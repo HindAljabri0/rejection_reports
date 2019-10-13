@@ -1,12 +1,15 @@
 <br> <br>
-<div style="width: 50%; padding: 10%; margin: auto; ">
-  <div class="input-group">
-  <div class="custom-file">
-    <input type="file" required (change)="detectFiles($event)">
-    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
-  </div>
-  <div *ngIf="true" class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-  </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h4>Choose File</h4>            
+            <div class="form-group">
+                <input type="file" id="file" onclick="this.value = null" (change)="selectFile($event)" />
+            </div>             
+            <div class="form-group">
+                <button class="btn btn-outline-secondary" (click)="upload()">Upload</button>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
