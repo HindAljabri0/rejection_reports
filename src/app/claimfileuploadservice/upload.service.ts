@@ -15,6 +15,7 @@ constructor(private http: HttpClient) {
   pushFileToStorage(file: File): Observable<HttpEvent<{}>> {
     const formdata: FormData = new FormData();
 
+    formdata.append('file', file);
     const req = new HttpRequest('POST', 'http://localhost:8080/uploads',  formdata);
 
     return this.http.request(req);
