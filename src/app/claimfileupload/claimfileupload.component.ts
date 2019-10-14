@@ -1,4 +1,4 @@
-import { UploadService, Summary } from './../claimfileuploadservice/upload.service';
+import { UploadService, Summary, ClaimSubmissionData } from './../claimfileuploadservice/upload.service';
 import { Component, OnInit } from '@angular/core';
 import {  HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -39,9 +39,10 @@ export class ClaimfileuploadComponent {
         if(event.status === 200){
           let summary = new Summary();
           summary.uploadName = event.body['uploadName'] === null? "Unknown":event.body['uploadName'];
-          summary.uploadedDate = event.body['uploadedDate'] === null? new Date(0,0,0,0,0,0,0):event.body['uploadedDate'];
+          summary.uploadedDate = event.body['uploadedDate'] === null? new Date(0,0,0,0,0,0,0):new Date(event.body['uploadedDate']);
           summary.totalNumberOfClaims = event.body['totalNumberOfClaims'] === null? 0:event.body['totalNumberOfClaims'];
-          summary.numberOfUploadedClaims = event.body['numberOfUploadedClaims'] === null? 10:event.body['numberOfUploadedClaims'];
+          summary.numberOfAcceptedClaims = event.body['numberOfAcceptedClaims'] === null? 10:event.body['numberOfAcceptedClaims'];
+          summary.numberOfNotAcceptedClaims = event.body['numberOfNotAcceptedClaims'] === null? 10:event.body['numberOfNotAcceptedClaims'];
           summary.numberOfNotUploadedClaims = event.body['numberOfNotUploadedClaims'] === null? 10:event.body['numberOfNotUploadedClaims'];
           summary.totalNetAmount = event.body['totalNetAmount'] === null? 110:event.body['totalNetAmount'];
           summary.totalAcceptedNetAmount = event.body['totalAcceptedNetAmount'] === null? 110:event.body['totalAcceptedNetAmount'];
@@ -49,7 +50,8 @@ export class ClaimfileuploadComponent {
           summary.totalNetVatAmount = event.body['totalNetVatAmount'] === null? 1110:event.body['totalNetVatAmount'];
           summary.totalAcceptedNetVatAmount = event.body['totalAcceptedNetVatAmount'] === null? 1110:event.body['totalAcceptedNetVatAmount'];
           summary.totalNotAcceptedNetVatAmount = event.body['totalNotAcceptedNetVatAmount'] === null? 1110:event.body['totalNotAcceptedNetVatAmount'];
-          summary.claimMetaData = event.body['claimMetaData'] === null? "Unknown":event.body['claimMetaData'];
+          summary.claimMetaData = event.body['claimMetaData'];
+          
           this.uploadService.summaryChange.next(summary);
         }
       }

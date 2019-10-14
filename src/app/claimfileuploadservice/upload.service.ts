@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-const url = 'http://localhost:8000/claimfileupload';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -26,7 +26,9 @@ export class UploadService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', 'http://localhost:8080/uploads',  formdata);
+    const req = new HttpRequest('POST', environment.host+'/uploads',  formdata, {
+      reportProgress: true,
+    });
 
     return this.http.request(req);
   }
@@ -43,7 +45,8 @@ export class Summary {
   uploadName:string = "Unknown";
   uploadedDate:Date = new Date(0,0,0,0,0,0,0);
   totalNumberOfClaims: number = 0;
-  numberOfUploadedClaims: number = 0;
+  numberOfAcceptedClaims: number = 0;
+  numberOfNotAcceptedClaims: number = 0;
   numberOfNotUploadedClaims:number = 0;
   totalNetAmount: number = 0;
   totalAcceptedNetAmount:number = 0;
@@ -51,7 +54,16 @@ export class Summary {
   totalNetVatAmount:number = 0;
   totalAcceptedNetVatAmount:number = 0;
   totalNotAcceptedNetVatAmount:number = 0;
-  claimMetaData: string = "Unknown";
+  claimMetaData: Array<ClaimSubmissionData>;
+}
+
+export class ClaimSubmissionData {
+  rowNumber:number;
+  providerClaimNumber:string;
+  claimUploadStatus:string;
+  errorCode:string;
+  fieldName:string;
+  errorDescription:string;
 }
 /*export class UploadService {
   constructor(private http: HttpClient) { }
