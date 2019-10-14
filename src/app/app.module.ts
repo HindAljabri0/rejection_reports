@@ -7,13 +7,15 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import { UploadService } from './claimfileuploadservice/upload.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ClaimsummaryComponent } from './claimsummary/claimsummary.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClaimfileuploadComponent,
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    ClaimsummaryComponent
   ],
   imports: [
     BrowserModule,

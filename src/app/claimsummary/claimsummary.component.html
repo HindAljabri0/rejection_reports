@@ -1,0 +1,52 @@
+<div class="w3-row offset-md-3">
+    <div class="w3-card w3-col s2">
+        <header class="w3-container w3-blue">
+            <h6>All Claims</h6>
+        </header>
+        <div class="w3-container">
+            <p>No. Of Claims<br>{{summary.totalNetAmount}}</p>
+            <p>Total<br>{{summary.totalNetVatAmount}}</p>
+        </div>
+        <footer class="w3-container">
+            <p *ngIf="summary.uploadedDate.getFullYear()!==1899">{{summary.uploadedDate.getHours()}}:{{summary.uploadedDate.getMinutes()}} - {{summary.uploadedDate.getDate()}}/{{summary.uploadedDate.getMonth()+1}}/{{summary.uploadedDate.getFullYear()}}</p>
+            <p *ngIf="summary.uploadedDate.getFullYear()<=1899">00:00 - 00/00/0000</p>
+        </footer>
+    </div>
+    <div class="w3-card w3-col s2">
+        <header class="w3-container w3-blue">
+            <h6>Accepted Claims</h6>
+        </header>
+        <div class="w3-container">
+            <p>No. Of Claims<br>{{summary.totalAcceptedNetAmount}}</p>
+            <p>Total<br>{{summary.totalAcceptedNetVatAmount}}</p>
+        </div>
+        <footer class="w3-container">
+            <p class="w3-right-align"><a href="#">Submit</a></p>
+        </footer>
+    </div>
+    <div class="w3-card w3-col s2">
+        <header class="w3-container w3-blue">
+            <h6>Not Accepted Claims</h6>
+        </header>
+        <div class="w3-container">
+            <p>No. Of Claims<br>{{summary.totalNotAcceptedNetAmount}}</p>
+            <p>Total<br>{{summary.totalNotAcceptedNetVatAmount}}</p>
+        </div>
+        <footer class="w3-container">
+            <p class="w3-right-align"><a href="#">Edit</a></p>
+        </footer>
+    </div>
+    <div class="w3-card w3-col s2">
+        <header class="w3-container w3-blue">
+            <h6>Submited Claims</h6>
+        </header>
+        <div class="w3-container">
+            <p>No. Of Claims<br>0</p>
+            <p>Total<br>0</p>
+        </div>
+        <footer class="w3-container">
+            <p class="w3-right-align"><a href="#">Details</a></p>
+        </footer>
+    </div>
+</div>
+

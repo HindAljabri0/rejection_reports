@@ -1,7 +1,7 @@
 <br> <br>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-6 offset-md-3" *ngIf="!uploading">
             <h4>Choose File</h4>            
             <div class="form-group">
                 <input type="file" id="file" onclick="this.value = null" (change)="selectFile($event)" />
@@ -9,6 +9,9 @@
             <div class="form-group">
                 <button class="btn btn-outline-secondary" (click)="upload()">Upload</button>
             </div>
+        </div>
+        <div class="col-md-6 offset-md-3" *ngIf="uploading">
+            <h4>Uploading...</h4>  
         </div>
     </div>
 </div>
