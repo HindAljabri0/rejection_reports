@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { UploadService } from './claimfileuploadservice/upload.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ClaimsummaryComponent } from './claimsummary/claimsummary.component';
+import { NotuploadedsummaryComponent } from './claimsummary/notuploadedsummary/notuploadedsummary.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ClaimsummaryComponent } from './claimsummary/claimsummary.component';
     ClaimfileuploadComponent,
     SidebarComponent,
     HeaderComponent,
-    ClaimsummaryComponent
+    ClaimsummaryComponent,
+    NotuploadedsummaryComponent
   ],
   imports: [
     BrowserModule,

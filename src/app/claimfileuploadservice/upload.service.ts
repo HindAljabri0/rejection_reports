@@ -65,6 +65,10 @@ export class ClaimSubmissionData {
   fieldName:string;
   errorDescription:string;
 }
+
+export enum ClaimUploadStatus {
+  UPLOADED, NOTUPLOADED, DUPLICATED
+}
 /*export class UploadService {
   constructor(private http: HttpClient) { }
 
