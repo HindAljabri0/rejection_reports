@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadService, Summary, ClaimSubmissionData, ClaimUploadStatus } from 'src/app/claimfileuploadservice/upload.service';
+import { UploadService, Summary, ClaimSubmissionData, ClaimUploadStatus } from 'src/app/claimpage/claimfileuploadservice/upload.service';
 
 @Component({
   selector: 'app-notuploadedsummary',

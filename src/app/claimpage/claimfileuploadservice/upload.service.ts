@@ -15,7 +15,7 @@ export class UploadService {
 
   constructor(private http: HttpClient) {
     this.http = http;
-    this.summary = new Summary();
+    this.summary = new Summary(null);
     //TODO: get last summary from database.
     this.summaryChange.subscribe((value)=> {
       console.log('Changed');
@@ -42,19 +42,31 @@ export class UploadService {
 }
 
 export class Summary {
-  uploadName:string = "Unknown";
-  uploadedDate:Date = new Date(0,0,0,0,0,0,0);
-  totalNumberOfClaims: number = 0;
-  numberOfAcceptedClaims: number = 0;
-  numberOfNotAcceptedClaims: number = 0;
-  numberOfNotUploadedClaims:number = 0;
-  totalNetAmount: number = 0;
-  totalAcceptedNetAmount:number = 0;
-  totalNotAcceptedNetAmount:number = 0;
-  totalNetVatAmount:number = 0;
-  totalAcceptedNetVatAmount:number = 0;
-  totalNotAcceptedNetVatAmount:number = 0;
+  uploadUniqueId:string;
+  uploadName:string;
+  uploadedDate:Date;
+  totalNumberOfUploadedClaims:number;
+  totalNumberOfNotUploadedClaims:number;
+  totalNetAmountOfUploadedClaims:number;
+  totalNetVatAmountOfUploadedClaims:number;
   claimMetaData: Array<ClaimSubmissionData>;
+  constructor(body:{}){
+    if(body === null){
+      this.totalNetAmountOfUploadedClaims = 0;
+      this.totalNetVatAmountOfUploadedClaims = 0;
+      this.totalNumberOfNotUploadedClaims = 0;
+      this.totalNumberOfUploadedClaims = 0;
+    } else {
+      this.uploadUniqueId = body['uploadUniqueId'];
+      this.uploadName = body['uploadName'];
+      this.uploadedDate = body['uploadedDate'];
+      this.totalNumberOfUploadedClaims = body['totalNumberOfUploadedClaims'];
+      this.totalNumberOfNotUploadedClaims = body['totalNumberOfNotUploadedClaims'];
+      this.totalNetAmountOfUploadedClaims = body['totalNetAmountOfUploadedClaims'];
+      this.totalNetVatAmountOfUploadedClaims = body['totalNetVatAmountOfUploadedClaims'];
+      this.claimMetaData = body['claimMetaData'];
+    }
+  }
 }
 
 export class ClaimSubmissionData {

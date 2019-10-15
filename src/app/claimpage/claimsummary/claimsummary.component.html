@@ -1,0 +1,34 @@
+<mat-grid-list cols="2" style="margin: 0 auto; width: 700px;">
+    <mat-grid-tile>
+        <app-abstractcard [title]="card1Title" [actionText]="card1ActionText" (action)="card1Action()">
+            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.totalNumberOfUploadedClaims}}</span><br>
+            Net Amount:<br><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims}}</span><br>
+            Net Vat Amount:<br><span class="dashboardNumbers">{{summary.totalNetVatAmountOfUploadedClaims}}</span></p>
+        </app-abstractcard>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-abstractcard [title]="card2Title" [actionText]="card2ActionText" (action)="card2Action()">
+            <p>No. Of Claims<br><span class="dashboardNumbers">{{summary.totalNumberOfNotUploadedClaims}}</span></p>
+        </app-abstractcard>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2">
+        <app-detailscard [title]="detailCardTitle">
+            <mat-accordion *ngFor="let claimData of summary.claimMetaData">
+                <mat-expansion-panel [expanded]="true" *ngIf="claimData.claimUploadStatus == detailsFilter">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{claimData.claimUploadStatus}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            from line {{claimData.rowNumber}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <p *ngIf="claimData.claimUploadStatus != 'UPLOADED'">
+                        {{claimData.fieldName}} field in line {{claimData.rowNumber}} gave error code: {{claimData.errorCode}}<br>
+                        Description: {{claimData.errorDescription}}
+                    </p>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </app-detailscard>
+    </mat-grid-tile>
+</mat-grid-list>
