@@ -21,11 +21,36 @@ export class ClaimfileuploadComponent {
   showFile = false;
   fileUploads: Observable<string[]>;
 
+  uploadContainerClass = "uploadfilecontainer";
+  error = "";
 
 
-  selectFile(event: { target: { files: { item: (arg0: number) => File; }; }; }) {
-    this.currentFileUpload = event.target.files.item(0);
+  selectFile(event){
+    this.currentFileUpload = event.item(0);
+    console.log(this.currentFileUpload.name);
+    if(this.checkfile()){
+      this.upload();
+    } else {
+      this.currentFileUpload = undefined;
+    }
   }
+  checkfile() {
+    var validExts = new Array(".xlsx", ".xls");
+    var fileExt = this.currentFileUpload.name;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+    if (validExts.indexOf(fileExt) < 0) {
+      this.uploadContainerClass = "uploadContainerErrorClass";
+      this.error = "Invalid file selected, valid files are of " +
+      validExts.toString() + " types."
+      return false;
+    }
+    else {
+      this.uploadContainerClass = "uploadfilecontainer";
+      this.error = "";
+      return true;
+    }
+  }
+  
   upload() {
     this.progress.percentage = 0;
     this.uploading = true;
@@ -46,6 +71,7 @@ export class ClaimfileuploadComponent {
     });
     this.selectedFiles = undefined;
   }
+  
   showFiles(enable: boolean) {
     this.showFile = enable;
     if (enable) {

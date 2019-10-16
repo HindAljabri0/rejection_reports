@@ -18,6 +18,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     DetailscardComponent,
     ClaimpageComponent,
     AbstractcardComponent,
+    DragdropDirective,
   ],
   imports: [
     BrowserModule,

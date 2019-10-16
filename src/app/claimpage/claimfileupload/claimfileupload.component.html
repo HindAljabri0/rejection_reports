@@ -1,22 +1,13 @@
-<br> <br>
-<div class="container">
-    <div class="row">
-        
-        <div class="col-md-6 offset-md-3" *ngIf="!uploading">
-            <h4>Choose File</h4>            
-            <div class="form-group">
-                <input type="file" id="file" onclick="this.value = null" (change)="selectFile($event)" />
-            </div>             
-            <div class="form-group">
-                <button class="btn btn-outline-secondary" (click)="upload()">Upload</button>
-            </div>
-        </div>
-        <div class="col-md-6 offset-md-3" *ngIf="uploading && progress.percentage !== 100">
-            <h4>Uploading...{{progress.percentage}}%</h4>  
-        </div>
-        <div class="col-md-6 offset-md-3" *ngIf="uploading && progress.percentage === 100">
-            <h4>Proccessing...</h4>  
-        </div>
+<div *ngIf="!uploading">         
+    <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
+        <p class="containerText">Choose a file or drag it here.</p>
+        <p class="containerText" style="line-height: 0; font-size: 14px !important;">{{error}}</p>
+        <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
     </div>
 </div>
-
+<div *ngIf="uploading && progress.percentage !== 100">
+    <h4>Uploading...{{progress.percentage}}%</h4>  
+</div>
+<div  *ngIf="uploading && progress.percentage === 100">
+    <h4>Proccessing...</h4>  
+</div>
