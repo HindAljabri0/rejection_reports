@@ -1,6 +1,7 @@
 import { Component, Input, Output, ContentChildren } from '@angular/core';
-import { MatCard } from '@angular/material/card'
-import { MatButton } from '@angular/material/button';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatCard } from '@angular/material/card';
+// import { MatButton } from '@angular/material/button';
 import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-abstractcard',
@@ -11,9 +12,7 @@ export class AbstractcardComponent  {
 
   constructor() { }
 
-  @Input() title:string;
-  @Input() actionText:string;
-  
+  @Input() title: string;
+  @Input() actionText: string;
   @Output() action = new EventEmitter();
-
 }
