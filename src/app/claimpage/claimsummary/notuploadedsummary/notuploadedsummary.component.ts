@@ -8,9 +8,9 @@ import { UploadService, Summary, ClaimSubmissionData, ClaimUploadStatus } from '
 })
 export class NotuploadedsummaryComponent {
 
-  constructor(private uploadService:UploadService) { }
+  constructor(private uploadService: UploadService) { }
 
-  get summary():Summary {
+  get summary(): Summary {
     return this.uploadService.summary;
   }
 
