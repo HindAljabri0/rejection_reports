@@ -8,7 +8,6 @@ import { HeaderComponent } from './header/header.component';
 import { UploadService } from './claimpage/claimfileuploadservice/upload.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ClaimsummaryComponent } from './claimpage/claimsummary/claimsummary.component';
-import { NotuploadedsummaryComponent } from './claimpage/claimsummary/notuploadedsummary/notuploadedsummary.component';
 import { DetailscardComponent } from './detailscard/detailscard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material';
@@ -27,7 +26,6 @@ import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directiv
     SidebarComponent,
     HeaderComponent,
     ClaimsummaryComponent,
-    NotuploadedsummaryComponent,
     DetailscardComponent,
     ClaimpageComponent,
     AbstractcardComponent,
