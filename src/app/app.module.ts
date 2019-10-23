@@ -11,13 +11,13 @@ import { ClaimsummaryComponent } from './claimpage/claimsummary/claimsummary.com
 import { NotuploadedsummaryComponent } from './claimpage/claimsummary/notuploadedsummary/notuploadedsummary.component';
 import { DetailscardComponent } from './detailscard/detailscard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material';
 import { ClaimpageComponent } from './claimpage/claimpage.component';
 import { AbstractcardComponent } from './abstractcard/abstractcard.component';
 import {MatButtonModule} from '@angular/material/button';
-import {MatGridListModule} from '@angular/material/grid-list';
+import {MatGridListModule} from '@angular/material';
 import {MatDividerModule} from '@angular/material/divider';
-import {MatExpansionModule} from '@angular/material/expansion';
+import {MatExpansionModule} from '@angular/material';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 
 @NgModule({

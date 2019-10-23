@@ -11,21 +11,20 @@ export class DetailscardComponent  {
 
   constructor() { }
 
-  @Input() title:string;
+  @Input() title: string;
 
-  @Input() topLeftActionText:string;
-  @Input() topRightActionText:string;
+  @Input() topLeftActionText: string;
+  @Input() topRightActionText: string;
 
-  @Input() bottomLeftActionText:string;
-  @Input() bottomRightActionText:string;
+  @Input() bottomLeftActionText: string;
+  @Input() bottomRightActionText: string;
 
-  @Input() bottomDetails:string;
+  @Input() bottomDetails: string;
 
   @Output() topLeftAction = new EventEmitter();
   @Output() topRightAction = new EventEmitter();
 
   @Output() bottomLeftAction = new EventEmitter();
   @Output() bottomRightAction = new EventEmitter();
-  
 
 }
