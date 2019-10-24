@@ -17,6 +17,9 @@ export class UploadService {
   constructor(private http: HttpClient) {
     this.http = http;
     this.summary = new Summary(null);
+    this.summary = new Summary(null);
+    if(!environment.production)
+      this.test();
     //TODO: get last summary from database.
     this.summaryChange.subscribe((value)=> {
       console.log('Changed');
@@ -40,6 +43,44 @@ export class UploadService {
   uploadFile(formData: FormData): Observable <any> {
     return this.http.post('http://localhost:8080/uploads', formData);
   }
+
+  test(){
+    this.summary.totalNumberOfUploadedClaims = 5;
+    this.summary.numOfAcceptedClaims = 3;
+    this.summary.numOfNotAcceptedClaims = 2;
+    this.summary.numOfNotUploadedClaims = 5;
+    this.summary.totalNetAmountOfUploadedClaims = 10000;
+    this.summary.totalNetVatAmount = 50;
+    this.summary.uploadDate = new Date();
+    let uploadedInfo:Array<UploadedClaim> = new Array();
+    let claimInfo = new UploadedClaim(null);
+    claimInfo.uploadStatus = ClaimStatus.Saved;
+    claimInfo.fileRowNumber = 5;
+    claimInfo.providerClaimNumber = '564654';
+    claimInfo.claimErrors = new Array();
+    let claimInfo1 = new UploadedClaim(null);
+    claimInfo1.uploadStatus = ClaimStatus.Saved_With_Errors;
+    claimInfo1.fileRowNumber = 5;
+    claimInfo1.providerClaimNumber = '564654';
+    claimInfo1.claimErrors = new Array();
+    let claimInfo2 = new UploadedClaim(null);
+    claimInfo2.uploadStatus = ClaimStatus.Not_Saved;
+    claimInfo2.fileRowNumber = 1;
+    claimInfo2.providerClaimNumber = 'dsafads';
+    claimInfo2.claimErrors = new Array();
+    uploadedInfo.push(claimInfo);
+    uploadedInfo.push(claimInfo);
+    uploadedInfo.push(claimInfo);
+    uploadedInfo.push(claimInfo1);
+    uploadedInfo.push(claimInfo1);
+    uploadedInfo.push(claimInfo2);
+    uploadedInfo.push(claimInfo2);
+    uploadedInfo.push(claimInfo2);
+    uploadedInfo.push(claimInfo2);
+    uploadedInfo.push(claimInfo2);
+
+    this.summary.uploadedClaims = uploadedInfo;
+  }
 }
 
 
@@ -51,6 +92,11 @@ export class Summary {
   totalNetAmountOfUploadedClaims: number;
   totalNetVatAmount: number;
   uploadedClaims: Array<UploadedClaim>;
+
+  numOfAcceptedClaims:number = 0;
+  numOfNotAcceptedClaims:number = 0;
+  numOfNotUploadedClaims:number = 0;
+
   constructor(body: {}) {
     if (body === null) {
       this.totalNetAmountOfUploadedClaims = 0;
@@ -65,7 +111,17 @@ export class Summary {
       this.totalNetVatAmount = body['totalNetVatAmount'];
       this.uploadedClaims = new Array();
       for(let uploadedclaim of body['uploadedClaims']){
-        this.uploadedClaims.push(new UploadedClaim(uploadedclaim));
+        let claimInfo:UploadedClaim = new UploadedClaim(uploadedclaim);
+        this.uploadedClaims.push(claimInfo);
+        switch(claimInfo.uploadStatus){
+          case ClaimStatus.Saved:
+            this.numOfAcceptedClaims++;
+            break;
+          case ClaimStatus.Saved_With_Errors:
+            this.numOfNotAcceptedClaims++;
+          default:
+            this.numOfNotUploadedClaims++;
+        }
       }
     }
   }
@@ -78,13 +134,15 @@ export class UploadedClaim {
   uploadSubStatus: string;
   claimErrors: Array <ClaimError>;
   constructor(body: {}) {
-    this.fileRowNumber = body['fileRowNumber'];
-    this.providerClaimNumber = body['providerClaimNumber'];
-    this.uploadStatus = body['uploadStatus'];
-    this.uploadSubStatus = body ['uploadSubStatus'];
-    this.claimErrors = new Array();
-    for (let error of body ['claimErrors']) {
-      this.claimErrors.push(new ClaimError(error));
+    if(body != null){
+      this.fileRowNumber = body['fileRowNumber'];
+      this.providerClaimNumber = body['providerClaimNumber'];
+      this.uploadStatus = body['uploadStatus'];
+      this.uploadSubStatus = body ['uploadSubStatus'];
+      this.claimErrors = new Array();
+      for (let error of body ['claimErrors']) {
+        this.claimErrors.push(new ClaimError(error));
+      }
     }
   }
 }
@@ -95,8 +153,17 @@ export class ClaimError {
   errorDescription: string;
   fieldName: string;
   constructor(body: {}) {
-    this.errorCode = body['errorCode'];
-    this.errorDescription = body['errorDescription'];
-    this.fieldName = body ['fieldName'];
+    if(body != null){
+      this.errorCode = body['errorCode'];
+      this.errorDescription = body['errorDescription'];
+      this.fieldName = body ['fieldName'];
+    }
   }
+}
+
+export enum ClaimStatus{
+  Saved = "saved",
+  Saved_With_Errors = "saved with errors",
+  Not_Saved = "not saved" ,
+  Duplicated = "duplicated"
 }

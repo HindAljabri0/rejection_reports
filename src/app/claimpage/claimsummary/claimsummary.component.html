@@ -1,15 +1,29 @@
-<mat-grid-list cols="2" >
+<mat-grid-list cols="4" style="height: 1000px;">
     <mat-grid-tile>
-        <app-abstractcard [title]="card1Title" [actionText]="card1ActionText" (action)="card1Action()">
-            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.totalNumberOfUploadedClaims}}</span><br>
-            Net Amount:<br><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims}}</span><br>
-            Net Vat Amount:<br><span class="dashboardNumbers">{{summary.totalNetVatAmount}}</span></p>
+        <app-abstractcard [title]="card0Title">
+            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfAcceptedClaims + summary.numOfNotAcceptedClaims + summary.numOfNotUploadedClaims }}</span><br>
+            total:<br><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims + summary.totalNetVatAmount}}</span><br>
         </app-abstractcard>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="2">
-        <app-detailscard [title]="detailCardTitle">
-            <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
-                <mat-expansion-panel [expanded]="true" *ngIf="claimData.uploadStatus == detailsFilter">
+    <mat-grid-tile>
+        <app-abstractcard [title]="card1Title" [actionText]="card1ActionText" (action)="card1Action()">
+            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfAcceptedClaims}}</span><br>
+        </app-abstractcard>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-abstractcard [title]="card2Title" [actionText]="card2ActionText" (action)="card2Action()">
+            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfNotAcceptedClaims}}</span><br>
+        </app-abstractcard>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-abstractcard [title]="card3Title" [actionText]="card3ActionText" (action)="card3Action()">
+            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfNotUploadedClaims}}</span><br>
+        </app-abstractcard>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" style="height: 700px; align-items: baseline;">
+        <app-detailscard [title]="detailCardTitle" style="width: 100%;">
+            <mat-accordion *ngFor="let claimData of summary.uploadedClaims" >
+                <mat-expansion-panel [expanded]="true" *ngIf="claimData.uploadStatus == detailsFilter || claimData.uploadStatus == detailsFilter1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{claimData.uploadStatus}}
