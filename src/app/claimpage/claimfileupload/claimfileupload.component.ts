@@ -1,4 +1,4 @@
-import { UploadService, Summary, ClaimSubmissionData } from '../claimfileuploadservice/upload.service';
+import { UploadService, Summary } from '../claimfileuploadservice/upload.service';
 import { Component, OnInit } from '@angular/core';
 import {  HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -13,44 +13,43 @@ import { Observable } from 'rxjs';
 export class ClaimfileuploadComponent {
   // constructor(private http: HttpClient) {}
   constructor(private uploadService: UploadService) { }
-  title = "testing";
+  title = 'testing';
   progress: { percentage: number } = { percentage: 0 };
-  uploading:boolean = false;
+  uploading = false;
   currentFileUpload: File;
   selectedFiles: FileList;
   showFile = false;
   fileUploads: Observable<string[]>;
 
-  uploadContainerClass = "uploadfilecontainer";
-  error = "";
+  uploadContainerClass = 'uploadfilecontainer';
+  error = '';
 
 
-  selectFile(event){
+  selectFile(event) {
     this.currentFileUpload = event.item(0);
     console.log(this.currentFileUpload.name);
-    if(this.checkfile()){
+    if (this.checkfile()) {
       this.upload();
     } else {
       this.currentFileUpload = undefined;
     }
   }
   checkfile() {
-    var validExts = new Array(".xlsx", ".xls");
-    var fileExt = this.currentFileUpload.name;
+    const validExts = new Array('.xlsx', '.xls');
+    let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
-      this.uploadContainerClass = "uploadContainerErrorClass";
-      this.error = "Invalid file selected, valid files are of " +
-      validExts.toString() + " types."
+      this.uploadContainerClass = 'uploadContainerErrorClass';
+      this.error = 'Invalid file selected, valid files are of ' +
+      validExts.toString() + ' types.';
       return false;
-    }
-    else {
-      this.uploadContainerClass = "uploadfilecontainer";
-      this.error = "";
+    } else {
+      this.uploadContainerClass = 'uploadfilecontainer';
+      this.error = '';
       return true;
     }
   }
-  
+
   upload() {
     this.progress.percentage = 0;
     this.uploading = true;
@@ -61,17 +60,17 @@ export class ClaimfileuploadComponent {
       } else if (event instanceof HttpResponse) {
         console.log('File is completely uploaded!');
         this.uploading = false;
-        if(event.status === 200){
-          let summary = new Summary(event.body);     
+        if (event.status === 200) {
+          const summary = new Summary(event.body);
           this.uploadService.summaryChange.next(summary);
         }
       }
-    }, (error)=>{
+    }, (error) => {
       this.uploading = false;
     });
     this.selectedFiles = undefined;
   }
-  
+
   showFiles(enable: boolean) {
     this.showFile = enable;
     if (enable) {
@@ -79,34 +78,4 @@ export class ClaimfileuploadComponent {
     }
   }
 }
-
- /* getFiles(): Observable<any> {
-    return this.http.get('/getallfiles');
-  }
-} */
-
- /* fileToUpload: File = null;
-  fileUploadService: any;
-  loginForm: FormGroup;
-  handleFileInput(files: FileList) {
-  this.fileToUpload = files.item(0);
-}
-  uploadFileToActivity(url: string, file: File) {
-    this.fileUploadService.postFile(this.fileToUpload).subscribe(() => {
-      // if upload success
-      console.log('file has been upload', this.loginForm);
-      }, (error: any) => {
-        console.log(error);
-      });
-  }
-
-  // constructor(private service: UploadService) {
-    // this.fileUploadService = service;
-    }
-
-  ngOnInit() {
-    this.loginForm = new FormGroup({});
-
-    }
-  }*/
 

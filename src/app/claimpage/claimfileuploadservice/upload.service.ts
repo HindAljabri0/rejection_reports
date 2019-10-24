@@ -1,3 +1,4 @@
+// import { ClaimSubmissionData } from 'src/app/claimpage/claimfileuploadservice/upload.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
@@ -26,7 +27,7 @@ export class UploadService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', environment.host+'/uploads',  formdata, {
+    const req = new HttpRequest('POST', environment.host+'/55/44/uploads',  formdata, {
       reportProgress: true,
     });
 
@@ -41,54 +42,61 @@ export class UploadService {
   }
 }
 
+
 export class Summary {
-  uploadUniqueId:string;
-  uploadName:string;
-  uploadedDate:Date;
-  totalNumberOfUploadedClaims:number;
-  totalNumberOfNotUploadedClaims:number;
-  totalNetAmountOfUploadedClaims:number;
-  totalNetVatAmountOfUploadedClaims:number;
-  claimMetaData: Array<ClaimSubmissionData>;
-  constructor(body:{}){
-    if(body === null){
+  uploadSummaryID: string;
+  uploadName: string;
+  uploadDate: Date;
+  totalNumberOfUploadedClaims: number;
+  totalNetAmountOfUploadedClaims: number;
+  totalNetVatAmount: number;
+  uploadedClaims: Array<UploadedClaim>;
+  constructor(body: {}) {
+    if (body === null) {
       this.totalNetAmountOfUploadedClaims = 0;
-      this.totalNetVatAmountOfUploadedClaims = 0;
-      this.totalNumberOfNotUploadedClaims = 0;
+      this.totalNetVatAmount = 0;
       this.totalNumberOfUploadedClaims = 0;
     } else {
-      this.uploadUniqueId = body['uploadUniqueId'];
+      this.uploadSummaryID = body['uploadSummaryID'];
       this.uploadName = body['uploadName'];
-      this.uploadedDate = body['uploadedDate'];
+      this.uploadDate = body['uploadDate'];
       this.totalNumberOfUploadedClaims = body['totalNumberOfUploadedClaims'];
-      this.totalNumberOfNotUploadedClaims = body['totalNumberOfNotUploadedClaims'];
       this.totalNetAmountOfUploadedClaims = body['totalNetAmountOfUploadedClaims'];
-      this.totalNetVatAmountOfUploadedClaims = body['totalNetVatAmountOfUploadedClaims'];
-      this.claimMetaData = body['claimMetaData'];
+      this.totalNetVatAmount = body['totalNetVatAmount'];
+      this.uploadedClaims = new Array();
+      for(let uploadedclaim of body['uploadedClaims']){
+        this.uploadedClaims.push(new UploadedClaim(uploadedclaim));
+      }
     }
   }
 }
 
-export class ClaimSubmissionData {
-  rowNumber:number;
-  providerClaimNumber:string;
-  claimUploadStatus:string;
-  errorCode:string;
-  fieldName:string;
-  errorDescription:string;
-}
-
-export enum ClaimUploadStatus {
-  UPLOADED, NOTUPLOADED, DUPLICATED
-}
-/*export class UploadService {
-  constructor(private http: HttpClient) { }
-
-  postFile(fileToUpload: File) {
-    const endpoint = 'http://localhost:8080/uploads';
-    const formData: FormData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
-    return this.http
-      .post(endpoint, formData);
+export class UploadedClaim {
+  fileRowNumber: number;
+  providerClaimNumber: string;
+  uploadStatus: string;
+  uploadSubStatus: string;
+  claimErrors: Array <ClaimError>;
+  constructor(body: {}) {
+    this.fileRowNumber = body['fileRowNumber'];
+    this.providerClaimNumber = body['providerClaimNumber'];
+    this.uploadStatus = body['uploadStatus'];
+    this.uploadSubStatus = body ['uploadSubStatus'];
+    this.claimErrors = new Array();
+    for (let error of body ['claimErrors']) {
+      this.claimErrors.push(new ClaimError(error));
+    }
   }
-}*/
+}
+
+
+export class ClaimError {
+  errorCode: string;
+  errorDescription: string;
+  fieldName: string;
+  constructor(body: {}) {
+    this.errorCode = body['errorCode'];
+    this.errorDescription = body['errorDescription'];
+    this.fieldName = body ['fieldName'];
+  }
+}

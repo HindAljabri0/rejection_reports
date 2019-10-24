@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Summary, UploadService, ClaimUploadStatus } from '../claimfileuploadservice/upload.service';
+import { Summary, UploadService } from '../claimfileuploadservice/upload.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class ClaimsummaryComponent implements OnInit {
   card1ActionText = 'details';
   card1Action() {
     this.detailCardTitle = this.card1Title;
-    this.detailsFilter = 'UPLOADED';
+    this.detailsFilter = 'saved';
   }
   // tslint:disable-next-line: member-ordering
   card2Title = 'Not Uploaded Claims';
