@@ -1,29 +1,58 @@
-<mat-grid-list cols="4" style="height: 1000px;">
+<mat-grid-list cols="4" rowHeight="165px">
     <mat-grid-tile>
-        <app-abstractcard [title]="card0Title">
-            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfAcceptedClaims + summary.numOfNotAcceptedClaims + summary.numOfNotUploadedClaims }}</span><br>
-            total:<br><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims + summary.totalNetVatAmount}}</span><br>
+        <app-abstractcard [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
+            <table>
+                <tr>
+                    <th>No. Of Claims:</th>
+                    <th>total:</th>
+                </tr>
+                <tr>
+                    <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims + summary.numOfNotAcceptedClaims + summary.numOfNotUploadedClaims }}</span></td>
+                    <td><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims + summary.totalNetVatAmount}}</span></td>
+                </tr>
+            </table>
         </app-abstractcard>
     </mat-grid-tile>
     <mat-grid-tile>
-        <app-abstractcard [title]="card1Title" [actionText]="card1ActionText" (action)="card1Action()">
-            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfAcceptedClaims}}</span><br>
+        <app-abstractcard [title]="card1Title" [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
+            <table>
+                <tr>
+                    <th>No. Of Claims:</th>
+                </tr>
+                <tr>
+                    <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims}}</span></td>
+                </tr>
+            </table>
         </app-abstractcard>
     </mat-grid-tile>
     <mat-grid-tile>
-        <app-abstractcard [title]="card2Title" [actionText]="card2ActionText" (action)="card2Action()">
-            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfNotAcceptedClaims}}</span><br>
+        <app-abstractcard [title]="card2Title" [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
+            <table>
+                <tr>
+                    <th>No. Of Claims:</th>
+                </tr>
+                <tr>
+                    <td><span class="dashboardNumbers">{{summary.numOfNotAcceptedClaims}}</span></td>
+                </tr>
+            </table>
         </app-abstractcard>
     </mat-grid-tile>
     <mat-grid-tile>
-        <app-abstractcard [title]="card3Title" [actionText]="card3ActionText" (action)="card3Action()">
-            <p>No. Of Claims:<br><span class="dashboardNumbers">{{summary.numOfNotUploadedClaims}}</span><br>
+        <app-abstractcard [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
+            <table>
+                <tr>
+                    <th>No. Of Claims:</th>
+                </tr>
+                <tr>
+                    <td><span class="dashboardNumbers">{{summary.numOfNotUploadedClaims}}</span></td>
+                </tr>
+            </table>
         </app-abstractcard>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="4" style="height: 700px; align-items: baseline;">
-        <app-detailscard [title]="detailCardTitle" style="width: 100%;">
-            <mat-accordion *ngFor="let claimData of summary.uploadedClaims" >
-                <mat-expansion-panel [expanded]="true" *ngIf="claimData.uploadStatus == detailsFilter || claimData.uploadStatus == detailsFilter1">
+    <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4">
+        <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
+            <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
+                <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailsNoFilter || claimData.uploadStatus == detailsFilter || claimData.uploadStatus == detailsFilter1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{claimData.uploadStatus}}

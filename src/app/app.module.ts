@@ -18,6 +18,7 @@ import {MatGridListModule} from '@angular/material';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directiv
     MatGridListModule,
     MatDividerModule,
     MatExpansionModule,
+    MatCheckboxModule,
   ],
   providers: [UploadService],
   bootstrap: [AppComponent]

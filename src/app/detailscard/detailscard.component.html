@@ -1,8 +1,11 @@
-<mat-card style="width: inherit; height: fit-content;">
-    <mat-card-title style="font-size: 16px;">
-        {{title}}
-    </mat-card-title>
-    <mat-card-content style="height: inherit;">
+<mat-card class="mat-elevation-z0" style="width: inherit; height: fit-content; padding: 0px; background-color: #F8F7FF;">
+    <div style="height: 3px; width: 100%;" [style.background-color]="accentColor"></div>
+    <mat-card  style="padding: 16px;">
+        <mat-card-title style="font-size: 16px;">
+             <mat-checkbox>{{title}}</mat-checkbox>
+        </mat-card-title>
+    </mat-card>
+    <mat-card-content style="height: inherit; padding: 16px;">
         <ng-content></ng-content>
     </mat-card-content>
 </mat-card>

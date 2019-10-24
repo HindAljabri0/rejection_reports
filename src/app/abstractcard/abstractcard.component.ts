@@ -14,5 +14,6 @@ export class AbstractcardComponent  {
 
   @Input() title: string;
   @Input() actionText: string;
+  @Input() accentColor:string;
   @Output() action = new EventEmitter();
 }

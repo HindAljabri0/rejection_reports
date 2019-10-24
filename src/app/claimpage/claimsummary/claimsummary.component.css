@@ -1,3 +1,17 @@
 .dashboardNumbers{
-    font-size: 20px;
+    font-size: 24px;
+}
+
+table {
+    margin: 0px;
+    width: 100%;
+}
+
+.ditalList{
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.ditalList::-webkit-scrollbar{
+    display: none;
 }

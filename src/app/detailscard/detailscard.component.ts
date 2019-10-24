@@ -21,6 +21,8 @@ export class DetailscardComponent  {
 
   @Input() bottomDetails: string;
 
+  @Input() accentColor:string;
+
   @Output() topLeftAction = new EventEmitter();
   @Output() topRightAction = new EventEmitter();
 
