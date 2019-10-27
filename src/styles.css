@@ -5,7 +5,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mainPage{
     width: 70%;
-    margin: 0px auto;
+    margin: 20px auto;
 }
 
 .mat-grid-tile .mat-figure {

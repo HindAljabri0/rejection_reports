@@ -6,9 +6,13 @@
                     <th>No. Of Claims:</th>
                     <th>total:</th>
                 </tr>
-                <tr>
+                <tr *ngIf="summary.numOfAcceptedClaims > 0 || summary.numOfNotAcceptedClaims > 0">
                     <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims + summary.numOfNotAcceptedClaims }}</span></td>
                     <td><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims + summary.totalNetVatAmount}}</span><span class="currency"> SR</span></td>
+                </tr>
+                <tr *ngIf="summary.numOfAcceptedClaims == 0 && summary.numOfNotAcceptedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
+                    <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>
         </app-abstractcard>
@@ -19,8 +23,11 @@
                 <tr>
                     <th>No. Of Claims:</th>
                 </tr>
-                <tr>
+                <tr *ngIf="summary.numOfAcceptedClaims > 0">
                     <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims}}</span></td>
+                </tr>
+                <tr *ngIf="summary.numOfAcceptedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>
         </app-abstractcard>
@@ -31,8 +38,11 @@
                 <tr>
                     <th>No. Of Claims:</th>
                 </tr>
-                <tr>
+                <tr *ngIf="summary.numOfNotAcceptedClaims > 0">
                     <td><span class="dashboardNumbers">{{summary.numOfNotAcceptedClaims}}</span></td>
+                </tr>
+                <tr *ngIf="summary.numOfNotAcceptedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>
         </app-abstractcard>
@@ -43,13 +53,16 @@
                 <tr>
                     <th>No. Of Claims:</th>
                 </tr>
-                <tr>
+                <tr *ngIf="summary.numOfNotUploadedClaims > 0">
                     <td><span class="dashboardNumbers">{{summary.numOfNotUploadedClaims}}</span></td>
+                </tr>
+                <tr *ngIf="summary.numOfNotUploadedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>
         </app-abstractcard>
     </mat-grid-tile>
-    <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4">
+    <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4" *ngIf="summary.numOfAcceptedClaims > 0 || summary.numOfNotAcceptedClaims > 0 || summary.numOfNotUploadedClaims > 0">
         <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
             <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
                 <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailsNoFilter || claimData.uploadStatus == detailsFilter || claimData.uploadStatus == detailsFilter1">

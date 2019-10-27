@@ -18,8 +18,9 @@ export class UploadService {
     this.http = http;
     this.summary = new Summary(null);
     this.summary = new Summary(null);
-    if(!environment.production)
-      this.test();
+    if(!environment.production){
+      // this.test();
+    }
     //TODO: get last summary from database.
     this.summaryChange.subscribe((value)=> {
       console.log('Changed');
@@ -63,7 +64,7 @@ export class UploadService {
     claimInfo.uploadStatus = ClaimStatus.Saved;
     claimInfo.fileRowNumber = 5;
     claimInfo.providerClaimNumber = '564654';
-    claimInfo.claimErrors = errors;
+    claimInfo.claimErrors = new Array();
     let claimInfo1 = new UploadedClaim(null);
     claimInfo1.uploadStatus = ClaimStatus.Saved_With_Errors;
     claimInfo1.fileRowNumber = 5;

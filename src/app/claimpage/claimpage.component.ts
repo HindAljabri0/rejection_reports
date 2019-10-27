@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UploadService, Summary } from './claimfileuploadservice/upload.service';
 
 @Component({
   selector: 'app-claimpage',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClaimpageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private uploadService:UploadService) { }
 
   ngOnInit() {
+  }
+
+  get summary(): Summary {
+    return this.uploadService.summary;
   }
 
 }

@@ -2,6 +2,7 @@ import { UploadService, Summary } from '../claimfileuploadservice/upload.service
 import { Component, OnInit } from '@angular/core';
 import {  HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { StepperProgressBarController, Step } from 'stepper-progress-bar';
 
 
 
@@ -10,9 +11,17 @@ import { Observable } from 'rxjs';
   templateUrl: './claimfileupload.component.html',
   styleUrls: ['./claimfileupload.component.css']
 })
-export class ClaimfileuploadComponent {
+export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
   constructor(private uploadService: UploadService) { }
+
+  ngOnInit(): void {
+    this.steps.push(new Step('Uploading'));
+    this.steps.push(new Step('Parsing'));
+    this.steps.push(new Step('Validating'));
+    this.steps.push(new Step('Done!'));
+  }
+
   title = 'testing';
   progress: { percentage: number } = { percentage: 0 };
   uploading = false;
@@ -23,6 +32,10 @@ export class ClaimfileuploadComponent {
 
   uploadContainerClass = 'uploadfilecontainer';
   error = '';
+
+  progressStepper:StepperProgressBarController = new StepperProgressBarController();
+  steps:Step[] = new Array<Step>();
+  isVertical=true;
 
 
   selectFile(event) {
@@ -53,14 +66,19 @@ export class ClaimfileuploadComponent {
   upload() {
     this.progress.percentage = 0;
     this.uploading = true;
+    this.progressStepper.nextStep();
     console.log('uploading...');
     this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round(100 * event.loaded / event.total);
+        if(this.progress.percentage == 100) this.progressStepper.nextStep();
       } else if (event instanceof HttpResponse) {
         console.log('File is completely uploaded!');
         this.uploading = false;
         if (event.status === 200) {
+          this.progressStepper.nextStep();
+          this.progressStepper.nextStep();
+          this.progressStepper.nextStep();
           const summary = new Summary(event.body);
           this.uploadService.summaryChange.next(summary);
         }

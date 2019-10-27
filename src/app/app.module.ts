@@ -20,6 +20,7 @@ import {MatExpansionModule} from '@angular/material';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRippleModule} from '@angular/material/core';
+import { StepperProgressBarModule } from 'stepper-progress-bar'
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatExpansionModule,
     MatCheckboxModule,
     MatRippleModule,
+    StepperProgressBarModule,
   ],
   providers: [UploadService],
   bootstrap: [AppComponent]

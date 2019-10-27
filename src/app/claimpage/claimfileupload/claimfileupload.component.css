@@ -1,5 +1,16 @@
 :host{
-  --drop-component-height: 100px;
+  --drop-component-height: 500px;
+}
+
+table{
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+
+.stepperProgressBar{
+  height: var(--drop-component-height);
+  width: 100%;
 }
 
 .center{
@@ -15,9 +26,11 @@
   background-size: 100px;
   background-position: center;
   height: var(--drop-component-height);
-  margin: 20px auto;
-  border: 2px dashed #1a89bc;
-  color: #1a89bc;
+  width: 100%;
+  margin: auto;
+  border: 2px dashed #70707080;
+  background-color: #FAFAFA !important;
+  color: #707070;
   border-radius: 10px;
   
 }
@@ -27,7 +40,8 @@
   background-size: 100px;
   background-position: center;
   height: var(--drop-component-height);
-  margin: 20px auto;
+  width: 100%;
+  margin: auto;
   border: 2px dashed #be3636 ;
   background-color: #f17e7e ;
   color: #be3636;
@@ -41,12 +55,12 @@
 
 .uploadfilecontainer:hover {
   cursor: pointer;
-  background-color: #9ecbec !important;
+  background-color: #e0dede !important;
   opacity: 0.8;
 }
 
 .containerText {
-  width: inherit;
+  width: 100%;
   font-size: 20px;
   text-align: center;
   vertical-align: middle;

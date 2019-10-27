@@ -1,4 +1,4 @@
 <div class="mainPage">
-    <app-claimfileupload></app-claimfileupload>
     <app-claimsummary></app-claimsummary>
+    <app-claimfileupload *ngIf="summary.numOfAcceptedClaims == 0 && summary.numOfNotAcceptedClaims == 0 && summary.numOfNotUploadedClaims == 0"></app-claimfileupload>
 </div>

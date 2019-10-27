@@ -1,10 +1,19 @@
-<div *ngIf="!uploading">         
-    <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
-        <p class="containerText">Choose a file or drag it here.</p>
-        <p class="containerText" style="line-height: 0; font-size: 14px !important;">{{error}}</p>
-        <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-    </div>
-</div>
+<mat-grid-list cols="4" rowHeight="500px">
+    
+        <mat-grid-tile class="grid-tile">
+            <lib-stepperProgressBar class="stepperProgressBar" [controller]="progressStepper" [steps]="steps" [isVertical]="isVertical" style="width: 240px; padding: 55px 0px 0px 0px; z-index: 2; background-color: white;">
+            </lib-stepperProgressBar>
+        </mat-grid-tile>
+        <!-- <td style="background-color: transparent; width: 10px;"></td> -->
+        <mat-grid-tile class="grid-tile" [colspan]="3">      
+            <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
+                <p class="containerText">Choose a file or drag it here.</p>
+                <p class="containerText" style="line-height: 0; font-size: 14px !important;">{{error}}</p>
+                <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            </div>
+        </mat-grid-tile>
+    
+</mat-grid-list>
 <div *ngIf="uploading && progress.percentage !== 100">
     <h4>Uploading...{{progress.percentage}}%</h4>  
 </div>
