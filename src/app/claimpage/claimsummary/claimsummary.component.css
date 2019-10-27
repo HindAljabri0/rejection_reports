@@ -15,3 +15,10 @@ table {
 .ditalList::-webkit-scrollbar{
     display: none;
 }
+
+.currency{
+    font: Bold 16px/21px Roboto;
+    letter-spacing: 0;
+    color: #3060AA;
+    opacity: 0.25;
+}

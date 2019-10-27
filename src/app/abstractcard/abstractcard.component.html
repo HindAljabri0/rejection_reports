@@ -1,12 +1,12 @@
-<mat-card style="width: 240px; height: 150px; padding: 0px 0px 5px 0px;">
+<mat-card matRipple (click)="action.emit()" style="width: 240px; height: 150px; padding: 0px 0px 5px 0px; cursor: pointer;">
     <div style="height: 3px; width: 100%;" [style.background-color]="accentColor"></div>
     <mat-card-title style="font-size: 16px; padding: 16px 16px 0px 16px;">
         {{title}}
     </mat-card-title>
-    <mat-card-content style="height: 30%; padding: 0px 16px;">
+    <mat-card-content [style.color]="accentColor" style="height: 30%; padding: 0px 16px;">
         <ng-content></ng-content>
     </mat-card-content>
     <mat-card-actions align="end">
-        <button mat-button color="primary" (click)="action.emit()">{{actionText}}</button>
+        <!-- <button mat-button color="primary" >{{actionText}}</button> -->
     </mat-card-actions>
 </mat-card>

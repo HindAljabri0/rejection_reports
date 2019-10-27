@@ -52,22 +52,28 @@ export class UploadService {
     this.summary.totalNetAmountOfUploadedClaims = 10000;
     this.summary.totalNetVatAmount = 50;
     this.summary.uploadDate = new Date();
+    let errors:ClaimError[] = new Array();
+    let error = new ClaimError(null);
+    error.errorCode = "000";
+    error.errorDescription = "There was something wrong!";
+    error.fieldName = "id";
+    errors.push(error);
     let uploadedInfo:Array<UploadedClaim> = new Array();
     let claimInfo = new UploadedClaim(null);
     claimInfo.uploadStatus = ClaimStatus.Saved;
     claimInfo.fileRowNumber = 5;
     claimInfo.providerClaimNumber = '564654';
-    claimInfo.claimErrors = new Array();
+    claimInfo.claimErrors = errors;
     let claimInfo1 = new UploadedClaim(null);
     claimInfo1.uploadStatus = ClaimStatus.Saved_With_Errors;
     claimInfo1.fileRowNumber = 5;
     claimInfo1.providerClaimNumber = '564654';
-    claimInfo1.claimErrors = new Array();
+    claimInfo1.claimErrors = errors;
     let claimInfo2 = new UploadedClaim(null);
     claimInfo2.uploadStatus = ClaimStatus.Not_Saved;
     claimInfo2.fileRowNumber = 1;
     claimInfo2.providerClaimNumber = 'dsafads';
-    claimInfo2.claimErrors = new Array();
+    claimInfo2.claimErrors = errors;
     uploadedInfo.push(claimInfo);
     uploadedInfo.push(claimInfo);
     uploadedInfo.push(claimInfo);
@@ -78,6 +84,8 @@ export class UploadService {
     uploadedInfo.push(claimInfo2);
     uploadedInfo.push(claimInfo2);
     uploadedInfo.push(claimInfo2);
+
+    
 
     this.summary.uploadedClaims = uploadedInfo;
   }

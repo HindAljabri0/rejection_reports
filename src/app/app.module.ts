@@ -19,6 +19,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDividerModule,
     MatExpansionModule,
     MatCheckboxModule,
+    MatRippleModule,
   ],
   providers: [UploadService],
   bootstrap: [AppComponent]
