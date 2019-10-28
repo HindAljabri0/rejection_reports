@@ -143,6 +143,7 @@ export class UploadedClaim {
   uploadSubStatus: string;
   claimErrors: Array <ClaimError>;
   constructor(body: {}) {
+    console.log(body);
     if(body != null){
       this.fileRowNumber = body['fileRowNumber'];
       this.providerClaimNumber = body['providerClaimNumber'];
@@ -171,8 +172,8 @@ export class ClaimError {
 }
 
 export enum ClaimStatus{
-  Saved = "saved",
-  Saved_With_Errors = "saved with errors",
-  Not_Saved = "not saved" ,
-  Duplicated = "duplicated"
+  Saved = "Accepted",
+  Saved_With_Errors = "NotAccepted",
+  Not_Saved = "NotSaved" ,
+  Duplicated = "Duplicate"
 }

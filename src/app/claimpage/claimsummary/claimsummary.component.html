@@ -1,4 +1,4 @@
-<mat-grid-list cols="4" rowHeight="165px">
+<mat-grid-list cols="4" rowHeight="145px">
     <mat-grid-tile>
         <app-abstractcard [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
             <table>
@@ -65,15 +65,16 @@
     <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4" *ngIf="summary.numOfAcceptedClaims > 0 || summary.numOfNotAcceptedClaims > 0 || summary.numOfNotUploadedClaims > 0">
         <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
             <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
-                <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailsNoFilter || claimData.uploadStatus == detailsFilter || claimData.uploadStatus == detailsFilter1">
+                <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailsNoFilter || applyFilter(claimData.uploadSubStatus) ">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            {{claimData.uploadStatus}}
+                            <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.: {{claimData.providerClaimNumber}}
                         </mat-panel-title>
                         <mat-panel-description>
-                            from line {{claimData.fileRowNumber}}
+                            Status: {{claimData.uploadSubStatus}}
                         </mat-panel-description>
                     </mat-expansion-panel-header>
+                    File Row Number: {{claimData.fileRowNumber}}
                     <div *ngFor="let error of claimData.claimErrors">
                         <p>
                             Error Code: {{error.errorCode}} <br>

@@ -10,6 +10,7 @@ import { Summary, UploadService, ClaimStatus, UploadedClaim } from '../claimfile
 export class ClaimsummaryComponent implements OnInit {
 
   detailsNoFilter:boolean;
+  detailsEqualEqual:boolean;
   detailsFilter: string;
   detailsFilter1: string;
   detailCardTitle: string;
@@ -20,6 +21,7 @@ export class ClaimsummaryComponent implements OnInit {
   card0AccentColor = "#3060AA";
   card0Action() {
     this.detailsNoFilter = true;
+    this.detailsEqualEqual = true;
     this.detailCardTitle = this.card0Title;
     this.detailsFilter = "";
     this.detailsFilter1 = "";
@@ -31,6 +33,7 @@ export class ClaimsummaryComponent implements OnInit {
   card1AccentColor = "#21B744";
   card1Action() {
     this.detailsNoFilter = false;
+    this.detailsEqualEqual = true;
     this.detailCardTitle = this.card1Title;
     this.detailsFilter = ClaimStatus.Saved;
     this.detailsFilter1 = "";
@@ -42,6 +45,7 @@ export class ClaimsummaryComponent implements OnInit {
   card2AccentColor = "#EB2A75"
   card2Action() {
     this.detailsNoFilter = false;
+    this.detailsEqualEqual = true;
     this.detailCardTitle = this.card2Title;
     this.detailsFilter = ClaimStatus.Saved_With_Errors;
     this.detailsFilter1 = "";
@@ -53,10 +57,15 @@ export class ClaimsummaryComponent implements OnInit {
   card3AccentColor = "#E3A820";
   card3Action() {
     this.detailsNoFilter = false;
+    this.detailsEqualEqual = false;
     this.detailCardTitle = this.card3Title;
-    this.detailsFilter = ClaimStatus.Duplicated;
-    this.detailsFilter1 = ClaimStatus.Not_Saved;
+    this.detailsFilter1 = ClaimStatus.Saved;
+    this.detailsFilter = ClaimStatus.Saved_With_Errors;
     this.detailAccentColor = this.card3AccentColor;
+  }
+
+  applyFilter(status:string):boolean{
+    return (this.detailsEqualEqual && (status == this.detailsFilter || status == this.detailsFilter1)) || (!this.detailsEqualEqual && (status != this.detailsFilter || status != this.detailsFilter1));
   }
 
 

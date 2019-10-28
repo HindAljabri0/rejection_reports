@@ -22,3 +22,13 @@ table {
     color: #3060AA;
     opacity: 0.25;
 }
+
+.detailSummaryCheckbox::after{
+    content: "|";
+    width: 1px;
+    height: 80%;
+    margin: 0px 10px;
+    border-radius: 80%;
+    background-color: #70707019;
+    color: #70707019;
+}
