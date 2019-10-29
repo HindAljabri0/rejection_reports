@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import {  HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StepperProgressBarController, Step } from 'stepper-progress-bar';
+import { async } from 'q';
 
 
 
@@ -40,7 +41,6 @@ export class ClaimfileuploadComponent implements OnInit {
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
-    console.log(this.currentFileUpload.name);
     if (this.checkfile()) {
       this.upload();
     } else {
@@ -63,22 +63,23 @@ export class ClaimfileuploadComponent implements OnInit {
     }
   }
 
-  upload() {
+  upload()  {
     this.progress.percentage = 0;
     this.uploading = true;
     this.progressStepper.nextStep();
-    console.log('uploading...');
-    this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
+    this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(async event => {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round(100 * event.loaded / event.total);
         if(this.progress.percentage == 100) this.progressStepper.nextStep();
       } else if (event instanceof HttpResponse) {
-        console.log('File is completely uploaded!');
         this.uploading = false;
         if (event.status === 200) {
           this.progressStepper.nextStep();
+          await this.delay(1000);
           this.progressStepper.nextStep();
+          await this.delay(1000);
           this.progressStepper.nextStep();
+          await this.delay(1000);
           const summary = new Summary(event.body);
           this.uploadService.summaryChange.next(summary);
         }
@@ -87,6 +88,9 @@ export class ClaimfileuploadComponent implements OnInit {
       this.uploading = false;
     });
     this.selectedFiles = undefined;
+  }
+  async delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
   showFiles(enable: boolean) {

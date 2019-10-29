@@ -16,6 +16,7 @@ export class ClaimsummaryComponent implements OnInit {
   detailCardTitle: string;
   detailAccentColor:string;
 
+  cardsAreClickable = false;
   card0Title = 'Total Claims';
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
@@ -76,12 +77,8 @@ export class ClaimsummaryComponent implements OnInit {
   }
 
   get summary(): Summary {
+    this.cardsAreClickable = this.uploadService.summary.uploadSummaryID != undefined;
     return this.uploadService.summary;
   }
-  // tslint:disable-next-line:member-ordering
-  showNotUploadedDetails = false;
 
-  toggleNotUploadedDetails() {
-    this.showNotUploadedDetails = !this.showNotUploadedDetails;
-  }
 }

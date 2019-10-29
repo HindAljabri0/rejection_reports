@@ -9,16 +9,14 @@
         <mat-grid-tile class="grid-tile" [colspan]="3" >      
             <div style="background-color: #FAFAFA; padding: 15px;">
                 <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
-                    <p class="containerText">Choose a file or drag it here.<br>{{error}}</p>
+                    <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
+                        <img  src="assets/xls.svg" alt="{{currentFileUpload.name}}">
+                        <h3>{{currentFileUpload.name}}</h3>
+                    </div>
+                    <p *ngIf="currentFileUpload == undefined" class="containerText">Choose a file or drag it here.<br>{{error}}</p>
                     <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                 </div>
             </div>
         </mat-grid-tile>
     
 </mat-grid-list>
-<div *ngIf="uploading && progress.percentage !== 100">
-    <h4>Uploading...{{progress.percentage}}%</h4>  
-</div>
-<div  *ngIf="uploading && progress.percentage === 100">
-    <h4>Proccessing...</h4>  
-</div>

@@ -15,5 +15,6 @@ export class AbstractcardComponent  {
   @Input() title: string;
   @Input() actionText: string;
   @Input() accentColor:string;
+  @Input() clickable:boolean = true;
   @Output() action = new EventEmitter();
 }

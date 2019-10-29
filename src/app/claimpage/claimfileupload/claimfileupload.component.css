@@ -39,6 +39,12 @@ table{
   /* border-radius: 10px; */
   
 }
+.containerFileIcon{
+  text-align: center;
+  position: absolute;
+  width: 92%;
+  top: 20%;
+}
 
 
 .uploadContainerErrorClass{
@@ -58,6 +64,7 @@ table{
   background-color: #db8282 !important;
   opacity: 0.8;
 }
+
 
 .uploadfilecontainer:hover {
   cursor: pointer;

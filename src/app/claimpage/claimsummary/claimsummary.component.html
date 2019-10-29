@@ -1,6 +1,6 @@
 <mat-grid-list cols="4" rowHeight="145px">
     <mat-grid-tile>
-        <app-abstractcard [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
+        <app-abstractcard [clickable]="cardsAreClickable" [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
@@ -18,7 +18,7 @@
         </app-abstractcard>
     </mat-grid-tile>
     <mat-grid-tile>
-        <app-abstractcard [title]="card1Title" [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
+        <app-abstractcard [clickable]="cardsAreClickable" [title]="card1Title" [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
@@ -33,7 +33,7 @@
         </app-abstractcard>
     </mat-grid-tile>
     <mat-grid-tile>
-        <app-abstractcard [title]="card2Title" [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
+        <app-abstractcard [clickable]="cardsAreClickable" [title]="card2Title" [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
@@ -48,7 +48,7 @@
         </app-abstractcard>
     </mat-grid-tile>
     <mat-grid-tile>
-        <app-abstractcard [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
+        <app-abstractcard [clickable]="cardsAreClickable" [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
@@ -62,7 +62,7 @@
             </table>
         </app-abstractcard>
     </mat-grid-tile>
-    <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4" *ngIf="summary.numOfAcceptedClaims > 0 || summary.numOfNotAcceptedClaims > 0 || summary.numOfNotUploadedClaims > 0">
+    <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4" *ngIf="summary.uploadSummaryID != undefined">
         <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
             <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
                 <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailsNoFilter || applyFilter(claimData.uploadSubStatus) ">
