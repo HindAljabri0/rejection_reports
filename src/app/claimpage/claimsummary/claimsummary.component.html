@@ -1,16 +1,19 @@
-<mat-grid-list cols="4" rowHeight="145px">
+<mat-grid-list cols="4" rowHeight="130px">
     <mat-grid-tile>
         <app-abstractcard [clickable]="cardsAreClickable" [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
-                    <th>total:</th>
+                    <th>Net Amount:</th>
+                    <th>Net Vat Amount:</th>
                 </tr>
                 <tr *ngIf="summary.numOfAcceptedClaims > 0 || summary.numOfNotAcceptedClaims > 0">
                     <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims + summary.numOfNotAcceptedClaims }}</span></td>
-                    <td><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims + summary.totalNetVatAmount}}</span><span class="currency"> SR</span></td>
+                    <td><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
+                    <td><span class="dashboardNumbers">{{summary.totalNetVatAmount}}</span><span class="currency"> SR</span></td>
                 </tr>
                 <tr *ngIf="summary.numOfAcceptedClaims == 0 && summary.numOfNotAcceptedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
                     <td><span class="dashboardNumbers">-</span></td>
                     <td><span class="dashboardNumbers">-</span></td>
                 </tr>
@@ -76,11 +79,18 @@
                     </mat-expansion-panel-header>
                     File Row Number: {{claimData.fileRowNumber}}
                     <div *ngFor="let error of claimData.claimErrors">
-                        <p>
-                            Error Code: {{error.errorCode}} <br>
-                            Error Description: {{error.errorDescription}} <br>
-                            field Name: {{error.fieldName}}
-                        </p>
+                        <table class="errorTable">
+                            <thead>
+                                <td>Error Code</td>
+                                <td>Error Description</td>
+                                <td>Field Name</td>
+                            </thead>
+                            <tr>
+                                <td>{{error.errorCode}}</td>
+                                <td>{{error.errorDescription}}</td>
+                                <td>{{error.fieldName}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>

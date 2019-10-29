@@ -119,10 +119,11 @@ export class Summary {
       this.totalNetAmountOfUploadedClaims = body['totalNetAmountOfUploadedClaims'];
       this.totalNetVatAmount = body['totalNetVatAmount'];
       this.uploadedClaims = new Array();
+      let i = 0;
       for(let uploadedclaim of body['uploadedClaims']){
         let claimInfo:UploadedClaim = new UploadedClaim(uploadedclaim);
         this.uploadedClaims.push(claimInfo);
-        switch(claimInfo.uploadStatus){
+        switch(claimInfo.uploadSubStatus){
           case ClaimStatus.Saved:
             this.numOfAcceptedClaims++;
             break;
@@ -131,6 +132,8 @@ export class Summary {
           default:
             this.numOfNotUploadedClaims++;
         }
+        i++;
+        // if(i >= 20) break;
       }
     }
   }
@@ -143,7 +146,6 @@ export class UploadedClaim {
   uploadSubStatus: string;
   claimErrors: Array <ClaimError>;
   constructor(body: {}) {
-    console.log(body);
     if(body != null){
       this.fileRowNumber = body['fileRowNumber'];
       this.providerClaimNumber = body['providerClaimNumber'];

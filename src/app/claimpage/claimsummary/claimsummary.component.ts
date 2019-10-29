@@ -66,7 +66,7 @@ export class ClaimsummaryComponent implements OnInit {
   }
 
   applyFilter(status:string):boolean{
-    return (this.detailsEqualEqual && (status == this.detailsFilter || status == this.detailsFilter1)) || (!this.detailsEqualEqual && (status != this.detailsFilter || status != this.detailsFilter1));
+    return (this.detailsEqualEqual && (status == this.detailsFilter || status == this.detailsFilter1)) || ((!this.detailsEqualEqual) && (status != this.detailsFilter && status != this.detailsFilter1));
   }
 
 

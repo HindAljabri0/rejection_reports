@@ -75,13 +75,18 @@ export class ClaimfileuploadComponent implements OnInit {
         this.uploading = false;
         if (event.status === 200) {
           this.progressStepper.nextStep();
-          await this.delay(1000);
+          await this.delay(600);
           this.progressStepper.nextStep();
-          await this.delay(1000);
+          await this.delay(600);
           this.progressStepper.nextStep();
-          await this.delay(1000);
+          await this.delay(600);
           const summary = new Summary(event.body);
           this.uploadService.summaryChange.next(summary);
+        } else {
+          this.progressStepper.previousStep();
+          this.progressStepper.previousStep();
+          this.uploadContainerClass = 'uploadContainerErrorClass';
+          this.error = 'Sorry! Somthing went wrong!';
         }
       }
     }, (error) => {
