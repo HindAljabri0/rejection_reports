@@ -1,0 +1,29 @@
+<div style="margin-left: 30%;">
+    <span class="Picker">
+        <input matInput required [matDatepicker]="fromdate" placeholder="Date From" (click)="fromdate.open()" [formControl]="dateFrom">
+        <mat-datepicker-toggle class="icon" [for]="fromdate">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #fromdate></mat-datepicker>
+    </span>
+    <span class="Picker">
+        <input matInput required [matDatepicker]="todate" placeholder="Date To" (click)="todate.open()" [formControl]="dateTo">
+        <mat-datepicker-toggle class="icon" [for]="todate">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #todate></mat-datepicker>
+    </span>
+    <span class="Picker">
+        <select #payerSelect required [formControl]="payer">
+            <option value="" selected>Select a Payer</option>
+            <option value="102">Tawuniya</option>
+            <option value="103">Tawuniya</option>
+        </select>
+        <!-- <mat-datepicker-toggle class="icon" (click)="payerSelect.click()">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle> -->
+    </span>
+    <span class="Picker searchIcon" (click)="search()">
+        <mat-icon >search</mat-icon>
+    </span>
+</div>

@@ -17,13 +17,11 @@ export class UploadService {
   constructor(private http: HttpClient) {
     this.http = http;
     this.summary = new Summary(null);
-    this.summary = new Summary(null);
     if(!environment.production){
       // this.test();
     }
     //TODO: get last summary from database.
     this.summaryChange.subscribe((value)=> {
-      console.log('Changed');
       this.summary = value;
     });
   }
@@ -31,7 +29,7 @@ export class UploadService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', environment.host+'/55/44/uploads',  formdata, {
+    const req = new HttpRequest('POST', environment.host+'/55/102/uploads',  formdata, {
       reportProgress: true,
     });
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CommenServicesService} from '../commen-services.service'
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   collapsed = true;
 
-  constructor() { }
+  constructor(private commen:CommenServicesService) { }
+
+  get loading():boolean{
+    return this.commen.loading;
+  }
 
   ngOnInit() {
   }

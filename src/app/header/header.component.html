@@ -1,18 +1,8 @@
-<nav class="navbar navbar-default" style="background: #3060AA; color: #FCFCFC;">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <img src="assets/waseel_logo.png" alt="Waseel" width="40%">
-    </div>
-
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-      <li>
-        <a routerLink="/">Title1</a>
-      </li>
-      <li>
-          <a routerLink="/">Title2</a>
-        </li>
-    </ul>
-    </div>
+<mat-toolbar color="primary">
+  <div>
+    <img src="assets/waseel_logo.png" alt="Waseel" width="40%">
   </div>
-</nav>
+  <app-search-bar></app-search-bar>
+</mat-toolbar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>

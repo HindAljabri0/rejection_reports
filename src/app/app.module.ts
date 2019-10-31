@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import { NgModule} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router'
 import { AppComponent } from './app.component';
 import { ClaimfileuploadComponent } from './claimpage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -10,17 +11,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { ClaimsummaryComponent } from './claimpage/claimsummary/claimsummary.component';
 import { DetailscardComponent } from './detailscard/detailscard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material';
 import { ClaimpageComponent } from './claimpage/claimpage.component';
 import { AbstractcardComponent } from './abstractcard/abstractcard.component';
-import {MatButtonModule} from '@angular/material/button';
-import {MatGridListModule} from '@angular/material';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatExpansionModule} from '@angular/material';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatRippleModule} from '@angular/material/core';
-import { StepperProgressBarModule } from 'stepper-progress-bar'
+import { StepperProgressBarModule } from 'stepper-progress-bar';
+import { MatDividerModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { SearchClaimsComponent } from './search-claims/search-claims.component'
+import { from } from 'rxjs';
+import { componentFactoryName } from '@angular/compiler';
+
 
 @NgModule({
   declarations: [
@@ -33,8 +33,14 @@ import { StepperProgressBarModule } from 'stepper-progress-bar'
     ClaimpageComponent,
     AbstractcardComponent,
     DragdropDirective,
+    SearchBarComponent,
+    SearchClaimsComponent,
   ],
   imports: [
+    RouterModule.forRoot([
+      { path: '', component:  ClaimpageComponent},
+      { path: ':providerId/claims', component: SearchClaimsComponent },
+    ]),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -46,6 +52,15 @@ import { StepperProgressBarModule } from 'stepper-progress-bar'
     MatCheckboxModule,
     MatRippleModule,
     StepperProgressBarModule,
+    MatToolbarModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatIconModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatProgressBarModule,
   ],
   providers: [UploadService],
   bootstrap: [AppComponent]

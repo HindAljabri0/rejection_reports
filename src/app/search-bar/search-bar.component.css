@@ -1,0 +1,45 @@
+
+.Picker {
+    font-size: 12px;
+    margin: 5px;
+}
+
+input, select{
+    border: 0px;
+    border-radius: 5px;
+    padding: 0px 15px;
+    line-height: 22px;
+    color: #3060AA;
+    background: #EFF5FF;
+}
+
+input:hover, select:hover, .searchIcon:hover{
+    background: #aec8f3;
+    cursor: pointer;
+}
+
+select{
+    padding: 0px 90px 0px 10px;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+}
+
+.icon{
+    position: absolute;
+    transform: translateX(-35px);
+}
+
+.searchIcon{
+    border: 0px;
+    border-radius: 5px;
+    padding: 5px 5px;
+    color: white;
+    background: #113F88;
+}
+.searchIcon .mat-icon{
+    font-size: 18px;
+    padding-top: 3px;
+    text-align: center;
+    transform: translateY(5px);
+}
