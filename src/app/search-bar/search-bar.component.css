@@ -20,8 +20,8 @@ input:hover, select:hover, .searchIcon:hover{
 
 select{
     padding: 0px 90px 0px 10px;
-    -moz-appearance:none; /* Firefox */
-    -webkit-appearance:none; /* Safari and Chrome */
+    -moz-appearance:none; 
+    -webkit-appearance:none; 
     appearance:none;
 }
 
@@ -42,4 +42,28 @@ select{
     padding-top: 3px;
     text-align: center;
     transform: translateY(5px);
+}
+
+.searchPlaceHolder{
+    font-size: 13px;
+    line-height: 22px;
+    height: 24px;
+    width: 200px;
+    border-bottom: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    opacity: 0.55;
+}
+.searchPlaceHolder:hover{
+    color: #aec8f3;
+    border-bottom: 1px solid #aec8f3;
+    cursor: pointer;
+}
+.searchPlaceHolder p::after{
+    content: "search";
+    font-family: 'Material Icons';
+    line-height: 2;
+    font-weight: normal;
+    font-style: normal;
+    position: sticky;
+    left: 70%;
 }

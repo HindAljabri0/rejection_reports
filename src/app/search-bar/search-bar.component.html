@@ -1,4 +1,7 @@
-<div style="margin-left: 30%;">
+<div class="searchPlaceHolder" *ngIf="!expandedForClaimSearch" (click)="expand()">
+    <p>Search ...</p>
+</div>
+<div *ngIf="expandedForClaimSearch" style="margin-left: 30%;">
     <span class="Picker">
         <input matInput required [matDatepicker]="fromdate" placeholder="Date From" (click)="fromdate.open()" [formControl]="dateFrom">
         <mat-datepicker-toggle class="icon" [for]="fromdate">
@@ -17,7 +20,7 @@
         <select #payerSelect required [formControl]="payer">
             <option value="" selected>Select a Payer</option>
             <option value="102">Tawuniya</option>
-            <option value="103">Tawuniya</option>
+            <option value="44">Tawuniya</option>
         </select>
         <!-- <mat-datepicker-toggle class="icon" (click)="payerSelect.click()">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>

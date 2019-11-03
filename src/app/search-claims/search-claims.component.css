@@ -1,0 +1,48 @@
+app-abstractcard{
+    width: 280px;
+    display: inline-block;
+    margin: 0px 5px;
+}
+.dashboardNumbers{
+    font-size: 15px;
+    font-weight: 700;
+}
+
+table {
+    margin: 0px;
+    width: 100%;
+}
+table th{
+    font-weight: 400;
+}
+table td{
+    width: 15%;
+}
+.currency{
+    font: Bold 10px Roboto;
+    letter-spacing: 0;
+    color: #3060AA;
+    opacity: 0.25;
+}
+
+.cardsSummary{
+    width: max-content;
+    margin: 0px auto;
+}
+
+.viewPort{
+    max-width: 95%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-bottom: 30px;
+}
+
+.detailSummaryCheckbox::after{
+    content: "|";
+    width: 1px;
+    height: 80%;
+    margin: 0px 10px;
+    border-radius: 80%;
+    background-color: #70707019;
+    color: #70707019;
+}
