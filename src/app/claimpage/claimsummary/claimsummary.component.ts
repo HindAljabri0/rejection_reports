@@ -29,7 +29,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card0AccentColor;
   }
 
-  card1Title = 'Accepted Calims';
+  card1Title = 'Accepted';
   card1ActionText = 'details';
   card1AccentColor = "#21B744";
   card1Action() {
@@ -41,7 +41,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card1AccentColor;
   }
 
-  card2Title = 'Not Accepted Claims';
+  card2Title = 'Not Accepted';
   card2ActionText = 'details';
   card2AccentColor = "#EB2A75"
   card2Action() {
@@ -53,7 +53,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card2AccentColor;
   }
 
-  card3Title = 'Not Uploaded Claims';
+  card3Title = 'Not Uploaded';
   card3ActionText = 'details';
   card3AccentColor = "#E3A820";
   card3Action() {
