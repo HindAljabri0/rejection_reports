@@ -55,7 +55,7 @@ export class SearchClaimsComponent implements OnInit {
     }
     this.searchService.getresults(this.providerId, this.from, this.to, this.payerId, 'all').subscribe((event)=>{
       if(event instanceof HttpResponse){
-        if(event.status == 200){
+        if((event.status/100).toFixed()== "2"){
           if(event.body instanceof Array){
             event.body.forEach(claim => {
               let newClaim = new ClaimResultData(claim)
@@ -66,11 +66,18 @@ export class SearchClaimsComponent implements OnInit {
               this.summaries.get(newClaim.status).totalVatNetAmount += newClaim.netVatAmount;
             });
           }
+        } else if((event.status/100).toFixed()== "4"){
+          console.log("400");
+        } else if((event.status/100).toFixed()== "5"){
+          console.log("500");
+        } else {
+          console.log("000");
         }
       }
-      console.log(this.claims);
-      console.log(this.summaries);
       this.commen.loadingChanged.next(false);
+    }, error =>{
+      this.commen.loadingChanged.next(false);
+      console.log(error);
     });
   }
 
@@ -88,6 +95,13 @@ export class SearchClaimsComponent implements OnInit {
   cardAction(status:string){
     this.detailAccentColor = this.getCardAccentColor(status);
     this.detailCardTitle = status;
+  }
+
+  get hasData(){
+    return this.summaries.size > 0;
+  }
+  get loading(){
+    return this.commen.loading;
   }
 
 }

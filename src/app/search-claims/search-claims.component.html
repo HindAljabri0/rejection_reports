@@ -1,4 +1,9 @@
 <div class="mainPage">
+    <div *ngIf="!hasData && !loading">
+        <mat-card>
+            <p>No Claims were found</p>
+        </mat-card>
+    </div>
     <div class="viewPort">
         <div class="cardsSummary" *ngFor="let summary of summaries | keyvalue">
             <app-abstractcard [clickable]="cardsClickAble" [title]="summary.key" [accentColor]="getCardAccentColor(summary.key)" (action)="cardAction(summary.key)">

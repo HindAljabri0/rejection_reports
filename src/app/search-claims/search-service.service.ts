@@ -12,7 +12,7 @@ export class SearchServiceService {
   getresults(providerId:string, fromDate:string, toDate:string, payerId:string, status:string){
     const requestURL:string = '/'+providerId+'/search/claim-results?fromDate='+fromDate
     +'&toDate='+toDate+'&payerId='+payerId+'&status='+status;
-    const request = new HttpRequest('GET', environment.host+requestURL);
+    const request = new HttpRequest('GET', environment.claimSearchHost+requestURL);
     return this.http.request(request);
   }
 }
