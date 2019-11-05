@@ -7,12 +7,12 @@
                     <th>Net Amount:</th>
                     <th>Net Vat Amount:</th>
                 </tr>
-                <tr *ngIf="summary.numOfAcceptedClaims > 0 || summary.numOfNotAcceptedClaims > 0">
-                    <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims + summary.numOfNotAcceptedClaims }}</span></td>
-                    <td><span class="dashboardNumbers">{{summary.totalNetAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
-                    <td><span class="dashboardNumbers">{{summary.totalNetVatAmount}}</span><span class="currency"> SR</span></td>
+                <tr *ngIf="summary.noOfAcceptedClaims > 0 || summary.noOfNotAcceptedClaims > 0">
+                    <td><span class="dashboardNumbers">{{summary.noOfAcceptedClaims + summary.noOfNotAcceptedClaims }}</span></td>
+                    <td><span class="dashboardNumbers">{{summary.netAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
+                    <td><span class="dashboardNumbers">{{summary.netVATAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
-                <tr *ngIf="summary.numOfAcceptedClaims == 0 && summary.numOfNotAcceptedClaims == 0">
+                <tr *ngIf="summary.noOfAcceptedClaims == 0 && summary.noOfNotAcceptedClaims == 0">
                     <td><span class="dashboardNumbers">-</span></td>
                     <td><span class="dashboardNumbers">-</span></td>
                     <td><span class="dashboardNumbers">-</span></td>
@@ -25,11 +25,17 @@
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
+                    <th>Net Amount:</th>
+                    <th>Net Vat Amount:</th>
                 </tr>
-                <tr *ngIf="summary.numOfAcceptedClaims > 0">
-                    <td><span class="dashboardNumbers">{{summary.numOfAcceptedClaims}}</span></td>
+                <tr *ngIf="summary.noOfAcceptedClaims > 0">
+                    <td><span class="dashboardNumbers">{{summary.noOfAcceptedClaims}}</span></td>
+                    <td><span class="dashboardNumbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency"> SR</span></td>
+                    <td><span class="dashboardNumbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
-                <tr *ngIf="summary.numOfAcceptedClaims == 0">
+                <tr *ngIf="summary.noOfAcceptedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
+                    <td><span class="dashboardNumbers">-</span></td>
                     <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>
@@ -40,11 +46,17 @@
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
+                    <th>Net Amount:</th>
+                    <th>Net Vat Amount:</th>
                 </tr>
-                <tr *ngIf="summary.numOfNotAcceptedClaims > 0">
-                    <td><span class="dashboardNumbers">{{summary.numOfNotAcceptedClaims}}</span></td>
+                <tr *ngIf="summary.noOfNotAcceptedClaims > 0">
+                    <td><span class="dashboardNumbers">{{summary.noOfNotAcceptedClaims}}</span></td>
+                    <td><span class="dashboardNumbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
+                    <td><span class="dashboardNumbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
-                <tr *ngIf="summary.numOfNotAcceptedClaims == 0">
+                <tr *ngIf="summary.noOfNotAcceptedClaims == 0">
+                    <td><span class="dashboardNumbers">-</span></td>
+                    <td><span class="dashboardNumbers">-</span></td>
                     <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>
@@ -56,10 +68,10 @@
                 <tr>
                     <th>No. Of Claims:</th>
                 </tr>
-                <tr *ngIf="summary.numOfNotUploadedClaims > 0">
-                    <td><span class="dashboardNumbers">{{summary.numOfNotUploadedClaims}}</span></td>
+                <tr *ngIf="summary.noOfNotUploadedClaims > 0">
+                    <td><span class="dashboardNumbers">{{summary.noOfNotUploadedClaims}}</span></td>
                 </tr>
-                <tr *ngIf="summary.numOfNotUploadedClaims == 0">
+                <tr *ngIf="summary.noOfNotUploadedClaims == 0">
                     <td><span class="dashboardNumbers">-</span></td>
                 </tr>
             </table>

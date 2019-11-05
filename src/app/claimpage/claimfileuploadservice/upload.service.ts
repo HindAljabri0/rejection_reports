@@ -44,12 +44,12 @@ export class UploadService {
   }
 
   test(){
-    this.summary.totalNumberOfUploadedClaims = 5;
-    this.summary.numOfAcceptedClaims = 3;
-    this.summary.numOfNotAcceptedClaims = 2;
-    this.summary.numOfNotUploadedClaims = 5;
-    this.summary.totalNetAmountOfUploadedClaims = 10000;
-    this.summary.totalNetVatAmount = 50;
+    this.summary.noOfUploadedClaims = 5;
+    this.summary.noOfAcceptedClaims = 3;
+    this.summary.noOfNotAcceptedClaims = 2;
+    this.summary.noOfNotUploadedClaims = 5;
+    this.summary.netAmountOfAcceptedClaims = 10000;
+    this.summary.netVATAmountOfUploadedClaims = 50;
     this.summary.uploadDate = new Date();
     let errors:ClaimError[] = new Array();
     let error = new ClaimError(null);
@@ -95,27 +95,35 @@ export class Summary {
   uploadSummaryID: string;
   uploadName: string;
   uploadDate: Date;
-  totalNumberOfUploadedClaims: number;
-  totalNetAmountOfUploadedClaims: number;
-  totalNetVatAmount: number;
+
+  noOfUploadedClaims: number;
+  netAmountOfUploadedClaims: number;
+  netVATAmountOfUploadedClaims: number;
+
   uploadedClaims: Array<UploadedClaim>;
 
-  numOfAcceptedClaims:number = 0;
-  numOfNotAcceptedClaims:number = 0;
-  numOfNotUploadedClaims:number = 0;
+  noOfAcceptedClaims:number = 0;
+  netAmountOfAcceptedClaims: number;
+  netVATAmountOfAcceptedClaims: number;
+
+  noOfNotAcceptedClaims:number = 0;
+  netAmountOfNotAcceptedClaims: number;
+  netVATAmountOfNotAcceptedClaims: number;
+
+  noOfNotUploadedClaims:number = 0;
 
   constructor(body: {}) {
     if (body === null) {
-      this.totalNetAmountOfUploadedClaims = 0;
-      this.totalNetVatAmount = 0;
-      this.totalNumberOfUploadedClaims = 0;
+      this.netAmountOfUploadedClaims = 0;
+      this.netVATAmountOfUploadedClaims = 0;
+      this.noOfUploadedClaims = 0;
     } else {
       this.uploadSummaryID = body['uploadSummaryID'];
       this.uploadName = body['uploadName'];
       this.uploadDate = body['uploadDate'];
-      this.totalNumberOfUploadedClaims = body['totalNumberOfUploadedClaims'];
-      this.totalNetAmountOfUploadedClaims = body['totalNetAmountOfUploadedClaims'];
-      this.totalNetVatAmount = body['totalNetVatAmount'];
+      this.noOfUploadedClaims = body['totalNumberOfUploadedClaims'];
+      this.netAmountOfUploadedClaims = body['totalNetAmountOfUploadedClaims'];
+      this.netVATAmountOfUploadedClaims = body['netVATAmountOfUploadedClaims'];
       this.uploadedClaims = new Array();
       let i = 0;
       for(let uploadedclaim of body['uploadedClaims']){
@@ -123,12 +131,12 @@ export class Summary {
         this.uploadedClaims.push(claimInfo);
         switch(claimInfo.uploadSubStatus){
           case ClaimStatus.Saved:
-            this.numOfAcceptedClaims++;
+            this.noOfAcceptedClaims++;
             break;
           case ClaimStatus.Saved_With_Errors:
-            this.numOfNotAcceptedClaims++;
+            this.noOfNotAcceptedClaims++;
           default:
-            this.numOfNotUploadedClaims++;
+            this.noOfNotUploadedClaims++;
         }
         i++;
         // if(i >= 20) break;
