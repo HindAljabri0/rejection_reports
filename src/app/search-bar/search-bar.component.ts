@@ -26,7 +26,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   search(){
-    let providerId = '00';
+    let providerId = '104';
     if(this.dateFrom.valid && this.dateTo.valid && this.payer.valid){
       const from = this.dateFrom.value.getDate() + '-' + (this.dateFrom.value.getMonth()+1) + '-' + this.dateFrom.value.getFullYear();
       const to = this.dateTo.value.getDate() + '-' + (this.dateTo.value.getMonth()+1) + '-' + this.dateTo.value.getFullYear();

@@ -27,11 +27,10 @@ table td{
 
 .cardsSummary{
     width: max-content;
-    margin: 0px auto;
 }
 
 .viewPort{
-    max-width: 95%;
+    max-width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     margin-bottom: 30px;
@@ -45,4 +44,34 @@ table td{
     border-radius: 80%;
     background-color: #70707019;
     color: #70707019;
+}
+
+mat-paginator{
+    margin-bottom: 10px;
+    margin-left: auto;
+}
+mat-expansion-panel{
+    box-shadow: 0 2px 1px -1px rgb(233, 233, 233), 
+                0 1px 1px 0 rgb(233, 233, 233), 
+                0 1px 3px 0 rgb(233, 233, 233) !important;
+}
+mat-expansion-panel:nth-child(odd){
+    background-color: #EDF4FF;
+}
+
+.paginatorContainer{
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+
+.page-select {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-left: 30px;
+}
+  
+.label {
+    margin: 0 4px;
 }

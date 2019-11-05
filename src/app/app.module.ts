@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'
 import { AppComponent } from './app.component';
 import { ClaimfileuploadComponent } from './claimpage/claimfileupload/claimfileupload.component';
@@ -15,7 +15,7 @@ import { ClaimpageComponent } from './claimpage/claimpage.component';
 import { AbstractcardComponent } from './abstractcard/abstractcard.component';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
-import { MatDividerModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
+import { MatDividerModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchClaimsComponent } from './search-claims/search-claims.component'
 import { from } from 'rxjs';
@@ -61,6 +61,8 @@ import { componentFactoryName } from '@angular/compiler';
     MatSelectModule,
     ReactiveFormsModule,
     MatProgressBarModule,
+    MatPaginatorModule,
+    FormsModule,
   ],
   providers: [UploadService],
   bootstrap: [AppComponent]
