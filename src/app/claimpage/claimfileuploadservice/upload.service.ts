@@ -121,9 +121,20 @@ export class Summary {
       this.uploadSummaryID = body['uploadSummaryID'];
       this.uploadName = body['uploadName'];
       this.uploadDate = body['uploadDate'];
+
       this.noOfUploadedClaims = body['totalNumberOfUploadedClaims'];
-      this.netAmountOfUploadedClaims = body['totalNetAmountOfUploadedClaims'];
+      this.netAmountOfUploadedClaims = body['netAmountOfUploadedClaims'];
       this.netVATAmountOfUploadedClaims = body['netVATAmountOfUploadedClaims'];
+
+      this.noOfAcceptedClaims = body['noOfAcceptedClaims'];
+      this.netAmountOfAcceptedClaims = body['netAmountOfAcceptedClaims'];
+      this.netVATAmountOfAcceptedClaims = body['netVATAmountOfAcceptedClaims'];
+
+      this.noOfNotAcceptedClaims = body['noOfNotAcceptedClaims'];
+      this.netAmountOfNotAcceptedClaims = body['netAmountOfNotAcceptedClaims'];
+      this.netVATAmountOfNotAcceptedClaims = body['netVATAmountOfNotAcceptedClaims'];
+
+      this.noOfNotUploadedClaims = body['noOfNotUploadedClaims'];
       this.uploadedClaims = new Array();
       let i = 0;
       for(let uploadedclaim of body['uploadedClaims']){
