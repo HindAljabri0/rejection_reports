@@ -68,6 +68,7 @@ export class SearchResultPaginator{
   }
 }
 export class ClaimResultContent{
+  claimId:string;
   claimDate:string;
   memberId:string;
   netAmount:number;
@@ -80,6 +81,7 @@ export class ClaimResultContent{
   unitOfNetVatAmount:string;
   constructor(body: {}){
     if(body!= null){
+      this.claimId = body['claimId'];
       this.claimDate = body['claimDate'];
       this.memberId = body['memberId'];
       this.netAmount = body['netAmount'];

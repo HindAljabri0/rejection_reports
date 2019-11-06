@@ -29,7 +29,7 @@ export class UploadService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', environment.uploaderHost+'/55/44/uploads',  formdata, {
+    const req = new HttpRequest('POST', environment.uploaderHost+'/104/10/uploads',  formdata, {
       reportProgress: true,
     });
 

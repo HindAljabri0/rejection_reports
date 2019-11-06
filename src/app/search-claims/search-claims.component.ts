@@ -31,9 +31,13 @@ export class SearchClaimsComponent implements OnInit {
   to:string;
   payerId:string;
   
-  claims:ClaimResultContent[];
-  searchResult:SearchResultPaginator;
   summaries:SearchStatusSummary[];
+  searchResult:SearchResultPaginator;
+  claims:ClaimResultContent[];
+  selectedClaims:string[] = new Array();
+  selectedClaimsCount:number = 0;
+  allCheckBoxIsIndeterminate:boolean;
+  allCheckBoxIsChecked:boolean;
 
   paginatorPagesNumbers:number[];
   @ViewChild('paginator', {static:false}) paginator: MatPaginator;
@@ -59,6 +63,8 @@ export class SearchClaimsComponent implements OnInit {
     this.claims = new Array();
     this.summaries = new Array();
     this.commen.loadingChanged.next(true);
+    this.selectedClaims = new Array();
+    this.selectedClaimsCount = 0;
     this.routeActive.params.subscribe(value => {
       this.providerId = value.providerId;
     });
@@ -75,6 +81,7 @@ export class SearchClaimsComponent implements OnInit {
     await this.getSummaryOfStatus('Accepted');
     await this.getSummaryOfStatus('NotAccepted');
     await this.getSummaryOfStatus('Batched');
+    if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     this.getResultsofStatus(0);
     if(!this.hasData && this.errorMessage == "") this.errorMessage = 'There is no claims for provider (' + this.providerId + ') from ' + this.from + ' to ' + this.to + ' associated with payer (' + this.payerId + ').';
@@ -109,6 +116,7 @@ export class SearchClaimsComponent implements OnInit {
       this.paginator.pageIndex = 0;
       this.paginator.pageSize = 10;
       this.manualPage = null;
+      this.paginator.showFirstLastButtons = true;
     }
     this.selectedCardKey = key;
     this.searchResult = null;
@@ -118,6 +126,11 @@ export class SearchClaimsComponent implements OnInit {
         if((event.status/100).toFixed()== "2"){
           this.searchResult = new SearchResultPaginator(event.body);
           this.claims = this.searchResult.content;
+          this.selectedClaimsCount = 0;
+          for(let claim of this.claims){
+            if(this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCount++;
+          }
+          this.setAllCheckBoxIsIndeterminate();
           this.detailAccentColor = this.getCardAccentColor(this.summaries[key].status);
           this.detailCardTitle = this.summaries[key].status;
           const pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
@@ -186,6 +199,40 @@ export class SearchClaimsComponent implements OnInit {
     this.manualPage = index;
     this.paginator.pageIndex = index;
     this.paginatorAction({previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length})
+  }
+
+  setAllCheckBoxIsIndeterminate(){
+    if(this.claims != null)
+      this.allCheckBoxIsIndeterminate = this.selectedClaimsCount != this.claims.length && this.selectedClaimsCount != 0;
+    else this.allCheckBoxIsIndeterminate = false;
+    this.setAllCheckBoxIsChecked();
+  }
+  setAllCheckBoxIsChecked(){
+    if(this.claims != null)
+      this.allCheckBoxIsChecked = this.selectedClaimsCount == this.claims.length;
+    else this.allCheckBoxIsChecked = false;
+  }
+  selectClaim(claimId:string){
+    if(!this.selectedClaims.includes(claimId)){
+      this.selectedClaims.push(claimId);
+      this.selectedClaimsCount++;
+    } else {
+      this.selectedClaims.splice(this.selectedClaims.indexOf(claimId), 1);
+      this.selectedClaimsCount--;
+    }
+    this.setAllCheckBoxIsIndeterminate();
+  }
+  selectAll(){
+    if(this.selectedClaimsCount != this.claims.length)
+      for(let claim of this.claims){
+        if(!this.selectedClaims.includes(claim.claimId))
+          this.selectClaim(claim.claimId);
+      }
+    else{
+      for(let claim of this.claims){
+        this.selectClaim(claim.claimId);
+      }
+    }
   }
 
 }

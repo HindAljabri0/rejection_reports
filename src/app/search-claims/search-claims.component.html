@@ -61,6 +61,7 @@
                         <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <div class="label" *ngIf="selectedClaims.length > 0" style="margin-left: auto; font-weight: 700;">{{selectedClaims.length}} of {{searchResult.totalElements}} are selected</div>
             </div>
             <mat-paginator #paginator [length]="paginatorLength"
                 [pageSizeOptions]="paginatorPageSizeOptions"
@@ -73,7 +74,7 @@
                     <mat-panel-title style="width: 100%;">
                         <table style="color: #3060AA !important;">
                             <tr>
-                                <td><mat-checkbox class="detailSummaryCheckbox"></mat-checkbox></td>
+                                <td><mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAll()"></mat-checkbox></td>
                                 <td>Provider Claim No.</td>
                                 <td>Member ID</td>
                                 <td>Patient File No.</td>
@@ -90,7 +91,7 @@
                     <mat-panel-title style="width: 100%;">
                         <table>
                             <tr>
-                                <td><mat-checkbox class="detailSummaryCheckbox"></mat-checkbox></td>
+                                <td><mat-checkbox class="detailSummaryCheckbox" [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)"></mat-checkbox></td>
                                 <td>{{claim.providerClaimNumber}}</td>
                                 <td>{{claim.memberId}}</td>
                                 <td>{{claim.patientFileNumber}}</td>
