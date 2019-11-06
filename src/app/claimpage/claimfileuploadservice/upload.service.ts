@@ -96,28 +96,24 @@ export class Summary {
   uploadName: string;
   uploadDate: Date;
 
-  noOfUploadedClaims: number;
-  netAmountOfUploadedClaims: number;
-  netVATAmountOfUploadedClaims: number;
+  noOfUploadedClaims: number = 0;
+  netAmountOfUploadedClaims: number = 0;
+  netVATAmountOfUploadedClaims: number = 0;
 
   uploadedClaims: Array<UploadedClaim>;
 
   noOfAcceptedClaims:number = 0;
-  netAmountOfAcceptedClaims: number;
-  netVATAmountOfAcceptedClaims: number;
+  netAmountOfAcceptedClaims: number = 0;
+  netVATAmountOfAcceptedClaims: number = 0;
 
   noOfNotAcceptedClaims:number = 0;
-  netAmountOfNotAcceptedClaims: number;
-  netVATAmountOfNotAcceptedClaims: number;
+  netAmountOfNotAcceptedClaims: number = 0;
+  netVATAmountOfNotAcceptedClaims: number = 0;
 
   noOfNotUploadedClaims:number = 0;
 
   constructor(body: {}) {
-    if (body === null) {
-      this.netAmountOfUploadedClaims = 0;
-      this.netVATAmountOfUploadedClaims = 0;
-      this.noOfUploadedClaims = 0;
-    } else {
+    if (body != null) {
       this.uploadSummaryID = body['uploadSummaryID'];
       this.uploadName = body['uploadName'];
       this.uploadDate = body['uploadDate'];
@@ -135,22 +131,11 @@ export class Summary {
       this.netVATAmountOfNotAcceptedClaims = body['netVATAmountOfNotAcceptedClaims'];
 
       this.noOfNotUploadedClaims = body['noOfNotUploadedClaims'];
+
       this.uploadedClaims = new Array();
-      let i = 0;
       for(let uploadedclaim of body['uploadedClaims']){
         let claimInfo:UploadedClaim = new UploadedClaim(uploadedclaim);
         this.uploadedClaims.push(claimInfo);
-        switch(claimInfo.uploadSubStatus){
-          case ClaimStatus.Saved:
-            this.noOfAcceptedClaims++;
-            break;
-          case ClaimStatus.Saved_With_Errors:
-            this.noOfNotAcceptedClaims++;
-          default:
-            this.noOfNotUploadedClaims++;
-        }
-        i++;
-        // if(i >= 20) break;
       }
     }
   }

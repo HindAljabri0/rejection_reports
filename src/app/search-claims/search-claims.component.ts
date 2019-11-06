@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, } from '@angular/core';
 import {CommenServicesService} from '../commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { switchMap, filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { SearchServiceService, ClaimResultContent, SearchStatusSummary, SearchResultPaginator } from './search-service.service';
 import { HttpResponse } from '@angular/common/http';
 import { ClaimStatus } from '../claimpage/claimfileuploadservice/upload.service';
@@ -13,6 +13,8 @@ import { MatPaginator } from '@angular/material';
   styleUrls: ['./search-claims.component.css']
 })
 export class SearchClaimsComponent implements OnInit {
+
+  
 
   constructor(private commen:CommenServicesService, private routeActive:ActivatedRoute, private router:Router, private searchService:SearchServiceService) {
   }
@@ -32,6 +34,17 @@ export class SearchClaimsComponent implements OnInit {
   claims:ClaimResultContent[];
   searchResult:SearchResultPaginator;
   summaries:SearchStatusSummary[];
+
+  paginatorPagesNumbers:number[];
+  @ViewChild('paginator', {static:false}) paginator: MatPaginator;
+  paginatorPageSizeOptions = [10,20, 50, 100];
+  manualPage = null;
+
+
+  selectedCardKey:number;
+
+  errorMessage:string;
+
   ngOnInit() {
     this.fetchData();
     this.router.events.pipe(
@@ -41,7 +54,8 @@ export class SearchClaimsComponent implements OnInit {
     });
   }
 
-  fetchData(){
+  async fetchData(){
+    this.commen.searchIsOpenChange.next(true);
     this.claims = new Array();
     this.summaries = new Array();
     this.commen.loadingChanged.next(true);
@@ -57,10 +71,71 @@ export class SearchClaimsComponent implements OnInit {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
-    this.getSummaryOfStatus('All');
-    this.getSummaryOfStatus('Accepted');
-    this.getSummaryOfStatus('NotAccepted');
-    this.getSummaryOfStatus('Batched');
+    await this.getSummaryOfStatus('All');
+    await this.getSummaryOfStatus('Accepted');
+    await this.getSummaryOfStatus('NotAccepted');
+    await this.getSummaryOfStatus('Batched');
+    this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
+    this.getResultsofStatus(0);
+    if(!this.hasData && this.errorMessage == "") this.errorMessage = 'There is no claims for provider (' + this.providerId + ') from ' + this.from + ' to ' + this.to + ' associated with payer (' + this.payerId + ').';
+  }
+
+  async getSummaryOfStatus(status:string) {
+    const event = await this.searchService.getSummaries(this.providerId, this.from, this.to, this.payerId, status).toPromise().catch(error =>{
+      this.commen.loadingChanged.next(false);
+      this.errorMessage = 'Could not reach the server. Please try again later.';
+    });
+    if(event instanceof HttpResponse){
+      if((event.status/100).toFixed()== "2"){
+        const summary = new SearchStatusSummary(event.body);
+        if(summary.totalClaims > 0)
+          this.summaries.push(summary);
+      } else if((event.status/100).toFixed()== "4"){
+        this.errorMessage = 'Could not get the claims from the server.';
+      } else if((event.status/100).toFixed()== "5"){
+        this.errorMessage = 'Server could not handle the request. Please try again later.';
+      } else {
+        this.errorMessage = 'Somthing went wrong!';
+      }
+    } else {
+      this.errorMessage = 'Somthing went wrong!';
+    }
+    this.commen.loadingChanged.next(false);
+  }
+
+  getResultsofStatus(key:number, page?:number, pageSize?:number){
+    this.commen.loadingChanged.next(true);
+    if(page==null && pageSize==null && this.paginator != null){
+      this.paginator.pageIndex = 0;
+      this.paginator.pageSize = 10;
+      this.manualPage = null;
+    }
+    this.selectedCardKey = key;
+    this.searchResult = null;
+    this.claims = new Array();
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize).subscribe((event)=>{
+      if(event instanceof HttpResponse){
+        if((event.status/100).toFixed()== "2"){
+          this.searchResult = new SearchResultPaginator(event.body);
+          this.claims = this.searchResult.content;
+          this.detailAccentColor = this.getCardAccentColor(this.summaries[key].status);
+          this.detailCardTitle = this.summaries[key].status;
+          const pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
+          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x,i)=>i);
+          this.manualPage = 0;
+        } else if((event.status/100).toFixed()== "4"){
+          console.log("400");
+        } else if((event.status/100).toFixed()== "5"){
+          console.log("500");
+        } else {
+          console.log("000");
+        }
+      }
+      this.commen.loadingChanged.next(false);
+    }, error =>{
+      this.commen.loadingChanged.next(false);
+      console.log(error);
+    });
   }
 
   getCardAccentColor(status:string){
@@ -78,60 +153,6 @@ export class SearchClaimsComponent implements OnInit {
     }
   }
 
-  getSummaryOfStatus(status:string){
-    this.searchService.getSummaries(this.providerId, this.from, this.to, this.payerId, status).subscribe((event)=>{
-      if(event instanceof HttpResponse){
-        if((event.status/100).toFixed()== "2"){
-          const summary = new SearchStatusSummary(event.body);
-          if(summary.totalClaims > 0)
-            this.summaries.push(summary);
-          this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
-        } else if((event.status/100).toFixed()== "4"){
-          console.log("400");
-        } else if((event.status/100).toFixed()== "5"){
-          console.log("500");
-        } else {
-          console.log("000");
-        }
-      }
-      this.commen.loadingChanged.next(false);
-    }, error =>{
-      this.commen.loadingChanged.next(false);
-      console.log(error);
-    });
-  }
-
-  getResultsofStatus(key:number, page?:number, pageSize?:number){
-    this.commen.loadingChanged.next(true);
-    if(page==null && pageSize==null){
-      this.paginator.pageIndex = 0;
-      this.paginator.pageSize = 10;
-    }
-    this.selectedCardKey = key;
-    this.searchResult = null;
-    this.claims = new Array();
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize).subscribe((event)=>{
-      if(event instanceof HttpResponse){
-        if((event.status/100).toFixed()== "2"){
-          this.searchResult = new SearchResultPaginator(event.body);
-          this.claims = this.searchResult.content;
-          this.detailAccentColor = this.getCardAccentColor(this.summaries[key].status);
-          this.detailCardTitle = this.summaries[key].status;
-        } else if((event.status/100).toFixed()== "4"){
-          console.log("400");
-        } else if((event.status/100).toFixed()== "5"){
-          console.log("500");
-        } else {
-          console.log("000");
-        }
-      }
-      this.commen.loadingChanged.next(false);
-    }, error =>{
-      this.commen.loadingChanged.next(false);
-      console.log(error);
-    });
-  }
-
   get hasData(){
     this.extraNumbers = new Array();
     this.extraCards = 6-this.summaries.length;
@@ -145,20 +166,15 @@ export class SearchClaimsComponent implements OnInit {
     return this.commen.loading;
   }
 
-  @ViewChild('paginator', {static:false}) paginator: MatPaginator;
-  selectedCardKey:number;
-
-  manualPage = null;
-  numbers:number[];
+  
+  
   get paginatorLength(){
     if(this.searchResult != null){
-      let pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
-      this.numbers = Array(pages).fill(pages).map((x,i)=>i);
       return this.searchResult.totalElements;
     }
     else return 0;
   }
-  paginatorPageSizeOptions = [10,20, 50, 100];
+  
 
   paginatorAction(event){
     this.manualPage = event['pageIndex'];
