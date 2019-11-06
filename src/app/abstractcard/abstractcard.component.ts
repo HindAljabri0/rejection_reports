@@ -1,7 +1,4 @@
-import { Component, Input, Output, ContentChildren } from '@angular/core';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatCard } from '@angular/material/card';
-// import { MatButton } from '@angular/material/button';
+import { Component, Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-abstractcard',

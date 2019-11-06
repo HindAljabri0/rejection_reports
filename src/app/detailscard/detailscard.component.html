@@ -8,4 +8,9 @@
     <mat-card-content style="height: inherit; padding: 16px;">
         <ng-content></ng-content>
     </mat-card-content>
+    <div class="sperator"></div>
+    <div class="footer">
+        <p>{{bottomDetails}}</p>
+        <button *ngIf="bottomRightActionText!=null" mat-raised-button color="primary" (click)="bottomRightAction.emit()">{{bottomRightActionText}}</button>
+    </div>
 </mat-card>

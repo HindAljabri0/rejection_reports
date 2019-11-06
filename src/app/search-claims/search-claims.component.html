@@ -52,7 +52,7 @@
             </app-abstractcard>
         </div>
     </div>
-    <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor">
+    <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" [bottomRightActionText]="detailActionText" [bottomDetails]="selectionCountText" (bottomRightAction)="submitSelectedClaims()">
         <div class="paginatorContainer">
             <div class="page-select">
                 <div class="label">Go to page:</div>
@@ -61,7 +61,7 @@
                         <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div class="label" *ngIf="selectedClaims.length > 0" style="margin-left: auto; font-weight: 700;">{{selectedClaims.length}} of {{searchResult.totalElements}} are selected</div>
+                <div class="label" *ngIf="selectedClaims.length > 0" style="margin-left: auto; font-weight: 700;"></div>
             </div>
             <mat-paginator #paginator [length]="paginatorLength"
                 [pageSizeOptions]="paginatorPageSizeOptions"

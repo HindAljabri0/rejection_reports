@@ -1,6 +1,5 @@
-import { Component, Input, ContentChildren, Output } from '@angular/core';
-import { EventEmitter } from 'events';
-import { MatCard } from '@angular/material/card';
+import { Component, Input, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-detailscard',

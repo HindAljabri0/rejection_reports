@@ -6,6 +6,7 @@ import { SearchServiceService, ClaimResultContent, SearchStatusSummary, SearchRe
 import { HttpResponse } from '@angular/common/http';
 import { ClaimStatus } from '../claimpage/claimfileuploadservice/upload.service';
 import { MatPaginator } from '@angular/material';
+import { ClaimSubmittionService } from '../claimSubmittionService/claim-submittion.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -16,7 +17,7 @@ export class SearchClaimsComponent implements OnInit {
 
   
 
-  constructor(private commen:CommenServicesService, private routeActive:ActivatedRoute, private router:Router, private searchService:SearchServiceService) {
+  constructor(private submittionService:ClaimSubmittionService,private commen:CommenServicesService, private routeActive:ActivatedRoute, private router:Router, private searchService:SearchServiceService) {
   }
   placeholder = '-';
   cardsClickAble:boolean = true;
@@ -25,6 +26,7 @@ export class SearchClaimsComponent implements OnInit {
 
   detailCardTitle:string;
   detailAccentColor:string;
+  detailActionText:string = null;
 
   providerId:string;
   from:string;
@@ -81,10 +83,10 @@ export class SearchClaimsComponent implements OnInit {
     await this.getSummaryOfStatus('Accepted');
     await this.getSummaryOfStatus('NotAccepted');
     await this.getSummaryOfStatus('Batched');
-    if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
+    if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
     this.getResultsofStatus(0);
-    if(!this.hasData && this.errorMessage == "") this.errorMessage = 'There is no claims for provider (' + this.providerId + ') from ' + this.from + ' to ' + this.to + ' associated with payer (' + this.payerId + ').';
+    if(!this.hasData && this.errorMessage == null) this.errorMessage = 'There is no claims for provider (' + this.providerId + ') from ' + this.from + ' to ' + this.to + ' associated with payer (' + this.payerId + ').';
   }
 
   async getSummaryOfStatus(status:string) {
@@ -111,6 +113,7 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   getResultsofStatus(key:number, page?:number, pageSize?:number){
+    if(this.summaries.length == 0) return;
     this.commen.loadingChanged.next(true);
     if(page==null && pageSize==null && this.paginator != null){
       this.paginator.pageIndex = 0;
@@ -118,6 +121,13 @@ export class SearchClaimsComponent implements OnInit {
       this.manualPage = null;
       this.paginator.showFirstLastButtons = true;
     }
+    if(this.selectedCardKey!= null && key != this.selectedCardKey){
+      this.selectedClaims = new Array();
+      this.selectedClaimsCount = 0;
+      this.setAllCheckBoxIsIndeterminate();
+    }
+    if(this.summaries[key].status == ClaimStatus.Saved) this.detailActionText = 'Submit';
+    else this.detailActionText = null;
     this.selectedCardKey = key;
     this.searchResult = null;
     this.claims = new Array();
@@ -135,7 +145,33 @@ export class SearchClaimsComponent implements OnInit {
           this.detailCardTitle = this.summaries[key].status;
           const pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x,i)=>i);
-          this.manualPage = 0;
+          this.manualPage = this.paginator.pageIndex;
+          console.log(this.searchResult.content.length);
+        } else if((event.status/100).toFixed()== "4"){
+          console.log("400");
+        } else if((event.status/100).toFixed()== "5"){
+          console.log("500");
+        } else {
+          console.log("000");
+        }
+      }
+      this.commen.loadingChanged.next(false);
+    }, error =>{
+      this.commen.loadingChanged.next(false);
+      console.log(error);
+    });
+  }
+
+  submitSelectedClaims(){
+    if(this.selectedClaims.length == 0){
+
+      return;
+    }
+    this.commen.loadingChanged.next(true);
+    this.submittionService.submitClaims(this.selectedClaims, this.providerId, this.payerId).subscribe((event)=>{
+      if(event instanceof HttpResponse){
+        if((event.status/100).toFixed()== "2"){
+          console.log("200");
         } else if((event.status/100).toFixed()== "4"){
           console.log("400");
         } else if((event.status/100).toFixed()== "5"){
@@ -234,6 +270,13 @@ export class SearchClaimsComponent implements OnInit {
       }
     }
   }
+
+  get selectionCountText(){
+    if(this.searchResult != null)
+      return this.selectedClaims.length + ' of ' + this.searchResult.totalElements + ' are selected.';
+    else return '0 of 0 are selected.';
+  }
+
 
 }
 
