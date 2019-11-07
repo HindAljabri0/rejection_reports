@@ -98,7 +98,7 @@
     <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4" *ngIf="summary.uploadSummaryID != undefined">
         <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
             <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
-                <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="applyFilter(claimData.uploadSubStatus) ">
+                <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailCardTitle == card0Title || applyFilter(claimData.uploadSubStatus) ">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.: {{claimData.providerClaimNumber}}

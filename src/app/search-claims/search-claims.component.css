@@ -34,8 +34,6 @@ table td{
     overflow-x: scroll;
     overflow-y: hidden;
     margin-bottom: 30px;
-    /* margin-left: 9%; */
-    /* margin-top: 6%; */
 }
 
 .detailSummaryCheckbox::after{

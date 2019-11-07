@@ -77,6 +77,7 @@
                             <td>Provider Claim No.</td>
                             <td>Member ID</td>
                             <td>Patient File No.</td>
+                            <td>Physician ID</td>
                             <td>Claim Date</td>
                             <td>Net Amount</td>
                             <td>Net Vat Amount</td>
@@ -94,9 +95,10 @@
                             <td>{{claim.providerClaimNumber}}</td>
                             <td>{{claim.memberId}}</td>
                             <td>{{claim.patientFileNumber}}</td>
+                            <td>{{claim.physicianId}}</td>
                             <td>{{claim.claimDate}}</td>
-                            <td>{{claim.netAmount}}<span class="currency"> SR</span></td>
-                            <td>{{claim.netVatAmount}}<span class="currency"> SR</span></td>
+                            <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
+                            <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span></td>
                         </tr>
                     </table>
                 </mat-panel-title>

@@ -83,8 +83,8 @@ export class SearchClaimsComponent implements OnInit {
       this.router.navigate(['']);
     }
     await this.getSummaryOfStatus('All');
-    await this.getSummaryOfStatus(ClaimStatus.Saved);
-    await this.getSummaryOfStatus(ClaimStatus.Saved_With_Errors);
+    await this.getSummaryOfStatus(ClaimStatus.Accepted);
+    await this.getSummaryOfStatus("NotAccepted");
     await this.getSummaryOfStatus('Batched');
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
@@ -184,17 +184,26 @@ export class SearchClaimsComponent implements OnInit {
         }
       } else console.log("Unknown");
       this.commen.loadingChanged.next(false);
-      if(this.selectedClaimsCount != 0)
+      if(this.allCheckBoxIsIndeterminate){
         this.selectAll();
+        this.selectAll();
+      } else if(this.allCheckBoxIsChecked){
+        this.selectAll();
+      }
     }, errorEvent =>{
       if(errorEvent instanceof HttpErrorResponse){
         this.errorMessage = '';
-        for(let error of errorEvent.error['errors']){
-          this.submittionErrors.set(error['claimID'], error['errorDescription']);
-        }
+        if(errorEvent.error['errors'] != null)
+          for(let error of errorEvent.error['errors']){
+            this.submittionErrors.set(error['claimID'], error['errorDescription']);
+          }
       }
-      if(this.selectedClaimsCount != 0)
+      if(this.allCheckBoxIsIndeterminate){
         this.selectAll();
+        this.selectAll();
+      } else if(this.allCheckBoxIsChecked){
+        this.selectAll();
+      }
       this.commen.loadingChanged.next(false);
       console.log(errorEvent);
     });
