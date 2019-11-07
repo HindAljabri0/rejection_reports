@@ -4,8 +4,8 @@ html, body { height: fit-content; background-color: #E8E8E8; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mainPage{
-    width: 85%;
-    margin: 20px auto;
+    width: 95%;
+    margin: 70px 20px;
 }
 
 .mat-grid-tile .mat-figure {
