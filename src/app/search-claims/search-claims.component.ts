@@ -130,7 +130,7 @@ export class SearchClaimsComponent implements OnInit {
       this.selectedClaimsCount = 0;
       this.setAllCheckBoxIsIndeterminate();
     }
-    if(this.summaries[key].status == ClaimStatus.Saved) this.detailActionText = 'Submit';
+    if(this.summaries[key].status == ClaimStatus.Accepted) this.detailActionText = 'Submit';
     else this.detailActionText = null;
     this.selectedCardKey = key;
     this.searchResult = null;
@@ -202,9 +202,9 @@ export class SearchClaimsComponent implements OnInit {
 
   getCardAccentColor(status:string){
     switch(status){
-      case ClaimStatus.Saved:
+      case ClaimStatus.Accepted:
         return '#21B744';
-      case ClaimStatus.Saved_With_Errors:
+      case ClaimStatus.Not_Accepted:
         return '#EB2A75';
       case 'All':
         return '#3060AA'
