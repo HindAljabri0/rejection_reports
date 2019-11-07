@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   uploaderHost: "http://localhost:8080",
   claimSearchHost: "http://localhost:8082",
-  host2: "http://localhost:8081",
+  claimServiceHost: "http://localhost:8081",
   
 };
 

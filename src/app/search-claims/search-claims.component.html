@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="mainPage">
     <div *ngIf="!hasData && !loading" style="margin-bottom: 10px;">
         <mat-card>
@@ -52,6 +53,7 @@
             </app-abstractcard>
         </div>
     </div>
+    <div class="detailCard">
     <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor">
         <div class="paginatorContainer">
             <div class="page-select">
@@ -108,4 +110,117 @@
             </mat-expansion-panel>
         </mat-accordion>
     </app-detailscard>
+</div>
+=======
+<div class="mainPage">
+    <div *ngIf="!hasData && !loading" style="margin-bottom: 10px;">
+        <mat-card>
+            <p>{{errorMessage}}</p>
+        </mat-card>
+    </div>
+    <div class="viewPort">
+        <div class="cardsSummary">
+            <app-abstractcard *ngFor="let summary of summaries | keyvalue" [clickable]="cardsClickAble" [title]="summary.value.status" [accentColor]="getCardAccentColor(summary.value.status)" (action)="getResultsofStatus(summary.key)">
+                <table>
+                    <tr>
+                        <th>No. Of Claims:</th>
+                        <th>Total:</th>
+                        
+                    </tr>
+                    <tr>
+                        <td><span class="dashboardNumbers">{{summary.value.totalClaims }}</span></td>
+                        <td><span class="dashboardNumbers">{{summary.value.totalNetAmount}}</span><span class="currency"> SR</span></td>
+                        
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Total Vat:</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><span class="dashboardNumbers">{{summary.value.totalVatNetAmount}}</span><span class="currency"> SR</span></td>
+                    </tr>
+                </table>
+            </app-abstractcard>
+            <app-abstractcard *ngFor="let i of extraNumbers" [clickable]="!cardsClickAble" [title]="placeholder" [accentColor]="getCardAccentColor(placeholder)">
+                <table>
+                    <tr>
+                        <th>No. Of Claims:</th>
+                        <th>Total:</th>
+                        
+                    </tr>
+                    <tr>
+                        <td><span class="dashboardNumbers">{{placeholder}}</span></td>
+                        <td><span class="dashboardNumbers">{{placeholder}}</span><span class="currency"> SR</span></td>
+                        
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Total Vat:</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><span class="dashboardNumbers">{{placeholder}}</span><span class="currency"> SR</span></td>
+                    </tr>
+                </table>
+            </app-abstractcard>
+        </div>
+    </div>
+    <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" [bottomRightActionText]="detailActionText" [bottomDetails]="selectionCountText" (bottomRightAction)="submitSelectedClaims()">
+        <div class="paginatorContainer">
+            <div class="page-select">
+                <div class="label">Go to page:</div>
+                <mat-form-field>
+                    <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                        <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="label" *ngIf="selectedClaims.length > 0" style="margin-left: auto; font-weight: 700;"></div>
+            </div>
+            <mat-paginator #paginator [length]="paginatorLength"
+                [pageSizeOptions]="paginatorPageSizeOptions"
+                (page)="paginatorAction($event)">
+            </mat-paginator>
+        </div>
+        <mat-accordion>
+            <mat-expansion-panel style="margin-bottom: 6px;" hideToggle [disabled]="0 == 0">
+                <mat-expansion-panel-header>
+                    <mat-panel-title style="width: 100%;">
+                        <table style="color: #3060AA !important;">
+                            <tr>
+                                <td><mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAll()"></mat-checkbox></td>
+                                <td>Provider Claim No.</td>
+                                <td>Member ID</td>
+                                <td>Patient File No.</td>
+                                <td>Claim Date</td>
+                                <td>Net Amount</td>
+                                <td>Net Vat Amount</td>
+                            </tr>
+                        </table>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngFor="let claim of claims" style="margin-bottom: 6px;" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title style="width: 100%;">
+                        <table>
+                            <tr>
+                                <td><mat-checkbox class="detailSummaryCheckbox" [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)"></mat-checkbox></td>
+                                <td>{{claim.providerClaimNumber}}</td>
+                                <td>{{claim.memberId}}</td>
+                                <td>{{claim.patientFileNumber}}</td>
+                                <td>{{claim.claimDate}}</td>
+                                <td>{{claim.netAmount}}</td>
+                                <td>{{claim.netVatAmount}}</td>
+                            </tr>
+                        </table>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </app-detailscard>
+>>>>>>> 33421a4c9f5db001fc572f930973155c642dd4b9
 </div>
