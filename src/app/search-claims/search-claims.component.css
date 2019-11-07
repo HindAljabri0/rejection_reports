@@ -16,7 +16,13 @@ table th{
     font-weight: 400;
 }
 table td{
-    width: 15%;
+    width: 10%;
+}
+table td:nth-child(1){
+    width: 3%;
+}
+app-abstractcard table td{
+    width: fit-content;
 }
 .currency{
     font: Bold 10px Roboto;
