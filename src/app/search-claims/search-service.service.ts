@@ -62,7 +62,6 @@ export class SearchResultPaginator{
     this.first = body['first'];
     this.empty = body['empty'];
     this.content = new Array();
-    console.log(body);
     body['content'].forEach(element => {
       this.content.push(new ClaimResultContent(element));
     });

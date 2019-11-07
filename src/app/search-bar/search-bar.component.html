@@ -1,7 +1,7 @@
 <div class="searchPlaceHolder" *ngIf="!expandedForClaimSearch" (click)="expand()">
     <p>Search ...</p>
 </div>
-<div *ngIf="expandedForClaimSearch" style="margin-left: 30%;">
+<div *ngIf="expandedForClaimSearch" style="margin-left: 0%;">
     <span class="Picker">
         <input required [matDatepicker]="fromdate" placeholder="Claim Date From" [formControl]="dateFrom">
         <mat-datepicker-toggle class="icon" [for]="fromdate">

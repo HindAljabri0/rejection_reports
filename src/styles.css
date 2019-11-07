@@ -37,3 +37,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 *:hover::-webkit-scrollbar-thumb{
     background-color: #b6b4b4;
 }
+
+.errorText{
+    color: red;
+}

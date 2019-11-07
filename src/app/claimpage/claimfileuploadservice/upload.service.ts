@@ -29,7 +29,7 @@ export class UploadService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', environment.uploaderHost+'/104/10/uploads',  formdata, {
+    const req = new HttpRequest('POST', environment.uploaderHost+'/104/102/uploads',  formdata, {
       reportProgress: true,
     });
 
@@ -118,7 +118,7 @@ export class Summary {
       this.uploadName = body['uploadName'];
       this.uploadDate = body['uploadDate'];
 
-      this.noOfUploadedClaims = body['totalNumberOfUploadedClaims'];
+      this.noOfUploadedClaims = body['noOfUploadedClaims'];
       this.netAmountOfUploadedClaims = body['netAmountOfUploadedClaims'];
       this.netVATAmountOfUploadedClaims = body['netVATAmountOfUploadedClaims'];
 
@@ -179,5 +179,6 @@ export enum ClaimStatus{
   Accepted = "Accepted",
   Not_Accepted = "Not Accepted",
   Not_Saved = "Not Saved" ,
+
   Duplicated = "Duplicate"
 }

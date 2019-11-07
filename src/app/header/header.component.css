@@ -5,3 +5,22 @@
   color: white;
   font-size: 14px;
 }
+
+.mat-toolbar-row , .mat-toolbar-single-row {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  float: right;
+  
+}
+
+.impos{
+  display: block;
+    margin-left: 4%;
+    margin-right: 0%;
+
+}
