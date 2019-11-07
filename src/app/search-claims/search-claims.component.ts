@@ -3,7 +3,7 @@ import {CommenServicesService} from '../commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SearchServiceService, ClaimResultContent, SearchStatusSummary, SearchResultPaginator } from './search-service.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimStatus } from '../claimpage/claimfileuploadservice/upload.service';
 import { MatPaginator } from '@angular/material';
 import { ClaimSubmittionService } from '../claimSubmittionService/claim-submittion.service';
@@ -51,6 +51,8 @@ export class SearchClaimsComponent implements OnInit {
 
   errorMessage:string;
 
+  submittionErrors:Map<string,string>;
+
   ngOnInit() {
     this.fetchData();
     this.router.events.pipe(
@@ -58,6 +60,7 @@ export class SearchClaimsComponent implements OnInit {
     ).subscribe(() => {
       this.fetchData();
     });
+    this.submittionErrors = new Map();
   }
 
   async fetchData(){
@@ -80,8 +83,8 @@ export class SearchClaimsComponent implements OnInit {
       this.router.navigate(['']);
     }
     await this.getSummaryOfStatus('All');
-    await this.getSummaryOfStatus('Accepted');
-    await this.getSummaryOfStatus('NotAccepted');
+    await this.getSummaryOfStatus(ClaimStatus.Saved);
+    await this.getSummaryOfStatus(ClaimStatus.Saved_With_Errors);
     await this.getSummaryOfStatus('Batched');
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
@@ -104,10 +107,11 @@ export class SearchClaimsComponent implements OnInit {
       } else if((event.status/100).toFixed()== "5"){
         this.errorMessage = 'Server could not handle the request. Please try again later.';
       } else {
-        this.errorMessage = 'Somthing went wrong!';
+        this.errorMessage = 'Somthing went wrong.';
       }
     } else {
-      this.errorMessage = 'Somthing went wrong!';
+      console.log(event);
+      this.errorMessage = 'Could not reach the server at the moment. Please try again later.';
     }
     this.commen.loadingChanged.next(false);
   }
@@ -146,7 +150,6 @@ export class SearchClaimsComponent implements OnInit {
           const pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x,i)=>i);
           this.manualPage = this.paginator.pageIndex;
-          console.log(this.searchResult.content.length);
         } else if((event.status/100).toFixed()== "4"){
           console.log("400");
         } else if((event.status/100).toFixed()== "5"){
@@ -179,11 +182,21 @@ export class SearchClaimsComponent implements OnInit {
         } else {
           console.log("000");
         }
+      } else console.log("Unknown");
+      this.commen.loadingChanged.next(false);
+      if(this.selectedClaimsCount != 0)
+        this.selectAll();
+    }, errorEvent =>{
+      if(errorEvent instanceof HttpErrorResponse){
+        this.errorMessage = '';
+        for(let error of errorEvent.error['errors']){
+          this.submittionErrors.set(error['claimID'], error['errorDescription']);
+        }
       }
+      if(this.selectedClaimsCount != 0)
+        this.selectAll();
       this.commen.loadingChanged.next(false);
-    }, error =>{
-      this.commen.loadingChanged.next(false);
-      console.log(error);
+      console.log(errorEvent);
     });
   }
 

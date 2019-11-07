@@ -9,19 +9,18 @@ import { Summary, UploadService, ClaimStatus, UploadedClaim } from '../claimfile
 })
 export class ClaimsummaryComponent implements OnInit {
 
-  detailsNoFilter:boolean;
+  showClaims:boolean = false;
   detailsEqualEqual:boolean;
   detailsFilter: string;
   detailsFilter1: string;
   detailCardTitle: string;
   detailAccentColor:string;
 
-  cardsAreClickable = false;
   card0Title = 'Total Claims';
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
   card0Action() {
-    this.detailsNoFilter = true;
+    this.showClaims = true;
     this.detailsEqualEqual = true;
     this.detailCardTitle = this.card0Title;
     this.detailsFilter = "";
@@ -33,7 +32,7 @@ export class ClaimsummaryComponent implements OnInit {
   card1ActionText = 'details';
   card1AccentColor = "#21B744";
   card1Action() {
-    this.detailsNoFilter = false;
+    this.showClaims = true;
     this.detailsEqualEqual = true;
     this.detailCardTitle = this.card1Title;
     this.detailsFilter = ClaimStatus.Saved;
@@ -45,7 +44,7 @@ export class ClaimsummaryComponent implements OnInit {
   card2ActionText = 'details';
   card2AccentColor = "#EB2A75"
   card2Action() {
-    this.detailsNoFilter = false;
+    this.showClaims = true;
     this.detailsEqualEqual = true;
     this.detailCardTitle = this.card2Title;
     this.detailsFilter = ClaimStatus.Saved_With_Errors;
@@ -57,7 +56,7 @@ export class ClaimsummaryComponent implements OnInit {
   card3ActionText = 'details';
   card3AccentColor = "#E3A820";
   card3Action() {
-    this.detailsNoFilter = false;
+    this.showClaims = true;
     this.detailsEqualEqual = false;
     this.detailCardTitle = this.card3Title;
     this.detailsFilter1 = ClaimStatus.Saved;
@@ -66,18 +65,27 @@ export class ClaimsummaryComponent implements OnInit {
   }
 
   applyFilter(status:string):boolean{
-    return (this.detailsEqualEqual && (status == this.detailsFilter || status == this.detailsFilter1)) || ((!this.detailsEqualEqual) && (status != this.detailsFilter && status != this.detailsFilter1));
+    return this.showClaims && ((this.detailsEqualEqual && (status == this.detailsFilter || status == this.detailsFilter1)) || ((!this.detailsEqualEqual) && (status != this.detailsFilter && status != this.detailsFilter1)));
   }
 
 
   constructor(private uploadService: UploadService) {}
 
   ngOnInit() {
-    this.card0Action();
+    this.uploadService.summaryChange.subscribe(value =>{
+      if(value.noOfUploadedClaims != 0){
+        this.card0Action();
+      } else if(value.noOfAcceptedClaims != 0){
+        this.card1Action();
+      } else if(value.noOfNotAcceptedClaims != 0){
+        this.card2Action();
+      } else if(value.noOfNotUploadedClaims != 0){
+        this.card3Action();
+      }
+    });
   }
 
   get summary(): Summary {
-    this.cardsAreClickable = this.uploadService.summary.uploadSummaryID != undefined;
     return this.uploadService.summary;
   }
 
