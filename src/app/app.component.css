@@ -1,0 +1,11 @@
+.res {
+    margin-left: 15%;
+    width: 85%;
+    display: block;
+    z-index: -1;
+}
+
+.mat-grid-list {
+    margin-top: 8%;
+    margin-bottom: 2%;
+}

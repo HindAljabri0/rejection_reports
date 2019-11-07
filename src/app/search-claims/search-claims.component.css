@@ -34,6 +34,8 @@ table td{
     overflow-x: scroll;
     overflow-y: hidden;
     margin-bottom: 30px;
+    margin-left: 9%;
+    margin-top: 6%;
 }
 
 .detailSummaryCheckbox::after{
@@ -75,4 +77,8 @@ mat-expansion-panel:nth-child(odd){
   
 .label {
     margin: 0 4px;
+}
+
+.detailCard {
+    margin-left: 9.5%;
 }
