@@ -59,12 +59,12 @@ export class UploadService {
     errors.push(error);
     let uploadedInfo:Array<UploadedClaim> = new Array();
     let claimInfo = new UploadedClaim(null);
-    claimInfo.uploadStatus = ClaimStatus.Saved;
+    claimInfo.uploadStatus = ClaimStatus.Accepted;
     claimInfo.fileRowNumber = 5;
     claimInfo.providerClaimNumber = '564654';
     claimInfo.claimErrors = new Array();
     let claimInfo1 = new UploadedClaim(null);
-    claimInfo1.uploadStatus = ClaimStatus.Saved_With_Errors;
+    claimInfo1.uploadStatus = ClaimStatus.Not_Accepted;
     claimInfo1.fileRowNumber = 5;
     claimInfo1.providerClaimNumber = '564654';
     claimInfo1.claimErrors = errors;
@@ -176,8 +176,8 @@ export class ClaimError {
 }
 
 export enum ClaimStatus{
-  Saved = "Accepted",
-  Saved_With_Errors = "NotAccepted",
-  Not_Saved = "NotSaved" ,
+  Accepted = "Accepted",
+  Not_Accepted = "Not Accepted",
+  Not_Saved = "Not Saved" ,
   Duplicated = "Duplicate"
 }

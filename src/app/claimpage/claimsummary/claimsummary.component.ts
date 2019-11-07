@@ -36,7 +36,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailsNoFilter = false;
     this.detailsEqualEqual = true;
     this.detailCardTitle = this.card1Title;
-    this.detailsFilter = ClaimStatus.Saved;
+    this.detailsFilter = ClaimStatus.Accepted;
     this.detailsFilter1 = "";
     this.detailAccentColor = this.card1AccentColor;
   }
@@ -48,7 +48,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailsNoFilter = false;
     this.detailsEqualEqual = true;
     this.detailCardTitle = this.card2Title;
-    this.detailsFilter = ClaimStatus.Saved_With_Errors;
+    this.detailsFilter = ClaimStatus.Not_Accepted;
     this.detailsFilter1 = "";
     this.detailAccentColor = this.card2AccentColor;
   }
@@ -60,8 +60,8 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailsNoFilter = false;
     this.detailsEqualEqual = false;
     this.detailCardTitle = this.card3Title;
-    this.detailsFilter1 = ClaimStatus.Saved;
-    this.detailsFilter = ClaimStatus.Saved_With_Errors;
+    this.detailsFilter1 = ClaimStatus.Accepted;
+    this.detailsFilter = ClaimStatus.Not_Accepted;
     this.detailAccentColor = this.card3AccentColor;
   }
 
