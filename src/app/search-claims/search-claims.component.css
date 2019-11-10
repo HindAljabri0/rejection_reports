@@ -82,3 +82,8 @@ mat-expansion-panel:nth-child(odd){
 .label {
     margin: 0 4px;
 }
+
+.errorCard{
+    background-color: #E988AD;
+    color:white;
+}

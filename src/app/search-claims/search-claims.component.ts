@@ -55,9 +55,6 @@ export class SearchClaimsComponent implements OnInit {
   submittionErrors:Map<string,string>;
 
   ngOnInit() {
-    this.commen.openDialog(new DialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result =>{
-      this.fetchData();
-    });
     this.fetchData();
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
