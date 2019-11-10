@@ -15,11 +15,12 @@ import { ClaimpageComponent } from './claimpage/claimpage.component';
 import { AbstractcardComponent } from './abstractcard/abstractcard.component';
 import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
-import { MatDividerModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
+import { MatDividerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchClaimsComponent } from './search-claims/search-claims.component'
 import { from } from 'rxjs';
 import { componentFactoryName } from '@angular/compiler';
+import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { componentFactoryName } from '@angular/compiler';
     DragdropDirective,
     SearchBarComponent,
     SearchClaimsComponent,
+    MessageDialogComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -63,8 +65,13 @@ import { componentFactoryName } from '@angular/compiler';
     MatProgressBarModule,
     MatPaginatorModule,
     FormsModule,
+    MatDialogModule,
   ],
   providers: [UploadService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    MessageDialogComponent,
+  ],
+  entryComponents: [MessageDialogComponent],
 })
 export class AppModule { }

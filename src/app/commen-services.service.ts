@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent, DialogData } from './dialogs/message-dialog/message-dialog.component';
+import { ClaimStatus } from './claimpage/claimfileuploadservice/upload.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +14,39 @@ export class CommenServicesService {
   searchIsOpen:boolean = false;
   searchIsOpenChange:Subject<boolean> = new Subject<boolean>();
   
-  constructor() {
+  constructor(public dialog:MatDialog) {
     this.loadingChanged.subscribe((value)=>{
       this.loading = value;
     });
     this.searchIsOpenChange.subscribe(value =>{
       this.searchIsOpen = value;
     });
+  }
+
+  openDialog(dialogData:DialogData):Observable<any>{
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: dialogData,
+    });
+    return dialogRef.afterClosed();
+  }
+
+  getCardAccentColor(status:string){
+    switch(status){
+      case ClaimStatus.Accepted:
+        return '#21B744';
+      case ClaimStatus.Not_Accepted:
+        return '#EB2A75';
+      case 'All':
+        return '#3060AA'
+      case '-':
+        return '#bebebe';
+      case 'Batched':
+        return '#21b590';
+      default:
+        return '#E3A820';
+    }
   }
 
   

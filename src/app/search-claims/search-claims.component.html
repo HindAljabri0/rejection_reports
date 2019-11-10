@@ -6,7 +6,7 @@
     </div>
     <div class="viewPort">
         <div class="cardsSummary">
-            <app-abstractcard *ngFor="let summary of summaries | keyvalue" [clickable]="cardsClickAble" [title]="summary.value.status" [accentColor]="getCardAccentColor(summary.value.status)" (action)="getResultsofStatus(summary.key)">
+            <app-abstractcard *ngFor="let summary of summaries | keyvalue" [clickable]="cardsClickAble" [title]="summary.value.status" [accentColor]="commen.getCardAccentColor(summary.value.status)" (action)="getResultsofStatus(summary.key)">
                 <table>
                     <tr>
                         <th>No. Of Claims:</th>
@@ -28,7 +28,7 @@
                     </tr>
                 </table>
             </app-abstractcard>
-            <app-abstractcard *ngFor="let i of extraNumbers" [clickable]="!cardsClickAble" [title]="placeholder" [accentColor]="getCardAccentColor(placeholder)">
+            <app-abstractcard *ngFor="let i of extraNumbers" [clickable]="!cardsClickAble" [title]="placeholder" [accentColor]="commen.getCardAccentColor(placeholder)">
                 <table>
                     <tr>
                         <th>No. Of Claims:</th>

@@ -7,6 +7,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimStatus } from '../claimpage/claimfileuploadservice/upload.service';
 import { MatPaginator } from '@angular/material';
 import { ClaimSubmittionService } from '../claimSubmittionService/claim-submittion.service';
+import { DialogData } from '../dialogs/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-search-claims',
@@ -145,7 +146,7 @@ export class SearchClaimsComponent implements OnInit {
             if(this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCount++;
           }
           this.setAllCheckBoxIsIndeterminate();
-          this.detailAccentColor = this.getCardAccentColor(this.summaries[key].status);
+          this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].status);
           this.detailCardTitle = this.summaries[key].status;
           const pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x,i)=>i);
@@ -173,16 +174,17 @@ export class SearchClaimsComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     this.submittionService.submitClaims(this.selectedClaims, this.providerId, this.payerId).subscribe((event)=>{
       if(event instanceof HttpResponse){
-        if((event.status/100).toFixed()== "2"){
-          console.log("200");
-        } else if((event.status/100).toFixed()== "4"){
-          console.log("400");
-        } else if((event.status/100).toFixed()== "5"){
-          console.log("500");
-        } else {
-          console.log("000");
+        if(event['queuedStatus'] == 'QUEUED'){
+          this.commen.openDialog(new DialogData('Success', 'The selected claims were queued to be submitted successfully!', false)).subscribe(result =>{
+            this.fetchData();
+          });
         }
-      } else console.log("Unknown");
+        if(event['error'] != null){
+          for(let error of event['error']['errors']){
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode']+', Description: '+error['errorDescription']);
+          }
+        }
+      }
       this.commen.loadingChanged.next(false);
       if(this.allCheckBoxIsIndeterminate){
         this.selectAll();
@@ -195,7 +197,7 @@ export class SearchClaimsComponent implements OnInit {
         this.errorMessage = '';
         if(errorEvent.error['errors'] != null)
           for(let error of errorEvent.error['errors']){
-            this.submittionErrors.set(error['claimID'], error['errorDescription']);
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode']+', Description: '+error['errorDescription']);
           }
       }
       if(this.allCheckBoxIsIndeterminate){
@@ -209,20 +211,6 @@ export class SearchClaimsComponent implements OnInit {
     });
   }
 
-  getCardAccentColor(status:string){
-    switch(status){
-      case ClaimStatus.Accepted:
-        return '#21B744';
-      case ClaimStatus.Not_Accepted:
-        return '#EB2A75';
-      case 'All':
-        return '#3060AA'
-      case '-':
-        return '#bebebe';
-      default:
-        return '#E3A820';
-    }
-  }
 
   get hasData(){
     this.extraNumbers = new Array();
