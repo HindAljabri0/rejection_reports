@@ -85,6 +85,17 @@ select{
     animation: show 500ms;
 }
 
+.Picker.error input, .Picker.error select{
+    background-color: #E988AD;
+    color: #7e0433;
+    animation: toError 500ms;
+}
+.Picker.error input::placeholder{
+    color: #7e0433;
+    animation: toError 500ms;
+}
+
+
 @keyframes hide{
     0% {opacity: 1; visibility: visible;}
     25% {opacity: 0.75;}
@@ -100,5 +111,17 @@ select{
     75% {opacity: 0.75;}
     100% {opacity: 1;}
 }
+
+@keyframes toError{
+    0% {background-color: white;}
+    100% {background-color: #E988AD;}
+}
+
+@keyframes fromError{
+    0% {background-color: #E988AD;}
+    100% {background-color: white;}
+}
+
+
 
 

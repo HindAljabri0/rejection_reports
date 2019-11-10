@@ -2,21 +2,21 @@
     <p>Search ...</p>
 </div>
 <form class="searchForm {{searchFormClasses}}" style="margin-left: 15%;">
-    <span class="Picker">
+    <span class="Picker {{dateFromClasses}}">
         <input #fromDate required [matDatepicker]="fromdate" placeholder="Claim Date From" [formControl]="dateFrom" tabindex="1">
         <mat-datepicker-toggle class="icon" [for]="fromdate" tabindex="99">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>
         <mat-datepicker #fromdate></mat-datepicker>
     </span>
-    <span class="Picker">
+    <span class="Picker {{dateToClasses}}">
         <input required [matDatepicker]="todate" placeholder="Claim Date To" [formControl]="dateTo" tabindex="2">
         <mat-datepicker-toggle class="icon" [for]="todate" tabindex="99">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>
         <mat-datepicker #todate></mat-datepicker>
     </span>
-    <span class="Picker">
+    <span class="Picker {{payerClasses}}">
         <select required [formControl]="payer" tabindex="3">
             <option value="0" selected>Select a Payer</option>
             <option value="102">Tawuniya</option>

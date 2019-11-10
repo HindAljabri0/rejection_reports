@@ -71,6 +71,7 @@ export class SearchClaimsComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     this.selectedClaims = new Array();
     this.selectedClaimsCount = 0;
+    this.errorMessage = null;
     this.routeActive.params.subscribe(value => {
       this.providerId = value.providerId;
     });
