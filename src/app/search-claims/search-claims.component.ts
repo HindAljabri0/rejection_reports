@@ -96,7 +96,10 @@ export class SearchClaimsComponent implements OnInit {
   async getSummaryOfStatus(status:string) {
     const event = await this.searchService.getSummaries(this.providerId, this.from, this.to, this.payerId, status).toPromise().catch(error =>{
       this.commen.loadingChanged.next(false);
-      this.errorMessage = 'Could not reach the server. Please try again later.';
+      if(error instanceof HttpErrorResponse){
+        this.errorMessage = error.error['message'];
+      } 
+      else this.errorMessage = 'Could not reach the server at the moment. Please try again later.';
     });
     if(event instanceof HttpResponse){
       if((event.status/100).toFixed()== "2"){
@@ -110,9 +113,6 @@ export class SearchClaimsComponent implements OnInit {
       } else {
         this.errorMessage = 'Somthing went wrong.';
       }
-    } else {
-      console.log(event);
-      this.errorMessage = 'Could not reach the server at the moment. Please try again later.';
     }
     this.commen.loadingChanged.next(false);
   }
