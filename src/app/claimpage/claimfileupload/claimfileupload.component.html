@@ -1,22 +1,16 @@
-<mat-grid-list cols="4" rowHeight="530px">
-    
-        <mat-grid-tile class="grid-tile">
-            <div style="background-color: white;"></div>
-            <lib-stepperProgressBar class="stepperProgressBar" [controller]="progressStepper" [steps]="steps" [isVertical]="isVertical">
-            </lib-stepperProgressBar>
-        </mat-grid-tile>
-        <!-- <td style="background-color: transparent; width: 10px;"></td> -->
-        <mat-grid-tile class="grid-tile" [colspan]="3" >      
-            <div style="background-color: #FAFAFA; padding: 15px;">
-                <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
-                    <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
-                        <img  src="assets/xls.svg" alt="{{currentFileUpload.name}}">
-                        <h3>{{currentFileUpload.name}}</h3>
-                    </div>
-                    <p *ngIf="currentFileUpload == undefined" class="containerText">Choose a file or drag it here.<br>{{error}}</p>
-                    <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                </div>
+<div style="display: flex; height: 650px;">
+    <div class="progressContiner">
+        <lib-stepperProgressBar class="stepperProgressBar" [controller]="progressStepper" [steps]="steps" [isVertical]="isVertical">
+        </lib-stepperProgressBar> 
+    </div>
+    <div class="dragAndDropContainer">
+        <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
+            <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
+                <img  src="assets/xls.svg" alt="{{currentFileUpload.name}}">
+                <h3>{{currentFileUpload.name}}</h3>
             </div>
-        </mat-grid-tile>
-    
-</mat-grid-list>
+            <p *ngIf="currentFileUpload == undefined" class="containerText">Choose a file or drag it here.<br>{{error}}</p>
+            <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+        </div>
+    </div>
+</div>

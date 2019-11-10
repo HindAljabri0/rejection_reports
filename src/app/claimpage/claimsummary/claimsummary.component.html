@@ -1,5 +1,5 @@
-<mat-grid-list cols="4" rowHeight="2:0.85">
-    <mat-grid-tile>
+<div class="viewPort">
+    <!-- <div class="cardsSummary"> -->
         <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
             <table>
                 <tr>
@@ -22,8 +22,6 @@
                 </tr>
             </table>
         </app-abstractcard>
-    </mat-grid-tile>
-    <mat-grid-tile>
         <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title" [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
             <table>
                 <tr>
@@ -46,8 +44,6 @@
                 </tr>
             </table>
         </app-abstractcard>
-    </mat-grid-tile>
-    <mat-grid-tile>
         <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title" [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
             <table>
                 <tr>
@@ -70,8 +66,6 @@
                 </tr>
             </table>
         </app-abstractcard>
-    </mat-grid-tile>
-    <mat-grid-tile>
         <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
             <table>
                 <tr>
@@ -94,36 +88,34 @@
                 </tr>
             </table>
         </app-abstractcard>
-    </mat-grid-tile>
-    <mat-grid-tile class="ditalList" [colspan]="4" [rowspan]="4" *ngIf="summary.uploadSummaryID != undefined">
-        <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
-            <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
-                <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailCardTitle == card0Title || applyFilter(claimData.uploadSubStatus) ">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.: {{claimData.providerClaimNumber}}
-                        </mat-panel-title>
-                        <mat-panel-description>
-                            Status: {{claimData.uploadSubStatus}}
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    File Row Number: {{claimData.fileRowNumber}}
-                    <div *ngFor="let error of claimData.claimErrors">
-                        <table class="errorTable">
-                            <thead>
-                                <td>Error Code</td>
-                                <td>Error Description</td>
-                                <td>Field Name</td>
-                            </thead>
-                            <tr>
-                                <td>{{error.errorCode}}</td>
-                                <td>{{error.errorDescription}}</td>
-                                <td>{{error.fieldName}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </app-detailscard>
-    </mat-grid-tile>
-</mat-grid-list>
+    <!-- </div> -->
+</div>
+<app-detailscard *ngIf="summary.uploadSummaryID != undefined" [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
+    <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
+        <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailCardTitle == card0Title || applyFilter(claimData.uploadSubStatus) ">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.: {{claimData.providerClaimNumber}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    Status: {{claimData.uploadSubStatus}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            File Row Number: {{claimData.fileRowNumber}}
+            <div *ngFor="let error of claimData.claimErrors">
+                <table class="errorTable">
+                    <thead>
+                        <td>Error Code</td>
+                        <td>Error Description</td>
+                        <td>Field Name</td>
+                    </thead>
+                    <tr>
+                        <td>{{error.errorCode}}</td>
+                        <td>{{error.errorDescription}}</td>
+                        <td>{{error.fieldName}}</td>
+                    </tr>
+                </table>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</app-detailscard>

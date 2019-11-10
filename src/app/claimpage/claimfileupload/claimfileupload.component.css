@@ -1,6 +1,3 @@
-:host{
-  --drop-component-height: 500px;
-}
 
 table{
   width: 100%;
@@ -8,13 +5,28 @@ table{
   text-align: center;
 }
 
+.progressContiner{
+  height: 100%;
+  width: 20%;
+  margin: 0px 10px 0px 5px;
+  padding: 15px 0px;
+  display: flex;
+  background: white;
+}
 .stepperProgressBar{
-  height: var(--drop-component-height);
+  height: 100%;
   width: 100%;
   transform: translateX(-30px);
   z-index: 2;
   padding: 55px 0px 0px 0px;
-  position: absolute;
+  /* position: absolute; */
+}
+
+.dragAndDropContainer{
+  background-color: #FAFAFA;
+  padding: 15px;
+  width: 80%;
+  height: 100%;
 }
 
 .center{
@@ -29,7 +41,7 @@ table{
   background-repeat: no-repeat;
   background-size: 100px;
   background-position: center;
-  height: var(--drop-component-height);
+  height: 100%;
   width: 100%;
   /* margin: auto; */
   border: 2px dashed #70707041;
@@ -41,9 +53,7 @@ table{
 }
 .containerFileIcon{
   text-align: center;
-  position: absolute;
-  width: 92%;
-  top: 20%;
+  margin-top: 15%;
 }
 
 
@@ -51,7 +61,7 @@ table{
   background-repeat: no-repeat;
   background-size: 100px;
   background-position: center;
-  height: var(--drop-component-height);
+  height: 100%;
   width: 100%;
   /* margin: auto; */
   border: 2px dashed #be363641 ;
@@ -75,6 +85,6 @@ table{
 .containerText {
   font-size: 20px;
   text-align: center;
-  margin-top: 220px;
+  margin-top: 25%;
 }
 
