@@ -41,3 +41,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .errorText{
     color: red;
 }
+
+.dialogSuccess .mat-dialog-container{
+    background-color: #F0FFF4;
+    margin-left: 13.5%;
+}
+
+.dialogError .mat-dialog-container{
+    background-color: #E988AD;
+    margin-left: 13.5%;
+}

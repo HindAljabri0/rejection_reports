@@ -25,8 +25,9 @@ export class CommenServicesService {
 
   openDialog(dialogData:DialogData):Observable<any>{
     const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: '80%',
-      height: '60%',
+      width: '35%',
+      height: '17%',
+      panelClass: dialogData.isError? 'dialogError':'dialogSuccess',
       data: dialogData,
     });
     return dialogRef.afterClosed();

@@ -21,7 +21,19 @@ import { SearchClaimsComponent } from './search-claims/search-claims.component'
 import { from } from 'rxjs';
 import { componentFactoryName } from '@angular/compiler';
 import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 
+
+//https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'YYYY/MM/DD',
+  },
+  display: {
+    dateInput: 'YYYY/MM/DD'
+  },
+};
 
 @NgModule({
   declarations: [
@@ -67,7 +79,16 @@ import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.
     FormsModule,
     MatDialogModule,
   ],
-  providers: [UploadService],
+  providers: [
+    UploadService,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
   bootstrap: [AppComponent],
   exports: [
     MessageDialogComponent,

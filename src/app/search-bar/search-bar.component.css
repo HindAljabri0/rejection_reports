@@ -33,7 +33,6 @@ select{
 .searchIcon{
     border: 0px;
     border-radius: 5px;
-    padding: 5px 5px;
     color: white;
     background: #113F88;
 }
@@ -52,6 +51,8 @@ select{
     border-bottom: 1px solid #FFFFFF;
     color: #FFFFFF;
     opacity: 0.55;
+    position: absolute;
+    margin-top: 10px;
 }
 .searchPlaceHolder:hover{
     color: #aec8f3;
@@ -66,6 +67,38 @@ select{
     font-style: normal;
     position: sticky;
     left: 70%;
+}
+
+.searchForm{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.searchPlaceHolder.hidden{
+    opacity: 0;
+    visibility: hidden;
+    animation: hide 500ms;
+}
+.searchForm.visible{
+    opacity: 1;
+    visibility: visible;
+    animation: show 500ms;
+}
+
+@keyframes hide{
+    0% {opacity: 1; visibility: visible;}
+    25% {opacity: 0.75;}
+    50% {opacity: 0.50;}
+    75% {opacity: 0.25;}
+    100% {opacity: 0; visibility: hidden;}
+}
+
+@keyframes show{
+    0% {opacity: 0; visibility: visible;}
+    25% {opacity: 0.25;}
+    50% {opacity: 0.50;}
+    75% {opacity: 0.75;}
+    100% {opacity: 1;}
 }
 
 

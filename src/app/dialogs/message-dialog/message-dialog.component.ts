@@ -16,7 +16,12 @@ export class MessageDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  // textColor = '#8FBE9A';
+  textColor = '#19A33A';
+  backgroundColor = '#F0FFF4';
+
   ngOnInit() {
+    if(this.data.isError) this.textColor = '#7e0433';
   }
 
 }
