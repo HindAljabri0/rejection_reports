@@ -4,7 +4,7 @@
     width: 100%;
     padding: 10px 30px;
 }
-.footer button{
+.footer>button:nth-child(even){
     margin-left: auto;
 }
 .footer p{

@@ -52,7 +52,7 @@
             </app-abstractcard>
         </div>
     </div>
-    <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" [bottomRightActionText]="detailActionText" [bottomDetails]="selectionCountText" (bottomRightAction)="submitSelectedClaims()">
+    <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor" [bottomLeftActionText]="detailSubActionText" [bottomRightActionText]="detailActionText" [bottomDetails]="selectionCountText" (bottomLeftAction)="submitSelectedClaims()" (bottomRightAction)="submitAllAcceptedClaims()">
         <div class="paginatorContainer">
             <div class="page-select">
                 <div class="label">Go to page:</div>
@@ -73,7 +73,7 @@
                 <mat-panel-title style="width: 100%;">
                     <table style="color: #3060AA !important;">
                         <tr>
-                            <td><mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAll()"></mat-checkbox></td>
+                            <td><mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()"></mat-checkbox></td>
                             <td>Prov. Claim No.</td>
                             <td>Member ID</td>
                             <td>Patient File No.</td>

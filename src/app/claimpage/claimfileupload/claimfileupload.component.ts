@@ -1,9 +1,11 @@
 import { UploadService, Summary } from '../claimfileuploadservice/upload.service';
 import { Component, OnInit } from '@angular/core';
-import {  HttpEventType, HttpResponse } from '@angular/common/http';
+import {  HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StepperProgressBarController, Step } from 'stepper-progress-bar';
 import { async } from 'q';
+import { CommenServicesService } from 'src/app/commen-services.service';
+import { DialogData } from 'src/app/dialogs/message-dialog/message-dialog.component';
 
 
 
@@ -14,7 +16,7 @@ import { async } from 'q';
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService, private common:CommenServicesService) { }
 
   ngOnInit(): void {
     this.steps.push(new Step('Uploading'));
@@ -82,15 +84,27 @@ export class ClaimfileuploadComponent implements OnInit {
           await this.delay(600);
           const summary = new Summary(event.body);
           this.uploadService.summaryChange.next(summary);
-        } else {
-          this.progressStepper.previousStep();
-          this.progressStepper.previousStep();
-          this.uploadContainerClass = 'uploadContainerErrorClass';
-          this.error = 'Sorry! Somthing went wrong!';
         }
       }
     }, (error) => {
+      if(error instanceof HttpErrorResponse){
+        let title:string;
+        let message:string;
+        if(error.status >= 500){
+          title = "Server Error";
+          message = 'Server could not handle your request at the moment. Please try Again later.';
+        } else if (error.status >= 400){
+          title = error.error['error'];
+          message = error.error['message'];
+        }
+        this.common.openDialog(new DialogData(title, message, true)).subscribe(value =>{
+            
+        });
+      }
       this.uploading = false;
+      this.currentFileUpload = undefined;
+      this.progressStepper.previousStep();
+      this.progressStepper.previousStep();
     });
     this.selectedFiles = undefined;
   }

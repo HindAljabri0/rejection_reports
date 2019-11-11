@@ -150,7 +150,7 @@ export class UploadedClaim {
   constructor(body: {}) {
     if(body != null){
       this.fileRowNumber = body['fileRowNumber'];
-      this.providerClaimNumber = body['providerClaimNumber'];
+      this.providerClaimNumber = body['provclaimno'];
       this.uploadStatus = body['uploadStatus'];
       this.uploadSubStatus = body ['uploadSubStatus'];
       this.claimErrors = new Array();

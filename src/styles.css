@@ -5,7 +5,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mainPage{
     width: 95%;
-    margin: 70px 20px;
+    margin: 80px 20px;
 }
 
 .mat-grid-tile .mat-figure {
@@ -50,4 +50,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .dialogError .mat-dialog-container{
     background-color: #E988AD;
     margin-left: 13.5%;
+}
+
+mat-checkbox::after{
+    content: "|";
+    width: 1px;
+    height: 80%;
+    margin: 0px 10px;
+    border-radius: 80%;
+    background-color: #70707019;
+    color: #70707019;
 }

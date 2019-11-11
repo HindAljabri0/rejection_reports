@@ -45,6 +45,8 @@ export class CommenServicesService {
         return '#bebebe';
       case 'Batched':
         return '#21b590';
+      case 'INVALID':
+        return '#E988AD';
       default:
         return '#E3A820';
     }

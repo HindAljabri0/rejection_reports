@@ -5,6 +5,7 @@ overflow: auto;
 height: 100%;
 position: fixed;
 margin-top: 62px;
+top: 0px;
 }
 
 .w3-light-grey{

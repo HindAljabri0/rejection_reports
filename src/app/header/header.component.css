@@ -15,12 +15,18 @@
   width: 100%;
   flex-direction: row;
   float: right;
-  
+  top: 0px;
 }
 
 .impos{
   display: block;
     margin-left: 4%;
     margin-right: 0%;
+}
 
+.mat-progress-bar{
+  position: fixed;
+  display: flex;
+  z-index: 2;
+  top: 64px;
 }

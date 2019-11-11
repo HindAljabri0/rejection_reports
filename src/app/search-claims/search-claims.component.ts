@@ -28,6 +28,9 @@ export class SearchClaimsComponent implements OnInit {
   detailCardTitle:string;
   detailAccentColor:string;
   detailActionText:string = null;
+  detailSubActionText:string = null;
+  detailCheckBoxIndeterminate:boolean;
+  detailCheckBoxChecked:boolean;
 
   providerId:string;
   from:string;
@@ -38,7 +41,7 @@ export class SearchClaimsComponent implements OnInit {
   searchResult:SearchResultPaginator;
   claims:ClaimResultContent[];
   selectedClaims:string[] = new Array();
-  selectedClaimsCount:number = 0;
+  selectedClaimsCountOfPage:number = 0;
   allCheckBoxIsIndeterminate:boolean;
   allCheckBoxIsChecked:boolean;
 
@@ -70,7 +73,7 @@ export class SearchClaimsComponent implements OnInit {
     this.summaries = new Array();
     this.commen.loadingChanged.next(true);
     this.selectedClaims = new Array();
-    this.selectedClaimsCount = 0;
+    this.selectedClaimsCountOfPage = 0;
     this.errorMessage = null;
     this.routeActive.params.subscribe(value => {
       this.providerId = value.providerId;
@@ -87,7 +90,9 @@ export class SearchClaimsComponent implements OnInit {
     await this.getSummaryOfStatus('All');
     await this.getSummaryOfStatus(ClaimStatus.Accepted);
     await this.getSummaryOfStatus("NotAccepted");
-    await this.getSummaryOfStatus('Batched');
+    // await this.getSummaryOfStatus('Batched');
+    await this.getSummaryOfStatus('INVALID');
+    await this.getSummaryOfStatus('VALID');
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
     this.getResultsofStatus(0);
@@ -95,6 +100,7 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   async getSummaryOfStatus(status:string) {
+    this.commen.loadingChanged.next(true);
     const event = await this.searchService.getSummaries(this.providerId, this.from, this.to, this.payerId, status).toPromise().catch(error =>{
       this.commen.loadingChanged.next(false);
       if(error instanceof HttpErrorResponse){
@@ -129,10 +135,13 @@ export class SearchClaimsComponent implements OnInit {
     }
     if(this.selectedCardKey!= null && key != this.selectedCardKey){
       this.selectedClaims = new Array();
-      this.selectedClaimsCount = 0;
+      this.selectedClaimsCountOfPage = 0;
       this.setAllCheckBoxIsIndeterminate();
     }
-    if(this.summaries[key].status == ClaimStatus.Accepted) this.detailActionText = 'Submit';
+    if(this.summaries[key].status == ClaimStatus.Accepted){
+      this.detailActionText = 'Submit All';
+      this.detailSubActionText = 'Submit Selection';
+    }
     else this.detailActionText = null;
     this.selectedCardKey = key;
     this.searchResult = null;
@@ -142,9 +151,9 @@ export class SearchClaimsComponent implements OnInit {
         if((event.status/100).toFixed()== "2"){
           this.searchResult = new SearchResultPaginator(event.body);
           this.claims = this.searchResult.content;
-          this.selectedClaimsCount = 0;
+          this.selectedClaimsCountOfPage = 0;
           for(let claim of this.claims){
-            if(this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCount++;
+            if(this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCountOfPage++;
           }
           this.setAllCheckBoxIsIndeterminate();
           this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].status);
@@ -169,7 +178,9 @@ export class SearchClaimsComponent implements OnInit {
 
   submitSelectedClaims(){
     if(this.selectedClaims.length == 0){
-
+      this.commen.openDialog(new DialogData('', 'Please select at least 1 Accepted claim first.', true));
+      return;
+    } else if(this.commen.loading){
       return;
     }
     this.commen.loadingChanged.next(true);
@@ -188,10 +199,10 @@ export class SearchClaimsComponent implements OnInit {
       }
       this.commen.loadingChanged.next(false);
       if(this.allCheckBoxIsIndeterminate){
-        this.selectAll();
-        this.selectAll();
+        this.selectAllinPage();
+        this.selectAllinPage();
       } else if(this.allCheckBoxIsChecked){
-        this.selectAll();
+        this.selectAllinPage();
       }
     }, errorEvent =>{
       if(errorEvent instanceof HttpErrorResponse){
@@ -202,14 +213,22 @@ export class SearchClaimsComponent implements OnInit {
           }
       }
       if(this.allCheckBoxIsIndeterminate){
-        this.selectAll();
-        this.selectAll();
+        this.selectAllinPage();
+        this.selectAllinPage();
       } else if(this.allCheckBoxIsChecked){
-        this.selectAll();
+        this.selectAllinPage();
       }
       this.commen.loadingChanged.next(false);
       console.log(errorEvent);
     });
+  }
+
+  submitAllAcceptedClaims(){
+    if(this.commen.loading){
+      return;
+    }
+    this.commen.loadingChanged.next(true);
+    //TODO
   }
 
 
@@ -250,27 +269,27 @@ export class SearchClaimsComponent implements OnInit {
 
   setAllCheckBoxIsIndeterminate(){
     if(this.claims != null)
-      this.allCheckBoxIsIndeterminate = this.selectedClaimsCount != this.claims.length && this.selectedClaimsCount != 0;
+      this.allCheckBoxIsIndeterminate = this.selectedClaimsCountOfPage != this.claims.length && this.selectedClaimsCountOfPage != 0;
     else this.allCheckBoxIsIndeterminate = false;
     this.setAllCheckBoxIsChecked();
   }
   setAllCheckBoxIsChecked(){
     if(this.claims != null)
-      this.allCheckBoxIsChecked = this.selectedClaimsCount == this.claims.length;
+      this.allCheckBoxIsChecked = this.selectedClaimsCountOfPage == this.claims.length;
     else this.allCheckBoxIsChecked = false;
   }
   selectClaim(claimId:string){
     if(!this.selectedClaims.includes(claimId)){
       this.selectedClaims.push(claimId);
-      this.selectedClaimsCount++;
+      this.selectedClaimsCountOfPage++;
     } else {
       this.selectedClaims.splice(this.selectedClaims.indexOf(claimId), 1);
-      this.selectedClaimsCount--;
+      this.selectedClaimsCountOfPage--;
     }
     this.setAllCheckBoxIsIndeterminate();
   }
-  selectAll(){
-    if(this.selectedClaimsCount != this.claims.length)
+  selectAllinPage(){
+    if(this.selectedClaimsCountOfPage != this.claims.length)
       for(let claim of this.claims){
         if(!this.selectedClaims.includes(claim.claimId))
           this.selectClaim(claim.claimId);
@@ -287,6 +306,8 @@ export class SearchClaimsComponent implements OnInit {
       return this.selectedClaims.length + ' of ' + this.searchResult.totalElements + ' are selected.';
     else return '0 of 0 are selected.';
   }
+
+  
 
 
 }

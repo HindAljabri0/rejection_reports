@@ -8,7 +8,7 @@ import { EventEmitter } from '@angular/core';
 })
 export class DetailscardComponent  {
 
-  constructor() { }
+  constructor() {}
 
   @Input() title: string;
 

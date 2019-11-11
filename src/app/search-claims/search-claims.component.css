@@ -42,15 +42,6 @@ app-abstractcard table td{
     margin-bottom: 30px;
 }
 
-.detailSummaryCheckbox::after{
-    content: "|";
-    width: 1px;
-    height: 80%;
-    margin: 0px 10px;
-    border-radius: 80%;
-    background-color: #70707019;
-    color: #70707019;
-}
 
 mat-paginator{
     margin-bottom: 10px;
