@@ -142,7 +142,10 @@ export class SearchClaimsComponent implements OnInit {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
     }
-    else this.detailActionText = null;
+    else{
+      this.detailActionText = null;
+      this.detailSubActionText = null;
+    }
     this.selectedCardKey = key;
     this.searchResult = null;
     this.claims = new Array();
@@ -177,10 +180,10 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   submitSelectedClaims(){
-    if(this.selectedClaims.length == 0){
-      this.commen.openDialog(new DialogData('', 'Please select at least 1 Accepted claim first.', true));
+    if(this.commen.loading){
       return;
-    } else if(this.commen.loading){
+    } else if(this.selectedClaims.length == 0){
+      this.commen.openDialog(new DialogData('', 'Please select at least 1 Accepted claim first.', true));
       return;
     }
     this.commen.loadingChanged.next(true);
@@ -196,30 +199,20 @@ export class SearchClaimsComponent implements OnInit {
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode']+', Description: '+error['errorDescription']);
           }
         }
+        this.commen.loadingChanged.next(false);
       }
-      this.commen.loadingChanged.next(false);
-      if(this.allCheckBoxIsIndeterminate){
-        this.selectAllinPage();
-        this.selectAllinPage();
-      } else if(this.allCheckBoxIsChecked){
-        this.selectAllinPage();
-      }
+      this.deSelectAll();
     }, errorEvent =>{
+      this.commen.loadingChanged.next(false);
       if(errorEvent instanceof HttpErrorResponse){
-        this.errorMessage = '';
+        if(errorEvent.status >= 500 || errorEvent.status == 0)
+          this.commen.openDialog(new DialogData('', 'Could not reach the server. Please try again later.', true));
         if(errorEvent.error['errors'] != null)
           for(let error of errorEvent.error['errors']){
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode']+', Description: '+error['errorDescription']);
           }
       }
-      if(this.allCheckBoxIsIndeterminate){
-        this.selectAllinPage();
-        this.selectAllinPage();
-      } else if(this.allCheckBoxIsChecked){
-        this.selectAllinPage();
-      }
-      this.commen.loadingChanged.next(false);
-      console.log(errorEvent);
+      this.deSelectAll();
     });
   }
 
@@ -298,6 +291,14 @@ export class SearchClaimsComponent implements OnInit {
       for(let claim of this.claims){
         this.selectClaim(claim.claimId);
       }
+    }
+  }
+  deSelectAll(){
+    if(this.allCheckBoxIsIndeterminate){
+      this.selectAllinPage();
+      this.selectAllinPage();
+    } else if(this.allCheckBoxIsChecked){
+      this.selectAllinPage();
     }
   }
 
