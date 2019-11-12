@@ -11,11 +11,15 @@ export class ClaimSubmittionService {
 
 
   submitClaims(claims:string[], providerId:string, payerId:string){
-    let requestURL:string = `/${providerId}/${payerId}/claims/queue?claimids=`;
-    for(let claim of claims){
-      requestURL += claim + ','
-    }
-    const request = new HttpRequest('POST', environment.claimServiceHost+requestURL.substr(0,requestURL.length-1), {});
+    let requestURL:string = `/${providerId}/${payerId}/queue/claims`;
+    const request = new HttpRequest('POST', environment.claimServiceHost+requestURL, {claimIds:claims},  {});
+    return this.http.request(request);
+  }
+
+  submitAllClaims(providerId:string, fromDate:string, toDate:string, payerId:string){
+    let requestURL:string = `/${providerId}/${payerId}/queue/claims-criteria?fromDate=`+fromDate
+    +'&toDate='+toDate;
+    const request = new HttpRequest('POST', environment.claimServiceHost+requestURL,  {});
     return this.http.request(request);
   }
 }

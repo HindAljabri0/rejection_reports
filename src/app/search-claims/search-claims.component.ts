@@ -8,6 +8,7 @@ import { ClaimStatus } from '../claimpage/claimfileuploadservice/upload.service'
 import { MatPaginator } from '@angular/material';
 import { ClaimSubmittionService } from '../claimSubmittionService/claim-submittion.service';
 import { DialogData } from '../dialogs/message-dialog/message-dialog.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-search-claims',
@@ -18,7 +19,7 @@ export class SearchClaimsComponent implements OnInit {
 
   
 
-  constructor(private submittionService:ClaimSubmittionService,private commen:CommenServicesService, private routeActive:ActivatedRoute, private router:Router, private searchService:SearchServiceService) {
+  constructor(private location: Location, private submittionService:ClaimSubmittionService,private commen:CommenServicesService, private routeActive:ActivatedRoute, private router:Router, private searchService:SearchServiceService) {
   }
   placeholder = '-';
   cardsClickAble:boolean = true;
@@ -56,6 +57,9 @@ export class SearchClaimsComponent implements OnInit {
   errorMessage:string;
 
   submittionErrors:Map<string,string>;
+  
+  queryStatus:number;
+  queryPage:number;
 
   ngOnInit() {
     this.fetchData();
@@ -82,6 +86,10 @@ export class SearchClaimsComponent implements OnInit {
       this.from = value.from;
       this.to = value.to;
       this.payerId = value.payer;
+      this.queryStatus = value.status == null? 0:Number.parseInt(value.status);
+      this.queryPage = value.page == null?0:Number.parseInt(value.page)-1;
+      if(Number.isNaN(this.queryStatus) || this.queryStatus < 0) this.queryStatus = 0;
+      if(Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
     });
     if(this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == ''){
       this.commen.loadingChanged.next(false);
@@ -90,12 +98,15 @@ export class SearchClaimsComponent implements OnInit {
     await this.getSummaryOfStatus('All');
     await this.getSummaryOfStatus(ClaimStatus.Accepted);
     await this.getSummaryOfStatus("NotAccepted");
-    // await this.getSummaryOfStatus('Batched');
+    await this.getSummaryOfStatus('Batched');
     await this.getSummaryOfStatus('INVALID');
     await this.getSummaryOfStatus('VALID');
+    await this.getSummaryOfStatus('Failed');
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
-    this.getResultsofStatus(0);
+    
+    this.getResultsofStatus(this.queryStatus, this.queryPage);
+
     if(!this.hasData && this.errorMessage == null) this.errorMessage = 'There is no claims for provider (' + this.providerId + ') from ' + this.from + ' to ' + this.to + ' associated with payer (' + this.payerId + ').';
   }
 
@@ -138,6 +149,15 @@ export class SearchClaimsComponent implements OnInit {
       this.selectedClaimsCountOfPage = 0;
       this.setAllCheckBoxIsIndeterminate();
     }
+    this.resetURL();
+    if(page > Math.ceil((this.summaries[key].totalClaims/this.paginator.pageSize))-1) page = 0;
+    if(key != 0){
+      this.location.go(this.location.path()+ `&status=${key}`);
+    }
+    if(page != null && page > 0){
+      this.paginator.pageIndex=page;
+      this.location.go(this.location.path()+ `&page=${(page+1)}`);
+    }
     if(this.summaries[key].status == ClaimStatus.Accepted){
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
@@ -149,6 +169,7 @@ export class SearchClaimsComponent implements OnInit {
     this.selectedCardKey = key;
     this.searchResult = null;
     this.claims = new Array();
+    
     this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize).subscribe((event)=>{
       if(event instanceof HttpResponse){
         if((event.status/100).toFixed()== "2"){
@@ -191,6 +212,7 @@ export class SearchClaimsComponent implements OnInit {
       if(event instanceof HttpResponse){
         if(event.body['queuedStatus'] == 'QUEUED'){
           this.commen.openDialog(new DialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result =>{
+            this.resetURL();
             this.fetchData();
           });
         }
@@ -221,7 +243,26 @@ export class SearchClaimsComponent implements OnInit {
       return;
     }
     this.commen.loadingChanged.next(true);
-    //TODO
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId).subscribe((event)=>{
+      if(event instanceof HttpResponse){
+        if(event.body['queuedStatus'] == 'QUEUED'){
+          this.commen.openDialog(new DialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result =>{
+            this.resetURL();
+            this.fetchData();
+          });
+        }
+        this.commen.loadingChanged.next(false);
+      }
+    }, errorEvent =>{
+      this.commen.loadingChanged.next(false);
+      if(errorEvent instanceof HttpErrorResponse){
+        if(errorEvent.status >= 500 || errorEvent.status == 0)
+          this.commen.openDialog(new DialogData('', 'Could not reach the server. Please try again later.', true));
+        if(errorEvent.error['message'] != null){
+          this.commen.openDialog(new DialogData('', errorEvent.error['message'], true));
+        }
+      }
+    });
   }
 
 
@@ -308,6 +349,9 @@ export class SearchClaimsComponent implements OnInit {
     else return '0 of 0 are selected.';
   }
 
+  resetURL(){
+    this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`);
+  }
   
 
 

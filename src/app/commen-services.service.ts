@@ -47,6 +47,8 @@ export class CommenServicesService {
         return '#21b590';
       case 'INVALID':
         return '#E988AD';
+      case 'Failed':
+        return '#bf1958';
       default:
         return '#E3A820';
     }
