@@ -1,28 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
 import { AppComponent } from './app.component';
-import { ClaimfileuploadComponent } from './claimpage/claimfileupload/claimfileupload.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { HeaderComponent } from './header/header.component';
-import { UploadService } from './claimpage/claimfileuploadservice/upload.service';
-import { HttpClientModule } from '@angular/common/http';
-import { ClaimsummaryComponent } from './claimpage/claimsummary/claimsummary.component';
-import { DetailscardComponent } from './detailscard/detailscard.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ClaimpageComponent } from './claimpage/claimpage.component';
-import { AbstractcardComponent } from './abstractcard/abstractcard.component';
-import { DragdropDirective } from './claimpage/claimfileupload/dragdrop.directive';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { MatDividerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
-import { SearchBarComponent } from './search-bar/search-bar.component';
-import { SearchClaimsComponent } from './search-claims/search-claims.component'
-import { from } from 'rxjs';
-import { componentFactoryName } from '@angular/compiler';
-import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
+
+import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
+import { ClaimsummaryComponent } from './pages/claimUploadignPage/claimsummary/claimsummary.component';
+import { DetailscardComponent } from './components/reusables/detailscard/detailscard.component';
+import { ClaimpageComponent } from './pages/claimUploadignPage/claimpage.component';
+import { AbstractcardComponent } from './components/reusables/abstractcard/abstractcard.component';
+import { DragdropDirective } from './pages/claimUploadignPage/claimfileupload/dragdrop.directive';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UploadService } from './services/claimfileuploadservice/upload.service';
 
 
 //https://momentjs.com/docs/#/displaying/format/

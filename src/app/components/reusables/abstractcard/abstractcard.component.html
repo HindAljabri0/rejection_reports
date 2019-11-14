@@ -1,0 +1,13 @@
+<mat-card  style="padding: 0px 0px 5px 0px; width: inherit;">
+    <div *ngIf="clickable" matRipple (click)="action.emit()" style="position: absolute; width: 100%; height: 100%; z-index: 1; cursor: pointer;"></div>
+    <div style="height: 3px; width: 100%;" [style.background-color]="accentColor"></div>
+    <mat-card-title style="font-size: 16px; padding: 16px 16px 0px 16px;">
+        {{title}}
+    </mat-card-title>
+    <mat-card-content [style.color]="accentColor" style="height: 30%; padding: 0px 16px;">
+        <ng-content></ng-content>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <!-- <button mat-button color="primary" >{{actionText}}</button> -->
+    </mat-card-actions>
+</mat-card>
