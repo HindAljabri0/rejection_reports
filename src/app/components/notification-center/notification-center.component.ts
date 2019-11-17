@@ -18,6 +18,7 @@ export class NotificationCenterComponent implements OnInit {
   }
 
   toggleNotificationCenter(show:boolean){
+    console.log(show);
     if(show){
       this.status = "show";
     } else this.status = "";
