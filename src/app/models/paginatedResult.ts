@@ -1,6 +1,7 @@
 import { SearchedClaim } from './searchedClaim';
+import { Paginateable } from './paginateable';
 
-export class PaginatedSearchResult{
+export class PaginatedResult<T extends Paginateable>{
     totalElements:number;
     totalPages:number;
     size:number;
@@ -9,8 +10,9 @@ export class PaginatedSearchResult{
     first:boolean;
     empty:boolean;
     last:boolean;
-    content:SearchedClaim[];
-    constructor(body:{}){
+    content:T[];
+    
+    constructor(body:{}, private type: new (body:{}) => T){
       this.totalElements = body['totalElements'];
       this.totalPages = body['totalPages'];
       this.size = body['size'];
@@ -20,7 +22,11 @@ export class PaginatedSearchResult{
       this.empty = body['empty'];
       this.content = new Array();
       body['content'].forEach(element => {
-        this.content.push(new SearchedClaim(element));
+        this.content.push(this.getNew(element));
       });
     }
+
+    getNew(body:{}) : T {
+      return new this.type(body);
+  }
   }

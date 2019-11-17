@@ -1,4 +1,7 @@
-export class SearchedClaim{
+import { Paginateable } from './paginateable';
+
+export class SearchedClaim extends Paginateable{
+  
   claimId:string;
   claimDate:string;
   memberId:string;
@@ -10,7 +13,10 @@ export class SearchedClaim{
   status:string;
   unitOfNetAmount:string;
   unitOfNetVatAmount:string;
-  constructor(body: {}){
+
+
+  constructor (body: {}){
+    super(body);
     if(body!= null){
       this.claimId = body['claimId'];
       this.claimDate = body['claimDate'];

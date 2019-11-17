@@ -10,7 +10,7 @@ import { DialogData } from '../../components/dialogs/message-dialog/message-dial
 import { Location } from '@angular/common';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
-import { PaginatedSearchResult } from 'src/app/models/paginatedSearchResult';
+import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 
 @Component({
@@ -42,7 +42,7 @@ export class SearchClaimsComponent implements OnInit {
   payerId:string;
   
   summaries:SearchStatusSummary[];
-  searchResult:PaginatedSearchResult;
+  searchResult:PaginatedResult<SearchedClaim>;
   claims:SearchedClaim[];
   selectedClaims:string[] = new Array();
   selectedClaimsCountOfPage:number = 0;
@@ -177,7 +177,7 @@ export class SearchClaimsComponent implements OnInit {
     this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize).subscribe((event)=>{
       if(event instanceof HttpResponse){
         if((event.status/100).toFixed()== "2"){
-          this.searchResult = new PaginatedSearchResult(event.body);
+          this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           this.claims = this.searchResult.content;
           this.selectedClaimsCountOfPage = 0;
           for(let claim of this.claims){

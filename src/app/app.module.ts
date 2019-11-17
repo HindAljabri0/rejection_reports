@@ -23,6 +23,7 @@ import { MessageDialogComponent } from './components/dialogs/message-dialog/mess
 import { HttpClientModule } from '@angular/common/http';
 import { UploadService } from './services/claimfileuploadservice/upload.service';
 import { NotificationCenterComponent } from './components/notification-center/notification-center.component';
+import { ClaimsTableViewComponent } from './components/reusables/claims-table-view/claims-table-view.component';
 
 
 //https://momentjs.com/docs/#/displaying/format/
@@ -50,6 +51,7 @@ export const MY_FORMATS = {
     SearchClaimsComponent,
     MessageDialogComponent,
     NotificationCenterComponent,
+    ClaimsTableViewComponent,
   ],
   imports: [
     RouterModule.forRoot([
