@@ -5,6 +5,10 @@
     <a href="/"><img src="assets/waseel_logo.png" alt="Waseel" width="40%"></a>
   </div>
   <app-search-bar></app-search-bar>
+  <span class="spacer"></span>
+  <button (click)="toggleNotificationCenter()" class="iconButton {{notificationIconClasses}}" mat-icon-button>
+    <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
+  </button>
 </mat-toolbar>
 
 

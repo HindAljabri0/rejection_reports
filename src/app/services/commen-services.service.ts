@@ -13,6 +13,9 @@ export class CommenServicesService {
 
   searchIsOpen:boolean = false;
   searchIsOpenChange:Subject<boolean> = new Subject<boolean>();
+
+  showNotificationCenter:boolean;
+  showNotificationCenterChange:Subject<boolean> = new Subject();
   
   constructor(public dialog:MatDialog) {
     this.loadingChanged.subscribe((value)=>{
@@ -21,6 +24,9 @@ export class CommenServicesService {
     this.searchIsOpenChange.subscribe(value =>{
       this.searchIsOpen = value;
     });
+    this.showNotificationCenterChange.subscribe(value => {
+      this.showNotificationCenter = value;
+    })
   }
 
   openDialog(dialogData:DialogData):Observable<any>{

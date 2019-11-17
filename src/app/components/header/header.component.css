@@ -30,3 +30,21 @@
   z-index: 2;
   top: 64px;
 }
+
+.iconButton {
+  margin-right: 60px;
+}
+
+.iconButton.hasNotifications::after{
+  content: ".";
+  position: absolute;
+  display: flex;
+  color: #EB2A75;
+  font-size: 70px;
+  bottom: 24px;
+  left: 16px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

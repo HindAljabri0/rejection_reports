@@ -22,6 +22,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UploadService } from './services/claimfileuploadservice/upload.service';
+import { NotificationCenterComponent } from './components/notification-center/notification-center.component';
 
 
 //https://momentjs.com/docs/#/displaying/format/
@@ -48,6 +49,7 @@ export const MY_FORMATS = {
     SearchBarComponent,
     SearchClaimsComponent,
     MessageDialogComponent,
+    NotificationCenterComponent,
   ],
   imports: [
     RouterModule.forRoot([

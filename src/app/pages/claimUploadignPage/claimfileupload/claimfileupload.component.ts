@@ -69,7 +69,7 @@ export class ClaimfileuploadComponent implements OnInit {
     this.progress.percentage = 0;
     this.uploading = true;
     this.progressStepper.nextStep();
-    this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(async event => {
+    this.uploadService.pushFileToStorage('104','102',this.currentFileUpload).subscribe(async event => {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round(100 * event.loaded / event.total);
         if(this.progress.percentage == 100) this.progressStepper.nextStep();
@@ -112,11 +112,5 @@ export class ClaimfileuploadComponent implements OnInit {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
-  showFiles(enable: boolean) {
-    this.showFile = enable;
-    if (enable) {
-      this.fileUploads = this.uploadService.getFiles();
-    }
-  }
 }
 
