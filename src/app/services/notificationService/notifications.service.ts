@@ -21,10 +21,10 @@ export class NotificationsService {
     return this.httpClient.request(request);
   }
 
-  markNotificationAsRead(providerId:string, id:string){
-    const requestUrl = `/${providerId}/notifications/${id}`;
-    const request = new HttpRequest('POST', environment.NotificationServiceHost+requestUrl, {read:true});
-    return this.httpClient.request(request);
-  }
+  // markNotificationAsRead(providerId:string, id:string){
+  //   const requestUrl = `/${providerId}/notifications/${id}`;
+  //   const request = new HttpRequest('POST', environment.NotificationServiceHost+requestUrl, {read:true});
+  //   return this.httpClient.request(request);
+  // }
 
 }
