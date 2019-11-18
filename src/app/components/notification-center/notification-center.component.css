@@ -33,3 +33,7 @@
 .notificationCenter.show{
     right: 0%;
 }
+
+.notificationCenter *{
+    width: 100%;
+}

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClaimsTableViewComponent } from './claims-table-view.component';
+import { NotificationCardComponent } from './notification-card.component';
 
-describe('ClaimsTableViewComponent', () => {
-  let component: ClaimsTableViewComponent;
-  let fixture: ComponentFixture<ClaimsTableViewComponent>;
+describe('NotificationCardComponent', () => {
+  let component: NotificationCardComponent;
+  let fixture: ComponentFixture<NotificationCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClaimsTableViewComponent ]
+      declarations: [ NotificationCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClaimsTableViewComponent);
+    fixture = TestBed.createComponent(NotificationCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,66 @@
+.notification{
+    width: 100%;
+    padding: 20px;
+    color: #FFFFFF;
+}
+
+.header{
+    background-color: #FFFFFF2F;
+    width: 100%;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    padding: 10px;
+}
+table{
+    width: 100%;
+}
+.header th{
+    font-size: 12px;
+    font-weight: 400;
+}
+.header th:last-child{
+    text-align: right;
+}
+
+.batchContent{
+    width: 100%;
+    background-color: #FFFFFF1C;
+}
+
+.batchContent th{
+    font-size: 13px;
+    font-weight: 500;
+    padding: 15px;
+}
+
+.batchContent th:first-child{
+    width: 40%;
+    border-right: 1px solid #3B629E;
+}
+.batchContent th:last-child{
+    width: 60%;
+}
+.batchContent .totalPaied{
+    font-size: large;
+    font-weight: 600;
+}
+.batchContent .totalUnpaied{
+    font-size: medium;
+    font-weight: 600;
+}
+.batchContent .totalPaied .mat-icon{
+    font-size: small;
+    font-weight: 300;
+    color: #7CFF81;
+}
+.batchContent .totalUnpaied .mat-icon{
+    font-size: small;
+    font-weight: 300;
+    color: #FF5F5F;
+}
+.batchContent th td{
+    text-align: center;
+}
+.batchContent th td p{
+    margin: 2px;
+}

@@ -1,4 +1,3 @@
-import { SearchedClaim } from './searchedClaim';
 import { Paginateable } from './paginateable';
 
 export class PaginatedResult<T extends Paginateable>{

@@ -15,10 +15,10 @@ export class NotificationCenterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.commen.showNotificationCenterChange.next(true);
   }
 
   toggleNotificationCenter(show:boolean){
-    console.log(show);
     if(show){
       this.status = "show";
     } else this.status = "";

@@ -37,6 +37,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 *:hover::-webkit-scrollbar-thumb{
     background-color: #b6b4b4;
 }
+body::-webkit-scrollbar-thumb{
+    background-color: #b6b4b4b6;
+}
+body:hover::-webkit-scrollbar-thumb{
+    background-color: #b6b4b4b6;
+}
 
 .errorText{
     color: red;
@@ -61,3 +67,7 @@ mat-checkbox::after{
     background-color: #70707019;
     color: #70707019;
 }
+
+.spacer {
+    flex: 1 1 auto;
+  }
