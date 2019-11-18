@@ -15,7 +15,7 @@ export class NotificationCenterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.commen.showNotificationCenterChange.next(true);
+    // this.commen.showNotificationCenterChange.next(true);
   }
 
   toggleNotificationCenter(show:boolean){

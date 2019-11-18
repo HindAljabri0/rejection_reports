@@ -20,7 +20,7 @@
 
 .notificationCenter{
     position: fixed;
-    display: flex;
+    overflow-y: auto;
     height: 100%;
     width: 25%;
     top: 68px;
@@ -36,4 +36,8 @@
 
 .notificationCenter *{
     width: 100%;
+    height: fit-content;
+}
+.notificationCenter *:last-child{
+    margin-bottom: 50px;
 }

@@ -2,6 +2,12 @@
     width: 100%;
     padding: 20px;
     color: #FFFFFF;
+    background-color: #ffffff00;
+}
+
+.clickable:hover{
+    cursor: pointer;
+    background-color: #ffffff1a;
 }
 
 .header{
