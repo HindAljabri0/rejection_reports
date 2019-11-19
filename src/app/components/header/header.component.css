@@ -35,6 +35,10 @@
   margin-right: 60px;
 }
 
+.iconButton:focus{
+  outline: none;
+}
+
 .iconButton.hasNotifications::after{
   content: ".";
   position: absolute;

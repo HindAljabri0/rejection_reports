@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CommenServicesService} from '../../services/commen-services.service'
+import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +14,9 @@ export class HeaderComponent implements OnInit {
   notificationIconClasses = "mat-icon-button mat-button-base ";
 
   constructor(private commen:CommenServicesService) {
-    
+    this.commen.unReadNotificationsCountChange.subscribe(count => {
+        this.setNewNotificationIndecater(count > 0);
+    })
   }
 
   get loading():boolean{
@@ -24,7 +28,7 @@ export class HeaderComponent implements OnInit {
 
   setNewNotificationIndecater(show:boolean){
     if(show){
-      this.notificationIconClasses += "hasNotifications";
+      this.notificationIconClasses = "mat-icon-button mat-button-base hasNotifications";
     } else {
       this.notificationIconClasses = "mat-icon-button mat-button-base ";
     }

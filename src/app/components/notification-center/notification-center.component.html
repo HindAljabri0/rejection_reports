@@ -1,15 +1,7 @@
 <div class="blackBackground {{status}}" (click)="this.commen.showNotificationCenterChange.next(false)"></div>
 <div class="notificationCenter {{status}}">
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <app-notification-card></app-notification-card>
-    <div style="height: 50px;"></div>
+    <p><br>There are {{numOfUnreadNotifications}} unread notifications.</p>
+    <app-notification-card *ngFor="let notification of notificationsList" [notification]="notification"></app-notification-card>
+    <div style="height: 50px;">
+    </div>
 </div>

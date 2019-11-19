@@ -28,6 +28,8 @@
     transition: right 500ms ease-in;
     background: #3B629E;
     z-index: 4;
+    color: white;
+    text-align: center;
 }
 
 .notificationCenter.show{

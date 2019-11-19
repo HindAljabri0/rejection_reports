@@ -27,6 +27,24 @@ table{
 .header th:last-child{
     text-align: right;
 }
+.header th.unread::before{
+    content: ".";
+    position: relative;
+    display: flex;
+    color: #EB2A75;
+    font-size: 70px;
+    bottom: 11px;
+    line-height: 0px;
+}
+.header th.read::before{
+    content: ".";
+    position: relative;
+    display: flex;
+    color: white;
+    font-size: 70px;
+    bottom: 11px;
+    line-height: 0px;
+}
 
 .batchContent{
     width: 100%;

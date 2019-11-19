@@ -9,16 +9,7 @@ import { NotificationTypes } from 'src/app/models/notificationsTypes';
 })
 export class NotificationCardComponent implements OnInit {
 
-  @Input() notification:Notification = new Notification({
-    id:1,
-    type: `${NotificationTypes.BatchNotification}`,
-    message: 'new batch update',
-    reference: '13254',
-    datetime: new Date(),
-    targetId: '102',
-    sourceId: '104',
-    targetUser: '0'
-  });
+  @Input() notification:Notification;
   date:string;
 
   constructor() { }
@@ -27,6 +18,14 @@ export class NotificationCardComponent implements OnInit {
     if(this.notification != null){
       this.date = `${this.notification.datetime.getFullYear()}/${this.notification.datetime.getMonth()+1}/${this.notification.datetime.getDate()}`
     }
+  }
+
+  isBatchNotification(type:NotificationTypes){
+    return type == NotificationTypes.batch;
+  }
+
+  parseInt(str:string){
+    return Number.parseInt(str);
   }
 
 }

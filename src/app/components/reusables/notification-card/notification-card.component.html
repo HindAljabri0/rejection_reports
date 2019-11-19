@@ -2,20 +2,20 @@
     <div class="header">
         <table>
             <thead>
-                <th>Batch ID: {{notification.reference}}</th>
+                <th class="{{notification.status}}">{{notification.type}} ID: {{notification.reference}}</th>
                 <th><span class="spacer"></span>Date: {{date}}</th>
             </thead>
         </table>
     </div>
-    <div *ngIf="notification.type == 0" class="batchContent">
+    <div *ngIf="isBatchNotification(notification.type)" class="batchContent">
         <table>
             <th>
                 <p>Total</p>
-                <p class="totalPaied"><mat-icon>arrow_upward</mat-icon>65640</p>
-                <p class="totalUnpaied"><mat-icon>arrow_downward</mat-icon>1021</p>
+                <p class="totalPaied"><mat-icon>arrow_upward</mat-icon>{{parseInt(notification.object[1]) + parseInt(notification.object[2])}}</p>
+                <p class="totalUnpaied"><mat-icon>arrow_downward</mat-icon>{{parseInt(notification.object[3])}}</p>
             </th>
             <th>
-                <p>No. of Claims<br><span style="font-size: 16px;">54564</span></p>
+                <p>No. of Claims<br><span style="font-size: 16px;">{{parseInt(notification.object[0])}}</span></p>
                 <table cellspacing="5px" style="border-collapse: separate;">
                     <tr style="font-size: smaller;">
                         <td class="paied" style="border-top: 1px solid #00FF1E;">
@@ -30,13 +30,13 @@
                     </tr>
                     <tr style="font-size: medium;">
                         <td>
-                            54523
+                            {{parseInt(notification.object[1])}}
                         </td>
                         <td>
-                            10535
+                            {{parseInt(notification.object[2])}}
                         </td>
                         <td>
-                            1021
+                            {{parseInt(notification.object[3])}}
                         </td>
                     </tr>
                 </table>

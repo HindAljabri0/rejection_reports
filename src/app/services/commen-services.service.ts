@@ -3,6 +3,12 @@ import { Subject, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent, DialogData } from '../components/dialogs/message-dialog/message-dialog.component';
 import { ClaimStatus } from '../models/claimStatus';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { NotificationsService } from './notificationService/notifications.service';
+import { HttpResponse } from '@angular/common/http';
+import { Notification } from '../models/notification';
+import { PaginatedResult } from '../models/paginatedResult';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +22,13 @@ export class CommenServicesService {
 
   showNotificationCenter:boolean;
   showNotificationCenterChange:Subject<boolean> = new Subject();
+
+  unReadNotificationsCount:number = 0;
+  unReadNotificationsCountChange: Subject<number> = new Subject();
+  notificationsList:Notification[];
+  notificationsListChange:Subject<Notification[]> = new Subject();
   
-  constructor(public dialog:MatDialog) {
+  constructor(public dialog:MatDialog, private router:Router, private notifications:NotificationsService) {
     this.loadingChanged.subscribe((value)=>{
       this.loading = value;
     });
@@ -26,7 +37,34 @@ export class CommenServicesService {
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
-    })
+    });
+    this.unReadNotificationsCountChange.subscribe(value => {
+      this.unReadNotificationsCount = value;
+    });
+    this.notificationsListChange.subscribe(value => {
+      this.notificationsList = value;
+    });
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.getNotifications();
+    });
+  }
+
+  getNotifications(){
+    this.notifications.getNotificationsCount('102', 'unread').subscribe(event => {
+      if(event instanceof HttpResponse){
+        const count = Number.parseInt(`${event.body}`);
+        if(!Number.isNaN(count))
+          this.unReadNotificationsCountChange.next(count);
+      }
+    });
+    this.notifications.getNotifications('102', 0, 10).subscribe(event => {
+      if(event instanceof HttpResponse){
+        const paginatedResult:PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
+        this.notificationsListChange.next(paginatedResult.content);
+      }
+    });
   }
 
   openDialog(dialogData:DialogData):Observable<any>{
