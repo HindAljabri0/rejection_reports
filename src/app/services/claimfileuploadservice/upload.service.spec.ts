@@ -3,15 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { UploadService } from './upload.service';
 
 describe('UploadService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [UploadService]
-  }));
-  
-  const service:UploadService = TestBed.get(UploadService);
-  const httpMock = TestBed.get(HttpTestingController);
+  beforeEach(() => {
 
-  it('shoud post data successful', () => {
-    
   });
+
 });

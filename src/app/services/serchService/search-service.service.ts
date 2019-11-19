@@ -24,4 +24,10 @@ export class SearchServiceService {
     const request = new HttpRequest('GET', environment.claimSearchHost+requestURL);
     return this.http.request(request);
   }
+
+  getClaim(providerId:string, claimId:string){
+    const requestURL = `/${providerId}/claims/${claimId}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost+requestURL);
+    return this.http.request(request);
+  }
 }
