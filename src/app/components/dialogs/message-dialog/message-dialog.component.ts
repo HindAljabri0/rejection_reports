@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-message-dialog',
@@ -8,7 +9,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class MessageDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<MessageDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  constructor(public dialogRef: MatDialogRef<MessageDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: MessageDialogData) {
     
   }
 
@@ -26,13 +27,4 @@ export class MessageDialogComponent implements OnInit {
 
 }
 
-export class DialogData{
-  title:string;
-  message:string;
-  isError:boolean = false;
-  constructor(title:string, message:string, isError:boolean){
-    this.title = title;
-    this.message = message;
-    this.isError = isError;
-  }
-}
+

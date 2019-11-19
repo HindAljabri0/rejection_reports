@@ -23,9 +23,10 @@ table{
 .header th{
     font-size: 12px;
     font-weight: 400;
+    /* text-align: start; */
 }
 .header th:last-child{
-    text-align: right;
+    text-align: end;
 }
 .header th.unread::before{
     content: ".";

@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UploadService } from './services/claimfileuploadservice/upload.service';
 import { NotificationCenterComponent } from './components/notification-center/notification-center.component';
 import { NotificationCardComponent } from './components/reusables/notification-card/notification-card.component';
+import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-dialog.component';
 
 
 //https://momentjs.com/docs/#/displaying/format/
@@ -52,6 +53,7 @@ export const MY_FORMATS = {
     MessageDialogComponent,
     NotificationCenterComponent,
     NotificationCardComponent,
+    ClaimDialogComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -95,7 +97,11 @@ export const MY_FORMATS = {
   bootstrap: [AppComponent],
   exports: [
     MessageDialogComponent,
+    ClaimDialogComponent,
   ],
-  entryComponents: [MessageDialogComponent],
+  entryComponents: [
+    MessageDialogComponent,
+    ClaimDialogComponent
+  ],
 })
 export class AppModule { }

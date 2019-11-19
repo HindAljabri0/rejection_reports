@@ -1,0 +1,90 @@
+.header{
+    width: 100%;
+    padding: 5px;
+    color: #3060AA;
+    display: flex;
+}
+
+.header button{
+    color: #707070;
+    width: unset;
+    height: 20px;
+    line-height: unset;
+}
+.header mat-icon{
+    font-size: medium;
+    font-weight: 200;
+}
+
+.header p{
+    font-size: medium;
+    margin: 3px 15px;
+}
+
+.header.sub{
+    background-color: #EFF5FF;
+    border-bottom: 1px solid #c4c4c4;
+}
+
+.content{
+    color: #3060AA;
+    padding: 0px 20px;
+}
+
+.content table{
+    width: 100%;
+}
+
+.commentBox{
+    padding: 5px;
+    width: 100%;
+    background: #EFF5FF;
+    border: none;
+    height: 100%;
+}
+
+.amountBox{
+    margin: 12px;
+    padding: 10px;
+    background-color: #EFF5FF;
+    height: 100%;
+    
+}
+
+.amountBox div{
+    border: 2px solid #3060AA;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.services{
+    padding: 10px;
+    background-color: #EFF5FF;
+}
+
+.services table{
+    width: 100%;
+    font-size: small;
+    text-align: center;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
+.services th{
+    font-weight: 400;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 5px;
+}
+.services td{
+    color: #707070;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 5px;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    background-color: #EFF5FF;
+    border-top: 1px solid #c4c4c4;
+}

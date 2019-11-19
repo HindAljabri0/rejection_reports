@@ -4,8 +4,9 @@ import {  HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common
 import { Observable } from 'rxjs';
 import { StepperProgressBarController, Step } from 'stepper-progress-bar';
 import { CommenServicesService } from '../../../services/commen-services.service';
-import { DialogData } from '../../../components/dialogs/message-dialog/message-dialog.component';
+
 import { UploadSummary } from 'src/app/models/uploadSummary';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 
 
@@ -97,7 +98,7 @@ export class ClaimfileuploadComponent implements OnInit {
           title = error.error['error'];
           message = error.error['message'];
         }
-        this.common.openDialog(new DialogData(title, message, true)).subscribe(value =>{
+        this.common.openDialog(new MessageDialogData(title, message, true)).subscribe(value =>{
             
         });
       }
