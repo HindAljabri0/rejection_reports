@@ -356,6 +356,11 @@ export class SearchClaimsComponent implements OnInit {
   resetURL(){
     this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`);
   }
+
+
+  showClaim(claimId:string){
+    this.commen.getClaimAndViewIt(this.providerId, claimId);
+  }
   
 
 

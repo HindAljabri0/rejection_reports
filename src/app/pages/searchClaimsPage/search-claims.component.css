@@ -55,6 +55,10 @@ mat-expansion-panel{
 mat-expansion-panel:nth-child(odd){
     background-color: #EDF4FF;
 }
+mat-expansion-panel:hover{
+    cursor: pointer;
+    background-color: #c7ddff;
+}
 
 .paginatorContainer{
     display: flex;

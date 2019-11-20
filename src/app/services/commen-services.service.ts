@@ -53,7 +53,6 @@ export class CommenServicesService {
     ).subscribe(() => {
       this.getNotifications();
     });
-    this.getClaimAndViewIt('104', '7692');
   }
 
   getNotifications(){
