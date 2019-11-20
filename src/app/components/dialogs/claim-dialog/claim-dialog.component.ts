@@ -13,6 +13,29 @@ export class ClaimDialogComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.claim);
+    if(this.claim.errors.length > 0){
+      this.setErrors();
+    }
+  }
+
+  commentBoxText:string;
+  commentBoxClasses:string;
+
+
+  memberidClasses:string;
+  genderClasses:string;
+  approvalClasses:string; 
+  eligibilityClasses:string;
+
+  setErrors(){
+    this.commentBoxClasses = 'error';
+    this.commentBoxText = "";
+    for(let error of this.claim.errors){
+      this.commentBoxText += `${error.description}\n`;
+      if(error.fieldName.toLowerCase().includes(('approvalNumber').toLowerCase())){
+        this.approvalClasses = 'error';
+      }
+    }
   }
 
 }

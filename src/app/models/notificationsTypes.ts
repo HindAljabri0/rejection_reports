@@ -1,5 +1,5 @@
 
 export enum NotificationTypes{
-    batch = 'batch',
+    BATCH_SUMMARY_INQUIRY = 'batch-summary-inquiry',
     General = 'General'
 }

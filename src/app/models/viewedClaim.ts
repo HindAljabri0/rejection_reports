@@ -1,4 +1,5 @@
 import { Service } from './service';
+import { ClaimError } from './claimError';
 
 export class ViewedClaim {
 
@@ -24,5 +25,7 @@ export class ViewedClaim {
 	eligibilitynumber:string;
 	comments:string;
     batchid:number;
-    services:Service[];
+	services:Service[];
+	errors:ClaimError[];
+
 }

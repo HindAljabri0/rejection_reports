@@ -56,7 +56,7 @@ export class CommenServicesService {
   }
 
   getNotifications(){
-    this.notifications.getNotificationsCount('102', 'unread').subscribe(event => {
+    this.notifications.getNotificationsCount('104', 'unread').subscribe(event => {
       if(event instanceof HttpResponse){
         const count = Number.parseInt(`${event.body}`);
         if(!Number.isNaN(count))
@@ -67,7 +67,7 @@ export class CommenServicesService {
         this.unReadNotificationsCountChange.next(errorEvent.status == 0? -1 : (errorEvent.status*-1));
       }
     });
-    this.notifications.getNotifications('102', 0, 10).subscribe(event => {
+    this.notifications.getNotifications('104', 0, 10).subscribe(event => {
       if(event instanceof HttpResponse){
         const paginatedResult:PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.notificationsListChange.next(paginatedResult.content);
@@ -94,7 +94,7 @@ export class CommenServicesService {
     this.loadingChanged.next(true);
     this.search.getClaim(providerId, claimId).subscribe(event => {
       if(event instanceof HttpResponse){
-        const claim = JSON.parse(JSON.stringify(event.body));
+        const claim:ViewedClaim = JSON.parse(JSON.stringify(event.body));
         this.openClaimDialog(claim);
         this.loadingChanged.next(false);
       }      
@@ -126,18 +126,37 @@ export class CommenServicesService {
         return '#21B744';
       case ClaimStatus.Not_Accepted:
         return '#EB2A75';
-      case 'All':
+      case ClaimStatus.ALL:
         return '#3060AA'
       case '-':
         return '#bebebe';
-      case 'Batched':
+      case ClaimStatus.Batched:
         return '#21b590';
-      case 'INVALID':
+      case ClaimStatus.INVALID:
         return '#E988AD';
-      case 'Failed':
+      case ClaimStatus.Failed:
         return '#bf1958';
       default:
         return '#E3A820';
+    }
+  }
+
+  statusToName(status:string){
+    switch(status){
+      case ClaimStatus.Accepted:
+        return 'Ready for Submission';
+      case ClaimStatus.Not_Accepted:
+        return 'Rejected by Waseel';
+      case ClaimStatus.ALL:
+        return 'All Claims'
+      case ClaimStatus.Batched:
+        return 'Queued for Submission';
+      case ClaimStatus.INVALID:
+        return 'Rejected by Payer';
+      case ClaimStatus.Failed:
+        return 'Failed to Submit'
+      default:
+        return status;
     }
   }
 

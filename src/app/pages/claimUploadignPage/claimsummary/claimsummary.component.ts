@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ClaimStatus } from 'src/app/models/claimStatus';
+import { CommenServicesService } from 'src/app/services/commen-services.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class ClaimsummaryComponent implements OnInit {
   detailCardTitle: string;
   detailAccentColor:string;
 
-  card0Title = 'Total Claims';
+  card0Title = this.commen.statusToName(ClaimStatus.ALL);
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
   card0Action() {
@@ -30,7 +31,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card0AccentColor;
   }
 
-  card1Title = ClaimStatus.Accepted;
+  card1Title = this.commen.statusToName(ClaimStatus.Accepted);
   card1ActionText = 'details';
   card1AccentColor = "#21B744";
   card1Action() {
@@ -42,7 +43,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card1AccentColor;
   }
 
-  card2Title = ClaimStatus.Not_Accepted;
+  card2Title = this.commen.statusToName(ClaimStatus.Not_Accepted);
   card2ActionText = 'details';
   card2AccentColor = "#EB2A75"
   card2Action() {
@@ -54,7 +55,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card2AccentColor;
   }
 
-  card3Title = ClaimStatus.Not_Saved;
+  card3Title = this.commen.statusToName(ClaimStatus.Not_Saved);
   card3ActionText = 'details';
   card3AccentColor = "#E3A820";
   card3Action() {
@@ -71,7 +72,7 @@ export class ClaimsummaryComponent implements OnInit {
   }
 
 
-  constructor(private uploadService: UploadService) {}
+  constructor(private uploadService: UploadService, private commen:CommenServicesService) {}
 
   ngOnInit() {
     this.uploadService.summaryChange.subscribe(value =>{

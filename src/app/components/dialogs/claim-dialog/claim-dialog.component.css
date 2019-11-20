@@ -34,16 +34,25 @@
     padding-bottom: 42px;
 }
 
+.content td.error{
+    color: #770a0a;
+}
+
 .content table{
     width: 100%;
 }
 
 .commentBox{
-    padding: 5px;
+    padding: 10px;
     width: 100%;
-    background: #EFF5FF;
     border: none;
     height: 100%;
+    visibility: hidden;
+}
+.commentBox.error{
+    visibility: visible;
+    background: #f5d4d4;
+    color: #770a0a;
 }
 
 .amountBox{

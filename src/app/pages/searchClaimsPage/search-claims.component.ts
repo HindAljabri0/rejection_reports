@@ -185,7 +185,7 @@ export class SearchClaimsComponent implements OnInit {
           }
           this.setAllCheckBoxIsIndeterminate();
           this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].status);
-          this.detailCardTitle = this.summaries[key].status;
+          this.detailCardTitle = this.commen.statusToName(this.summaries[key].status);
           const pages = Math.ceil((this.searchResult.totalElements/this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x,i)=>i);
           this.manualPage = this.paginator.pageIndex;

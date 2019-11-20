@@ -1,7 +1,7 @@
 .notification{
     width: 100%;
     padding: 20px;
-    color: #FFFFFF;
+    color: #3060AA;
     background-color: #ffffff00;
 }
 
@@ -11,11 +11,12 @@
 }
 
 .header{
-    background-color: #FFFFFF2F;
+    background-color: #3060AA;
     width: 100%;
     border-top-right-radius: 7px;
     border-top-left-radius: 7px;
     padding: 10px;
+    color: white;
 }
 table{
     width: 100%;
@@ -28,39 +29,21 @@ table{
 .header th:last-child{
     text-align: end;
 }
-.header th.unread::before{
-    content: ".";
-    position: relative;
-    display: flex;
-    color: #EB2A75;
-    font-size: 70px;
-    bottom: 11px;
-    line-height: 0px;
-}
-.header th.read::before{
-    content: ".";
-    position: relative;
-    display: flex;
-    color: white;
-    font-size: 70px;
-    bottom: 11px;
-    line-height: 0px;
-}
+
 
 .batchContent{
     width: 100%;
-    background-color: #FFFFFF1C;
+    background-color: white;
 }
 
 .batchContent th{
     font-size: 13px;
     font-weight: 500;
-    padding: 15px;
+    padding: 5px 15px;
 }
 
 .batchContent th:first-child{
     width: 40%;
-    border-right: 1px solid #3B629E;
 }
 .batchContent th:last-child{
     width: 60%;
@@ -88,4 +71,18 @@ table{
 }
 .batchContent th td p{
     margin: 2px;
+}
+
+.nIcon{
+    background-color: #3060AA0F;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin-left: auto;
+    text-align: center;
+    padding: 13%;
+}
+
+p{
+    margin-bottom: 1px;
 }

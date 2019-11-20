@@ -20,12 +20,24 @@ export class NotificationCardComponent implements OnInit {
     }
   }
 
-  isBatchNotification(type:NotificationTypes){
-    return type == NotificationTypes.batch;
+
+  isRead(){
+    return this.notification.status == 'read';
+  }
+
+  isBatchNotification(){
+    return this.notification.type == NotificationTypes.BATCH_SUMMARY_INQUIRY;
   }
 
   parseInt(str:string){
     return Number.parseInt(str);
+  }
+
+  typeToString(){
+    switch(this.notification.type){
+      case NotificationTypes.BATCH_SUMMARY_INQUIRY:
+        return 'Batch Notification';
+    }
   }
 
 }

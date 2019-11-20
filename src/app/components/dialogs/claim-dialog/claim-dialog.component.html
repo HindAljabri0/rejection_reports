@@ -21,10 +21,10 @@
                             <td>
                                 Patient Name
                             </td>
-                            <td>
+                            <td class="{{memberidClasses}}">
                                 Member ID
                             </td>
-                            <td>
+                            <td class="{{genderClasses}}">
                                 Gender
                             </td>
                             <td>
@@ -35,10 +35,10 @@
                             <td>
                                 {{claim.firstname}} {{claim.middlename}} {{claim.lastname}}
                             </td>
-                            <td>
+                            <td class="{{memberidClasses}}">
                                 {{claim.memberid}}
                             </td>
-                            <td>
+                            <td class="{{genderClasses}}">
                                 {{claim.gender}}
                             </td>
                             <td>
@@ -46,7 +46,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="{{approvalClasses}}">
+                                Approval No
+                            </td>
+                            <td class="{{eligibilityClasses}}">
                                 Eligibility Ref No
                             </td>
                             <td>
@@ -57,7 +60,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="{{approvalClasses}}">
+                                {{claim.approvalnumber}}
+                            </td>
+                            <td class="{{eligibilityClasses}}">
                                 {{claim.eligibilitynumber}}
                             </td>
                             <td>
@@ -70,7 +76,7 @@
                     </table>
                 </tr>
                 <tr style="padding: 30px;">
-                    <td><textarea class="commentBox" placeholder="Comments" disabled>{{claim.comments}}</textarea></td>
+                    <td><textarea class="commentBox {{commentBoxClasses}}" disabled>{{commentBoxText}}</textarea></td>
                 </tr>
             </table>
         </td>

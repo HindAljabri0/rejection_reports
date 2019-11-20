@@ -1,11 +1,11 @@
 export class ClaimError {
-  errorCode: string;
-  errorDescription: string;
+  code: string;
+  description: string;
   fieldName: string;
   constructor(body: {}) {
     if(body != null){
-      this.errorCode = body['errorCode'];
-      this.errorDescription = body['errorDescription'];
+      this.code = body['errorCode'];
+      this.description = body['errorDescription'];
       this.fieldName = body ['fieldName'];
     }
   }
