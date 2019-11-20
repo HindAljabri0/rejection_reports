@@ -18,4 +18,6 @@ export class Service {
 	unitofpatientshare:string;
 	unitofpatientsharevatamount:string;
 	unitofpatientsharevatrate:string;
+	servicedate:Date;
+	invoicedepartment:string;
 }

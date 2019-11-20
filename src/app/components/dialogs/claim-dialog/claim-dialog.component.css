@@ -29,6 +29,9 @@
 .content{
     color: #3060AA;
     padding: 0px 20px;
+    overflow-y: auto;
+    max-height: 80%;
+    padding-bottom: 42px;
 }
 
 .content table{

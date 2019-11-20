@@ -110,7 +110,7 @@
                 <tr *ngFor="let service of claim.services">
                     <td>{{service.servicecode}}</td>
                     <td>{{service.gross}}</td>
-                    <td></td>
+                    <td>{{service.invoicedepartment}}</td>
                     <td>
                         <div style="width: 100%; display: flex;">
                             <div>{{service.patientshare}} {{service.unitofpatientshare}}</div> <div style="margin-left: auto;">{{service.patientsharevatamount}}  {{service.unitofpatientsharevatamount}}</div>
@@ -121,7 +121,7 @@
                             <div>{{service.net}} {{service.unitofnet}}</div> <div style="margin-left: auto;">{{service.netvatamount}} {{service.unitofnetvatamount}}</div>
                         </div>
                     </td>
-                    <td></td>
+                    <td>{{service.servicedate}}</td>
                     <td>{{service.invoicenumber}}</td>
                 </tr>
             </tbody>

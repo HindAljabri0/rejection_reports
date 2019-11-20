@@ -6,7 +6,7 @@ import { ClaimStatus } from '../models/claimStatus';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { NotificationsService } from './notificationService/notifications.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Notification } from '../models/notification';
 import { PaginatedResult } from '../models/paginatedResult';
 import { MessageDialogData } from '../models/dialogData/messageDialogData';
@@ -62,11 +62,19 @@ export class CommenServicesService {
         if(!Number.isNaN(count))
           this.unReadNotificationsCountChange.next(count);
       }
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        this.unReadNotificationsCountChange.next(errorEvent.status == 0? -1 : (errorEvent.status*-1));
+      }
     });
     this.notifications.getNotifications('102', 0, 10).subscribe(event => {
       if(event instanceof HttpResponse){
         const paginatedResult:PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.notificationsListChange.next(paginatedResult.content);
+      }
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        this.unReadNotificationsCountChange.next(errorEvent.status == 0? -1 : (errorEvent.status*-1));
       }
     });
   }
@@ -82,12 +90,23 @@ export class CommenServicesService {
   }
 
   getClaimAndViewIt(providerId:string, claimId:string){
+    if(this.loading) return;
+    this.loadingChanged.next(true);
     this.search.getClaim(providerId, claimId).subscribe(event => {
       if(event instanceof HttpResponse){
         const claim = JSON.parse(JSON.stringify(event.body));
-        console.log(claim);
         this.openClaimDialog(claim);
+        this.loadingChanged.next(false);
+      }      
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        if(errorEvent.status == 404){
+          this.openDialog(new MessageDialogData("", 'Claim was not found!', true));
+        } else {
+          this.openDialog(new MessageDialogData("", 'Could not reach the server at the moment. Please try again later.', true));
+        }
       }
+      this.loadingChanged.next(false);
     });
   }
 

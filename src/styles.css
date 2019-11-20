@@ -61,6 +61,7 @@ body:hover::-webkit-scrollbar-thumb{
 .claimDialog mat-dialog-container{
     padding: 0px;
     position: relative;
+    overflow: hidden;
 }
 
 mat-checkbox::after{
