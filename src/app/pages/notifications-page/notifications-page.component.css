@@ -1,0 +1,22 @@
+#infinitScroll{
+    height: 730px;
+    overflow: auto;
+}
+
+.notifications{
+    overflow-wrap: break-word;
+}
+app-notification-card{
+    min-width: 325px;
+}
+.notification{
+    width: 400px;
+    display: inline-block;
+}
+
+#loadMore{
+    background-color: #3060AA; color: #fff; text-align: center; width: 100%;
+}
+#loadMore:hover{
+    cursor: pointer;
+}

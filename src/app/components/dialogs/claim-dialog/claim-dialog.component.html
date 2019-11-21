@@ -36,10 +36,15 @@
                                 {{claim.firstname}} {{claim.middlename}} {{claim.lastname}}
                             </td>
                             <td class="{{memberidClasses}}">
-                                {{claim.memberid}}
+                                <label *ngIf="!isEditMode">{{claim.memberid}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}">
                             </td>
                             <td class="{{genderClasses}}">
-                                {{claim.gender}}
+                                <label *ngIf="!isEditMode">{{claim.gender}}</label>
+                                <select *ngIf="isEditMode" [value]="claim.gender">
+                                    <option value="F">F</option>
+                                    <option value="M">M</option>                                   
+                                </select>
                             </td>
                             <td>
                                 {{claim.patientfilenumber}}
@@ -61,13 +66,16 @@
                         </tr>
                         <tr>
                             <td class="{{approvalClasses}}">
-                                {{claim.approvalnumber}}
+                                <label *ngIf="!isEditMode">{{claim.approvalnumber}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.approvalnumber}}">
                             </td>
                             <td class="{{eligibilityClasses}}">
-                                {{claim.eligibilitynumber}}
+                                <label *ngIf="!isEditMode">{{claim.eligibilitynumber}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.eligibilitynumber}}">
                             </td>
                             <td>
-                                {{claim.policynumber}}
+                                <label *ngIf="!isEditMode">{{claim.policynumber}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}">
                             </td>
                             <td>
                                 {{claim.provclaimno}}
@@ -137,7 +145,8 @@
 <div class="header footer">
     <p>Batch ID: {{claim.batchid}}</p>
     <span class="spacer"></span>
-    <button mat-button cdkFocusInitial>Edit</button>
+    <button mat-button cdkFocusInitial (click)="toggleEditMode()">{{editButtonLabel}}</button>
+    <button mat-raised-button *ngIf="isEditMode" cdkFocusInitial  color="primary" style="color: white;">Save</button>
 </div>
 <div mat-dialog-content >
     

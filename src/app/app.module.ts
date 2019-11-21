@@ -25,7 +25,9 @@ import { UploadService } from './services/claimfileuploadservice/upload.service'
 import { NotificationCenterComponent } from './components/notification-center/notification-center.component';
 import { NotificationCardComponent } from './components/reusables/notification-card/notification-card.component';
 import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-dialog.component';
+import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 
+import { ScrollingModule} from '@angular/cdk/scrolling';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -54,11 +56,13 @@ export const MY_FORMATS = {
     NotificationCenterComponent,
     NotificationCardComponent,
     ClaimDialogComponent,
+    NotificationsPageComponent,
   ],
   imports: [
     RouterModule.forRoot([
       { path: '', component:  ClaimpageComponent},
       { path: ':providerId/claims', component: SearchClaimsComponent },
+      { path: ':providerId/notifications', component: NotificationsPageComponent}
     ]),
     BrowserModule,
     HttpClientModule,
@@ -83,6 +87,7 @@ export const MY_FORMATS = {
     MatPaginatorModule,
     FormsModule,
     MatDialogModule,
+    ScrollingModule,
   ],
   providers: [
     UploadService,

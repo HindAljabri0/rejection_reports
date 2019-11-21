@@ -42,12 +42,12 @@ table{
     padding: 5px 15px;
 }
 
-.batchContent th:first-child{
+/* .batchContent th:first-child{
     width: 40%;
 }
 .batchContent th:last-child{
     width: 60%;
-}
+} */
 .batchContent .totalPaied{
     font-size: large;
     font-weight: 600;

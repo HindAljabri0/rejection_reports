@@ -27,6 +27,9 @@ export class ClaimDialogComponent implements OnInit {
   approvalClasses:string; 
   eligibilityClasses:string;
 
+  isEditMode:boolean = false;
+  editButtonLabel:string = "Edit";
+
   setErrors(){
     this.commentBoxClasses = 'error';
     this.commentBoxText = "";
@@ -36,6 +39,11 @@ export class ClaimDialogComponent implements OnInit {
         this.approvalClasses = 'error';
       }
     }
+  }
+
+  toggleEditMode(){
+    this.isEditMode = !this.isEditMode;
+    this.editButtonLabel = this.isEditMode? "Cancel" : "Edit";
   }
 
 }
