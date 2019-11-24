@@ -1,3 +1,28 @@
+.loadingBG{
+    background-color: #00000050;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 10;
+}
+.loadingSpinner{
+    left: 35%;
+    height: fit-content;
+    width: 30%;
+    position: absolute;
+    z-index: 11;
+    top: 35%;
+    border-radius: 25px;
+}
+mat-icon{
+    width: 100%;
+    text-align: center;
+    font-size: xx-large;
+}
+.loadingSpinner mat-spinner{
+    margin: 13% auto;
+}
+
 .header{
     width: 100%;
     padding: 5px;

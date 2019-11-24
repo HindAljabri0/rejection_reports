@@ -71,6 +71,11 @@ export class SearchClaimsComponent implements OnInit {
     ).subscribe(() => {
       this.fetchData();
     });
+    this.commen.onClaimDialogClose.subscribe(value =>{
+      if(value != null && value){
+        this.fetchData();
+      }
+    })
     this.submittionErrors = new Map();
   }
 

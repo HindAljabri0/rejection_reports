@@ -1,6 +1,6 @@
 export class ClaimError {
-  errorCode: string;
-  errorDescription: string;
+  code: string;
+  description: string;
   fieldName: string;
   
 }

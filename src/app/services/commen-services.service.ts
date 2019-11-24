@@ -31,6 +31,8 @@ export class CommenServicesService {
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList:Notification[];
   notificationsListChange:Subject<Notification[]> = new Subject();
+
+  onClaimDialogClose:Subject<any> = new Subject;
   
   constructor(public dialog:MatDialog, private router:Router, private notifications:NotificationsService, private search:SearchServiceService) {
     this.loadingChanged.subscribe((value)=>{
@@ -107,8 +109,8 @@ export class CommenServicesService {
     this.search.getClaim(providerId, claimId).subscribe(event => {
       if(event instanceof HttpResponse){
         const claim:ViewedClaim = JSON.parse(JSON.stringify(event.body));
-        this.openClaimDialog(providerId, payerId, status, claim);
         this.loadingChanged.next(false);
+        this.openClaimDialog(providerId, payerId, status, claim);
       }      
     }, errorEvent => {
       if(errorEvent instanceof HttpErrorResponse){
@@ -122,7 +124,7 @@ export class CommenServicesService {
     });
   }
 
-  openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim):Observable<any>{
+  openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim){
     claim.providerId = providerId;
     claim.payerId = payerId;
     claim.status = status;
@@ -132,7 +134,9 @@ export class CommenServicesService {
       panelClass: 'claimDialog',
       data: claim,
     });
-    return dialogRef.afterClosed();
+    dialogRef.afterClosed().subscribe(value =>{
+      this.onClaimDialogClose.next(value);
+    });
   }
 
   getCardAccentColor(status:string){

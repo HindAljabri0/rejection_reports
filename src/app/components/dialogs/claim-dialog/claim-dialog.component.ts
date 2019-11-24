@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { ClaimUpdateService } from 'src/app/services/claimUpdateService/claim-update.service';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { CommenServicesService } from 'src/app/services/commen-services.service';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -13,7 +14,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 })
 export class ClaimDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim:ViewedClaim, private claimUpdateService:ClaimUpdateService) { }
+  constructor(private commen:CommenServicesService, public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim:ViewedClaim, private claimUpdateService:ClaimUpdateService) { }
 
   ngOnInit() {
     console.log(this.claim);
@@ -21,6 +22,9 @@ export class ClaimDialogComponent implements OnInit {
       this.setErrors();
     }
   }
+
+  loading:boolean = false;
+  loadingResponse:string;
 
   commentBoxText:string;
   commentBoxClasses:string;
@@ -44,9 +48,12 @@ export class ClaimDialogComponent implements OnInit {
     this.commentBoxClasses = 'error';
     this.commentBoxText = "";
     for(let error of this.claim.errors){
-      this.commentBoxText += `${error.errorDescription}\n`;
+      this.commentBoxText += `${error.description}\n`;
       if(error.fieldName.toLowerCase().includes(('approvalNumber').toLowerCase())){
         this.approvalClasses = 'error';
+      }
+      if(error.fieldName.toLowerCase().includes(('memberID').toLowerCase())){
+        this.memberidClasses = 'error';
       }
     }
   }
@@ -92,9 +99,12 @@ export class ClaimDialogComponent implements OnInit {
     }
     
     if(flag){
+      this.loading = true;
       this.claimUpdateService.updateClaim(this.claim.providerId, this.claim.payerId, this.claim.claimid, updateRequestBody).subscribe(event =>{
         if(event instanceof HttpResponse){
-          console.log(event);
+          if(event.status == 201){
+            this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
+          }
         }
       }, eventError =>{
         if(eventError instanceof HttpErrorResponse){
@@ -102,6 +112,22 @@ export class ClaimDialogComponent implements OnInit {
         }
       });
     }
+  }
+  isAccepted(){
+    return this.loadingResponse != null && this.loadingResponse.includes(this.commen.statusToName(ClaimStatus.Accepted));
+  }
+  onDoneSaving(){
+    this.loading = false;
+    if(this.isAccepted()){
+      this.dialogRef.close(true);
+    } else {
+      this.reloadeClaim();
+      this.dialogRef.close(false);
+    }
+  }
+
+  reloadeClaim(){
+    this.commen.getClaimAndViewIt(this.claim.providerId, this.claim.payerId, this.claim.status, `${this.claim.claimid}`);
   }
 
 }
