@@ -58,6 +58,13 @@ export class ClaimDialogComponent implements OnInit {
     }
   }
 
+  resetErrors(){
+    this.commentBoxClasses = null;
+    this.commentBoxText = null;
+    this.approvalClasses = null;
+    this.memberidClasses = null;
+  }
+
   isEditable(){
     switch(this.claim.status){
       case ClaimStatus.Accepted:
@@ -122,12 +129,29 @@ export class ClaimDialogComponent implements OnInit {
       this.dialogRef.close(true);
     } else {
       this.reloadeClaim();
-      this.dialogRef.close(false);
     }
   }
 
   reloadeClaim(){
-    this.commen.getClaimAndViewIt(this.claim.providerId, this.claim.payerId, this.claim.status, `${this.claim.claimid}`);
+    this.commen.getClaim(this.claim.providerId, `${this.claim.claimid}`).subscribe(event => {
+      if(event instanceof HttpResponse){
+        const providerId = this.claim.providerId;
+        const payerId = this.claim.payerId;
+        const status = this.claim.status;
+        this.claim = JSON.parse(JSON.stringify(event.body));
+        this.claim.providerId = providerId;
+        this.claim.payerId = payerId;
+        this.claim.status = status;
+        this.resetErrors();
+        if(this.claim.errors.length > 0){
+          this.setErrors();
+        }
+      }      
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        this.dialogRef.close(true);
+      }
+    });
   }
 
 }

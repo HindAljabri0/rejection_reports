@@ -106,7 +106,7 @@ export class CommenServicesService {
   getClaimAndViewIt(providerId:string, payerId:string, status:string, claimId:string){
     if(this.loading) return;
     this.loadingChanged.next(true);
-    this.search.getClaim(providerId, claimId).subscribe(event => {
+    this.getClaim(providerId, claimId).subscribe(event => {
       if(event instanceof HttpResponse){
         const claim:ViewedClaim = JSON.parse(JSON.stringify(event.body));
         this.loadingChanged.next(false);
@@ -122,6 +122,10 @@ export class CommenServicesService {
       }
       this.loadingChanged.next(false);
     });
+  }
+
+  getClaim(providerId:string, claimId:string){
+    return this.search.getClaim(providerId, claimId);
   }
 
   openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim){
