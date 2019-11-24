@@ -79,6 +79,18 @@ export class CommenServicesService {
     });
   }
 
+  markAsRead(notificationId:string, providerId:string){
+    this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
+      if(event instanceof HttpResponse){
+        console.log(event);
+      }
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        console.log(errorEvent);
+      }
+    });
+  }
+
   openDialog(dialogData:MessageDialogData):Observable<any>{
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '35%',
@@ -89,13 +101,13 @@ export class CommenServicesService {
     return dialogRef.afterClosed();
   }
 
-  getClaimAndViewIt(providerId:string, claimId:string){
+  getClaimAndViewIt(providerId:string, payerId:string, status:string, claimId:string){
     if(this.loading) return;
     this.loadingChanged.next(true);
     this.search.getClaim(providerId, claimId).subscribe(event => {
       if(event instanceof HttpResponse){
         const claim:ViewedClaim = JSON.parse(JSON.stringify(event.body));
-        this.openClaimDialog(claim);
+        this.openClaimDialog(providerId, payerId, status, claim);
         this.loadingChanged.next(false);
       }      
     }, errorEvent => {
@@ -110,7 +122,10 @@ export class CommenServicesService {
     });
   }
 
-  openClaimDialog(claim:ViewedClaim):Observable<any>{
+  openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim):Observable<any>{
+    claim.providerId = providerId;
+    claim.payerId = payerId;
+    claim.status = status;
     const dialogRef = this.dialog.open(ClaimDialogComponent, {
       width: '50%',
       height: '70%',
@@ -124,7 +139,7 @@ export class CommenServicesService {
     switch(status){
       case ClaimStatus.Accepted:
         return '#21B744';
-      case ClaimStatus.Not_Accepted:
+      case ClaimStatus.NotAccepted:
         return '#EB2A75';
       case ClaimStatus.ALL:
         return '#3060AA'
@@ -145,7 +160,7 @@ export class CommenServicesService {
     switch(status){
       case ClaimStatus.Accepted:
         return 'Ready for Submission';
-      case ClaimStatus.Not_Accepted:
+      case ClaimStatus.NotAccepted:
         return 'Rejected by Waseel';
       case ClaimStatus.ALL:
         return 'All Claims'

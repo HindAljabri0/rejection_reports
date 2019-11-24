@@ -16,7 +16,7 @@ export class UploadService {
 
   constructor(private http: HttpClient) {
     this.http = http;
-    this.summary = new UploadSummary(null);
+    this.summary = new UploadSummary();
     this.summaryChange.subscribe((value)=> {
       this.summary = value;
     });

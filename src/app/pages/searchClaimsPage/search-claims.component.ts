@@ -140,6 +140,7 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   getResultsofStatus(key:number, page?:number, pageSize?:number){
+    if(this.summaries[key] == null) return;
     if(this.summaries.length == 0) return;
     this.commen.loadingChanged.next(true);
     if(page==null && pageSize==null && this.paginator != null){
@@ -358,8 +359,8 @@ export class SearchClaimsComponent implements OnInit {
   }
 
 
-  showClaim(claimId:string){
-    this.commen.getClaimAndViewIt(this.providerId, claimId);
+  showClaim(claimStatus:string, claimId:string){
+    this.commen.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId);
   }
   
 

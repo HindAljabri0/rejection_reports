@@ -83,7 +83,7 @@ export class ClaimfileuploadComponent implements OnInit {
           await this.delay(600);
           this.progressStepper.nextStep();
           await this.delay(600);
-          const summary = new UploadSummary(event.body);
+          const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
           this.uploadService.summaryChange.next(summary);
         }
       }

@@ -43,14 +43,14 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailAccentColor = this.card1AccentColor;
   }
 
-  card2Title = this.commen.statusToName(ClaimStatus.Not_Accepted);
+  card2Title = this.commen.statusToName(ClaimStatus.NotAccepted);
   card2ActionText = 'details';
   card2AccentColor = "#EB2A75"
   card2Action() {
     this.showClaims = true;
     this.detailsEqualEqual = true;
     this.detailCardTitle = this.card2Title;
-    this.detailsFilter = ClaimStatus.Not_Accepted;
+    this.detailsFilter = ClaimStatus.NotAccepted;
     this.detailsFilter1 = "";
     this.detailAccentColor = this.card2AccentColor;
   }
@@ -63,7 +63,7 @@ export class ClaimsummaryComponent implements OnInit {
     this.detailsEqualEqual = false;
     this.detailCardTitle = this.card3Title;
     this.detailsFilter1 = ClaimStatus.Accepted;
-    this.detailsFilter = ClaimStatus.Not_Accepted;
+    this.detailsFilter = ClaimStatus.NotAccepted;
     this.detailAccentColor = this.card3AccentColor;
   }
 

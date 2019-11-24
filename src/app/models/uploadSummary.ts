@@ -22,31 +22,5 @@ export class UploadSummary {
   
     noOfNotUploadedClaims:number = 0;
   
-    constructor(body: {}) {
-      if (body != null) {
-        this.uploadSummaryID = body['uploadSummaryID'];
-        this.uploadName = body['uploadName'];
-        this.uploadDate = body['uploadDate'];
-  
-        this.noOfUploadedClaims = body['noOfUploadedClaims'];
-        this.netAmountOfUploadedClaims = body['netAmountOfUploadedClaims'];
-        this.netVATAmountOfUploadedClaims = body['netVATAmountOfUploadedClaims'];
-  
-        this.noOfAcceptedClaims = body['noOfAcceptedClaims'];
-        this.netAmountOfAcceptedClaims = body['netAmountOfAcceptedClaims'];
-        this.netVATAmountOfAcceptedClaims = body['netVATAmountOfAcceptedClaims'];
-  
-        this.noOfNotAcceptedClaims = body['noOfNotAcceptedClaims'];
-        this.netAmountOfNotAcceptedClaims = body['netAmountOfNotAcceptedClaims'];
-        this.netVATAmountOfNotAcceptedClaims = body['netVATAmountOfNotAcceptedClaims'];
-  
-        this.noOfNotUploadedClaims = body['noOfNotUploadedClaims'];
-  
-        this.uploadedClaims = new Array();
-        for(let uploadedclaim of body['uploadedClaims']){
-          let claimInfo:ClaimInfo = new ClaimInfo(uploadedclaim);
-          this.uploadedClaims.push(claimInfo);
-        }
-      }
-    }
+    
   }
