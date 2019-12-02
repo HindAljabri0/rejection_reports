@@ -1,0 +1,23 @@
+/*style.css*/
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.login-main{
+    margin-top: 20%;
+    margin-left: 23%;
+    width: 50%;
+    content: center;
+
+    }
+    mat-card{
+    width: 400px;
+    margin: auto;
+    }
+
+    .icon {
+        padding: 10px;
+        background: dodgerblue;
+        color: rgb(255, 0, 0);
+        min-width: 50px;
+        text-align: center;
+      }
+
+      

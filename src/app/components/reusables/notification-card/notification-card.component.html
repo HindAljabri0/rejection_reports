@@ -1,0 +1,58 @@
+<div class="notification clickable">
+    <div class="header">
+        <table>
+            <thead>
+                <th *ngIf="isRead()" style="background-color: #00B1FF; color: #fff; border-radius: 3px;">Read</th>
+                <th *ngIf="!isRead()" style="background-color: #FA3B3B; color: #fff; border-radius: 3px;">Unread</th>
+                <th style="text-align: start; padding: 0px 5px;">{{typeToString()}}</th>
+                <th><span class="spacer"></span>Date: {{date}}</th>
+            </thead>
+        </table>
+    </div>
+    <div *ngIf="isBatchNotification()" class="batchContent">
+        <table style="text-align: start;">
+            <tr style="padding: 5px 15px;">
+                <th>
+                    <p>Batch ID:</p>
+                    <p class="totalPaied">{{notification.reference}}</p>
+                    <p>Total</p>
+                    <p class="totalPaied"><mat-icon>arrow_upward</mat-icon>{{parseInt(notification.object[1]) + parseInt(notification.object[2])}}</p>
+                    <p class="totalUnpaied"><mat-icon>arrow_downward</mat-icon>{{parseInt(notification.object[3])}}</p>
+                </th>
+                <th>
+                    <div class="nIcon">
+                        <img src="../../../../assets/box.png" alt="">
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="2" style="padding: 5px 0px;">
+                    <table>
+                        <tr style="font-size: smaller;">
+                            <td class="paied" style="border-top: 1px solid #00FF1E;">
+                                Paied
+                            </td>
+                            <td class="partlyPaied" style="border-top: 1px solid #64FFF9;">
+                                Partly Paied
+                            </td>
+                            <td class="rejected" style="border-top: 1px solid #FF7BD6;">
+                                Rejected
+                            </td>
+                        </tr>
+                        <tr style="font-size: medium;">
+                            <td>
+                                {{parseInt(notification.object[1])}}
+                            </td>
+                            <td>
+                                {{parseInt(notification.object[2])}}
+                            </td>
+                            <td>
+                                {{parseInt(notification.object[3])}}
+                            </td>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
+        </table>
+    </div>
+</div>

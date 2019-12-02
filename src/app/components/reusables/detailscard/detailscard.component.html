@@ -1,0 +1,17 @@
+<mat-card class="mat-elevation-z0" style="width: inherit; height: fit-content; padding: 0px; background-color: #F8F7FF;">
+    <div style="height: 3px; width: 100%;" [style.background-color]="accentColor"></div>
+    <mat-card  style="padding: 16px;">
+        <mat-card-title style="font-size: 16px;">
+            {{title}}
+        </mat-card-title>
+    </mat-card>
+    <mat-card-content style="height: inherit; padding: 16px;">
+        <ng-content></ng-content>
+    </mat-card-content>
+    <div class="sperator"></div>
+    <div class="footer">
+        <p>{{bottomDetails}}</p>
+        <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()">{{bottomLeftActionText}}</button>
+        <button *ngIf="bottomRightActionText!=null" mat-raised-button color="primary" (click)="bottomRightAction.emit()">{{bottomRightActionText}}</button>
+    </div>
+</mat-card>

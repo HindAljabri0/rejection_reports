@@ -1,0 +1,127 @@
+
+.Picker {
+    font-size: 12px;
+    margin: 5px;
+}
+
+input, select{
+    border: 0px;
+    border-radius: 5px;
+    padding: 0px 15px;
+    line-height: 22px;
+    color: #3060AA;
+    background: #EFF5FF;
+}
+
+input:hover, select:hover, .searchIcon:hover{
+    background: #aec8f3;
+    cursor: pointer;
+}
+
+select{
+    padding: 0px 90px 0px 10px;
+    -moz-appearance:none; 
+    -webkit-appearance:none; 
+    appearance:none;
+}
+
+.icon{
+    position: absolute;
+    transform: translateX(-35px);
+}
+
+.searchIcon{
+    border: 0px;
+    border-radius: 5px;
+    color: white;
+    background: #113F88;
+}
+.searchIcon .mat-icon{
+    font-size: 18px;
+    padding-top: 3px;
+    text-align: center;
+    transform: translateY(5px);
+}
+
+.searchPlaceHolder{
+    font-size: 13px;
+    line-height: 22px;
+    height: 24px;
+    width: 200px;
+    border-bottom: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    opacity: 0.55;
+    position: absolute;
+    margin-top: 10px;
+}
+.searchPlaceHolder:hover{
+    color: #aec8f3;
+    border-bottom: 1px solid #aec8f3;
+    cursor: pointer;
+}
+.searchPlaceHolder p::after{
+    content: "search";
+    font-family: 'Material Icons';
+    line-height: 2;
+    font-weight: normal;
+    font-style: normal;
+    position: sticky;
+    left: 70%;
+}
+
+.searchForm{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.searchPlaceHolder.hidden{
+    opacity: 0;
+    visibility: hidden;
+    animation: hide 500ms;
+}
+.searchForm.visible{
+    opacity: 1;
+    visibility: visible;
+    animation: show 500ms;
+}
+
+.Picker.error input, .Picker.error select{
+    background-color: #E988AD;
+    color: #7e0433;
+    animation: toError 500ms;
+}
+.Picker.error input::placeholder{
+    color: #7e0433;
+    animation: toError 500ms;
+}
+
+
+@keyframes hide{
+    0% {opacity: 1; visibility: visible;}
+    25% {opacity: 0.75;}
+    50% {opacity: 0.50;}
+    75% {opacity: 0.25;}
+    100% {opacity: 0; visibility: hidden;}
+}
+
+@keyframes show{
+    0% {opacity: 0; visibility: visible;}
+    25% {opacity: 0.25;}
+    50% {opacity: 0.50;}
+    75% {opacity: 0.75;}
+    100% {opacity: 1;}
+}
+
+@keyframes toError{
+    0% {background-color: white;}
+    100% {background-color: #E988AD;}
+}
+
+@keyframes fromError{
+    0% {background-color: #E988AD;}
+    100% {background-color: white;}
+}
+
+
+
+

@@ -1,0 +1,8 @@
+<div class="blackBackground {{status}}" (click)="this.commen.showNotificationCenterChange.next(false)"></div>
+<div class="notificationCenter {{status}}">
+    <p *ngIf="numOfUnreadNotifications >= 0"><br>There are {{numOfUnreadNotifications}} unread notifications. <a href="104/notifications">See All</a></p>
+    <p *ngIf="numOfUnreadNotifications < 0"><br>Could not reach the server at the moment!</p>
+    <app-notification-card *ngFor="let notification of notificationsList" [notification]="notification" ></app-notification-card>
+    <div style="height: 50px;">
+    </div>
+</div>

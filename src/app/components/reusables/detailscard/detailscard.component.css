@@ -1,0 +1,22 @@
+.footer{
+    display: flex;
+    align-content: center;
+    width: 100%;
+    padding: 10px 30px;
+}
+.footer>button:nth-child(even){
+    margin-left: auto;
+}
+.footer p{
+    margin: auto 0px;
+
+}
+.sperator{
+    content: "";
+    width: 100%;
+    height: 1px;
+    border: 1px solid #707070;
+    opacity: 0.18;
+    position: absolute;
+    display: block;
+}

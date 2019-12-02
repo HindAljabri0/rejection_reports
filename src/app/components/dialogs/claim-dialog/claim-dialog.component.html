@@ -1,0 +1,167 @@
+<mat-card *ngIf="loading" class="loadingSpinner">
+    <mat-spinner *ngIf="loadingResponse == null" diameter="40"></mat-spinner>
+    <mat-icon *ngIf="isAccepted()" [style.color]="commen.getCardAccentColor('Accepted')">check_circle</mat-icon>
+    <mat-icon *ngIf="!isAccepted()" [style.color]="commen.getCardAccentColor('NotAccepted')">cancel</mat-icon>
+    <p *ngIf="loadingResponse != null">{{loadingResponse}}</p>
+    <mat-card-actions *ngIf="loadingResponse != null" style="text-align: end;">
+        <button mat-button (click)="onDoneSaving()">OK</button>
+    </mat-card-actions>
+</mat-card>
+<div *ngIf="loading" class="loadingBG"></div>
+<div  class="header">
+    <button mat-icon-button [mat-dialog-close]="true">
+        <mat-icon>clear</mat-icon>
+    </button>
+    <p>{{claim.casetype}}</p>
+    <span class="spacer"></span>
+    <p>{{claim.visitdate}}</p>
+</div>
+<div class="header sub">
+    <p>Doctor Name: {{claim.physicianname}}</p>
+    <span class="spacer"></span>
+    <p>Claim R-No: {{claim.payerclaimrefno}}</p>
+</div>
+<div class="content">
+    <table>
+        <td style="width: 75%;">
+            <table>
+                <tr>
+                    <table>
+                        <tr>
+                            <td>
+                                Patient Name
+                            </td>
+                            <td class="{{memberidClasses}}">
+                                Member ID
+                            </td>
+                            <td class="{{genderClasses}}">
+                                Gender
+                            </td>
+                            <td>
+                                Patient File No.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{claim.firstname}} {{claim.middlename}} {{claim.lastname}}
+                            </td>
+                            <td class="{{memberidClasses}}">
+                                <label *ngIf="!isEditMode">{{claim.memberid}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid">
+                            </td>
+                            <td class="{{genderClasses}}">
+                                <label *ngIf="!isEditMode">{{claim.gender}}</label>
+                                <select *ngIf="isEditMode" [value]="claim.gender" [formControl]="gender">
+                                    <option value="F">F</option>
+                                    <option value="M">M</option>                                   
+                                </select>
+                            </td>
+                            <td>
+                                {{claim.patientfilenumber}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="{{approvalClasses}}">
+                                Approval No
+                            </td>
+                            <td class="{{eligibilityClasses}}">
+                                Eligibility Ref No
+                            </td>
+                            <td>
+                                Policy No
+                            </td>
+                            <td>
+                                Porvider Claim Number
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="{{approvalClasses}}">
+                                <label *ngIf="!isEditMode">{{claim.approvalnumber}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.approvalnumber}}" [formControl]="approvalnumber">
+                            </td>
+                            <td class="{{eligibilityClasses}}">
+                                <label *ngIf="!isEditMode">{{claim.eligibilitynumber}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.eligibilitynumber}}" [formControl]="eligibilitynumber">
+                            </td>
+                            <td>
+                                <label *ngIf="!isEditMode">{{claim.policynumber}}</label>
+                                <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber">
+                            </td>
+                            <td>
+                                {{claim.provclaimno}}
+                            </td>
+                        </tr>
+                    </table>
+                </tr>
+                <tr style="padding: 30px;">
+                    <td><textarea class="commentBox {{commentBoxClasses}}" disabled>{{commentBoxText}}</textarea></td>
+                </tr>
+            </table>
+        </td>
+        <td style="width: 25%; padding: 0px;">
+            <div class="amountBox">
+                <div>
+                    <h6 style="font-weight: 400;">Net Amount</h6>
+                    <h6>{{claim.net}} {{claim.unitofnet}}</h6>
+                    <br>
+                    <h6 style="font-weight: 400;">Vat Amount</h6>
+                    <h6>{{claim.netvatamount}} {{claim.unitofnetvatamount}}</h6>
+                </div>
+            </div>
+        </td>
+    </table>
+    <div class="services">
+        <p>Services</p>
+        <table>
+            <thead>
+                <th>Service Code</th>
+                <th>Gross Amount</th>
+                <th>Department</th>
+                <th>
+                    <div style="width: 100%; display: flex;">
+                        <div>Patient Share</div> <div style="margin-left: auto;">Vat</div>
+                    </div>
+                </th>
+                <th>
+                    <div style="width: 100%; display: flex;">
+                        <div>Net Amount</div> <div style="margin-left: auto;">Vat</div>
+                    </div>
+                </th>
+                <th>Date</th>
+                <th>Invoice No.</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let service of claim.services">
+                    <td>{{service.servicecode}}</td>
+                    <td>{{service.gross}}</td>
+                    <td>{{service.invoicedepartment}}</td>
+                    <td>
+                        <div style="width: 100%; display: flex;">
+                            <div>{{service.patientshare}} {{service.unitofpatientshare}}</div> <div style="margin-left: auto;">{{service.patientsharevatamount}}  {{service.unitofpatientsharevatamount}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width: 100%; display: flex;">
+                            <div>{{service.net}} {{service.unitofnet}}</div> <div style="margin-left: auto;">{{service.netvatamount}} {{service.unitofnetvatamount}}</div>
+                        </div>
+                    </td>
+                    <td>{{service.servicedate}}</td>
+                    <td>{{service.invoicenumber}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="header footer">
+    <p>Batch ID: {{claim.batchid}}</p>
+    <span class="spacer"></span>
+    <button mat-button cdkFocusInitial *ngIf="isEditable()" (click)="toggleEditMode()">{{editButtonLabel}}</button>
+    <button mat-raised-button *ngIf="isEditMode" (click)="save()"  color="primary" style="color: white;">Save</button>
+</div>
+<div mat-dialog-content >
+    
+</div>
+<div mat-dialog-actions align="end">
+  <!-- <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>OK</button> -->
+</div>

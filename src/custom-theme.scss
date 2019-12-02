@@ -8,12 +8,43 @@
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat-core();
-
+$mat-waseel: (
+  50: #7eacf0,
+  100: #6398e7,
+  200: #568fe4,
+  300: #4c84d8,
+  400: #376ec2,
+  500: #3060AA,
+  600: #295494,
+  700: #1e4174,
+  800: #18478d,
+  900: #002050,
+  A100: #cfd8dc,
+  A200: #b0bec5,
+  A400: #78909c,
+  A700: #455a64,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$waseele-gui-primary: mat-palette($mat-indigo);
-$waseele-gui-accent: mat-palette($mat-pink, A200, A100, A400);
+$waseele-gui-primary: mat-palette($mat-waseel);
+$waseele-gui-accent: mat-palette($mat-waseel, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $waseele-gui-warn: mat-palette($mat-red);

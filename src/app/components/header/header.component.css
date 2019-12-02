@@ -1,0 +1,51 @@
+.header {
+  padding: 1px;
+  text-align: center;
+  background: #3060AA;
+  color: white;
+  font-size: 14px;
+}
+
+.mat-toolbar-row , .mat-toolbar-single-row {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  float: right;
+  top: 0px;
+}
+
+.impos{
+  display: block;
+    margin-left: 4%;
+    margin-right: 0%;
+}
+
+.mat-progress-bar{
+  position: fixed;
+  display: flex;
+  z-index: 2;
+  top: 64px;
+}
+
+.iconButton {
+  margin-right: 60px;
+}
+
+.iconButton:focus{
+  outline: none;
+}
+
+.iconButton.hasNotifications::after{
+  content: ".";
+  position: absolute;
+  display: flex;
+  color: #EB2A75;
+  font-size: 70px;
+  bottom: 24px;
+  left: 16px;
+}
+

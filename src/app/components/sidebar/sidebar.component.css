@@ -1,0 +1,17 @@
+.w3-sidebar {
+width: 15%;
+z-index: 1;
+overflow: auto;
+height: 100%;
+position: fixed;
+margin-top: 62px;
+top: 0px;
+}
+
+.w3-light-grey{
+  display: block;
+}
+
+.list{
+  margin-top: 9%;
+}

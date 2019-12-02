@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  host: "http://172.26.2.242:8080"
+  uploaderHost: "http://localhost:8080",
+  claimSearchHost: "http://localhost:8082",
+  claimServiceHost: "http://localhost:8081",
+  NotificationServiceHost: "http://localhost:8222"
 };
 
 /*
