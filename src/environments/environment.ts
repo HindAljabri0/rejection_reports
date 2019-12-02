@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  uploaderHost: "http://localhost:8080",
-  claimSearchHost: "http://localhost:8082",
-  claimServiceHost: "http://localhost:8081",
-  NotificationServiceHost: "http://localhost:8222"
+  uploaderHost: "http://claim-uploader-waseele-cloud.apps.okd.waseel.com",
+  claimSearchHost: "http://claim-search-waseele-cloud.apps.okd.waseel.com",
+  claimServiceHost: "	http://claim-service-waseele-cloud.apps.okd.waseel.com",
+  NotificationServiceHost: "http://notification-service-waseele-cloud.apps.okd.waseel.com"
 };
 
 /*
