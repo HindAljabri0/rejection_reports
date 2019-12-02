@@ -1,5 +1,7 @@
+import { LoginComponent } from './pages/loginpage/login.component';
+import { logging } from 'protractor';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
@@ -57,12 +59,14 @@ export const MY_FORMATS = {
     NotificationCardComponent,
     ClaimDialogComponent,
     NotificationsPageComponent,
+    LoginComponent,
   ],
   imports: [
     RouterModule.forRoot([
       { path: '', component:  ClaimpageComponent},
       { path: ':providerId/claims', component: SearchClaimsComponent },
-      { path: ':providerId/notifications', component: NotificationsPageComponent}
+      { path: ':providerId/notifications', component: NotificationsPageComponent},
+      { path: 'login', component: LoginComponent },
     ]),
     BrowserModule,
     HttpClientModule,
@@ -89,6 +93,7 @@ export const MY_FORMATS = {
     MatDialogModule,
     ScrollingModule,
     MatProgressSpinnerModule,
+       
   ],
   providers: [
     UploadService,
