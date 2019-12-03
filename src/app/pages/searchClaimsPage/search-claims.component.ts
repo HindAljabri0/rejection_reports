@@ -22,7 +22,7 @@ export class SearchClaimsComponent implements OnInit {
 
   
 
-  constructor(private location: Location, private submittionService:ClaimSubmittionService,private commen:CommenServicesService, private routeActive:ActivatedRoute, private router:Router, private searchService:SearchServiceService) {
+  constructor(public location: Location, public submittionService:ClaimSubmittionService,public commen:CommenServicesService, public routeActive:ActivatedRoute, public router:Router, public searchService:SearchServiceService) {
   }
   placeholder = '-';
   cardsClickAble:boolean = true;

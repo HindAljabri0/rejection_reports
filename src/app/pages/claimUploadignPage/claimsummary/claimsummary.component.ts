@@ -72,7 +72,7 @@ export class ClaimsummaryComponent implements OnInit {
   }
 
 
-  constructor(private uploadService: UploadService, private commen:CommenServicesService) {}
+  constructor(public uploadService: UploadService, public commen:CommenServicesService) {}
 
   ngOnInit() {
     this.uploadService.summaryChange.subscribe(value =>{

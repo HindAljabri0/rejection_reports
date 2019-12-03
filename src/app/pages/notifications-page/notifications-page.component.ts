@@ -28,7 +28,7 @@ export class NotificationsPageComponent implements OnInit {
   totalNotifications:number = 0;
   currentNotificationsCount:number = 0;
 
-  constructor(private commen:CommenServicesService, private routeActive:ActivatedRoute, private notificationService:NotificationsService) { }
+  constructor(public commen:CommenServicesService, public routeActive:ActivatedRoute, public notificationService:NotificationsService) { }
 
   ngOnInit() {
     this.routeActive.params.subscribe(value => {
