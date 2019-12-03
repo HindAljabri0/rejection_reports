@@ -1,5 +1,4 @@
 /*style.css*/
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 .login-main{
     margin-top: 20%;
     margin-left: 23%;
@@ -19,5 +18,3 @@
         min-width: 50px;
         text-align: center;
       }
-
-      
