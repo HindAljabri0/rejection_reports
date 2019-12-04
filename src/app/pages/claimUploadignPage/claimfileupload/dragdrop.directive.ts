@@ -6,10 +6,10 @@ import { Directive, Output, Input, EventEmitter, HostBinding, HostListener } fro
 export class DragdropDirective {
 
   @Output() onFileDropped = new EventEmitter<any>();
-	
-  @HostBinding('style.background-color') private background = '#f5fcff'
-  @HostBinding('style.opacity') private opacity = '1'
-	
+
+  @HostBinding('style.background-color') public background = '#f5fcff'
+  @HostBinding('style.opacity') public opacity = '1'
+
   //Dragover listener
   @HostListener('dragover', ['$event']) onDragOver(evt) {
     evt.preventDefault();
@@ -17,7 +17,7 @@ export class DragdropDirective {
     this.background = '#9ecbec';
     this.opacity = '0.8'
   }
-	
+
   //Dragleave listener
   @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
     evt.preventDefault();
@@ -25,7 +25,7 @@ export class DragdropDirective {
     this.background = '#f5fcff'
     this.opacity = '1'
   }
-	
+
   //Drop listener
   @HostListener('drop', ['$event']) public ondrop(evt) {
     evt.preventDefault();

@@ -17,7 +17,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
-  constructor(private uploadService: UploadService, private common:CommenServicesService) { }
+  constructor(public uploadService: UploadService, public common:CommenServicesService) { }
 
   ngOnInit(): void {
     this.steps.push(new Step('Uploading'));
