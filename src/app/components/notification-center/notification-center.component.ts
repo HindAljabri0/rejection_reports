@@ -10,7 +10,7 @@ import { Notification } from 'src/app/models/notification';
 export class NotificationCenterComponent implements OnInit {
   status;
   notificationsList:Notification[];
-  constructor(private commen:CommenServicesService) {
+  constructor(public commen:CommenServicesService) {
     this.commen.showNotificationCenterChange.subscribe(value => {
       this.toggleNotificationCenter(value);
     });

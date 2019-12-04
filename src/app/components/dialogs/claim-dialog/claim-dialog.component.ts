@@ -14,7 +14,7 @@ import { CommenServicesService } from 'src/app/services/commen-services.service'
 })
 export class ClaimDialogComponent implements OnInit {
 
-  constructor(private commen:CommenServicesService, public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim:ViewedClaim, private claimUpdateService:ClaimUpdateService) { }
+  constructor(public commen:CommenServicesService, public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim:ViewedClaim, public claimUpdateService:ClaimUpdateService) { }
 
   ngOnInit() {
     console.log(this.claim);
