@@ -1,5 +1,5 @@
 import { LoginComponent } from './pages/loginpage/login.component';
-import { logging } from 'protractor';
+import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -68,6 +68,14 @@ export const MY_FORMATS = {
       { path: ':providerId/notifications', component: NotificationsPageComponent},
       { path: 'login', component: LoginComponent },
     ]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: function  tokenGetter() {
+             return     localStorage.getItem('access_token');},
+        whitelistedDomains: ['localhost:4200'],
+        blacklistedRoutes: ['http://localhost:4200/validate/login']
+      }
+    }),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
