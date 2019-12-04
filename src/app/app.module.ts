@@ -1,5 +1,5 @@
 import { LoginComponent } from './pages/loginpage/login.component';
-import { JwtModule } from '@auth0/angular-jwt';
+// import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -22,7 +22,7 @@ import { AbstractcardComponent } from './components/reusables/abstractcard/abstr
 import { DragdropDirective } from './pages/claimUploadignPage/claimfileupload/dragdrop.directive';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UploadService } from './services/claimfileuploadservice/upload.service';
 import { NotificationCenterComponent } from './components/notification-center/notification-center.component';
 import { NotificationCardComponent } from './components/reusables/notification-card/notification-card.component';
@@ -30,6 +30,7 @@ import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-di
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 
 import { ScrollingModule} from '@angular/cdk/scrolling';
+import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -68,14 +69,14 @@ export const MY_FORMATS = {
       { path: ':providerId/notifications', component: NotificationsPageComponent},
       { path: 'login', component: LoginComponent },
     ]),
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: function  tokenGetter() {
-             return     localStorage.getItem('access_token');},
-        whitelistedDomains: ['localhost:4200'],
-        blacklistedRoutes: ['http://localhost:4200/validate/login']
-      }
-    }),
+    // JwtModule.forRoot({
+    //   config: {
+    //     tokenGetter: function  tokenGetter() {
+    //          return     localStorage.getItem('access_token');},
+    //     whitelistedDomains: ['localhost:4200'],
+    //     blacklistedRoutes: ['http://localhost:4200/validate/login']
+    //   }
+    // }),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -112,6 +113,7 @@ export const MY_FORMATS = {
     },
 
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent],
   exports: [
