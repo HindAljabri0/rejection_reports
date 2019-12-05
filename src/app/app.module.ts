@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { RouterModule } from '@angular/router'
+import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { MatDividerModule, MatProgressSpinnerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
@@ -31,6 +31,7 @@ import { NotificationsPageComponent } from './pages/notifications-page/notificat
 
 import { ScrollingModule} from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
+import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -64,9 +65,9 @@ export const MY_FORMATS = {
   ],
   imports: [
     RouterModule.forRoot([
-      { path: '', component:  ClaimpageComponent},
-      { path: ':providerId/claims', component: SearchClaimsComponent },
-      { path: ':providerId/notifications', component: NotificationsPageComponent},
+      { path: '', component:  ClaimpageComponent, canActivate:[RouteCanActiveService]},
+      { path: ':providerId/claims', component: SearchClaimsComponent, canActivate:[RouteCanActiveService] },
+      { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate:[RouteCanActiveService]},
       { path: 'login', component: LoginComponent },
     ]),
     // JwtModule.forRoot({
@@ -113,7 +114,11 @@ export const MY_FORMATS = {
     },
 
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
+    {
+      provide: 'RouteCanActiveService',
+      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
+    }
   ],
   bootstrap: [AppComponent],
   exports: [

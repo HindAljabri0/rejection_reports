@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CommenServicesService} from '../../services/commen-services.service'
-import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
-import { HttpResponse } from '@angular/common/http';
+import { AuthService } from 'src/app/services/authService/authService.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   notificationIconClasses = "mat-icon-button mat-button-base ";
 
-  constructor(private commen:CommenServicesService) {
+  constructor(private commen:CommenServicesService, public router:Router, public authService:AuthService) {
     this.commen.unReadNotificationsCountChange.subscribe(count => {
         this.setNewNotificationIndecater(count > 0);
     })
@@ -36,6 +36,11 @@ export class HeaderComponent implements OnInit {
 
   toggleNotificationCenter(){
     this.commen.showNotificationCenterChange.next(!this.commen.showNotificationCenter);
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

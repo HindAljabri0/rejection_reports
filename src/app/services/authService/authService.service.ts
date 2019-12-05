@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 
-export class JwtService {
+export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,10 +23,13 @@ export class JwtService {
 
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('expires_in');
   }
 
   public get loggedIn(): boolean {
-    return localStorage.getItem('access_token') !== null;
+    const expiresIn = new Date(this.getExpiresIn());
+    return localStorage.getItem('access_token') !== null && new Date().getTime() < expiresIn.getTime();
   }
 
   refreshCurrentToken(){

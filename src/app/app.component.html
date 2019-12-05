@@ -1,9 +1,9 @@
-<app-sidebar></app-sidebar>
-<app-header></app-header>
+<app-sidebar *ngIf="isLoggedIn"></app-sidebar>
+<app-header *ngIf="isLoggedIn"></app-header>
 <div class="res">
 
     <router-outlet></router-outlet>
 
 
 </div>
-<app-notification-center></app-notification-center>
+<app-notification-center *ngIf="isLoggedIn"></app-notification-center>
