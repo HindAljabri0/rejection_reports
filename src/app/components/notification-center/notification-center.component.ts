@@ -33,6 +33,10 @@ export class NotificationCenterComponent implements OnInit {
     return this.commen.unReadNotificationsCount;
   }
 
+  get providerId(){
+    return this.commen.providerId;
+  }
+
   // markAsRead(id:string){
   //   this.commen.markAsRead(id, "102");
   // }

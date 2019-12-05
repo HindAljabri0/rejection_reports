@@ -13,6 +13,7 @@ import { MessageDialogData } from '../models/dialogData/messageDialogData';
 import { ViewedClaim } from '../models/viewedClaim';
 import { SearchServiceService } from './serchService/search-service.service';
 import { ClaimDialogComponent } from '../components/dialogs/claim-dialog/claim-dialog.component';
+import { AuthService } from './authService/authService.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class CommenServicesService {
 
   onClaimDialogClose:Subject<any> = new Subject;
   
-  constructor(public dialog:MatDialog, private router:Router, private notifications:NotificationsService, private search:SearchServiceService) {
+  constructor(public authService:AuthService, public dialog:MatDialog, private router:Router, private notifications:NotificationsService, private search:SearchServiceService) {
     this.loadingChanged.subscribe((value)=>{
       this.loading = value;
     });
@@ -58,7 +59,7 @@ export class CommenServicesService {
   }
 
   getNotifications(){
-    this.notifications.getNotificationsCount('104', 'unread').subscribe(event => {
+    this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
       if(event instanceof HttpResponse){
         const count = Number.parseInt(`${event.body}`);
         if(!Number.isNaN(count))
@@ -69,7 +70,7 @@ export class CommenServicesService {
         this.unReadNotificationsCountChange.next(errorEvent.status == 0? -1 : (errorEvent.status*-1));
       }
     });
-    this.notifications.getNotifications('104', 0, 10).subscribe(event => {
+    this.notifications.getNotifications(this.providerId, 0, 10).subscribe(event => {
       if(event instanceof HttpResponse){
         const paginatedResult:PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.notificationsListChange.next(paginatedResult.content);
@@ -126,6 +127,10 @@ export class CommenServicesService {
 
   getClaim(providerId:string, claimId:string){
     return this.search.getClaim(providerId, claimId);
+  }
+
+  public get providerId(){
+    return this.authService.getProviderId();
   }
 
   openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim){

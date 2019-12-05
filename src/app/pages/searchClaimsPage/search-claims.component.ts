@@ -122,25 +122,23 @@ export class SearchClaimsComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     const event = await this.searchService.getSummaries(this.providerId, this.from, this.to, this.payerId, status).toPromise().catch(error =>{
       this.commen.loadingChanged.next(false);
-      console.log(error);
-      if(error instanceof HttpErrorResponse && error.error['message'] != null){
-        this.errorMessage = error.error['message'];
-      } 
-      else this.errorMessage = 'Could not reach the server at the moment. Please try again later.';
+      if(error instanceof HttpErrorResponse){
+        if((error.status/100).toFixed()== "4"){
+          this.errorMessage = 'Access Denied.';
+        } else if((error.status/100).toFixed()== "5"){
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
+        }
+      }
     });
     if(event instanceof HttpResponse){
       if((event.status/100).toFixed()== "2"){
         const summary = new SearchStatusSummary(event.body);
         if(summary.totalClaims > 0)
           this.summaries.push(summary);
-      } else if((event.status/100).toFixed()== "4"){
-        this.errorMessage = 'Could not get the claims from the server.';
-      } else if((event.status/100).toFixed()== "5"){
-        this.errorMessage = 'Server could not handle the request. Please try again later.';
-      } else {
-        this.errorMessage = 'Somthing went wrong.';
       }
-    }
+    } 
     this.commen.loadingChanged.next(false);
   }
 
@@ -205,8 +203,16 @@ export class SearchClaimsComponent implements OnInit {
       }
       this.commen.loadingChanged.next(false);
     }, error =>{
+     if(error instanceof HttpErrorResponse){
+        if((error.status/100).toFixed()== "4"){
+          this.errorMessage = 'Access Denied.';
+        } else if((error.status/100).toFixed()== "5"){
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
+        }
+      }
       this.commen.loadingChanged.next(false);
-      console.log(error);
     });
   }
 

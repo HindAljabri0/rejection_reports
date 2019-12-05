@@ -7,6 +7,7 @@ import { CommenServicesService } from '../../../services/commen-services.service
 
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { FormControl } from '@angular/forms';
 
 
 
@@ -41,11 +42,13 @@ export class ClaimfileuploadComponent implements OnInit {
   steps:Step[] = new Array<Step>();
   isVertical=true;
 
+  payer = new FormControl('0');
+
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
     if (this.checkfile()) {
-      this.upload();
+      this.upload(this.common.providerId, this.payer.value);
     } else {
       this.currentFileUpload = undefined;
     }
@@ -66,11 +69,11 @@ export class ClaimfileuploadComponent implements OnInit {
     }
   }
 
-  upload()  {
+  upload(providerId:string, payerId:string)  {
     this.progress.percentage = 0;
     this.uploading = true;
     this.progressStepper.nextStep();
-    this.uploadService.pushFileToStorage('104','102',this.currentFileUpload).subscribe(async event => {
+    this.uploadService.pushFileToStorage(providerId,payerId,this.currentFileUpload).subscribe(async event => {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round(100 * event.loaded / event.total);
         if(this.progress.percentage == 100) this.progressStepper.nextStep();

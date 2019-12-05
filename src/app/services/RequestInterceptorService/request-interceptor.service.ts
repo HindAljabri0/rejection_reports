@@ -17,7 +17,7 @@ export class RequestInterceptorService implements HttpInterceptor {
     }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
-    if(!req.url.includes("authenticate")){
+    if(!req.url.includes("authenticate") || req.url.includes("authenticate/user/current")){
       const expiresIn:Date = new Date(this.authService.getExpiresIn());
       const currentTime:Date = new Date();
       const diffTime = (expiresIn.getTime() - currentTime.getTime()) / (1000*60);

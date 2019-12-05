@@ -64,7 +64,6 @@ export class SearchBarComponent implements OnInit {
     this.dateFromClasses = '';
     this.dateToClasses = '';
     this.payerClasses = '';
-    let providerId = '104';
     if(this.dateFrom.valid && this.dateTo.valid && (this.payer.valid && this.payer.value != 0)){
       let fromDate = new Date(this.dateFrom.value);
       let toDate = new Date(this.dateTo.value);
@@ -75,7 +74,7 @@ export class SearchBarComponent implements OnInit {
       }
       const from = fromDate.getFullYear() + '-' + (fromDate.getMonth()+1) + '-' + fromDate.getDate();
       const to = toDate.getFullYear() + '-' + (toDate.getMonth()+1) + '-' + toDate.getDate();
-      this.router.navigate([providerId,'claims'], {queryParams:{from:from, to:to, payer: this.payer.value}});
+      this.router.navigate([this.commen.providerId,'claims'], {queryParams:{from:from, to:to, payer: this.payer.value}});
     } else if(!this.dateFrom.valid){
       this.dateFromClasses = 'error';
     } else if(!this.dateTo.valid){

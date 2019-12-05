@@ -42,10 +42,23 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
+  getCurrentUserToken(){
+    const requestURL = "/authenticate/user/current";
+    const request = new HttpRequest("GET", environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
   setTokens(body:{}){
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
     localStorage.setItem('expires_in', body['expires_in']);
+    this.getCurrentUserToken().subscribe(event => {
+      if(event instanceof HttpResponse){
+        // console.log(event.body);
+        let authority:string = event.body['authorities'][0]['authority'];
+        localStorage.setItem('provider_id', authority.split('|')[0]);
+      }
+    });
   }
 
   getAccessToken(){
@@ -56,6 +69,9 @@ export class AuthService {
   }
   getExpiresIn(){
     return localStorage.getItem('expires_in');
+  }
+  getProviderId(){
+    return localStorage.getItem('provider_id');
   }
 
 }
