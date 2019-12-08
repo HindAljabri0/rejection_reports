@@ -115,7 +115,7 @@ export class SearchClaimsComponent implements OnInit {
     
     this.getResultsofStatus(this.queryStatus, this.queryPage);
 
-    if(!this.hasData && this.errorMessage == null) this.errorMessage = 'There is no claims for provider (' + this.providerId + ') from ' + this.from + ' to ' + this.to + ' associated with payer (' + this.payerId + ').';
+    if(!this.hasData && this.errorMessage == null) this.errorMessage = 'Sorry, we could not find any result.';
   }
 
   async getSummaryOfStatus(status:string) {
