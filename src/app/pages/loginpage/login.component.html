@@ -6,13 +6,13 @@
     <mat-card-content fxLayout="column">
         <mat-form-field appearance="outline" style="padding-left:10%; padding-top: 15%; width: 90%;">
             <mat-label>Username</mat-label>
-            <input matInput placeholder="username" [formControl]="username">
+            <input matInput placeholder="username" [formControl]="username" (keyup.enter)="login()">
             <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
         </mat-form-field>
         <br>
         <mat-form-field appearance="outline" style="padding-left:10%; width: 90%;">
             <mat-label>password</mat-label>
-            <input type="password" matInput placeholder="password" [formControl]="password">
+            <input type="password" matInput placeholder="password" [formControl]="password" (keyup.enter)="login()">
             <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
         </mat-form-field>
         <div *ngIf="errors != null" class="errorArea">

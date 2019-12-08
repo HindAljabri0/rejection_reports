@@ -45,7 +45,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
       }, errorEvent =>{
         if(errorEvent instanceof HttpErrorResponse){
            if(errorEvent.status < 500 && errorEvent.status >= 400){
-            this.errors = "username or password are not vaild!";
+            this.errors = "username/password is invaild!";
           } else
             this.errors = "Could not reach server at the moment. Please try again later.";
           this.isLoading = false;
