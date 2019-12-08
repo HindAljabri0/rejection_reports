@@ -1,25 +1,28 @@
 <div fxLayout="row" fxLayoutAlign="center center" class="login-main">
     <mat-card class="mat-card">
     <mat-card-header style="justify-content: center;">
-        <div class="impos" >
-            <a href="/"><img src="assets/logo_big.png" alt="Waseel" width="80%" ></a>
-         </div>
+        <img src="assets/waseel_logo_Dark_Blue.png" alt="Waseel" width="30%" >
     </mat-card-header>
     <mat-card-content fxLayout="column">
-        <mat-form-field style="padding-left:10%; padding-top: 15%; width: 90%;">
+        <mat-form-field appearance="outline" style="padding-left:10%; padding-top: 15%; width: 90%;">
+            <mat-label>Username</mat-label>
             <input matInput placeholder="username" [formControl]="username">
+            <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
         </mat-form-field>
         <br>
-        <br>
-        <mat-form-field style="padding-left:10%; width: 90%;">
-          <input type="password" matInput placeholder="password" [formControl]="password">
+        <mat-form-field appearance="outline" style="padding-left:10%; width: 90%;">
+            <mat-label>password</mat-label>
+            <input type="password" matInput placeholder="password" [formControl]="password">
+            <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
         </mat-form-field>
+        <div *ngIf="errors != null" class="errorArea">
+            <p>{{errors}}</p>
+        </div>
     </mat-card-content>
-    <br>
-    <mat-card-actions align="end" style="justify-content: center;">
-        <button *ngIf="!isLoading" mat-raised-button color="primary" style="width: 75%;" (click)="login()">Login</button>
-        <mat-spinner *ngIf="isLoading"></mat-spinner>
-    </mat-card-actions>
+    <mat-card-footer align="end" style="justify-content: center;">
+        <button *ngIf="!isLoading" mat-raised-button color="primary" class="loginButton" (click)="login()">Sign In</button>
+        <mat-spinner *ngIf="isLoading" style="width: 100%; margin: 0px auto;"></mat-spinner>
+    </mat-card-footer>
     <br>
     </mat-card>
     </div>

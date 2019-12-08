@@ -22,11 +22,17 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
     isLoading = false;
 
+    errors:String;
+
     login(){
       if(this.isLoading) return;
       this.isLoading = true;
-      if(this.username.value == undefined || this.username.value == "" || this.password.value == undefined || this.password.value == ""){
-        this.commen.openDialog(new MessageDialogData("", "username & password are requierd.", true));
+      if(this.username.value == undefined || this.username.value == "" ){
+        this.errors = "Please provide a vaild username!";
+        this.isLoading = false;
+        return;
+      } else if(this.password.value == undefined || this.password.value == ""){
+        this.errors = "Please provide a password!";
         this.isLoading = false;
         return;
       }
@@ -39,9 +45,9 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
       }, errorEvent =>{
         if(errorEvent instanceof HttpErrorResponse){
            if(errorEvent.status < 500 && errorEvent.status >= 400){
-            this.commen.openDialog(new MessageDialogData("", "username or password are not vaild!", true));
+            this.errors = "username or password are not vaild!";
           } else
-            this.commen.openDialog(new MessageDialogData("", "Could not reach server at the moment. Please try again later.", true));
+            this.errors = "Could not reach server at the moment. Please try again later.";
           this.isLoading = false;
         } 
       });
