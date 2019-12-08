@@ -59,6 +59,7 @@ export class CommenServicesService {
   }
 
   getNotifications(){
+    if(this.providerId == null) return;
     this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
       if(event instanceof HttpResponse){
         const count = Number.parseInt(`${event.body}`);
