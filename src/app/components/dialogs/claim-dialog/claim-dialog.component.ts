@@ -6,6 +6,7 @@ import { ClaimUpdateService } from 'src/app/services/claimUpdateService/claim-up
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { ClaimFields } from 'src/app/models/claimFields';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -49,11 +50,17 @@ export class ClaimDialogComponent implements OnInit {
     this.commentBoxText = "";
     for(let error of this.claim.errors){
       this.commentBoxText += `${error.description}\n`;
-      if(error.fieldName.toLowerCase().includes(('approvalNumber').toLowerCase())){
+      if(error.fieldName == ClaimFields.APPNO){
         this.approvalClasses = 'error';
       }
-      if(error.fieldName.toLowerCase().includes(('memberID').toLowerCase())){
+      if(error.fieldName == ClaimFields.MEMID){
         this.memberidClasses = 'error';
+      }
+      if(error.fieldName == ClaimFields.GENDER){
+        this.genderClasses = 'error';
+      }
+      if(error.fieldName == ClaimFields.ELGNO){
+        this.eligibilityClasses = 'error';
       }
     }
   }
