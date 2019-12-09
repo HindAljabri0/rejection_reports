@@ -36,10 +36,13 @@ import { RouteCanActiveService } from './services/routeCanActive/route-can-activ
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'YYYY/MM/DD',
+    dateInput: 'DD/MM/YYYY',
   },
   display: {
-    dateInput: 'YYYY/MM/DD'
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'DD/MM/YYYY ',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'DD/MM/YYYY',
   },
 };
 
