@@ -48,7 +48,7 @@ export class ClaimfileuploadComponent implements OnInit {
   selectFile(event) {
     this.currentFileUpload = event.item(0);
     if (this.checkfile()) {
-      // this.upload(this.common.providerId, this.payer.value);
+      this.upload(this.common.providerId, this.payer.value);
     } else {
       this.currentFileUpload = undefined;
     }
