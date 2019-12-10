@@ -2,14 +2,16 @@
 <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
 <mat-toolbar color="primary">
   <div class="impos">
-    <a href="/"><img src="assets/waseel_logo.png" alt="Waseel" width="40%"></a>
+    <a routerLink="/"><img src="assets/waseel_logo.png" alt="Waseel" width="40%"></a>
   </div>
   <app-search-bar></app-search-bar>
   <span class="spacer"></span>
-  <button (click)="toggleNotificationCenter()" class="iconButton {{notificationIconClasses}}" mat-icon-button>
+  <button (click)="toggleNotificationCenter()" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Notifications">
     <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
   </button>
-  <a mat-button (click)="logout()">logout</a>
+  <button (click)="logout()" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Sign Out">
+    <mat-icon aria-hidden="false" aria-label="Sing Out">exit_to_app</mat-icon>
+  </button>
 </mat-toolbar>
 
 
