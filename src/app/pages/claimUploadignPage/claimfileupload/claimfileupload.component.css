@@ -6,7 +6,7 @@ table{
 }
 
 .payerContiner{
-  margin: 5px 10px 5px 5px;
+  margin: 0px 15px 10px 5px;
 }
 
 .progressContiner{
@@ -29,7 +29,7 @@ table{
 .dragAndDropContainer{
   background-color: #FAFAFA;
   padding: 15px;
-  width: 80%;
+  width: 78%;
   height: 100%;
 }
 

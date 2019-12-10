@@ -14,10 +14,10 @@
             <tr style="padding: 5px 15px;">
                 <th>
                     <p>Batch ID:</p>
-                    <p class="totalPaied">{{notification.reference}}</p>
+                    <p class="totalPaid">{{notification.reference}}</p>
                     <p>Total</p>
-                    <p class="totalPaied"><mat-icon>arrow_upward</mat-icon>{{parseInt(notification.object[1]) + parseInt(notification.object[2])}}</p>
-                    <p class="totalUnpaied"><mat-icon>arrow_downward</mat-icon>{{parseInt(notification.object[3])}}</p>
+                    <p class="totalPaid"><mat-icon>arrow_upward</mat-icon>{{parseInt(notification.object[1]) + parseInt(notification.object[2])}}</p>
+                    <p class="totalUnpaid"><mat-icon>arrow_downward</mat-icon>{{parseInt(notification.object[3])}}</p>
                 </th>
                 <th>
                     <div class="nIcon">
@@ -29,11 +29,11 @@
                 <th colspan="2" style="padding: 5px 0px;">
                     <table>
                         <tr style="font-size: smaller;">
-                            <td class="paied" style="border-top: 1px solid #00FF1E;">
-                                Paied
+                            <td class="paid" style="border-top: 1px solid #00FF1E;">
+                                Paid
                             </td>
-                            <td class="partlyPaied" style="border-top: 1px solid #64FFF9;">
-                                Partly Paied
+                            <td class="partlyPaid" style="border-top: 1px solid #64FFF9;">
+                                Partly Paid
                             </td>
                             <td class="rejected" style="border-top: 1px solid #FF7BD6;">
                                 Rejected

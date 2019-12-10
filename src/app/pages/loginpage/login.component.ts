@@ -24,6 +24,8 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
     errors:String;
 
+    progressSpinnerDiameter = 35;
+
     login(){
       if(this.isLoading) return;
       this.isLoading = true;

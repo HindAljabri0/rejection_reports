@@ -21,7 +21,7 @@
     </mat-card-content>
     <mat-card-footer align="end" style="justify-content: center;">
         <button *ngIf="!isLoading" mat-raised-button color="primary" class="loginButton" (click)="login()">Sign In</button>
-        <mat-spinner *ngIf="isLoading" style="width: 100%; margin: 0px auto;"></mat-spinner>
+        <mat-spinner *ngIf="isLoading" [diameter]="progressSpinnerDiameter" style="width: 100%; margin: 10px auto;"></mat-spinner>
     </mat-card-footer>
     <br>
     </mat-card>

@@ -48,20 +48,20 @@ table{
 .batchContent th:last-child{
     width: 60%;
 } */
-.batchContent .totalPaied{
+.batchContent .totalPaid{
     font-size: large;
     font-weight: 600;
 }
-.batchContent .totalUnpaied{
+.batchContent .totalUnpaid{
     font-size: medium;
     font-weight: 600;
 }
-.batchContent .totalPaied .mat-icon{
+.batchContent .totalPaid .mat-icon{
     font-size: small;
     font-weight: 300;
     color: #7CFF81;
 }
-.batchContent .totalUnpaied .mat-icon{
+.batchContent .totalUnpaid .mat-icon{
     font-size: small;
     font-weight: 300;
     color: #FF5F5F;
