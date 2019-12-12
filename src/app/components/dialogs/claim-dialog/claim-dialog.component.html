@@ -110,6 +110,23 @@
             </div>
         </td>
     </table>
+
+    <div class="services">
+        <p>Diagnosis</p>
+        <table>
+            <thead>
+                <th>Code</th>
+                <th>Description</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let diag of claim.diagnosis">
+                    <td>{{diag.diagnosisCode}}</td>
+                    <td>{{diag.diagnosisDescription}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="services">
         <p>Services</p>
         <table>
