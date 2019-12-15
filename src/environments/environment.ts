@@ -8,7 +8,8 @@ export const environment = {
   claimSearchHost: "http://localhost:8082",
   claimServiceHost: "http://localhost:8081",
   NotificationServiceHost: "http://localhost:8222",
-  authenticationHost: "http://localhost:8086"
+  authenticationHost: "http://localhost:8086",
+  adminServiceHost: "http://localhost:8087"
 };
 
 /*

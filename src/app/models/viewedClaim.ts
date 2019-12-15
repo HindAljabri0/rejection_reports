@@ -1,6 +1,7 @@
 import { Service } from './service';
 import { ClaimError } from './claimError';
 import { ClaimStatus } from './claimStatus';
+import { ICDDiagnosis } from './ICDDiagnosis';
 
 export class ViewedClaim {
 
@@ -28,6 +29,7 @@ export class ViewedClaim {
     batchid:number;
 	services:Service[];
 	errors:ClaimError[];
+	diagnosis:ICDDiagnosis[];
 
 	providerId:string;
 	payerId:string;

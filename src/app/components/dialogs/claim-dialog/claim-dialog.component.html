@@ -8,7 +8,7 @@
     </mat-card-actions>
 </mat-card>
 <div *ngIf="loading" class="loadingBG"></div>
-<div  class="header">
+<div class="header">
     <button mat-icon-button [mat-dialog-close]="true">
         <mat-icon>clear</mat-icon>
     </button>
@@ -47,13 +47,14 @@
                             </td>
                             <td class="{{memberidClasses}}">
                                 <label *ngIf="!isEditMode">{{claim.memberid}}</label>
-                                <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid">
+                                <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}"
+                                    [formControl]="memberid">
                             </td>
                             <td class="{{genderClasses}}">
                                 <label *ngIf="!isEditMode">{{claim.gender}}</label>
                                 <select *ngIf="isEditMode" [value]="claim.gender" [formControl]="gender">
                                     <option value="F">F</option>
-                                    <option value="M">M</option>                                   
+                                    <option value="M">M</option>
                                 </select>
                             </td>
                             <td>
@@ -77,15 +78,18 @@
                         <tr>
                             <td class="{{approvalClasses}}">
                                 <label *ngIf="!isEditMode">{{claim.approvalnumber}}</label>
-                                <input type="text" *ngIf="isEditMode" value="{{claim.approvalnumber}}" [formControl]="approvalnumber">
+                                <input type="text" *ngIf="isEditMode" value="{{claim.approvalnumber}}"
+                                    [formControl]="approvalnumber">
                             </td>
                             <td class="{{eligibilityClasses}}">
                                 <label *ngIf="!isEditMode">{{claim.eligibilitynumber}}</label>
-                                <input type="text" *ngIf="isEditMode" value="{{claim.eligibilitynumber}}" [formControl]="eligibilitynumber">
+                                <input type="text" *ngIf="isEditMode" value="{{claim.eligibilitynumber}}"
+                                    [formControl]="eligibilitynumber">
                             </td>
                             <td>
                                 <label *ngIf="!isEditMode">{{claim.policynumber}}</label>
-                                <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber">
+                                <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}"
+                                    [formControl]="policynumber">
                             </td>
                             <td>
                                 {{claim.provclaimno}}
@@ -114,15 +118,36 @@
     <div class="services">
         <p>Diagnosis</p>
         <table>
+            <thead *ngIf="isEditMode">
+                <th style="text-align: start;" colspan="3">
+                    <mat-form-field style="width: 100%;">
+                        <input type="text" placeholder="Select diagnosis" aria-label="ICD10" matInput [formControl]="searchDiag"
+                            [matAutocomplete]="auto" (keyup)="searchICDCodes()">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let option of options"  (click)="addICDDignosis(option)">
+                                {{option.diagnosisCode}} | {{option.diagnosisDescription}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </th>
+            </thead>
             <thead>
+                <span *ngIf="isEditMode"></span>
                 <th>Code</th>
                 <th>Description</th>
             </thead>
             <tbody>
-                <tr *ngFor="let diag of claim.diagnosis">
-                    <td>{{diag.diagnosisCode}}</td>
-                    <td>{{diag.diagnosisDescription}}</td>
-                </tr>
+                <ng-container *ngFor="let diag of claim.diagnosis">
+                    <tr *ngIf="!diagnosisList.includes(diag) || diag.diagnosisId == null">
+                        <span *ngIf="isEditMode">
+                            <button (click)="deleteDiagnosis(diag)" mat-icon-button matTooltip="Remove">
+                                <mat-icon aria-hidden="false" aria-label="Remove" style="color: red; font-size: 25px">
+                                    remove_circle</mat-icon>
+                            </button></span>
+                        <td>{{diag.diagnosisCode}}</td>
+                        <td>{{diag.diagnosisDescription}}</td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
@@ -136,12 +161,14 @@
                 <th>Department</th>
                 <th>
                     <div style="width: 100%; display: flex;">
-                        <div>Patient Share</div> <div style="margin-left: auto;">Vat</div>
+                        <div>Patient Share</div>
+                        <div style="margin-left: auto;">Vat</div>
                     </div>
                 </th>
                 <th>
                     <div style="width: 100%; display: flex;">
-                        <div>Net Amount</div> <div style="margin-left: auto;">Vat</div>
+                        <div>Net Amount</div>
+                        <div style="margin-left: auto;">Vat</div>
                     </div>
                 </th>
                 <th>Date</th>
@@ -154,12 +181,16 @@
                     <td>{{service.invoicedepartment}}</td>
                     <td>
                         <div style="width: 100%; display: flex;">
-                            <div>{{service.patientshare}} {{service.unitofpatientshare}}</div> <div style="margin-left: auto;">{{service.patientsharevatamount}}  {{service.unitofpatientsharevatamount}}</div>
+                            <div>{{service.patientshare}} {{service.unitofpatientshare}}</div>
+                            <div style="margin-left: auto;">{{service.patientsharevatamount}}
+                                {{service.unitofpatientsharevatamount}}</div>
                         </div>
                     </td>
                     <td>
                         <div style="width: 100%; display: flex;">
-                            <div>{{service.net}} {{service.unitofnet}}</div> <div style="margin-left: auto;">{{service.netvatamount}} {{service.unitofnetvatamount}}</div>
+                            <div>{{service.net}} {{service.unitofnet}}</div>
+                            <div style="margin-left: auto;">{{service.netvatamount}} {{service.unitofnetvatamount}}
+                            </div>
                         </div>
                     </td>
                     <td>{{service.servicedate}}</td>
@@ -173,12 +204,12 @@
     <p>Batch ID: {{claim.batchid}}</p>
     <span class="spacer"></span>
     <button mat-button cdkFocusInitial *ngIf="isEditable()" (click)="toggleEditMode()">{{editButtonLabel}}</button>
-    <button mat-raised-button *ngIf="isEditMode" (click)="save()"  color="primary" style="color: white;">Save</button>
+    <button mat-raised-button *ngIf="isEditMode" (click)="save()" color="primary" style="color: white;">Save</button>
 </div>
-<div mat-dialog-content >
-    
+<div mat-dialog-content>
+
 </div>
 <div mat-dialog-actions align="end">
-  <!-- <button mat-button (click)="onNoClick()">No Thanks</button>
+    <!-- <button mat-button (click)="onNoClick()">No Thanks</button>
   <button mat-button [mat-dialog-close]="true" cdkFocusInitial>OK</button> -->
 </div>

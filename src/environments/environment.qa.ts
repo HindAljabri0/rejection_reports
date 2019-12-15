@@ -4,5 +4,6 @@ export const environment = {
     claimSearchHost: "http://claim-search-waseele-cloud.apps.okd.waseel.com",
     claimServiceHost: "	http://claim-service-waseele-cloud.apps.okd.waseel.com",
     NotificationServiceHost: "http://notification-service-waseele-cloud.apps.okd.waseel.com",
-    authenticationHost: "	http://authentication-waseele-cloud.apps.okd.waseel.com"
+    authenticationHost: "	http://authentication-waseele-cloud.apps.okd.waseel.com",
+    adminServiceHost: "http://admin-service-waseele-cloud.apps.okd.waseel.com"
   };
