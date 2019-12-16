@@ -12,7 +12,6 @@ export class RouteCanActiveService implements CanActivate {
   constructor(public authService:AuthService, public router:Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    console.log('here');
     if(!this.authService.loggedIn ){
       this.router.navigate(['/login']);
       return false;
