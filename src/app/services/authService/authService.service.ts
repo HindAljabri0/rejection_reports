@@ -26,12 +26,14 @@ export class AuthService {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');
     localStorage.removeItem('provider_id');
+    localStorage.clear();
   }
 
   public get loggedIn(): boolean {
     const expiresIn = new Date(this.getExpiresIn());
     return localStorage.getItem('access_token') !== null && new Date().getTime() < expiresIn.getTime();
   }
+
 
   refreshCurrentToken(){
     const requestURL = "/authenticate/refresh";
@@ -55,7 +57,15 @@ export class AuthService {
     localStorage.setItem('expires_in', body['expires_in']);
     this.getCurrentUserToken().subscribe(event => {
       if(event instanceof HttpResponse){
-        // console.log(event.body);
+        event.body['authorities'].forEach(element => {
+          const key = element['authority'].split('|')[0]+element['authority'].split('|')[2];
+          const value = element['authority'].split('|')[1];
+          let currentValue:string = localStorage.getItem(key);
+          if(currentValue == null)
+            localStorage.setItem(key, value);
+          else
+            localStorage.setItem(key, currentValue+'|'+value);
+        });
         let authority:string = event.body['authorities'][0]['authority'];
         localStorage.setItem('provider_id', authority.split('|')[0]);
       }
