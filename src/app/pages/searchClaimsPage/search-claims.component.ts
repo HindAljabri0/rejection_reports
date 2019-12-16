@@ -103,13 +103,16 @@ export class SearchClaimsComponent implements OnInit {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
-    await this.getSummaryOfStatus('All');
-    await this.getSummaryOfStatus(ClaimStatus.Accepted);
-    await this.getSummaryOfStatus("NotAccepted");
-    await this.getSummaryOfStatus('Batched');
-    await this.getSummaryOfStatus('INVALID');
-    await this.getSummaryOfStatus('VALID');
-    await this.getSummaryOfStatus('Failed');
+    for(status in ClaimStatus){
+      await this.getSummaryOfStatus(status);
+    }
+    
+    // await this.getSummaryOfStatus(ClaimStatus.Accepted);
+    // await this.getSummaryOfStatus("NotAccepted");
+    // await this.getSummaryOfStatus('Batched');
+    // await this.getSummaryOfStatus('INVALID');
+    // await this.getSummaryOfStatus('VALID');
+    // await this.getSummaryOfStatus('Failed');
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
     
