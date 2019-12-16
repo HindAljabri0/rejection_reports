@@ -100,7 +100,7 @@
                             <td>{{claim.claimDate}}</td>
                             <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
                             <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span></td>
-                            <td>{{claim.status}}</td>
+                            <td>{{commen.statusToName(claim.status)}}</td>
                         </tr>
                     </table>
                 </mat-panel-title>
