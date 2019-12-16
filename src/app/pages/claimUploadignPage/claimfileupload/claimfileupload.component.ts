@@ -47,8 +47,11 @@ export class ClaimfileuploadComponent implements OnInit {
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
-    if (this.checkfile()) {
+    if (this.checkfile() && this.payer.value != null && this.payer.value != 0) {
       this.upload(this.common.providerId, this.payer.value);
+    } else if(this.payer.value == null || this.payer.value == 0) {
+      this.common.openDialog(new MessageDialogData("", "Please select a payer", true));
+      this.currentFileUpload = undefined;
     } else {
       this.currentFileUpload = undefined;
     }
@@ -100,7 +103,7 @@ export class ClaimfileuploadComponent implements OnInit {
         } else if (error.status >= 400){
           title = error.error['error'];
           message = error.error['message'];
-        }
+        } else message = 'Server could not be reached at the moment. Please try Again later.';
         this.common.openDialog(new MessageDialogData(title, message, true)).subscribe(value =>{
             
         });
