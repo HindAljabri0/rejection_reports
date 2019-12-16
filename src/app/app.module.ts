@@ -32,6 +32,7 @@ import { NotificationsPageComponent } from './pages/notifications-page/notificat
 import { ScrollingModule} from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
 import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -65,13 +66,15 @@ export const MY_FORMATS = {
     ClaimDialogComponent,
     NotificationsPageComponent,
     LoginComponent,
+    DashboardComponent,
   ],
   imports: [
     RouterModule.forRoot([
-      { path: '', component:  ClaimpageComponent, canActivate:[RouteCanActiveService]},
+      { path: '', component:  DashboardComponent, canActivate:[RouteCanActiveService]},
       { path: ':providerId/claims', component: SearchClaimsComponent, canActivate:[RouteCanActiveService] },
       { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate:[RouteCanActiveService]},
       { path: 'login', component: LoginComponent },
+      { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
     ]),
     // JwtModule.forRoot({
     //   config: {
