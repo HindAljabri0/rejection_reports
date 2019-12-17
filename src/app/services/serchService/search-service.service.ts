@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -22,6 +22,13 @@ export class SearchServiceService {
     const requestURL:string = '/'+providerId+'/search/claim-results?fromDate='+fromDate
     +'&toDate='+toDate+'&payerId='+payerId+'&status='+status+'&page='+page+'&size='+pageSize;
     const request = new HttpRequest('GET', environment.claimSearchHost+requestURL);
+    return this.http.request(request);
+  }
+
+  downloadSummaries(providerId:string, fromDate:string, toDate:string, payerId:string, status:string){
+    const requestURL:string = '/'+providerId+'/claim-download?fromDate='+fromDate
+    +'&toDate='+toDate+'&payerId='+payerId+'&status='+status;
+    const request = new HttpRequest('GET', environment.claimSearchHost+requestURL, "", {responseType: "text"});
     return this.http.request(request);
   }
 

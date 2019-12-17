@@ -108,7 +108,8 @@ mat-icon{
 }
 .services th{
     font-weight: 400;
-    background-color: white;
+    color: white;
+    background-color: #3161AA;
     border-radius: 5px;
     padding: 10px 5px;
 }
@@ -124,4 +125,12 @@ mat-icon{
     bottom: 0;
     background-color: #EFF5FF;
     border-top: 1px solid #c4c4c4;
+}
+
+.icd10search{
+    background-color: #D4E4FF;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #3161AA;
+    font-size: 10px;
 }

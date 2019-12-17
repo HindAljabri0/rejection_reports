@@ -379,7 +379,19 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   download(){
-    console.log("downloading...");
+    this.searchService.downloadSummaries(this.providerId, this.from, this.to, this.payerId, this.summaries[this.selectedCardKey].status).subscribe(event =>{
+      if(event instanceof HttpResponse){
+        var a = document.createElement("a");
+        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body+"");
+        a.target = '_blank';
+        a.download = this.detailCardTitle+'_'+this.from+'_'+this.to+'.csv';
+        a.click();
+      }
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        console.log(errorEvent);
+      }
+    });
   }
   
 

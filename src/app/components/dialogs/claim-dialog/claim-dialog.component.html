@@ -117,20 +117,16 @@
 
     <div class="services">
         <p>Diagnosis</p>
+        <mat-form-field class="icd10search" *ngIf="isEditMode" style="width: 100%;">
+            <input type="text" placeholder="Select diagnosis" aria-label="ICD10" matInput [formControl]="searchDiag"
+                [matAutocomplete]="auto" (keyup)="searchICDCodes()">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options"  (click)="addICDDignosis(option)">
+                    {{option.diagnosisCode}} | {{option.diagnosisDescription}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
         <table>
-            <thead *ngIf="isEditMode">
-                <th style="text-align: start;" colspan="3">
-                    <mat-form-field style="width: 100%;">
-                        <input type="text" placeholder="Select diagnosis" aria-label="ICD10" matInput [formControl]="searchDiag"
-                            [matAutocomplete]="auto" (keyup)="searchICDCodes()">
-                        <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let option of options"  (click)="addICDDignosis(option)">
-                                {{option.diagnosisCode}} | {{option.diagnosisDescription}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                </th>
-            </thead>
             <thead>
                 <th *ngIf="isEditMode" colspan="2">Code</th>
                 <th *ngIf="!isEditMode">Code</th>
