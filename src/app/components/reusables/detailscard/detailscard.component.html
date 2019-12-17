@@ -3,6 +3,9 @@
     <mat-card  style="padding: 16px;">
         <mat-card-title style="font-size: 16px;">
             {{title}}
+            <button mat-icon-button (click)="topRightAction.emit()" *ngIf="title != null && topRightActionText!=null"  matTooltip="Download" style="position: absolute; top: 15%; right: 11px;">
+                <mat-icon aria-hidden="false" aria-label="Download" style="font-size: medium; font-weight: 700;">{{topRightActionText}}</mat-icon>
+            </button>
         </mat-card-title>
     </mat-card>
     <mat-card-content style="height: inherit; padding: 16px;">

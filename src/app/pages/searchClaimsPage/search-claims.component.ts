@@ -30,6 +30,7 @@ export class SearchClaimsComponent implements OnInit {
   extraNumbers:number[];
 
   detailCardTitle:string;
+  detailTopActionText = "vertical_align_bottom";
   detailAccentColor:string;
   detailActionText:string = null;
   detailSubActionText:string = null;
@@ -375,6 +376,10 @@ export class SearchClaimsComponent implements OnInit {
 
   showClaim(claimStatus:string, claimId:string){
     this.commen.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId);
+  }
+
+  download(){
+    console.log("downloading...");
   }
   
 
