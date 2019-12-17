@@ -389,7 +389,7 @@ export class SearchClaimsComponent implements OnInit {
       }
     }, errorEvent => {
       if(errorEvent instanceof HttpErrorResponse){
-        console.log(errorEvent);
+        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
   }
