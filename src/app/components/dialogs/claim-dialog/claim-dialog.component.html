@@ -1,7 +1,7 @@
 <mat-card *ngIf="loading" class="loadingSpinner">
     <mat-spinner *ngIf="loadingResponse == null" diameter="40"></mat-spinner>
-    <mat-icon *ngIf="isAccepted()" [style.color]="commen.getCardAccentColor('Accepted')">check_circle</mat-icon>
-    <mat-icon *ngIf="!isAccepted()" [style.color]="commen.getCardAccentColor('NotAccepted')">cancel</mat-icon>
+    <mat-icon *ngIf="loadingResponse != null && isAccepted()" [style.color]="commen.getCardAccentColor('Accepted')">check_circle</mat-icon>
+    <mat-icon *ngIf="loadingResponse != null && !isAccepted()" [style.color]="commen.getCardAccentColor('NotAccepted')">cancel</mat-icon>
     <p *ngIf="loadingResponse != null">{{loadingResponse}}</p>
     <mat-card-actions *ngIf="loadingResponse != null" style="text-align: end;">
         <button mat-button (click)="onDoneSaving()">OK</button>
@@ -132,8 +132,8 @@
                 </th>
             </thead>
             <thead>
-                <span *ngIf="isEditMode"></span>
-                <th>Code</th>
+                <th *ngIf="isEditMode" colspan="2">Code</th>
+                <th *ngIf="!isEditMode">Code</th>
                 <th>Description</th>
             </thead>
             <tbody>
