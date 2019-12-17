@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { CommenServicesService } from '../commen-services.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
+
+  isUserNameUpdated: Subject<boolean> = new Subject();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -31,7 +35,9 @@ export class AuthService {
 
   public get loggedIn(): boolean {
     const expiresIn = new Date(this.getExpiresIn());
-    return localStorage.getItem('access_token') !== null && new Date().getTime() < expiresIn.getTime();
+    let isLogged: boolean;
+    isLogged = localStorage.getItem('access_token') !== null && new Date().getTime() < expiresIn.getTime();
+    return isLogged;
   }
 
 
@@ -68,6 +74,9 @@ export class AuthService {
         });
         let authority:string = event.body['authorities'][0]['authority'];
         localStorage.setItem('provider_id', authority.split('|')[0]);
+        localStorage.setItem('user_name', event.body['name']);
+        localStorage.setItem('provider_name', event.body['principal']["providerName"]);
+        this.isUserNameUpdated.next(true);
       }
     });
   }
@@ -83,6 +92,12 @@ export class AuthService {
   }
   getProviderId(){
     return localStorage.getItem('provider_id');
+  }
+  getUserName(){
+    return localStorage.getItem('user_name');
+  }
+  getProviderName(){
+    return localStorage.getItem('provider_name');
   }
 
 }

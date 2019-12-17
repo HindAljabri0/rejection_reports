@@ -48,4 +48,20 @@
   bottom: 24px;
   left: 16px;
 }
+.user-info
+{
+  font-size: small;
+    line-height: 20px;
+    background-color: #254f90;
+    border-radius: 5px;
+    padding: 3px 10px;
+    display: flex;
+}
+.user-info-button
+{
+  height: 30px;
+  background-color: #ccc;
+  width: 30px;
+  border-radius: 20px;
+}
 

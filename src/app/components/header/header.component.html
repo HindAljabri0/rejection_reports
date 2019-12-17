@@ -6,12 +6,20 @@
   </div>
   <app-search-bar></app-search-bar>
   <span class="spacer"></span>
-  <button (click)="toggleNotificationCenter()" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Notifications">
+  <button (click)="toggleNotificationCenter()" style="    margin-right: 25px;" class="iconButton {{notificationIconClasses}}" mat-icon-button
+    matTooltip="Notifications">
     <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
   </button>
-  <button (click)="logout()" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Sign Out">
-    <mat-icon aria-hidden="false" aria-label="Sing Out">exit_to_app</mat-icon>
-  </button>
+  <span class="user-info">
+    <span>
+      <div class="inner-user-info">{{userName}}</div>
+      <div class="inner-user-info">{{providerName}}</div>
+    </span>
+
+    <button (click)="logout()" class="{{notificationIconClasses}}" style="margin-left: 30px; background-color: #22477f" mat-icon-button
+      matTooltip="Sign Out">
+      <mat-icon aria-hidden="false" aria-label="Sing Out" style="font-size: large;">exit_to_app</mat-icon>
+    </button>
+
+  </span>
 </mat-toolbar>
-
-

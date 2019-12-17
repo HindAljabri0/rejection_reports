@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CommenServicesService} from '../../services/commen-services.service'
+import { CommenServicesService } from '../../services/commen-services.service'
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
 
@@ -10,35 +10,50 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   collapsed = true;
+  userName: string;
+  providerName: string;
 
   notificationIconClasses = "mat-icon-button mat-button-base ";
 
-  constructor(private commen:CommenServicesService, public router:Router, public authService:AuthService) {
+  constructor(private commen: CommenServicesService, public router: Router, public authService: AuthService) {
     this.commen.unReadNotificationsCountChange.subscribe(count => {
-        this.setNewNotificationIndecater(count > 0);
-    })
+      this.setNewNotificationIndecater(count > 0);
+    });
+    this.authService.isUserNameUpdated.subscribe((isUpdated) => {
+      if (isUpdated) {
+        this.getUserData();
+      }
+    }
+    );
   }
 
-  get loading():boolean{
+  getUserData() {
+    this.userName = this.authService.getUserName();
+    this.providerName = this.authService.getProviderName();
+  }
+
+  get loading(): boolean {
     return this.commen.loading;
   }
 
   ngOnInit() {
+    this.getUserData();
+
   }
 
-  setNewNotificationIndecater(show:boolean){
-    if(show){
+  setNewNotificationIndecater(show: boolean) {
+    if (show) {
       this.notificationIconClasses = "mat-icon-button mat-button-base hasNotifications";
     } else {
       this.notificationIconClasses = "mat-icon-button mat-button-base ";
     }
   }
 
-  toggleNotificationCenter(){
+  toggleNotificationCenter() {
     this.commen.showNotificationCenterChange.next(!this.commen.showNotificationCenter);
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
