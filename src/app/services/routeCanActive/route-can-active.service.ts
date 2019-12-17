@@ -33,7 +33,7 @@ export class RouteCanActiveService implements CanActivate {
           this.router.navigate(['/']);
           return false;
         }
-        if(!authority.includes('3.0')){
+        if(!authority.includes('3.0') && authority.includes('3.9') && authority.includes('3.91')){
           this.router.navigate(['/']);
           return false;
         }
