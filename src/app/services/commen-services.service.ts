@@ -159,8 +159,8 @@ export class CommenServicesService {
         return '#3060AA'
       case '-':
         return '#bebebe';
-      case ClaimStatus.Batched:
-        return '#21b590';
+      // case ClaimStatus.Batched:
+      //   return '#21b590';
       case ClaimStatus.INVALID:
         return '#E988AD';
       case ClaimStatus.Failed:
@@ -178,8 +178,8 @@ export class CommenServicesService {
         return 'Rejected by Waseel';
       case ClaimStatus.ALL:
         return 'All Claims'
-      case ClaimStatus.Batched:
-        return 'Queued for Submission';
+      // case ClaimStatus.Batched:
+      //   return 'Queued for Submission';
       case ClaimStatus.INVALID:
         return 'Rejected by Payer';
       case ClaimStatus.Failed:
