@@ -1,5 +1,5 @@
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import {  HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StepperProgressBarController, Step } from 'stepper-progress-bar';
@@ -8,6 +8,7 @@ import { CommenServicesService } from '../../../services/commen-services.service
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { FormControl } from '@angular/forms';
+import { MatRadioGroup } from '@angular/material';
 
 
 
@@ -42,17 +43,32 @@ export class ClaimfileuploadComponent implements OnInit {
   steps:Step[] = new Array<Step>();
   isVertical=true;
 
-  payer = new FormControl('0');
+  payer:number;
 
+  payersList = [
+    {
+      id:102,
+      name:'Tawuniya'
+    },
+    {
+      id:300,
+      name:'MDG'
+    },
+    {
+      id:306,
+      name:'SE'
+    },
+    {
+      id:204,
+      name:'AXA'
+    },
+  ];
+  payersList1 = this.payersList.slice(0, Math.floor(this.payersList.length/2));
+  payersList2 = this.payersList.slice(Math.floor(this.payersList.length/2), this.payersList.length);
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
-    if (this.checkfile() && this.payer.value != null && this.payer.value != 0) {
-      // this.upload(this.common.providerId, this.payer.value);
-    } else if(this.payer.value == null || this.payer.value == 0) {
-      this.common.openDialog(new MessageDialogData("", "Please select a payer", true));
-      this.currentFileUpload = undefined;
-    } else {
+    if (!this.checkfile()){
       this.currentFileUpload = undefined;
     }
   }
@@ -72,7 +88,10 @@ export class ClaimfileuploadComponent implements OnInit {
     }
   }
 
-  upload(providerId:string, payerId:string)  {
+  upload()  {
+    if(this.payer == null) return;
+    let providerId = this.common.providerId;
+    let payerId = `${this.payer}`;
     this.progress.percentage = 0;
     this.uploading = true;
     this.progressStepper.nextStep();
@@ -117,6 +136,10 @@ export class ClaimfileuploadComponent implements OnInit {
   }
   async delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
+  payerSelection(event){
+    this.payer = event.value;
   }
 
 }
