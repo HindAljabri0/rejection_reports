@@ -1,0 +1,51 @@
+<svg id="Component_90_1" data-name="Component 90 – 1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-4 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #707070;
+      }
+
+      .cls-1 {
+        stroke-width: 0.8px;
+      }
+
+      .cls-2 {
+        stroke-width: 0.5px;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Rectangle_2416" data-name="Rectangle 2416" class="cls-1">
+    <rect class="cls-3" width="20" height="12" rx="2"/>
+    <rect class="cls-4" x="0.4" y="0.4" width="19.2" height="11.2" rx="1.6"/>
+  </g>
+  <g id="Rectangle_2419" data-name="Rectangle 2419" class="cls-1" transform="translate(20 14) rotate(90)">
+    <rect class="cls-3" width="6" height="20" rx="2"/>
+    <rect class="cls-4" x="0.4" y="0.4" width="5.2" height="19.2" rx="1.6"/>
+  </g>
+  <g id="Group_668" data-name="Group 668" transform="translate(9167.109 -2843.941)">
+    <g id="Rectangle_2420" data-name="Rectangle 2420" class="cls-2" transform="translate(-9161.109 2845.941)">
+      <rect class="cls-3" width="12" height="3" rx="1"/>
+      <rect class="cls-4" x="0.25" y="0.25" width="11.5" height="2.5" rx="0.75"/>
+    </g>
+    <g id="Rectangle_2421" data-name="Rectangle 2421" class="cls-2" transform="translate(-9165.109 2845.941)">
+      <rect class="cls-3" width="3" height="3" rx="1"/>
+      <rect class="cls-4" x="0.25" y="0.25" width="2.5" height="2.5" rx="0.75"/>
+    </g>
+    <g id="Rectangle_2422" data-name="Rectangle 2422" class="cls-2" transform="translate(-9165.109 2849.941)">
+      <rect class="cls-3" width="3" height="4" rx="1"/>
+      <rect class="cls-4" x="0.25" y="0.25" width="2.5" height="3.5" rx="0.75"/>
+    </g>
+    <g id="Rectangle_2423" data-name="Rectangle 2423" class="cls-2" transform="translate(-9161.109 2849.941)">
+      <rect class="cls-3" width="12" height="4" rx="1"/>
+      <rect class="cls-4" x="0.25" y="0.25" width="11.5" height="3.5" rx="0.75"/>
+    </g>
+  </g>
+</svg>
