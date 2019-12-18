@@ -23,7 +23,7 @@
 #li-container {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 10px 10px 15px;
   color: #4F5666;
 }
 
@@ -37,7 +37,6 @@
 }
 
 .list-container {
-  margin-left: 20px;
   margin-top: 20px
 }
 
@@ -46,6 +45,7 @@
   list-style: none;
   margin: 10px 0;
   text-decoration: none;
+  padding-left: 10px;
 }
 
 .icon {
