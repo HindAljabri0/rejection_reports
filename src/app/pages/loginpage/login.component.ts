@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +15,18 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
   export class LoginComponent {
 
-    constructor(public authService:AuthService, public router:Router, public commen:CommenServicesService){}
+    expired:boolean;
+    constructor(public authService:AuthService, public router:Router, public routeActive:ActivatedRoute, public commen:CommenServicesService){
+      this.router.events.pipe(
+        filter((event: RouterEvent) => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        this.routeActive.queryParams.subscribe(value => {
+          if(value.expired!=null && value.expired) {
+            this.errors = "Your session have been expired. Please sign in again."
+          }
+        });
+      });
+    }
     ngOnInit() {}
 
     username = new FormControl();

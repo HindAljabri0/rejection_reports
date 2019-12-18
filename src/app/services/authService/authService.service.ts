@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest, HttpEvent, HttpResponse } from '@angular/commo
 import { environment } from 'src/environments/environment';
 import { CommenServicesService } from '../commen-services.service';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
 
   isUserNameUpdated: Subject<boolean> = new Subject();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router:Router) { }
 
   login(username: string, password: string) {
     const requestURL = "/authenticate";
@@ -25,18 +26,23 @@ export class AuthService {
   }
 
 
-  logout() {
+  logout(expired?:boolean) {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');
     localStorage.removeItem('provider_id');
     localStorage.clear();
+    if(expired == null || !expired)
+      this.router.navigate(['login']);
+    else
+      this.router.navigate(['login'], {queryParams:{expired:expired}});
   }
 
   public get loggedIn(): boolean {
     const expiresIn = new Date(this.getExpiresIn());
     let isLogged: boolean;
     isLogged = localStorage.getItem('access_token') !== null && new Date().getTime() < expiresIn.getTime();
+    if(!isLogged && localStorage.getItem('access_token') !== null) this.logout(true);
     return isLogged;
   }
 

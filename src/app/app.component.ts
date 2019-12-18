@@ -8,12 +8,10 @@ import { AuthService } from './services/authService/authService.service';
 })
 export class AppComponent {
   title = 'Waseele';
-  constructor(public authService:AuthService){
+  constructor(public authService: AuthService) {
   }
 
-  get isLoggedIn()
-  {
-    
+  get isLoggedIn() {
     return this.authService.loggedIn;
   }
 }
