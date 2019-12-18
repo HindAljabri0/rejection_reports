@@ -3,7 +3,7 @@ import {CommenServicesService} from '../../services/commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SearchServiceService } from '../../services/serchService/search-service.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
 import { Location } from '@angular/common';
@@ -150,6 +150,7 @@ export class SearchClaimsComponent implements OnInit {
     if(this.summaries[key] == null) return;
     if(this.summaries.length == 0) return;
     this.commen.loadingChanged.next(true);
+    this.detailTopActionText = "vertical_align_bottom";
     if(page==null && pageSize==null && this.paginator != null){
       this.paginator.pageIndex = 0;
       this.paginator.pageSize = 10;
@@ -379,6 +380,7 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   download(){
+    if(this.detailTopActionText == "check_circle") return;
     this.searchService.downloadSummaries(this.providerId, this.from, this.to, this.payerId, this.summaries[this.selectedCardKey].status).subscribe(event =>{
       if(event instanceof HttpResponse){
         var a = document.createElement("a");
@@ -386,6 +388,7 @@ export class SearchClaimsComponent implements OnInit {
         a.target = '_blank';
         a.download = this.detailCardTitle+'_'+this.from+'_'+this.to+'.csv';
         a.click();
+        this.detailTopActionText = "check_circle";
       }
     }, errorEvent => {
       if(errorEvent instanceof HttpErrorResponse){
