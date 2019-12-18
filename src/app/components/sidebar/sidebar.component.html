@@ -1,8 +1,67 @@
 <div class="w3-sidebar w3-light-grey w3-bar-block ">
   <!-- <h3 class="w3-bar-item">Menu</h3> -->
-  <ul class="nav navbar-nav" routerLinkActive="active">
+  <!-- <ul class="nav navbar-nav" routerLinkActive="active">
             <li><a class="nav-link" routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
             <li><a class="nav-link" routerLink="upload" routerLinkActive="is-active">Upload</a></li>
-        </ul>
-</div>
+        </ul> -->
+  <div class="list-container">
+    <div class="list-tittle"> Claim </div>
 
+    <ul id="zero">
+
+      <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+        <li id="li-container">
+
+          <img class="icon" src="../../../assets/uploadclaim.svg" />
+          Dashboard
+        </li>
+      </a>
+
+      <a routerLink="upload" routerLinkActive="is-active">
+        <li id="li-container">
+          <img class="icon" src="../../../assets/uploadclaim.svg" />
+          Upload Claim
+        </li>
+      </a>
+
+      <a routerLink="summary" routerLinkActive="is-active">
+        <li id="li-container">
+          <img class="icon" src="../../../assets/summary.svg" />
+          Summary
+        </li>
+      </a>
+
+      <a routerLink="create" routerLinkActive="is-active">
+        <li id="li-container">
+          <img class="icon" src="../../../assets/addclaim.svg" />
+          Create Claim
+        </li>
+      </a>
+
+      <a routerLink="notification" routerLinkActive="is-active">
+        <li id="li-container">
+          <img class="icon" src="../../../assets/notification.svg" />
+          Notification
+        </li>
+      </a>
+
+    </ul>
+
+    <div>
+      <div class="list-tittle"> Reports </div>
+
+      <ul id="zero">
+        <a routerLink="reports" routerLinkActive="is-active">
+          <li id="li-container">
+            <img class="icon" src="../../../assets/report.svg" />
+            Reports
+          </li>
+        </a>
+      </ul>
+
+    </div>
+  </div>
+
+
+
+</div>
