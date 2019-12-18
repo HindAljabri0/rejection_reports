@@ -94,7 +94,15 @@ export class ClaimDialogComponent implements OnInit {
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
     this.editButtonLabel = this.isEditMode ? "Cancel" : "Edit";
-    this.diagnosisList = [];
+    if (!this.isEditMode) {
+      this.diagnosisList = [];
+      this.removeAddedDiagFromClaimList();
+    }
+  }
+
+  removeAddedDiagFromClaimList() {
+
+    this.claim.diagnosis = this.claim.diagnosis.filter((x => x.diagnosisId != null));
   }
 
   deleteDiagnosis(diagnosis) {
@@ -126,9 +134,22 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   addICDDignosis(diag) {
-    this.diagnosisList.push(diag);
-    this.claim.diagnosis.push(diag);
-    console.log(this.claim);
+    if (this.claim.diagnosis.length < 14 && !(this.elementIsInList(diag))) {
+      this.diagnosisList.push(diag);
+      this.claim.diagnosis.push(diag);
+    } else {
+      if (this.claim.diagnosis.length >= 14)
+        alert("Only 14 Dignosis are Allowed");
+      else {
+        alert("Diagnosis Already in List");
+      }
+    }
+
+  }
+
+  elementIsInList(diag: any): boolean {
+    let list = this.claim.diagnosis.filter((x => x.diagnosisCode == diag.diagnosisCode));
+    return list.length > 0;
   }
 
 
@@ -156,8 +177,7 @@ export class ClaimDialogComponent implements OnInit {
       flag = true;
     }
 
-    if(this.diagnosisList.length > 0)
-    {
+    if (this.diagnosisList.length > 0) {
       updateRequestBody.diagnosis = this.diagnosisList;
       flag = true;
     }
