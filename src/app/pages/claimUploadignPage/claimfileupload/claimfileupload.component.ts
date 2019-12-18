@@ -48,7 +48,7 @@ export class ClaimfileuploadComponent implements OnInit {
   selectFile(event) {
     this.currentFileUpload = event.item(0);
     if (this.checkfile() && this.payer.value != null && this.payer.value != 0) {
-      this.upload(this.common.providerId, this.payer.value);
+      // this.upload(this.common.providerId, this.payer.value);
     } else if(this.payer.value == null || this.payer.value == 0) {
       this.common.openDialog(new MessageDialogData("", "Please select a payer", true));
       this.currentFileUpload = undefined;

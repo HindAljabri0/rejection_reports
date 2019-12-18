@@ -13,11 +13,17 @@
         </lib-stepperProgressBar> 
     </div>
     <div class="dragAndDropContainer">
-        <div class=" {{uploadContainerClass}}" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
-            <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
-                <img  src="assets/xls.svg" alt="{{currentFileUpload.name}}">
-                <h3>{{currentFileUpload.name}}</h3>
-            </div>
+        <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
+            <table style="text-align: start; background-color: #F4F4F4; margin: 5px;">
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; width: 40px;"><img  src="assets/xls.svg" alt="{{currentFileUpload.name}}" width="40px"></td>
+                        <td style="padding: 10px; color: #3765AC; font-size: large; font-weight: 600;">{{currentFileUpload.name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
             <p *ngIf="currentFileUpload == undefined" class="containerText">Choose a file or drag it here.<br>{{error}}</p>
             <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
         </div>
