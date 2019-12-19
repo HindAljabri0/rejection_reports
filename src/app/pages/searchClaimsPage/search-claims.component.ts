@@ -68,7 +68,7 @@ export class SearchClaimsComponent implements OnInit {
   ngOnInit() {
     this.fetchData();
     this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims"))
     ).subscribe(() => {
       this.fetchData();
     });

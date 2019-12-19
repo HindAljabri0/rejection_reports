@@ -7,8 +7,6 @@ import { CommenServicesService } from '../../../services/commen-services.service
 
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
-import { FormControl } from '@angular/forms';
-import { MatRadioGroup } from '@angular/material';
 
 
 
@@ -137,6 +135,11 @@ export class ClaimfileuploadComponent implements OnInit {
     });
     this.selectedFiles = undefined;
   }
+
+  cancel(){
+    this.currentFileUpload = null;
+  }
+
   async delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
