@@ -31,4 +31,17 @@ export class UploadService {
 
     return this.http.request(req);
   }
+
+  getUploadedSummary(summaryId:number,){
+    const requestUrl = `/uploads/summary/${summaryId}?`;
+    const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
+    return this.http.request(request);
+  }
+
+  getUploadedClaimsDetails(summaryId:number, status?:string, page?:number, pageSize?:number){
+    const requestUrl = `/uploads/details/${summaryId}?` + (status != null? `status=${status}&`:'')
+    + (page != null? `page=${page}&`:'') + (pageSize != null? `size=${pageSize}`:'');
+    const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
+    return this.http.request(request);
+  }
 }

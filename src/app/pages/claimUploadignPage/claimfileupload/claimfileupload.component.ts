@@ -89,7 +89,7 @@ export class ClaimfileuploadComponent implements OnInit {
   }
 
   upload()  {
-    if(this.payer == null) return;
+    if(this.payer == null || this.common.loading) return;
     let providerId = this.common.providerId;
     let payerId = `${this.payer}`;
     this.progress.percentage = 0;

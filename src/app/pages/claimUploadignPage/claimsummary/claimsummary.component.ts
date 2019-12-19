@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { PaginatedResult } from 'src/app/models/paginatedResult';
+import { ClaimInfo } from 'src/app/models/claimInfo';
+import { HttpResponse } from '@angular/common/http';
+import { MatPaginator } from '@angular/material';
+import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -12,23 +18,27 @@ import { CommenServicesService } from 'src/app/services/commen-services.service'
 })
 export class ClaimsummaryComponent implements OnInit {
 
+  paginatedResult:PaginatedResult<ClaimInfo>;
+
+  paginatorPagesNumbers:number[];
+  @ViewChild('paginator', {static:false}) paginator: MatPaginator;
+  paginatorPageSizeOptions = [10,20, 50, 100];
+  manualPage = null;
+
   showClaims:boolean = false;
-  detailsEqualEqual:boolean;
-  detailsFilter: string;
-  detailsFilter1: string;
   detailCardTitle: string;
   detailAccentColor:string;
+  selectedCardKey:string;
 
   card0Title = this.commen.statusToName(ClaimStatus.ALL);
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
   card0Action() {
     this.showClaims = true;
-    this.detailsEqualEqual = true;
     this.detailCardTitle = this.card0Title;
-    this.detailsFilter = "";
-    this.detailsFilter1 = "";
     this.detailAccentColor = this.card0AccentColor;
+    this.getUploadedClaimsDetails();
+    this.selectedCardKey = null;
   }
 
   card1Title = this.commen.statusToName(ClaimStatus.Accepted);
@@ -36,11 +46,10 @@ export class ClaimsummaryComponent implements OnInit {
   card1AccentColor = "#21B744";
   card1Action() {
     this.showClaims = true;
-    this.detailsEqualEqual = true;
     this.detailCardTitle = this.card1Title;
-    this.detailsFilter = ClaimStatus.Accepted;
-    this.detailsFilter1 = "";
     this.detailAccentColor = this.card1AccentColor;
+    this.selectedCardKey = 'Accepted';
+    this.getUploadedClaimsDetails(this.selectedCardKey);
   }
 
   card2Title = this.commen.statusToName(ClaimStatus.NotAccepted);
@@ -48,11 +57,10 @@ export class ClaimsummaryComponent implements OnInit {
   card2AccentColor = "#EB2A75"
   card2Action() {
     this.showClaims = true;
-    this.detailsEqualEqual = true;
     this.detailCardTitle = this.card2Title;
-    this.detailsFilter = ClaimStatus.NotAccepted;
-    this.detailsFilter1 = "";
     this.detailAccentColor = this.card2AccentColor;
+    this.selectedCardKey = 'NotAccepted';
+    this.getUploadedClaimsDetails(this.selectedCardKey);
   }
 
   card3Title = this.commen.statusToName(ClaimStatus.Not_Saved);
@@ -60,19 +68,34 @@ export class ClaimsummaryComponent implements OnInit {
   card3AccentColor = "#E3A820";
   card3Action() {
     this.showClaims = true;
-    this.detailsEqualEqual = false;
     this.detailCardTitle = this.card3Title;
-    this.detailsFilter1 = ClaimStatus.Accepted;
-    this.detailsFilter = ClaimStatus.NotAccepted;
     this.detailAccentColor = this.card3AccentColor;
+    this.selectedCardKey = 'NotUploaded';
+    this.getUploadedClaimsDetails(this.selectedCardKey);
   }
 
-  applyFilter(status:string):boolean{
-    return this.showClaims && ((this.detailsEqualEqual && (status == this.detailsFilter || status == this.detailsFilter1)) || ((!this.detailsEqualEqual) && (status != this.detailsFilter && status != this.detailsFilter1)));
+
+
+  constructor(public uploadService: UploadService, public commen:CommenServicesService, private router:Router, private routeActive:ActivatedRoute) {
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.routeActive.queryParams.subscribe(value => {
+        if(value.id!=null) {
+          this.commen.loadingChanged.next(true);
+          this.uploadService.getUploadedSummary(value.id).subscribe(event => {
+            if(event instanceof HttpResponse){
+              this.commen.loadingChanged.next(false);
+              const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
+              this.uploadService.summaryChange.next(summary);
+            }
+          }, eventError => {
+            this.commen.loadingChanged.next(false);
+          });
+        }
+      });
+    });
   }
-
-
-  constructor(public uploadService: UploadService, public commen:CommenServicesService) {}
 
   ngOnInit() {
     this.uploadService.summaryChange.subscribe(value =>{
@@ -90,6 +113,33 @@ export class ClaimsummaryComponent implements OnInit {
 
   get summary(): UploadSummary {
     return this.uploadService.summary;
+  }
+
+  getUploadedClaimsDetails(status?:string, page?:number, pageSize?:number){
+    if(this.commen.loading) return;
+    this.commen.loadingChanged.next(true);
+    if(this.paginatedResult != null)
+      this.paginatedResult.content = [];
+    this.uploadService.getUploadedClaimsDetails(this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
+      if(event instanceof HttpResponse){
+        this.commen.loadingChanged.next(false);
+        this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
+        this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x,i)=>i);
+        this.manualPage = this.paginatedResult.number;
+      }
+    }, eventError => {
+      this.commen.loadingChanged.next(false);
+    });
+  }
+
+  updateManualPage(index) {
+    this.manualPage = index;
+    this.paginator.pageIndex = index;
+    this.paginatorAction({previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length})
+  }
+  paginatorAction(event){
+    this.manualPage = event['pageIndex'];
+    this.getUploadedClaimsDetails(this.selectedCardKey, event['pageIndex'], event['pageSize']);
   }
 
 }

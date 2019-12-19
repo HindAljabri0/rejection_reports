@@ -2,7 +2,7 @@ import { ClaimInfo } from './claimInfo';
 
 
 export class UploadSummary {
-    uploadSummaryID: string;
+    uploadSummaryID: number;
     uploadName: string;
     uploadDate: Date;
   
@@ -10,7 +10,7 @@ export class UploadSummary {
     netAmountOfUploadedClaims: number = 0;
     netVATAmountOfUploadedClaims: number = 0;
   
-    uploadedClaims: Array<ClaimInfo>;
+    // uploadedClaims: Array<ClaimInfo>;
   
     noOfAcceptedClaims:number = 0;
     netAmountOfAcceptedClaims: number = 0;

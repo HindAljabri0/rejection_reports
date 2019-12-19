@@ -90,9 +90,22 @@
         </app-abstractcard>
     <!-- </div> -->
 </div>
-<app-detailscard *ngIf="summary.uploadSummaryID != undefined" [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
-    <mat-accordion *ngFor="let claimData of summary.uploadedClaims">
-        <mat-expansion-panel style="margin-bottom: 6px;" *ngIf="detailCardTitle == card0Title || applyFilter(claimData.uploadSubStatus) ">
+<app-detailscard *ngIf="paginatedResult != undefined" [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
+    <div class="paginatorContainer">
+        <div class="page-select">
+            <div class="label">Go to page:</div>
+            <mat-form-field>
+                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <mat-paginator #paginator [length]="paginatedResult.totalElements" [pageSizeOptions]="paginatorPageSizeOptions"
+            (page)="paginatorAction($event)">
+        </mat-paginator>
+    </div>
+    <mat-accordion *ngFor="let claimData of paginatedResult.content">
+        <mat-expansion-panel style="margin-bottom: 6px;">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.: {{claimData.providerClaimNumber}}
