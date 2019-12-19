@@ -89,13 +89,16 @@ export class ClaimfileuploadComponent implements OnInit {
   }
 
   upload()  {
-    if(this.payer == null || this.common.loading) return;
+    if(this.common.loading) {
+      return;
+    }
+    
     let providerId = this.common.providerId;
-    let payerId = `${this.payer}`;
+    // let payerId = `${this.payer}`;
     this.progress.percentage = 0;
     this.uploading = true;
     this.progressStepper.nextStep();
-    this.uploadService.pushFileToStorage(providerId,payerId,this.currentFileUpload).subscribe(async event => {
+    this.uploadService.pushFileToStorage(providerId,this.currentFileUpload).subscribe(async event => {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round(100 * event.loaded / event.total);
         if(this.progress.percentage == 100) this.progressStepper.nextStep();
