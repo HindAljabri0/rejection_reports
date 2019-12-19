@@ -22,18 +22,18 @@
                     </tr>
                 </tbody>
             </table>
-            <table style="text-align: start; background-color: #F4F4F4; margin: 50px 5px; border-spacing: 30px; border-collapse: separate;">
+            <!-- <table style="text-align: start; background-color: #F4F4F4; margin: 50px 5px; border-spacing: 30px; border-collapse: separate;">
                 <tbody>
                     <tr>
                         <td style="padding: 10px; color: #3765AC; font-size: large; font-weight: 600;" colspan="2">Select A Payer</td>
                     </tr>
-                    <!-- <mat-radio-group #selectionGroup style=" width: 100%" ></mat-radio-group> -->
+                    <mat-radio-group #selectionGroup style=" width: 100%" ></mat-radio-group> 
                     <tr *ngFor="let p2 of payersList2; let i = index" >
                         <td style="background-color: white; border-radius: 10px; padding: 10px; width: 50%;" *ngIf="payersList1[i] != null"><mat-radio-button (change)="payerSelection($event)" [value]="payersList1[i].id">{{payersList1[i].name}}</mat-radio-button></td>
                         <td style="background-color: white; border-radius: 10px; padding: 10px; width: 50%;" ><mat-radio-button (change)="payerSelection($event)" [value]="payersList2[i].id">{{payersList2[i].name}}</mat-radio-button></td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
             <div style="width: 100%; text-align: center; margin-top: 10px">
                 <button mat-raised-button color="primary" (click)="upload()" style="font-size: large; padding: 5px 20px;">Upload</button>
             </div>

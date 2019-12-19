@@ -21,11 +21,11 @@ export class UploadService {
       this.summary = value;
     });
   }
-  pushFileToStorage(providerID:string, payerID:string, file: File): Observable<HttpEvent<{}>> {
+  pushFileToStorage(providerID:string, file: File): Observable<HttpEvent<{}>> {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', environment.uploaderHost+`/${providerID}/${payerID}/uploads`,  formdata, {
+    const req = new HttpRequest('POST', environment.uploaderHost+`/${providerID}/uploads`,  formdata, {
       reportProgress: true,
     });
 
