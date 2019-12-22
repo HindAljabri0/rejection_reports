@@ -24,7 +24,7 @@ export class UploadService {
   pushFileToStorage(providerID:string, file: File): Observable<HttpEvent<{}>> {
     const formdata: FormData = new FormData();
 
-    formdata.append('file', file);
+    formdata.append('file', file, file.name);
     const req = new HttpRequest('POST', environment.uploaderHost+`/${providerID}/uploads`,  formdata, {
       reportProgress: true,
     });

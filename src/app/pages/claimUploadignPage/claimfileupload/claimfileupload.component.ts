@@ -88,7 +88,7 @@ export class ClaimfileuploadComponent implements OnInit {
   }
 
   upload()  {
-    if(this.common.loading) {
+    if(this.common.loading || this.uploading) {
       return;
     }
     
@@ -103,16 +103,14 @@ export class ClaimfileuploadComponent implements OnInit {
         if(this.progress.percentage == 100) this.progressStepper.nextStep();
       } else if (event instanceof HttpResponse) {
         this.uploading = false;
-        if (event.status === 200) {
-          this.progressStepper.nextStep();
-          await this.delay(600);
-          this.progressStepper.nextStep();
-          await this.delay(600);
-          this.progressStepper.nextStep();
-          await this.delay(600);
-          const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
-          this.uploadService.summaryChange.next(summary);
-        }
+        this.progressStepper.nextStep();
+        await this.delay(600);
+        this.progressStepper.nextStep();
+        await this.delay(600);
+        this.progressStepper.nextStep();
+        await this.delay(600);
+        const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
+        this.uploadService.summaryChange.next(summary);
       }
     }, (error) => {
       if(error instanceof HttpErrorResponse){
