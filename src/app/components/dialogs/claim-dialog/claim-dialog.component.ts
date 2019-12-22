@@ -238,4 +238,14 @@ export class ClaimDialogComponent implements OnInit {
     else return '';
   }
 
+  getPatientFullName(){
+    return `${this.claim.firstname} ${this.claim.middlename} ${this.claim.lastname}`;
+  }
+
+  getPatientName(){
+    let name = this.getPatientFullName();
+    if(name.length > 30)
+      return name.substring(0, 27) + '...';
+    else return name;
+  }
 }

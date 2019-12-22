@@ -42,12 +42,12 @@
                 </th>
             </tr>
             <tr>
-                <td>
-                    {{claim.firstname}} {{claim.middlename}} {{claim.lastname}}
+                <td matTooltip="{{getPatientFullName()}}">
+                    {{getPatientName()}}
                 </td>
                 <td class="{{memberidClasses}}">
                     <label *ngIf="!isEditMode">{{claim.memberid}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid">
+                    <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid" maxlength="30">
                 </td>
                 <td class="{{genderClasses}}">
                     <label *ngIf="!isEditMode">{{genderToText(claim.gender)}}</label>
@@ -78,16 +78,16 @@
                 <td class="{{approvalClasses}}">
                     <label *ngIf="!isEditMode">{{claim.approvalnumber}}</label>
                     <input type="text" *ngIf="isEditMode" value="{{claim.approvalnumber}}"
-                        [formControl]="approvalnumber">
+                        [formControl]="approvalnumber" maxlength="20">
                 </td>
                 <td class="{{eligibilityClasses}}">
                     <label *ngIf="!isEditMode">{{claim.eligibilitynumber}}</label>
                     <input type="text" *ngIf="isEditMode" value="{{claim.eligibilitynumber}}"
-                        [formControl]="eligibilitynumber">
+                        [formControl]="eligibilitynumber" maxlength="20">
                 </td>
                 <td>
                     <label *ngIf="!isEditMode">{{claim.policynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber">
+                    <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber" maxlength="30">
                 </td>
                 <td>
                     {{claim.provclaimno}}
