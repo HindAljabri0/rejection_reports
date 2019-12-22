@@ -1,6 +1,6 @@
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import {  HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, OnDestroy } from '@angular/core';
+import {  HttpEventType, HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StepperProgressBarController, Step } from 'stepper-progress-bar';
 import { CommenServicesService } from '../../../services/commen-services.service';
@@ -25,6 +25,7 @@ export class ClaimfileuploadComponent implements OnInit {
     this.steps.push(new Step('Validating'));
     this.steps.push(new Step('Done!'));
   }
+
 
   title = 'testing';
   progress: { percentage: number } = { percentage: 0 };

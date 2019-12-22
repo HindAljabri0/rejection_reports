@@ -1,6 +1,6 @@
 // import { ClaimSubmissionData } from 'src/app/claimpage/claimfileuploadservice/upload.service';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UploadSummary } from 'src/app/models/uploadSummary';
@@ -43,5 +43,16 @@ export class UploadService {
     + (page != null? `page=${page}&`:'') + (pageSize != null? `size=${pageSize}`:'');
     const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
     return this.http.request(request);
+  }
+
+  handleUploadResponse(request:Observable<HttpEvent<{}>>){
+    console.log('start from upload service');
+    request.subscribe(event => {
+      if(event instanceof HttpResponse){
+        const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
+        this.summaryChange.next(summary);
+        console.log('done from upload service');
+      }
+    });
   }
 }
