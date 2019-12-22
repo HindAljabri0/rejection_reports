@@ -200,7 +200,7 @@
     </div>
 </div>
 <div class="header footer">
-    <p *ngIf="claim.batchid != null && claim.batchid != ''">Batch ID: {{claim.batchid}}</p>
+    <p *ngIf="claim.batchid != null">Batch ID: {{claim.batchid}}</p>
     <span class="spacer"></span>
     <button mat-button cdkFocusInitial *ngIf="isEditable()" (click)="toggleEditMode()">{{editButtonLabel}}</button>
     <button mat-raised-button *ngIf="isEditMode" (click)="save()" color="primary" style="color: white;">Save</button>

@@ -108,18 +108,34 @@ export class SearchClaimsComponent implements OnInit {
       await this.getSummaryOfStatus(status);
     }
     
-    // await this.getSummaryOfStatus(ClaimStatus.Accepted);
-    // await this.getSummaryOfStatus("NotAccepted");
-    // await this.getSummaryOfStatus('Batched');
-    // await this.getSummaryOfStatus('INVALID');
-    // await this.getSummaryOfStatus('VALID');
-    // await this.getSummaryOfStatus('Failed');
+    // this.summaries = this.mapRelatedStatus();
+
+
     this.summaries.sort((a, b)=> b.totalClaims - a.totalClaims);
     if(this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
     
     this.getResultsofStatus(this.queryStatus, this.queryPage);
 
     if(!this.hasData && this.errorMessage == null) this.errorMessage = 'Sorry, we could not find any result.';
+  }
+  mapRelatedStatus() {
+    let pendingSummary:SearchStatusSummary;
+    let outstandingSummary:SearchStatusSummary;
+    let newSummaries:SearchStatusSummary[] = [];
+    this.summaries.forEach(summary => {
+      if(summary.status == ClaimStatus.PENDING)
+        pendingSummary = summary;
+      else if(summary.status == ClaimStatus.OUTSTANDING)
+        outstandingSummary = summary;
+      else newSummaries.push(summary);
+    });
+    if(pendingSummary != null && outstandingSummary != null){
+      outstandingSummary.totalClaims += pendingSummary.totalClaims;
+      outstandingSummary.totalNetAmount += pendingSummary.totalNetAmount;
+      outstandingSummary.totalVatNetAmount += pendingSummary.totalVatNetAmount;
+      newSummaries.push(outstandingSummary);
+      return newSummaries;
+    } else return this.summaries;
   }
 
   async getSummaryOfStatus(status:string) {
@@ -139,8 +155,9 @@ export class SearchClaimsComponent implements OnInit {
     if(event instanceof HttpResponse){
       if((event.status/100).toFixed()== "2"){
         const summary = new SearchStatusSummary(event.body);
-        if(summary.totalClaims > 0)
+        if(summary.totalClaims > 0){
           this.summaries.push(summary);
+        }
       }
     } 
     this.commen.loadingChanged.next(false);
