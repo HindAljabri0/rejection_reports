@@ -67,6 +67,7 @@ export class AuthService {
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
     localStorage.setItem('expires_in', body['expires_in']);
+    localStorage.setItem('src', body['src']);
     this.getCurrentUserToken().subscribe(event => {
       if(event instanceof HttpResponse){
         event.body['authorities'].forEach(element => {
