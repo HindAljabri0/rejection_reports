@@ -134,3 +134,16 @@ mat-icon{
     border: 1px solid #3161AA;
     font-size: 10px;
 }
+
+.gInfo{
+    display: flex;
+    margin: 20px 0px;
+}
+.gInfo table{
+    background-color: #D4E4FF;
+}
+
+.gInfo table th, .gInfo table td {
+    padding: 5px;
+    height: 32px;
+}

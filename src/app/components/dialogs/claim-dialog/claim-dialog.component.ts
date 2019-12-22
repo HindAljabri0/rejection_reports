@@ -232,4 +232,10 @@ export class ClaimDialogComponent implements OnInit {
     });
   }
 
+  genderToText(g:string){
+    if(g == 'M') return 'Male';
+    if(g == 'F') return 'Female';
+    else return '';
+  }
+
 }
