@@ -100,7 +100,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
           this.location.go('/summary?id='+this.summary.uploadSummaryID);
           this.getResults();
         } else if(this.location.path().includes('summary')){
-          this.location.go('/upload');
+          this.router.navigate(['/upload']);
         }
       });
     });
@@ -113,7 +113,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(){
     this.routingObservable.unsubscribe();
-    this.summaryObservable.unsubscribe();
+    if(this.summaryObservable != null)
+      this.summaryObservable.unsubscribe();
   }
 
   getResults(){
