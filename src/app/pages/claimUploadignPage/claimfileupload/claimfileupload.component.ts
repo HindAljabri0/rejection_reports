@@ -7,6 +7,7 @@ import { CommenServicesService } from '../../../services/commen-services.service
 
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { async } from '@angular/core/testing';
 
 
 
@@ -28,7 +29,6 @@ export class ClaimfileuploadComponent implements OnInit {
 
 
   title = 'testing';
-  progress: { percentage: number } = { percentage: 0 };
   uploading = false;
   currentFileUpload: File;
   selectedFiles: FileList;
@@ -42,28 +42,6 @@ export class ClaimfileuploadComponent implements OnInit {
   steps:Step[] = new Array<Step>();
   isVertical=true;
 
-  payer:number;
-
-  payersList = [
-    {
-      id:102,
-      name:'Tawuniya'
-    },
-    {
-      id:300,
-      name:'MDG'
-    },
-    {
-      id:306,
-      name:'SE'
-    },
-    {
-      id:204,
-      name:'AXA'
-    },
-  ];
-  payersList1 = this.payersList.slice(0, Math.floor(this.payersList.length/2));
-  payersList2 = this.payersList.slice(Math.floor(this.payersList.length/2), this.payersList.length);
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
@@ -93,59 +71,42 @@ export class ClaimfileuploadComponent implements OnInit {
     }
     
     let providerId = this.common.providerId;
-    // let payerId = `${this.payer}`;
-    this.progress.percentage = 0;
     this.uploading = true;
     this.progressStepper.nextStep();
-    this.uploadService.pushFileToStorage(providerId,this.currentFileUpload).subscribe(async event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round(100 * event.loaded / event.total);
-        if(this.progress.percentage == 100) this.progressStepper.nextStep();
-      } else if (event instanceof HttpResponse) {
-        this.uploading = false;
+    this.uploadService.pushFileToStorage(providerId,this.currentFileUpload);
+    let progressObservable = this.uploadService.progressChange.subscribe(progress => {
+      if(progress.percentage == 100){
         this.progressStepper.nextStep();
-        await this.delay(600);
-        this.progressStepper.nextStep();
-        await this.delay(600);
-        this.progressStepper.nextStep();
-        await this.delay(600);
-        const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
-        this.uploadService.summaryChange.next(summary);
+        progressObservable.unsubscribe();
       }
-    }, (error) => {
-      if(error instanceof HttpErrorResponse){
-        let title:string;
-        let message:string;
-        if(error.status >= 500){
-          title = "Server Error";
-          message = 'Server could not handle your request at the moment. Please try Again later.';
-        } else if (error.status >= 400){
-          title = error.error['error'];
-          message = error.error['message'];
-        } else message = 'Server could not be reached at the moment. Please try Again later.';
-        this.common.openDialog(new MessageDialogData(title, message, true)).subscribe(value =>{
-            
-        });
-      }
-      this.uploading = false;
-      this.currentFileUpload = undefined;
-      this.progressStepper.previousStep();
-      this.progressStepper.previousStep();
     });
-    this.selectedFiles = undefined;
+    let summaryObservable = this.uploadService.summaryChange.subscribe(async value =>{
+      this.progressStepper.nextStep();
+        await this.delay(600);
+        this.progressStepper.nextStep();
+        await this.delay(600);
+        this.progressStepper.nextStep();
+        await this.delay(600);
+        summaryObservable.unsubscribe();
+    });
+    let errorobservable = this.uploadService.errorChange.subscribe(error =>{
+      this.common.openDialog(new MessageDialogData("", error, true));
+      this.progressStepper.previousStep();
+      this.progressStepper.previousStep();
+      errorobservable.unsubscribe();
+    });
+    this.cancel();
   }
 
   cancel(){
     this.currentFileUpload = null;
+    this.selectedFiles = null;
   }
 
   async delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
-  payerSelection(event){
-    this.payer = event.value;
-  }
 
 }
 

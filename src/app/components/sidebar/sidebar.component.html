@@ -24,8 +24,15 @@
         </li>
       </a>
 
-      <a routerLink="summary" routerLinkActive="is-active">
+      <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
         <li id="li-container">
+          <img class="icon" src="../../../assets/summary.svg" />
+          Summary
+        </li>
+      </a>
+
+      <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
+        <li id="li-container" class="new">
           <img class="icon" src="../../../assets/summary.svg" />
           Summary
         </li>

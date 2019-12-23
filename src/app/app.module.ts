@@ -75,6 +75,7 @@ export const MY_FORMATS = {
       { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate:[RouteCanActiveService]},
       { path: 'login', component: LoginComponent },
       { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
+      { path: 'summary', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
     ]),
     // JwtModule.forRoot({
     //   config: {

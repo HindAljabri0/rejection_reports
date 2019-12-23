@@ -31,6 +31,15 @@
   background-color: #ecebeb;
 }
 
+#li-container.new::after{
+  content: ".";
+  color: #EB2A75;
+  font-size: 70px;
+  position: absolute;
+  left: 83%;
+  top: 85px;
+}
+
 .is-active>li {
   background-color: #E8E8E8;
   font-weight: 500;

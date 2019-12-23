@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ClaimStatus } from 'src/app/models/claimStatus';
@@ -9,14 +9,15 @@ import { HttpResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
+import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-claimsummary',
   templateUrl: './claimsummary.component.html',
   styleUrls: ['./claimsummary.component.css']
 })
-export class ClaimsummaryComponent implements OnInit {
+export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   paginatedResult:PaginatedResult<ClaimInfo>;
 
@@ -24,6 +25,9 @@ export class ClaimsummaryComponent implements OnInit {
   @ViewChild('paginator', {static:false}) paginator: MatPaginator;
   paginatorPageSizeOptions = [10,20, 50, 100];
   manualPage = null;
+
+  routingObservable:Subscription;
+  summaryObservable:Subscription;
 
   showClaims:boolean = false;
   detailCardTitle: string;
@@ -76,12 +80,12 @@ export class ClaimsummaryComponent implements OnInit {
 
 
 
-  constructor(public uploadService: UploadService, public commen:CommenServicesService, private router:Router, private routeActive:ActivatedRoute) {
-    this.router.events.pipe(
+  constructor(public location: Location, public uploadService: UploadService, public commen:CommenServicesService, private router:Router, private routeActive:ActivatedRoute) {
+    this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.routeActive.queryParams.subscribe(value => {
-        if(value.id!=null) {
+        if(value.id!=null && this.location.path().includes('summary')) {
           this.commen.loadingChanged.next(true);
           this.uploadService.getUploadedSummary(value.id).subscribe(event => {
             if(event instanceof HttpResponse){
@@ -92,27 +96,44 @@ export class ClaimsummaryComponent implements OnInit {
           }, eventError => {
             this.commen.loadingChanged.next(false);
           });
+        } else if(this.summary.uploadSummaryID != null && this.location.path().includes('summary')){
+          this.location.go('/summary?id='+this.summary.uploadSummaryID);
+          this.getResults();
+        } else if(this.location.path().includes('summary')){
+          this.location.go('/upload');
         }
       });
     });
   }
 
   ngOnInit() {
-    this.uploadService.summaryChange.subscribe(value =>{
-      if(value.noOfUploadedClaims != 0){
-        this.card0Action();
-      } else if(value.noOfAcceptedClaims != 0){
-        this.card1Action();
-      } else if(value.noOfNotAcceptedClaims != 0){
-        this.card2Action();
-      } else if(value.noOfNotUploadedClaims != 0){
-        this.card3Action();
-      }
+    this.summaryObservable =this.uploadService.summaryChange.subscribe(value =>{
+      this.router.navigate(['/summary']);
     });
+  }
+  ngOnDestroy(){
+    this.routingObservable.unsubscribe();
+    this.summaryObservable.unsubscribe();
+  }
+
+  getResults(){
+    let value = this.summary;
+    if(value.noOfUploadedClaims != 0){
+      this.card0Action();
+    } else if(value.noOfAcceptedClaims != 0){
+      this.card1Action();
+    } else if(value.noOfNotAcceptedClaims != 0){
+      this.card2Action();
+    } else if(value.noOfNotUploadedClaims != 0){
+      this.card3Action();
+    }
   }
 
   get summary(): UploadSummary {
-    return this.uploadService.summary;
+    if(this.location.path().includes("summary"))
+      return this.uploadService.summary;
+    else
+      return new UploadSummary();
   }
 
   getUploadedClaimsDetails(status?:string, page?:number, pageSize?:number){
