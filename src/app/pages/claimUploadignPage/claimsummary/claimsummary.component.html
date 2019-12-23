@@ -1,96 +1,107 @@
 <div class="viewPort">
     <!-- <div class="cardsSummary"> -->
-        <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title" [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
-            <table>
-                <tr>
-                    <th>No. Of Claims:</th>
-                    <th>Total:</th>
-                    
-                </tr>
-                <tr>
-                    <td><span class="dashboardNumbers">{{summary.noOfUploadedClaims}}</span></td>
-                    <td><span class="dashboardNumbers">{{summary.netAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
-                    
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>Total Vat:</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="dashboardNumbers">{{summary.netVATAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
-                </tr>
-            </table>
-        </app-abstractcard>
-        <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title" [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
-            <table>
-                <tr>
-                    <th>No. Of Claims:</th>
-                    <th>Total:</th>
-                    
-                </tr>
-                <tr>
-                    <td><span class="dashboardNumbers">{{summary.noOfAcceptedClaims}}</span></td>
-                    <td><span class="dashboardNumbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency"> SR</span></td>
-                    
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>Total Vat:</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="dashboardNumbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span class="currency"> SR</span></td>
-                </tr>
-            </table>
-        </app-abstractcard>
-        <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title" [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
-            <table>
-                <tr>
-                    <th>No. Of Claims:</th>
-                    <th>Total:</th>
-                    
-                </tr>
-                <tr>
-                    <td><span class="dashboardNumbers">{{summary.noOfNotAcceptedClaims}}</span></td>
-                    <td><span class="dashboardNumbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
-                    
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>Total Vat:</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="dashboardNumbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
-                </tr>
-            </table>
-        </app-abstractcard>
-        <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
-            <table>
-                <tr>
-                    <th>No. Of Claims:</th>
-                    <th>Total:</th>
-                    
-                </tr>
-                <tr>
-                    <td><span class="dashboardNumbers">{{summary.noOfNotUploadedClaims}}</span></td>
-                    <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
-                    
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>Total Vat:</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
-                </tr>
-            </table>
-        </app-abstractcard>
+    <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title"
+        [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
+        <table>
+            <tr>
+                <th>No. Of Claims:</th>
+                <th>Total:</th>
+
+            </tr>
+            <tr>
+                <td><span class="dashboardNumbers">{{summary.noOfUploadedClaims}}</span></td>
+                <td><span class="dashboardNumbers">{{summary.netAmountOfUploadedClaims}}</span><span class="currency">
+                        SR</span></td>
+
+            </tr>
+            <tr>
+                <th></th>
+                <th>Total Vat:</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td><span class="dashboardNumbers">{{summary.netVATAmountOfUploadedClaims}}</span><span
+                        class="currency"> SR</span></td>
+            </tr>
+        </table>
+    </app-abstractcard>
+    <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title"
+        [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
+        <table>
+            <tr>
+                <th>No. Of Claims:</th>
+                <th>Total:</th>
+
+            </tr>
+            <tr>
+                <td><span class="dashboardNumbers">{{summary.noOfAcceptedClaims}}</span></td>
+                <td><span class="dashboardNumbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency">
+                        SR</span></td>
+
+            </tr>
+            <tr>
+                <th></th>
+                <th>Total Vat:</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td><span class="dashboardNumbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span
+                        class="currency"> SR</span></td>
+            </tr>
+        </table>
+    </app-abstractcard>
+    <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title"
+        [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
+        <table>
+            <tr>
+                <th>No. Of Claims:</th>
+                <th>Total:</th>
+
+            </tr>
+            <tr>
+                <td><span class="dashboardNumbers">{{summary.noOfNotAcceptedClaims}}</span></td>
+                <td><span class="dashboardNumbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span
+                        class="currency"> SR</span></td>
+
+            </tr>
+            <tr>
+                <th></th>
+                <th>Total Vat:</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td><span class="dashboardNumbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span
+                        class="currency"> SR</span></td>
+            </tr>
+        </table>
+    </app-abstractcard>
+    <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title"
+        [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
+        <table>
+            <tr>
+                <th>No. Of Claims:</th>
+                <th>Total:</th>
+
+            </tr>
+            <tr>
+                <td><span class="dashboardNumbers">{{summary.noOfNotUploadedClaims}}</span></td>
+                <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
+
+            </tr>
+            <tr>
+                <th></th>
+                <th>Total Vat:</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
+            </tr>
+        </table>
+    </app-abstractcard>
     <!-- </div> -->
 </div>
-<app-detailscard *ngIf="paginatedResult != undefined" [title]="detailCardTitle" [accentColor]="detailAccentColor" style="width: 100%;">
+<app-detailscard *ngIf="paginatedResult != undefined" [title]="detailCardTitle" [accentColor]="detailAccentColor"
+    style="width: 100%;">
     <div class="paginatorContainer">
         <div class="page-select">
             <div class="label">Go to page:</div>
@@ -108,7 +119,8 @@
         <mat-expansion-panel style="margin-bottom: 6px;">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.: {{claimData.providerClaimNumber}}
+                    <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.:
+                    {{claimData.providerClaimNumber}}
                 </mat-panel-title>
                 <mat-panel-description>
                     Status: {{claimData.uploadSubStatus}}
@@ -117,14 +129,16 @@
             File Row Number: {{claimData.fileRowNumber}}
             <div *ngFor="let error of claimData.claimErrors">
                 <table class="errorTable">
-                    <thead>
-                        <td>Error Code</td>
-                        <td>Error Description</td>
-                        <td>Field Name</td>
-                    </thead>
                     <tr>
+                        <th>Error Code</th>
                         <td>{{error.errorCode}}</td>
+                    </tr>
+                    <tr>
+                        <th>Error Description</th>
                         <td>{{error.errorDescription}}</td>
+                    </tr>
+                    <tr>
+                        <th>Field Name</th>
                         <td>{{error.fieldName}}</td>
                     </tr>
                 </table>

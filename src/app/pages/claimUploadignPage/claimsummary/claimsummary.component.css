@@ -25,11 +25,13 @@ table {
     border-collapse: separate;
     margin: 10px 0px;
     font-size: 16px;
+    
 }
-.errorTable thead{
+.errorTable th{
     background-color: #FFCED9;
     color: #bd0f34;
     font-weight: 500;
+    padding-left: 25px;
 }
 .errorTable tr{
     color: #3060AA;
