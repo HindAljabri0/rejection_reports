@@ -42,6 +42,9 @@ app-abstractcard table td{
     margin-bottom: 30px;
 }
 
+.downloadIcon:hover{
+    cursor: pointer;
+}
 
 mat-paginator{
     margin-bottom: 10px;

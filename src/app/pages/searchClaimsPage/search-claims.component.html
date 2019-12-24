@@ -61,8 +61,7 @@
     <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor"
         [bottomLeftActionText]="detailSubActionText" [bottomRightActionText]="detailActionText"
         [bottomDetails]="selectionCountText" (bottomLeftAction)="submitSelectedClaims()"
-        (bottomRightAction)="submitAllAcceptedClaims()"
-        [topRightActionText]="detailTopActionText" (topRightAction)="download()">
+        (bottomRightAction)="submitAllAcceptedClaims()" >
         <div class="paginatorContainer">
             <div class="page-select">
                 <div class="label">Go to page:</div>
@@ -76,6 +75,12 @@
             <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
                 (page)="paginatorAction($event)">
             </mat-paginator>
+            <span class="downloadIcon" [style.background-color]="detailAccentColor" style="border-radius: 6px; padding: 4px 10px; margin-right: 15px;">
+                <mat-icon _ngcontent-wxe-c14="" aria-hidden="false" aria-label="Download" (click)="download()"
+                    class="mat-icon notranslate material-icons mat-icon-no-color" role="img" matTooltip="Download"
+                    style="font-size: large;font-weight: 800; color: white;text-align: center; margin-top: 2px;">
+                    {{detailTopActionText}}</mat-icon>
+            </span>
         </div>
         <mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
             <mat-expansion-panel-header>
