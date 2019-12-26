@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
-import { MatAutocompleteModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
+import { MatAutocompleteModule, MatMenuModule, MatChipsModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
 
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
@@ -33,6 +33,7 @@ import { ScrollingModule} from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
 import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -67,6 +68,7 @@ export const MY_FORMATS = {
     NotificationsPageComponent,
     LoginComponent,
     DashboardComponent,
+    SearchWithAdvanceComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -97,6 +99,7 @@ export const MY_FORMATS = {
     MatRippleModule,
     StepperProgressBarModule,
     MatToolbarModule,
+    MatMenuModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
@@ -105,6 +108,7 @@ export const MY_FORMATS = {
     MatSelectModule,
     ReactiveFormsModule,
     MatRadioModule,
+    MatChipsModule,
     MatProgressBarModule,
     MatPaginatorModule,
     FormsModule,

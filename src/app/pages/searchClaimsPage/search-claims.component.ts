@@ -111,8 +111,8 @@ export class SearchClaimsComponent implements OnInit {
     // this.summaries = this.mapRelatedStatus();
 
 
-    this.summaries.sort((a, b) => b.totalClaims - a.totalClaims);
-    if (this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
+    // this.summaries.sort((a, b) => b.totalClaims - a.totalClaims);
+    // if (this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
 
     this.getResultsofStatus(this.queryStatus, this.queryPage);
 
@@ -418,6 +418,10 @@ export class SearchClaimsComponent implements OnInit {
         this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
+  }
+
+  get isLoading(){
+    return this.commen.loading;
   }
 
 

@@ -3,7 +3,7 @@ import { Paginateable } from './paginateable';
 
 export class ClaimInfo extends Paginateable {
     fileRowNumber: number;
-    providerClaimNumber: string;
+    provclaimno: string;
     uploadStatus: string;
     uploadSubStatus: string;
     claimErrors: Array <ClaimError>;
@@ -11,7 +11,7 @@ export class ClaimInfo extends Paginateable {
     constructor(body:{}){
       super(body);
       this.fileRowNumber = body['fileRowNumber'];
-      this.providerClaimNumber = body['providerClaimNumber'];
+      this.provclaimno = body['provclaimno'];
       this.uploadStatus = body['uploadStatus'];
       this.uploadSubStatus = body['uploadSubStatus'];
       this.claimErrors = body['claimErrors'];
