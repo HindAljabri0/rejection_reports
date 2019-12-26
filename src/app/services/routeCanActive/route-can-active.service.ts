@@ -27,6 +27,8 @@ export class RouteCanActiveService implements CanActivate {
         return true;
       case SearchClaimsComponent:
         providerId = route.url[0].path;
+        let batchId = route.queryParamMap.get("batchId");
+        if(batchId != null && batchId != '') return true;
         payerId = route.queryParamMap.get("payer");
         authority = localStorage.getItem(providerId+payerId);
         if(providerId == null || providerId == "" || payerId == null || payerId == "" || authority == null){

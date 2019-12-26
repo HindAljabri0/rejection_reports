@@ -44,7 +44,7 @@
             {{queryToText(query)}}
             <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input type="text" matInput autocomplete="off" [matChipInputFor]="chipList"
+        <input type="text" placeholder="search by batch id..." matInput autocomplete="off" [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
             [formControl]="searchControl" (matChipInputTokenEnd)="updateChips('batchId', $event.value)"
             (keyup.enter)="search()" (click)="$event.stopPropagation()">

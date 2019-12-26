@@ -61,6 +61,9 @@ export class SearchWithAdvanceComponent implements OnInit {
         this.toDateControl.setValue('');
         break;
     }
+    if(this.queries.length == 0){
+      this.searchControl.setValue('');
+    }
   }
 
 
@@ -115,7 +118,8 @@ export class SearchWithAdvanceComponent implements OnInit {
         this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { from: from, to: to, payer: payer } });
       }
     } else if (this.queries.length == 1 && this.queries.map(value => value.type == QueryType.BATCHID).includes(true)) {
-
+      let batchId = this.queries.find(query => query.type == QueryType.BATCHID).content;
+      this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { batchId:batchId } });
     } else {
       this.trigger.openMenu();
     }
@@ -130,14 +134,21 @@ export class SearchWithAdvanceComponent implements OnInit {
       else
         this.queries.push({ type: queryType, content: content.trim() });
     }
-    this.searchControl.setValue('');
     if(queryType == QueryType.BATCHID){
-      
+      this.search();
+    } else{
+      let query:Query = this.queries.find(query => query.type == QueryType.BATCHID);
+      if(query != null) this.remove(query);
     }
+    this.searchControl.setValue(' ');
   }
 
   clear(){
     this.queries = [];
+    this.searchControl.setValue('');
+    this.fromDateControl.setValue('');
+    this.toDateControl.setValue('');
+    this.payerIdControl.setValue('');
   }
 
 }

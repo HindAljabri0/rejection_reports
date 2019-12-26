@@ -41,6 +41,7 @@ export class SearchClaimsComponent implements OnInit {
   from: string;
   to: string;
   payerId: string;
+  batchId:string;
 
   summaries: SearchStatusSummary[];
   searchResult: PaginatedResult<SearchedClaim>;
@@ -95,12 +96,13 @@ export class SearchClaimsComponent implements OnInit {
       this.from = value.from;
       this.to = value.to;
       this.payerId = value.payer;
+      this.batchId = value.batchId;
       this.queryStatus = value.status == null ? 0 : Number.parseInt(value.status);
       this.queryPage = value.page == null ? 0 : Number.parseInt(value.page) - 1;
       if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) this.queryStatus = 0;
       if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
     });
-    if (this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') {
+    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '')) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
