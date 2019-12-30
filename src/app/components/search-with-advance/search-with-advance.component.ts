@@ -134,10 +134,12 @@ export class SearchWithAdvanceComponent implements OnInit {
     content = `${content}`;
     if (content != null && content.trim().length != 0) {
       let query: Query = this.queries.find(query => query.type == queryType);
-      if (query != null)
+      if (query != null){
         query.content = content.trim();
-      else
+      } else {
+        if(queryType == QueryType.BATCHID) this.clear();
         this.queries.push({ type: queryType, content: content.trim() });
+      }
     }
     if(queryType == QueryType.BATCHID){
       this.search();
