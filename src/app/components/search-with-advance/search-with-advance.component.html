@@ -4,7 +4,7 @@
             <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 5px;">
                 <input matInput [matDatepicker]="fromPicker" placeholder="From claim date"
                     [formControl]="fromDateControl" (keyup.enter)="search()"
-                    (dateChange)="updateChips('fromDate', $event.value.format('DD-MM-YYYY'))">
+                    (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
                 <mat-datepicker-toggle matSuffix [for]="fromPicker">
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                 </mat-datepicker-toggle>
@@ -12,7 +12,7 @@
             </mat-form-field>
             <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" style="margin-right: 5px;">
                 <input matInput [matDatepicker]="toPicker" placeholder="To claim date" [formControl]="toDateControl"
-                    (keyup.enter)="search()" (dateChange)="updateChips('toDate', $event.value.format('DD-MM-YYYY'))">
+                    (keyup.enter)="search()" (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
                 <mat-datepicker-toggle matSuffix [for]="toPicker">
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                 </mat-datepicker-toggle>
@@ -21,7 +21,7 @@
             <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}">
                 <mat-label>Select Payer</mat-label>
                 <mat-select [formControl]="payerIdControl" (keyup.enter)="search()"
-                    (selectionChange)="updateChips('payerId', $event.value)">
+                    (selectionChange)="updateChips(payerId, $event.value)">
                     <mat-option *ngFor="let payer of payers" [value]="payer.id">
                         {{payer.name}}
                     </mat-option>
@@ -46,7 +46,7 @@
         </mat-chip>
         <input type="text" placeholder="search by batch id..." matInput autocomplete="off" [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-            [formControl]="searchControl" (matChipInputTokenEnd)="updateChips('batchId', $event.value)"
+            [formControl]="searchControl" (matChipInputTokenEnd)="updateChips(batchId, $event.value)"
             (keyup.enter)="search()" (click)="$event.stopPropagation()">
         <mat-icon matSuffix style="cursor: pointer;">keyboard_arrow_down</mat-icon>
     </mat-chip-list>

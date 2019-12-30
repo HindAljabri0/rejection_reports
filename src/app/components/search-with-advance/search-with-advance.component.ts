@@ -27,6 +27,11 @@ export class SearchWithAdvanceComponent implements OnInit {
   payerIdControl: FormControl = new FormControl();
   payerIdHasError: boolean = false;
 
+  fromDate:QueryType = QueryType.DATEFROM;
+  toDate:QueryType = QueryType.DATETO;
+  payerId:QueryType = QueryType.PAYERID;
+  batchId:QueryType = QueryType.BATCHID;
+
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
