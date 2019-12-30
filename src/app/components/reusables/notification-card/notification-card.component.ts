@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Notification } from 'src/app/models/notification';
 import { NotificationTypes } from 'src/app/models/notificationsTypes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notification-card',
@@ -12,7 +13,7 @@ export class NotificationCardComponent implements OnInit {
   @Input() notification:Notification;
   date:string;
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
     if(this.notification != null){
@@ -38,6 +39,11 @@ export class NotificationCardComponent implements OnInit {
       case NotificationTypes.BATCH_SUMMARY_INQUIRY:
         return 'Batch Notification';
     }
+  }
+
+  getBatchclaims(){
+    //console.log(this.notification.sourceId);
+    this.router.navigate([this.notification.sourceId, 'claims'], { queryParams: { batchId:this.notification.reference } });
   }
 
 }

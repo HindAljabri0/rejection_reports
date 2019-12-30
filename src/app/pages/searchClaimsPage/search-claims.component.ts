@@ -41,7 +41,7 @@ export class SearchClaimsComponent implements OnInit {
   from: string;
   to: string;
   payerId: string;
-  batchId:string;
+  batchId: string;
 
   summaries: SearchStatusSummary[];
   searchResult: PaginatedResult<SearchedClaim>;
@@ -142,18 +142,37 @@ export class SearchClaimsComponent implements OnInit {
 
   async getSummaryOfStatus(status: string) {
     this.commen.loadingChanged.next(true);
-    const event = await this.searchService.getSummaries(this.providerId, this.from, this.to, this.payerId, status).toPromise().catch(error => {
-      this.commen.loadingChanged.next(false);
-      if (error instanceof HttpErrorResponse) {
-        if ((error.status / 100).toFixed() == "4") {
-          this.errorMessage = 'Access Denied.';
-        } else if ((error.status / 100).toFixed() == "5") {
-          this.errorMessage = 'Server could not handle the request. Please try again later.';
-        } else {
-          this.errorMessage = 'Somthing went wrong.';
+    let event;
+    if (this.batchId == null) {
+      event = await this.searchService.getSummaries(this.providerId, status, this.from, this.to, this.payerId).toPromise().catch(error => {
+        this.commen.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == "4") {
+            this.errorMessage = 'Access Denied.';
+          } else if ((error.status / 100).toFixed() == "5") {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
         }
-      }
-    });
+      });
+    }
+    else{
+
+      event = await this.searchService.getSummaries(this.providerId, status,undefined,undefined,undefined, this.batchId).toPromise().catch(error => {
+        this.commen.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == "4") {
+            this.errorMessage = 'Access Denied.';
+          } else if ((error.status / 100).toFixed() == "5") {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
+        }
+      });
+
+    }
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == "2") {
         const summary = new SearchStatusSummary(event.body);
@@ -202,7 +221,7 @@ export class SearchClaimsComponent implements OnInit {
     this.searchResult = null;
     this.claims = new Array();
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize).subscribe((event) => {
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize,this.batchId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -422,7 +441,7 @@ export class SearchClaimsComponent implements OnInit {
     });
   }
 
-  get isLoading(){
+  get isLoading() {
     return this.commen.loading;
   }
 

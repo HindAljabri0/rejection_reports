@@ -115,7 +115,7 @@ export class SearchWithAdvanceComponent implements OnInit {
         const from = fromDate.getFullYear() + '-' + (fromDate.getMonth() + 1) + '-' + fromDate.getDate();
         const to = toDate.getFullYear() + '-' + (toDate.getMonth() + 1) + '-' + toDate.getDate();
         const payer = this.payerIdControl.value;
-        this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { from: from, to: to, payer: payer } });
+        this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { from: from, to: to, payer: payer} });
       }
     } else if (this.queries.length == 1 && this.queries.map(value => value.type == QueryType.BATCHID).includes(true)) {
       let batchId = this.queries.find(query => query.type == QueryType.BATCHID).content;
