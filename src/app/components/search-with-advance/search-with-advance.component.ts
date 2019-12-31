@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Query } from 'src/app/models/searchData/query';
 import { QueryType } from 'src/app/models/searchData/queryType';
-import { Router } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { MatMenuTrigger, MatDatepickerInputEvent, MatSelectChange, MatChipInputEvent } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-with-advance',
@@ -35,7 +36,7 @@ export class SearchWithAdvanceComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  constructor(private router: Router, private commen: CommenServicesService) { }
+  constructor(private router: Router, private routeActive:ActivatedRoute, private commen: CommenServicesService) { }
 
   ngOnInit() {
     this.payers = [
@@ -44,6 +45,31 @@ export class SearchWithAdvanceComponent implements OnInit {
       { id: 306, name: "SE" },
       { id: 204, name: "AXA" },
     ];
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.routeActive.queryParams.subscribe(value => {
+        if(value.from!=null) {
+          const str = value.from.split('-');
+          const date = new Date(str[0]+'/'+str[1]+'/'+str[2]);
+          this.fromDateControl.setValue(date);
+          this.updateChips(QueryType.DATEFROM, str[2] + '/' + str[1] + '/' + str[0]);
+        }
+        if(value.to!=null){
+          const str = value.to.split('-');
+          const date = new Date(str[0]+'/'+str[1]+'/'+str[2]);
+          this.toDateControl.setValue(date);
+          this.updateChips(QueryType.DATETO, str[2] + '/' + str[1] + '/' + str[0]);
+        }
+        if(value.payer!=null){
+          this.payerIdControl.setValue(Number.parseInt(value.payer));
+          this.updateChips(QueryType.PAYERID, value.payer);
+        }
+        if(value.batchId!=null){
+          this.updateChips(QueryType.BATCHID, value.batchId);
+        }
+      });
+    });
   }
 
   remove(query: Query) {
