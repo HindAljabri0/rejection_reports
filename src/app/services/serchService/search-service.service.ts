@@ -32,7 +32,7 @@ export class SearchServiceService {
         ;
     }
     if (batchId != null) {
-      requestURL += 'batchId=' + batchId;
+      requestURL += 'batchId=' + batchId + '&status=' + status;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
