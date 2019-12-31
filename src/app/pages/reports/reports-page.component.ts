@@ -20,6 +20,8 @@ import { QueryType } from 'src/app/models/searchData/queryType';
   export class ReportsComponent implements OnInit {
 
     payers: { id: number, name: string }[];
+    reports: { id: number, name: string }[];
+
     queries: QuerytoReport[] = [];
 
     @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
@@ -47,6 +49,18 @@ import { QueryType } from 'src/app/models/searchData/queryType';
         switch (querytoreport.typeReport) {
           case QueryReport.PAYERID:
             return this.payers.find(value => `${value.id}` == querytoreport.content).name
+          case QueryReport.DATEFROM:
+          case QueryReport.DATETO:
+            return querytoreport.content.replace('-', '/').replace('-', '/');
+          default:
+            return querytoreport.content;
+        }
+      }
+
+      queryToTextReports(querytoreport: QuerytoReport) {
+        switch (querytoreport.typeReport) {
+          case QueryReport.PAYERID:
+            return this.reports.find(value => `${value.id}` == querytoreport.content).name
           case QueryReport.DATEFROM:
           case QueryReport.DATETO:
             return querytoreport.content.replace('-', '/').replace('-', '/');
@@ -105,6 +119,9 @@ import { QueryType } from 'src/app/models/searchData/queryType';
             { id: 300, name: "MDG" },
             { id: 306, name: "SE" },
             { id: 204, name: "AXA" },
+          ];
+        this.reports = [
+            { id: 1, name: "Payment" },
           ];
     }
   }
