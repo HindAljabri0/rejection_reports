@@ -6,7 +6,7 @@
                 <div class="menuContent" (click)="$event.stopPropagation()" >
                     <div class="searchByDate" (keyup.enter)="search()">
                         <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}"  style="width: 15%;margin-right: 5%;margin-left: 3%;border: none; border-radius: 4px; ">
-                            <input matInput [matDatepicker]="fromPicker" placeholder="From claim date"
+                            <input matInput [matDatepicker]="fromPicker" placeholder="From date"
                                    [formControl]="fromDateControl" (keyup.enter)="search()"
                                    (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
                             <mat-datepicker-toggle matSuffix [for]="fromPicker">
@@ -15,7 +15,7 @@
                             <mat-datepicker #fromPicker></mat-datepicker>
                         </mat-form-field>
                         <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" style="margin-right: 5%;width: 15%;">
-                            <input matInput [matDatepicker]="toPicker" placeholder="To claim date" [formControl]="toDateControl"
+                            <input matInput [matDatepicker]="toPicker" placeholder="To date" [formControl]="toDateControl"
                                   (keyup.enter)="search()" (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
                             <mat-datepicker-toggle matSuffix [for]="toPicker">
                             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
