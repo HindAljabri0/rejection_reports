@@ -185,7 +185,7 @@ export class ClaimDialogComponent implements OnInit {
 
     if (flag) {
       this.loading = true;
-      this.claimUpdateService.updateClaim(this.claim.providerId, this.claim.payerId, this.claim.claimid, updateRequestBody).subscribe(event => {
+      this.claimUpdateService.updateClaim(this.claim.providerId, this.claim.payerid, this.claim.claimid, updateRequestBody).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
@@ -214,11 +214,11 @@ export class ClaimDialogComponent implements OnInit {
     this.commen.getClaim(this.claim.providerId, `${this.claim.claimid}`).subscribe(event => {
       if (event instanceof HttpResponse) {
         const providerId = this.claim.providerId;
-        const payerId = this.claim.payerId;
+        const payerId = this.claim.payerid;
         const status = this.claim.status;
         this.claim = JSON.parse(JSON.stringify(event.body));
         this.claim.providerId = providerId;
-        this.claim.payerId = payerId;
+        this.claim.payerid = payerId;
         this.claim.status = status;
         this.resetErrors();
         if (this.claim.errors.length > 0) {

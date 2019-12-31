@@ -32,7 +32,7 @@ export class ViewedClaim {
 	diagnosis:ICDDiagnosis[];
 
 	providerId:string;
-	payerId:string;
+	payerid:string;
 	status:string;
 
 }

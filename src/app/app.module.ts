@@ -36,6 +36,7 @@ import { RouteCanActiveService } from './services/routeCanActive/route-can-activ
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 import { from } from 'rxjs';
+import { PaymentReferenceReportComponent } from './components/payment-reference-report/payment-reference-report.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -72,6 +73,7 @@ export const MY_FORMATS = {
     ReportsComponent,
     DashboardComponent,
     SearchWithAdvanceComponent,
+    PaymentReferenceReportComponent,
   ],
   imports: [
     RouterModule.forRoot([
