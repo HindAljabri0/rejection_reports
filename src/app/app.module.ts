@@ -1,4 +1,5 @@
 import { LoginComponent } from './pages/loginpage/login.component';
+import { ReportsComponent } from './pages/reports/reports-page.component';
 // import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
@@ -34,6 +35,7 @@ import { RequestInterceptorService } from './services/RequestInterceptorService/
 import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
+import { from } from 'rxjs';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -67,6 +69,7 @@ export const MY_FORMATS = {
     ClaimDialogComponent,
     NotificationsPageComponent,
     LoginComponent,
+    ReportsComponent,
     DashboardComponent,
     SearchWithAdvanceComponent,
   ],
@@ -78,6 +81,8 @@ export const MY_FORMATS = {
       { path: 'login', component: LoginComponent },
       { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
       { path: 'summary', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
+      { path: 'reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
+
     ]),
     // JwtModule.forRoot({
     //   config: {
