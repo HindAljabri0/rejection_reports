@@ -28,11 +28,10 @@ export class SearchServiceService {
     let requestURL: string = '/' + providerId + '/search/claim-results?';
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + fromDate
-        + '&toDate=' + toDate + '&payerId=' + payerId + '&status=' + status + '&page=' + page + '&size=' + pageSize
-        ;
+        + '&toDate=' + toDate + '&payerId=' + payerId + '&status=' + status + '&page=' + page + '&size=' + pageSize;
     }
     if (batchId != null) {
-      requestURL += 'batchId=' + batchId + '&status=' + status;
+      requestURL += 'batchId=' + batchId + '&status=' + status + '&page=' + page + '&size=' + pageSize;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
