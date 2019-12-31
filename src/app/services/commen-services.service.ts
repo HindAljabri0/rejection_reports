@@ -112,6 +112,10 @@ export class CommenServicesService {
       if(event instanceof HttpResponse){
         const claim:ViewedClaim = JSON.parse(JSON.stringify(event.body));
         this.loadingChanged.next(false);
+        if(payerId==null)
+        {
+          payerId = claim.payerid;
+        }
         this.openClaimDialog(providerId, payerId, status, claim);
       }      
     }, errorEvent => {
@@ -136,7 +140,7 @@ export class CommenServicesService {
 
   openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim){
     claim.providerId = providerId;
-    claim.payerId = payerId;
+    claim.payerid = payerId;
     claim.status = status;
     const dialogRef = this.dialog.open(ClaimDialogComponent, {
       width: '50%',

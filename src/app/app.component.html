@@ -2,7 +2,10 @@
 <app-header *ngIf="isLoggedIn"></app-header>
 <div class="res">
 
-    <router-outlet></router-outlet>
+    <router-outlet style="
+    display: block;
+    margin-top: 70px;
+"><app-payment-reference-report></app-payment-reference-report></router-outlet>
 
 
 </div>
