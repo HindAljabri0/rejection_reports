@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +15,6 @@ import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 })
 export class PaymentReferenceReportComponent implements OnInit {
 
-  summaries: SearchStatusSummary[];
   detailCardTitle = "Payment References";
   detailTopActionText = "vertical_align_bottom";
   detailAccentColor = "#3060AA";
@@ -23,11 +22,11 @@ export class PaymentReferenceReportComponent implements OnInit {
   detailSubActionText: string = null;
   detailCheckBoxIndeterminate: boolean;
   detailCheckBoxChecked: boolean;
-  from: string;
-  to: string;
-  payerId: string;
-  queryPage: number;
-  providerId: string;
+  @Input() from: string;
+  @Input() to: string;
+  @Input() payerId: string;
+  @Input() queryPage: number;
+  @Input() providerId: string;
 
   paginatorPagesNumbers: number[];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
@@ -43,24 +42,12 @@ export class PaymentReferenceReportComponent implements OnInit {
   constructor(public reportService: ReportsService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
-    this.fetchData();
+    // this.fetchData();
   }
   async fetchData() {
-
-    this.summaries = new Array();
+    if(this.providerId == null || this.from == null || this.to == null || this.payerId == null) return;
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
-
-    this.routeActive.params.subscribe(value => {
-      this.providerId = value.providerId;
-    });
-    this.routeActive.queryParams.subscribe(value => {
-      this.from = value.from;
-      this.to = value.to;
-      this.payerId = value.payer;
-      this.queryPage = value.page == null ? 0 : Number.parseInt(value.page) - 1;
-      if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
-    });
     let event;
     event = await this.reportService.getPaymentSummary(this.providerId, this.from, this.to, this.payerId, this.queryPage, this.queryPage).subscribe((event) => {
       if (event instanceof HttpResponse) {

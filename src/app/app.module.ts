@@ -85,8 +85,7 @@ export const MY_FORMATS = {
       { path: 'login', component: LoginComponent },
       { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
       { path: 'summary', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
-      { path: 'reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
-      { path: ':providerId/payment-summary', component: PaymentReferenceReportComponent, canActivate:[RouteCanActiveService] },
+      { path: ':providerId/reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
 
     ]),
     // JwtModule.forRoot({

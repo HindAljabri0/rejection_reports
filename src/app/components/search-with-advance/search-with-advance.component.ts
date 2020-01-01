@@ -47,7 +47,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       { id: 204, name: "AXA" },
     ];
     this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('claims'))
     ).subscribe(() => {
       if(this.queries.length != 0) this.searchControl.setValue(' ');
       else this.searchControl.setValue('');
