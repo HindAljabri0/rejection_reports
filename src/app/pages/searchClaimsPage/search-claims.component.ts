@@ -429,7 +429,7 @@ export class SearchClaimsComponent implements OnInit {
 
   download() {
     if (this.detailTopActionText == "check_circle") return;
-    this.searchService.downloadSummaries(this.providerId, this.from, this.to, this.payerId, this.summaries[this.selectedCardKey].status).subscribe(event => {
+    this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].status, this.from, this.to, this.payerId, this.batchId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
           var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
@@ -439,7 +439,12 @@ export class SearchClaimsComponent implements OnInit {
           var a = document.createElement("a");
           a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
           a.target = '_blank';
-          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          if(this.from != null){
+            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          } else {
+            a.download = this.detailCardTitle + '_Batch_' + this.batchId+ '.csv';
+          }
+          
           a.click();
           this.detailTopActionText = "check_circle";
         }
