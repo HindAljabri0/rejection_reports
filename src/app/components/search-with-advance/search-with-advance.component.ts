@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, SystemJsNgModuleLoader } from '@angular/core';
 import { Query } from 'src/app/models/searchData/query';
 import { QueryType } from 'src/app/models/searchData/queryType';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
@@ -72,6 +72,7 @@ export class SearchWithAdvanceComponent implements OnInit {
           this.updateChips(QueryType.BATCHID, value.batchId);
         }
       });
+      if(!this.router.url.includes('claims')) this.clear();
     });
   }
 
