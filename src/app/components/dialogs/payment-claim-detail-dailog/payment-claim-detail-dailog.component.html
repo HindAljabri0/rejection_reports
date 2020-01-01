@@ -1,0 +1,124 @@
+<div class="header sub">
+    <button mat-icon-button [mat-dialog-close]="false">
+        <mat-icon>clear</mat-icon>
+    </button>
+    <p>Claim Status: {{claim.statusCode}}</p>
+    <span class="spacer"></span>
+    <p>Provider Claim ID: {{claim.providerClaimNumber}}</p>
+</div>
+<div class="content">
+    <div class="gInfo">
+        <table style="width: 52%; margin-right: 3%; background-color: unset;">
+            <tr>
+                <td>
+                    Patient Name<br>
+                    <span matTooltip="{{claim.patientName}}">{{claim.patientName}}</span>
+                </td>
+                <td>
+                    Dr. Name<br>
+                    <span>{{claim.physicianName}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Policy No<br>
+                    <span>{{claim.policyNumber}}</span>
+                </td>
+                <td>
+                    Patient File No<br>
+                    <span>{{claim.patientFileNumber}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><textarea rows="1" class="commentBox" disabled>{{claim.statusDescription}}</textarea></td>
+            </tr>
+        </table>
+        <table style="width: 22%; margin-right: 3%; font-size: medium;">
+            <tr>
+                <td>
+                    Requested Net Amount
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="">{{claim.requestedNetAmount}} <span class="currency">{{claim.requestedNetAmountUnit}}</span></label>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Vat
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="">{{claim.requestedNetVatAmount}} <span class="currency">{{claim.requestedNetVatAmountUnit}}</span></label>
+                </th>
+            </tr>
+        </table>
+        <table style="width: 20%; font-size: medium;">
+            <tr>
+                <td>
+                    Paid Amount
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="">{{claim.paidAmount}} <span class="currency">{{claim.paidAmountUnit}}</span></label>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Rejected Amount
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="">{{claim.rejectedAmount}} <span class="currency">{{claim.rejectedAmountUnit}}</span></label>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div class="services">
+        <p>Services</p>
+        <table>
+            <thead>
+                <th>Invoice No</th>
+                <th>Code</th>
+                <th>Decscription</th>
+                <th>Status</th>
+                <th>Status Details</th>
+                <th>
+                    <div style="width: 100%; display: flex;">
+                        <div>Requested N.A</div>
+                        <div style="margin-left: auto;">Vat</div>
+                    </div>
+                </th>
+                <th>Actual Paid</th>
+                <th>Actual Detected</th>
+                <th>Date</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let service of claim.serviceDetails">
+                    <td>{{service.invoiceNumber}}</td>
+                    <td>{{service.serviceCode}}</td>
+                    <td>{{service.serviceDescription}}</td>
+                    <td>{{service.serviceStatus}}</td>
+                    <td>{{service.decisionComment}}</td>
+                    <td>
+                        <div style="width: 100%; display: flex;">
+                            <div>{{service.requestedNetAmount}} <span class="currency">{{service.requestedNetAmountUnit}}</span></div>
+                            <div style="margin-left: auto;">{{service.requestedNetVatAmount}} <span class="currency">{{service.requestedNetVatAmountVat}}</span></div>
+                        </div>
+                    </td>
+                    <td>{{service.paidAmount}} <span class="currency">{{service.paidAmountUnit}}</span></td>
+                    <td>{{service.rejectedAmount}} <span class="currency">{{service.rejectedAmountUnit}}</span></td>
+                    <td>{{service.serviceDate.toDateString().substr(4)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="header footer">
+    <span class="spacer"></span>
+    <p></p>
+</div>
