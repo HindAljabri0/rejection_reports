@@ -7,6 +7,7 @@ import { MatMenuTrigger, MatDatepickerInputEvent, MatSelectChange, MatChipInputE
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { filter } from 'rxjs/operators';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-search-with-advance',
@@ -48,6 +49,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
+      if(this.queries.length != 0) this.searchControl.setValue(' ');
+      else this.searchControl.setValue('');
       this.routeActive.queryParams.subscribe(value => {
         if(value.from!=null) {
           const str = value.from.split('-');
@@ -65,7 +68,7 @@ export class SearchWithAdvanceComponent implements OnInit {
           this.payerIdControl.setValue(Number.parseInt(value.payer));
           this.updateChips(QueryType.PAYERID, value.payer);
         }
-        if(value.batchId!=null){
+        if(value.batchId!=null && (this.queries[0] == null || this.queries[0].content != value.batchId)){
           this.updateChips(QueryType.BATCHID, value.batchId);
         }
       });
@@ -168,12 +171,23 @@ export class SearchWithAdvanceComponent implements OnInit {
       }
     }
     if(queryType == QueryType.BATCHID){
-      this.search();
-    } else{
+    } else {
       let query:Query = this.queries.find(query => query.type == QueryType.BATCHID);
       if(query != null) this.remove(query);
     }
-    this.searchControl.setValue(' ');
+    this.searchControl.setValue(" ");
+  }
+
+  searchWithBatchId(){
+    this.router.navigate([this.commen.providerId, 'claims'], {queryParams:{batchId:this.currentBatchId}});
+  }
+
+  get currentBatchId(){
+    if(this.searchControl.value != null && this.searchControl.value != ' '){
+      return this.searchControl.value.trim();
+    } else if(this.queries.map(query => query.type == QueryType.BATCHID).includes(true)){
+      return this.queries.map(query => {if(query.type == QueryType.BATCHID) return query.content;})
+    } else return '';
   }
 
   clear(){

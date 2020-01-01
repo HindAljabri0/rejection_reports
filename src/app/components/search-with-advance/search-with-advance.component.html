@@ -1,5 +1,5 @@
 <mat-menu #appMenu="matMenu">
-    <div class="menuContent" (click)="$event.stopPropagation()" >
+    <div class="menuContent" (click)="$event.stopPropagation()">
         <div class="searchByDate" (keyup.enter)="search()">
             <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 5px;">
                 <input matInput [matDatepicker]="fromPicker" placeholder="From claim date"
@@ -36,7 +36,7 @@
 </mat-menu>
 
 <mat-form-field color="accent" appearance="outline" floatLabel="never" class="searchField" style="font-size: smaller;"
-     (keyup.enter)="search()" [matMenuTriggerFor]="appMenu">
+    [matMenuTriggerFor]="appMenu">
     <mat-icon matPrefix style="margin-right: 10px;">search</mat-icon>
     <mat-chip-list #chipList>
         <mat-chip *ngFor="let query of queries" removable="true" (removed)="remove(query)"
@@ -47,7 +47,14 @@
         <input type="text" placeholder="search by batch id..." matInput autocomplete="off" [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
             [formControl]="searchControl" (matChipInputTokenEnd)="updateChips(batchId, $event.value)"
-            (keyup.enter)="search()" (click)="$event.stopPropagation()">
+             (click)="$event.stopPropagation()"
+            [matAutocomplete]="auto" [value]="searchControl.value">
         <mat-icon matSuffix style="cursor: pointer;">keyboard_arrow_down</mat-icon>
     </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option (click)="searchWithBatchId()"
+            *ngIf="currentBatchId != null && currentBatchId != ''">
+            Search for claims with batch ID: {{currentBatchId}}
+        </mat-option>
+    </mat-autocomplete>
 </mat-form-field>
