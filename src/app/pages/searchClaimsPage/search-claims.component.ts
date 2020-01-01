@@ -107,7 +107,10 @@ export class SearchClaimsComponent implements OnInit {
       this.router.navigate(['']);
     }
     for (status in ClaimStatus) {
-      await this.getSummaryOfStatus(status);
+      let statusCode = await this.getSummaryOfStatus(status);
+      if(statusCode != 200){
+        break;
+      }
     }
 
     // this.summaries = this.mapRelatedStatus();
@@ -140,7 +143,7 @@ export class SearchClaimsComponent implements OnInit {
     } else return this.summaries;
   }
 
-  async getSummaryOfStatus(status: string) {
+  async getSummaryOfStatus(status: string):Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
     if (this.batchId == null) {
@@ -154,6 +157,7 @@ export class SearchClaimsComponent implements OnInit {
           } else {
             this.errorMessage = 'Somthing went wrong.';
           }
+          return error.status;
         }
       });
     }
@@ -169,6 +173,7 @@ export class SearchClaimsComponent implements OnInit {
           } else {
             this.errorMessage = 'Somthing went wrong.';
           }
+          return error.status;
         }
       });
 
@@ -182,6 +187,7 @@ export class SearchClaimsComponent implements OnInit {
       }
     }
     this.commen.loadingChanged.next(false);
+    return event.status;
   }
 
   getResultsofStatus(key: number, page?: number, pageSize?: number) {
@@ -409,7 +415,11 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   resetURL() {
-    this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`);
+    if(this.from != null && this.to != null && this.payerId != null){
+      this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`);
+    } else if(this.batchId != null){
+      this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
+    }
   }
 
 
