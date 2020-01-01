@@ -1,0 +1,53 @@
+<div class="mainPage">
+    <div class="row" style="padding: 1%;">
+        <div class="col-md-12">
+          <div class="card " style="width: 100%; width: inherit; height: 650px; padding: 0px; background-color: #F8F7FF; ">
+            <div class="card-header "style="background: white; padding-top: 25px; padding-bottom: 1px; ">
+                <div class="menuContent" (click)="$event.stopPropagation()" >
+                    <div class="searchByDate" (keyup.enter)="search()">
+                        <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}"  style="width: 15%;margin-right: 5%;margin-left: 3%;border: none; border-radius: 4px; ">
+                            <input matInput [matDatepicker]="fromPicker" placeholder="From date"
+                                   [formControl]="fromDateControl" (keyup.enter)="search()"
+                                   (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
+                            <mat-datepicker-toggle matSuffix [for]="fromPicker">
+                                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #fromPicker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" style="margin-right: 5%;width: 15%;">
+                            <input matInput [matDatepicker]="toPicker" placeholder="To date" [formControl]="toDateControl"
+                                  (keyup.enter)="search()" (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
+                            <mat-datepicker-toggle matSuffix [for]="toPicker">
+                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #toPicker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}" style="margin-right: 5%; width: 15%;">
+                            <mat-label>Select Payer</mat-label>
+                            <mat-select [formControl]="payerIdControl" (keyup.enter)="search()"
+                              (selectionChange)="updateChips(payerId, $event.value)">
+                             <mat-option *ngFor="let payer of payers" [value]="payer.id">
+                                  {{payer.name}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}" style="margin-right: 5%; width: 15%;">
+                            <mat-label>Select Report</mat-label>
+                            <mat-select [formControl]="payerIdControl" (keyup.enter)="search()"
+                              (selectionChange)="updateChips(payerId, $event.value)">
+                             <mat-option *ngFor="let report of reports" [value]="report.id">
+                                  {{report.name}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" (click)="search()" style="width: 15%;">Search</button>
+                        </div>
+                    </div>
+            </div>
+            <div class="card-body ">
+                <p style="color: #001b7d70; margin: 22%;padding-left: 19%;">Search result will be here..</p>
+              </div>
+           </div>
+        </div>
+    </div>
+</div>
