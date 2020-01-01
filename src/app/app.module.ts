@@ -37,6 +37,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 import { from } from 'rxjs';
 import { PaymentReferenceReportComponent } from './components/payment-reference-report/payment-reference-report.component';
+import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -74,6 +75,7 @@ export const MY_FORMATS = {
     DashboardComponent,
     SearchWithAdvanceComponent,
     PaymentReferenceReportComponent,
+    PaymentClaimDetailDailogComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -145,10 +147,12 @@ export const MY_FORMATS = {
   exports: [
     MessageDialogComponent,
     ClaimDialogComponent,
+    PaymentClaimDetailDailogComponent,
   ],
   entryComponents: [
     MessageDialogComponent,
-    ClaimDialogComponent
+    ClaimDialogComponent,
+    PaymentClaimDetailDailogComponent,
   ],
 })
 export class AppModule { }
