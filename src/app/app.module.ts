@@ -38,6 +38,7 @@ import { SearchWithAdvanceComponent } from './components/search-with-advance/sea
 import { from } from 'rxjs';
 import { PaymentReferenceReportComponent } from './components/payment-reference-report/payment-reference-report.component';
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
+import { PaymentClaimSummaryReportComponent } from './components/payment-claim-summary-report/payment-claim-summary-report.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -76,6 +77,7 @@ export const MY_FORMATS = {
     SearchWithAdvanceComponent,
     PaymentReferenceReportComponent,
     PaymentClaimDetailDailogComponent,
+    PaymentClaimSummaryReportComponent,
   ],
   imports: [
     RouterModule.forRoot([

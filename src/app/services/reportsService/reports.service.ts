@@ -37,7 +37,7 @@ export class ReportsService {
   downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
     const requestURL = `/${providerId}/payment/payment-claim-summary/csv?`+
     `paymentReference=${paymentReference}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);
   }
 

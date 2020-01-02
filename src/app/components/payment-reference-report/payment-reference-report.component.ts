@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/
 import { PaymentRefernceDetail } from 'src/app/models/paymentRefernceDetail';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-payment-reference-report',
@@ -28,6 +29,8 @@ export class PaymentReferenceReportComponent implements OnInit {
   @Input() queryPage: number;
   @Input() providerId: string;
 
+  @Output() onPaymentClick = new EventEmitter();
+
   paginatorPagesNumbers: number[];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
@@ -45,7 +48,7 @@ export class PaymentReferenceReportComponent implements OnInit {
     // this.fetchData();
   }
   async fetchData() {
-    if(this.providerId == null || this.from == null || this.to == null || this.payerId == null) return;
+    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null) return;
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
@@ -98,17 +101,19 @@ export class PaymentReferenceReportComponent implements OnInit {
     else return 0;
   }
 
-  mapPayer(payerId:string)
-  {
+  mapPayer(payerId: string) {
 
-    switch(payerId) { 
-      case "300": { 
-        return "MedGulf"; 
-      } 
-      default: { 
-         return "";
-      } 
-   } 
+    switch (payerId) {
+      case "300": {
+        return "MedGulf";
+      }
+      case "102": {
+        return "Tawuniya";
+      }
+      default: {
+        return "";
+      }
+    }
   }
 
 }
