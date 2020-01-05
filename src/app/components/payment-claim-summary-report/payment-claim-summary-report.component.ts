@@ -49,7 +49,7 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
         this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
         this.manualPage = this.paginator.pageIndex;
         this.paginator.pageIndex = this.claimsSummaryResult.number;
-        this.paginator.pageSize = this.claimsSummaryResult.numberOfElements;
+        this.paginator.pageSize = this.claimsSummaryResult.size;
       }
     });
   }
@@ -60,6 +60,7 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.onPaginationChange.emit(event);
     this.fetchData(this.paymentReference);
+    this.onPaginationChange.emit(event);
   }
   updateManualPage(index) {
     this.manualPage = index;

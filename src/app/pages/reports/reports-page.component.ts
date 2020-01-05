@@ -116,7 +116,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   onPaymentClick(paymentRef) {
-    this.paymentReference = paymentRef;
     this.tempPage = this.page;
     this.tempPageSize = this.pageSize;
     this.page = 0;
@@ -124,6 +123,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.paymentClaimSummaryReport.page = 0;
     this.paymentClaimSummaryReport.pageSize = 10;
     this.resetURL();
+    this.paymentReference = paymentRef;
     this.paymentClaimSummaryReport.fetchData(this.paymentReference);
     this.location.go(`${this.location.path()}&pRef=${paymentRef}`);
   }
@@ -177,6 +177,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
     let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
+    if(this.paymentReference != null){
+      URL += `&pRef=${this.paymentReference}`
+    }
     if(this.page > 0){
       URL += `&page=${this.page}`;
     }

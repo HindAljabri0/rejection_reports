@@ -69,7 +69,8 @@
                     </app-payment-reference-report>
                     <app-payment-claim-summary-report #paymentClaimSummaryReport
                         [ngClass]="{'hidden':paymentReference == null}" [providerId]="providerId"
-                        [paymentReference]="pRef" [page]="page" [pageSize]="pageSize">
+                        [paymentReference]="pRef" [page]="page" [pageSize]="pageSize"
+                        (onPaginationChange)="paginationChange($event)">
                     </app-payment-claim-summary-report>
                     <!-- <p style="color: #001b7d70; margin: 22%;padding-left: 19%;">Search result will be here..</p> -->
                 </div>

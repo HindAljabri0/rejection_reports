@@ -62,7 +62,7 @@ export class PaymentReferenceReportComponent implements OnInit {
         this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
         this.manualPage = this.paymentDetails.number;
         this.paginator.pageIndex = this.paymentDetails.number;
-        this.paginator.pageSize = this.paymentDetails.numberOfElements;
+        this.paginator.pageSize = this.paymentDetails.size;
       }
       this.commen.loadingChanged.next(false);
     }, error => {
