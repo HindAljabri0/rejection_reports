@@ -13,7 +13,7 @@ export class ReportsService {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     const requestURL = `/${providerId}/payment/payment-summary?`+
-    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&pageSize=${pageSize}`;
+    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
@@ -22,7 +22,7 @@ export class ReportsService {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     const requestURL = `/${providerId}/payment/payment-claim-summary?`+
-    `paymentReference=${paymentReference}&page=${page}&pageSize=${pageSize}`;
+    `paymentReference=${paymentReference}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }

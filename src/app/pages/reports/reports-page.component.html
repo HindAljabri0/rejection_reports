@@ -1,8 +1,8 @@
 <div class="mainPage">
     <div class="row" style="padding: 1%;">
         <div class="col-md-12">
-            <div class="card "
-                style="width: 100%; width: inherit; height: 650px; padding: 0px; background-color: #F8F7FF; ">
+            <div class="card " style="width: 100%; width: inherit; padding: 0px; background-color: #F8F7FF; "
+                [style.height]="height">
                 <div class="" style="background: white; padding: 10px 20px;  ">
                     <div class="menuContent">
                         <div class="searchByDate" *ngIf="paymentReference == null">
@@ -51,8 +51,7 @@
                             </button> Payment Report
                             <span style="margin-left: 10%;">Payment Ref. No. <span
                                     style="background-color: #EFF5FF; padding: 5px; border-radius: 5px; width: 10%;">{{paymentReference}}</span></span>
-                            <span class="downloadIcon"
-                                style="border-radius: 6px; padding: 4px 10px; float: right;">
+                            <span class="downloadIcon" style="border-radius: 6px; padding: 4px 10px; float: right;">
                                 <mat-icon _ngcontent-wxe-c14="" aria-hidden="false" aria-label="Download"
                                     (click)="download()" class="mat-icon notranslate material-icons mat-icon-no-color"
                                     role="img" matTooltip="Download"
@@ -65,11 +64,12 @@
                 <div class="card-body ">
                     <app-payment-reference-report #paymentSearchResult [ngClass]="{'hidden':paymentReference != null}"
                         *ngIf="showPaymentSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
-                        [payerId]="payerIdControl.value" [queryPage]="0" (onPaymentClick)="onPaymentClick($event)">
+                        [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
+                        (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
                     </app-payment-reference-report>
                     <app-payment-claim-summary-report #paymentClaimSummaryReport
                         [ngClass]="{'hidden':paymentReference == null}" [providerId]="providerId"
-                        [paymentReference]="pRef" [page]="0">
+                        [paymentReference]="pRef" [page]="page" [pageSize]="pageSize">
                     </app-payment-claim-summary-report>
                     <!-- <p style="color: #001b7d70; margin: 22%;padding-left: 19%;">Search result will be here..</p> -->
                 </div>

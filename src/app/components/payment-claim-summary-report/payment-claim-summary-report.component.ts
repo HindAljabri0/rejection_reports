@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output } from '@angular/core';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PaymentClaimSummary } from 'src/app/models/paymentClaimSummary';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-payment-claim-summary-report',
@@ -17,6 +18,8 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
   @Input() paymentReference: string;
   @Input() page: number = 0;
   @Input() pageSize: number = 10;
+
+  @Output() onPaginationChange = new EventEmitter();
 
   paginatorPagesNumbers: number[];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
@@ -32,6 +35,12 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
   }
 
   fetchData(paymentReference:string) {
+    if(this.claimsSummaryResult != null){
+      this.claimsSummaryResult.content = [];
+      this.claimsSummaryResult.number = 0;
+      this.claimsSummaryResult.numberOfElements = 0;
+    }
+    this.paymentReference = paymentReference;
     this.reportService.getPaymentClaimSummary(this.providerId, paymentReference, this.page, this.pageSize).subscribe(event => {
       if(event instanceof HttpResponse){
         console.log(event)
@@ -39,12 +48,18 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
         const pages = Math.ceil((this.claimsSummaryResult.totalElements / this.paginator.pageSize));
         this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
         this.manualPage = this.paginator.pageIndex;
+        this.paginator.pageIndex = this.claimsSummaryResult.number;
+        this.paginator.pageSize = this.claimsSummaryResult.numberOfElements;
       }
     });
   }
 
   paginatorAction(event) {
     this.manualPage = event['pageIndex'];
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.onPaginationChange.emit(event);
+    this.fetchData(this.paymentReference);
   }
   updateManualPage(index) {
     this.manualPage = index;

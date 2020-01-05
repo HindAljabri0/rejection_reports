@@ -27,9 +27,11 @@ export class PaymentReferenceReportComponent implements OnInit {
   @Input() to: string;
   @Input() payerId: string;
   @Input() queryPage: number;
+  @Input() pageSize: number;
   @Input() providerId: string;
 
   @Output() onPaymentClick = new EventEmitter();
+  @Output() onPaginationChange = new EventEmitter();
 
   paginatorPagesNumbers: number[];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
@@ -52,23 +54,15 @@ export class PaymentReferenceReportComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
-    event = await this.reportService.getPaymentSummary(this.providerId, this.from, this.to, this.payerId, this.queryPage, this.queryPage).subscribe((event) => {
+    event = await this.reportService.getPaymentSummary(this.providerId, this.from, this.to, this.payerId, this.queryPage, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        if ((event.status / 100).toFixed() == "2") {
-          this.paymentDetails = new PaginatedResult(event.body, PaymentRefernceDetail);
-          this.payments = this.paymentDetails.content;
-          console.log(event.body);
-          console.log(this.paymentDetails);
-          const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
-          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.paginator.pageIndex;
-        } else if ((event.status / 100).toFixed() == "4") {
-          console.log("400");
-        } else if ((event.status / 100).toFixed() == "5") {
-          console.log("500");
-        } else {
-          console.log("000");
-        }
+        this.paymentDetails = new PaginatedResult(event.body, PaymentRefernceDetail);
+        this.payments = this.paymentDetails.content;
+        const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
+        this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+        this.manualPage = this.paymentDetails.number;
+        this.paginator.pageIndex = this.paymentDetails.number;
+        this.paginator.pageSize = this.paymentDetails.numberOfElements;
       }
       this.commen.loadingChanged.next(false);
     }, error => {
@@ -87,6 +81,10 @@ export class PaymentReferenceReportComponent implements OnInit {
 
   paginatorAction(event) {
     this.manualPage = event['pageIndex'];
+    this.onPaginationChange.emit(event);
+    this.queryPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.fetchData();
   }
   updateManualPage(index) {
     this.manualPage = index;

@@ -1,7 +1,7 @@
 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { filter } from 'rxjs/operators';
@@ -37,6 +37,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   toDateControl: FormControl = new FormControl();
   payerIdControl: FormControl = new FormControl();
 
+  page:number;
+  pageSize:number;
+  tempPage:number = 0;
+  tempPageSize:number = 10;
+
   paymentReference:string;
 
   @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
@@ -63,6 +68,16 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       if(value.pRef != null){
         this.paymentReference = value.pRef;
       }
+      if(value.page != null){
+        this.page = Number.parseInt(value.page);
+      } else {
+        this.page = 0;
+      }
+      if(value.pageSize != null){
+        this.pageSize = Number.parseInt(value.pageSize);
+      } else {
+        this.pageSize = 10;
+      }
     });
   }
 
@@ -78,11 +93,22 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null) {
       return;
     }
+    let queryParams:Params = {};
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
-    this.router.navigate([this.providerId, 'reports'], { queryParams: { from: from, to: to, payer: this.payerIdControl.value, type: this.reportTypeControl.value } });
+    queryParams.from = from;
+    queryParams.to = to;
+    queryParams.payer = this.payerIdControl.value;
+    queryParams.type = this.reportTypeControl.value;
+    if(this.page > 0){
+      queryParams.page = this.page;
+    }
+    if(this.pageSize > 10){
+      queryParams.pageSize = this.pageSize;
+    }
+    this.router.navigate([this.providerId, 'reports'], { queryParams: queryParams });
     if (this.reportTypeControl.value == 1) {
       this.paymentSearchResult.fetchData();
     }
@@ -90,13 +116,29 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   onPaymentClick(paymentRef) {
     this.paymentReference = paymentRef;
+    this.tempPage = this.page;
+    this.tempPageSize = this.pageSize;
+    this.page = 0;
+    this.pageSize = 10;
+    this.paymentClaimSummaryReport.page = 0;
+    this.paymentClaimSummaryReport.pageSize = 10;
     this.resetURL();
     this.paymentClaimSummaryReport.fetchData(this.paymentReference);
     this.location.go(`${this.location.path()}&pRef=${paymentRef}`);
   }
 
+  paginationChange(event){
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.resetURL();
+  }
+
   backButton(){
     this.paymentReference = null;
+    this.page = this.tempPage;
+    this.pageSize = this.tempPageSize;
+    this.paymentSearchResult.queryPage = this.page;
+    this.paymentSearchResult.pageSize = this.pageSize;
     if(this.paymentSearchResult.payments.length == 0) this.paymentSearchResult.fetchData();
     this.resetURL();
   }
@@ -133,7 +175,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const toDate: Date = new Date(this.toDateControl.value);
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
-    this.location.go(`${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`);
+    let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
+    if(this.page > 0){
+      URL += `&page=${this.page}`;
+    }
+    if(this.pageSize > 10){
+      URL += `&pageSize=${this.pageSize}`;
+    }
+    this.location.go(URL);
   }
 
   get providerId() {
@@ -156,6 +205,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   get pRef(){
     return this.paymentReference;
+  }
+
+  get height(){
+    return `${this.pageSize * 55 + 275}px`;
   }
 
 
