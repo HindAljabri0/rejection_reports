@@ -9,6 +9,7 @@ import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angu
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { MatAutocompleteModule, MatMenuModule, MatChipsModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
@@ -37,6 +38,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 import { from } from 'rxjs';
 import { PaymentReferenceReportComponent } from './components/payment-reference-report/payment-reference-report.component';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -124,6 +126,7 @@ export const MY_FORMATS = {
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    InfiniteScrollModule,
   ],
   providers: [
     UploadService,
@@ -151,3 +154,4 @@ export const MY_FORMATS = {
   ],
 })
 export class AppModule { }
+// platformBrowserDynamic().bootstrapModule(AppModule);
