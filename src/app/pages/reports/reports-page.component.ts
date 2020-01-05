@@ -27,6 +27,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   ];
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Payment" },
+    { id: 2, name: "Submitted Invoices" },
   ];
 
   downloadIcon = "vertical_align_bottom";
