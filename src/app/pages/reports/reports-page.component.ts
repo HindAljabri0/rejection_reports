@@ -4,12 +4,11 @@ import { FormControl } from '@angular/forms';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
-import { filter } from 'rxjs/operators';
-import { PaymentReferenceReportComponent } from 'src/app/components/payment-reference-report/payment-reference-report.component';
-import { PaymentClaimSummaryReportComponent } from 'src/app/components/payment-claim-summary-report/payment-claim-summary-report.component';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
+import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 
 
 @Component({
@@ -178,7 +177,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
     let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
     if(this.paymentReference != null){
-      URL += `&pRef=${this.paymentReference}`
+      URL += `&pRef=${this.paymentReference}`;
     }
     if(this.page > 0){
       URL += `&page=${this.page}`;

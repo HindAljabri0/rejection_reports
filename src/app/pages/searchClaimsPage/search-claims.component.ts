@@ -460,7 +460,9 @@ export class SearchClaimsComponent implements OnInit {
     return this.commen.loading;
   }
 
-
+  getIsRejectedByPayer(status:string){
+    return status == ClaimStatus.INVALID || status == ClaimStatus.REJECTED || status == ClaimStatus.PARTIALLY_PAID  || status == ClaimStatus.PARTIALLY_APPROVED;
+  }
 
 }
 
