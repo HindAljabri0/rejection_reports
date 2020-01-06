@@ -9,6 +9,7 @@ import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angu
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { MatAutocompleteModule, MatMenuModule, MatChipsModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
@@ -130,6 +131,7 @@ export const MY_FORMATS = {
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    InfiniteScrollModule,
   ],
   providers: [
     UploadService,
@@ -159,3 +161,4 @@ export const MY_FORMATS = {
   ],
 })
 export class AppModule { }
+// platformBrowserDynamic().bootstrapModule(AppModule);
