@@ -9,11 +9,13 @@ import { DataSource } from '@angular/cdk/table';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { async } from 'q';
+// import { InfiniteScroll } from 'ngx-infinite-scroll';
+
 
 @Component({
   selector: 'app-notifications-page',
   templateUrl: './notifications-page.component.html',
-  styleUrls: ['./notifications-page.component.css']
+  styleUrls: ['./notifications-page.component.css'],
 })
 export class NotificationsPageComponent implements OnInit {
 
@@ -21,6 +23,11 @@ export class NotificationsPageComponent implements OnInit {
   cardTitle:string = 'All Notifications';
   currentPage:number = 0;
   pageSize:number = 10;
+
+  // modalScrollDistance = 2;
+  // throttle = 300;
+
+
 
   notificationMap:Map<string, Notification[]> = new Map();
   notificationsMapKeys:string[] = new Array();
@@ -66,5 +73,9 @@ export class NotificationsPageComponent implements OnInit {
   notificationsNotFinished(){
     return this.currentNotificationsCount < this.totalNotifications
   }
+
+ /* onScrollDown() {
+    console.log('scrolled down!!');
+  }*/
 
 }

@@ -27,6 +27,15 @@ export class ReportsService {
     return this.http.request(request);
   }
 
+  getSubmittedInvoicesSummary(providerId: string, fromDate: string, toDate: string, payerId: string, page?: number, pageSize?: number) {
+    if (page == null) page = 0;
+    if (pageSize == null) pageSize = 10;
+    const requestURL = `/${providerId}/claim/payed?`+
+    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&size=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
   getPaymentClaimDetail(providerId: string, claimId:number) {
     const requestURL = `/${providerId}/payment/payment-claim-detail?`+
     `claimId=${claimId}`;
