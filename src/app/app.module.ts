@@ -36,9 +36,10 @@ import { RouteCanActiveService } from './services/routeCanActive/route-can-activ
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 import { from } from 'rxjs';
-import { PaymentReferenceReportComponent } from './components/payment-reference-report/payment-reference-report.component';
+import { PaymentReferenceReportComponent } from './pages/reports/payment-reference-report/payment-reference-report.component';
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
-import { PaymentClaimSummaryReportComponent } from './components/payment-claim-summary-report/payment-claim-summary-report.component';
+import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
+import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -78,6 +79,7 @@ export const MY_FORMATS = {
     PaymentReferenceReportComponent,
     PaymentClaimDetailDailogComponent,
     PaymentClaimSummaryReportComponent,
+    SubmittedInvoicesComponent,
   ],
   imports: [
     RouterModule.forRoot([

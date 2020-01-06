@@ -72,6 +72,13 @@
                         [paymentReference]="pRef" [page]="page" [pageSize]="pageSize"
                         (onPaginationChange)="paginationChange($event)">
                     </app-payment-claim-summary-report>
+
+                    <app-submitted-invoices #submittedInvoicesSearchResult 
+                    [ngClass]="{'hidden':paymentReference != null}"
+                        *ngIf="showSubmittedInvoicesSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
+                        [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
+                        (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
+                    </app-submitted-invoices>
                     <!-- <p style="color: #001b7d70; margin: 22%;padding-left: 19%;">Search result will be here..</p> -->
                 </div>
             </div>
