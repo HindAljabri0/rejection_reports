@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
     this.authService.isUserNameUpdated.subscribe((isUpdated) => {
       if (isUpdated) {
         this.getUserData();
+        this.commen.getNotifications();
       }
     }
     );

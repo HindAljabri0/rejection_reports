@@ -1,29 +1,13 @@
-app-abstractcard{
-    width: 280px;
-    display: inline-block;
-    margin: 0px 5px;
-}
-.dashboardNumbers{
-    font-size: 15px;
-    font-weight: 700;
-}
 
 table {
     margin: 0px;
     width: 100%;
 }
-table th{
-    font-weight: 400;
-}
+
 table td{
-    width: 10%;
-}
-table td:nth-child(1){
     width: 4%;
 }
-app-abstractcard table td{
-    width: fit-content;
-}
+
 .currency{
     font: Bold 10px Roboto;
     letter-spacing: 0;
@@ -31,19 +15,11 @@ app-abstractcard table td{
     opacity: 0.25;
 }
 
-.cardsSummary{
-    width: max-content;
-}
-
 .viewPort{
     max-width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     margin-bottom: 30px;
-}
-
-.downloadIcon:hover{
-    cursor: pointer;
 }
 
 mat-paginator{
@@ -84,21 +60,4 @@ mat-expansion-panel:hover{
 .errorCard{
     background-color: #E988AD;
     color:white;
-}
-
-.errorText{
-    border: 1px solid #8f0000;
-    border-radius: 6px;
-    padding: 10px;
-    width: 90%;
-    margin-left: 60px;
-    background-color: #fdc0c0;
-    color: #8f0000;
-    font-size: large;
-}
-.errorText::after{
-    content: '!';
-    float: right;
-    font-weight: 600;
-    margin-right: 15px;
 }

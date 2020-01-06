@@ -14,6 +14,10 @@ import { ViewedClaim } from '../models/viewedClaim';
 import { SearchServiceService } from './serchService/search-service.service';
 import { ClaimDialogComponent } from '../components/dialogs/claim-dialog/claim-dialog.component';
 import { AuthService } from './authService/authService.service';
+import { PaymentClaimDetail } from '../models/paymentClaimDetail';
+import { PaymentClaimDetailDailogComponent } from '../components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
+import { PaymentServiceDetails } from '../models/paymentServiceDetails';
+import { ReportsService } from './reportsService/reports.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +39,7 @@ export class CommenServicesService {
 
   onClaimDialogClose:Subject<any> = new Subject;
   
-  constructor(public authService:AuthService, public dialog:MatDialog, private router:Router, private notifications:NotificationsService, private search:SearchServiceService) {
+  constructor(private reportService:ReportsService, public authService:AuthService, public dialog:MatDialog, private router:Router, private notifications:NotificationsService, private search:SearchServiceService) {
     this.loadingChanged.subscribe((value)=>{
       this.loading = value;
     });
@@ -153,6 +157,30 @@ export class CommenServicesService {
     });
   }
 
+  getPaymentClaimDetailAndViewIt(claimId: number){
+    this.reportService.getPaymentClaimDetail(this.providerId, claimId).subscribe(event =>{
+      if(event instanceof HttpResponse){
+        const claim:PaymentClaimDetail = JSON.parse(JSON.stringify(event.body));
+        this.openPaymentClaimDetailDialog(claim);
+      }
+    }, errorEvent => {
+      if(errorEvent instanceof HttpErrorResponse){
+        this.openDialog(new MessageDialogData("", errorEvent.message, true));
+      }
+    });
+  }
+  openPaymentClaimDetailDialog(claim:PaymentClaimDetail){
+    const dialogRef = this.dialog.open(PaymentClaimDetailDailogComponent, {
+      width: '60%',
+      height: '80%',
+      panelClass: 'claimDialog',
+      data: claim,
+    });
+    dialogRef.afterClosed().subscribe(value =>{
+      this.onClaimDialogClose.next(value);
+    });
+  }
+
   getCardAccentColor(status:string){
     switch(status){
       case ClaimStatus.Accepted:
@@ -188,10 +216,50 @@ export class CommenServicesService {
         return 'Rejected by Payer';
       case ClaimStatus.Failed:
         return 'Failed to Submit'
+      case ClaimStatus.PARTIALLY_PAID:
+        return 'Partially Paid';
+      case ClaimStatus.REJECTED:
+        return 'Rejected by Payer';
       default:
-        return status;
+        return status.substr(0,1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase();
     }
   }
 
+  // private testPaymentClaimDetailDailog() {
+  //   let claim: PaymentClaimDetail = new PaymentClaimDetail();
+  //   claim.claimId = 0;
+  //   claim.paidAmount = 5050;
+  //   claim.paidAmountUnit = "SAR";
+  //   claim.patientFileNumber = "patientFileNumber";
+  //   claim.patientName = "patientName";
+  //   claim.physicianName = "physicianName";
+  //   claim.policyNumber = "policyNumber";
+  //   claim.providerClaimNumber = "providerClaimNumber";
+  //   claim.rejectedAmount = 0;
+  //   claim.rejectedAmountUnit = "SAR";
+  //   claim.requestedNetAmount = 5000;
+  //   claim.requestedNetAmountUnit = "SAR";
+  //   claim.requestedNetVatAmount = 50;
+  //   claim.requestedNetVatAmountUnit = "SAR";
+  //   claim.statusCode = "PAID";
+  //   claim.statusDescription = "Paid";
+  //   let service: PaymentServiceDetails = new PaymentServiceDetails();
+  //   service.decisionComment = "Paid";
+  //   service.invoiceNumber = "invoiceNumber";
+  //   service.paidAmount = 5050;
+  //   service.paidAmountUnit = "SAR";
+  //   service.rejectedAmount = 0;
+  //   service.rejectedAmountUnit = "SAR";
+  //   service.requestedNetAmount = 5000;
+  //   service.requestedNetAmountUnit = "SAR";
+  //   service.requestedNetVatAmount = 50;
+  //   service.requestedNetVatAmountVat = "SAR";
+  //   service.serviceCode = "serviceCode";
+  //   service.serviceDate = new Date();
+  //   service.serviceDescription = "serviceDescription";
+  //   service.serviceStatus = "PAID";
+  //   claim.serviceDetails = [service,service,service,service,service,service,service,service,service,service,service,service,service,service,service,service,service];
+  //   this.openPaymentClaimDetailDialog(claim);
+  // }
   
 }

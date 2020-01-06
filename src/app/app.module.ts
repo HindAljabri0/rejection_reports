@@ -37,8 +37,9 @@ import { RouteCanActiveService } from './services/routeCanActive/route-can-activ
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 import { from } from 'rxjs';
-import { PaymentReferenceReportComponent } from './components/payment-reference-report/payment-reference-report.component';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { PaymentReferenceReportComponent } from './pages/reports/payment-reference-report/payment-reference-report.component';
+import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
+import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -76,6 +77,8 @@ export const MY_FORMATS = {
     DashboardComponent,
     SearchWithAdvanceComponent,
     PaymentReferenceReportComponent,
+    PaymentClaimDetailDailogComponent,
+    PaymentClaimSummaryReportComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -85,7 +88,7 @@ export const MY_FORMATS = {
       { path: 'login', component: LoginComponent },
       { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
       { path: 'summary', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
-      { path: 'reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
+      { path: ':providerId/reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
 
     ]),
     // JwtModule.forRoot({
@@ -147,10 +150,12 @@ export const MY_FORMATS = {
   exports: [
     MessageDialogComponent,
     ClaimDialogComponent,
+    PaymentClaimDetailDailogComponent,
   ],
   entryComponents: [
     MessageDialogComponent,
-    ClaimDialogComponent
+    ClaimDialogComponent,
+    PaymentClaimDetailDailogComponent,
   ],
 })
 export class AppModule { }

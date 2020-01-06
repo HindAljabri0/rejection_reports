@@ -1,127 +1,218 @@
-import { QuerytoReport } from './../../models/searchData/querytoReports';
-import { QueryReport } from './../../models/searchData/queryReport';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Query } from 'src/app/models/searchData/query';
-import { MatMenuTrigger } from '@angular/material';
-import { FormControl } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Router } from '@angular/router';
 
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Router, RouterEvent, NavigationEnd, ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
-import { QueryType } from 'src/app/models/searchData/queryType';
+import { ReportsService } from 'src/app/services/reportsService/reports.service';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
+import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 
 
 @Component({
-    selector: 'app-reports-page',
-    templateUrl: './reports-page.component.html',
-    styleUrls: ['./reports-page.component.css']
-  })
-  export class ReportsComponent implements OnInit {
+  selector: 'app-reports-page',
+  templateUrl: './reports-page.component.html',
+  styleUrls: ['./reports-page.component.css']
+})
+export class ReportsComponent implements OnInit, AfterViewInit {
 
-    payers: { id: number, name: string }[];
-    reports: { id: number, name: string }[];
+  payers: { id: number, name: string }[] = [
+    { id: 102, name: "Tawuniya" },
+    { id: 300, name: "MDG" },
+    { id: 306, name: "SE" },
+    { id: 204, name: "AXA" },
+  ];
+  reports: { id: number, name: string }[] = [
+    { id: 1, name: "Payment" },
+    { id: 2, name: "Submitted Invoices" },
+  ];
 
-    queries: QuerytoReport[] = [];
+  downloadIcon = "vertical_align_bottom";
 
-    @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
-    searchControl: FormControl = new FormControl();
+  reportTypeControl: FormControl = new FormControl();
+  fromDateControl: FormControl = new FormControl();
+  toDateControl: FormControl = new FormControl();
+  payerIdControl: FormControl = new FormControl();
 
-    fromDateControl: FormControl = new FormControl();
-    fromDateHasError: boolean = false;
-    toDateControl: FormControl = new FormControl();
-    toDateHasError: boolean = false;
-    payerIdControl: FormControl = new FormControl();
-    payerIdHasError: boolean = false;
+  page:number;
+  pageSize:number;
+  tempPage:number = 0;
+  tempPageSize:number = 10;
 
-    fromDate:QueryReport = QueryReport.DATEFROM;
-    toDate:QueryReport = QueryReport.DATETO;
-    payerId:QueryReport = QueryReport.PAYERID;
-    batchId:QueryReport = QueryReport.BATCHID;
-    report:QueryReport = QueryReport.REPORT;
-    addOnBlur = true;
+  paymentReference:string;
 
-    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-    constructor(private router: Router, private commen: CommenServicesService) { }
+  @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
+  @ViewChild('paymentClaimSummaryReport', {static: false}) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
 
-    queryToText(querytoreport: QuerytoReport) {
-        switch (querytoreport.typeReport) {
-          case QueryReport.PAYERID:
-            return this.payers.find(value => `${value.id}` == querytoreport.content).name
-          case QueryReport.DATEFROM:
-          case QueryReport.DATETO:
-            return querytoreport.content.replace('-', '/').replace('-', '/');
-          default:
-            return querytoreport.content;
-        }
+  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService:ReportsService) { }
+
+  ngOnInit() {
+    this.routeActive.queryParams.subscribe(value => {
+      if (value.from != undefined) {
+        const fromDate: Date = new Date(value.from);
+        this.fromDateControl.setValue(fromDate);
       }
-
-      queryToTextReports(querytoreport: QuerytoReport) {
-        switch (querytoreport.typeReport) {
-          case QueryReport.PAYERID:
-            return this.reports.find(value => `${value.id}` == querytoreport.content).name
-          case QueryReport.DATEFROM:
-          case QueryReport.DATETO:
-            return querytoreport.content.replace('-', '/').replace('-', '/');
-          default:
-            return querytoreport.content;
-        }
+      if (value.to != undefined) {
+        const toDate: Date = new Date(value.to);
+        this.toDateControl.setValue(toDate);
       }
-    
-
-    search() {
-        this.fromDateHasError = false;
-        this.toDateHasError = false;
-        this.payerIdHasError = false;
-        if (this.queries.map(value => value.typeReport == QueryReport.DATEFROM || value.typeReport == QueryReport.DATETO || value.typeReport == QueryReport.PAYERID).includes(true)) {
-          if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
-            this.trigger.openMenu();
-            this.fromDateHasError = true;
-          } else if (this.toDateControl.invalid || this.toDateControl.value == null) {
-            this.trigger.openMenu();
-            this.toDateHasError = true;
-          } else if (this.payerIdControl.invalid || this.payerIdControl.value == null) {
-            this.trigger.openMenu();
-            this.payerIdHasError = true;
-          } else {
-            let fromDate = new Date(this.fromDateControl.value);
-            let toDate = new Date(this.toDateControl.value);
-            const from = fromDate.getFullYear() + '-' + (fromDate.getMonth() + 1) + '-' + fromDate.getDate();
-            const to = toDate.getFullYear() + '-' + (toDate.getMonth() + 1) + '-' + toDate.getDate();
-            const payer = this.payerIdControl.value;
-            this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { from: from, to: to, payer: payer} });
-          }
-        } else if (this.queries.length == 1 && this.queries.map(value => value.typeReport == QueryReport.BATCHID).includes(true)) {
-          let batchId = this.queries.find(querytoreport => querytoreport.typeReport == QueryReport.BATCHID).content;
-          this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { batchId:batchId } });
-        } else {
-          this.trigger.openMenu();
-        }
+      if (value.payer != undefined) {
+        this.payerIdControl.setValue(Number.parseInt(value.payer));
       }
+      if (value.type != undefined) {
+        this.reportTypeControl.setValue(Number.parseInt(value.type));
+      }
+      if(value.pRef != null){
+        this.paymentReference = value.pRef;
+      }
+      if(value.page != null){
+        this.page = Number.parseInt(value.page);
+      } else {
+        this.page = 0;
+      }
+      if(value.pageSize != null){
+        this.pageSize = Number.parseInt(value.pageSize);
+      } else {
+        this.pageSize = 10;
+      }
+    });
+  }
 
-    
-    updateChips(queryReport: QueryReport, content: string) {
-        content = `${content}`;
-        if (content != null && content.trim().length != 0) {
-          let querytoReport: QuerytoReport = this.queries.find(querytoReport => querytoReport.typeReport == queryReport);
-          if (querytoReport != null){
-              querytoReport.content = content.trim();
-          } 
-        }
-    }
-     
-
-
-    ngOnInit() {
-        this.payers = [
-            { id: 102, name: "Tawuniya" },
-            { id: 300, name: "MDG" },
-            { id: 306, name: "SE" },
-            { id: 204, name: "AXA" },
-          ];
-        this.reports = [
-            { id: 1, name: "Payment" },
-          ];
+  ngAfterViewInit() {
+    if(this.paymentReference == null){
+      this.search();
+    } else {
+      this.paymentClaimSummaryReport.fetchData(this.paymentReference);
     }
   }
+
+  search() {
+    if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null) {
+      return;
+    }
+    let queryParams:Params = {};
+    const fromDate: Date = new Date(this.fromDateControl.value);
+    const toDate: Date = new Date(this.toDateControl.value);
+    const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
+    const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
+    queryParams.from = from;
+    queryParams.to = to;
+    queryParams.payer = this.payerIdControl.value;
+    queryParams.type = this.reportTypeControl.value;
+    if(this.page > 0){
+      queryParams.page = this.page;
+    }
+    if(this.pageSize > 10){
+      queryParams.pageSize = this.pageSize;
+    }
+    this.router.navigate([this.providerId, 'reports'], { queryParams: queryParams });
+    if (this.reportTypeControl.value == 1) {
+      this.paymentSearchResult.fetchData();
+    }
+  }
+
+  onPaymentClick(paymentRef) {
+    this.tempPage = this.page;
+    this.tempPageSize = this.pageSize;
+    this.page = 0;
+    this.pageSize = 10;
+    this.paymentClaimSummaryReport.page = 0;
+    this.paymentClaimSummaryReport.pageSize = 10;
+    this.resetURL();
+    this.paymentReference = paymentRef;
+    this.paymentClaimSummaryReport.fetchData(this.paymentReference);
+    this.location.go(`${this.location.path()}&pRef=${paymentRef}`);
+  }
+
+  paginationChange(event){
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.resetURL();
+  }
+
+  backButton(){
+    this.paymentReference = null;
+    this.page = this.tempPage;
+    this.pageSize = this.tempPageSize;
+    this.paymentSearchResult.queryPage = this.page;
+    this.paymentSearchResult.pageSize = this.pageSize;
+    if(this.paymentSearchResult.payments.length == 0) this.paymentSearchResult.fetchData();
+    this.resetURL();
+  }
+
+  download(){
+    if(this.downloadIcon == "check_circle") return;
+    
+    this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        var exportedFilenmae = `Report_Payment_Reference_${this.paymentReference}.csv`;
+        if (navigator.msSaveBlob) { // IE 10+
+          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          navigator.msSaveBlob(blob, exportedFilenmae);
+        } else {
+          var a = document.createElement("a");
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          a.target = '_blank';
+          a.download = exportedFilenmae
+          
+          a.click();
+          this.downloadIcon = "check_circle";
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent);
+        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+      }
+    });
+  }
+
+  resetURL(){
+    const fromDate: Date = new Date(this.fromDateControl.value);
+    const toDate: Date = new Date(this.toDateControl.value);
+    const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
+    const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
+    let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
+    if(this.paymentReference != null){
+      URL += `&pRef=${this.paymentReference}`;
+    }
+    if(this.page > 0){
+      URL += `&page=${this.page}`;
+    }
+    if(this.pageSize > 10){
+      URL += `&pageSize=${this.pageSize}`;
+    }
+    this.location.go(URL);
+  }
+
+  get providerId() {
+    return this.commen.providerId;
+  }
+
+  get showPaymentSearch() {
+    return this.reportTypeControl.value == 1;
+  }
+
+  get fromDate() {
+    let date: Date = new Date(this.fromDateControl.value);
+    return `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
+  }
+
+  get toDate() {
+    let date: Date = new Date(this.toDateControl.value);
+    return `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
+  }
+
+  get pRef(){
+    return this.paymentReference;
+  }
+
+  get height(){
+    return `${this.pageSize * 55 + 275}px`;
+  }
+
+
+}
