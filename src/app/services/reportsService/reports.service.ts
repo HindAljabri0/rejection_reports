@@ -50,4 +50,15 @@ export class ReportsService {
     return this.http.request(request);
   }
 
+  // downloadSubmittedInvoices(providerId: string, status: string, fromDate?: string, toDate?: string, payerId?: string, batchId?: string) {
+  //   let requestURL: string = '/' + providerId + '/claim-download?status=' + status;
+  //   if(fromDate != null && toDate != null && payerId != null){
+  //     requestURL += `&fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
+  //   } else{
+  //     requestURL += `&batchId=${batchId}`;
+  //   }
+  //   const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
+  //   return this.http.request(request);
+  // }
+
 }
