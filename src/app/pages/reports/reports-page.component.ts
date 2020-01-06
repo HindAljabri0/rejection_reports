@@ -5,12 +5,12 @@ import { Router, RouterEvent, NavigationEnd, ActivatedRoute, Params } from '@ang
 import { Location } from '@angular/common';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { filter } from 'rxjs/operators';
-import { PaymentReferenceReportComponent } from 'src/app/pages/reports/payment-reference-report/payment-reference-report.component';
-import { PaymentClaimSummaryReportComponent } from 'src/app/pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
+import { SubmittedInvoicesComponent } from './submitted-invoices/submitted-invoices.component';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
-import { SubmittedInvoicesComponent } from './submitted-invoices/submitted-invoices.component';
+import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
+import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 
 
 @Component({
@@ -194,8 +194,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
     let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
-    if (this.paymentReference != null) {
-      URL += `&pRef=${this.paymentReference}`
+    if(this.paymentReference != null){
+      URL += `&pRef=${this.paymentReference}`;
     }
     if (this.claimId != null) {
       URL += `&claimId=${this.claimId}`

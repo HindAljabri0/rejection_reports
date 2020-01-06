@@ -85,3 +85,20 @@ mat-expansion-panel:hover{
     background-color: #E988AD;
     color:white;
 }
+
+.errorText{
+    border: 1px solid #8f0000;
+    border-radius: 6px;
+    padding: 10px;
+    width: 90%;
+    margin-left: 60px;
+    background-color: #fdc0c0;
+    color: #8f0000;
+    font-size: large;
+}
+.errorText::after{
+    content: '!';
+    float: right;
+    font-weight: 600;
+    margin-right: 15px;
+}

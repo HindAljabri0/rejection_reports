@@ -216,8 +216,12 @@ export class CommenServicesService {
         return 'Rejected by Payer';
       case ClaimStatus.Failed:
         return 'Failed to Submit'
+      case ClaimStatus.PARTIALLY_PAID:
+        return 'Partially Paid';
+      case ClaimStatus.REJECTED:
+        return 'Rejected by Payer';
       default:
-        return status;
+        return status.substr(0,1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase();
     }
   }
 

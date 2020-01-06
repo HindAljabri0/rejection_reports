@@ -11,6 +11,7 @@ export class SearchedClaim extends Paginateable{
   physicianId:string;
   providerClaimNumber:string;
   status:string;
+  statusDetail:string;
   unitOfNetAmount:string;
   unitOfNetVatAmount:string;
 
@@ -27,6 +28,7 @@ export class SearchedClaim extends Paginateable{
       this.physicianId = body['physicianId'];
       this.providerClaimNumber = body['providerClaimNumber'];
       this.status = body['status'];
+      this.statusDetail = body['statusDetail'];
       this.unitOfNetAmount = body['unitOfNetAmount'];
       this.unitOfNetVatAmount = body['unitOfNetVatAmount'];
     }
