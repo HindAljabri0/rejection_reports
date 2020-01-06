@@ -39,10 +39,7 @@ import { from } from 'rxjs';
 import { PaymentReferenceReportComponent } from './pages/reports/payment-reference-report/payment-reference-report.component';
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
-<<<<<<< HEAD
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
-=======
->>>>>>> e243ee23c8b9b0b472e5812d28891207680f1acd
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
