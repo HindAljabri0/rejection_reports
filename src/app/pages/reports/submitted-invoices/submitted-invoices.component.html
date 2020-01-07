@@ -24,11 +24,11 @@
             <table style="color: #3060AA !important;">
                 <tr>
                     <td>Payer</td>
-                    <td>Claim Id</td>
+                    <!-- <td>Claim Id</td> -->
                     <td>Visit Date</td>
                     <td>Submission Date</td>
-                    <td>Provider Claim Number</td>
-                    <td>Payer Claim Ref Number</td>
+                    <td style="width: 12%;">Provider Claim Number</td>
+                    <td style="width: 15%;">Payer Claim Ref Number</td>
                     <td>Batch Id</td>
                     <td>Policy Holder Code</td>
                     <td>Status</td>
@@ -46,11 +46,11 @@
             <table style="color: black !important;">
                 <tr>
                     <td style="width: 10%;">{{mapPayer(claim.payerId)}}</td>
-                    <td style="width: 10%;">{{claim.claimId}}</td>
+                    <!-- <td style="width: 10%;">{{claim.claimId}}</td> -->
                     <td style="width: 10%;">{{claim.visitDate}}</td>
                     <td style="width: 10%;">{{claim.submissionDate}}</td>
-                    <td style="width: 10%;">{{claim.provClaimNo}}</td>
-                    <td style="width: 10%;">{{claim.payerClaimRefNo}}</td>
+                    <td style="width: 12%;">{{claim.provClaimNo}}</td>
+                    <td style="width: 15%;">{{claim.payerClaimRefNo}}</td>
                     <td style="width: 10%;">{{claim.batchid}}</td>
                     <td style="width: 10%;">{{claim.policyHolderCode}}</td>
                     <td style="width: 10%;">{{claim.status}}</td>
