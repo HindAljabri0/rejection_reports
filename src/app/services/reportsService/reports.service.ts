@@ -57,6 +57,7 @@ export class ReportsService {
     
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);
+    
   }
 
 }
