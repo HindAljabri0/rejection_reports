@@ -8,6 +8,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { EventEmitter } from '@angular/core';
 import { SubmittedInvoiceSummary } from 'src/app/models/submittedInvoiceSummary';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-submitted-invoices',
@@ -82,32 +83,28 @@ export class SubmittedInvoicesComponent implements OnInit {
   }
 
    download() {
-  //   if (this.detailTopActionText == "check_circle") return;
-  //   this.reportService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].status, this.from, this.to, this.payerId, this.batchId).subscribe(event => {
-  //     if (event instanceof HttpResponse) {
-  //       if (navigator.msSaveBlob) { // IE 10+
-  //         var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-  //         var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-  //         navigator.msSaveBlob(blob, exportedFilenmae);
-  //       } else {
-  //         var a = document.createElement("a");
-  //         a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
-  //         a.target = '_blank';
-  //         if(this.from != null){
-  //           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-  //         } else {
-  //           a.download = this.detailCardTitle + '_Batch_' + this.batchId+ '.csv';
-  //         }
+    if (this.detailTopActionText == "check_circle") return;
+    this.reportService.downloadSubmittedInvoices(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (navigator.msSaveBlob) { // IE 10+
+          var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          navigator.msSaveBlob(blob, exportedFilenmae);
+        } else {
+          var a = document.createElement("a");
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          a.target = '_blank';
           
-  //         a.click();
-  //         this.detailTopActionText = "check_circle";
-  //       }
-  //     }
-  //   }, errorEvent => {
-  //     if (errorEvent instanceof HttpErrorResponse) {
-  //       this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-  //     }
-  //   });
+            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';          
+          a.click();
+          this.detailTopActionText = "check_circle";
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+      }
+    });
   }
 
   paginatorAction(event) {
