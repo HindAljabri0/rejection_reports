@@ -108,7 +108,7 @@ export class SearchClaimsComponent implements OnInit {
     }
     for (status in ClaimStatus) {
       let statusCode = await this.getSummaryOfStatus(status);
-      if(statusCode != 200){
+      if (statusCode != 200) {
         break;
       }
     }
@@ -143,7 +143,7 @@ export class SearchClaimsComponent implements OnInit {
     } else return this.summaries;
   }
 
-  async getSummaryOfStatus(status: string):Promise<number> {
+  async getSummaryOfStatus(status: string): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
     if (this.batchId == null) {
@@ -161,9 +161,9 @@ export class SearchClaimsComponent implements OnInit {
         }
       });
     }
-    else{
+    else {
 
-      event = await this.searchService.getSummaries(this.providerId, status,undefined,undefined,undefined, this.batchId).toPromise().catch(error => {
+      event = await this.searchService.getSummaries(this.providerId, status, undefined, undefined, undefined, this.batchId).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == "4") {
@@ -218,8 +218,10 @@ export class SearchClaimsComponent implements OnInit {
     if (this.summaries[key].status == ClaimStatus.Accepted) {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
-    }
-    else {
+    } /*else if (this.summaries[key].status == ClaimStatus.Failed){
+      this.detailActionText = 'Re-Submit All';
+      this.detailSubActionText = 'Re-Submit Selection';
+    }*/ else {
       this.detailActionText = null;
       this.detailSubActionText = null;
     }
@@ -227,7 +229,7 @@ export class SearchClaimsComponent implements OnInit {
     this.searchResult = null;
     this.claims = new Array();
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize,this.batchId).subscribe((event) => {
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize, this.batchId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -415,9 +417,9 @@ export class SearchClaimsComponent implements OnInit {
   }
 
   resetURL() {
-    if(this.from != null && this.to != null && this.payerId != null){
+    if (this.from != null && this.to != null && this.payerId != null) {
       this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`);
-    } else if(this.batchId != null){
+    } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
     }
   }
@@ -439,12 +441,12 @@ export class SearchClaimsComponent implements OnInit {
           var a = document.createElement("a");
           a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
           a.target = '_blank';
-          if(this.from != null){
+          if (this.from != null) {
             a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           } else {
-            a.download = this.detailCardTitle + '_Batch_' + this.batchId+ '.csv';
+            a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
           }
-          
+
           a.click();
           this.detailTopActionText = "check_circle";
         }
@@ -460,8 +462,8 @@ export class SearchClaimsComponent implements OnInit {
     return this.commen.loading;
   }
 
-  getIsRejectedByPayer(status:string){
-    return status == ClaimStatus.INVALID || status == ClaimStatus.REJECTED || status == ClaimStatus.PARTIALLY_PAID  || status == ClaimStatus.PARTIALLY_APPROVED;
+  getIsRejectedByPayer(status: string) {
+    return status == ClaimStatus.INVALID || status == ClaimStatus.REJECTED || status == ClaimStatus.PARTIALLY_PAID || status == ClaimStatus.PARTIALLY_APPROVED;
   }
 
 }

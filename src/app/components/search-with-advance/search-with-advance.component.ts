@@ -42,8 +42,8 @@ export class SearchWithAdvanceComponent implements OnInit {
   ngOnInit() {
     this.payers = [
       { id: 102, name: "Tawuniya" },
-      { id: 300, name: "MDG" },
-      { id: 306, name: "SE" },
+      { id: 300, name: "Med Gulf" },
+      { id: 306, name: "Saudi Enaya" },
       { id: 204, name: "AXA" },
     ];
     this.router.events.pipe(
