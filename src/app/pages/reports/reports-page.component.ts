@@ -22,8 +22,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   payers: { id: number, name: string }[] = [
     { id: 102, name: "Tawuniya" },
-    { id: 300, name: "MDG" },
-    { id: 306, name: "SE" },
+    { id: 300, name: "Med Gulf" },
+    { id: 306, name: "Saudi Enaya" },
     { id: 204, name: "AXA" },
   ];
   reports: { id: number, name: string }[] = [
