@@ -50,6 +50,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
+  payerId: string;
 
 
   constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService) { }
@@ -188,6 +189,34 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  downloadInvoice() {
+    if (this.downloadIcon == "check_circle") return;
+
+    this.reportsService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.fromDate, this.toDate, this.payerIdControl.value).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        var exportedFilenmae = `Report_Submitted_Invoice_Reference.csv`;
+        if (navigator.msSaveBlob) { // IE 10+
+          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          navigator.msSaveBlob(blob, exportedFilenmae);
+        } else {
+          var a = document.createElement("a");
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          a.target = '_blank';
+          a.download = exportedFilenmae
+
+          a.click();
+          this.downloadIcon = "check_circle";
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent);
+        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+      }
+    });
+  }
+
   resetURL() {
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);
@@ -212,6 +241,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   get providerId() {
     return this.commen.providerId;
   }
+
+  /* get payerId() {
+    return this.commen.payerId;
+  }*/
 
   get showPaymentSearch() {
     return this.reportTypeControl.value == 1;
