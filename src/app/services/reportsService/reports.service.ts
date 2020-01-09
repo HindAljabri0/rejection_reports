@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -39,6 +40,15 @@ export class ReportsService {
   getPaymentClaimDetail(providerId: string, claimId:number) {
     const requestURL = `/${providerId}/payment/payment-claim-detail?`+
     `claimId=${claimId}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+  getRejectionSummary(providerId: string, fromDate: string, toDate: string, payerId: string, page?: number, pageSize?: number) {
+    if (page == null) page = 0;
+    if (pageSize == null) pageSize = 10;
+    const requestURL = `/${providerId}/claim/-summary?`+
+    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
