@@ -8,6 +8,8 @@ import { CommenServicesService } from 'src/app/services/commen-services.service'
 })
 export class UploadHistoryCenterComponent implements OnInit {
 
+  inCenter = true;
+
   showCenter:boolean = false;
 
   constructor(private commen:CommenServicesService) {

@@ -1,5 +1,5 @@
 <div class="blackBackground" [ngClass]="{'show':showCenter}" (click)="hideCenter()"></div>
 <div class="notificationCenter" [ngClass]="{'show':showCenter}">
-    <app-upload-history-card *ngFor="let data of dataList" [data]="data" [isUploadHistroyCenter]="1 == 1"></app-upload-history-card>
+    <app-upload-history-card *ngFor="let data of dataList" [data]="data" [isUploadHistroyCenter]="inCenter"></app-upload-history-card>
     <div class="seeAll"><a routerLink="upload/history"  (click)="hideCenter()">See All</a></div>
 </div>

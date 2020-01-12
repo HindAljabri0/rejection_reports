@@ -18,6 +18,8 @@ export class UploadsHistoryComponent implements OnInit {
   currentPage = 0;
   maxPages = Number.MAX_VALUE;
 
+  inCenter=false;
+
   constructor(private uploadService:UploadService, private commen:CommenServicesService) { }
 
   ngOnInit() {

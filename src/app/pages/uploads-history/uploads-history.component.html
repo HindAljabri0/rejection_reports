@@ -5,7 +5,7 @@
                 <p>{{key}}</p>
                 <div class="notifications">
                     <div class="notification" *ngFor="let uploadCardDate of uploadsMap.get(key)">
-                        <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="1 == 0">
+                        <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="inCenter">
                         </app-upload-history-card>
                     </div>
                 </div>
