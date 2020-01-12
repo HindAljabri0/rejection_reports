@@ -12,6 +12,7 @@ import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -22,7 +23,7 @@ export class SearchClaimsComponent implements OnInit {
 
 
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchServiceService) {
+  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchServiceService, private dialogService:DialogService) {
   }
   placeholder = '-';
   cardsClickAble: boolean = true;
@@ -73,7 +74,7 @@ export class SearchClaimsComponent implements OnInit {
     ).subscribe(() => {
       this.fetchData();
     });
-    this.commen.onClaimDialogClose.subscribe(value => {
+    this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null && value) {
         this.fetchData();
       }
@@ -271,14 +272,14 @@ export class SearchClaimsComponent implements OnInit {
     if (this.commen.loading) {
       return;
     } else if (this.selectedClaims.length == 0) {
-      this.commen.openDialog(new MessageDialogData('', 'Please select at least 1 Accepted claim first.', true));
+      this.dialogService.openMessageDialog(new MessageDialogData('', 'Please select at least 1 Accepted claim first.', true));
       return;
     }
     this.commen.loadingChanged.next(true);
     this.submittionService.submitClaims(this.selectedClaims, this.providerId, this.payerId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
-          this.commen.openDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
+          this.dialogService.openMessageDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
             this.resetURL();
             this.fetchData();
           });
@@ -295,7 +296,7 @@ export class SearchClaimsComponent implements OnInit {
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status >= 500 || errorEvent.status == 0)
-          this.commen.openDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
         if (errorEvent.error['errors'] != null)
           for (let error of errorEvent.error['errors']) {
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
@@ -313,7 +314,7 @@ export class SearchClaimsComponent implements OnInit {
     this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
-          this.commen.openDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
+          this.dialogService.openMessageDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
             this.resetURL();
             this.fetchData();
           });
@@ -324,9 +325,9 @@ export class SearchClaimsComponent implements OnInit {
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status >= 500 || errorEvent.status == 0)
-          this.commen.openDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
         if (errorEvent.error['message'] != null) {
-          this.commen.openDialog(new MessageDialogData('', errorEvent.error['message'], true));
+          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
         }
       }
     });
@@ -426,7 +427,7 @@ export class SearchClaimsComponent implements OnInit {
 
 
   showClaim(claimStatus: string, claimId: string) {
-    this.commen.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId);
+    this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId);
   }
 
   download() {
@@ -453,7 +454,7 @@ export class SearchClaimsComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
   }

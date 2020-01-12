@@ -9,6 +9,8 @@ import { CommenServicesService } from 'src/app/services/commen-services.service'
 import { ClaimFields } from 'src/app/models/claimFields';
 import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { SearchServiceService } from 'src/app/services/serchService/search-service.service';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -17,7 +19,7 @@ import { AdminService } from 'src/app/services/adminService/admin.service';
 })
 export class ClaimDialogComponent implements OnInit {
 
-  constructor(public commen: CommenServicesService, public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim: ViewedClaim, public claimUpdateService: ClaimUpdateService, public adminService: AdminService) { }
+  constructor(public commen: CommenServicesService, public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim: ViewedClaim, public claimUpdateService: ClaimUpdateService, public adminService: AdminService, private searchService:SearchServiceService) { }
 
   ngOnInit() {
     console.log(this.claim);
@@ -211,7 +213,7 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   reloadeClaim() {
-    this.commen.getClaim(this.claim.providerId, `${this.claim.claimid}`).subscribe(event => {
+    this.searchService.getClaim(this.claim.providerId, `${this.claim.claimid}`).subscribe(event => {
       if (event instanceof HttpResponse) {
         const providerId = this.claim.providerId;
         const payerId = this.claim.payerid;

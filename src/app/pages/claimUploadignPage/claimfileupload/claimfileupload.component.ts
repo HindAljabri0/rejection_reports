@@ -8,6 +8,7 @@ import { CommenServicesService } from '../../../services/commen-services.service
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { async } from '@angular/core/testing';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 
 
@@ -18,7 +19,7 @@ import { async } from '@angular/core/testing';
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
-  constructor(public uploadService: UploadService, public common:CommenServicesService) { }
+  constructor(public uploadService: UploadService, public common:CommenServicesService, private dialogService:DialogService) { }
 
   ngOnInit(): void {
     this.steps.push(new Step('Uploading'));
@@ -90,7 +91,7 @@ export class ClaimfileuploadComponent implements OnInit {
         summaryObservable.unsubscribe();
     });
     let errorobservable = this.uploadService.errorChange.subscribe(error =>{
-      this.common.openDialog(new MessageDialogData("", error, true));
+      this.dialogService.openMessageDialog(new MessageDialogData("", error, true));
       this.progressStepper.previousStep();
       this.progressStepper.previousStep();
       errorobservable.unsubscribe();

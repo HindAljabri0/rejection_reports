@@ -11,6 +11,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
 import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 
 @Component({
@@ -53,7 +54,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   payerId: string;
 
 
-  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService) { }
+  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService, private dialogService:DialogService) { }
 
   ngOnInit() {
     this.routeActive.queryParams.subscribe(value => {
@@ -183,7 +184,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         console.log(errorEvent);
-        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
   }
@@ -211,7 +212,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         console.log(errorEvent);
-        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
   }

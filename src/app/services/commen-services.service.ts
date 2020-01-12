@@ -23,27 +23,28 @@ import { ReportsService } from './reportsService/reports.service';
   providedIn: 'root'
 })
 export class CommenServicesService {
-  loading:boolean = false;
-  loadingChanged:Subject<boolean> = new Subject<boolean>();
+  loading: boolean = false;
+  loadingChanged: Subject<boolean> = new Subject<boolean>();
 
-  searchIsOpen:boolean = false;
-  searchIsOpenChange:Subject<boolean> = new Subject<boolean>();
+  searchIsOpen: boolean = false;
+  searchIsOpenChange: Subject<boolean> = new Subject<boolean>();
 
-  showNotificationCenter:boolean;
-  showNotificationCenterChange:Subject<boolean> = new Subject();
+  showNotificationCenter: boolean;
+  showNotificationCenterChange: Subject<boolean> = new Subject();
 
-  unReadNotificationsCount:number = 0;
+  unReadNotificationsCount: number = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
-  notificationsList:Notification[];
-  notificationsListChange:Subject<Notification[]> = new Subject();
+  notificationsList: Notification[];
+  notificationsListChange: Subject<Notification[]> = new Subject();
 
-  onClaimDialogClose:Subject<any> = new Subject;
-  
-  constructor(private reportService:ReportsService, public authService:AuthService, public dialog:MatDialog, private router:Router, private notifications:NotificationsService, private search:SearchServiceService) {
-    this.loadingChanged.subscribe((value)=>{
+
+  constructor(public authService: AuthService,
+    private router: Router,
+    private notifications: NotificationsService) {
+    this.loadingChanged.subscribe((value) => {
       this.loading = value;
     });
-    this.searchIsOpenChange.subscribe(value =>{
+    this.searchIsOpenChange.subscribe(value => {
       this.searchIsOpen = value;
     });
     this.showNotificationCenterChange.subscribe(value => {
@@ -62,127 +63,52 @@ export class CommenServicesService {
     });
   }
 
-  getNotifications(){
-    if(this.providerId == null) return;
+  getNotifications() {
+    if (this.providerId == null) return;
     this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
-      if(event instanceof HttpResponse){
+      if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`);
-        if(!Number.isNaN(count))
+        if (!Number.isNaN(count))
           this.unReadNotificationsCountChange.next(count);
       }
     }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse){
-        this.unReadNotificationsCountChange.next(errorEvent.status == 0? -1 : (errorEvent.status*-1));
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadNotificationsCountChange.next(errorEvent.status == 0 ? -1 : (errorEvent.status * -1));
       }
     });
     this.notifications.getNotifications(this.providerId, 0, 10).subscribe(event => {
-      if(event instanceof HttpResponse){
-        const paginatedResult:PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
+      if (event instanceof HttpResponse) {
+        const paginatedResult: PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.notificationsListChange.next(paginatedResult.content);
       }
     }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse){
-        this.unReadNotificationsCountChange.next(errorEvent.status == 0? -1 : (errorEvent.status*-1));
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadNotificationsCountChange.next(errorEvent.status == 0 ? -1 : (errorEvent.status * -1));
       }
     });
   }
 
-  markAsRead(notificationId:string, providerId:string){
+  markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
-      if(event instanceof HttpResponse){
+      if (event instanceof HttpResponse) {
         console.log(event);
       }
     }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse){
+      if (errorEvent instanceof HttpErrorResponse) {
         console.log(errorEvent);
       }
     });
   }
 
-  openDialog(dialogData:MessageDialogData):Observable<any>{
-    const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: '35%',
-      height: '17%',
-      panelClass: dialogData.isError? 'dialogError':'dialogSuccess',
-      data: dialogData,
-    });
-    return dialogRef.afterClosed();
-  }
 
-  getClaimAndViewIt(providerId:string, payerId:string, status:string, claimId:string){
-    if(this.loading) return;
-    this.loadingChanged.next(true);
-    this.getClaim(providerId, claimId).subscribe(event => {
-      if(event instanceof HttpResponse){
-        const claim:ViewedClaim = JSON.parse(JSON.stringify(event.body));
-        this.loadingChanged.next(false);
-        if(payerId==null)
-        {
-          payerId = claim.payerid;
-        }
-        this.openClaimDialog(providerId, payerId, status, claim);
-      }      
-    }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse){
-        if(errorEvent.status == 404){
-          this.openDialog(new MessageDialogData("", 'Claim was not found!', true));
-        } else {
-          this.openDialog(new MessageDialogData("", 'Could not reach the server at the moment. Please try again later.', true));
-        }
-      }
-      this.loadingChanged.next(false);
-    });
-  }
 
-  getClaim(providerId:string, claimId:string){
-    return this.search.getClaim(providerId, claimId);
-  }
 
-  public get providerId(){
+  public get providerId() {
     return this.authService.getProviderId();
   }
 
-  openClaimDialog(providerId:string, payerId:string, status:string, claim:ViewedClaim){
-    claim.providerId = providerId;
-    claim.payerid = payerId;
-    claim.status = status;
-    const dialogRef = this.dialog.open(ClaimDialogComponent, {
-      width: '50%',
-      height: '70%',
-      panelClass: 'claimDialog',
-      data: claim,
-    });
-    dialogRef.afterClosed().subscribe(value =>{
-      this.onClaimDialogClose.next(value);
-    });
-  }
-
-  getPaymentClaimDetailAndViewIt(claimId: number){
-    this.reportService.getPaymentClaimDetail(this.providerId, claimId).subscribe(event =>{
-      if(event instanceof HttpResponse){
-        const claim:PaymentClaimDetail = JSON.parse(JSON.stringify(event.body));
-        this.openPaymentClaimDetailDialog(claim);
-      }
-    }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse){
-        this.openDialog(new MessageDialogData("", errorEvent.message, true));
-      }
-    });
-  }
-  openPaymentClaimDetailDialog(claim:PaymentClaimDetail){
-    const dialogRef = this.dialog.open(PaymentClaimDetailDailogComponent, {
-      width: '80%',
-      height: '90%',
-      panelClass: 'claimDialog',
-      data: claim,
-    });
-    dialogRef.afterClosed().subscribe(value =>{
-      this.onClaimDialogClose.next(value);
-    });
-  }
-
-  getCardAccentColor(status:string){
-    switch(status){
+  getCardAccentColor(status: string) {
+    switch (status) {
       case ClaimStatus.Accepted:
         return '#21B744';
       case ClaimStatus.NotAccepted:
@@ -202,8 +128,8 @@ export class CommenServicesService {
     }
   }
 
-  statusToName(status:string){
-    switch(status){
+  statusToName(status: string) {
+    switch (status) {
       case ClaimStatus.Accepted:
         return 'Ready for Submission';
       case ClaimStatus.NotAccepted:
@@ -221,45 +147,8 @@ export class CommenServicesService {
       case ClaimStatus.REJECTED:
         return 'Rejected by Payer';
       default:
-        return status.substr(0,1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase();
+        return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase();
     }
   }
 
-  // private testPaymentClaimDetailDailog() {
-  //   let claim: PaymentClaimDetail = new PaymentClaimDetail();
-  //   claim.claimId = 0;
-  //   claim.paidAmount = 5050;
-  //   claim.paidAmountUnit = "SAR";
-  //   claim.patientFileNumber = "patientFileNumber";
-  //   claim.patientName = "patientName";
-  //   claim.physicianName = "physicianName";
-  //   claim.policyNumber = "policyNumber";
-  //   claim.providerClaimNumber = "providerClaimNumber";
-  //   claim.rejectedAmount = 0;
-  //   claim.rejectedAmountUnit = "SAR";
-  //   claim.requestedNetAmount = 5000;
-  //   claim.requestedNetAmountUnit = "SAR";
-  //   claim.requestedNetVatAmount = 50;
-  //   claim.requestedNetVatAmountUnit = "SAR";
-  //   claim.statusCode = "PAID";
-  //   claim.statusDescription = "Paid";
-  //   let service: PaymentServiceDetails = new PaymentServiceDetails();
-  //   service.decisionComment = "Paid";
-  //   service.invoiceNumber = "invoiceNumber";
-  //   service.paidAmount = 5050;
-  //   service.paidAmountUnit = "SAR";
-  //   service.rejectedAmount = 0;
-  //   service.rejectedAmountUnit = "SAR";
-  //   service.requestedNetAmount = 5000;
-  //   service.requestedNetAmountUnit = "SAR";
-  //   service.requestedNetVatAmount = 50;
-  //   service.requestedNetVatAmountVat = "SAR";
-  //   service.serviceCode = "serviceCode";
-  //   service.serviceDate = new Date();
-  //   service.serviceDescription = "serviceDescription";
-  //   service.serviceStatus = "PAID";
-  //   claim.serviceDetails = [service,service,service,service,service,service,service,service,service,service,service,service,service,service,service,service,service];
-  //   this.openPaymentClaimDetailDialog(claim);
-  // }
-  
 }

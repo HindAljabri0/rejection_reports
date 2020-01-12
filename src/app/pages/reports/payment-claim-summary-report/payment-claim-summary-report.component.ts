@@ -6,6 +6,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PaymentClaimSummary } from 'src/app/models/paymentClaimSummary';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { EventEmitter } from '@angular/core';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-payment-claim-summary-report',
@@ -28,7 +29,7 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
 
   claimsSummaryResult:PaginatedResult<PaymentClaimSummary>;
 
-  constructor(private reportService: ReportsService, private commen:CommenServicesService) { }
+  constructor(private reportService: ReportsService, private dialogService:DialogService) { }
 
 
   ngOnInit() {
@@ -76,7 +77,7 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
   }
 
   openCLaimPaymentDialog(claimId:number){
-    this.commen.getPaymentClaimDetailAndViewIt(claimId);
+    this.dialogService.getPaymentClaimDetailAndViewIt(claimId);
   }
 
 }

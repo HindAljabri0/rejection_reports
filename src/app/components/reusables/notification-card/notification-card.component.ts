@@ -6,6 +6,7 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { HttpResponse,HttpErrorResponse } from '@angular/common/http';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-notification-card',
@@ -17,7 +18,7 @@ export class NotificationCardComponent implements OnInit {
   @Input() notification:Notification;
   date:string;
 
-  constructor(private router:Router,public notificationService:NotificationsService,public commen: CommenServicesService) { }
+  constructor(private router:Router,public notificationService:NotificationsService,public dialogService:DialogService) { }
 
   ngOnInit() {
     if(this.notification != null){
@@ -53,7 +54,7 @@ export class NotificationCardComponent implements OnInit {
       }
     }, errorEvent => {
       if(errorEvent instanceof HttpErrorResponse){
-        this.commen.openDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));        
+        this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));        
       }
     });
    

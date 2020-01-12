@@ -9,6 +9,7 @@ import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { EventEmitter } from '@angular/core';
 import { SubmittedInvoiceSummary } from 'src/app/models/submittedInvoiceSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-submitted-invoices',
@@ -45,7 +46,7 @@ export class SubmittedInvoicesComponent implements OnInit {
   claims = Array();
 
 
-  constructor(public reportService: ReportsService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router) { }
+  constructor(public reportService: ReportsService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, private dialogService:DialogService) { }
 
   ngOnInit() {
      //this.fetchData();
@@ -102,7 +103,7 @@ export class SubmittedInvoicesComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
   }
