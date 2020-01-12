@@ -27,8 +27,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     { id: 204, name: "AXA" },
   ];
   reports: { id: number, name: string }[] = [
-    { id: 1, name: "Payment" },
-    { id: 2, name: "Submitted Invoices" },
+    { id: 1, name: "Payment Report" },
+    { id: 2, name: "Claim Submission Report" },
   ];
 
   downloadIcon = "vertical_align_bottom";
@@ -45,7 +45,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   tempPageSize: number = 10;
 
   paymentReference: string;
-  claimId:string;
+  claimId: string;
 
   @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
@@ -138,10 +138,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.paymentClaimSummaryReport.fetchData(this.paymentReference);
       this.location.go(`${this.location.path()}&pRef=${ref}`);
     }
-    else
-    if (this.reportTypeControl.value == 2) {
+    else if (this.reportTypeControl.value == 2) {
       this.claimId = ref;
-      
+
     }
   }
 
@@ -194,7 +193,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
     let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
-    if(this.paymentReference != null){
+    if (this.paymentReference != null) {
       URL += `&pRef=${this.paymentReference}`;
     }
     if (this.claimId != null) {

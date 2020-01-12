@@ -171,8 +171,8 @@ export class CommenServicesService {
   }
   openPaymentClaimDetailDialog(claim:PaymentClaimDetail){
     const dialogRef = this.dialog.open(PaymentClaimDetailDailogComponent, {
-      width: '60%',
-      height: '80%',
+      width: '80%',
+      height: '90%',
       panelClass: 'claimDialog',
       data: claim,
     });
