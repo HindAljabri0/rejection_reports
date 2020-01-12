@@ -18,6 +18,8 @@ import { PaymentClaimDetail } from '../models/paymentClaimDetail';
 import { PaymentClaimDetailDailogComponent } from '../components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { PaymentServiceDetails } from '../models/paymentServiceDetails';
 import { ReportsService } from './reportsService/reports.service';
+import { DialogService } from './dialogsService/dialog.service';
+import { RejectionReportClaimDialogData } from '../models/dialogData/rejectionReportClaimDialogData';
 
 @Injectable({
   providedIn: 'root'

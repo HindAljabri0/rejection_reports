@@ -41,6 +41,7 @@ import { PaymentReferenceReportComponent } from './pages/reports/payment-referen
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
+import { RejectionReportClaimDialogComponent } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -81,6 +82,7 @@ export const MY_FORMATS = {
     PaymentClaimDetailDailogComponent,
     PaymentClaimSummaryReportComponent,
     SubmittedInvoicesComponent,
+    RejectionReportClaimDialogComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -153,11 +155,13 @@ export const MY_FORMATS = {
     MessageDialogComponent,
     ClaimDialogComponent,
     PaymentClaimDetailDailogComponent,
+    RejectionReportClaimDialogComponent,
   ],
   entryComponents: [
     MessageDialogComponent,
     ClaimDialogComponent,
     PaymentClaimDetailDailogComponent,
+    RejectionReportClaimDialogComponent,
   ],
 })
 export class AppModule { }

@@ -11,6 +11,8 @@ import { CommenServicesService } from '../commen-services.service';
 import { SearchServiceService } from '../serchService/search-service.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ReportsService } from '../reportsService/reports.service';
+import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/rejectionReportClaimDialogData';
+import { RejectionReportClaimDialogComponent } from 'src/app/components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +91,18 @@ export class DialogService {
     const dialogRef = this.dialog.open(PaymentClaimDetailDailogComponent, {
       width: '80%',
       height: '90%',
+      panelClass: 'claimDialog',
+      data: claim,
+    });
+    dialogRef.afterClosed().subscribe(value => {
+      this.onClaimDialogClose.next(value);
+    });
+  }
+
+  openRejectionReportClaimDialog(claim: RejectionReportClaimDialogData){
+    const dialogRef = this.dialog.open(RejectionReportClaimDialogComponent, {
+      width: '50%',
+      height: '70%',
       panelClass: 'claimDialog',
       data: claim,
     });
