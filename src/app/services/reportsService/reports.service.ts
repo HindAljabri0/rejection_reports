@@ -51,11 +51,18 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  getRejectionSummary(providerId: string, fromDate: string, toDate: string, payerId: string, page?: number, pageSize?: number) {
+  getRejectionSummary(providerId: string, fromDate: string, toDate: string, payerId: string, criteria: string, page?: number, pageSize?: number) {
+    let queryType: string;
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
-    const requestURL = `/${providerId}/claim/-summary?`+
-    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&size=${pageSize}`;
+    if (criteria == "1") {
+      queryType = "extraction";
+    } else if (criteria == "2") {
+      queryType = "claim";
+
+    }
+    const requestURL = `/${providerId}/claim/rejected?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
@@ -78,8 +85,8 @@ export class ReportsService {
   }
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string) {
-    const requestURL = `/${providerId}/claim/payed/csv?`+
-    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
+    const requestURL = `/${providerId}/claim/payed/csv?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);
   }

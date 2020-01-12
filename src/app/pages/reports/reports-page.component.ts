@@ -30,6 +30,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Payment Report" },
     { id: 2, name: "Claim Submission Report" },
+    { id: 3, name: "Rejection Report" },
+  ];
+
+  criterias: { id: number, name: string }[] = [
+    { id: 1, name: "Upload Date" },
+    { id: 2, name: "Claim Date" },
   ];
 
   downloadIcon = "vertical_align_bottom";
@@ -40,6 +46,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   toDateControl: FormControl = new FormControl();
   payerIdControl: FormControl = new FormControl();
 
+  rejectionCriteriaControl: FormControl = new FormControl();
+
   page: number;
   pageSize: number;
   tempPage: number = 0;
@@ -47,10 +55,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   paymentReference: string;
   claimId: string;
+  criteria: string;
 
   @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
+  @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: SubmittedInvoicesComponent;
   payerId: string;
 
 
@@ -77,6 +87,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
       if (value.claimId != null) {
         this.claimId = value.claimId;
+      }
+      if (value.criteria != null) {
+        this.rejectionCriteriaControl.setValue(Number.parseInt(value.criteria));
+        this.criteria = value.criteria;
       }
       if (value.page != null) {
         this.page = Number.parseInt(value.page);
@@ -112,6 +126,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     queryParams.to = to;
     queryParams.payer = this.payerIdControl.value;
     queryParams.type = this.reportTypeControl.value;
+    queryParams.criteria = this.rejectionCriteriaControl.value;
     if (this.page > 0) {
       queryParams.page = this.page;
     }
@@ -124,6 +139,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
     if (this.reportTypeControl.value == 2) {
       this.submittedInvoicesSearchResult.fetchData();
+    }
+    if (this.reportTypeControl.value == 3) {
+      this.rejectionReportComponent.fetchData();
     }
   }
 
@@ -142,8 +160,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
     else if (this.reportTypeControl.value == 2) {
       this.claimId = ref;
-
     }
+    else if (this.reportTypeControl.value == 3) {
+      this.criteria = ref;
+    }
+    
   }
 
   paginationChange(event) {
@@ -235,6 +256,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.pageSize > 10) {
       URL += `&pageSize=${this.pageSize}`;
     }
+    if (this.criteria != null) {
+      URL += `&criteria=${this.criteria}`
+    }
     this.location.go(URL);
   }
 
@@ -252,6 +276,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   get showSubmittedInvoicesSearch() {
     return this.reportTypeControl.value == 2;
+  }
+
+  get showRejectionReport() {
+    return this.reportTypeControl.value == 3;
   }
 
   get fromDate() {
