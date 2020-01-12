@@ -60,14 +60,38 @@ export class UploadService {
     });
   }
 
+  getUploadSummaries(providerId:string, page?:number, size?:number){
+    if(page == null) page = 0;
+    if(size == null) size = 10;
+    const requestUrl = `/${providerId}/uploads/summary?page=${page}&size=${size}`;
+    const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
+    return this.http.request(request);
+  }
+
+  searchUploadSummaries(providerId:string, query?:string, fromDate?:string, toDate?:string, page?:number, size?:number){
+    if(page == null) page = 0;
+    if(size == null) size = 10;
+    let requestUrl = `/${providerId}/uploads/summary?`;
+
+    if(query != null){
+      requestUrl += `query=${query}`;
+    } else if(fromDate != null && toDate != null){
+      requestUrl += `fromDate=${fromDate}&toDate=${toDate}`;
+    }
+    requestUrl += `&page=${page}&size=${size}`;
+
+    const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
+    return this.http.request(request);
+  }
+
   getUploadedSummary(providerId:string, summaryId:number){
-    const requestUrl = `${providerId}/uploads/summary/${summaryId}?`;
+    const requestUrl = `/${providerId}/uploads/summary/${summaryId}?`;
     const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
     return this.http.request(request);
   }
 
   getUploadedClaimsDetails(providerId:string, summaryId:number, status?:string, page?:number, pageSize?:number){
-    const requestUrl = `${providerId}/uploads/details/${summaryId}?` + (status != null? `status=${status}&`:'')
+    const requestUrl = `/${providerId}/uploads/details/${summaryId}?` + (status != null? `status=${status}&`:'')
     + (page != null? `page=${page}&`:'') + (pageSize != null? `size=${pageSize}`:'');
     const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
     return this.http.request(request);

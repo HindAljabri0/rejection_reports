@@ -42,6 +42,10 @@ import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
 import { RejectionReportClaimDialogComponent } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
+import { UploadHistoryCenterComponent } from './components/upload-history-center/upload-history-center.component';
+import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
+import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
+import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -83,6 +87,10 @@ export const MY_FORMATS = {
     PaymentClaimSummaryReportComponent,
     SubmittedInvoicesComponent,
     RejectionReportClaimDialogComponent,
+    UploadHistoryCenterComponent,
+    UploadHistoryCardComponent,
+    UploadsHistoryComponent,
+    ScrollableDirective,
   ],
   imports: [
     RouterModule.forRoot([
@@ -91,6 +99,7 @@ export const MY_FORMATS = {
       { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate:[RouteCanActiveService]},
       { path: 'login', component: LoginComponent },
       { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
+      { path: 'upload/history', component: UploadsHistoryComponent , canActivate:[RouteCanActiveService]},
       { path: 'summary', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
       { path: ':providerId/reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
 

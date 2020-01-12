@@ -1,0 +1,16 @@
+<div class="mainPage">
+    <app-detailscard title="Upload History" [accentColor]="'#3060AA'">
+        <div id="infinitScroll" scrollable (scrollPosition)="scrollHandler($event)">
+            <div *ngFor="let key of uploadsMapKeys">
+                <p>{{key}}</p>
+                <div class="notifications">
+                    <div class="notification" *ngFor="let uploadCardDate of uploadsMap.get(key)">
+                        <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="1 == 0">
+                        </app-upload-history-card>
+                    </div>
+                </div>
+            </div>
+            <!-- <div id="loadMore" *ngIf="notificationsNotFinished()" (click)="getData(true)">Load more...</div> -->
+        </div>
+    </app-detailscard>
+</div>

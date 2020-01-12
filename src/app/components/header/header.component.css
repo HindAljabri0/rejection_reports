@@ -6,7 +6,7 @@
   font-size: 14px;
 }
 
-.mat-toolbar-row , .mat-toolbar-single-row {
+.mat-toolbar-row, .mat-toolbar-single-row {
   z-index: 1;
   position: fixed;
   display: flex;
@@ -18,13 +18,13 @@
   top: 0px;
 }
 
-.impos{
+.impos {
   display: block;
-    margin-left: 4%;
-    margin-right: 0%;
+  margin-left: 4%;
+  margin-right: 0%;
 }
 
-.mat-progress-bar{
+.mat-progress-bar {
   position: fixed;
   display: flex;
   z-index: 2;
@@ -35,11 +35,20 @@
   margin-right: 60px;
 }
 
-.iconButton:focus{
+.iconButton:focus {
   outline: none;
 }
 
-.iconButton.hasNotifications::after{
+.innerIcon {
+  position: absolute;
+  top: 8.4px;
+  left: 7.5px;
+  font-size: medium;
+  color: #3060AA;
+  font-weight: bold;
+}
+
+.iconButton.hasNotifications::after {
   content: ".";
   position: absolute;
   display: flex;
@@ -48,21 +57,20 @@
   bottom: 24px;
   left: 16px;
 }
-.user-info
-{
+
+.user-info {
   font-size: small;
-    line-height: 20px;
-    background-color: #254f90;
-    border-radius: 5px;
-    padding: 3px 10px;
-    display: flex;
+  line-height: 20px;
+  background-color: #254f90;
+  border-radius: 5px;
+  padding: 3px 10px;
+  display: flex;
 }
-.user-info-button
-{
+
+.user-info-button {
   height: 30px;
   background-color: #ccc;
   width: 30px;
   border-radius: 20px;
   margin-left: 35px;
 }
-

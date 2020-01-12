@@ -1,9 +1,6 @@
 <div class="mainPage">
     <app-detailscard [title]="cardTitle" [accentColor]="'#3060AA'" >
-        <div id="infinitScroll" >
-       <!-- infinite-scroll
-        (scrolled)="onScrollDown()"-->
-            
+        <div id="infinitScroll">
             <div *ngFor="let key of notificationsMapKeys">
                 <p>{{key}}</p>
                 <div class="notifications">

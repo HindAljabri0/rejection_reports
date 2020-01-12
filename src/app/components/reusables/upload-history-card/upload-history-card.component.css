@@ -1,0 +1,93 @@
+.notification{
+    width: 100%;
+    padding: 20px;
+    color: #3060AA;
+    background-color: #ffffff00;
+}
+
+.clickable:hover{
+    cursor: pointer;
+    background-color: #ffffff1a;
+}
+
+.header{
+    background-color: #3060AA;
+    width: 100%;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    padding: 10px;
+    color: white;
+}
+table{
+    width: 100%;
+}
+.header th{
+    font-size: 12px;
+    font-weight: 400;
+    /* text-align: start; */
+}
+.header th:last-child{
+    text-align: end;
+}
+
+
+.batchContent{
+    width: 100%;
+    background-color: white;
+}
+
+.cardInCenter{
+    color: white;
+    background-color: #466DA9;
+}
+
+.batchContent th{
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 15px;
+}
+
+/* .batchContent th:first-child{
+    width: 40%;
+}
+.batchContent th:last-child{
+    width: 60%;
+} */
+.batchContent .totalPaid{
+    font-size: large;
+    font-weight: 600;
+}
+.batchContent .totalUnpaid{
+    font-size: medium;
+    font-weight: 600;
+}
+.batchContent .totalPaid .mat-icon{
+    font-size: small;
+    font-weight: 300;
+    color: #7CFF81;
+}
+.batchContent .totalUnpaid .mat-icon{
+    font-size: small;
+    font-weight: 300;
+    color: #FF5F5F;
+}
+.batchContent th td{
+    text-align: center;
+}
+.batchContent th td p{
+    margin: 2px;
+}
+
+.nIcon{
+    background-color: #3060AA0F;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin-left: auto;
+    text-align: center;
+    padding: 13%;
+}
+
+p{
+    margin-bottom: 1px;
+}

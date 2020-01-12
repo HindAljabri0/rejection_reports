@@ -20,6 +20,8 @@ import { PaymentServiceDetails } from '../models/paymentServiceDetails';
 import { ReportsService } from './reportsService/reports.service';
 import { DialogService } from './dialogsService/dialog.service';
 import { RejectionReportClaimDialogData } from '../models/dialogData/rejectionReportClaimDialogData';
+import { UploadSummary } from '../models/uploadSummary';
+import { UploadService } from './claimfileuploadservice/upload.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +36,22 @@ export class CommenServicesService {
   showNotificationCenter: boolean;
   showNotificationCenterChange: Subject<boolean> = new Subject();
 
+  showUploadHistoryCenter: boolean;
+  showUploadHistoryCenterChange: Subject<boolean> = new Subject();
+
   unReadNotificationsCount: number = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
+  uploadHistoryList: UploadSummary[];
+  uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
+
 
   constructor(public authService: AuthService,
     private router: Router,
-    private notifications: NotificationsService) {
+    private notifications: NotificationsService,
+    private uploadService: UploadService) {
     this.loadingChanged.subscribe((value) => {
       this.loading = value;
     });
@@ -51,6 +60,11 @@ export class CommenServicesService {
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
+      if(value) this.showUploadHistoryCenterChange.next(false);
+    });
+    this.showUploadHistoryCenterChange.subscribe(value => {
+      this.showUploadHistoryCenter = value;
+      if(value) this.showNotificationCenterChange.next(false);
     });
     this.unReadNotificationsCountChange.subscribe(value => {
       this.unReadNotificationsCount = value;
@@ -58,10 +72,17 @@ export class CommenServicesService {
     this.notificationsListChange.subscribe(value => {
       this.notificationsList = value;
     });
+    this.uploadHistoryListChange.subscribe(value => {
+      this.uploadHistoryList = value.map(upload => {
+        upload.uploadDate = new Date(upload.uploadDate);
+        return upload;
+      });
+    });
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.getNotifications();
+      this.getUploadHistory();
     });
   }
 
@@ -86,6 +107,20 @@ export class CommenServicesService {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status == 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  getUploadHistory() {
+    if (this.providerId == null) return;
+    
+    this.uploadService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.uploadHistoryListChange.next(event.body["content"]);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.uploadHistoryListChange.next([]);
       }
     });
   }

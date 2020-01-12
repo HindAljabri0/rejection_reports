@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
       if (isUpdated) {
         this.getUserData();
         this.commen.getNotifications();
+        this.commen.getUploadHistory();
       }
     }
     );
@@ -52,6 +53,10 @@ export class HeaderComponent implements OnInit {
 
   toggleNotificationCenter() {
     this.commen.showNotificationCenterChange.next(!this.commen.showNotificationCenter);
+  }
+
+  toggleUploadHistoryCenter(){
+    this.commen.showUploadHistoryCenterChange.next(!this.commen.showUploadHistoryCenter);
   }
 
   logout() {
