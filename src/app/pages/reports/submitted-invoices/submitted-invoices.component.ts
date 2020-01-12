@@ -84,6 +84,31 @@ export class SubmittedInvoicesComponent implements OnInit {
 
    download() {
     if (this.detailTopActionText == "check_circle") return;
+
+    this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (navigator.msSaveBlob) { // IE 10+
+          var exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          navigator.msSaveBlob(blob, exportedFilename);
+        } else {
+          var a = document.createElement("a");
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          a.target = '_blank';
+          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';          
+          a.click();
+          this.detailTopActionText = "check_circle";
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+      }
+    });
+  }
+
+  /* download() {
+    if (this.detailTopActionText == "check_circle") return;
     this.reportService.downloadSubmittedInvoices(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
@@ -105,7 +130,7 @@ export class SubmittedInvoicesComponent implements OnInit {
         this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
-  }
+  }*/
 
   paginatorAction(event) {
     this.manualPage = event['pageIndex'];
