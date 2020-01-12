@@ -87,7 +87,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
       this.routeActive.queryParams.subscribe(value => {
         if(value.id!=null && this.location.path().includes('summary')) {
           this.commen.loadingChanged.next(true);
-          this.uploadService.getUploadedSummary(value.id).subscribe(event => {
+          this.uploadService.getUploadedSummary(this.commen.providerId, value.id).subscribe(event => {
             if(event instanceof HttpResponse){
               this.commen.loadingChanged.next(false);
               const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
@@ -142,7 +142,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     this.commen.loadingChanged.next(true);
     if(this.paginatedResult != null)
       this.paginatedResult.content = [];
-    this.uploadService.getUploadedClaimsDetails(this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
+    this.uploadService.getUploadedClaimsDetails(this.commen.providerId, this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
       if(event instanceof HttpResponse){
         this.commen.loadingChanged.next(false);
         this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
