@@ -2,27 +2,32 @@ import { Paginateable } from './paginateable';
 
 export class RejectionSummary extends Paginateable {
 
-    claimId: string;
-    payerId: string;
-    visitDate: Date;
-    rejectDate: Date;
-    provClaimNo: string;
-    payerClaimRefNo: string;
-    batchid: string;
-    policyHolderCode: string;
+    doctorId: string;
+    patientName: string;
+    claimRefNo: string;
+    patientFileNumber: string;
+    memeberId: string;
+    policyNumber: string;
+    claimdate: Date;
+    netAmount: number;
+    rejectedBy: string;
     status: string;
+    statusDetails: string;
+    field: string;
 
     constructor(body: {}) {
         super(body);
-        this.payerId = body["payerId"];
-        this.claimId = body["claimId"];
-        this.visitDate = body["visitDate"];
-        this.rejectDate = body["rejectDate"];
-        this.provClaimNo = body["provClaimNo"];
-        this.payerClaimRefNo = body["payerClaimRefNo"];
-        this.batchid = body["batchid"];
-        this.policyHolderCode = body["policyHolderCode"];
-        this.status = body["status"];
-
+        this.doctorId = body["wslGenInfo"]["physicianid"];
+        this.patientName = body["wslGenInfo"]["firstname"] + (body["wslGenInfo"]["lastname"]!=null?body["wslGenInfo"]["lastname"]:"");
+        this.claimRefNo = body["wslGenInfo"]["claimid"];
+        this.patientFileNumber = body["wslGenInfo"]["patientfilenumber"];
+        this.memeberId = body["wslGenInfo"]["memberid"];
+        this.policyNumber = body["wslGenInfo"]["policynumber"];
+        this.claimdate = body["wslGenInfo"]["visitdate"];
+        this.netAmount = body["wslGenInfo"]["net"];
+        this.rejectedBy = (body["wslGenInfo"]["claimprop"]["statuscode"] == "NotAccepted") ? "Waseel" : "Payer";
+        this.status = body["wslGenInfo"]["claimprop"]["statuscode"];
+        this.statusDetails = body["wslGenInfo"]["claimprop"]["statusdetail"];
+        this.field = "";
     }
 }
