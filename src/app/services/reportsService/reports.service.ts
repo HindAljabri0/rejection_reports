@@ -91,5 +91,19 @@ export class ReportsService {
     return this.http.request(request);
   }
 
+  downloadRejectionAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string, criteria: string) {
+    let queryType: string;
+    if (criteria == "1") {
+      queryType = "extraction";
+    } else if (criteria == "2") {
+      queryType = "claim";
+
+    }
+    const requestURL = `/${providerId}/claim/rejected/csv?`+
+    `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
+    return this.http.request(request);
+  }
+
 
 }

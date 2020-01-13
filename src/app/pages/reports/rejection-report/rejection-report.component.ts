@@ -6,7 +6,6 @@ import { MatPaginator } from '@angular/material';
 import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EventEmitter } from '@angular/core';
-import { SubmittedInvoiceSummary } from 'src/app/models/submittedInvoiceSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { RejectionSummary } from 'src/app/models/rejectionSummary';
@@ -86,7 +85,7 @@ export class RejectionReportComponent implements OnInit {
    download() {
     if (this.detailTopActionText == "check_circle") return;
 
-    this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
+    this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
           var exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
