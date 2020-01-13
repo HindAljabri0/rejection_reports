@@ -9,6 +9,8 @@ import { EventEmitter } from '@angular/core';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { RejectionSummary } from 'src/app/models/rejectionSummary';
+import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/rejectionReportClaimDialogData';
+import { ClaimStatus } from 'src/app/models/claimStatus';
 
 @Component({
   selector: 'app-rejection-report',
@@ -45,10 +47,10 @@ export class RejectionReportComponent implements OnInit {
   rejectedClaims = Array();
 
 
-  constructor(public reportService: ReportsService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, private dialogService:DialogService) { }
+  constructor(public reportService: ReportsService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, private dialogService: DialogService) { }
 
   ngOnInit() {
-     //this.fetchData();
+    //this.fetchData();
   }
 
   async fetchData() {
@@ -56,7 +58,7 @@ export class RejectionReportComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
-    event = await this.reportService.getRejectionSummary(this.providerId, this.from, this.to, this.payerId,this.criteriaType, this.queryPage, this.pageSize).subscribe((event) => {
+    event = await this.reportService.getRejectionSummary(this.providerId, this.from, this.to, this.payerId, this.criteriaType, this.queryPage, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
         this.rejectionReportSummary = new PaginatedResult(event.body, RejectionSummary);
         this.rejectedClaims = this.rejectionReportSummary.content;
@@ -65,7 +67,7 @@ export class RejectionReportComponent implements OnInit {
         this.manualPage = this.rejectionReportSummary.number;
         this.paginator.pageIndex = this.rejectionReportSummary.number;
         this.paginator.pageSize = this.rejectionReportSummary.numberOfElements;
-        console.log( this.rejectionReportSummary);
+        console.log(this.rejectionReportSummary);
       }
       this.commen.loadingChanged.next(false);
     }, error => {
@@ -82,7 +84,7 @@ export class RejectionReportComponent implements OnInit {
     });
   }
 
-   download() {
+  download() {
     if (this.detailTopActionText == "check_circle") return;
 
     this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType).subscribe(event => {
@@ -95,7 +97,7 @@ export class RejectionReportComponent implements OnInit {
           var a = document.createElement("a");
           a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
           a.target = '_blank';
-          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';          
+          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
           this.detailTopActionText = "check_circle";
         }
@@ -141,6 +143,77 @@ export class RejectionReportComponent implements OnInit {
         return "";
       }
     }
+  }
+
+  onClaimClick(id) {
+    this.reportService.getClaimRejection(this.providerId, this.payerId, id).subscribe(
+      event => {
+        if (event instanceof HttpResponse) {
+          let claim = new RejectionReportClaimDialogData();
+          claim.claimDate = new Date(event.body['wslGenInfo']['claimuploadeddate']);
+          claim.claimStatus = event.body['wslGenInfo']['claimprop']['statuscode'];
+          claim.drName = event.body['wslGenInfo']['physicianname'];
+          claim.netAmount = event.body['wslGenInfo']['net'];
+          claim.netVatAmount = event.body['wslGenInfo']['netvatamount'];
+          claim.netAmountUnit = event.body['wslGenInfo']['unitofnet'];
+          claim.netvatAmountUnit = event.body['wslGenInfo']['unitofnetvatamount'];
+          claim.patientFileNumber = event.body['wslGenInfo']['patientfilenumber'];
+          claim.patientName = `${event.body['wslGenInfo']['firstname']} ${event.body['wslGenInfo']['middlename']} ${event.body['wslGenInfo']['lastname']}`;
+          claim.policyNumber = event.body['wslGenInfo']['policynumber'];
+          claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
+          claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];
+
+          switch (claim.claimStatus) {
+            case ClaimStatus.NotAccepted:
+              let errors = event.body['claimError'];
+              if (errors instanceof Array) {
+                claim.claimErrors = errors.map(error => {
+                  return {
+                    status: error['errorcode'],
+                    feildName: error['fieldcode'],
+                    description: error['errormessage'],
+                  };
+                })
+              }
+              break;
+            case ClaimStatus.INVALID:
+              break;
+            default:
+              let invoices = event.body['wslGenInfo']['wslClaimInvoices'];
+              if(invoices instanceof Array){
+                claim.services = [];
+                invoices.forEach(invoice => {
+                  let services = invoice['wslServiceDetails'];
+                  if(services instanceof Array){
+                    services.forEach(service => {
+                      claim.services.push({
+                        code: service['servicecode'],
+                        description: service['servicedescription'],
+                        differentInComputation: "unknown",
+                        invoiceNmber: invoice['invoicenumber'],
+                        rejectedAmount: -1,
+                        rejectedAmountUnit: "unknown",
+                        requestedNA: service['net'],
+                        requestedNAUnit: service['unitofnet'],
+                        requestedNAVat: service['netvatamount'],
+                        requestedNAVatUnit: service['unitofnetvatamount'],
+                        status: "unknown",
+                        statusDetails: "unknown"
+                      });
+                    });
+                  }
+                });
+              }
+          }
+
+          this.dialogService.openRejectionReportClaimDialog(claim);
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          console.log(error);
+        }
+      }
+    )
   }
 
 }

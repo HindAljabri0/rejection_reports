@@ -2,6 +2,7 @@ import { Paginateable } from './paginateable';
 
 export class RejectionSummary extends Paginateable {
 
+    claimId:string;
     doctorId: string;
     patientName: string;
     claimRefNo: string;
@@ -17,6 +18,7 @@ export class RejectionSummary extends Paginateable {
 
     constructor(body: {}) {
         super(body);
+        this.claimId = body["wslGenInfo"]["claimid"];
         this.doctorId = body["wslGenInfo"]["physicianid"];
         this.patientName = body["wslGenInfo"]["firstname"] + (body["wslGenInfo"]["lastname"]!=null?body["wslGenInfo"]["lastname"]:"");
         this.claimRefNo = body["wslGenInfo"]["claimid"];

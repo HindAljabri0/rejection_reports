@@ -67,6 +67,13 @@ export class ReportsService {
     return this.http.request(request);
   }
 
+  getClaimRejection(providerId:string, payerId:string, claimId:string){
+    const requestURL = `/${providerId}/claim/rejected/details?`+
+    `payerId=${payerId}&claimId=${claimId}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
   downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
     const requestURL = `/${providerId}/payment/payment-claim-summary/csv?` +
       `paymentReference=${paymentReference}`;
