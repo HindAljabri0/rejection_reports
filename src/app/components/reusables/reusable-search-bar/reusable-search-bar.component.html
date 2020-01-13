@@ -1,0 +1,52 @@
+<mat-menu #appMenu="matMenu">
+    <div class="menuContent" (click)="$event.stopPropagation()">
+        <div class="searchByDate" (keyup.enter)="search()">
+            <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 5px;">
+                <input matInput [matDatepicker]="fromPicker" placeholder="From claim date"
+                    [formControl]="fromDateControl" (keyup.enter)="search()"
+                    (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" style="margin-right: 5px;">
+                <input matInput [matDatepicker]="toPicker" placeholder="To claim date" [formControl]="toDateControl"
+                    (keyup.enter)="search()" (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
+                <mat-datepicker-toggle matSuffix [for]="toPicker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div style="width: 100%; text-align: end;">
+            <button mat-flat-button style="margin-right: 5px;" (click)="clear()">Clear</button>
+            <button mat-raised-button color="primary" (click)="search()">Search</button>
+        </div>
+    </div>
+</mat-menu>
+
+<mat-form-field color="accent" appearance="outline" floatLabel="never" class="searchField" style="font-size: smaller;"
+    [matMenuTriggerFor]="appMenu">
+    <mat-icon matPrefix style="margin-right: 10px;">search</mat-icon>
+    <mat-chip-list #chipList>
+        <mat-chip *ngFor="let query of queries" removable="true" (removed)="remove(query)"
+            [matTooltip]="getQueryTypeText(query.type)">
+            {{queryToText(query)}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input type="text" placeholder="Enter {{searchBy}}" matInput autocomplete="off" [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            [formControl]="searchTextControl" (matChipInputTokenEnd)="updateChips(text, $event.value)"
+             (click)="$event.stopPropagation()"
+             [value]="searchTextControl.value"
+            [matAutocomplete]="auto">
+        <mat-icon matSuffix style="cursor: pointer;">tune</mat-icon>
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option (click)="searchWithText()"
+            *ngIf="currentTEXT != null && currentTEXT != ''">
+            Search for: {{currentTEXT}}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

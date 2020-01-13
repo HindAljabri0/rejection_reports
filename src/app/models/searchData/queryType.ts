@@ -3,5 +3,6 @@ export enum QueryType{
     DATEFROM = "fromDate",
     DATETO = "toDate",
     PAYERID = 'payerId',
-    BATCHID = "batchId"
+    BATCHID = "batchId",
+    TEXT = "text"
 }

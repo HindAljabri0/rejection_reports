@@ -48,6 +48,7 @@ import { UploadHistoryCardComponent } from './components/reusables/upload-histor
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
+import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 
 
 //https://momentjs.com/docs/#/displaying/format/
@@ -95,6 +96,7 @@ export const MY_FORMATS = {
     UploadsHistoryComponent,
     ScrollableDirective,
     RejectionReportComponent,
+    ReusableSearchBarComponent,
   ],
   imports: [
     RouterModule.forRoot([

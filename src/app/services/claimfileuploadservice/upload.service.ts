@@ -71,7 +71,7 @@ export class UploadService {
   searchUploadSummaries(providerId:string, query?:string, fromDate?:string, toDate?:string, page?:number, size?:number){
     if(page == null) page = 0;
     if(size == null) size = 10;
-    let requestUrl = `/${providerId}/uploads/summary?`;
+    let requestUrl = `/${providerId}/uploads/summary/search?`;
 
     if(query != null){
       requestUrl += `query=${query}`;
