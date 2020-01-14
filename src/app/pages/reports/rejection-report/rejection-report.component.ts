@@ -189,16 +189,16 @@ export class RejectionReportComponent implements OnInit {
                       claim.services.push({
                         code: service['servicecode'],
                         description: service['servicedescription'],
-                        differentInComputation: "unknown",
+                        differentInComputation: service['servicedecision']['pricecorrection'],
                         invoiceNmber: invoice['invoicenumber'],
-                        rejectedAmount: -1,
-                        rejectedAmountUnit: "unknown",
+                        rejectedAmount: service['servicedecision']['rejection'],
+                        rejectedAmountUnit: service['servicedecision']['unitofrejection'],
                         requestedNA: service['net'],
                         requestedNAUnit: service['unitofnet'],
                         requestedNAVat: service['netvatamount'],
                         requestedNAVatUnit: service['unitofnetvatamount'],
-                        status: "unknown",
-                        statusDetails: "unknown"
+                        status: "",
+                        statusDetails: service['servicedecision']['decisioncomment']
                       });
                     });
                   }
@@ -215,5 +215,6 @@ export class RejectionReportComponent implements OnInit {
       }
     )
   }
+
 
 }
