@@ -47,7 +47,8 @@
                 </td>
                 <td class="{{memberidClasses}}">
                     <label *ngIf="!isEditMode">{{claim.memberid}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid" maxlength="30">
+                    <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid"
+                        maxlength="30">
                 </td>
                 <td class="{{genderClasses}}">
                     <label *ngIf="!isEditMode">{{genderToText(claim.gender)}}</label>
@@ -87,12 +88,27 @@
                 </td>
                 <td>
                     <label *ngIf="!isEditMode">{{claim.policynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber" maxlength="30">
+                    <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber"
+                        maxlength="30">
                 </td>
                 <td>
                     {{claim.provclaimno}}
                 </td>
             </tr>
+            <tr>
+                <th class="{{approvalClasses}}" colspan="4">
+                    Chief Complaint Symptoms
+                </th>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <label *ngIf="!isEditMode">{{claim.chiefcomplaintsymptoms}}</label>
+                    <textarea *ngIf="isEditMode" value="{{claim.chiefcomplaintsymptoms}}" [formControl]="chiefComplaintSymptoms"
+                    style="width: 100%;"></textarea>
+                </td>
+            </tr>
+
+
         </table>
         <table style="width: 15%;">
             <tr>
