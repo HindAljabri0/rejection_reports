@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest, HttpResponse, HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 
@@ -39,7 +40,7 @@ export class UploadService {
       reportProgress: true,
     });
 
-    this.http.request(req).subscribe(event => {
+    this.http.request(req).pipe(timeout(60000)).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
         this.progressChange.next( { percentage:Math.round(100 * event.loaded / event.total)});
       } else if (event instanceof HttpResponse) {
