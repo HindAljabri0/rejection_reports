@@ -30,6 +30,7 @@ export class ViewedClaim {
 	services:Service[];
 	errors:ClaimError[];
 	diagnosis:ICDDiagnosis[];
+	chiefcomplaintsymptoms:string;
 
 	providerId:string;
 	payerid:string;

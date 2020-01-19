@@ -48,6 +48,8 @@ export class ClaimDialogComponent implements OnInit {
   approvalnumber = new FormControl(this.claim.approvalnumber);
   eligibilitynumber = new FormControl(this.claim.eligibilitynumber);
   policynumber = new FormControl(this.claim.policynumber);
+  chiefComplaintSymptoms = new FormControl(this.claim.chiefcomplaintsymptoms);
+
 
   searchDiag = new FormControl("");
 
@@ -183,6 +185,11 @@ export class ClaimDialogComponent implements OnInit {
       updateRequestBody.diagnosis = this.diagnosisList;
       flag = true;
     }
+    if (this.chiefComplaintSymptoms.value != this.claim.chiefcomplaintsymptoms) {
+      updateRequestBody.chiefcomplaintsymptoms = this.chiefComplaintSymptoms.value;
+      flag = true;
+    }
+    
 
 
     if (flag) {
