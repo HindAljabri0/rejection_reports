@@ -81,7 +81,7 @@ export class AuthService {
         });
         let authority:string = event.body['authorities'][0]['authority'];
         localStorage.setItem('provider_id', authority.split('|')[0]);
-        localStorage.setItem('user_name', event.body['name']);
+        localStorage.setItem('user_name', event.body['principal']["fullName"]);
         localStorage.setItem('provider_name', event.body['principal']["providerName"]);
         this.isUserNameUpdated.next(true);
       }
