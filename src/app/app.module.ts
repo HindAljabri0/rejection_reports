@@ -1,6 +1,5 @@
 import { LoginComponent } from './pages/loginpage/login.component';
 import { ReportsComponent } from './pages/reports/reports-page.component';
-// import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -8,12 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
-import { MatAutocompleteModule, MatMenuModule, MatChipsModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatToolbarModule, MatRippleModule, MatCheckboxModule, MatExpansionModule } from '@angular/material';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
-import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -31,7 +27,7 @@ import { NotificationCardComponent } from './components/reusables/notification-c
 import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-dialog.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 
-import { ScrollingModule} from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
 import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -49,20 +45,10 @@ import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
+import { MatiralModule } from './modules/matiral/matiral.module';
 
 
-//https://momentjs.com/docs/#/displaying/format/
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'DD/MM/YYYY ',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'DD/MM/YYYY',
-  },
-};
+
 
 @NgModule({
   declarations: [
@@ -100,65 +86,34 @@ export const MY_FORMATS = {
   ],
   imports: [
     RouterModule.forRoot([
-      { path: '', component:  DashboardComponent, canActivate:[RouteCanActiveService]},
-      { path: ':providerId/claims', component: SearchClaimsComponent, canActivate:[RouteCanActiveService] },
-      { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate:[RouteCanActiveService]},
+      { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
       { path: 'login', component: LoginComponent },
-      { path: 'upload', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
-      { path: 'upload/history', component: UploadsHistoryComponent , canActivate:[RouteCanActiveService]},
-      { path: 'summary', component: ClaimpageComponent , canActivate:[RouteCanActiveService]},
-      { path: ':providerId/reports', component: ReportsComponent , canActivate:[RouteCanActiveService]},
+      { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+      { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
+      { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
+      {
+        path: 'administration',
+        loadChildren: () => import('./modules/adminstration/adminstration.module').then(m => m.AdminstrationModule),
+        canLoad: [RouteCanActiveService]
+      }
 
     ]),
-    // JwtModule.forRoot({
-    //   config: {
-    //     tokenGetter: function  tokenGetter() {
-    //          return     localStorage.getItem('access_token');},
-    //     whitelistedDomains: ['localhost:4200'],
-    //     blacklistedRoutes: ['http://localhost:4200/validate/login']
-    //   }
-    // }),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatCheckboxModule,
-    MatRippleModule,
     StepperProgressBarModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatIconModule,
-    MatSelectModule,
     ReactiveFormsModule,
-    MatRadioModule,
-    MatChipsModule,
-    MatProgressBarModule,
-    MatPaginatorModule,
     FormsModule,
-    MatDialogModule,
     ScrollingModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    MatAutocompleteModule,
     InfiniteScrollModule,
+    MatiralModule,
   ],
   providers: [
     UploadService,
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     {
       provide: 'RouteCanActiveService',

@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanLoad, UrlSegment } from '@angular/router';
+import { Observable, TimeoutError } from 'rxjs';
 import { AuthService } from '../authService/authService.service';
 import { ClaimpageComponent } from 'src/app/pages/claimUploadignPage/claimpage.component';
 import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-claims.component';
 import { NotificationsPageComponent } from 'src/app/pages/notifications-page/notifications-page.component';
+import { Route } from '@angular/compiler/src/core';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class RouteCanActiveService implements CanActivate {
+export class RouteCanActiveService implements CanActivate, CanLoad {
+  
 
   constructor(public authService:AuthService, public router:Router) { }
 
@@ -45,6 +48,14 @@ export class RouteCanActiveService implements CanActivate {
       default:
         return true;
     }
+  }
+
+  canLoad(route:Route, segments:UrlSegment[]): boolean | Observable<boolean> | Promise<boolean> {
+    if(!this.authService.loggedIn ){
+      this.router.navigate(['/login']);
+      return false;
+    }
+    return localStorage.getItem('101101').includes('10');
   }
 
   
