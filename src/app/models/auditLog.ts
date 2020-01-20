@@ -9,4 +9,9 @@ export class AuditLog {
     eventPath: string;
     eventDescription: string;
 
+    deserialize(input: any): this {
+        Object.assign(this, input);
+        return this;
+      }
+
 }

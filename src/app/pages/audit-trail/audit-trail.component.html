@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card-body ">
-                    <p *ngFor="let log of logs | async">
+                    <p *ngFor="let log of logs">
                         {{log.id}}: {{log.eventDescription}}
                     </p>
                 </div>

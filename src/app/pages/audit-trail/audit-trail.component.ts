@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuditTrailService } from 'src/app/services/audit/audit-trail.service';
 import { Observable } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-audit-trail',
@@ -11,16 +11,22 @@ import { filter, map } from 'rxjs/operators';
 })
 export class AuditTrailComponent implements OnInit {
 
-  logs:Observable<Array<AuditLog>>;
+  logs:AuditLog[] = [];
 
-  constructor(private auditTrailService:AuditTrailService) { }
+  constructor(private auditTrailService:AuditTrailService) {
+  }
   
   ngOnInit() {
-    
+    this.getData();
   }
 
   getData(){
-    this.logs = this.auditTrailService.getAllLogs();
+    this.auditTrailService._logWatchSource.subscribe(value => {
+      if (value !== undefined && value !== null) {
+        this.logs.push(value);
+      }
+    });
   }
+
 
 }
