@@ -3,6 +3,7 @@ import { AuditTrailService } from 'src/app/services/audit/audit-trail.service';
 import { Observable } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
 import { filter, map, timeout } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-audit-trail',
@@ -13,10 +14,22 @@ export class AuditTrailComponent implements OnInit {
 
   logs:AuditLog[] = [];
 
+  userIdControl:FormControl = new FormControl();
+  eventTypeControl:FormControl = new FormControl();
+
+  types:{value:string, text:string}[];
+
   constructor(private auditTrailService:AuditTrailService) {
   }
   
   ngOnInit() {
+    this.types = [
+      {value: "GenericAuditLogType", text: "Generic"},
+      {value: "ClaimManipulationAuditLogType", text: "ClaimManipulation"},
+      {value: "ClaimSubmissionAuditLogType", text: "ClaimSubmission"},
+      {value: "UploadAuditLogType", text: "Upload"},
+      {value: "LoginAuditLogType", text: "Login"},
+    ];
     this.getData();
   }
 

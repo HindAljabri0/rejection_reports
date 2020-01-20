@@ -11,6 +11,8 @@ export class AuditLog {
 
     deserialize(input: any): this {
         Object.assign(this, input);
+        this.eventTimeStamp = new Date(this.eventTimeStamp);
+        this.eventType = this.eventType.replace("AuditLogType", "");
         return this;
       }
 
