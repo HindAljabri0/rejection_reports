@@ -10,7 +10,7 @@ export class ReportsService {
 
   constructor(private http: HttpClient) { }
 
-  getPaymentSummary(providerId: string, fromDate: string, toDate: string, payerId: string, page?: number, pageSize?: number) {
+  getPaymentSummary(providerId: string, fromDate: string, toDate: string, payerId: string[], page?: number, pageSize?: number) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     const requestURL = `/${providerId}/payment/payment-summary?` +
@@ -92,7 +92,7 @@ export class ReportsService {
   }
 
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string) {
-    const requestURL = `/${providerId}/claim/payed/csv?` +
+    const requestURL = `/${providerId}/claim/paid/csv?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);

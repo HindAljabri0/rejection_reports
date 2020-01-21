@@ -25,7 +25,7 @@ export class PaymentReferenceReportComponent implements OnInit {
   detailCheckBoxChecked: boolean;
   @Input() from: string;
   @Input() to: string;
-  @Input() payerId: string;
+  @Input() payerId: string[];
   @Input() queryPage: number;
   @Input() pageSize: number;
   @Input() providerId: string;
@@ -99,14 +99,17 @@ export class PaymentReferenceReportComponent implements OnInit {
     else return 0;
   }
 
-  mapPayer(payerId: string) {
+  mapPayer(payerId: string[]) {
 
     switch (payerId) {
-      case "300": {
+      case ['300']: {
         return "MedGulf";
       }
-      case "102": {
+      case ['102']: {
         return "Tawuniya";
+      }
+      case ['102', '300', '306', '204']: {
+        return "All";
       }
       default: {
         return "";

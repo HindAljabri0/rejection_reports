@@ -21,11 +21,12 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
-  payers: { id: number, name: string }[] = [
-    { id: 102, name: "Tawuniya" },
-    { id: 300, name: "Med Gulf" },
-    { id: 306, name: "Saudi Enaya" },
-    { id: 204, name: "AXA" },
+  payers: { id: string[], name: string }[] = [
+    { id: ['102', '300', '306', '204'], name:"All"},
+    { id: ['102'], name: "Tawuniya" },
+    { id: ['300'], name: "Med Gulf" },
+    { id: ['306'], name: "Saudi Enaya" },
+    { id: ['204'], name: "AXA" },
   ];
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Payment Report" },
@@ -61,7 +62,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
   @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: SubmittedInvoicesComponent;
-  payerId: string;
+  payerId: number[];
 
 
   constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService, private dialogService:DialogService) { }
