@@ -16,6 +16,8 @@ export class AuditTrailComponent implements OnInit {
 
   userIdControl:FormControl = new FormControl();
   eventTypeControl:FormControl = new FormControl();
+  fromDateControl:FormControl = new FormControl();
+  toDateControl:FormControl = new FormControl();
 
   types:{value:string, text:string}[];
 
@@ -41,5 +43,8 @@ export class AuditTrailComponent implements OnInit {
     });
   }
 
+  filter(){
+    
+  }
 
 }

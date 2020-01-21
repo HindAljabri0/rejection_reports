@@ -10,28 +10,38 @@
                                     [formControl]="userIdControl">
                             </mat-form-field>
                             <mat-form-field floatLabel="never" 
-                                style="margin-right: 5%; width: 15%;" appearance="outline">
+                                style="width: 15%;" appearance="outline">
                                 <mat-select placeholder="Event Type" [formControl]="eventTypeControl" >
                                     <mat-option *ngFor="let type of types" [value]="type.value">
                                         {{type.text}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <!-- <mat-form-field floatLabel="never" 
-                                style="width: 15%;margin-right: 5%;margin-left: 3%;border: none; border-radius: 4px; ">
+                            <mat-form-field floatLabel="never" appearance="outline"
+                                style="width: 15%;">
                                 <input matInput [matDatepicker]="fromPicker" placeholder="From date"
-                                    [formControl]="" (keyup.enter)="" required>
+                                    [formControl]="fromDateControl">
                                 <mat-datepicker-toggle matSuffix [for]="fromPicker">
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #fromPicker></mat-datepicker>
-                            </mat-form-field> -->
-                            <button mat-raised-button color="primary" (click)="getData()"
+                            </mat-form-field>
+                            <mat-form-field floatLabel="never" appearance="outline"
+                                style="width: 15%;">
+                                <input matInput [matDatepicker]="toPicker" placeholder="To date"
+                                    [formControl]="toDateControl">
+                                <mat-datepicker-toggle matSuffix [for]="toPicker">
+                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #toPicker></mat-datepicker>
+                            </mat-form-field>
+                            <span style="width: 20%; display: inline-block;"></span>
+                            <button mat-raised-button color="primary" (click)="filter()"
                                 style="width: 15%;">Filter</button>
                         </div>
                     </div>
                 </div>
-                <div class="card-body " style="width: 100%; padding:0px; text-align: center; line-height: 3;">
+                <div class="card-body " style="width: 100%; padding:0px; text-align: center; line-height: 3; background-color: #EFF5FF;">
                     <table style="width: 100%; color: #4672B4; border-collapse:separate; border-spacing: 0px 5px;" >
                         <tr>
                             <th>Object ID</th>
