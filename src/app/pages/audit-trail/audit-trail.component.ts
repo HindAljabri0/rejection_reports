@@ -32,13 +32,17 @@ export class AuditTrailComponent implements OnInit {
       {value: "UploadAuditLogType", text: "Upload"},
       {value: "LoginAuditLogType", text: "Login"},
     ];
-    this.getData();
+    this.auditTrailService.getAllLogs().subscribe(value => {
+      let auditLogs = value as AuditLog[];
+      auditLogs.map(log => this.logs.unshift(new AuditLog().deserialize(log)));
+      this.getData();
+    });
   }
 
   getData(){
     this.auditTrailService._logWatchSource.subscribe(value => {
       if (value !== undefined && value !== null) {
-        this.logs.push(value);
+        this.logs.unshift(value);
       }
     });
   }

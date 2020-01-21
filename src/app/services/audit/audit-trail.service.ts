@@ -13,15 +13,15 @@ export class AuditTrailService {
   _logWatchSource: Observable<AuditLog> = this.logWatchSource.asObservable();
 
   constructor(private http: HttpClient, private zone: NgZone) {
-    this.getAllLogs().subscribe(data => {
+    this.watchNewLogs().subscribe(data => {
       this.logWatchSource.next(new AuditLog().deserialize(data));
     }, error => console.log('Error: ' + error),
       () => console.log('done loading team stream'));
   }
 
-  getAllLogs(): Observable<AuditLog> {
+  watchNewLogs(): Observable<AuditLog> {
     return new Observable((observer) => {
-      let url = environment.auditTrailServiceHost + "/audit-trail/trail";
+      let url = environment.auditTrailServiceHost + "/audit-trail/watch";
       let eventSource = new EventSource(url);
 
       eventSource.onmessage = (event) => {
@@ -41,5 +41,9 @@ export class AuditTrailService {
         }
       }
     });
+  }
+
+  getAllLogs(){
+    return this.http.get(environment.auditTrailServiceHost+'/audit-trail/trail');
   }
 }
