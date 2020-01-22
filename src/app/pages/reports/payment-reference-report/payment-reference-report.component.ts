@@ -111,6 +111,12 @@ export class PaymentReferenceReportComponent implements OnInit {
       case ['102', '300', '306', '204']: {
         return "All";
       }
+      case ['306']: {
+        return "Saudi Enaya";
+      }
+      case ['204']: {
+        return "AXA";
+      }
       default: {
         return "";
       }
