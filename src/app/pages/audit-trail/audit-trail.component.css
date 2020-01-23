@@ -20,3 +20,21 @@
     width: 100%;
     text-align: center;
 }
+
+.GenericColor{
+    background-color: white;
+}
+
+.ClaimManipulationColor{
+    background-color: #d0e2f7;
+}
+.ClaimSubmissionColor{
+    background-color: #aafdaa;
+}
+
+.UploadColor{
+    background-color: #bbf3f7;
+}
+.LoginColor {
+    background-color: #f3efbb;
+}

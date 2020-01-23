@@ -59,7 +59,7 @@
                             <th>Time</th>
                         </tr>
                         <ng-container *ngFor="let log of logsArray">
-                            <tr *ngIf="log.id != null" style="background-color: white;">
+                            <tr style="color:#154185" *ngIf="log.id != null" [ngClass]="{ 'LoginColor':log.eventType == 'Login', 'ClaimManipulationColor':log.eventType == 'ClaimManipulation', 'ClaimSubmissionColor':log.eventType == 'ClaimSubmission', 'UploadColor':log.eventType == 'Upload', 'GenericColor':log.eventType == 'Generic'}">
                                 <td>{{log.objectId}}</td>
                                 <td>{{log.userId}}</td>
                                 <td>{{log.providerId}}</td>
