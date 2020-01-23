@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
 
 @Injectable({
@@ -12,18 +12,19 @@ export class AuditTrailService {
   private logWatchSource = new BehaviorSubject(new AuditLog());
   _logWatchSource: Observable<AuditLog> = this.logWatchSource.asObservable();
 
+  private eventSource: EventSource;
+  private observer: Subscriber<AuditLog>;
+
   constructor(private http: HttpClient, private zone: NgZone) {
-    this.watchNewLogs().subscribe(data => {
-      this.logWatchSource.next(new AuditLog().deserialize(data));
-    }, error => console.log('Error: ' + error),
-      () => console.log('done loading team stream'));
+    this.startWatchingLogs();
   }
 
   watchNewLogs(): Observable<AuditLog> {
     return new Observable((observer) => {
-      let url = environment.auditTrailServiceHost + "/audit-trail/watch";
+      let url = environment.auditTrailServiceHost + "/audit-trail/logs/watch";
       let eventSource = new EventSource(url);
-
+      this.eventSource = eventSource;
+      this.observer = observer;
       eventSource.onmessage = (event) => {
         let json = JSON.parse(event.data);
         if (json !== undefined && json !== '') {
@@ -33,7 +34,7 @@ export class AuditTrailService {
 
       eventSource.onerror = (error) => {
         if (eventSource.readyState === 0) {
-          console.log('The stream has been closed by the server.');
+          console.debug('The stream has been closed by the server.');
           eventSource.close();
           observer.complete();
         } else {
@@ -43,7 +44,35 @@ export class AuditTrailService {
     });
   }
 
-  getAllLogs(){
-    return this.http.get(environment.auditTrailServiceHost+'/audit-trail/trail');
+  startWatchingLogs(){
+    this.watchNewLogs().subscribe(data => {
+      this.logWatchSource.next(new AuditLog().deserialize(data));
+    }, error => console.log('Error: ' + error),
+      () => console.log('done loading team stream'));
+  }
+
+  stopWatchingLogs(){
+    this.eventSource.close();
+    this.observer.complete();
+  }
+
+  getAllLogs(example?: AuditLog, size?: number, date?: Date, afterDate?:boolean) {
+    let params = ``;
+    if (size == null) size = 10;
+    if(afterDate == null) afterDate = false;
+    params = `?size=${size}`
+    if (example != null) {
+      if (example.objectId != null) params += `&objectId=${example.objectId}`;
+      if (example.providerId != null) params += `&providerId=${example.providerId}`;
+      if (example.userId != null) params += `&userId=${example.userId}`;
+      if (example.eventType != null) params += `&eventType=${example.eventType}`;
+    }
+    if (date != null) {
+      if(!afterDate)
+        params += `&beforeDate=${date.getTime()}`;
+      else
+        params += `&afterDate=${date.getTime()}`;
+    }
+    return this.http.get(environment.auditTrailServiceHost + `/audit-trail/logs${params}`);
   }
 }
