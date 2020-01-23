@@ -10,7 +10,7 @@ export class ReportsService {
 
   constructor(private http: HttpClient) { }
 
-  getPaymentSummary(providerId: string, fromDate: string, toDate: string, payerId: string, page?: number, pageSize?: number) {
+  getPaymentSummary(providerId: string, fromDate: string, toDate: string, payerId: string[], page?: number, pageSize?: number) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     const requestURL = `/${providerId}/payment/payment-summary?` +
@@ -28,7 +28,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  getSubmittedInvoicesSummary(providerId: string, fromDate: string, toDate: string, payerId: string, page?: number, pageSize?: number) {
+  getSubmittedInvoicesSummary(providerId: string, fromDate: string, toDate: string, payerId: string[], page?: number, pageSize?: number) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     const requestURL = `/${providerId}/claim/paid?` +
@@ -51,7 +51,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  getRejectionSummary(providerId: string, fromDate: string, toDate: string, payerId: string, criteria: string, page?: number, pageSize?: number) {
+  getRejectionSummary(providerId: string, fromDate: string, toDate: string, payerId: string[], criteria: string, page?: number, pageSize?: number) {
     let queryType: string;
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
@@ -67,7 +67,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  getClaimRejection(providerId:string, payerId:string, claimId:string){
+  getClaimRejection(providerId:string, payerId:string[], claimId:string){
     const requestURL = `/${providerId}/claim/rejected/details?`+
     `payerId=${payerId}&claimId=${claimId}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
@@ -91,14 +91,14 @@ export class ReportsService {
 
   }
 
-  downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string) {
-    const requestURL = `/${providerId}/claim/payed/csv?` +
+  downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
+    const requestURL = `/${providerId}/claim/paid/csv?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);
   }
 
-  downloadRejectionAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string, criteria: string) {
+  downloadRejectionAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[], criteria: string) {
     let queryType: string;
     if (criteria == "1") {
       queryType = "extraction";
