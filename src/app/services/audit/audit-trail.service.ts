@@ -23,7 +23,7 @@ export class AuditTrailService {
   watchNewLogs(): Observable<AuditLog> {
     return new Observable((observer) => {
       let url = environment.auditTrailServiceHost + "/audit-trail/logs/watch";
-      let eventSource = new EventSourcePolyfill(url, {headers: {authorization: `Bearer ${localStorage.getItem('access_token')}`}});
+      let eventSource = new EventSourcePolyfill(url, {headers: {Authorization: `Bearer ${localStorage.getItem('access_token')}`}});
       this.eventSource = eventSource;
       this.observer = observer;
       eventSource.onmessage = (event) => {
