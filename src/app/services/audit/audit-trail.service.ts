@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
+import {EventSourcePolyfill} from 'ng-event-source';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuditTrailService {
   private logWatchSource = new BehaviorSubject(new AuditLog());
   _logWatchSource: Observable<AuditLog> = this.logWatchSource.asObservable();
 
-  private eventSource: EventSource;
+  private eventSource: EventSourcePolyfill;
   private observer: Subscriber<AuditLog>;
 
   constructor(private http: HttpClient, private zone: NgZone) {
@@ -22,7 +23,7 @@ export class AuditTrailService {
   watchNewLogs(): Observable<AuditLog> {
     return new Observable((observer) => {
       let url = environment.auditTrailServiceHost + "/audit-trail/logs/watch";
-      let eventSource = new EventSource(url);
+      let eventSource = new EventSourcePolyfill(url, {headers: {authorization: `Bearer ${localStorage.getItem('access_token')}`}});
       this.eventSource = eventSource;
       this.observer = observer;
       eventSource.onmessage = (event) => {
