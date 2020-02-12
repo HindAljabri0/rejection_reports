@@ -37,7 +37,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  getSubmittedServicesOfClaim(providerId: string, payerId: string, claimId: string) {
+  getSubmittedServicesOfClaim(providerId: string, payerId: string[], claimId: string) {
     const requestURL = `/${providerId}/claim/paid/service?` +
       `payerId=${payerId}&claimId=${claimId}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
@@ -81,7 +81,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  downloadSubmittedInvoices(providerId: string, fromDate?: string, toDate?: string, payerId?: string) {
+  downloadSubmittedInvoices(providerId: string, fromDate?: string, toDate?: string, payerId?: string[]) {
     let requestURL: string = '/' + providerId + '/claim/paid/csv?' + status;
 
     requestURL += `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;

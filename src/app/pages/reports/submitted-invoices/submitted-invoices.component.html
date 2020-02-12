@@ -39,7 +39,7 @@
 </mat-expansion-panel>
 
 
-<mat-expansion-panel *ngFor="let claim of claims" style="margin-bottom: 6px; cursor: pointer;" hideToggle
+<mat-expansion-panel *ngFor="let claim of claims" style="margin-bottom: 6px; cursor: unset;" hideToggle
     [disabled]="0 == 0" (click)="onPaymentClick.emit(claim.claimId)">
     <mat-expansion-panel-header>
         <mat-panel-title style="width: 100%;">
