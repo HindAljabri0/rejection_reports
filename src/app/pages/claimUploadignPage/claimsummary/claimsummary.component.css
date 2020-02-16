@@ -31,7 +31,8 @@ table {
     background-color: #FFCED9;
     color: #bd0f34;
     font-weight: 500;
-    padding-left: 25px;
+    padding-left: 5px;
+    width: 18%!important;
 }
 .errorTable tr{
     color: #3060AA;
