@@ -14,13 +14,13 @@ export class AuthService {
   isUserNameUpdated: Subject<boolean> = new Subject();
   amp;
 
-  constructor(private httpClient: HttpClient, private router:Router, @Inject(ApmService) apmService: ApmService) {
-    this.amp = apmService.init({
-      serviceName: 'angular-app',
-      serverUrl: 'https://apm-server-sample-elastic.apps.okd.waseel.com:443',
-      secret_token: '76prrj79tw5kcpdwvkfshmfs',
-      verify_server_cert:false
-    });
+  constructor(private httpClient: HttpClient, private router:Router) {
+    // this.amp = apmService.init({
+    //   serviceName: 'angular-app',
+    //   serverUrl: 'https://apm-server-sample-elastic.apps.okd.waseel.com:443',
+    //   secret_token: '76prrj79tw5kcpdwvkfshmfs',
+    //   verify_server_cert:false
+    // });
   }
 
   login(username: string, password: string) {

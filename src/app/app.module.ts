@@ -46,6 +46,7 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
+import { ErrorHandler } from '@angular/core';
 
 
 
@@ -113,16 +114,20 @@ import { MatiralModule } from './modules/matiral/matiral.module';
   ],
   providers: [
     UploadService,
-    {
-      provide: ApmService,
-      useClass: ApmService,
-      deps: [Router]
-    },
+    // {
+    //   provide: ApmService,
+    //   useClass: ApmService,
+    //   deps: [Router]
+    // },
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     {
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
-    }
+    },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: ApmErrorHandler
+    // }
   ],
   bootstrap: [AppComponent],
   exports: [

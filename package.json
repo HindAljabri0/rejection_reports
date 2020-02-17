@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "^8.2.12",
     "@angular/router": "^8.2.12",
     "@auth0/angular-jwt": "^3.0.1",
-    "@elastic/apm-rum-angular": "^0.4.1",
+    "@elastic/apm-rum-angular": "^0.4.3",
     "@material-git/grid-list": "^2.0.0-git.20160919",
     "@material/card": "^3.2.0",
     "all": "0.0.0",
