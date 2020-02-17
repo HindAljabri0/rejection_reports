@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, } from '@angular/core';
 import { CommenServicesService } from '../../services/commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { SearchServiceService } from '../../services/serchService/search-service.service';
+import { SearchService } from '../../services/serchService/search.service';
 import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
@@ -23,7 +23,7 @@ export class SearchClaimsComponent implements OnInit {
 
 
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchServiceService, private dialogService:DialogService) {
+  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService:DialogService) {
   }
   placeholder = '-';
   cardsClickAble: boolean = true;
@@ -108,7 +108,14 @@ export class SearchClaimsComponent implements OnInit {
       this.router.navigate(['']);
     }
     for (status in ClaimStatus) {
-      let statusCode = await this.getSummaryOfStatus(status);
+      if(status == ClaimStatus.INVALID) continue;
+      let statusCode;
+      if(status == ClaimStatus.OUTSTANDING){
+        statusCode = await this.getSummaryOfStatus([status, 'PENDING']);
+      }else if(status == ClaimStatus.REJECTED){
+          statusCode = await this.getSummaryOfStatus([status, 'INVALID', 'DUPLICATE']);
+      } else
+        statusCode = await this.getSummaryOfStatus([status]);
       if (statusCode != 200) {
         break;
       }
@@ -124,31 +131,13 @@ export class SearchClaimsComponent implements OnInit {
 
     if (!this.hasData && this.errorMessage == null) this.errorMessage = 'Sorry, we could not find any result.';
   }
-  mapRelatedStatus() {
-    let pendingSummary: SearchStatusSummary;
-    let outstandingSummary: SearchStatusSummary;
-    let newSummaries: SearchStatusSummary[] = [];
-    this.summaries.forEach(summary => {
-      if (summary.status == ClaimStatus.PENDING)
-        pendingSummary = summary;
-      else if (summary.status == ClaimStatus.OUTSTANDING)
-        outstandingSummary = summary;
-      else newSummaries.push(summary);
-    });
-    if (pendingSummary != null && outstandingSummary != null) {
-      outstandingSummary.totalClaims += pendingSummary.totalClaims;
-      outstandingSummary.totalNetAmount += pendingSummary.totalNetAmount;
-      outstandingSummary.totalVatNetAmount += pendingSummary.totalVatNetAmount;
-      newSummaries.push(outstandingSummary);
-      return newSummaries;
-    } else return this.summaries;
-  }
 
-  async getSummaryOfStatus(status: string): Promise<number> {
+
+  async getSummaryOfStatus(statuses: string[]): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
     if (this.batchId == null) {
-      event = await this.searchService.getSummaries(this.providerId, status, this.from, this.to, this.payerId).toPromise().catch(error => {
+      event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == "4") {
@@ -164,7 +153,7 @@ export class SearchClaimsComponent implements OnInit {
     }
     else {
 
-      event = await this.searchService.getSummaries(this.providerId, status, undefined, undefined, undefined, this.batchId).toPromise().catch(error => {
+      event = await this.searchService.getSummaries(this.providerId, statuses, undefined, undefined, undefined, this.batchId).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == "4") {
@@ -216,7 +205,7 @@ export class SearchClaimsComponent implements OnInit {
       this.paginator.pageIndex = page;
       this.location.go(this.location.path() + `&page=${(page + 1)}`);
     }
-    if (this.summaries[key].status == ClaimStatus.Accepted) {
+    if (this.summaries[key].statuses[0] == ClaimStatus.Accepted) {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
     } /*else if (this.summaries[key].status == ClaimStatus.Failed){
@@ -230,7 +219,7 @@ export class SearchClaimsComponent implements OnInit {
     this.searchResult = null;
     this.claims = new Array();
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].status, page, pageSize, this.batchId).subscribe((event) => {
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -240,8 +229,8 @@ export class SearchClaimsComponent implements OnInit {
             if (this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCountOfPage++;
           }
           this.setAllCheckBoxIsIndeterminate();
-          this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].status);
-          this.detailCardTitle = this.commen.statusToName(this.summaries[key].status);
+          this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
+          this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
           const pages = Math.ceil((this.searchResult.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.paginator.pageIndex;
@@ -432,7 +421,7 @@ export class SearchClaimsComponent implements OnInit {
 
   download() {
     if (this.detailTopActionText == "check_circle") return;
-    this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].status, this.from, this.to, this.payerId, this.batchId).subscribe(event => {
+    this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
           var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';

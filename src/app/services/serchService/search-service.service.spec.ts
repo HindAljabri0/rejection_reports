@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ViewedClaim } from '../../models/viewedClaim';
-import { SearchServiceService } from './search-service.service';
+import { SearchService } from './search.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpResponse, HttpClientModule } from '@angular/common/http';
 
@@ -15,12 +15,12 @@ fdescribe('Search Service', () => {
   );
 
   it('object should be created', () => {
-    const service:SearchServiceService  = TestBed.get(SearchServiceService);
+    const service:SearchService  = TestBed.get(SearchService);
     expect(service).toBeTruthy();
   });
 
   xit('getting claim function should get a claim', (done)=>{
-    const service:SearchServiceService  = TestBed.get(SearchServiceService);
+    const service:SearchService  = TestBed.get(SearchService);
     let claim:ViewedClaim;
     service.getClaim('104', '7692').subscribe(event =>{
       if(event instanceof HttpResponse){

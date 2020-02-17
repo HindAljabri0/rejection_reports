@@ -8,7 +8,7 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { PaymentClaimDetail } from 'src/app/models/paymentClaimDetail';
 import { PaymentClaimDetailDailogComponent } from 'src/app/components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { CommenServicesService } from '../commen-services.service';
-import { SearchServiceService } from '../serchService/search-service.service';
+import { SearchService } from '../serchService/search.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ReportsService } from '../reportsService/reports.service';
 import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/rejectionReportClaimDialogData';
@@ -23,7 +23,7 @@ export class DialogService {
 
   constructor(private commenServices: CommenServicesService,
     private dialog: MatDialog,
-    private searchService: SearchServiceService,
+    private searchService: SearchService,
     private reportService: ReportsService) { }
 
   openMessageDialog(dialogData: MessageDialogData): Observable<any> {
