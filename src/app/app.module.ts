@@ -114,20 +114,20 @@ import { ErrorHandler } from '@angular/core';
   ],
   providers: [
     UploadService,
-    // {
-    //   provide: ApmService,
-    //   useClass: ApmService,
-    //   deps: [Router]
-    // },
+    {
+      provide: ApmService,
+      useClass: ApmService,
+      deps: [Router]
+    },
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     {
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
     },
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: ApmErrorHandler
-    // }
+    {
+      provide: ErrorHandler,
+      useClass: ApmErrorHandler
+    }
   ],
   bootstrap: [AppComponent],
   exports: [
