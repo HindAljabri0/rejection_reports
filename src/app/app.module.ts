@@ -8,7 +8,7 @@ import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angu
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { ApmService, ApmErrorHandler } from '@elastic/apm-rum-angular';
+// import { ApmService, ApmErrorHandler } from '@elastic/apm-rum-angular';
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -46,7 +46,7 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
-import { ErrorHandler } from '@angular/core';
+// import { ErrorHandler } from '@angular/core';
 
 
 
@@ -114,20 +114,20 @@ import { ErrorHandler } from '@angular/core';
   ],
   providers: [
     UploadService,
-    {
-      provide: ApmService,
-      useClass: ApmService,
-      deps: [Router]
-    },
+    // {
+    //   provide: ApmService,
+    //   useClass: ApmService,
+    //   deps: [Router]
+    // },
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     {
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
     },
-    {
-      provide: ErrorHandler,
-      useClass: ApmErrorHandler
-    }
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: ApmErrorHandler
+    // }
   ],
   bootstrap: [AppComponent],
   exports: [
