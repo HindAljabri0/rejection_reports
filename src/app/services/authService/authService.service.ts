@@ -3,7 +3,7 @@ import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-// import { ApmService } from '@elastic/apm-rum-angular';
+import { ApmService } from '@elastic/apm-rum-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +12,23 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   isUserNameUpdated: Subject<boolean> = new Subject();
-  // amp;
+  amp;
 
-  constructor(private httpClient: HttpClient, private router:Router) {
-    // this.amp = apmService.init({
-    //   serviceName: 'angular-app',
-    //   serverUrl: 'https://apm-server-sample-elastic.apps.okd.waseel.com:443',
-    //   secret_token: '76prrj79tw5kcpdwvkfshmfs',
-    //   verify_server_cert:false
-    // });
+  constructor(private httpClient: HttpClient, private router:Router, @Inject(ApmService) apmService: ApmService) {
+    this.amp = apmService.init({
+      serviceName: 'angular-app',
+      serverUrl: 'https://apm-server-sample-elastic.apps.okd.waseel.com:443',
+      secret_token: '76prrj79tw5kcpdwvkfshmfs',
+      verify_server_cert:false
+    });
   }
 
   login(username: string, password: string) {
     const requestURL = "/authenticate";
-    // this.amp.setUserContext({
-    //   'username': username,
-    //   'id': username
-    // });
+    this.amp.setUserContext({
+      'username': username,
+      'id': username
+    });
     const body:{} = {
       "username":username,
       "password":password
