@@ -26,7 +26,7 @@
                             </mat-form-field>
                             <mat-form-field floatLabel="never" 
                                 style="width: 15%;margin-right: 5%;margin-left: 3%;border: none; border-radius: 4px; ">
-                                <input matInput [matDatepicker]="fromPicker" placeholder="From date"
+                                <input matInput [matDatepicker]="fromPicker" placeholder="From Date"
                                     [formControl]="fromDateControl" (keyup.enter)="search()" required>
                                 <mat-datepicker-toggle matSuffix [for]="fromPicker">
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -35,7 +35,7 @@
                             </mat-form-field>
                             <mat-form-field floatLabel="never"
                                 style="margin-right: 5%;width: 15%;">
-                                <input matInput [matDatepicker]="toPicker" placeholder="To date"
+                                <input matInput [matDatepicker]="toPicker" placeholder="To Date"
                                     [formControl]="toDateControl" (keyup.enter)="search()" required>
                                 <mat-datepicker-toggle matSuffix [for]="toPicker">
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -45,7 +45,7 @@
 
                             <mat-form-field floatLabel="never" 
                                 style="margin-right: 5%; width: 15%;" *ngIf="showRejectionReport">
-                                <mat-label>Select Report</mat-label>
+                                <mat-label>Select Date Type</mat-label>
                                 <mat-select [formControl]="rejectionCriteriaControl" (keyup.enter)="search()" required>
                                     <mat-option *ngFor="let criteria of criterias" [value]="criteria.id">
                                         {{criteria.name}}
