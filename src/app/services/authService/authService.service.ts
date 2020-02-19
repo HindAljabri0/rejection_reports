@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent, HttpResponse } from '@angular/common/http';
+import { Injectable, Inject } from '@angular/core';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { CommenServicesService } from '../commen-services.service';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+// import { ApmService } from '@elastic/apm-rum-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,23 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   isUserNameUpdated: Subject<boolean> = new Subject();
+  // amp;
 
-  constructor(private httpClient: HttpClient, private router:Router) { }
+  constructor(private httpClient: HttpClient, private router:Router) {
+    // this.amp = apmService.init({
+    //   serviceName: 'angular-app',
+    //   serverUrl: 'https://apm-server-sample-elastic.apps.okd.waseel.com:443',
+    //   secret_token: '76prrj79tw5kcpdwvkfshmfs',
+    //   verify_server_cert:false
+    // });
+  }
 
   login(username: string, password: string) {
     const requestURL = "/authenticate";
+    // this.amp.setUserContext({
+    //   'username': username,
+    //   'id': username
+    // });
     const body:{} = {
       "username":username,
       "password":password

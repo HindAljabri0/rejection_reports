@@ -1,14 +1,14 @@
 import { LoginComponent } from './pages/loginpage/login.component';
 import { ReportsComponent } from './pages/reports/reports-page.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
+// import { ApmService, ApmErrorHandler } from '@elastic/apm-rum-angular';
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -26,7 +26,7 @@ import { NotificationCenterComponent } from './components/notification-center/no
 import { NotificationCardComponent } from './components/reusables/notification-card/notification-card.component';
 import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-dialog.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
-
+import { Router } from '@angular/router';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
 import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
@@ -46,6 +46,7 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
+// import { ErrorHandler } from '@angular/core';
 
 
 
@@ -113,12 +114,20 @@ import { MatiralModule } from './modules/matiral/matiral.module';
   ],
   providers: [
     UploadService,
-    
+    // {
+    //   provide: ApmService,
+    //   useClass: ApmService,
+    //   deps: [Router]
+    // },
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     {
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
-    }
+    },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: ApmErrorHandler
+    // }
   ],
   bootstrap: [AppComponent],
   exports: [
@@ -134,5 +143,5 @@ import { MatiralModule } from './modules/matiral/matiral.module';
     RejectionReportClaimDialogComponent,
   ],
 })
-export class AppModule { }
+export class AppModule {}
 // platformBrowserDynamic().bootstrapModule(AppModule);

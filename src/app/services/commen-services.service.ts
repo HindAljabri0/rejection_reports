@@ -11,7 +11,7 @@ import { Notification } from '../models/notification';
 import { PaginatedResult } from '../models/paginatedResult';
 import { MessageDialogData } from '../models/dialogData/messageDialogData';
 import { ViewedClaim } from '../models/viewedClaim';
-import { SearchServiceService } from './serchService/search-service.service';
+import { SearchService } from './serchService/search.service';
 import { ClaimDialogComponent } from '../components/dialogs/claim-dialog/claim-dialog.component';
 import { AuthService } from './authService/authService.service';
 import { PaymentClaimDetail } from '../models/paymentClaimDetail';
@@ -145,20 +145,20 @@ export class CommenServicesService {
   }
 
   getCardAccentColor(status: string) {
-    switch (status) {
-      case ClaimStatus.Accepted:
+    switch (status.toLowerCase()) {
+      case ClaimStatus.Accepted.toLowerCase():
         return '#21B744';
-      case ClaimStatus.NotAccepted:
+      case ClaimStatus.NotAccepted.toLowerCase():
         return '#EB2A75';
-      case ClaimStatus.ALL:
+      case ClaimStatus.ALL.toLowerCase():
         return '#3060AA'
       case '-':
         return '#bebebe';
       // case ClaimStatus.Batched:
       //   return '#21b590';
-      case ClaimStatus.INVALID:
+      case ClaimStatus.REJECTED.toLowerCase():
         return '#E988AD';
-      case ClaimStatus.Failed:
+      case ClaimStatus.Failed.toLowerCase():
         return '#bf1958';
       default:
         return '#E3A820';
@@ -175,16 +175,14 @@ export class CommenServicesService {
         return 'All Claims'
       // case ClaimStatus.Batched:
       //   return 'Queued for Submission';
-      case ClaimStatus.INVALID:
-        return 'Rejected by Payer';
       case ClaimStatus.Failed:
         return 'Failed to Submit'
-      case ClaimStatus.PARTIALLY_PAID:
+      case ClaimStatus.PARTIALLY_PAID: case 'PARTIALLY_PAID':
         return 'Partially Paid';
       case ClaimStatus.REJECTED:
         return 'Rejected by Payer';
       default:
-        return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase();
+        return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
   }
 

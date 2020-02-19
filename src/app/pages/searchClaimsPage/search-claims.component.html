@@ -7,8 +7,8 @@
     <div class="viewPort">
         <div class="cardsSummary">
             <app-abstractcard *ngFor="let summary of summaries | keyvalue" [clickable]="cardsClickAble"
-                [title]="commen.statusToName(summary.value.status)"
-                [accentColor]="commen.getCardAccentColor(summary.value.status)"
+                [title]="commen.statusToName(summary.value.statuses[0])"
+                [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
                 (action)="getResultsofStatus(summary.key)">
                 <table>
                     <tr>
