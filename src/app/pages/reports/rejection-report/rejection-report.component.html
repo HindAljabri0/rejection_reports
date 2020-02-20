@@ -21,19 +21,19 @@
 <mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
     <mat-expansion-panel-header>
         <mat-panel-title style="width: 100%;">
-            <table style="color: #3060AA !important;">
+            <table style="color: #3060AA !important;font-size:13px">
                 <tr>
-                    <td style="width: 5%">Doctor Id</td>
-                    <td style="width: 10%">Patient Name</td>
-                    <td style="width: 5%">Claim Id</td>
-                    <td style="width: 10%">Patient File Number</td>
-                    <td style="width: 10%">Memeber Id</td>
-                    <td style="width: 10%">Policy Number</td>
-                    <td style="width: 10%">Claim Date</td>
-                    <td style="width: 5%">Net Amount</td>
-                    <td style="width: 5%">Rejected By</td>
-                    <td style="width: 10%">Status</td>
-                    <td style="width: 10%">Status Details</td>
+                    <td style="width: 9%">Doctor Id</td>
+                    <td style="width: 9%">Patient Name</td>
+                    <td style="width: 9%">Claim Id</td>
+                    <td style="width: 9%">File Number</td>
+                    <td style="width: 9%;padding-left: 1%;">Memeber Id</td>
+                    <td style="width: 9%;padding-left: 1%;">Policy Number</td>
+                    <td style="width: 9%">Claim Date</td>
+                    <td style="width: 9%">Net Amount</td>
+                    <td style="width: 9%">Rejected By</td>
+                    <td style="width: 9%">Status</td>
+                    <td style="width: 9%">Status Details</td>
                 </tr>
             </table>
         </mat-panel-title>
@@ -45,19 +45,19 @@
     [disabled]="0 == 0" (click)="onClaimClick(claim.claimId)">
     <mat-expansion-panel-header>
         <mat-panel-title style="width: 100%;">
-            <table style="color: black !important;">
+            <table style="color: black !important;font-size:12px">
                 <tr>
-                    <td style="width: 5%">{{claim.doctorId}}</td>
-                    <td style="width: 10%">{{claim.patientName}}</td>
-                    <td style="width: 5%">{{claim.claimRefNo}}</td>
-                    <td style="width: 10%">{{claim.patientFileNumber}}</td>
-                    <td style="width: 10%">{{claim.memeberId}}</td>
-                    <td style="width: 10%">{{claim.policyNumber}}</td>
-                    <td style="width: 10%">{{claim.claimdate}}</td>
-                    <td style="width: 5%">{{claim.netAmount}}</td>
-                    <td style="width: 5%">{{claim.rejectedBy}}</td>
-                    <td style="width: 10%">{{claim.status}}</td>
-                    <td style="width: 10%">{{claim.statusDetails}}</td>
+                    <td style="width: 9%;">{{claim.doctorId}}</td>
+                    <td style="width: 9%">{{claim.patientName}}</td>
+                    <td style="width: 9%">{{claim.claimRefNo}}</td>
+                    <td style="width: 9%;">{{claim.patientFileNumber}}</td>
+                    <td style="width: 9%;padding-left: 1%;">{{claim.memeberId}}</td>
+                    <td style="width: 9%;padding-left: 1%;">{{claim.policyNumber}}</td>
+                    <td style="width: 9%;">{{claim.claimdate}}</td>
+                    <td style="width: 9%">{{claim.netAmount}}</td>
+                    <td style="width: 9%;">{{claim.rejectedBy}}</td>
+                    <td style="width: 9%;">{{claim.status}}</td>
+                    <td style="width: 9%;">{{claim.statusDetails}}</td>
                 </tr>
             </table>
         </mat-panel-title>
