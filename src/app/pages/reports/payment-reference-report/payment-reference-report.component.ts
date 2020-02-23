@@ -100,27 +100,9 @@ export class PaymentReferenceReportComponent implements OnInit {
   }
 
   mapPayer(payerId: string[]) {
-
-    switch (payerId) {
-      case ['300']: {
-        return "MedGulf";
-      }
-      case ['102']: {
-        return "Tawuniya";
-      }
-      case ['102', '300', '306', '204']: {
-        return "All";
-      }
-      case ['306']: {
-        return "Saudi Enaya";
-      }
-      case ['204']: {
-        return "AXA";
-      }
-      default: {
-        return "";
-      }
-    }
+    if(payerId.length > 1)
+      return 'All';
+    return this.commen.getPayersList().find(value => `${value.id}` == payerId[0]).name;
   }
 
 }

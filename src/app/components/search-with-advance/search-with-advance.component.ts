@@ -40,12 +40,7 @@ export class SearchWithAdvanceComponent implements OnInit {
   constructor(private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService) { }
 
   ngOnInit() {
-    this.payers = [
-      { id: 102, name: "Tawuniya" },
-      { id: 300, name: "Med Gulf" },
-      { id: 306, name: "Saudi Enaya" },
-      { id: 204, name: "AXA" },
-    ];
+    this.payers = this.commen.getPayersList();
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {

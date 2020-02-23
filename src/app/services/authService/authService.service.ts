@@ -100,6 +100,12 @@ export class AuthService {
         localStorage.setItem('provider_id', authority.split('|')[0]);
         localStorage.setItem('user_name', event.body['principal']["fullName"]);
         localStorage.setItem('provider_name', event.body['principal']["providerName"]);
+        let payers = event.body['principal']['payers'];
+        let payersStr = "";
+        for(let payerid in payers){
+          payersStr += `${payerid}:${payers[payerid]}|`;
+        }
+        localStorage.setItem('payers', payersStr.substr(0, payersStr.length-1));
         this.isUserNameUpdated.next(true);
       }
     });

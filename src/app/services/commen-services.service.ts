@@ -84,6 +84,7 @@ export class CommenServicesService {
       this.getNotifications();
       this.getUploadHistory();
     });
+    console.log(this.getPayersList());
   }
 
   getNotifications() {
@@ -184,6 +185,21 @@ export class CommenServicesService {
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
+  }
+
+  getPayersList():{id:number, name:string, arName:string}[]{
+    let payers:{id:number, name:string, arName:string}[] = [];
+    const payersStr = localStorage.getItem('payers');
+    if(payersStr != null){
+      const payersStrSplitted = payersStr.split('|');
+      payersStrSplitted.map(value => payers.push({
+        id: Number.parseInt(value.split(':')[0]),
+        name:value.split(':')[1].split(',')[0],
+        arName: value.split(':')[1].split(',')[1]
+      }));
+    }
+
+    return payers;
   }
 
 }
