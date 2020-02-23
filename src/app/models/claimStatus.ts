@@ -4,7 +4,7 @@ export enum ClaimStatus{
     NotAccepted = "NotAccepted",
     Not_Saved = "Not Saved" ,
     // Duplicated = "Duplicate",
-    // Batched = 'Batched',
+    Batched = 'Batched',
     INVALID = 'INVALID',
     Failed = 'Failed',
     
