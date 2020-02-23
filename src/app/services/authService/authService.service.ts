@@ -44,17 +44,22 @@ export class AuthService {
     localStorage.removeItem('expires_in');
     localStorage.removeItem('provider_id');
     localStorage.clear();
+    let promise: Promise<boolean>;
     if(expired == null || !expired)
-      this.router.navigate(['login']);
+      promise = this.router.navigate(['login']);
     else
-      this.router.navigate(['login'], {queryParams:{expired:expired}});
+      promise = this.router.navigate(['login'], {queryParams:{expired:expired}});
+    
+    promise.then(() => location.reload());
   }
 
   public get loggedIn(): boolean {
     const expiresIn = new Date(this.getExpiresIn());
     let isLogged: boolean;
     isLogged = localStorage.getItem('access_token') !== null && new Date().getTime() < expiresIn.getTime();
-    if(!isLogged && localStorage.getItem('access_token') !== null) this.logout(true);
+    const lastActivity = new Date(localStorage.getItem('lastActivity'));
+    const diffTime = (Date.now() - lastActivity.getTime()) / (1000*60);
+    if(!isLogged && localStorage.getItem('access_token') !== null) this.logout(diffTime <= 60);
     return isLogged;
   }
 
