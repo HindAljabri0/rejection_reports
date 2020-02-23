@@ -84,7 +84,6 @@ export class CommenServicesService {
       this.getNotifications();
       this.getUploadHistory();
     });
-    console.log(this.getPayersList());
   }
 
   getNotifications() {

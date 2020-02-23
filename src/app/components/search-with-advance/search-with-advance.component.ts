@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { filter } from 'rxjs/operators';
 import { query } from '@angular/animations';
+import { AuthService } from 'src/app/services/authService/authService.service';
 
 @Component({
   selector: 'app-search-with-advance',
@@ -37,10 +38,15 @@ export class SearchWithAdvanceComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  constructor(private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService) { }
+  constructor(private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private authService: AuthService) {
+    this.authService.isUserNameUpdated.subscribe((isUpdated) => {
+      if (isUpdated) {
+        this.payers = this.commen.getPayersList();
+      }
+    });
+  }
 
   ngOnInit() {
-    this.payers = this.commen.getPayersList();
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
