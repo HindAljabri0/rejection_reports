@@ -186,4 +186,19 @@ export class CommenServicesService {
     }
   }
 
+  getPayersList():{id:number, name:string, arName:string}[]{
+    let payers:{id:number, name:string, arName:string}[] = [];
+    const payersStr = localStorage.getItem('payers');
+    if(payersStr != null){
+      const payersStrSplitted = payersStr.split('|');
+      payersStrSplitted.map(value => payers.push({
+        id: Number.parseInt(value.split(':')[0]),
+        name:value.split(':')[1].split(',')[0],
+        arName: value.split(':')[1].split(',')[1]
+      }));
+    }
+
+    return payers;
+  }
+
 }

@@ -157,7 +157,7 @@ export class SearchClaimsComponent implements OnInit {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == "4") {
-            this.errorMessage = 'Access Denied.';
+            this.errorMessage = 'Sorry, we could not find any result.';
           } else if ((error.status / 100).toFixed() == "5") {
             this.errorMessage = 'Server could not handle the request. Please try again later.';
           } else {

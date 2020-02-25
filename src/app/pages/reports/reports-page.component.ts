@@ -21,13 +21,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
-  payers: { id: string[], name: string }[] = [
-    { id: ['102', '300', '306', '204'], name:"All"},
-    { id: ['102'], name: "Tawuniya" },
-    { id: ['300'], name: "Med Gulf" },
-    { id: ['306'], name: "Saudi Enaya" },
-    { id: ['204'], name: "AXA" },
-  ];
+  payers: { id: string[], name: string }[];
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Payment Report" },
     { id: 2, name: "Claim Submission Report" },
@@ -103,6 +97,19 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       } else {
         this.pageSize = 10;
       }
+    });
+    this.payers = [];
+    let allPayersIds = [];
+    this.commen.getPayersList().map(value => {
+      this.payers.push({
+        id: [`${value.id}`],
+        name: value.name
+      });
+      allPayersIds.push(`${value.id}`)
+    });
+    this.payers.push({
+      id: allPayersIds,
+      name: "All"
     });
   }
 
