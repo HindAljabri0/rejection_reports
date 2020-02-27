@@ -130,10 +130,8 @@ export class RejectionReportComponent implements OnInit {
     else return 0;
   }
 
-  mapPayer(payerId: string[]) {
-    if(payerId.length > 1)
-      return 'All';
-    return this.commen.getPayersList().find(value => `${value.id}` == payerId[0]).name;
+  mapPayer(payerId) {
+    return this.commen.getPayersList().find(value => `${value.id}` == payerId).name;
   }
 
   onClaimClick(id) {
@@ -149,7 +147,7 @@ export class RejectionReportComponent implements OnInit {
           claim.netAmountUnit = event.body['wslGenInfo']['unitofnet'];
           claim.netvatAmountUnit = event.body['wslGenInfo']['unitofnetvatamount'];
           claim.patientFileNumber = event.body['wslGenInfo']['patientfilenumber'];
-          claim.patientName = `${event.body['wslGenInfo']['firstname']} ${event.body['wslGenInfo']['middlename']} ${event.body['wslGenInfo']['lastname']}`;
+          claim.patientName = `${event.body['wslGenInfo']['firstname']} ${event.body['wslGenInfo']['middlename']} ${(event.body['wslGenInfo']['lastname']!=null?event.body["wslGenInfo"]["lastname"]:"")}`;
           claim.policyNumber = event.body['wslGenInfo']['policynumber'];
           claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
           claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];

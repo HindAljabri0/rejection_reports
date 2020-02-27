@@ -21,7 +21,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
-  payers: { id: string[], name: string }[];
+  payers: { id: string[] | string, name: string }[];
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Payment Report" },
     { id: 2, name: "Claim Submission Report" },
@@ -59,9 +59,22 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   payerId: number[];
 
 
-  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService, private dialogService:DialogService) { }
+  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService, private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.payers = [];
+    let allPayersIds = [];
+    this.commen.getPayersList().map(value => {
+      this.payers.push({
+        id: `${value.id}`,
+        name: value.name
+      });
+      allPayersIds.push(`${value.id}`);
+    });
+    this.payers.push({
+      id: allPayersIds,
+      name: "All"
+    });
     this.routeActive.queryParams.subscribe(value => {
       if (value.from != undefined) {
         const fromDate: Date = new Date(value.from);
@@ -72,7 +85,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.toDateControl.setValue(toDate);
       }
       if (value.payer != undefined) {
-        this.payerIdControl.setValue(Number.parseInt(value.payer));
+        if (value.payer instanceof Array && value.payer.length > 1)
+          this.payerIdControl.setValue(allPayersIds);
+        else
+          this.payerIdControl.setValue(value.payer);
       }
       if (value.type != undefined) {
         this.reportTypeControl.setValue(Number.parseInt(value.type));
@@ -98,19 +114,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.pageSize = 10;
       }
     });
-    this.payers = [];
-    let allPayersIds = [];
-    this.commen.getPayersList().map(value => {
-      this.payers.push({
-        id: [`${value.id}`],
-        name: value.name
-      });
-      allPayersIds.push(`${value.id}`)
-    });
-    this.payers.push({
-      id: allPayersIds,
-      name: "All"
-    });
+    
   }
 
   ngAfterViewInit() {
@@ -172,7 +176,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     else if (this.reportTypeControl.value == 3) {
       this.criteria = ref;
     }
-    
+
   }
 
   paginationChange(event) {

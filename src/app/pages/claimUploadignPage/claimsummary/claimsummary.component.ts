@@ -11,6 +11,7 @@ import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/rou
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { ClaimfileuploadComponent } from '../claimfileupload/claimfileupload.component';
 
 @Component({
   selector: 'app-claimsummary',
@@ -20,6 +21,8 @@ import { Subscription } from 'rxjs';
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   paginatedResult:PaginatedResult<ClaimInfo>;
+  filename:ClaimfileuploadComponent;
+
 
   paginatorPagesNumbers:number[];
   @ViewChild('paginator', {static:false}) paginator: MatPaginator;
@@ -34,6 +37,9 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   detailAccentColor:string;
   selectedCardKey:string;
 
+ // currentFileUpload: File;
+
+
   card0Title = this.commen.statusToName(ClaimStatus.ALL);
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
@@ -44,6 +50,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     this.getUploadedClaimsDetails();
     this.selectedCardKey = null;
   }
+
+  /* checkfile() {
+    const validExts = new Array('.xlsx', '.xls');
+    let fileExt = this.currentFileUpload.name;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+  }*/
 
   card1Title = this.commen.statusToName(ClaimStatus.Accepted);
   card1ActionText = 'details';

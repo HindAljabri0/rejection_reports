@@ -99,10 +99,8 @@ export class PaymentReferenceReportComponent implements OnInit {
     else return 0;
   }
 
-  mapPayer(payerId: string[]) {
-    if(payerId.length > 1)
-      return 'All';
-    return this.commen.getPayersList().find(value => `${value.id}` == payerId[0]).name;
+  mapPayer(payerId) {
+    return this.commen.getPayersList().find(value => `${value.id}` == payerId).name;
   }
 
 }
