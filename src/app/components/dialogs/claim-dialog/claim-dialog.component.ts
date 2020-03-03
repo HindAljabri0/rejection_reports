@@ -248,7 +248,8 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   getPatientFullName(){
-    return `${this.claim.firstname} ${this.claim.middlename} ${this.claim.lastname}`;
+      return `${this.claim.firstname!=null? this.claim.firstname:""} ${this.claim.middlename!=null? this.claim.middlename:""}  ${this.claim.lastname!=null? this.claim.lastname:""}  `;
+    //return `${this.claim.firstname} ${this.claim.middlename} ${this.claim.lastname}`;
   }
 
   getPatientName(){

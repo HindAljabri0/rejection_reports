@@ -20,7 +20,7 @@ export class RejectionSummary extends Paginateable {
         super(body);
         this.claimId = body["wslGenInfo"]["claimid"];
         this.doctorId = body["wslGenInfo"]["physicianid"];
-        this.patientName = body["wslGenInfo"]["firstname"] + (body["wslGenInfo"]["lastname"]!=null?body["wslGenInfo"]["lastname"]:"");
+        this.patientName = (body["wslGenInfo"]["firstname"]!=null?body["wslGenInfo"]["firstname"]:"") + (body["wslGenInfo"]["lastname"]!=null?body["wslGenInfo"]["lastname"]:"");
         this.claimRefNo = body["wslGenInfo"]["claimid"];
         this.patientFileNumber = body["wslGenInfo"]["patientfilenumber"];
         this.memeberId = body["wslGenInfo"]["memberid"];
