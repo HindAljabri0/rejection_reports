@@ -1,4 +1,4 @@
-const host = 'http://gateway.okd.waseel.com/api';
+const host = 'http://gateway.okd.waseel.com';
 export const environment = {
     production: true,
     uploaderHost: `${host}/claim-uploader`,
