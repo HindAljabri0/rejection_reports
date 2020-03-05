@@ -65,7 +65,7 @@ export class AuthService {
 
 
   refreshCurrentToken(){
-    const requestURL = "/authenticate/refresh";
+    const requestURL = "/refresh";
     const body:{} = {
       "access_token":this.getAccessToken(),
       "refresh_token":this.getRefreshToken()
@@ -75,7 +75,7 @@ export class AuthService {
   }
 
   getCurrentUserToken(){
-    const requestURL = "/authenticate/user/current";
+    const requestURL = "/users/current";
     const request = new HttpRequest("GET", environment.authenticationHost + requestURL);
     return this.httpClient.request(request);
   }
