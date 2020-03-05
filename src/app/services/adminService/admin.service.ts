@@ -10,7 +10,7 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   searchICDCode(searchQuery: string) {
-    const requestURL: string = '/ICD10Diagnosis/search?query=' + searchQuery;
+    const requestURL: string = '/diagnosis/search?query=' + searchQuery;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
