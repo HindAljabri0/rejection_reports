@@ -35,7 +35,7 @@ export class UploadService {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file, file.name);
-    const req = new HttpRequest('POST', environment.uploaderHost+`/${providerID}/uploads`,  formdata, {
+    const req = new HttpRequest('POST', environment.uploaderHost+`/providers/${providerID}/file`,  formdata, {
       reportProgress: true,
     });
 
@@ -63,7 +63,7 @@ export class UploadService {
   getUploadSummaries(providerId:string, page?:number, size?:number){
     if(page == null) page = 0;
     if(size == null) size = 10;
-    const requestUrl = `/${providerId}/uploads/summary?page=${page}&size=${size}`;
+    const requestUrl = `/providers/${providerId}/history?page=${page}&size=${size}`;
     const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
     return this.http.request(request);
   }
@@ -71,7 +71,7 @@ export class UploadService {
   searchUploadSummaries(providerId:string, query?:string, fromDate?:string, toDate?:string, page?:number, size?:number){
     if(page == null) page = 0;
     if(size == null) size = 10;
-    let requestUrl = `/${providerId}/uploads/summary/search?`;
+    let requestUrl = `/providers/${providerId}/history/search?`;
 
     if(query != null){
       requestUrl += `query=${query}`;
@@ -84,14 +84,14 @@ export class UploadService {
     return this.http.request(request);
   }
 
-  getUploadedSummary(providerId:string, summaryId:number){
-    const requestUrl = `/${providerId}/uploads/summary/${summaryId}?`;
+  getUploadedSummary(providerId:string, uploadId:number){
+    const requestUrl = `/providers/${providerId}/history/${uploadId}?`;
     const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
     return this.http.request(request);
   }
 
-  getUploadedClaimsDetails(providerId:string, summaryId:number, status?:string, page?:number, pageSize?:number){
-    const requestUrl = `/${providerId}/uploads/details/${summaryId}?` + (status != null? `status=${status}&`:'')
+  getUploadedClaimsDetails(providerId:string, uploadId:number, status?:string, page?:number, pageSize?:number){
+    const requestUrl = `/providers/${providerId}/history/${uploadId}/details?` + (status != null? `status=${status}&`:'')
     + (page != null? `page=${page}&`:'') + (pageSize != null? `size=${pageSize}`:'');
     const request = new HttpRequest('GET', environment.uploaderHost+requestUrl);
     return this.http.request(request);
