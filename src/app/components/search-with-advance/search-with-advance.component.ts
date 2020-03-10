@@ -19,6 +19,11 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   queries: Query[] = [];
   payers: { id: number, name: string }[];
+  casetypes: { value: string, name: string }[] = [
+    { value: "OUTPATIENT,INPATIENT", name: "Any" },
+    { value: "OUTPATIENT", name: "Outpatient" },
+    { value: "INPATIENT", name: "Inpatient" },
+  ];
   @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
   searchControl: FormControl = new FormControl();
@@ -29,11 +34,14 @@ export class SearchWithAdvanceComponent implements OnInit {
   toDateHasError: boolean = false;
   payerIdControl: FormControl = new FormControl();
   payerIdHasError: boolean = false;
+  outpatientControl: boolean = true;
+  inpatientControl: boolean = true;
 
   fromDate: QueryType = QueryType.DATEFROM;
   toDate: QueryType = QueryType.DATETO;
   payerId: QueryType = QueryType.PAYERID;
   batchId: QueryType = QueryType.BATCHID;
+  casetype: QueryType = QueryType.CASETYPE;
 
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -50,6 +58,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
+      this.payers = this.commen.getPayersList();
       if (this.queries.length != 0) this.searchControl.setValue(' ');
       else this.searchControl.setValue('');
       if (this.router.url.includes('claims')) {
@@ -69,6 +78,20 @@ export class SearchWithAdvanceComponent implements OnInit {
           if (value.payer != null) {
             this.payerIdControl.setValue(Number.parseInt(value.payer));
             this.updateChips(QueryType.PAYERID, value.payer);
+          }
+          if (value.casetype != null) {
+            switch (value.casetype) {
+              case this.casetypes[1].value:
+                this.outpatientControl = true;
+                this.inpatientControl = false;
+                this.updateChips(QueryType.CASETYPE, value.casetype);
+                break;
+              case this.casetypes[2].value:
+                this.outpatientControl = false;
+                this.inpatientControl = true;
+                this.updateChips(QueryType.CASETYPE, value.casetype);
+                break;
+            }
           }
           if (value.batchId != null && (this.queries[0] == null || this.queries[0].content != value.batchId)) {
             this.updateChips(QueryType.BATCHID, value.batchId);
@@ -118,6 +141,8 @@ export class SearchWithAdvanceComponent implements OnInit {
         return "From Claim Date"
       case QueryType.DATETO:
         return "To Claim Date"
+      case QueryType.CASETYPE:
+        return "Case Type";
       default:
         return "";
     }
@@ -155,7 +180,15 @@ export class SearchWithAdvanceComponent implements OnInit {
         const from = fromDate.getFullYear() + '-' + (fromDate.getMonth() + 1) + '-' + fromDate.getDate();
         const to = toDate.getFullYear() + '-' + (toDate.getMonth() + 1) + '-' + toDate.getDate();
         const payer = this.payerIdControl.value;
-        this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { from: from, to: to, payer: payer } });
+        let selectedCasetype: string;
+        if (this.outpatientControl && !this.inpatientControl) {
+          selectedCasetype = this.casetypes[1].value;
+        } else if (!this.outpatientControl && this.inpatientControl) {
+          selectedCasetype = this.casetypes[2].value;
+        }
+        let queryParams: any = { from: from, to: to, payer: payer }
+        if (selectedCasetype != null) queryParams.casetype = selectedCasetype;
+        this.router.navigate([this.commen.providerId, 'claims'], { queryParams: queryParams });
       }
     } else if (this.queries.length == 1 && this.queries.map(value => value.type == QueryType.BATCHID).includes(true)) {
       let batchId = this.queries.find(query => query.type == QueryType.BATCHID).content;
@@ -194,6 +227,28 @@ export class SearchWithAdvanceComponent implements OnInit {
     } else if (this.queries.map(query => query.type == QueryType.BATCHID).includes(true)) {
       return this.queries.map(query => { if (query.type == QueryType.BATCHID) return query.content; })
     } else return '';
+  }
+
+  toggleSelectionOutpatient() {
+    this.outpatientControl = !this.outpatientControl;
+    this.editCaseTypeChip();
+  }
+
+  toggleSelectionInpatient() {
+    this.inpatientControl = !this.inpatientControl;
+    this.editCaseTypeChip();
+  }
+
+  editCaseTypeChip() {
+    if(this.outpatientControl && this.inpatientControl){
+      const query = this.queries.find(query => query.type == QueryType.CASETYPE);
+      if(query != null)  
+        this.remove(query)
+    } else if (this.outpatientControl){
+      this.updateChips(QueryType.CASETYPE, this.casetypes[1].value)
+    }else if (this.inpatientControl){
+      this.updateChips(QueryType.CASETYPE, this.casetypes[2].value)
+    }
   }
 
   clear() {

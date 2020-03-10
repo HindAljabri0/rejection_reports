@@ -4,5 +4,6 @@ export enum QueryType{
     DATETO = "toDate",
     PAYERID = 'payerId',
     BATCHID = "batchId",
+    CASETYPE = "casetype",
     TEXT = "text"
 }

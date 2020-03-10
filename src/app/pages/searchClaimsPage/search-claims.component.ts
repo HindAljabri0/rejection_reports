@@ -43,6 +43,7 @@ export class SearchClaimsComponent implements OnInit {
   to: string;
   payerId: string;
   batchId: string;
+  casetype: string;
 
   summaries: SearchStatusSummary[];
   searchResult: PaginatedResult<SearchedClaim>;
@@ -102,6 +103,7 @@ export class SearchClaimsComponent implements OnInit {
       this.queryPage = value.page == null ? 0 : Number.parseInt(value.page) - 1;
       if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) this.queryStatus = 0;
       if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
+      this.casetype = value.casetype;
     });
     if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '')) {
       this.commen.loadingChanged.next(false);
@@ -137,7 +139,7 @@ export class SearchClaimsComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     let event;
     if (this.batchId == null) {
-      event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId).toPromise().catch(error => {
+      event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, undefined, this.casetype).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == "4") {
@@ -219,7 +221,7 @@ export class SearchClaimsComponent implements OnInit {
     this.searchResult = null;
     this.claims = new Array();
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId).subscribe((event) => {
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.casetype).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -408,7 +410,8 @@ export class SearchClaimsComponent implements OnInit {
 
   resetURL() {
     if (this.from != null && this.to != null && this.payerId != null) {
-      this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`);
+      this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
+      + (this.casetype != null? `&casetype=${this.casetype}`:""));
     } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
     }
