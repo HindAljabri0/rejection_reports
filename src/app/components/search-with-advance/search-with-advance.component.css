@@ -14,9 +14,6 @@
     text-align: center;
 }
 
-.searchByDate * {
-    margin: 0px 30px;
-}
 
 ::ng-deep.mat-menu-panel {
     max-width: none !important;

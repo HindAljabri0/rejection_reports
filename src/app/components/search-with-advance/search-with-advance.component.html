@@ -1,7 +1,7 @@
 <mat-menu #appMenu="matMenu">
     <div class="menuContent" (click)="$event.stopPropagation()">
         <div class="searchByDate" (keyup.enter)="search()">
-            <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}" style="margin-right: 20px;">
+            <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}" style="margin-right: 45px; min-width: 205px;  margin-left: 15px;">
                 <mat-label>Select Payer</mat-label>
                 <mat-select [formControl]="payerIdControl" (keyup.enter)="search()"
                     (selectionChange)="updateChips(payerId, $event.value)">
@@ -14,7 +14,7 @@
             <mat-checkbox [(checked)]="inpatientControl" (change)="toggleSelectionInpatient()">Inpatient</mat-checkbox>
         </div>
         <div class="searchByDate" (keyup.enter)="search()">
-            <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 5px;">
+            <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 45px;">
                 <input matInput [matDatepicker]="fromPicker" placeholder="From claim date"
                     [formControl]="fromDateControl" (keyup.enter)="search()"
                     (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
