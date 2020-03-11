@@ -10,10 +10,12 @@
 
 .menuContent {
     padding: 15px;
+    min-width: 710px;
+    text-align: center;
 }
 
-.searchByDate {
-    display: flex;
+.searchByDate * {
+    margin: 0px 30px;
 }
 
 ::ng-deep.mat-menu-panel {
