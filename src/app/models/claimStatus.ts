@@ -6,7 +6,7 @@ export enum ClaimStatus{
     // Duplicated = "Duplicate",
     Batched = 'Batched',
     INVALID = 'INVALID',
-    Failed = 'Failed',
+    // Failed = 'Failed',
     
     VALID = "VALID",
     ELIGIBLE = "ELIGIBLE",

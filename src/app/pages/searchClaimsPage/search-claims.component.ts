@@ -115,7 +115,9 @@ export class SearchClaimsComponent implements OnInit {
       if(status == ClaimStatus.OUTSTANDING){
         statusCode = await this.getSummaryOfStatus([status, 'PENDING']);
       }else if(status == ClaimStatus.REJECTED){
-          statusCode = await this.getSummaryOfStatus([status, 'INVALID', 'DUPLICATE']);
+        statusCode = await this.getSummaryOfStatus([status, 'INVALID', 'DUPLICATE']);
+      } else if(status == ClaimStatus.Accepted){
+        statusCode = await this.getSummaryOfStatus([status, 'Failed']);
       } else
         statusCode = await this.getSummaryOfStatus([status]);
       if (statusCode != 200) {

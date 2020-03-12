@@ -158,8 +158,6 @@ export class CommenServicesService {
       //   return '#21b590';
       case ClaimStatus.REJECTED.toLowerCase():
         return '#E988AD';
-      case ClaimStatus.Failed.toLowerCase():
-        return '#bf1958';
       default:
         return '#E3A820';
     }
@@ -173,10 +171,6 @@ export class CommenServicesService {
         return 'Rejected by Waseel';
       case ClaimStatus.ALL:
         return 'All Claims'
-      // case ClaimStatus.Batched:
-      //   return 'Queued for Submission';
-      case ClaimStatus.Failed:
-        return 'Failed to Submit'
       case ClaimStatus.PARTIALLY_PAID: case 'PARTIALLY_PAID':
         return 'Partially Paid';
       case ClaimStatus.REJECTED:
