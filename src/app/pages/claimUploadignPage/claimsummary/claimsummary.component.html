@@ -4,22 +4,18 @@
         [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
         <table>
             <tr>
-                <th>No. Of Claims:</th>
-                <th>Total:</th>
-
+                <th>No. Of Claims</th>
             </tr>
             <tr>
                 <td><span class="dashboardNumbers">{{summary.noOfUploadedClaims}}</span></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th>Total Vat</th>
+            </tr>
+            <tr>
                 <td><span class="dashboardNumbers">{{summary.netAmountOfUploadedClaims}}</span><span class="currency">
                         SR</span></td>
-
-            </tr>
-            <tr>
-                <th></th>
-                <th>Total Vat:</th>
-            </tr>
-            <tr>
-                <td></td>
                 <td><span class="dashboardNumbers">{{summary.netVATAmountOfUploadedClaims}}</span><span
                         class="currency"> SR</span></td>
             </tr>
@@ -29,22 +25,18 @@
         [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
         <table>
             <tr>
-                <th>No. Of Claims:</th>
-                <th>Total:</th>
-
+                <th>No. Of Claims</th>
             </tr>
             <tr>
                 <td><span class="dashboardNumbers">{{summary.noOfAcceptedClaims}}</span></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th>Total Vat</th>
+            </tr>
+            <tr>
                 <td><span class="dashboardNumbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency">
-                        SR</span></td>
-
-            </tr>
-            <tr>
-                <th></th>
-                <th>Total Vat:</th>
-            </tr>
-            <tr>
-                <td></td>
+                    SR</span></td>
                 <td><span class="dashboardNumbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span
                         class="currency"> SR</span></td>
             </tr>
@@ -54,22 +46,18 @@
         [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
         <table>
             <tr>
-                <th>No. Of Claims:</th>
-                <th>Total:</th>
-
+                <th>No. Of Claims</th>
             </tr>
             <tr>
                 <td><span class="dashboardNumbers">{{summary.noOfNotAcceptedClaims}}</span></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th>Total Vat</th>
+            </tr>
+            <tr>
                 <td><span class="dashboardNumbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span
-                        class="currency"> SR</span></td>
-
-            </tr>
-            <tr>
-                <th></th>
-                <th>Total Vat:</th>
-            </tr>
-            <tr>
-                <td></td>
+                    class="currency"> SR</span></td>
                 <td><span class="dashboardNumbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span
                         class="currency"> SR</span></td>
             </tr>
@@ -79,21 +67,17 @@
         [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
         <table>
             <tr>
-                <th>No. Of Claims:</th>
-                <th>Total:</th>
-
+                <th>No. Of Claims</th>
             </tr>
             <tr>
                 <td><span class="dashboardNumbers">{{summary.noOfNotUploadedClaims}}</span></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th>Total Vat</th>
+            </tr>
+            <tr>
                 <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
-
-            </tr>
-            <tr>
-                <th></th>
-                <th>Total Vat:</th>
-            </tr>
-            <tr>
-                <td></td>
                 <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
             </tr>
         </table>

@@ -1,30 +1,37 @@
-
-<div style="display: flex; height: 650px;">
-    <div class="progressContiner">
-        <lib-stepperProgressBar class="stepperProgressBar" [controller]="progressStepper" [steps]="steps" [isVertical]="isVertical">
-        </lib-stepperProgressBar> 
+<div style="margin: 0 10px;">
+    <div class="header">
+        File Uploading
     </div>
-    <div class="dragAndDropContainer">
-        <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
-            <table style="text-align: center; margin: 5px 0px 150px 0px;">
-                <tbody>
-                    <tr>
-                        <td><img  src="assets/xls.svg" alt="{{currentFileUpload.name}}" ></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px; font-size: large; font-weight: 600;">{{currentFileUpload.name}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="width: 100%; text-align: center; margin-top: 10px">
-                <button mat-button (click)="cancel()" style="font-size: large;  padding: 5px 20px;  margin-right: 10px;">Cancel</button>
-                <button mat-raised-button color="primary" (click)="upload()" style="font-size: large;  padding: 5px 20px; margin-bottom: 5px;">Upload</button>                
-            </div>
+    <div style="display: flex; height: 70%px;">
+        <div class="dragAndDropContainer">
+            <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
+                <table style="text-align: center; margin: 5px 0px 150px 0px;">
+                    <tbody>
+                        <tr>
+                            <td><img src="assets/xls.svg" alt="{{currentFileUpload.name}}"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 20px; font-size: large; font-weight: 600;">{{currentFileUpload.name}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="!uploading" style="width: 100%; text-align: center; margin-top: 10px">
+                    <button mat-button (click)="cancel()"
+                        style="font-size: large;  padding: 5px 20px;  margin-right: 10px;">Cancel</button>
+                    <button mat-raised-button color="primary" (click)="upload()"
+                        style="font-size: large;  padding: 5px 20px; margin-bottom: 5px;">Upload</button>
+                </div>
 
-        </div>
-        <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
-            <p *ngIf="currentFileUpload == undefined" class="containerText">Choose an Excel file or drag it here.<br>{{error}}</p>
-            <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            </div>
+            <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()"
+                appDragdrop (onFileDropped)="selectFile($event)">
+                <p *ngIf="currentFileUpload == undefined" class="containerText">Choose an Excel file or drag it
+                    here.<br>{{error}}</p>
+                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                    (change)="selectFile($event.target.files)"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            </div>
         </div>
     </div>
 </div>

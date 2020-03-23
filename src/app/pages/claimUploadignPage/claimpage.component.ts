@@ -10,7 +10,10 @@ import { Location } from '@angular/common';
 })
 export class ClaimpageComponent implements OnInit {
 
-  constructor(private uploadService:UploadService, public location: Location) { }
+  uploadingObs:boolean = false;
+  constructor(private uploadService:UploadService, public location: Location) {
+    this.uploadService.uploadingObs.subscribe(value => this.uploadingObs = value);
+  }
 
   ngOnInit() {
   }
@@ -20,6 +23,10 @@ export class ClaimpageComponent implements OnInit {
       return this.uploadService.summary;
     else
       return new UploadSummary();
+  }
+
+  get uploading(): boolean {
+    return this.uploadingObs;
   }
 
 }

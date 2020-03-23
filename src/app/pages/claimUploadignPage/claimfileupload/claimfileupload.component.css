@@ -29,7 +29,7 @@ table{
 .dragAndDropContainer{
   background-color: #FAFAFA;
   padding: 15px;
-  width: 78%;
+  width: 100%;
   height: 100%;
 }
 
@@ -88,6 +88,20 @@ table{
 .containerText {
   font-size: 20px;
   text-align: center;
-  margin-top: 25%;
+  margin: 15% 0px;;
 }
 
+.header {
+  display: flex;
+  color: #3060AA;
+  background-color: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 10px;
+  height: 40px;
+}
+
+.body {
+  padding-top: 10px;
+  background-color: #f0eeee;
+}

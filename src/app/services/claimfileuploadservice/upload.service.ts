@@ -16,6 +16,7 @@ export class UploadService {
   uploading:boolean = false;
   progress: { percentage: number } = { percentage: 0 };
   progressChange:Subject<{ percentage: number }> = new Subject();
+  uploadingObs: Subject<boolean> = new Subject<boolean>();
   error:string;
   errorChange:Subject<string> = new Subject();
   constructor(private http: HttpClient) {
@@ -32,6 +33,7 @@ export class UploadService {
   pushFileToStorage(providerID:string, file: File) {
     if(this.uploading) return;
     this.uploading = true;
+    this.uploadingObs.next(true);
     const formdata: FormData = new FormData();
 
     formdata.append('file', file, file.name);
@@ -44,12 +46,14 @@ export class UploadService {
         this.progressChange.next( { percentage:Math.round(100 * event.loaded / event.total)});
       } else if (event instanceof HttpResponse) {
         this.uploading = false;
+        this.uploadingObs.next(false);
         const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
         this.summaryChange.next(summary);
         this.progressChange.next( { percentage:101});
       }
     }, errorEvent => {
       this.uploading = false;
+      this.uploadingObs.next(false);
       if(errorEvent instanceof HttpErrorResponse){
         if(errorEvent.status >= 500){
           this.errorChange.next('Server could not handle your request at the moment. Please try Again later.');

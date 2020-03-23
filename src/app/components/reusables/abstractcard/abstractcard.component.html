@@ -1,7 +1,7 @@
-<mat-card  style="padding: 0px 0px 5px 0px; width: inherit;">
+<mat-card  style="padding: 0px 0px 5px 0px; width: inherit; border-radius: 5px;">
     <div *ngIf="clickable" matRipple (click)="action.emit()" style="position: absolute; width: 100%; height: 100%; z-index: 1; cursor: pointer;"></div>
-    <div style="height: 3px; width: 100%;" [style.background-color]="accentColor"></div>
-    <mat-card-title style="font-size: 16px; padding: 16px 16px 0px 16px;">
+    <div style="height: 3px; width: 30%; margin-left: 60%; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" [style.background-color]="accentColor"></div>
+    <mat-card-title [style.color]="accentColor" style="font-size: 12px; padding: 8px 8px 0px 8px;">
         {{title}}
     </mat-card-title>
     <mat-card-content [style.color]="accentColor" style="height: 30%; padding: 0px 16px;">

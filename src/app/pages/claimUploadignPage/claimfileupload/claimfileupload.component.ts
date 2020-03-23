@@ -1,13 +1,9 @@
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, OnDestroy } from '@angular/core';
-import {  HttpEventType, HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { StepperProgressBarController, Step } from 'stepper-progress-bar';
+import { Component, OnInit} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { CommenServicesService } from '../../../services/commen-services.service';
 
-import { UploadSummary } from 'src/app/models/uploadSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
-import { async } from '@angular/core/testing';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 
@@ -22,10 +18,6 @@ export class ClaimfileuploadComponent implements OnInit {
   constructor(public uploadService: UploadService, public common:CommenServicesService, private dialogService:DialogService) { }
 
   ngOnInit(): void {
-    this.steps.push(new Step('Uploading'));
-    this.steps.push(new Step('Parsing'));
-    this.steps.push(new Step('Validating'));
-    this.steps.push(new Step('Done!'));
   }
 
 
@@ -36,11 +28,11 @@ export class ClaimfileuploadComponent implements OnInit {
   showFile = false;
   fileUploads: Observable<string[]>;
 
+  
+
   uploadContainerClass = 'uploadfilecontainer';
   error = '';
 
-  progressStepper:StepperProgressBarController = new StepperProgressBarController();
-  steps:Step[] = new Array<Step>();
   isVertical=true;
 
 
@@ -73,30 +65,21 @@ export class ClaimfileuploadComponent implements OnInit {
     
     let providerId = this.common.providerId;
     this.uploading = true;
-    this.progressStepper.nextStep();
     this.uploadService.pushFileToStorage(providerId,this.currentFileUpload);
     let progressObservable = this.uploadService.progressChange.subscribe(progress => {
       if(progress.percentage == 100){
-        this.progressStepper.nextStep();
         progressObservable.unsubscribe();
       }
     });
     let summaryObservable = this.uploadService.summaryChange.subscribe(async value =>{
-      this.progressStepper.nextStep();
-        await this.delay(600);
-        this.progressStepper.nextStep();
-        await this.delay(600);
-        this.progressStepper.nextStep();
-        await this.delay(600);
         summaryObservable.unsubscribe();
+        this.cancel();
     });
     let errorobservable = this.uploadService.errorChange.subscribe(error =>{
       this.dialogService.openMessageDialog(new MessageDialogData("", error, true));
-      this.progressStepper.previousStep();
-      this.progressStepper.previousStep();
       errorobservable.unsubscribe();
+      this.cancel();
     });
-    this.cancel();
   }
 
   cancel(){

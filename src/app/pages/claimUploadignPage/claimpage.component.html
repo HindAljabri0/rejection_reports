@@ -1,4 +1,14 @@
 <div class="mainPage">
-    <app-claimsummary></app-claimsummary>
-    <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined"></app-claimfileupload>
+    <div class="header">
+        <p>Upload Name: {{summary.uploadName}}</p><span class="spacer"></span>
+        <p>{{summary.uploadDate}}</p>
+    </div>
+    <div class="body">
+        <app-claimsummary></app-claimsummary>
+        <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined"></app-claimfileupload>
+    </div>
+    <div class="footer">
+        <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
+        <button *ngIf="uploading" mat-raised-button color="primary">Cancel</button>
+    </div>
 </div>
