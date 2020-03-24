@@ -43,6 +43,7 @@ export class SearchClaimsComponent implements OnInit {
   to: string;
   payerId: string;
   batchId: string;
+  uploadId: string;
   casetype: string;
 
   summaries: SearchStatusSummary[];
@@ -99,13 +100,14 @@ export class SearchClaimsComponent implements OnInit {
       this.to = value.to;
       this.payerId = value.payer;
       this.batchId = value.batchId;
+      this.uploadId = value.uploadId
       this.queryStatus = value.status == null ? 0 : Number.parseInt(value.status);
       this.queryPage = value.page == null ? 0 : Number.parseInt(value.page) - 1;
       if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) this.queryStatus = 0;
       if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
       this.casetype = value.casetype;
     });
-    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '')) {
+    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '') && (this.uploadId == null || this.uploadId == '')) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
@@ -140,7 +142,7 @@ export class SearchClaimsComponent implements OnInit {
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
-    if (this.batchId == null) {
+    if (this.batchId == null && this.uploadId == null) {
       event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, undefined, this.casetype).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
@@ -154,9 +156,9 @@ export class SearchClaimsComponent implements OnInit {
           return error.status;
         }
       });
-    }
-    else {
-
+    } else if (this.uploadId != null){
+      
+    } else {
       event = await this.searchService.getSummaries(this.providerId, statuses, undefined, undefined, undefined, this.batchId).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {

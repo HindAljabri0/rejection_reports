@@ -20,24 +20,25 @@ import { ClaimfileuploadComponent } from '../claimfileupload/claimfileupload.com
 })
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
-  paginatedResult:PaginatedResult<ClaimInfo>;
-  filename:ClaimfileuploadComponent;
+  paginatedResult: PaginatedResult<ClaimInfo>;
+  results: any[];
+  filename: ClaimfileuploadComponent;
 
 
-  paginatorPagesNumbers:number[];
-  @ViewChild('paginator', {static:false}) paginator: MatPaginator;
-  paginatorPageSizeOptions = [10,20, 50, 100];
+  paginatorPagesNumbers: number[];
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
+  paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 
-  routingObservable:Subscription;
-  summaryObservable:Subscription;
+  routingObservable: Subscription;
+  summaryObservable: Subscription;
 
-  showClaims:boolean = false;
+  showClaims: boolean = false;
   detailCardTitle: string;
-  detailAccentColor:string;
-  selectedCardKey:string;
+  detailAccentColor: string;
+  selectedCardKey: string;
 
- // currentFileUpload: File;
+  // currentFileUpload: File;
 
 
   card0Title = this.commen.statusToName(ClaimStatus.ALL);
@@ -92,26 +93,26 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(public location: Location, public uploadService: UploadService, public commen:CommenServicesService, private router:Router, private routeActive:ActivatedRoute) {
+  constructor(public location: Location, public uploadService: UploadService, public commen: CommenServicesService, private router: Router, private routeActive: ActivatedRoute) {
     this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.routeActive.queryParams.subscribe(value => {
-        if(value.id!=null && this.location.path().includes('summary')) {
+        if (value.id != null && this.location.path().includes('summary')) {
           this.commen.loadingChanged.next(true);
           this.uploadService.getUploadedSummary(this.commen.providerId, value.id).subscribe(event => {
-            if(event instanceof HttpResponse){
+            if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
-              const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
+              const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
               this.uploadService.summaryChange.next(summary);
             }
           }, eventError => {
             this.commen.loadingChanged.next(false);
           });
-        } else if(this.summary.uploadSummaryID != null && this.location.path().includes('summary')){
-          this.location.go('/summary?id='+this.summary.uploadSummaryID);
+        } else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
+          this.location.go('/summary?id=' + this.summary.uploadSummaryID);
           this.getResults();
-        } else if(this.location.path().includes('summary')){
+        } else if (this.location.path().includes('summary')) {
           this.router.navigate(['/upload']);
         }
       });
@@ -119,61 +120,105 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.summaryObservable =this.uploadService.summaryChange.subscribe(value =>{
+    this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
       this.router.navigate(['/summary']);
     });
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.routingObservable.unsubscribe();
-    if(this.summaryObservable != null)
+    if (this.summaryObservable != null)
       this.summaryObservable.unsubscribe();
   }
 
-  getResults(){
+  getResults() {
     let value = this.summary;
-    if(value.noOfUploadedClaims != 0){
+    if (value.noOfUploadedClaims != 0) {
       this.card0Action();
-    } else if(value.noOfAcceptedClaims != 0){
+    } else if (value.noOfAcceptedClaims != 0) {
       this.card1Action();
-    } else if(value.noOfNotAcceptedClaims != 0){
+    } else if (value.noOfNotAcceptedClaims != 0) {
       this.card2Action();
-    } else if(value.noOfNotUploadedClaims != 0){
+    } else if (value.noOfNotUploadedClaims != 0) {
       this.card3Action();
     }
   }
 
   get summary(): UploadSummary {
-    if(this.location.path().includes("summary"))
+    if (this.location.path().includes("summary"))
       return this.uploadService.summary;
     else
       return new UploadSummary();
   }
 
-  getUploadedClaimsDetails(status?:string, page?:number, pageSize?:number){
-    if(this.commen.loading) return;
+  getUploadedClaimsDetails(status?: string, page?: number, pageSize?: number) {
+    if (this.commen.loading) return;
     this.commen.loadingChanged.next(true);
-    if(this.paginatedResult != null)
+    if (this.paginatedResult != null)
       this.paginatedResult.content = [];
     this.uploadService.getUploadedClaimsDetails(this.commen.providerId, this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
-      if(event instanceof HttpResponse){
+      if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
         this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
-        this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x,i)=>i);
-        this.manualPage = this.paginatedResult.number;
-      }
-    }, eventError => {
-      this.commen.loadingChanged.next(false);
-    });
+        this.results = [];
+        this.paginatedResult.content.forEach(result => {
+          if (result.uploadSubStatus == ClaimStatus.Accepted) {
+            let col: any = {};
+              col.description = '-';
+              col.fieldName = '-';
+              col.fileRowNumber = result.fileRowNumber || '';
+              col.provclaimno = result.provclaimno || '';
+              col.uploadStatus = result.uploadStatus || '';
+              col.uploadSubStatus = result.uploadSubStatus || '';
+              this.results.push(col);
+          } else {
+            result.claimErrors.forEach(error => {
+              let col: any = {};
+              col.code = error.code || '';
+              col.description = error.errorDescription || '';
+              col.fieldName = error.fieldName || '';
+              col.fileRowNumber = result.fileRowNumber || '';
+              col.provclaimno = result.provclaimno || '';
+              col.uploadStatus = result.uploadStatus || '';
+              col.uploadSubStatus = result.uploadSubStatus || '';
+              this.results.push(col);
+            });
+          }
+        });
+    this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x, i) => i);
+    this.manualPage = this.paginatedResult.number;
+  }
+}, eventError => {
+  this.commen.loadingChanged.next(false);
+});
   }
 
-  updateManualPage(index) {
-    this.manualPage = index;
-    this.paginator.pageIndex = index;
-    this.paginatorAction({previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length})
-  }
-  paginatorAction(event){
-    this.manualPage = event['pageIndex'];
-    this.getUploadedClaimsDetails(this.selectedCardKey, event['pageIndex'], event['pageSize']);
-  }
+updateManualPage(index) {
+  this.manualPage = index;
+  this.paginator.pageIndex = index;
+  this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
+}
+paginatorAction(event) {
+  this.manualPage = event['pageIndex'];
+  this.getUploadedClaimsDetails(this.selectedCardKey, event['pageIndex'], event['pageSize']);
+}
+
+goToFirstPage(){
+  this.paginatorAction({ pageIndex: 0, pageSize: 10 });
+}
+goToPrePage(){
+  if (this.paginatedResult.number != 0)
+    this.paginatorAction({ pageIndex: this.paginatedResult.number - 1, pageSize: 10 });
+}
+goToNextPage(){
+  if (this.paginatedResult.number + 1 < this.paginatedResult.totalPages)
+    this.paginatorAction({ pageIndex: this.paginatedResult.number + 1, pageSize: 10 });
+}
+goToLastPage(){
+  this.paginatorAction({ pageIndex: this.paginatedResult.totalPages - 1, pageSize: 10 });
+}
+
+accentColor(status){
+  return this.commen.getCardAccentColor(status);
+}
 
 }

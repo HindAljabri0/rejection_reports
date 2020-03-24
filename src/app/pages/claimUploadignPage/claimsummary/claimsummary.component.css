@@ -1,18 +1,21 @@
-.cardsSummary{
+.cardsSummary {
     width: max-content;
 }
-app-abstractcard{
+
+app-abstractcard {
     min-width: 24%;
     display: inline-block;
     margin: 5px;
 }
-.viewPort{
+
+.viewPort {
     max-width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     margin-bottom: 5px;
 }
-.dashboardNumbers{
+
+.dashboardNumbers {
     font-size: 15px;
 }
 
@@ -21,43 +24,46 @@ table {
     width: 100%;
 }
 
-.errorTable{
+.errorTable {
     border-collapse: separate;
     margin: 10px 0px;
     font-size: 16px;
-    
 }
-.errorTable th{
+
+.errorTable th {
     background-color: #FFCED9;
     color: #bd0f34;
     font-weight: 500;
     padding-left: 5px;
     width: 18%!important;
 }
-.errorTable tr{
+
+.errorTable tr {
     color: #3060AA;
     background-color: #F0F6FF;
 }
-.errorTable td{
+
+.errorTable td {
     padding: 10px;
 }
-.ditalList{
+
+.ditalList {
     overflow-y: auto;
     margin-bottom: 20px;
 }
 
-.ditalList::-webkit-scrollbar{
+.ditalList::-webkit-scrollbar {
     display: none;
 }
 
-.currency{
+.currency {
     font: Bold 8px Roboto;
     letter-spacing: 0;
     color: #3060AA;
     opacity: 0.25;
 }
 
-.detailSummaryCheckbox::after{
+.detailSummaryCheckbox::after {
     content: "|";
     width: 1px;
     height: 80%;
@@ -67,13 +73,12 @@ table {
     color: #70707019;
 }
 
-
 .mat-grid-list {
     /* margin-left:15%; */
     margin-top: 10vh;
-  }
+}
 
-.paginatorContainer{
+.paginatorContainer {
     display: flex;
     align-items: center;
     background-color: white;
@@ -90,7 +95,45 @@ table {
 .label {
     margin: 0 4px;
 }
-mat-paginator{
+
+mat-paginator {
     margin-bottom: 10px;
     margin-left: auto;
+}
+
+.header {
+    display: flex;
+    color: #3060AA;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    height: 40px;
+}
+
+.body {
+    padding-top: 10px;
+    background-color: #f0eeee;
+}
+
+.summary {
+    margin: 0px 10px;
+}
+
+.summary th, .summary td{
+    padding: 7px;
+}
+
+.summary tr:nth-child(odd){
+    background-color: white;
+}
+.summary tr:nth-child(even){
+    background-color: #e0ecff;
+}
+
+.statusDot::before{
+    content: '.';
+    font-size: 47px;
+    font-weight: 700;
+    line-height: 0px;
 }

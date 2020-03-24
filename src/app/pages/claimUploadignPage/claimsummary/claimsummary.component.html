@@ -1,5 +1,4 @@
 <div class="viewPort">
-    <!-- <div class="cardsSummary"> -->
     <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title"
         [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
         <table>
@@ -36,7 +35,7 @@
             </tr>
             <tr>
                 <td><span class="dashboardNumbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency">
-                    SR</span></td>
+                        SR</span></td>
                 <td><span class="dashboardNumbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span
                         class="currency"> SR</span></td>
             </tr>
@@ -57,7 +56,7 @@
             </tr>
             <tr>
                 <td><span class="dashboardNumbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span
-                    class="currency"> SR</span></td>
+                        class="currency"> SR</span></td>
                 <td><span class="dashboardNumbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span
                         class="currency"> SR</span></td>
             </tr>
@@ -73,63 +72,39 @@
                 <td><span class="dashboardNumbers">{{summary.noOfNotUploadedClaims}}</span></td>
             </tr>
             <tr>
-                <th>Total</th>
-                <th>Total Vat</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
-                <td><span class="dashboardNumbers">-</span><span class="currency"> SR</span></td>
+                <td colspan="2">Non readable claims will not be saved<br>in the system</td>
             </tr>
         </table>
     </app-abstractcard>
-    <!-- </div> -->
 </div>
-<!--div>
-<span>{{filename.currentFileUpload.name}}</span>
-</div-->
-<app-detailscard *ngIf="paginatedResult != undefined" [title]="detailCardTitle" [accentColor]="detailAccentColor"
-    style="width: 100%;">
-    <div class="paginatorContainer">
-        <div class="page-select">
-            <div class="label">Go to page:</div>
-            <mat-form-field>
-                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+<div class="summary" *ngIf="location.path().includes('summary') && paginatedResult != null">
+    <div class="header">
+        <p>Summary</p>
+        <span class="spacer"></span>
+        <div *ngIf="paginatedResult.totalPages > 0">
+            <span (click)="goToFirstPage()" style="cursor: pointer;"><<</span>&nbsp;&nbsp;&nbsp;
+            <span (click)="goToPrePage()" style="cursor: pointer;"><</span>&nbsp;&nbsp;&nbsp;
+            <span style="font-weight: 600;">{{(paginatedResult.number+1)}}</span> <span style="font-size: small;">/ {{paginatedResult.totalPages}}</span>
+            &nbsp;&nbsp;&nbsp;<span (click)="goToNextPage()" style="cursor: pointer;">></span>
+            &nbsp;&nbsp;&nbsp;<span (click)="goToLastPage()" style="cursor: pointer;">>></span>
         </div>
-        <mat-paginator #paginator [length]="paginatedResult.totalElements" [pageSizeOptions]="paginatorPageSizeOptions"
-            (page)="paginatorAction($event)">
-        </mat-paginator>
     </div>
-    <mat-accordion *ngFor="let claimData of paginatedResult.content">
-        <mat-expansion-panel style="margin-bottom: 6px;">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <mat-checkbox class="detailSummaryCheckbox"></mat-checkbox>Provider Claim Num.:
-                    {{claimData.provclaimno}}
-                </mat-panel-title>
-                <mat-panel-description>
-                    Status: {{claimData.uploadSubStatus}}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            File Row Number: {{claimData.fileRowNumber}}
-            <div *ngFor="let error of claimData.claimErrors">
-                <table class="errorTable">
-                    <tr>
-                        <th>Error Code</th>
-                        <td>{{error.errorCode}}</td>
-                    </tr>
-                    <tr>
-                        <th>Error Description</th>
-                        <td>{{error.errorDescription}}</td>
-                    </tr>
-                    <tr>
-                        <th>Field Name</th>
-                        <td>{{error.fieldName}}</td>
-                    </tr>
-                </table>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</app-detailscard>
+    <table>
+        <thead style="background-color: #c7dfff; color: #3060AA;">
+            <th style="width: 15%;">Provider Claim Number</th>
+            <th style="width: 15%;">File Row Number</th>
+            <th style="width: 10%;">Field Name</th>
+            <th style="width: 50%;">Error Description</th>
+            <th style="width: 10%; text-align: center;">Status</th>
+        </thead>
+        <tbody style="font-size: 11px; font-weight: 500;">
+            <tr *ngFor="let result of results">
+                <td style="width: 15%;">{{result.provclaimno}}</td>
+                <td style="width: 15%;">{{result.fileRowNumber}}</td>
+                <td style="width: 10%;" [style.color]="accentColor(result.uploadSubStatus)">{{result.fieldName}}</td>
+                <td style="width: 50%;" [style.color]="accentColor(result.uploadSubStatus)">{{result.description}}</td>
+                <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(result.uploadSubStatus)"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
