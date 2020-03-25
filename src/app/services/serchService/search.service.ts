@@ -9,7 +9,7 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
-  getSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, casetype?: string) {
+  getSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, casetype?: string) {
     let requestURL: string = `/providers/${providerId}/claims?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + fromDate
@@ -19,11 +19,14 @@ export class SearchService {
     if (batchId != null) {
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString();
     }
+    if(uploadId != null){
+      requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString();
+    }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
 
-  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string, casetype?: string) {
+  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string,  uploadId?: string, casetype?: string) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     let requestURL: string = `/providers/${providerId}/claims/details?`;
@@ -34,6 +37,9 @@ export class SearchService {
     }
     if (batchId != null) {
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
+    }
+    if(uploadId != null){
+      requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);

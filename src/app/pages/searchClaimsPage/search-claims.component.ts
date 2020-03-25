@@ -23,7 +23,7 @@ export class SearchClaimsComponent implements OnInit {
 
 
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService:DialogService) {
+  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService: DialogService) {
   }
   placeholder = '-';
   cardsClickAble: boolean = true;
@@ -112,13 +112,13 @@ export class SearchClaimsComponent implements OnInit {
       this.router.navigate(['']);
     }
     for (status in ClaimStatus) {
-      if(status == ClaimStatus.INVALID) continue;
+      if (status == ClaimStatus.INVALID) continue;
       let statusCode;
-      if(status == ClaimStatus.OUTSTANDING){
+      if (status == ClaimStatus.OUTSTANDING) {
         statusCode = await this.getSummaryOfStatus([status, 'PENDING']);
-      }else if(status == ClaimStatus.REJECTED){
+      } else if (status == ClaimStatus.REJECTED) {
         statusCode = await this.getSummaryOfStatus([status, 'INVALID', 'DUPLICATE']);
-      } else if(status == ClaimStatus.Accepted){
+      } else if (status == ClaimStatus.Accepted) {
         statusCode = await this.getSummaryOfStatus([status, 'Failed']);
       } else
         statusCode = await this.getSummaryOfStatus([status]);
@@ -143,7 +143,7 @@ export class SearchClaimsComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     let event;
     if (this.batchId == null && this.uploadId == null) {
-      event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, undefined, this.casetype).toPromise().catch(error => {
+      event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, undefined, undefined, this.casetype).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == "4") {
@@ -156,8 +156,20 @@ export class SearchClaimsComponent implements OnInit {
           return error.status;
         }
       });
-    } else if (this.uploadId != null){
-      
+    } else if (this.uploadId != null) {
+      event = await this.searchService.getSummaries(this.providerId, statuses, undefined, undefined, undefined, undefined, this.uploadId).toPromise().catch(error => {
+        this.commen.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == "4") {
+            this.errorMessage = 'Sorry, we could not find any result.';
+          } else if ((error.status / 100).toFixed() == "5") {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
+          return error.status;
+        }
+      });
     } else {
       event = await this.searchService.getSummaries(this.providerId, statuses, undefined, undefined, undefined, this.batchId).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
@@ -172,7 +184,6 @@ export class SearchClaimsComponent implements OnInit {
           return error.status;
         }
       });
-
     }
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == "2") {
@@ -225,7 +236,7 @@ export class SearchClaimsComponent implements OnInit {
     this.searchResult = null;
     this.claims = new Array();
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.casetype).subscribe((event) => {
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -415,7 +426,7 @@ export class SearchClaimsComponent implements OnInit {
   resetURL() {
     if (this.from != null && this.to != null && this.payerId != null) {
       this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-      + (this.casetype != null? `&casetype=${this.casetype}`:""));
+        + (this.casetype != null ? `&casetype=${this.casetype}` : ""));
     } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
     }
