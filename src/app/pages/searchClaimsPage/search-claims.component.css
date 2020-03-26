@@ -102,3 +102,17 @@ mat-expansion-panel:hover{
     font-weight: 600;
     margin-right: 15px;
 }
+
+.header {
+    display: flex;
+    color: #3060AA;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    height: 40px;
+}
+.body {
+    padding: 10px 0px;
+    background-color: #f0eeee;
+}

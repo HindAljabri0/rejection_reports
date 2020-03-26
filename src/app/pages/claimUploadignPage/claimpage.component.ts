@@ -20,9 +20,7 @@ export class ClaimpageComponent implements OnInit {
   ngOnInit() {
   }
 
-  viewClaims(){
-    this.router.navigate([this.providerId, 'claims'], {queryParams: {uploadId: this.summary.uploadSummaryID}})
-  }
+  
 
   get summary(): UploadSummary {
     if(this.location.path().includes("summary"))

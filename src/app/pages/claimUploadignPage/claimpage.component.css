@@ -13,13 +13,3 @@
     background-color: #f0eeee;
 }
 
-.footer {
-    display: flex;
-    color: #3060AA;
-    background-color: white;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 0px 10px;
-    height: 60px;
-    align-items: center;
-}

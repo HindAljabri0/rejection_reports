@@ -163,13 +163,13 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         this.paginatedResult.content.forEach(result => {
           if (result.uploadSubStatus == ClaimStatus.Accepted) {
             let col: any = {};
-              col.description = '-';
-              col.fieldName = '-';
-              col.fileRowNumber = result.fileRowNumber || '';
-              col.provclaimno = result.provclaimno || '';
-              col.uploadStatus = result.uploadStatus || '';
-              col.uploadSubStatus = result.uploadSubStatus || '';
-              this.results.push(col);
+            col.description = '-';
+            col.fieldName = '-';
+            col.fileRowNumber = result.fileRowNumber || '';
+            col.provclaimno = result.provclaimno || '';
+            col.uploadStatus = result.uploadStatus || '';
+            col.uploadSubStatus = result.uploadSubStatus || '';
+            this.results.push(col);
           } else {
             result.claimErrors.forEach(error => {
               let col: any = {};
@@ -184,41 +184,46 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
             });
           }
         });
-    this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x, i) => i);
-    this.manualPage = this.paginatedResult.number;
+        this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x, i) => i);
+        this.manualPage = this.paginatedResult.number;
+      }
+    }, eventError => {
+      this.commen.loadingChanged.next(false);
+    });
   }
-}, eventError => {
-  this.commen.loadingChanged.next(false);
-});
+
+  updateManualPage(index) {
+    this.manualPage = index;
+    this.paginator.pageIndex = index;
+    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
+  }
+  paginatorAction(event) {
+    this.manualPage = event['pageIndex'];
+    this.getUploadedClaimsDetails(this.selectedCardKey, event['pageIndex'], event['pageSize']);
   }
 
-updateManualPage(index) {
-  this.manualPage = index;
-  this.paginator.pageIndex = index;
-  this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
-}
-paginatorAction(event) {
-  this.manualPage = event['pageIndex'];
-  this.getUploadedClaimsDetails(this.selectedCardKey, event['pageIndex'], event['pageSize']);
-}
+  goToFirstPage() {
+    this.paginatorAction({ pageIndex: 0, pageSize: 10 });
+  }
+  goToPrePage() {
+    if (this.paginatedResult.number != 0)
+      this.paginatorAction({ pageIndex: this.paginatedResult.number - 1, pageSize: 10 });
+  }
+  goToNextPage() {
+    if (this.paginatedResult.number + 1 < this.paginatedResult.totalPages)
+      this.paginatorAction({ pageIndex: this.paginatedResult.number + 1, pageSize: 10 });
+  }
+  goToLastPage() {
+    this.paginatorAction({ pageIndex: this.paginatedResult.totalPages - 1, pageSize: 10 });
+  }
 
-goToFirstPage(){
-  this.paginatorAction({ pageIndex: 0, pageSize: 10 });
-}
-goToPrePage(){
-  if (this.paginatedResult.number != 0)
-    this.paginatorAction({ pageIndex: this.paginatedResult.number - 1, pageSize: 10 });
-}
-goToNextPage(){
-  if (this.paginatedResult.number + 1 < this.paginatedResult.totalPages)
-    this.paginatorAction({ pageIndex: this.paginatedResult.number + 1, pageSize: 10 });
-}
-goToLastPage(){
-  this.paginatorAction({ pageIndex: this.paginatedResult.totalPages - 1, pageSize: 10 });
-}
-
-accentColor(status){
-  return this.commen.getCardAccentColor(status);
-}
-
+  accentColor(status) {
+    return this.commen.getCardAccentColor(status);
+  }
+  get providerId(){
+    return this.commen.providerId;
+  }
+  viewClaims() {
+    this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } })
+  }
 }
