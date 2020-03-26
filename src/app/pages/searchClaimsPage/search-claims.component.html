@@ -50,15 +50,6 @@
                             <td><span class="dashboardNumbers">{{placeholder}}</span></td>
                             <td><span class="dashboardNumbers">{{placeholder}}</span><span class="currency"> SR</span>
                             </td>
-                            <td>Prov. Claim No.</td>
-                            <td>Member ID</td>
-                            <td>National Id</td>
-                            <td>Patient File No.</td>
-                            <td>Physician ID</td>
-                            <td>Claim Date</td>
-                            <td>Net Amount</td>
-                            <td>Vat</td>
-                            <td>Status</td>
                         </tr>
                         <tr>
                             <th></th>
@@ -68,15 +59,6 @@
                             <td></td>
                             <td><span class="dashboardNumbers">{{placeholder}}</span><span class="currency"> SR</span>
                             </td>
-                            <td>{{claim.providerClaimNumber}}</td>
-                            <td>{{claim.memberId}}</td>
-                            <td>{{claim.nationalId}}</td>
-                            <td>{{claim.patientFileNumber}}</td>
-                            <td>{{claim.physicianId}}</td>
-                            <td>{{claim.claimDate}}</td>
-                            <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
-                            <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span></td>
-                            <td>{{commen.statusToName(claim.status)}}</td>
                         </tr>
                     </table>
                 </app-abstractcard>
@@ -120,6 +102,7 @@
                                 </td>
                                 <td>Prov. Claim No.</td>
                                 <td>Member ID</td>
+                                <td>National Id</td>
                                 <td>Patient File No.</td>
                                 <td>Physician ID</td>
                                 <td>Claim Date</td>
@@ -146,6 +129,7 @@
                                 </td>
                                 <td>{{claim.providerClaimNumber}}</td>
                                 <td>{{claim.memberId}}</td>
+                                <td>{{claim.nationalId}}</td>
                                 <td>{{claim.patientFileNumber}}</td>
                                 <td>{{claim.physicianId}}</td>
                                 <td>{{claim.claimDate}}</td>
