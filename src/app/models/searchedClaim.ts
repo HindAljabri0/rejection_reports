@@ -5,6 +5,7 @@ export class SearchedClaim extends Paginateable{
   claimId:string;
   claimDate:string;
   memberId:string;
+  nationalId:string;
   netAmount:number;
   netVatAmount:number;
   patientFileNumber:string;
@@ -22,6 +23,7 @@ export class SearchedClaim extends Paginateable{
       this.claimId = body['claimId'];
       this.claimDate = body['claimDate'];
       this.memberId = body['memberId'];
+      this.nationalId = body['nationalId'];
       this.netAmount = body['netAmount'];
       this.netVatAmount = body['netVatAmount'];
       this.patientFileNumber = body['patientFileNumber'];
