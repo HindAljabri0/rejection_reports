@@ -113,6 +113,35 @@ mat-expansion-panel:hover{
     height: 40px;
 }
 .body {
-    padding: 10px 0px;
+    padding: 10px;
     background-color: #f0eeee;
+}
+
+.claimsHeader td, .claims td{
+    padding: 10px;
+}
+
+.claimsHeader{
+    color: #3060AA;
+    background-color: #c8dcfc;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.claims{
+ font-size: 11px;
+}
+
+.claims:nth-child(even){
+    background-color: white;
+}
+.claims:nth-child(odd){
+    background-color: #e0eafa;
+}
+
+.statusDot::before{
+    content: '.';
+    font-size: 47px;
+    font-weight: 700;
+    line-height: 0px;
 }

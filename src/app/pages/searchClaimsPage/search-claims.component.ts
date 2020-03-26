@@ -23,7 +23,10 @@ export class SearchClaimsComponent implements OnInit {
 
 
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService: DialogService) {
+  constructor(public location: Location, public submittionService: ClaimSubmittionService,
+    public commen: CommenServicesService, public routeActive: ActivatedRoute,
+    public router: Router, public searchService: SearchService,
+    private dialogService: DialogService) {
   }
   placeholder = '-';
   cardsClickAble: boolean = true;
@@ -55,7 +58,7 @@ export class SearchClaimsComponent implements OnInit {
   allCheckBoxIsChecked: boolean;
 
   paginatorPagesNumbers: number[];
-  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
+  // @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 
@@ -202,24 +205,17 @@ export class SearchClaimsComponent implements OnInit {
     if (this.summaries.length == 0) return;
     this.commen.loadingChanged.next(true);
     this.detailTopActionText = "vertical_align_bottom";
-    if (page == null && pageSize == null && this.paginator != null) {
-      this.paginator.pageIndex = 0;
-      this.paginator.pageSize = 10;
-      this.manualPage = null;
-      this.paginator.showFirstLastButtons = true;
-    }
+
     if (this.selectedCardKey != null && key != this.selectedCardKey) {
       this.selectedClaims = new Array();
       this.selectedClaimsCountOfPage = 0;
       this.setAllCheckBoxIsIndeterminate();
     }
     this.resetURL();
-    if (page > Math.ceil((this.summaries[key].totalClaims / this.paginator.pageSize)) - 1) page = 0;
     if (key != 0) {
       this.location.go(this.location.path() + `&status=${key}`);
     }
     if (page != null && page > 0) {
-      this.paginator.pageIndex = page;
       this.location.go(this.location.path() + `&page=${(page + 1)}`);
     }
     if (this.summaries[key].statuses[0] == ClaimStatus.Accepted) {
@@ -248,9 +244,9 @@ export class SearchClaimsComponent implements OnInit {
           this.setAllCheckBoxIsIndeterminate();
           this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
           this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
-          const pages = Math.ceil((this.searchResult.totalElements / this.paginator.pageSize));
+          const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.paginator.pageIndex;
+          this.manualPage = this.searchResult.number;
         } else if ((event.status / 100).toFixed() == "4") {
           console.log("400");
         } else if ((event.status / 100).toFixed() == "5") {
@@ -371,8 +367,7 @@ export class SearchClaimsComponent implements OnInit {
   }
   updateManualPage(index) {
     this.manualPage = index;
-    this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
+    this.paginatorAction({ previousPageIndex: this.searchResult.number, pageIndex: index, pageSize: this.searchResult.numberOfElements, length: this.searchResult.size })
   }
 
   setAllCheckBoxIsIndeterminate() {
@@ -429,6 +424,8 @@ export class SearchClaimsComponent implements OnInit {
         + (this.casetype != null ? `&casetype=${this.casetype}` : ""));
     } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
+    } else if(this.uploadId != null){
+      this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}`);
     }
   }
 
@@ -474,5 +471,23 @@ export class SearchClaimsComponent implements OnInit {
     return status == ClaimStatus.INVALID || status == ClaimStatus.REJECTED || status == ClaimStatus.PARTIALLY_PAID || status == ClaimStatus.PARTIALLY_APPROVED;
   }
 
+  accentColor(status) {
+    return this.commen.getCardAccentColor(status);
+  }
+
+  goToFirstPage() {
+    this.paginatorAction({ pageIndex: 0, pageSize: 10 });
+  }
+  goToPrePage() {
+    if (this.searchResult.number != 0)
+      this.paginatorAction({ pageIndex: this.searchResult.number - 1, pageSize: 10 });
+  }
+  goToNextPage() {
+    if (this.searchResult.number + 1 < this.searchResult.totalPages)
+      this.paginatorAction({ pageIndex: this.searchResult.number + 1, pageSize: 10 });
+  }
+  goToLastPage() {
+    this.paginatorAction({ pageIndex: this.searchResult.totalPages - 1, pageSize: 10 });
+  }
 }
 

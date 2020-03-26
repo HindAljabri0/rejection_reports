@@ -64,15 +64,7 @@ body:hover::-webkit-scrollbar-thumb{
     overflow: hidden;
 }
 
-mat-checkbox::after{
-    content: "|";
-    width: 1px;
-    height: 80%;
-    margin: 0px 10px;
-    border-radius: 80%;
-    background-color: #70707019;
-    color: #70707019;
-}
+
 
 .spacer {
     flex: 1 1 auto;

@@ -64,89 +64,52 @@
                 </app-abstractcard>
             </div>
         </div>
-        <app-detailscard [title]="detailCardTitle" [accentColor]="detailAccentColor"
-            [bottomLeftActionText]="detailSubActionText" [bottomRightActionText]="detailActionText"
-            [bottomDetails]="selectionCountText" (bottomLeftAction)="submitSelectedClaims()"
-            (bottomRightAction)="submitAllAcceptedClaims()">
-            <div class="paginatorContainer">
-                <div class="page-select">
-                    <div class="label">Go to page:</div>
-                    <mat-form-field>
-                        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-                            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div class="label" *ngIf="selectedClaims.length > 0" style="margin-left: auto; font-weight: 700;">
-                    </div>
-                </div>
-                <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-                    (page)="paginatorAction($event)">
-                </mat-paginator>
-                <span class="downloadIcon" [style.background-color]="detailAccentColor"
-                    style="border-radius: 6px; padding: 4px 10px; margin-right: 15px;">
-                    <mat-icon _ngcontent-wxe-c14="" aria-hidden="false" aria-label="Download" (click)="download()"
-                        class="mat-icon notranslate material-icons mat-icon-no-color" role="img" matTooltip="Download"
-                        style="font-size: large;font-weight: 800; color: white;text-align: center; margin-top: 2px;">
-                        {{detailTopActionText}}</mat-icon>
-                </span>
+        <div class="header">
+            <p *ngIf="summaries[0] != null && summaries[0].uploadName != null">Upload Name: {{summaries[0].uploadName}}
+            </p>
+            <span class="spacer"></span>
+            <div *ngIf="searchResult.totalPages > 0" style="font-size: small;">
+                <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>&nbsp;&nbsp;&nbsp;
+                <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>&nbsp;&nbsp;&nbsp;
+                <span style="font-weight: 600;">{{(searchResult.number+1)}}</span> <span>/ {{searchResult.totalPages}}</span>
+                &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next</mat-icon>
+                &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
             </div>
-            <mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
-                <mat-expansion-panel-header>
-                    <mat-panel-title style="width: 100%;">
-                        <table style="color: #3060AA !important;">
-                            <tr>
-                                <td>
-                                    <mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked"
-                                        [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
-                                    </mat-checkbox>
-                                </td>
-                                <td>Prov. Claim No.</td>
-                                <td>Member ID</td>
-                                <td>National Id</td>
-                                <td>Patient File No.</td>
-                                <td>Physician ID</td>
-                                <td>Claim Date</td>
-                                <td>Net Amount</td>
-                                <td>Vat</td>
-                                <td>Status</td>
-                            </tr>
-                        </table>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-            </mat-expansion-panel>
-            <mat-expansion-panel [expanded]="claim.statusDetail != null  && getIsRejectedByPayer(claim.status)"
-                (click)="showClaim(claim.status, claim.claimId)" *ngFor="let claim of claims"
-                style="margin-bottom: 6px;" hideToggle [disabled]="0 == 0">
-                <mat-expansion-panel-header>
-                    <mat-panel-title style="width: 100%;">
-                        <table style="color: black;">
-                            <tr>
-                                <td>
-                                    <mat-checkbox class="detailSummaryCheckbox"
-                                        [checked]="selectedClaims.includes(claim.claimId)"
-                                        (change)="selectClaim(claim.claimId)" (click)="$event.stopPropagation()">
-                                    </mat-checkbox>
-                                </td>
-                                <td>{{claim.providerClaimNumber}}</td>
-                                <td>{{claim.memberId}}</td>
-                                <td>{{claim.nationalId}}</td>
-                                <td>{{claim.patientFileNumber}}</td>
-                                <td>{{claim.physicianId}}</td>
-                                <td>{{claim.claimDate}}</td>
-                                <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
-                                <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
-                                </td>
-                                <td>{{commen.statusToName(claim.status)}}</td>
-                            </tr>
-                        </table>
-                    </mat-panel-title>
-                    <mat-panel-description>
-
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p class="errorText" *ngIf="claim.statusDetail != null && getIsRejectedByPayer(claim.status)">
-                    {{claim.statusDetail}}</p>
-            </mat-expansion-panel>
-        </app-detailscard>
+        </div>
+        <table >
+            <tr class="claimsHeader">
+                <td>
+                    <mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked"
+                        [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
+                    </mat-checkbox>
+                </td>
+                <td>Prov. Claim No.</td>
+                <td>Member ID</td>
+                <td>National Id</td>
+                <td>Patient File No.</td>
+                <td>Physician ID</td>
+                <td>Claim Date</td>
+                <td>Net Amount</td>
+                <td>Vat</td>
+                <td>Status</td>
+            </tr>
+            <tr class="claims" (click)="showClaim(claim.status, claim.claimId)" *ngFor="let claim of claims">
+                <td>
+                    <mat-checkbox class="detailSummaryCheckbox" [checked]="selectedClaims.includes(claim.claimId)"
+                        (change)="selectClaim(claim.claimId)" (click)="$event.stopPropagation()">
+                    </mat-checkbox>
+                </td>
+                <td>{{claim.providerClaimNumber}}</td>
+                <td>{{claim.memberId}}</td>
+                <td>{{claim.nationalId}}</td>
+                <td>{{claim.patientFileNumber}}</td>
+                <td>{{claim.physicianId}}</td>
+                <td>{{claim.claimDate}}</td>
+                <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
+                <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
+                </td>
+                <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(claim.status)"></td>
+            </tr>
+        </table>
     </div>
 </div>
