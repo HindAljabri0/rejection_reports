@@ -45,12 +45,14 @@ export class SearchService {
     return this.http.request(request);
   }
 
-  downloadSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string) {
+  downloadSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string) {
     let requestURL: string = `/providers/${providerId}/claims/download?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += `&fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
-    } else {
+    } else if(batchId != null) {
       requestURL += `&batchId=${batchId}`;
+    } else if(uploadId != null){
+      requestURL += `&uploadId=${uploadId}`;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);

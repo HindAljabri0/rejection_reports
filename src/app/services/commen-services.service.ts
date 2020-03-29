@@ -151,11 +151,9 @@ export class CommenServicesService {
       case ClaimStatus.NotAccepted.toLowerCase():
         return '#EB2A75';
       case ClaimStatus.ALL.toLowerCase():
-        return '#3060AA'
+        return '#3060AA';
       case '-':
         return '#bebebe';
-      // case ClaimStatus.Batched:
-      //   return '#21b590';
       case ClaimStatus.REJECTED.toLowerCase():
         return '#E988AD';
       default:

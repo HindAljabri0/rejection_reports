@@ -3,18 +3,21 @@ import { Paginateable } from './paginateable';
 export class SearchedClaim extends Paginateable{
   
   claimId:string;
-  claimDate:string;
+  providerClaimNumber:string;
+  drName:string;
+  policyNumber:string;
   memberId:string;
   nationalId:string;
+  patientFileNumber:string;
+  claimDate:string;
   netAmount:number;
   netVatAmount:number;
-  patientFileNumber:string;
-  physicianId:string;
-  providerClaimNumber:string;
-  status:string;
-  statusDetail:string;
   unitOfNetAmount:string;
   unitOfNetVatAmount:string;
+  status:string;
+  statusDetail:string;
+  payerId:string;
+  
 
 
   constructor (body: {}){
@@ -22,17 +25,19 @@ export class SearchedClaim extends Paginateable{
     if(body!= null){
       this.claimId = body['claimId'];
       this.claimDate = body['claimDate'];
+      this.policyNumber = body['policyNumber'];
       this.memberId = body['memberId'];
       this.nationalId = body['nationalId'];
       this.netAmount = body['netAmount'];
       this.netVatAmount = body['netVatAmount'];
       this.patientFileNumber = body['patientFileNumber'];
-      this.physicianId = body['physicianId'];
+      this.drName = body['drName'];
       this.providerClaimNumber = body['providerClaimNumber'];
       this.status = body['status'];
       this.statusDetail = body['statusDetail'];
       this.unitOfNetAmount = body['unitOfNetAmount'];
       this.unitOfNetVatAmount = body['unitOfNetVatAmount'];
+      this.payerId = body['payerId'];
     }
   }
 }

@@ -65,29 +65,39 @@
             </div>
         </div>
         <div class="header">
-            <p *ngIf="summaries[0] != null && summaries[0].uploadName != null">Upload Name: {{summaries[0].uploadName}}
+            <p *ngIf="summaries[0] != null && summaries[0].uploadName != null"
+            [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
+                {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
             </p>
             <span class="spacer"></span>
-            <div *ngIf="searchResult.totalPages > 0" style="font-size: small;">
+            <div *ngIf="searchResult.totalPages > 0" style="font-size: small; display: flex; align-items: end;"
+                [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
                 <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>&nbsp;&nbsp;&nbsp;
                 <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>&nbsp;&nbsp;&nbsp;
-                <span style="font-weight: 600;">{{(searchResult.number+1)}}</span> <span>/ {{searchResult.totalPages}}</span>
+                <p style="font-weight: 600; font-size: larger;">{{(searchResult.number+1)}}</p>
+                <p style="font-size: larger;">/ {{searchResult.totalPages}}</p>
                 &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next</mat-icon>
                 &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-icon (click)="download()" style="cursor: pointer;">{{detailTopActionText}}</mat-icon>
             </div>
         </div>
         <table >
-            <tr class="claimsHeader">
+            <tr class="claimsHeader"
+            [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
+            [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'22'">
                 <td>
                     <mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked"
                         [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
                     </mat-checkbox>
                 </td>
-                <td>Prov. Claim No.</td>
+                <td style="width: 5%;">verify</td>
+                <td>Claim Ref. No.</td>
+                <td>Dr. Name</td>
+                <td>Policy Number</td>
                 <td>Member ID</td>
                 <td>National Id</td>
                 <td>Patient File No.</td>
-                <td>Physician ID</td>
                 <td>Claim Date</td>
                 <td>Net Amount</td>
                 <td>Vat</td>
@@ -99,11 +109,13 @@
                         (change)="selectClaim(claim.claimId)" (click)="$event.stopPropagation()">
                     </mat-checkbox>
                 </td>
+                <td style="width: 5%;">-</td>
                 <td>{{claim.providerClaimNumber}}</td>
+                <td>{{claim.drName}}</td>
+                <td>{{claim.policyNumber}}</td>
                 <td>{{claim.memberId}}</td>
                 <td>{{claim.nationalId}}</td>
                 <td>{{claim.patientFileNumber}}</td>
-                <td>{{claim.physicianId}}</td>
                 <td>{{claim.claimDate}}</td>
                 <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
                 <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
@@ -111,5 +123,11 @@
                 <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(claim.status)"></td>
             </tr>
         </table>
+        <div class="footer">
+            <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
+            <span class="spacer"></span>
+            <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}</button>
+            <button *ngIf="detailActionText != null" (click)="doAction()" mat-raised-button color="primary">{{detailActionText}}</button>
+        </div>
     </div>
 </div>

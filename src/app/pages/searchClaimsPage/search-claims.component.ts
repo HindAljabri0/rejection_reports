@@ -436,7 +436,7 @@ export class SearchClaimsComponent implements OnInit {
 
   download() {
     if (this.detailTopActionText == "check_circle") return;
-    this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId).subscribe(event => {
+    this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
           var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
@@ -448,8 +448,10 @@ export class SearchClaimsComponent implements OnInit {
           a.target = '_blank';
           if (this.from != null) {
             a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          } else {
+          } else if(this.batchId != null) {
             a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
+          } else {
+            a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
           }
 
           a.click();
@@ -461,6 +463,17 @@ export class SearchClaimsComponent implements OnInit {
         this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
     });
+  }
+
+  doAction(){
+    if(this.detailActionText.includes("Submit")){
+      this.submitAllAcceptedClaims();
+    }
+  }
+  doSubAction(){
+    if(this.detailActionText.includes("Submit")){
+      this.submitSelectedClaims();
+    }
   }
 
   get isLoading() {
