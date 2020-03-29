@@ -33,6 +33,7 @@ app-abstractcard table td{
 
 .cardsSummary{
     width: max-content;
+    display: flex;
 }
 
 .viewPort{
@@ -110,6 +111,7 @@ mat-expansion-panel:hover{
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding: 10px;
+    margin-top: 10px;
     height: 40px;
 }
 .body {

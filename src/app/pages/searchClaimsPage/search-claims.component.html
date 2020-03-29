@@ -5,72 +5,76 @@
         </mat-card>
     </div>
     <div class="header">
-        <p *ngIf="summaries[0] != null && summaries[0].uploadName != null">Upload Name: {{summaries[0].uploadName}}</p>
+        <p *ngIf="uploadNameExist">Upload Name: {{summaries[0].uploadName}}</p>
         <span class="spacer"></span>
     </div>
     <div class="body">
-        <div class="viewPort">
-            <div class="cardsSummary">
-                <app-abstractcard *ngFor="let summary of summaries | keyvalue" [clickable]="cardsClickAble"
-                    [title]="commen.statusToName(summary.value.statuses[0])"
-                    [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
-                    (action)="getResultsofStatus(summary.key)">
-                    <table>
-                        <tr>
-                            <th>No. Of Claims:</th>
-                            <th>Total:</th>
+        <div class="cardsSummary">
+            <app-abstractcard [clickable]="cardsClickAble" *ngIf="summaries != null && summaries[0] != null"
+                [title]="commen.statusToName(summaries[0].statuses[0])"
+                [accentColor]="commen.getCardAccentColor(summaries[0].statuses[0])" (action)="getResultsofStatus(0)">
+                <table>
+                    <tr>
+                        <th>No. Of Claims:</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td><span class="dashboardNumbers">{{summaries[0].totalClaims }}</span></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <th>Total:</th>
+                        <th>Total Vat:</th>
+                    </tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <td><span class="dashboardNumbers">{{summaries[0].totalNetAmount}}</span><span class="currency">
+                            SR</span></td>
+                        <td><span class="dashboardNumbers">{{summaries[0].totalVatNetAmount}}</span><span
+                                class="currency"> SR</span></td>
+                    </tr>
+                </table>
+            </app-abstractcard>
+            <button mat-icon-button [disabled]="currentSummariesPage==1" (click)="previousSummary()" style="margin-top: 50px;">
+                <mat-icon>navigate_before</mat-icon>
+            </button>
+            <app-abstractcard *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage*3+1" [clickable]="cardsClickAble"
+                [title]="commen.statusToName(summary.value.statuses[0])"
+                [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
+                (action)="getResultsofStatus(summary.key)" style="margin: 0px -4px; width: 290px;">
+                <table>
+                    <tr>
+                        <th>No. Of Claims:</th>
+                        <th></th>
 
-                        </tr>
-                        <tr>
-                            <td><span class="dashboardNumbers">{{summary.value.totalClaims }}</span></td>
-                            <td><span class="dashboardNumbers">{{summary.value.totalNetAmount}}</span><span
-                                    class="currency"> SR</span></td>
-
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th>Total Vat:</th>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><span class="dashboardNumbers">{{summary.value.totalVatNetAmount}}</span><span
-                                    class="currency"> SR</span></td>
-                        </tr>
-                    </table>
-                </app-abstractcard>
-                <app-abstractcard *ngFor="let i of extraNumbers" [clickable]="!cardsClickAble" [title]="placeholder"
-                    [accentColor]="commen.getCardAccentColor(placeholder)">
-                    <table>
-                        <tr>
-                            <th>No. Of Claims:</th>
-                            <th>Total:</th>
-
-                        </tr>
-                        <tr>
-                            <td><span class="dashboardNumbers">{{placeholder}}</span></td>
-                            <td><span class="dashboardNumbers">{{placeholder}}</span><span class="currency"> SR</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th>Total Vat:</th>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><span class="dashboardNumbers">{{placeholder}}</span><span class="currency"> SR</span>
-                            </td>
-                        </tr>
-                    </table>
-                </app-abstractcard>
-            </div>
+                    </tr>
+                    <tr>
+                        <td><span class="dashboardNumbers">{{summary.value.totalClaims }}</span></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <th>Total:</th>
+                        <th>Total Vat:</th>
+                    </tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <td><span class="dashboardNumbers">{{summary.value.totalNetAmount}}</span><span
+                            class="currency"> SR</span></td>
+                        <td><span class="dashboardNumbers">{{summary.value.totalVatNetAmount}}</span><span
+                                class="currency"> SR</span></td>
+                    </tr>
+                </table>
+            </app-abstractcard>
+            <button mat-icon-button (click)="nextSummary()" [disabled]="currentSummariesPage>=summaries.length-3" style="margin-top: 50px;">
+                <mat-icon>navigate_next</mat-icon>
+            </button>
         </div>
         <div class="header">
-            <p *ngIf="summaries[0] != null && summaries[0].uploadName != null"
-            [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
+            <p *ngIf="summaries != null && summaries[selectedCardKey] != null"
+                [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
                 {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
             </p>
             <span class="spacer"></span>
-            <div *ngIf="searchResult.totalPages > 0" style="font-size: small; display: flex; align-items: end;"
+            <div *ngIf="searchResult != null && searchResult.totalPages > 0"
+                style="font-size: small; display: flex; align-items: end;"
                 [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
                 <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>&nbsp;&nbsp;&nbsp;
                 <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>&nbsp;&nbsp;&nbsp;
@@ -82,10 +86,10 @@
                 <mat-icon (click)="download()" style="cursor: pointer;">{{detailTopActionText}}</mat-icon>
             </div>
         </div>
-        <table >
-            <tr class="claimsHeader"
-            [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
-            [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'22'">
+        <table>
+            <tr class="claimsHeader" *ngIf="summaries != null && summaries[selectedCardKey] != null"
+                [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
+                [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'22'">
                 <td>
                     <mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked"
                         [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
@@ -103,7 +107,8 @@
                 <td>Vat</td>
                 <td>Status</td>
             </tr>
-            <tr class="claims" (click)="showClaim(claim.status, claim.claimId)" *ngFor="let claim of claims">
+            <tr class="claims" (click)="showClaim(claim.status, claim.claimId)" *ngFor="let claim of claims"
+                style="cursor: pointer;">
                 <td>
                     <mat-checkbox class="detailSummaryCheckbox" [checked]="selectedClaims.includes(claim.claimId)"
                         (change)="selectClaim(claim.claimId)" (click)="$event.stopPropagation()">
@@ -120,14 +125,17 @@
                 <td>{{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
                 <td>{{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
                 </td>
-                <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(claim.status)"></td>
+                <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(claim.status)">
+                </td>
             </tr>
         </table>
         <div class="footer">
             <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
             <span class="spacer"></span>
-            <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}</button>
-            <button *ngIf="detailActionText != null" (click)="doAction()" mat-raised-button color="primary">{{detailActionText}}</button>
+            <button *ngIf="detailSubActionText != null" (click)="doSubAction()"
+                mat-button>{{detailSubActionText}}</button>
+            <button *ngIf="detailActionText != null" (click)="doAction()" mat-raised-button
+                color="primary">{{detailActionText}}</button>
         </div>
     </div>
 </div>

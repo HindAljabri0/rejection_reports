@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, } from '@angular/core';
 import { CommenServicesService } from '../../services/commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
   templateUrl: './search-claims.component.html',
   styleUrls: ['./search-claims.component.css']
 })
-export class SearchClaimsComponent implements OnInit {
+export class SearchClaimsComponent implements OnInit, AfterViewChecked {
 
 
 
@@ -28,6 +28,9 @@ export class SearchClaimsComponent implements OnInit {
     public router: Router, public searchService: SearchService,
     private dialogService: DialogService) {
   }
+
+  isViewChecked: boolean = false;
+
   placeholder = '-';
   cardsClickAble: boolean = true;
   extraCards = 3;
@@ -50,6 +53,7 @@ export class SearchClaimsComponent implements OnInit {
   casetype: string;
 
   summaries: SearchStatusSummary[];
+  currentSummariesPage:number = 1;
   searchResult: PaginatedResult<SearchedClaim>;
   claims: SearchedClaim[];
   selectedClaims: string[] = new Array();
@@ -85,6 +89,10 @@ export class SearchClaimsComponent implements OnInit {
       }
     })
     this.submittionErrors = new Map();
+  }
+
+  ngAfterViewChecked() {
+    this.isViewChecked = true;
   }
 
   async fetchData() {
@@ -480,6 +488,10 @@ export class SearchClaimsComponent implements OnInit {
     return this.commen.loading;
   }
 
+  get uploadNameExist(){
+    return this.summaries[0] != null && this.summaries[0].uploadName != null;
+  }
+
   getIsRejectedByPayer(status: string) {
     return status == ClaimStatus.INVALID || status == ClaimStatus.REJECTED || status == ClaimStatus.PARTIALLY_PAID || status == ClaimStatus.PARTIALLY_APPROVED;
   }
@@ -501,6 +513,15 @@ export class SearchClaimsComponent implements OnInit {
   }
   goToLastPage() {
     this.paginatorAction({ pageIndex: this.searchResult.totalPages - 1, pageSize: 10 });
+  }
+
+  nextSummary() {
+    if(this.currentSummariesPage+1 < this.summaries.length)
+    this.currentSummariesPage++;
+  }
+  previousSummary() {
+    if(this.currentSummariesPage-1 > 0)
+    this.currentSummariesPage--;
   }
 }
 
