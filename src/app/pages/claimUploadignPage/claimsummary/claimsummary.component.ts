@@ -226,4 +226,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   viewClaims() {
     this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } })
   }
+
+  get uploading(){
+    return this.uploadService.uploading;
+  }
 }
