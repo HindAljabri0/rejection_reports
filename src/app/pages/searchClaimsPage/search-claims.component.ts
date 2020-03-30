@@ -13,6 +13,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ClaimUpdateService } from 'src/app/services/claimUpdateService/claim-update.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -26,7 +27,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
     public commen: CommenServicesService, public routeActive: ActivatedRoute,
     public router: Router, public searchService: SearchService,
-    private dialogService: DialogService) {
+    private dialogService: DialogService,
+    private claimService: ClaimUpdateService) {
   }
 
   isViewChecked: boolean = false;
@@ -438,8 +440,29 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
   }
 
 
-  showClaim(claimStatus: string, claimId: string) {
-    this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId);
+  showClaim(claimStatus: string, claimId: string, edit?:boolean) {
+    this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId, edit);
+  }
+
+  deleteClaim(claimId: string, refNumber:string){
+    this.dialogService.openMessageDialog(new MessageDialogData('Delete Claim?', `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
+    .subscribe(result => {
+      if(result === true){
+        this.commen.loadingChanged.next(true);
+        this.claimService.deleteClaim(this.providerId, claimId).subscribe(event =>{
+          if(event instanceof HttpResponse){
+            this.commen.loadingChanged.next(false);
+            this.dialogService.openMessageDialog(new MessageDialogData('', `Claim with reference ${refNumber} was deleted successfully.`, false))
+            .subscribe(afterColse => this.getResultsofStatus(this.selectedCardKey));
+          }
+        }, errorEvent => {
+          if(errorEvent instanceof HttpErrorResponse){
+            this.commen.loadingChanged.next(false);
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+          }
+        });
+      }
+    });
   }
 
   download() {

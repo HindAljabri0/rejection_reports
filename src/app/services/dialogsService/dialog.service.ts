@@ -29,14 +29,14 @@ export class DialogService {
   openMessageDialog(dialogData: MessageDialogData): Observable<any> {
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '35%',
-      height: '17%',
-      panelClass: dialogData.isError ? 'dialogError' : 'dialogSuccess',
+      height: '30%',
+      panelClass: dialogData.isError ? 'dialogError' : (!dialogData.withButtons? 'dialogSuccess' : ''),
       data: dialogData,
     });
     return dialogRef.afterClosed();
   }
 
-  getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string) {
+  getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string, edit?:boolean) {
     if (this.loading) return;
     this.commenServices.loadingChanged.next(true);
     this.searchService.getClaim(providerId, claimId).subscribe(event => {
@@ -46,7 +46,7 @@ export class DialogService {
         if (payerId == null) {
           payerId = claim.payerid;
         }
-        this.openClaimDialog(providerId, payerId, status, claim);
+        this.openClaimDialog(providerId, payerId, status, claim, edit);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -60,7 +60,7 @@ export class DialogService {
     });
   }
 
-  openClaimDialog(providerId: string, payerId: string, status: string, claim: ViewedClaim) {
+  openClaimDialog(providerId: string, payerId: string, status: string, claim: ViewedClaim, edit?:boolean) {
     claim.providerId = providerId;
     claim.payerid = payerId;
     claim.status = status;
@@ -68,7 +68,7 @@ export class DialogService {
       width: '50%',
       height: '70%',
       panelClass: 'claimDialog',
-      data: claim,
+      data: {claim: claim, edit: (edit || false)},
     });
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);

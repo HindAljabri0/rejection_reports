@@ -14,14 +14,14 @@
     <button mat-icon-button [mat-dialog-close]="false">
         <mat-icon>clear</mat-icon>
     </button>
-    <p>{{claim.casetype}}</p>
+    <p>{{data.claim.casetype}}</p>
     <span class="spacer"></span>
-    <p>Claim Date: {{claim.visitdate}}</p>
+    <p>Claim Date: {{data.claim.visitdate}}</p>
 </div>
 <div class="header sub">
-    <p>Doctor Name: {{claim.physicianname}}</p>
+    <p>Doctor Name: {{data.claim.physicianname}}</p>
     <span class="spacer"></span>
-    <p *ngIf="claim.payerclaimrefno != null && claim.payerclaimrefno != ''">Payer Claim R-No: {{claim.payerclaimrefno}}
+    <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No: {{data.claim.payerclaimrefno}}
     </p>
 </div>
 <div class="content">
@@ -46,19 +46,19 @@
                     {{getPatientName()}}
                 </td>
                 <td class="{{memberidClasses}}">
-                    <label *ngIf="!isEditMode">{{claim.memberid}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.memberid}}" [formControl]="memberid"
+                    <label *ngIf="!isEditMode">{{data.claim.memberid}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.memberid}}" [formControl]="memberid"
                         maxlength="30">
                 </td>
                 <td class="{{genderClasses}}">
-                    <label *ngIf="!isEditMode">{{genderToText(claim.gender)}}</label>
-                    <select *ngIf="isEditMode" [value]="claim.gender" [formControl]="gender">
+                    <label *ngIf="!isEditMode">{{genderToText(data.claim.gender)}}</label>
+                    <select *ngIf="isEditMode" [value]="data.claim.gender" [formControl]="gender">
                         <option value="F">Female</option>
                         <option value="M">Male</option>
                     </select>
                 </td>
                 <td>
-                    {{claim.patientfilenumber}}
+                    {{data.claim.patientfilenumber}}
                 </td>
             </tr>
             <tr>
@@ -77,22 +77,22 @@
             </tr>
             <tr>
                 <td class="{{approvalClasses}}">
-                    <label *ngIf="!isEditMode">{{claim.approvalnumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.approvalnumber}}"
+                    <label *ngIf="!isEditMode">{{data.claim.approvalnumber}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.approvalnumber}}"
                         [formControl]="approvalnumber" maxlength="20">
                 </td>
                 <td class="{{eligibilityClasses}}">
-                    <label *ngIf="!isEditMode">{{claim.eligibilitynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.eligibilitynumber}}"
+                    <label *ngIf="!isEditMode">{{data.claim.eligibilitynumber}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.eligibilitynumber}}"
                         [formControl]="eligibilitynumber" maxlength="20">
                 </td>
                 <td>
-                    <label *ngIf="!isEditMode">{{claim.policynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{claim.policynumber}}" [formControl]="policynumber"
+                    <label *ngIf="!isEditMode">{{data.claim.policynumber}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.policynumber}}" [formControl]="policynumber"
                         maxlength="30">
                 </td>
                 <td>
-                    {{claim.provclaimno}}
+                    {{data.claim.provclaimno}}
                 </td>
             </tr>
             <tr>
@@ -102,8 +102,8 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <label *ngIf="!isEditMode">{{claim.chiefcomplaintsymptoms}}</label>
-                    <textarea *ngIf="isEditMode" value="{{claim.chiefcomplaintsymptoms}}" [formControl]="chiefComplaintSymptoms"
+                    <label *ngIf="!isEditMode">{{data.claim.chiefcomplaintsymptoms}}</label>
+                    <textarea *ngIf="isEditMode" value="{{data.claim.chiefcomplaintsymptoms}}" [formControl]="chiefComplaintSymptoms"
                     style="width: 100%;"></textarea>
                 </td>
             </tr>
@@ -118,7 +118,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="">{{claim.net}} {{claim.unitofnet}}</label>
+                    <label for="">{{data.claim.net}} {{data.claim.unitofnet}}</label>
                 </td>
             </tr>
             <tr>
@@ -128,7 +128,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="">{{claim.netvatamount}} {{claim.unitofnetvatamount}}</label>
+                    <label for="">{{data.claim.netvatamount}} {{data.claim.unitofnetvatamount}}</label>
                 </td>
             </tr>
         </table>
@@ -152,7 +152,7 @@
                 <th>Description</th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let diag of claim.diagnosis">
+                <ng-container *ngFor="let diag of data.claim.diagnosis">
                     <tr *ngIf="!diagnosisList.includes(diag) || diag.diagnosisId == null">
                         <span *ngIf="isEditMode">
                             <button (click)="deleteDiagnosis(diag)" mat-icon-button matTooltip="Remove">
@@ -190,7 +190,7 @@
                 <th>Invoice No.</th>
             </thead>
             <tbody>
-                <tr *ngFor="let service of claim.services">
+                <tr *ngFor="let service of data.claim.services">
                     <td>{{service.servicecode}}</td>
                     <td>{{service.gross}}</td>
                     <td>{{service.invoicedepartment}}</td>
@@ -216,7 +216,7 @@
     </div>
 </div>
 <div class="header footer">
-    <p *ngIf="claim.batchid != null">Batch ID: {{claim.batchid}}</p>
+    <p *ngIf="data.claim.batchid != null">Batch ID: {{data.claim.batchid}}</p>
     <span class="spacer"></span>
     <button mat-button cdkFocusInitial *ngIf="isEditable()" (click)="toggleEditMode()">{{editButtonLabel}}</button>
     <button mat-raised-button *ngIf="isEditMode" (click)="save()" color="primary" style="color: white;">Save</button>

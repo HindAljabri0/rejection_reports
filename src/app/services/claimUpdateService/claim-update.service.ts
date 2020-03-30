@@ -14,4 +14,10 @@ export class ClaimUpdateService {
     const httpRequest = new HttpRequest('PUT', environment.claimServiceHost+requestUrl, data);
     return this.httpClient.request(httpRequest);
   }
+
+  deleteClaim(providerId: string, claimId){
+    const requestUrl = `/providers/${providerId}/${claimId}`;
+    const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost+requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterContentInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { FormControl } from '@angular/forms';
@@ -17,14 +17,25 @@ import { SearchService } from 'src/app/services/serchService/search.service';
   templateUrl: './claim-dialog.component.html',
   styleUrls: ['./claim-dialog.component.css']
 })
-export class ClaimDialogComponent implements OnInit {
+export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
-  constructor(public commen: CommenServicesService, public dialogRef: MatDialogRef<ClaimDialogComponent>, @Inject(MAT_DIALOG_DATA) public claim: ViewedClaim, public claimUpdateService: ClaimUpdateService, public adminService: AdminService, private searchService:SearchService) { }
+  constructor(public commen: CommenServicesService,
+    public dialogRef: MatDialogRef<ClaimDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {claim: ViewedClaim, edit: boolean},
+    public claimUpdateService: ClaimUpdateService,
+    public adminService: AdminService,
+    private searchService:SearchService) {
+  }
 
   ngOnInit() {
-    console.log(this.claim);
-    if (this.claim.errors.length > 0) {
+    if (this.data.claim.errors.length > 0) {
       this.setErrors();
+    }
+  }
+
+  ngAfterContentInit(){
+    if(this.data.edit){
+      this.toggleEditMode()
     }
   }
 
@@ -43,12 +54,12 @@ export class ClaimDialogComponent implements OnInit {
   isEditMode: boolean = false;
   editButtonLabel: string = "Edit";
 
-  memberid = new FormControl(this.claim.memberid);
-  gender = new FormControl(this.claim.gender);
-  approvalnumber = new FormControl(this.claim.approvalnumber);
-  eligibilitynumber = new FormControl(this.claim.eligibilitynumber);
-  policynumber = new FormControl(this.claim.policynumber);
-  chiefComplaintSymptoms = new FormControl(this.claim.chiefcomplaintsymptoms);
+  memberid = new FormControl(this.data.claim.memberid);
+  gender = new FormControl(this.data.claim.gender);
+  approvalnumber = new FormControl(this.data.claim.approvalnumber);
+  eligibilitynumber = new FormControl(this.data.claim.eligibilitynumber);
+  policynumber = new FormControl(this.data.claim.policynumber);
+  chiefComplaintSymptoms = new FormControl(this.data.claim.chiefcomplaintsymptoms);
 
 
   searchDiag = new FormControl("");
@@ -60,7 +71,7 @@ export class ClaimDialogComponent implements OnInit {
   setErrors() {
     this.commentBoxClasses = 'error';
     this.commentBoxText = "";
-    for (let error of this.claim.errors) {
+    for (let error of this.data.claim.errors) {
       this.commentBoxText += `${error.description}\n`;
       if (error.fieldName == ClaimFields.APPNO) {
         this.approvalClasses = 'error';
@@ -85,7 +96,7 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   isEditable() {
-    switch (this.claim.status) {
+    switch (this.data.claim.status) {
       case ClaimStatus.Accepted:
       case ClaimStatus.INVALID:
       case ClaimStatus.NotAccepted:
@@ -106,7 +117,7 @@ export class ClaimDialogComponent implements OnInit {
 
   removeAddedDiagFromClaimList() {
 
-    this.claim.diagnosis = this.claim.diagnosis.filter((x => x.diagnosisId != null));
+    this.data.claim.diagnosis = this.data.claim.diagnosis.filter((x => x.diagnosisId != null));
   }
 
   deleteDiagnosis(diagnosis) {
@@ -114,7 +125,7 @@ export class ClaimDialogComponent implements OnInit {
       this.diagnosisList.push(diagnosis);
     } else {
       delete this.diagnosisList[this.diagnosisList.indexOf(diagnosis)];
-      delete this.claim.diagnosis[this.claim.diagnosis.indexOf(diagnosis)];
+      delete this.data.claim.diagnosis[this.data.claim.diagnosis.indexOf(diagnosis)];
     }
   }
 
@@ -138,11 +149,11 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   addICDDignosis(diag) {
-    if (this.claim.diagnosis.length < 14 && !(this.elementIsInList(diag))) {
+    if (this.data.claim.diagnosis.length < 14 && !(this.elementIsInList(diag))) {
       this.diagnosisList.push(diag);
-      this.claim.diagnosis.push(diag);
+      this.data.claim.diagnosis.push(diag);
     } else {
-      if (this.claim.diagnosis.length >= 14)
+      if (this.data.claim.diagnosis.length >= 14)
         alert("Only 14 Dignosis are Allowed");
       else {
         alert("Diagnosis Already in List");
@@ -152,7 +163,7 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   elementIsInList(diag: any): boolean {
-    let list = this.claim.diagnosis.filter((x => x.diagnosisCode == diag.diagnosisCode));
+    let list = this.data.claim.diagnosis.filter((x => x.diagnosisCode == diag.diagnosisCode));
     return list.length > 0;
   }
 
@@ -160,23 +171,23 @@ export class ClaimDialogComponent implements OnInit {
   save() {
     let updateRequestBody: { [k: string]: any } = {};
     let flag = false;
-    if (this.memberid.value != this.claim.memberid) {
+    if (this.memberid.value != this.data.claim.memberid) {
       updateRequestBody.memberid = this.memberid.value;
       flag = true;
     }
-    if (this.gender.value != this.claim.gender) {
+    if (this.gender.value != this.data.claim.gender) {
       updateRequestBody.gender = this.gender.value;
       flag = true;
     }
-    if (this.approvalnumber.value != this.claim.approvalnumber) {
+    if (this.approvalnumber.value != this.data.claim.approvalnumber) {
       updateRequestBody.approvalnumber = this.approvalnumber.value;
       flag = true;
     }
-    if (this.eligibilitynumber.value != this.claim.eligibilitynumber) {
+    if (this.eligibilitynumber.value != this.data.claim.eligibilitynumber) {
       updateRequestBody.eligibilitynumber = this.eligibilitynumber.value;
       flag = true;
     }
-    if (this.policynumber.value != this.claim.policynumber) {
+    if (this.policynumber.value != this.data.claim.policynumber) {
       updateRequestBody.policynumber = this.policynumber.value;
       flag = true;
     }
@@ -185,7 +196,7 @@ export class ClaimDialogComponent implements OnInit {
       updateRequestBody.diagnosis = this.diagnosisList;
       flag = true;
     }
-    if (this.chiefComplaintSymptoms.value != this.claim.chiefcomplaintsymptoms) {
+    if (this.chiefComplaintSymptoms.value != this.data.claim.chiefcomplaintsymptoms) {
       updateRequestBody.chiefcomplaintsymptoms = this.chiefComplaintSymptoms.value;
       flag = true;
     }
@@ -194,7 +205,7 @@ export class ClaimDialogComponent implements OnInit {
 
     if (flag) {
       this.loading = true;
-      this.claimUpdateService.updateClaim(this.claim.providerId, this.claim.payerid, this.claim.claimid, updateRequestBody).subscribe(event => {
+      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, updateRequestBody).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
@@ -220,17 +231,17 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   reloadeClaim() {
-    this.searchService.getClaim(this.claim.providerId, `${this.claim.claimid}`).subscribe(event => {
+    this.searchService.getClaim(this.data.claim.providerId, `${this.data.claim.claimid}`).subscribe(event => {
       if (event instanceof HttpResponse) {
-        const providerId = this.claim.providerId;
-        const payerId = this.claim.payerid;
-        const status = this.claim.status;
-        this.claim = JSON.parse(JSON.stringify(event.body));
-        this.claim.providerId = providerId;
-        this.claim.payerid = payerId;
-        this.claim.status = status;
+        const providerId = this.data.claim.providerId;
+        const payerId = this.data.claim.payerid;
+        const status = this.data.claim.status;
+        this.data.claim = JSON.parse(JSON.stringify(event.body));
+        this.data.claim.providerId = providerId;
+        this.data.claim.payerid = payerId;
+        this.data.claim.status = status;
         this.resetErrors();
-        if (this.claim.errors.length > 0) {
+        if (this.data.claim.errors.length > 0) {
           this.setErrors();
         }
       }
@@ -248,8 +259,8 @@ export class ClaimDialogComponent implements OnInit {
   }
 
   getPatientFullName(){
-      return `${this.claim.firstname!=null? this.claim.firstname:""} ${this.claim.middlename!=null? this.claim.middlename:""}  ${this.claim.lastname!=null? this.claim.lastname:""}  `;
-    //return `${this.claim.firstname} ${this.claim.middlename} ${this.claim.lastname}`;
+      return `${this.data.claim.firstname!=null? this.data.claim.firstname:""} ${this.data.claim.middlename!=null? this.data.claim.middlename:""}  ${this.data.claim.lastname!=null? this.data.claim.lastname:""}  `;
+    //return `${this.data.claim.firstname} ${this.data.claim.middlename} ${this.data.claim.lastname}`;
   }
 
   getPatientName(){

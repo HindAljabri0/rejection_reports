@@ -150,6 +150,13 @@ mat-expansion-panel:hover{
     background-color: #e0eafa;
 }
 
+.claims:nth-child(even) button:hover{
+    background-color: #e0eafa;
+}
+.claims:nth-child(odd) button:hover{
+    background-color: white;
+}
+
 .statusDot::before{
     content: '.';
     font-size: 47px;

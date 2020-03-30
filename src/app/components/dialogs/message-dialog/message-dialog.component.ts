@@ -23,6 +23,10 @@ export class MessageDialogComponent implements OnInit {
 
   ngOnInit() {
     if(this.data.isError) this.textColor = '#7e0433';
+    if(this.data.withButtons){
+      this.textColor = '#3060AA';
+      this.backgroundColor = 'white';
+    }
   }
 
 }
