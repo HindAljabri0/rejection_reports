@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpClient } from '@angular/common/http';
+import { HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -17,7 +17,8 @@ export class ClaimUpdateService {
 
   deleteClaim(providerId: string, claimId){
     const requestUrl = `/providers/${providerId}/${claimId}`;
-    const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost+requestUrl);
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
+    const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost+requestUrl, {}, {headers: headers});
     return this.httpClient.request(httpRequest);
   }
 }
