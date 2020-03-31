@@ -13,7 +13,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { ClaimUpdateService } from 'src/app/services/claimUpdateService/claim-update.service';
+import { ClaimService } from 'src/app/services/claimService/claim.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -28,7 +28,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     public commen: CommenServicesService, public routeActive: ActivatedRoute,
     public router: Router, public searchService: SearchService,
     private dialogService: DialogService,
-    private claimService: ClaimUpdateService) {
+    private claimService: ClaimService) {
   }
 
   isViewChecked: boolean = false;

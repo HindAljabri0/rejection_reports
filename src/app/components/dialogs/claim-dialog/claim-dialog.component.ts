@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, AfterContentInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { FormControl } from '@angular/forms';
-import { ClaimUpdateService } from 'src/app/services/claimUpdateService/claim-update.service';
+import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
@@ -22,7 +22,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   constructor(public commen: CommenServicesService,
     public dialogRef: MatDialogRef<ClaimDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {claim: ViewedClaim, edit: boolean},
-    public claimUpdateService: ClaimUpdateService,
+    public claimUpdateService: ClaimService,
     public adminService: AdminService,
     private searchService:SearchService) {
   }

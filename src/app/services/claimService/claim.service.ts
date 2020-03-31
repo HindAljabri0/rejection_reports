@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ClaimUpdateService {
+export class ClaimService {
 
   constructor(private httpClient:HttpClient) { }
 
