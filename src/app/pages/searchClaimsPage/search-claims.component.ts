@@ -453,7 +453,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
           if(event instanceof HttpResponse){
             this.commen.loadingChanged.next(false);
             this.dialogService.openMessageDialog(new MessageDialogData('', `Claim with reference ${refNumber} was deleted successfully.`, false))
-            .subscribe(afterColse => this.getResultsofStatus(this.selectedCardKey));
+            .subscribe(afterColse => this.fetchData());
           }
         }, errorEvent => {
           if(errorEvent instanceof HttpErrorResponse){
