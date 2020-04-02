@@ -101,6 +101,7 @@
                 <td>Claim Ref. No.</td>
                 <td>Dr. Name</td>
                 <td>Member ID</td>
+                <td>National ID</td>
                 <td>Patient File No.</td>
                 <td>Claim Date</td>
                 <td>Net Amount</td>
@@ -118,6 +119,7 @@
                     {{claim.providerClaimNumber}}</td>
                 <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.drName}}</td>
                 <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.memberId}}</td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.nationalId}}</td>
                 <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
                     {{claim.patientFileNumber}}</td>
                 <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.claimDate}}</td>
