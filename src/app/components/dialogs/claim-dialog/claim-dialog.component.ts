@@ -60,6 +60,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   eligibilitynumber = new FormControl(this.data.claim.eligibilitynumber);
   policynumber = new FormControl(this.data.claim.policynumber);
   chiefComplaintSymptoms = new FormControl(this.data.claim.chiefcomplaintsymptoms);
+  nationalId = new FormControl(this.data.claim.nationalId);
 
 
   searchDiag = new FormControl("");
@@ -173,6 +174,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     let flag = false;
     if (this.memberid.value != this.data.claim.memberid) {
       updateRequestBody.memberid = this.memberid.value;
+      flag = true;
+    }
+    if (this.nationalId.value != this.data.claim.nationalId) {
+      updateRequestBody.nationalId = this.nationalId.value;
       flag = true;
     }
     if (this.gender.value != this.data.claim.gender) {

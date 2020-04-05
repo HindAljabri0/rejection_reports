@@ -21,7 +21,8 @@
 <div class="header sub">
     <p>Doctor Name: {{data.claim.physicianname}}</p>
     <span class="spacer"></span>
-    <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No: {{data.claim.payerclaimrefno}}
+    <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No:
+        {{data.claim.payerclaimrefno}}
     </p>
 </div>
 <div class="content">
@@ -31,25 +32,90 @@
                 <th>
                     Patient Name
                 </th>
-                <th class="{{memberidClasses}}">
-                    Member ID
-                </th>
-                <th class="{{genderClasses}}">
-                    Gender
-                </th>
-                <th>
-                    Patient File No.
-                </th>
-            </tr>
-            <tr>
                 <td matTooltip="{{getPatientFullName()}}">
                     {{getPatientName()}}
                 </td>
+                <th class="{{eligibilityClasses}}">
+                    Eligibility Ref No
+                </th>
+                <td class="{{eligibilityClasses}}">
+                    <label *ngIf="!isEditMode">{{data.claim.eligibilitynumber}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.eligibilitynumber}}"
+                        [formControl]="eligibilitynumber" maxlength="20">
+                </td>
+            </tr>
+            <tr>
+
+                <th class="{{memberidClasses}}">
+                    Member ID
+                </th>
                 <td class="{{memberidClasses}}">
                     <label *ngIf="!isEditMode">{{data.claim.memberid}}</label>
                     <input type="text" *ngIf="isEditMode" value="{{data.claim.memberid}}" [formControl]="memberid"
                         maxlength="30">
                 </td>
+                <th>
+                    Porvider Claim Number
+                </th>
+                <td>
+                    {{data.claim.provclaimno}}
+                </td>
+            </tr>
+            <tr>
+
+                <th class="{{approvalClasses}}">
+                    Approval No
+                </th>
+
+                <td class="{{approvalClasses}}">
+                    <label *ngIf="!isEditMode">{{data.claim.approvalnumber}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.approvalnumber}}"
+                        [formControl]="approvalnumber" maxlength="20">
+                </td>
+
+                <th>
+                    Patient File No.
+                </th>
+                <td>
+                    {{data.claim.patientfilenumber}}
+                </td>
+            </tr>
+
+
+
+
+
+
+
+
+
+            <tr>
+
+                <th>
+                    Policy No
+                </th>
+                <td>
+                    <label *ngIf="!isEditMode">{{data.claim.policynumber}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.policynumber}}"
+                        [formControl]="policynumber" maxlength="30">
+                </td>
+
+                <th>
+                    National ID
+                </th>
+                <td>
+                    <label *ngIf="!isEditMode">{{data.claim.nationalId}}</label>
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.nationalId}}" [formControl]="nationalId"
+                        maxlength="30">
+                </td>
+            </tr>
+            <tr>
+                <th class="{{approvalClasses}}" colspan="4">
+                    Chief Complaint Symptoms
+                </th>
+                <th class="{{genderClasses}}">
+                    Gender
+                </th>
                 <td class="{{genderClasses}}">
                     <label *ngIf="!isEditMode">{{genderToText(data.claim.gender)}}</label>
                     <select *ngIf="isEditMode" [value]="data.claim.gender" [formControl]="gender">
@@ -57,58 +123,14 @@
                         <option value="M">Male</option>
                     </select>
                 </td>
-                <td>
-                    {{data.claim.patientfilenumber}}
-                </td>
-            </tr>
-            <tr>
-                <th class="{{approvalClasses}}">
-                    Approval No
-                </th>
-                <th class="{{eligibilityClasses}}">
-                    Eligibility Ref No
-                </th>
-                <th>
-                    Policy No
-                </th>
-                <th>
-                    Porvider Claim Number
-                </th>
-            </tr>
-            <tr>
-                <td class="{{approvalClasses}}">
-                    <label *ngIf="!isEditMode">{{data.claim.approvalnumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.approvalnumber}}"
-                        [formControl]="approvalnumber" maxlength="20">
-                </td>
-                <td class="{{eligibilityClasses}}">
-                    <label *ngIf="!isEditMode">{{data.claim.eligibilitynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.eligibilitynumber}}"
-                        [formControl]="eligibilitynumber" maxlength="20">
-                </td>
-                <td>
-                    <label *ngIf="!isEditMode">{{data.claim.policynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.policynumber}}" [formControl]="policynumber"
-                        maxlength="30">
-                </td>
-                <td>
-                    {{data.claim.provclaimno}}
-                </td>
-            </tr>
-            <tr>
-                <th class="{{approvalClasses}}" colspan="4">
-                    Chief Complaint Symptoms
-                </th>
             </tr>
             <tr>
                 <td colspan="4">
                     <label *ngIf="!isEditMode">{{data.claim.chiefcomplaintsymptoms}}</label>
-                    <textarea *ngIf="isEditMode" value="{{data.claim.chiefcomplaintsymptoms}}" [formControl]="chiefComplaintSymptoms"
-                    style="width: 100%;"></textarea>
+                    <textarea *ngIf="isEditMode" value="{{data.claim.chiefcomplaintsymptoms}}"
+                        [formControl]="chiefComplaintSymptoms" style="width: 100%;"></textarea>
                 </td>
             </tr>
-
-
         </table>
         <table style="width: 15%;">
             <tr>

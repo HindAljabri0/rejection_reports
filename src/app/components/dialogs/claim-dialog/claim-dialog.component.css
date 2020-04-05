@@ -146,4 +146,5 @@ mat-icon{
 .gInfo table th, .gInfo table td {
     padding: 5px;
     height: 32px;
+    width: 25%;
 }

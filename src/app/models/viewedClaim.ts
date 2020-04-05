@@ -24,6 +24,7 @@ export class ViewedClaim {
 	approvalnumber:string;
 	policynumber:string;
 	memberid:string;
+	nationalId:string;
 	eligibilitynumber:string;
 	comments:string;
     batchid:number;
