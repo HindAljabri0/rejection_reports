@@ -177,7 +177,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       flag = true;
     }
     if (this.nationalId.value != this.data.claim.nationalId) {
-      updateRequestBody.nationalId = this.nationalId.value;
+      updateRequestBody.nationalid = this.nationalId.value;
       flag = true;
     }
     if (this.gender.value != this.data.claim.gender) {
