@@ -46,6 +46,7 @@ export class CommenServicesService {
 
   uploadHistoryList: UploadSummary[];
   uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
+  getUploadId: any;
 
 
   constructor(public authService: AuthService,
@@ -137,7 +138,9 @@ export class CommenServicesService {
     });
   }
 
-
+  public get uploadId() {
+    return this.getUploadId();
+  }
 
 
   public get providerId() {

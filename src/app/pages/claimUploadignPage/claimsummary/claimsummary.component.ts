@@ -1,3 +1,4 @@
+import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-claims.component';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
@@ -5,13 +6,18 @@ import { ClaimStatus } from 'src/app/models/claimStatus';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { ClaimInfo } from 'src/app/models/claimInfo';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ClaimfileuploadComponent } from '../claimfileupload/claimfileupload.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { ClaimService } from 'src/app/services/claimService/claim.service';
+
+
 
 @Component({
   selector: 'app-claimsummary',
@@ -23,6 +29,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   paginatedResult: PaginatedResult<ClaimInfo>;
   results: any[];
   filename: ClaimfileuploadComponent;
+  // providerId: string;
+  // uploadId: any;
 
 
   paginatorPagesNumbers: number[];
@@ -44,6 +52,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   card0Title = this.commen.statusToName(ClaimStatus.ALL);
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
+  private searchClaimsComponent : SearchClaimsComponent;
+
   card0Action() {
     this.showClaims = true;
     this.detailCardTitle = this.card0Title;
@@ -93,7 +103,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(public location: Location, public uploadService: UploadService, public commen: CommenServicesService, private router: Router, private routeActive: ActivatedRoute) {
+  constructor(public location: Location, public uploadService: UploadService, public commen: CommenServicesService, private router: Router, 
+    private routeActive: ActivatedRoute, private dialogService: DialogService, private claimService: ClaimService) {
     this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -123,6 +134,11 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
       this.router.navigate(['/summary']);
     });
+    this.dialogService.onClaimDialogClose.subscribe(value => {
+      if (value != null && value) {
+        this.searchClaimsComponent.fetchData();
+      }
+    })
   }
   ngOnDestroy() {
     this.routingObservable.unsubscribe();
@@ -223,10 +239,35 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   get providerId(){
     return this.commen.providerId;
   }
+  get uploadId(){
+    return this.commen.uploadId;
+  }
   viewClaims() {
     this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } })
   }
 
+  
+  deleteClaimByUploadid(uploadSummaryID: string, refNumber:string){
+    this.dialogService.openMessageDialog(new MessageDialogData('Delete Upload?', `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
+    .subscribe(result => {
+      if(result === true){
+        this.commen.loadingChanged.next(true);
+        this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event =>{
+          if(event instanceof HttpResponse){
+            this.commen.loadingChanged.next(false);
+            this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
+            .subscribe(afterColse => this.searchClaimsComponent.fetchData());
+          }
+        }, errorEvent => {
+          if(errorEvent instanceof HttpErrorResponse){
+            this.commen.loadingChanged.next(false);
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+          }
+        });
+      }
+    });
+  }
+ 
   get uploading(){
     return this.uploadService.uploading;
   }

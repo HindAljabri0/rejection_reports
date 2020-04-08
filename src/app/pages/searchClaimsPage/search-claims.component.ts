@@ -14,6 +14,7 @@ import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
+import { UploadSummary } from 'src/app/models/uploadSummary';
 
 @Component({
   selector: 'app-search-claims',
@@ -58,6 +59,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
   currentSummariesPage:number = 1;
   searchResult: PaginatedResult<SearchedClaim>;
   claims: SearchedClaim[];
+  uploadSummaries: UploadSummary[];
   selectedClaims: string[] = new Array();
   selectedClaimsCountOfPage: number = 0;
   allCheckBoxIsIndeterminate: boolean;
@@ -464,6 +466,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
       }
     });
   }
+
 
   download() {
     if (this.detailTopActionText == "check_circle") return;

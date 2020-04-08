@@ -5,7 +5,9 @@ export class UploadSummary {
     uploadSummaryID: number;
     uploadName: string;
     uploadDate: Date;
-  
+
+    providerClaimNumber:number;
+
     noOfUploadedClaims: number = 0;
     netAmountOfUploadedClaims: number = 0;
     netVATAmountOfUploadedClaims: number = 0;
