@@ -162,16 +162,16 @@ export class CommenServicesService {
   }
 
   statusToName(status: string) {
-    switch (status) {
-      case ClaimStatus.Accepted:
+    switch (status.toLowerCase()) {
+      case ClaimStatus.Accepted.toLowerCase():
         return 'Ready for Submission';
-      case ClaimStatus.NotAccepted:
+      case ClaimStatus.NotAccepted.toLowerCase():
         return 'Rejected by Waseel';
-      case ClaimStatus.ALL:
+      case ClaimStatus.ALL.toLowerCase():
         return 'All Claims'
-      case ClaimStatus.PARTIALLY_PAID: case 'PARTIALLY_PAID':
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
         return 'Partially Paid';
-      case ClaimStatus.REJECTED:
+      case ClaimStatus.REJECTED.toLowerCase():
         return 'Rejected by Payer';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');

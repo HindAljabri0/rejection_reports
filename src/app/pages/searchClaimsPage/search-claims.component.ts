@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, AfterViewChecked, } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, } from '@angular/core';
 import { CommenServicesService } from '../../services/commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
-import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpEventType, HttpEvent } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
 import { Location } from '@angular/common';
@@ -14,6 +14,8 @@ import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
+import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-claims',
@@ -28,7 +30,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     public commen: CommenServicesService, public routeActive: ActivatedRoute,
     public router: Router, public searchService: SearchService,
     private dialogService: DialogService,
-    private claimService: ClaimService) {
+    private claimService: ClaimService,
+    private eligibilityService: EligibilityService) {
   }
 
   isViewChecked: boolean = false;
@@ -55,7 +58,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
   casetype: string;
 
   summaries: SearchStatusSummary[];
-  currentSummariesPage:number = 1;
+  currentSummariesPage: number = 1;
   searchResult: PaginatedResult<SearchedClaim>;
   claims: SearchedClaim[];
   selectedClaims: string[] = new Array();
@@ -77,6 +80,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
 
   queryStatus: number;
   queryPage: number;
+
+  waitingEligibilityCheck:boolean = false;
+  eligibilityWaitingList:{result:string, waiting:boolean}[] = [];
 
   ngOnInit() {
     this.fetchData();
@@ -434,35 +440,78 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
         + (this.casetype != null ? `&casetype=${this.casetype}` : ""));
     } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
-    } else if(this.uploadId != null){
+    } else if (this.uploadId != null) {
       this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}`);
     }
   }
 
 
-  showClaim(claimStatus: string, claimId: string, edit?:boolean) {
+  showClaim(claimStatus: string, claimId: string, edit?: boolean) {
     this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId, edit);
   }
 
-  deleteClaim(claimId: string, refNumber:string){
-    this.dialogService.openMessageDialog(new MessageDialogData('Delete Claim?', `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
-    .subscribe(result => {
-      if(result === true){
-        this.commen.loadingChanged.next(true);
-        this.claimService.deleteClaim(this.providerId, claimId).subscribe(event =>{
-          if(event instanceof HttpResponse){
-            this.commen.loadingChanged.next(false);
-            this.dialogService.openMessageDialog(new MessageDialogData('', `Claim with reference ${refNumber} was deleted successfully.`, false))
-            .subscribe(afterColse => this.fetchData());
-          }
-        }, errorEvent => {
-          if(errorEvent instanceof HttpErrorResponse){
-            this.commen.loadingChanged.next(false);
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-          }
-        });
+  checkClaim(id: string) {
+    this.eligibilityWaitingList[id] = {result:'', waiting:true};
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id)]));
+  }
+
+  checkSelectedClaims() {
+    this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = {result:'', waiting:true});
+    this.waitingEligibilityCheck = true;
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, this.selectedClaims.map(id => Number.parseInt(id))));
+  }
+
+  checkAllClaims() {
+    this.waitingEligibilityCheck = true;
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDate(this.providerId, this.payerId, this.from, this.to));
+  }
+
+  handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
+    request.subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.selectedClaims = [];
       }
-    });
+    }, errorEvent => {
+      this.waitingEligibilityCheck = false;
+      this.eligibilityWaitingList = [];
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status == 400) {
+          this.dialogService.openMessageDialog(new MessageDialogData(
+            '', 'Some of the selected claims are already checked or are not ready for submission.', true)
+          );
+        } else if ((errorEvent.status / 100).toFixed() == "5") {
+          this.dialogService.openMessageDialog(new MessageDialogData('', "Could not reach the server at the moment. Please try again leter.", true));
+        }
+      }
+    })
+  }
+
+  claimIsWaitingEligibility(claimId:string){
+    return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
+  }
+  get isWaitingForEligibility(){
+    return this.waitingEligibilityCheck;
+  }
+
+  deleteClaim(claimId: string, refNumber: string) {
+    this.dialogService.openMessageDialog(new MessageDialogData('Delete Claim?', `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.claimService.deleteClaim(this.providerId, claimId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', `Claim with reference ${refNumber} was deleted successfully.`, false))
+                .subscribe(afterColse => this.fetchData());
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+            }
+          });
+        }
+      });
   }
 
   download() {
@@ -479,7 +528,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
           a.target = '_blank';
           if (this.from != null) {
             a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          } else if(this.batchId != null) {
+          } else if (this.batchId != null) {
             a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
           } else {
             a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
@@ -496,13 +545,13 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  doAction(){
-    if(this.detailActionText.includes("Submit")){
+  doAction() {
+    if (this.detailActionText.includes("Submit")) {
       this.submitAllAcceptedClaims();
     }
   }
-  doSubAction(){
-    if(this.detailActionText.includes("Submit")){
+  doSubAction() {
+    if (this.detailActionText.includes("Submit")) {
       this.submitSelectedClaims();
     }
   }
@@ -511,7 +560,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     return this.commen.loading;
   }
 
-  get uploadNameExist(){
+  get uploadNameExist() {
     return this.summaries[0] != null && this.summaries[0].uploadName != null;
   }
 
@@ -539,12 +588,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
   }
 
   nextSummary() {
-    if(this.currentSummariesPage+1 < this.summaries.length)
-    this.currentSummariesPage++;
+    if (this.currentSummariesPage + 1 < this.summaries.length)
+      this.currentSummariesPage++;
   }
   previousSummary() {
-    if(this.currentSummariesPage-1 > 0)
-    this.currentSummariesPage--;
+    if (this.currentSummariesPage - 1 > 0)
+      this.currentSummariesPage--;
   }
 }
 
