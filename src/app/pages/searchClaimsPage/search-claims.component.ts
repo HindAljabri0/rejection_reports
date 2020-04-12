@@ -16,6 +16,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
 import { Observable } from 'rxjs';
+import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -23,6 +24,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./search-claims.component.css']
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked {
+  
 
 
 
@@ -31,7 +33,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     public router: Router, public searchService: SearchService,
     private dialogService: DialogService,
     private claimService: ClaimService,
-    private eligibilityService: EligibilityService) {
+    private eligibilityService: EligibilityService,
+    private notificationService: NotificationsService) {
   }
 
   isViewChecked: boolean = false;
@@ -83,6 +86,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
 
   waitingEligibilityCheck:boolean = false;
   eligibilityWaitingList:{result:string, waiting:boolean}[] = [];
+  watchingEligibility: boolean = false;
 
   ngOnInit() {
     this.fetchData();
@@ -469,7 +473,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
     request.subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.selectedClaims = [];
+        this.deSelectAll();
+        this.watchEligibilityChanges();
       }
     }, errorEvent => {
       this.waitingEligibilityCheck = false;
@@ -484,6 +489,32 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
         }
       }
     })
+  }
+  watchEligibilityChanges() {
+    if(this.watchingEligibility) return;
+
+    this.watchingEligibility = true;
+
+    this.notificationService.startWatchingMessages(this.providerId, 'eligibility');
+    this.notificationService._messageWatchSources['eligibility'].subscribe(value => {
+      value = value.replace(`"`, '').replace(`"`, '');
+      const splitedValue:string[] =  value.split(':');
+      if(splitedValue.length == 2){
+        const index = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
+        if(index > -1){
+          this.claims[index].eligibilitycheck = splitedValue[1];
+        }
+        if(this.eligibilityWaitingList[splitedValue[0]] != null){
+          this.eligibilityWaitingList[splitedValue[0]].result = splitedValue[1];
+          this.eligibilityWaitingList[splitedValue[0]].waiting = false;
+        }
+      }
+      if((this.eligibilityWaitingList.length != 0 && this.eligibilityWaitingList.every(claim => !claim.waiting))
+      || this.claims.every(claim => claim.status == 'Accepted' && claim.eligibilitycheck != null)){
+        this.notificationService.stopWatchingMessages('eligibility');
+        this.waitingEligibilityCheck = false;
+      }
+    });
   }
 
   claimIsWaitingEligibility(claimId:string){
