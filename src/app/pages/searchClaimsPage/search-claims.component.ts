@@ -238,7 +238,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     if (page != null && page > 0) {
       this.location.go(this.location.path() + `&page=${(page + 1)}`);
     }
-    if (this.summaries[key].statuses[0] == ClaimStatus.Accepted) {
+    if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
     } /*else if (this.summaries[key].status == ClaimStatus.Failed){
