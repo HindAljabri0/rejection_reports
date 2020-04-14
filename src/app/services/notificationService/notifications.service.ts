@@ -58,6 +58,7 @@ export class NotificationsService {
   }
 
   startWatchingMessages(providerId: string, topic: string) {
+    if(this.eventSources[topic] != null) return;
     this.messageWatchSources[topic] = new BehaviorSubject('');
     this._messageWatchSources[topic] = this.messageWatchSources[topic].asObservable();
     this.watchNewMessage(providerId, topic).subscribe(data => {
@@ -70,6 +71,11 @@ export class NotificationsService {
   stopWatchingMessages(topic: string) {
     this.eventSources[topic].close();
     this.observers[topic].complete();
+    this.eventSources[topic] = null;
+    this.observers[topic] = null;
+    delete this.eventSources[topic];
+    delete this.observers[topic];
+
   }
 
 }
