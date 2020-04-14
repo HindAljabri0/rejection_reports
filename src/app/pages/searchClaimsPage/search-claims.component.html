@@ -107,7 +107,23 @@
                 <td>Net Amount</td>
                 <td style="width: 5%;">Vat</td>
                 <td style="width: 5%; text-align: center;">Status</td>
-                <td style="width: 15%; text-align: center;"></td>
+                <td style="width: 15%; text-align: center;">
+                    <ng-container *ngIf="selectedClaims.length == 0 && !isWaitingForEligibility">
+                        <button style="color: #adadad;" mat-icon-button (click)="checkAllClaims()"
+                            matTooltip="Verify All Ready Claims' Eligibility">
+                            <mat-icon>check_circle_outline</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedClaims.length > 0 && !isWaitingForEligibility">
+                        <button style="color: #adadad;" mat-icon-button (click)="checkSelectedClaims()"
+                            matTooltip="Verify All Selected Claims' Eligibility">
+                            <mat-icon>check_circle_outline</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="isWaitingForEligibility">
+                        <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
+                    </ng-container>
+                </td>
             </tr>
             <tr class="claims" *ngFor="let claim of claims">
                 <td>
@@ -133,10 +149,34 @@
                 </td>
                 <td style="width: 15%; text-align: center;">
                     <div>
-                        <button style="color: #3060AA;" mat-icon-button (click)="showClaim(claim.status, claim.claimId, true)">
+                        <button style="color: #3060AA;" mat-icon-button
+                            (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button style="color: #3060AA;" mat-icon-button (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)">
+                        <ng-container
+                            *ngIf="claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #adadad;" mat-icon-button (click)="checkClaim(claim.claimId)"
+                                matTooltip="Verify Eligibility">
+                                <mat-icon>check_circle_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="claim.eligibilitycheck == 'Eligible' && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #21B744;" mat-icon-button matTooltip="Eligible">
+                                <mat-icon>check_circle_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="claim.eligibilitycheck != null && claim.eligibilitycheck != 'Eligible' && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #E988AD" mat-icon-button [matTooltip]="claim.eligibilitycheck">
+                                <mat-icon>error_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="claimIsWaitingEligibility(claim.claimId)">
+                            <button mat-icon-button>
+                                <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
+                            </button>
+                        </ng-container>
+                        <button style="color: #3060AA;" mat-icon-button
+                            (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)" matTooltip="Delete">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                     </div>

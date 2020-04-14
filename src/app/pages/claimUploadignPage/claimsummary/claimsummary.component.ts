@@ -255,6 +255,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event =>{
           if(event instanceof HttpResponse){
             this.commen.loadingChanged.next(false);
+            
             this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
             .subscribe(afterColse => this.searchClaimsComponent.fetchData());
           }
