@@ -22,10 +22,10 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  deleteClaimByUploadid(providerId: string, uploadId){
+ /* deleteClaimByUploadid(providerId: string, uploadId){
     const requestUrl = `/providers/${providerId}/uploads/${uploadId}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
     const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost+requestUrl, {}, {headers: headers});
     return this.httpClient.request(httpRequest);
-  }
+  }*/
 }

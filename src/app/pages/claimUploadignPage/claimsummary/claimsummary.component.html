@@ -112,7 +112,7 @@
         <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
         <span class="spacer"></span>
 
-        <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.providerClaimNumber)">Delete Claims</button>
+        <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button>
         <button *ngIf="summary.uploadSummaryID != undefined" (click)="viewClaims()"
             mat-raised-button color="primary">View Claims</button>
     </div>

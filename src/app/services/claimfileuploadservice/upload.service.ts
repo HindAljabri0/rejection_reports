@@ -1,6 +1,6 @@
 // import { ClaimSubmissionData } from 'src/app/claimpage/claimfileuploadservice/upload.service';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest, HttpResponse, HttpEventType, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest, HttpResponse, HttpEventType, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UploadSummary } from 'src/app/models/uploadSummary';
@@ -110,5 +110,12 @@ export class UploadService {
         console.log('done from upload service');
       }
     });
+  }
+
+  deleteClaimByUploadid(providerId: string, uploadId){
+    const requestUrl = `/providers/${providerId}/history/uploads/${uploadId}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
+    const httpRequest = new HttpRequest('DELETE', environment.uploaderHost+requestUrl, {}, {headers: headers});
+    return this.http.request(httpRequest);
   }
 }
