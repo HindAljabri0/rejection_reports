@@ -103,7 +103,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(public location: Location, public uploadService: UploadService, public commen: CommenServicesService, private router: Router, 
+  constructor(public location: Location, public uploadService: UploadService, public commen: CommenServicesService, private router: Router,
     private routeActive: ActivatedRoute, private dialogService: DialogService, private claimService: ClaimService) {
     this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
@@ -246,8 +246,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } })
   }
 
-  
-  deleteClaimByUploadid(uploadSummaryID: string, refNumber:string){
+
+  deleteClaimByUploadid(uploadSummaryID: number, refNumber:string){
     this.dialogService.openMessageDialog(new MessageDialogData('Delete Upload?', `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
     .subscribe(result => {
       if(result === true){
@@ -255,7 +255,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event =>{
           if(event instanceof HttpResponse){
             this.commen.loadingChanged.next(false);
-            
+
             this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
             .subscribe(afterColse => this.searchClaimsComponent.fetchData());
           }
@@ -268,7 +268,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
       }
     });
   }
- 
+
   get uploading(){
     return this.uploadService.uploading;
   }
