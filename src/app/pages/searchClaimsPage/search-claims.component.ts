@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnDestroy, } from '@angular/core';
 import { CommenServicesService } from '../../services/commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -23,7 +23,7 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
   templateUrl: './search-claims.component.html',
   styleUrls: ['./search-claims.component.css']
 })
-export class SearchClaimsComponent implements OnInit, AfterViewChecked {
+export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
   
 
 
@@ -35,6 +35,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
     private notificationService: NotificationsService) {
+  }
+  ngOnDestroy(): void {
+    this.notificationService.stopWatchingMessages('eligibility');
   }
 
   isViewChecked: boolean = false;
@@ -511,7 +514,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked {
       }
       if((this.eligibilityWaitingList.length != 0 && this.eligibilityWaitingList.every(claim => !claim.waiting))
       || this.claims.every(claim => claim.status == 'Accepted' && claim.eligibilitycheck != null)){
-        this.notificationService.stopWatchingMessages('eligibility');
+        // this.notificationService.stopWatchingMessages('eligibility');
         this.waitingEligibilityCheck = false;
       }
     });
