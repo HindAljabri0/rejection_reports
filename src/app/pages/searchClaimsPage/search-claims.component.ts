@@ -17,6 +17,7 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
 import { Observable } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
+import { UploadSummary } from 'src/app/models/uploadSummary';
 
 @Component({
   selector: 'app-search-claims',
