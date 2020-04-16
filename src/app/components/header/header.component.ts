@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommenServicesService } from '../../services/commen-services.service'
+import { CommenServicesService } from '../../services/commen-services.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
 
