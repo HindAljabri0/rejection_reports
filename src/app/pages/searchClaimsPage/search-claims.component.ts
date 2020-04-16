@@ -266,6 +266,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           for (let claim of this.claims) {
             if (this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCountOfPage++;
           }
+          if(this.payerId == null) this.payerId = this.claims[0].payerId;
           this.setAllCheckBoxIsIndeterminate();
           this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
           this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
@@ -472,7 +473,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDate(this.providerId, this.payerId, this.from, this.to));
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId, this.payerId, this.from, this.to, this.uploadId));
   }
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {

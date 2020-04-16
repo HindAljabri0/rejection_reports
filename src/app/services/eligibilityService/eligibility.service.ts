@@ -15,8 +15,13 @@ export class EligibilityService {
     return this.http.request(request);
   }
 
-  public checkEligibilityByDate(providerId:string, payerId:string, from:string, to:string){
-    const requestUrl = `/providers/${providerId}/eligibility/criteria?payerId=${payerId}&fromDate=${from}&toDate=${to}`;
+  public checkEligibilityByDateOrUploadId(providerId:string, payerId:string, from:string, to:string, uploadId:string){
+    let requestUrl = `/providers/${providerId}/eligibility/criteria`;
+    if(uploadId != null){
+      requestUrl += `?payerId=${payerId}&uploadId=${uploadId}`;
+    } else  {
+      requestUrl += `?payerId=${payerId}&fromDate=${from}&toDate=${to}`;
+    }
     const request = new HttpRequest('POST', environment.claimServiceHost+requestUrl, '');
     return this.http.request(request);
   }
