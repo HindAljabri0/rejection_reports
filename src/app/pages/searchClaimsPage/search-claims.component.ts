@@ -476,10 +476,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
+    this.watchEligibilityChanges();
     request.subscribe(event => {
       if (event instanceof HttpResponse) {
         this.deSelectAll();
-        this.watchEligibilityChanges();
       }
     }, errorEvent => {
       this.waitingEligibilityCheck = false;
