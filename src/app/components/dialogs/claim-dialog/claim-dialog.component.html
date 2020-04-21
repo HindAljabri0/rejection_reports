@@ -236,7 +236,23 @@
             </tbody>
         </table>
     </div>
+    <div class="services">
+        <p>Attachment</p>
+        <div class="attachments">
+            <ng-container *ngFor="let attachment of data.claim.attachments">
+                <img [src]="getImageOfBlob(attachment.file)" alt="Sign Thumbnail">
+            </ng-container>
+            <button mat-icon-button color="primary" *ngIf="isEditMode" (click)="fileInput.click()">
+                <mat-icon>add</mat-icon>
+                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                        (change)="selectFile($event.target.files)"
+                        accept="image/png" />
+              </button>
+        </div>
+       
+    </div>
 </div>
+
 <div class="header footer">
     <p *ngIf="data.claim.batchid != null">Batch ID: {{data.claim.batchid}}</p>
     <span class="spacer"></span>

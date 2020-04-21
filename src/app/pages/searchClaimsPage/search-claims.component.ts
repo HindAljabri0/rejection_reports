@@ -1,3 +1,4 @@
+import { AttachmentService } from './../../services/attachmentService/attachment.service';
 import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnDestroy, } from '@angular/core';
 import { CommenServicesService } from '../../services/commen-services.service';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
@@ -15,7 +16,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 
@@ -25,6 +26,7 @@ import { UploadSummary } from 'src/app/models/uploadSummary';
   styleUrls: ['./search-claims.component.css']
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  file: File;
 
 
 
@@ -35,13 +37,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private dialogService: DialogService,
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
-    private notificationService: NotificationsService) {
+    private notificationService: NotificationsService,
+    private attachmentService: AttachmentService) {
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
   }
 
   isViewChecked: boolean = false;
+
+  progressChange:Subject<{ percentage: number }> = new Subject();
+
 
   placeholder = '-';
   cardsClickAble: boolean = true;
@@ -581,6 +587,26 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }
     });
   }
+
+  /*uploadAttachment(claimID:string){
+    this.attachmentService.uploadAttachament(this.providerId, claimID, this.file)
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progressChange.next( { percentage:Math.round(100 * event.loaded / event.total)});
+        } else if (event instanceof HttpResponse) {
+          const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
+          this.progressChange.next( { percentage:101});
+        }
+      }, errorEvent => {
+          if(errorEvent instanceof HttpErrorResponse){
+          if(errorEvent.status >= 500){
+
+          }
+        }
+      });
+    
+
+  }*/
 
   doAction() {
     if (this.detailActionText.includes("Submit")) {

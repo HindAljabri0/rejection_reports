@@ -1,16 +1,19 @@
+import { AttachmentService } from './../../../services/attachmentService/attachment.service';
 import { Component, OnInit, Inject, AfterContentInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { FormControl } from '@angular/forms';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { ClaimStatus } from 'src/app/models/claimStatus';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { CommenServicesService } from 'src/app/services/commen-services.service';
 import { ClaimFields } from 'src/app/models/claimFields';
 import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SearchService } from 'src/app/services/serchService/search.service';
+import { Subject } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -18,16 +21,23 @@ import { SearchService } from 'src/app/services/serchService/search.service';
   styleUrls: ['./claim-dialog.component.css']
 })
 export class ClaimDialogComponent implements OnInit, AfterContentInit {
+  file: File;
+  errorText: string;
+  progressChange:Subject<{ percentage: number }> = new Subject();
+
 
   constructor(public commen: CommenServicesService,
     public dialogRef: MatDialogRef<ClaimDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {claim: ViewedClaim, edit: boolean},
     public claimUpdateService: ClaimService,
     public adminService: AdminService,
-    private searchService:SearchService) {
+    private searchService:SearchService,
+    private attachmentService:AttachmentService,
+    private sanitizer : DomSanitizer) {
   }
 
   ngOnInit() {
+    console.log(this.data.claim);
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
@@ -274,4 +284,29 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       return name.substring(0, 27) + '...';
     else return name;
   }
+
+  uploadAttachment(){
+    this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid+"", this.file)
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progressChange.next( { percentage:Math.round(100 * event.loaded / event.total)});
+        } else if (event instanceof HttpResponse) {
+          this.progressChange.next( { percentage:101});
+        }
+      }, errorEvent => {
+          if(errorEvent instanceof HttpErrorResponse){
+            this.errorText=errorEvent.message;
+          }
+        }
+      );
+}
+selectFile(event) {
+  this.file = event.item(0);
+  this.uploadAttachment();
+}
+getImageOfBlob(image:string){
+  let blob = new Blob([image], {type: 'image/png, image/JPEG'});
+  let objectURL = URL.createObjectURL(blob);
+  return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+}
 }
