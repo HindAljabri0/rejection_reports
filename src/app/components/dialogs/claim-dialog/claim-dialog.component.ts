@@ -14,6 +14,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SearchService } from 'src/app/services/serchService/search.service';
 import { Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { sampleTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -304,9 +305,23 @@ selectFile(event) {
   this.file = event.item(0);
   this.uploadAttachment();
 }
-getImageOfBlob(image:string){
-  let blob = new Blob([image], {type: 'image/png, image/JPEG'});
-  let objectURL = URL.createObjectURL(blob);
-  return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+getImageOfBlob(attachment){
+  let fileExt = attachment.filename.split(".").pop();
+  if(fileExt.toLowerCase() == 'pdf'){
+    //var file = new Blob([attachment.attachmentfile], {type: 'application/pdf'});
+    //var fileURL = URL.createObjectURL(file);
+    let objectURL = `data:application/pdf;base64,` + attachment.attachmentfile;
+    let sant = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    return sant;
+  } else {
+    let objectURL = `data:image/${fileExt};base64,` + attachment.attachmentfile;
+    let sant = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    return sant;
+  }
+
+}
+isPdf(attachment){
+  let fileExt = attachment.filename.split(".").pop();
+  return fileExt.toLowerCase() == 'pdf';
 }
 }

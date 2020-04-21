@@ -29,7 +29,7 @@ export class ViewedClaim {
 	comments:string;
     batchid:number;
 	services:Service[];
-	attachments:{attachmentid:string, file:string, filename:string, filetype:string, usercomment:string}[];
+	attachments:{attachmentid:string, attachmentfile:string, filename:string, filetype:string, usercomment:string}[];
 	errors:ClaimError[];
 	diagnosis:ICDDiagnosis[];
 	chiefcomplaintsymptoms:string;

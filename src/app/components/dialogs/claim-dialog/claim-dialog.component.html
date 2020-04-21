@@ -240,7 +240,10 @@
         <p>Attachment</p>
         <div class="attachments">
             <ng-container *ngFor="let attachment of data.claim.attachments">
-                <img [src]="getImageOfBlob(attachment.file)" alt="Sign Thumbnail">
+                <img *ngIf= "!isPdf(attachment)" [src]="getImageOfBlob(attachment)" alt="Sign Thumbnail">
+                <iframe *ngIf= "isPdf(attachment)" [src]="getImageOfBlob(attachment)"
+                            style="display: block;"
+                 ></iframe>
             </ng-container>
             <button mat-icon-button color="primary" *ngIf="isEditMode" (click)="fileInput.click()">
                 <mat-icon>add</mat-icon>
