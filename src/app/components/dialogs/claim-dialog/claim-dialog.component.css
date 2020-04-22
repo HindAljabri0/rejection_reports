@@ -148,3 +148,25 @@ mat-icon{
     height: 32px;
     width: 25%;
 }
+
+.attachments{
+    background-color: white;
+    height: 95px;
+    padding: 5px;
+    display: flex;
+    overflow-x: auto;
+}
+
+.attachment{
+    background-color: #EFF5FF;
+    min-width: 250px;
+    margin-right: 10px;
+    padding-top: 7.5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+}
+
+.thumbnail{
+    display: inline-block;
+}

@@ -22,19 +22,20 @@ import { sampleTime } from 'rxjs/operators';
   styleUrls: ['./claim-dialog.component.css']
 })
 export class ClaimDialogComponent implements OnInit, AfterContentInit {
-  file: File;
+  files: File[] = [];
+  newAttachmentsPreview: {src:(string | ArrayBuffer), name:string}[] = [];
   errorText: string;
-  progressChange:Subject<{ percentage: number }> = new Subject();
+  progressChange: Subject<{ percentage: number }> = new Subject();
 
 
   constructor(public commen: CommenServicesService,
     public dialogRef: MatDialogRef<ClaimDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {claim: ViewedClaim, edit: boolean},
+    @Inject(MAT_DIALOG_DATA) public data: { claim: ViewedClaim, edit: boolean },
     public claimUpdateService: ClaimService,
     public adminService: AdminService,
-    private searchService:SearchService,
-    private attachmentService:AttachmentService,
-    private sanitizer : DomSanitizer) {
+    private searchService: SearchService,
+    private attachmentService: AttachmentService,
+    private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -44,8 +45,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     }
   }
 
-  ngAfterContentInit(){
-    if(this.data.edit){
+  ngAfterContentInit() {
+    if (this.data.edit) {
       this.toggleEditMode()
     }
   }
@@ -216,7 +217,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       updateRequestBody.chiefcomplaintsymptoms = this.chiefComplaintSymptoms.value;
       flag = true;
     }
-    
+
 
 
     if (flag) {
@@ -268,60 +269,89 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     });
   }
 
-  genderToText(g:string){
-    if(g == 'M') return 'Male';
-    if(g == 'F') return 'Female';
+  genderToText(g: string) {
+    if (g == 'M') return 'Male';
+    if (g == 'F') return 'Female';
     else return '';
   }
 
-  getPatientFullName(){
-      return `${this.data.claim.firstname!=null? this.data.claim.firstname:""} ${this.data.claim.middlename!=null? this.data.claim.middlename:""}  ${this.data.claim.lastname!=null? this.data.claim.lastname:""}  `;
+  getPatientFullName() {
+    return `${this.data.claim.firstname != null ? this.data.claim.firstname : ""} ${this.data.claim.middlename != null ? this.data.claim.middlename : ""}  ${this.data.claim.lastname != null ? this.data.claim.lastname : ""}  `;
     //return `${this.data.claim.firstname} ${this.data.claim.middlename} ${this.data.claim.lastname}`;
   }
 
-  getPatientName(){
+  getPatientName() {
     let name = this.getPatientFullName();
-    if(name.length > 30)
+    if (name.length > 30)
       return name.substring(0, 27) + '...';
     else return name;
   }
 
-  uploadAttachment(){
-    this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid+"", this.file)
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progressChange.next( { percentage:Math.round(100 * event.loaded / event.total)});
-        } else if (event instanceof HttpResponse) {
-          this.progressChange.next( { percentage:101});
-        }
-      }, errorEvent => {
-          if(errorEvent instanceof HttpErrorResponse){
-            this.errorText=errorEvent.message;
-          }
-        }
-      );
-}
-selectFile(event) {
-  this.file = event.item(0);
-  this.uploadAttachment();
-}
-getImageOfBlob(attachment){
-  let fileExt = attachment.filename.split(".").pop();
-  if(fileExt.toLowerCase() == 'pdf'){
-    //var file = new Blob([attachment.attachmentfile], {type: 'application/pdf'});
-    //var fileURL = URL.createObjectURL(file);
-    let objectURL = `data:application/pdf;base64,` + attachment.attachmentfile;
-    let sant = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-    return sant;
-  } else {
-    let objectURL = `data:image/${fileExt};base64,` + attachment.attachmentfile;
-    let sant = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-    return sant;
+  // uploadAttachment() {
+  //   this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid + "", this.file)
+  //     .subscribe(event => {
+  //       if (event.type === HttpEventType.UploadProgress) {
+  //         this.progressChange.next({ percentage: Math.round(100 * event.loaded / event.total) });
+  //       } else if (event instanceof HttpResponse) {
+  //         this.progressChange.next({ percentage: 101 });
+  //       }
+  //     }, errorEvent => {
+  //       if (errorEvent instanceof HttpErrorResponse) {
+  //         this.errorText = errorEvent.message;
+  //       }
+  //     }
+  //     );
+  // }
+
+  getImageOfBlob(attachment) {
+    let fileExt = attachment.filename.split(".").pop();
+    if (fileExt.toLowerCase() == 'pdf') {
+      let objectURL = `data:application/pdf;base64,` + attachment.attachmentfile;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+    } else {
+      let objectURL = `data:image/${fileExt};base64,` + attachment.attachmentfile;
+      return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
+
   }
 
-}
-isPdf(attachment){
-  let fileExt = attachment.filename.split(".").pop();
-  return fileExt.toLowerCase() == 'pdf';
-}
+  selectFile(event) {
+    let file = event.item(0)
+    if (file instanceof File) {
+      if (file.size == 0)
+        return;
+      let mimeType = file.type;
+      if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
+        return;
+      }
+      this.files.push(file);
+      this.preview(file);
+    }
+  }
+
+  preview(file: File) {
+    var mimeType = file.type;
+    if (mimeType.includes('pdf')) {
+      return this.newAttachmentsPreview.push({src:'pdf', name:file.name});
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (_event) => {
+      this.newAttachmentsPreview.push({src:reader.result, name: file.name});
+    }
+  }
+
+  isPdf(attachment) {
+    let fileExt = attachment.filename.split(".").pop();
+    return fileExt.toLowerCase() == 'pdf';
+  }
+
+  deleteAttachment(attachment) {
+
+  }
+
+  deleteNewAttachment(attachment){
+
+  }
 }

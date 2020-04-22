@@ -239,20 +239,47 @@
     <div class="services">
         <p>Attachment</p>
         <div class="attachments">
-            <ng-container *ngFor="let attachment of data.claim.attachments">
-                <img *ngIf= "!isPdf(attachment)" [src]="getImageOfBlob(attachment)" alt="Sign Thumbnail">
-                <iframe *ngIf= "isPdf(attachment)" [src]="getImageOfBlob(attachment)"
-                            style="display: block;"
-                 ></iframe>
-            </ng-container>
-            <button mat-icon-button color="primary" *ngIf="isEditMode" (click)="fileInput.click()">
-                <mat-icon>add</mat-icon>
-                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
-                        (change)="selectFile($event.target.files)"
-                        accept="image/png" />
-              </button>
+            <div class="attachment" *ngFor="let attachment of data.claim.attachments">
+                <div class="thumbnail">
+                    <img width="60px" height="60px" *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)"
+                        [alt]="attachment.filename">
+                    <img width="60px" height="60px" *ngIf="isPdf(attachment)" src="../../../../assets/pdfIcon.png"
+                        [alt]="attachment.filename">
+                </div>
+                <p style="margin: auto 5px">{{attachment.filename}}</p>
+                <span class="spacer"></span>
+                <a [href]="getImageOfBlob(attachment)" [download]="attachment.filename" *ngIf="!isEditMode"
+                    mat-icon-button color="primary" style="margin: auto;">
+                    <mat-icon style="font-size: 20px;">save_alt</mat-icon>
+                </a>
+                <button (click)="deleteAttachment(attachment)" *ngIf="isEditMode" mat-icon-button color="warn"
+                    style="margin: auto;">
+                    <mat-icon style="font-size: 20px;">cancel</mat-icon>
+                </button>
+            </div>
+            <div class="attachment" *ngFor="let attachment of newAttachmentsPreview">
+                <div class="thumbnail">
+                    <img width="60px" height="60px" *ngIf="attachment.src != 'pdf'" [src]="attachment.src"
+                        [alt]="attachment.name">
+                    <img width="60px" height="60px" *ngIf="attachment.src == 'pdf'" src="../../../../assets/pdfIcon.png"
+                        [alt]="attachment.name">
+                </div>
+                <p style="margin: auto 5px">{{attachment.name}}</p>
+                <span class="spacer"></span>
+                <button (click)="deleteNewAttachment(attachment)" *ngIf="isEditMode" mat-icon-button color="warn"
+                    style="margin: auto;">
+                    <mat-icon style="font-size: 20px;">cancel</mat-icon>
+                </button>
+            </div>
+            <div class="attachment" *ngIf="isEditMode" >
+                <button mat-icon-button color="primary" (click)="fileInput.click()" style="margin: auto">
+                    <mat-icon>add</mat-icon>
+                    <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                        (change)="selectFile($event.target.files)" accept="image/png" />
+                </button>
+            </div>
         </div>
-       
+
     </div>
 </div>
 

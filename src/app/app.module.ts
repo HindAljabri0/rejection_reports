@@ -46,7 +46,6 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 
@@ -112,7 +111,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     ScrollingModule,
     InfiniteScrollModule,
     MatiralModule,
-    PdfViewerModule,
   ],
   providers: [
     UploadService,
