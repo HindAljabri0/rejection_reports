@@ -463,7 +463,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId, edit);
+    this.commen.loadingChanged.next(true);
+    this.attachmentService.getMaxAttachmentAllowed(this.providerId).subscribe(
+      event => {
+        if(event instanceof HttpResponse){
+          let maxNumber = event.body;
+          this.commen.loadingChanged.next(false);
+          this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId, maxNumber, edit);
+        }
+      }
+    )
+    
   }
 
   checkClaim(id: string) {

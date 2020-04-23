@@ -23,14 +23,15 @@ import { sampleTime } from 'rxjs/operators';
 })
 export class ClaimDialogComponent implements OnInit, AfterContentInit {
   files: File[] = [];
-  newAttachmentsPreview: {src:(string | ArrayBuffer), name:string}[] = [];
-  errorText: string;
-  progressChange: Subject<{ percentage: number }> = new Subject();
+  newAttachmentsPreview: { src: (string | ArrayBuffer), name: string, index: number }[] = [];
+  toDeleteAttachments = [];
+
+  maxNumberOfAttachment: number;
 
 
   constructor(public commen: CommenServicesService,
     public dialogRef: MatDialogRef<ClaimDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { claim: ViewedClaim, edit: boolean },
+    @Inject(MAT_DIALOG_DATA) public data: { claim: ViewedClaim, edit: boolean, maxNumberOfAttachment: any },
     public claimUpdateService: ClaimService,
     public adminService: AdminService,
     private searchService: SearchService,
@@ -39,10 +40,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    console.log(this.data.claim);
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
+    this.maxNumberOfAttachment = Number.parseInt(this.data.maxNumberOfAttachment);
   }
 
   ngAfterContentInit() {
@@ -125,6 +126,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     if (!this.isEditMode) {
       this.diagnosisList = [];
       this.removeAddedDiagFromClaimList();
+      this.toDeleteAttachments.forEach(attachment => this.data.claim.attachments.push(attachment))
+      this.toDeleteAttachments = [];
+      this.files = [];
+      this.newAttachmentsPreview = [];
     }
   }
 
@@ -182,49 +187,62 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
 
   save() {
-    let updateRequestBody: { [k: string]: any } = {};
+    let updateRequestBody: FormData = new FormData();
+    let claim: { [k: string]: any } = { deletedAttachments:null, chiefcomplaintsymptoms:null, diagnosis:null, memberid: null, nationalid: null, gender: null, approvalnumber: null, eligibilitynumber: null, policynumber: null };
     let flag = false;
     if (this.memberid.value != this.data.claim.memberid) {
-      updateRequestBody.memberid = this.memberid.value;
+      claim.memberid = this.memberid.value;
       flag = true;
     }
     if (this.nationalId.value != this.data.claim.nationalId) {
-      updateRequestBody.nationalid = this.nationalId.value;
+      claim.nationalid = this.nationalId.value;
       flag = true;
     }
     if (this.gender.value != this.data.claim.gender) {
-      updateRequestBody.gender = this.gender.value;
+      claim.gender = this.gender.value;
       flag = true;
     }
     if (this.approvalnumber.value != this.data.claim.approvalnumber) {
-      updateRequestBody.approvalnumber = this.approvalnumber.value;
+      claim.approvalnumber = this.approvalnumber.value;
       flag = true;
     }
     if (this.eligibilitynumber.value != this.data.claim.eligibilitynumber) {
-      updateRequestBody.eligibilitynumber = this.eligibilitynumber.value;
+      claim.eligibilitynumber = this.eligibilitynumber.value;
       flag = true;
     }
     if (this.policynumber.value != this.data.claim.policynumber) {
-      updateRequestBody.policynumber = this.policynumber.value;
+      claim.policynumber = this.policynumber.value;
       flag = true;
     }
 
     if (this.diagnosisList.length > 0) {
-      updateRequestBody.diagnosis = this.diagnosisList;
+      claim.diagnosis = this.diagnosisList;
       flag = true;
     }
     if (this.chiefComplaintSymptoms.value != this.data.claim.chiefcomplaintsymptoms) {
-      updateRequestBody.chiefcomplaintsymptoms = this.chiefComplaintSymptoms.value;
+      claim.chiefcomplaintsymptoms = this.chiefComplaintSymptoms.value;
       flag = true;
     }
 
+    if (this.files.length > 0) {
+      flag = true;
+    }
 
+    if (this.toDeleteAttachments.length > 0) {
+      flag = true;
+      claim.deletedAttachments = this.toDeleteAttachments.map(attachment => attachment.attachmentid);
+    }
 
     if (flag) {
       this.loading = true;
-      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, updateRequestBody).subscribe(event => {
+      let body: FormData = new FormData();
+      body.append('claim', JSON.stringify(claim));
+      this.files.forEach(file => body.append("files", file, file.name));
+      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
+            this.files = [];
+            this.newAttachmentsPreview = [];
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
           }
         }
@@ -287,22 +305,36 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     else return name;
   }
 
-  // uploadAttachment() {
-  //   this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid + "", this.file)
-  //     .subscribe(event => {
-  //       if (event.type === HttpEventType.UploadProgress) {
-  //         this.progressChange.next({ percentage: Math.round(100 * event.loaded / event.total) });
-  //       } else if (event instanceof HttpResponse) {
-  //         this.progressChange.next({ percentage: 101 });
-  //       }
-  //     }, errorEvent => {
-  //       if (errorEvent instanceof HttpErrorResponse) {
-  //         this.errorText = errorEvent.message;
-  //       }
-  //     }
-  //     );
-  // }
-
+  uploadAttachmentToBackend(file: File) {
+    this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid + "", file)
+      .subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.loadingResponse += `${file.name} uploaded`;
+          console.log(`${file.name} uploaded`);
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.loadingResponse += `${file.name} error uploading`;
+          console.log(`${file.name} error uploading: ${errorEvent.error}`);
+        }
+      }
+      );
+  }
+  deleteAttachmentFromBackend(attachmentId: string) {
+    this.attachmentService.deleteAttachment(this.data.claim.providerId, attachmentId)
+      .subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.loadingResponse += `${attachmentId} deleted`;
+          console.log(`${attachmentId} deleted`);
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.loadingResponse += `${attachmentId} error while deleting`;
+          console.log(`${attachmentId} error while deleting`);
+        }
+      }
+      );
+  }
   getImageOfBlob(attachment) {
     let fileExt = attachment.filename.split(".").pop();
     if (fileExt.toLowerCase() == 'pdf') {
@@ -325,20 +357,20 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
         return;
       }
       this.files.push(file);
-      this.preview(file);
+      this.preview(file, this.files.length - 1);
     }
   }
 
-  preview(file: File) {
+  preview(file: File, index: number) {
     var mimeType = file.type;
     if (mimeType.includes('pdf')) {
-      return this.newAttachmentsPreview.push({src:'pdf', name:file.name});
+      return this.newAttachmentsPreview.push({ src: 'pdf', name: file.name, index: index });
     }
 
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
-      this.newAttachmentsPreview.push({src:reader.result, name: file.name});
+      this.newAttachmentsPreview.push({ src: reader.result, name: file.name, index: index });
     }
   }
 
@@ -348,10 +380,17 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
 
   deleteAttachment(attachment) {
+    let index = this.data.claim.attachments.indexOf(attachment);
+    if (index >= 0) {
+      this.toDeleteAttachments.push(this.data.claim.attachments.splice(index, 1)[0]);
+    }
 
   }
 
-  deleteNewAttachment(attachment){
-
+  deleteNewAttachment(attachment: { src: string | ArrayBuffer, name: string, index: number }) {
+    this.files.splice(attachment.index, 1);
+    let index = this.newAttachmentsPreview.indexOf(attachment);
+    if (index >= 0)
+      this.newAttachmentsPreview.splice(index, 1);
   }
 }

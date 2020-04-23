@@ -36,7 +36,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string, edit?:boolean) {
+  getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string, maxNumberOfAttachment, edit?:boolean) {
     if (this.loading) return;
     this.commenServices.loadingChanged.next(true);
     this.searchService.getClaim(providerId, claimId).subscribe(event => {
@@ -46,7 +46,7 @@ export class DialogService {
         if (payerId == null) {
           payerId = claim.payerid;
         }
-        this.openClaimDialog(providerId, payerId, status, claim, edit);
+        this.openClaimDialog(providerId, payerId, status, claim, maxNumberOfAttachment, edit);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -60,7 +60,7 @@ export class DialogService {
     });
   }
 
-  openClaimDialog(providerId: string, payerId: string, status: string, claim: ViewedClaim, edit?:boolean) {
+  openClaimDialog(providerId: string, payerId: string, status: string, claim: ViewedClaim, maxNumberOfAttachment, edit?:boolean) {
     claim.providerId = providerId;
     claim.payerid = payerId;
     claim.status = status;
@@ -68,7 +68,7 @@ export class DialogService {
       width: '50%',
       height: '70%',
       panelClass: 'claimDialog',
-      data: {claim: claim, edit: (edit || false)},
+      data: {claim: claim, edit: (edit || false), maxNumberOfAttachment:maxNumberOfAttachment},
     });
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);
