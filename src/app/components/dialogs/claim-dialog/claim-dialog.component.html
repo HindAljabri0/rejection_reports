@@ -237,7 +237,7 @@
         </table>
     </div>
     <div class="services">
-        <p>Attachment</p>
+        <p>Attachment <span *ngIf="isEditMode" style="font-size: small;">({{data.claim.attachments.length}}/{{maxNumberOfAttachment}})</span></p>
         <div class="attachments">
             <div class="attachment" *ngFor="let attachment of data.claim.attachments">
                 <div class="thumbnail">
