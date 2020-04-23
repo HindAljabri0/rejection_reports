@@ -18,7 +18,7 @@ export class SearchedClaim extends Paginateable{
   statusDetail:string;
   payerId:string;
   eligibilitycheck:string;
-
+  numOfAttachments:number;
 
   constructor (body: {}){
     super(body);
@@ -39,6 +39,7 @@ export class SearchedClaim extends Paginateable{
       this.unitOfNetVatAmount = body['unitOfNetVatAmount'];
       this.payerId = body['payerId'];
       this.eligibilitycheck = body['eligibilityCheck'];
+      this.numOfAttachments = body['numOfAttachments'];
     }
   }
 }

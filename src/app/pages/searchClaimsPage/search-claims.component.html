@@ -149,6 +149,9 @@
                 </td>
                 <td style="width: 15%; text-align: center;">
                     <div>
+                        <button *ngIf="claim.numOfAttachments > 0" style="color: #3060AA;" mat-icon-button  [matTooltip]="claim.numOfAttachments + ' attachments'">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
                         <button style="color: #3060AA;" mat-icon-button
                             (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
                             <mat-icon>edit</mat-icon>
