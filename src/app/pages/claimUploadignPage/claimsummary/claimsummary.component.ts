@@ -258,7 +258,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
             this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
             .subscribe(afterColse => {
-              this.uploadService.summaryChange.next(null);
+              this.uploadService.summaryChange.next(new UploadSummary());
               this.router.navigate(['']);
             });
           }
