@@ -188,7 +188,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
   save() {
     let updateRequestBody: FormData = new FormData();
-    let claim: { [k: string]: any } = { deletedAttachments:null, chiefcomplaintsymptoms:null, diagnosis:null, memberid: null, nationalid: null, gender: null, approvalnumber: null, eligibilitynumber: null, policynumber: null };
+    let claim: { [k: string]: any } = {};
     let flag = false;
     if (this.memberid.value != this.data.claim.memberid) {
       claim.memberid = this.memberid.value;
@@ -236,19 +236,20 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     if (flag) {
       this.loading = true;
       let body: FormData = new FormData();
-      body.append('claim', JSON.stringify(claim));
+      if(claim != {})
+        body.append('claim', JSON.stringify(claim));
       this.files.forEach(file => body.append("files", file, file.name));
       this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
-            this.files = [];
-            this.newAttachmentsPreview = [];
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
+            this.reloadeClaim();
           }
         }
       }, eventError => {
         if (eventError instanceof HttpErrorResponse) {
-          console.log(event);
+          this.loadingResponse = eventError.message;
+          this.reloadeClaim();
         }
       });
     }
@@ -258,14 +259,16 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
   onDoneSaving() {
     this.loading = false;
+    this.loadingResponse = null;
     if (this.isAccepted()) {
       this.dialogRef.close(true);
-    } else {
-      this.reloadeClaim();
     }
   }
 
   reloadeClaim() {
+    this.toDeleteAttachments = [];
+    this.files = [];
+    this.newAttachmentsPreview = [];
     this.searchService.getClaim(this.data.claim.providerId, `${this.data.claim.claimid}`).subscribe(event => {
       if (event instanceof HttpResponse) {
         const providerId = this.data.claim.providerId;
@@ -347,13 +350,27 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
   }
 
+  selectFilesError = null;
   selectFile(event) {
-    let file = event.item(0)
+    this.selectFilesError = null;
+    let file = event.item(0);
     if (file instanceof File) {
       if (file.size == 0)
         return;
       let mimeType = file.type;
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
+        return;
+      }
+      if (this.files.find(selectedFile => selectedFile.name == file.name) != undefined) {
+        this.selectFilesError = "You can't choose two files of the same name."
+        return;
+      }
+      if (this.data.claim.attachments.find(attachment => attachment.filename == file.name) != undefined) {
+        this.selectFilesError = "A file with the same name already exists."
+        return;
+      }
+      if (file.size / 1024 / 1024 > 2) {
+        this.selectFilesError = "Selected files should not be more than 2M."
         return;
       }
       this.files.push(file);
