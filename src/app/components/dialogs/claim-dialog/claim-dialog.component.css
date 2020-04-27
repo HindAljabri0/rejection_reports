@@ -1,11 +1,12 @@
-.loadingBG{
+.loadingBG {
     background-color: #00000050;
     height: 100%;
     width: 100%;
     position: absolute;
     z-index: 10;
 }
-.loadingSpinner{
+
+.loadingSpinner {
     left: 35%;
     height: fit-content;
     width: 30%;
@@ -14,44 +15,47 @@
     top: 35%;
     border-radius: 25px;
 }
-mat-icon{
+
+mat-icon {
     width: 100%;
     text-align: center;
     font-size: xx-large;
 }
-.loadingSpinner mat-spinner{
+
+.loadingSpinner mat-spinner {
     margin: 13% auto;
 }
 
-.header{
+.header {
     width: 100%;
     padding: 5px;
     color: #3060AA;
     display: flex;
 }
 
-.header button{
+.header button {
     color: #707070;
     width: unset;
     height: 20px;
     line-height: unset;
 }
-.header mat-icon{
+
+.header mat-icon {
     font-size: medium;
     font-weight: 200;
 }
 
-.header p{
+.header p {
     font-size: medium;
     margin: 3px 15px;
 }
 
-.header.sub{
+.header.sub {
     background-color: #EFF5FF;
     border-bottom: 1px solid #c4c4c4;
 }
 
-.content{
+.content {
     color: #3060AA;
     padding: 0px 20px;
     overflow-y: auto;
@@ -59,75 +63,77 @@ mat-icon{
     padding-bottom: 42px;
 }
 
-.content td.error{
+.content td.error {
     color: #770a0a;
 }
 
-.content table{
+.content table {
     width: 100%;
 }
 
-.commentBox{
+.commentBox {
     padding: 10px;
     width: 100%;
     border: none;
     height: 100%;
     visibility: hidden;
 }
-.commentBox.error{
+
+.commentBox.error {
     visibility: visible;
     background: #f5d4d4;
     color: #770a0a;
 }
 
-.amountBox{
+.amountBox {
     margin: 12px;
     padding: 10px;
     background-color: #EFF5FF;
     height: 100%;
-    
 }
 
-.amountBox div{
+.amountBox div {
     border: 2px solid #3060AA;
     padding: 20px;
     border-radius: 10px;
 }
 
-.services{
+.services {
     padding: 10px;
     background-color: #EFF5FF;
 }
 
-.services table{
+.services table {
     width: 100%;
     font-size: small;
     text-align: center;
     border-spacing: 5px;
     border-collapse: separate;
 }
-.services th{
+
+.services th {
     font-weight: 400;
     color: white;
     background-color: #3161AA;
     border-radius: 5px;
     padding: 10px 5px;
 }
-.services td{
+
+.services td {
     color: #707070;
     background-color: white;
     border-radius: 5px;
     padding: 10px 5px;
 }
 
-.footer{
+.footer {
     position: absolute;
     bottom: 0;
     background-color: #EFF5FF;
     border-top: 1px solid #c4c4c4;
 }
 
-.icd10search{
+.icd10search {
     background-color: #D4E4FF;
     padding: 5px;
     border-radius: 5px;
@@ -135,11 +141,12 @@ mat-icon{
     font-size: 10px;
 }
 
-.gInfo{
+.gInfo {
     display: flex;
     margin: 20px 0px;
 }
-.gInfo table{
+
+.gInfo table {
     background-color: #D4E4FF;
 }
 
@@ -149,15 +156,16 @@ mat-icon{
     width: 25%;
 }
 
-.attachments{
+.attachments {
     background-color: white;
     height: 95px;
     padding: 5px;
     display: flex;
     overflow-x: auto;
+    overflow: visible;
 }
 
-.attachment{
+.attachment {
     background-color: #EFF5FF;
     min-width: 250px;
     margin-right: 10px;
@@ -165,8 +173,36 @@ mat-icon{
     padding-left: 10px;
     padding-right: 10px;
     display: flex;
+    overflow: visible;
 }
 
-.thumbnail{
+.thumbnail {
     display: inline-block;
+    overflow: visible;
+    z-index: 5;
 }
+
+.thumbnailImage {
+    transition: transform .2s;
+    z-index: 5;
+}
+
+.thumbnail:hover .thumbnailImage {
+    width: unset !important;
+    height: unset !important;
+    max-width: 120px;
+    max-height: 120px;
+    transform-origin: bottom left;
+    transform: scale(2);
+    z-index: 5;
+}
+.thumbnail:hover+.attachmentInfo{
+    z-index: -1;
+}
+.attachmentInfo{
+    display: flex;
+    z-index: 1;
+}
+/* .thumbnailImage:hover {
+    
+} */

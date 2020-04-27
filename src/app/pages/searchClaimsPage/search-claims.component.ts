@@ -463,6 +463,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
+    if(this.commen.loading) return;
     this.commen.loadingChanged.next(true);
     this.attachmentService.getMaxAttachmentAllowed(this.providerId).subscribe(
       event => {

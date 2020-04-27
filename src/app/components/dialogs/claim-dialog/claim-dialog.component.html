@@ -238,8 +238,10 @@
     </div>
     <div class="services">
         <p>Attachment
-            <span *ngIf="isEditMode" style="font-size: small;"> ({{(data.claim.attachments.length + newAttachmentsPreview.length)}}/{{maxNumberOfAttachment}})</span>
-            <span *ngIf="isEditMode && selectFilesError != null" style="font-size: small; color: #f09494;"> Error: {{selectFilesError}}</span>
+            <span *ngIf="isEditMode" style="font-size: small;">
+                ({{(data.claim.attachments.length + newAttachmentsPreview.length)}}/{{maxNumberOfAttachment}})</span>
+            <span *ngIf="isEditMode && selectFilesError != null" style="font-size: small; color: #f09494;"> Error:
+                {{selectFilesError}}</span>
         </p>
         <div class="attachments">
             <div class="attachment" *ngFor="let attachment of data.claim.attachments">
@@ -263,24 +265,28 @@
             <ng-container *ngFor="let attachment of newAttachmentsPreview">
                 <div class="attachment" *ngIf="attachment != null">
                     <div class="thumbnail">
-                        <img width="60px" height="60px" *ngIf="attachment.src != 'pdf'" [src]="attachment.src"
-                            [alt]="attachment.name">
-                        <img width="60px" height="60px" *ngIf="attachment.src == 'pdf'"
+                        <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src != 'pdf'"
+                            [src]="attachment.src" [alt]="attachment.name">
+                        <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src == 'pdf'"
                             src="../../../../assets/pdfIcon.png" [alt]="attachment.name">
                     </div>
-                    <p style="margin: auto 5px">{{attachment.name}}</p>
-                    <span class="spacer"></span>
-                    <button (click)="deleteNewAttachment(attachment)" *ngIf="isEditMode" mat-icon-button color="warn"
-                        style="margin: auto;">
-                        <mat-icon style="font-size: 20px;">cancel</mat-icon>
-                    </button>
+                    <div class="attachmentInfo">
+                        <p style="margin: auto 5px">{{attachment.name}}</p>
+                        <span class="spacer"></span>
+                        <button (click)="deleteNewAttachment(attachment)" *ngIf="isEditMode" mat-icon-button
+                            color="warn" style="margin: auto;">
+                            <mat-icon style="font-size: 20px;">cancel</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </ng-container>
-            <div class="attachment" *ngIf="isEditMode && (newAttachmentsPreview.length + data.claim.attachments.length) < maxNumberOfAttachment">
+            <div class="attachment"
+                *ngIf="isEditMode && (newAttachmentsPreview.length + data.claim.attachments.length) < maxNumberOfAttachment">
                 <button mat-icon-button color="primary" (click)="fileInput.click()" style="margin: auto">
                     <mat-icon>add</mat-icon>
                     <input hidden type="file" #fileInput id="file" onclick="this.value = null"
-                        (change)="selectFile($event.target.files)" accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                        (change)="selectFile($event.target.files)"
+                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
                 </button>
             </div>
         </div>
