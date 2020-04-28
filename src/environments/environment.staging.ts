@@ -4,7 +4,7 @@ export const environment = {
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
-    NotificationServiceHost: `${host}/notification`,
+    NotificationServiceHost: `${host}/notifications`,
     authenticationHost: `${host}/oauth`,
     adminServiceHost: `${host}/admin`,
     auditTrailServiceHost: `${host}/audit`
