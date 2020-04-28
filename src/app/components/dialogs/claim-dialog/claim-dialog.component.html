@@ -246,9 +246,9 @@
         <div class="attachments">
             <div class="attachment" *ngFor="let attachment of data.claim.attachments">
                 <div class="thumbnail">
-                    <img width="60px" height="60px" *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)"
+                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)"
                         [alt]="attachment.filename">
-                    <img width="60px" height="60px" *ngIf="isPdf(attachment)" src="../../../../assets/pdfIcon.png"
+                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)" src="../../../../assets/pdfIcon.png"
                         [alt]="attachment.filename">
                 </div>
                 <p style="margin: auto 5px">{{attachment.filename}}</p>
