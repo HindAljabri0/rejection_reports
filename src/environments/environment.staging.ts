@@ -1,4 +1,4 @@
-const host = 'http://api.estg.waseel.com';
+const host = 'https://api.estg.waseel.com';
 export const environment = {
     production: true,
     uploaderHost: `${host}/upload`,
