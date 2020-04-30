@@ -9,7 +9,7 @@ import { EventSourcePolyfill } from 'ng-event-source';
 })
 export class NotificationsService {
 
-  private messageWatchSources:BehaviorSubject<string>[] = new Array<BehaviorSubject<string>>();
+  private messageWatchSources: BehaviorSubject<string>[] = new Array<BehaviorSubject<string>>();
   _messageWatchSources: Observable<string>[] = new Array<Observable<string>>();
 
   private eventSources: EventSourcePolyfill[] = [];
@@ -58,7 +58,7 @@ export class NotificationsService {
   }
 
   startWatchingMessages(providerId: string, topic: string) {
-    if(this.eventSources[topic] != null) return;
+    if (this.eventSources[topic] != null) return;
     this.messageWatchSources[topic] = new BehaviorSubject('');
     this._messageWatchSources[topic] = this.messageWatchSources[topic].asObservable();
     this.watchNewMessage(providerId, topic).subscribe(data => {
@@ -69,13 +69,14 @@ export class NotificationsService {
   }
 
   stopWatchingMessages(topic: string) {
-    this.eventSources[topic].close();
-    this.observers[topic].complete();
-    this.eventSources[topic] = null;
-    this.observers[topic] = null;
-    delete this.eventSources[topic];
-    delete this.observers[topic];
-
+    if (this.eventSources[topic] != undefined) {
+      this.eventSources[topic].close();
+      this.observers[topic].complete();
+      this.eventSources[topic] = null;
+      this.observers[topic] = null;
+      delete this.eventSources[topic];
+      delete this.observers[topic];
+    }
   }
 
 }

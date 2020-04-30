@@ -258,11 +258,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     return this.loadingResponse != null && this.loadingResponse.includes(this.commen.statusToName(ClaimStatus.Accepted));
   }
   onDoneSaving() {
-    this.loading = false;
-    this.loadingResponse = null;
     if (this.isAccepted()) {
       this.dialogRef.close(true);
     }
+    this.loading = false;
+    this.loadingResponse = null;
   }
 
   reloadeClaim() {

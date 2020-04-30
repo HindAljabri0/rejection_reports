@@ -162,7 +162,7 @@ mat-icon {
     padding: 5px;
     display: flex;
     overflow-x: auto;
-    overflow: visible;
+    /* overflow: visible; */
 }
 
 .attachment {
@@ -187,7 +187,7 @@ mat-icon {
     z-index: 5;
 }
 
-.thumbnail:hover .thumbnailImage {
+/* .thumbnail:hover .thumbnailImage {
     width: unset !important;
     height: unset !important;
     max-width: 120px;
@@ -198,7 +198,7 @@ mat-icon {
 }
 .thumbnail:hover+.attachmentInfo{
     z-index: -1;
-}
+} */
 .attachmentInfo{
     display: flex;
     z-index: 1;
