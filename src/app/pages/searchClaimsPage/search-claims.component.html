@@ -163,7 +163,7 @@
                                 <mat-icon>check_circle_outline</mat-icon>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="claim.eligibilitycheck == 'Eligible' && !claimIsWaitingEligibility(claim.claimId)">
+                        <ng-container *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
                             <button style="color: #21B744;" mat-icon-button matTooltip="Eligible">
                                 <mat-icon>check_circle_outline</mat-icon>
                             </button>
