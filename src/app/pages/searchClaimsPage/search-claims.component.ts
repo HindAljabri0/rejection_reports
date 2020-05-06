@@ -668,4 +668,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.currentSummariesPage - 1 > 0)
       this.currentSummariesPage--;
   }
+
+  isEligibleState(status:string){
+    if(status == null) return false;
+    return status.toLowerCase() == 'eligible';
+  }
 }
