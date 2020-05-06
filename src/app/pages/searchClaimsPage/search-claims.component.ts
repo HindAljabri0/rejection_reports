@@ -27,8 +27,7 @@ import { UploadSummary } from 'src/app/models/uploadSummary';
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
   file: File;
-
-
+  buttonDisabled: boolean = false;
 
 
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
