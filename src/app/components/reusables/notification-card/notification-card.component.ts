@@ -50,7 +50,7 @@ export class NotificationCardComponent implements OnInit {
     this.notification.status = 'read';
     this.notificationService.markNotificationAsRead(this.notification.targetId, String(this.notification.id)).subscribe(event => {
       if(event instanceof HttpResponse){
-        this.router.navigate([this.notification.targetId, 'claims'], { queryParams: { batchId:this.notification.reference } });
+        this.router.navigate([this.notification.targetId, 'claims'], { queryParams: { batchId:this.notification.reference.split('-')[1] } });
       }
     }, errorEvent => {
       if(errorEvent instanceof HttpErrorResponse){
