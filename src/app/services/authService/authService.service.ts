@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   isUserNameUpdated: Subject<boolean> = new Subject();
+  onCancelPendingHttpRequests$: Subject<void> = new Subject();
+  onCancelPendingHttpRequests = () => this.onCancelPendingHttpRequests$.asObservable();
   // amp;
 
   constructor(private httpClient: HttpClient, private router:Router) {
@@ -39,6 +41,7 @@ export class AuthService {
 
 
   logout(expired?:boolean) {
+    this.onCancelPendingHttpRequests$.next();
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');

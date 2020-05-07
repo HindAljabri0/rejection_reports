@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../../services/claimfileuploadservice/upload.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Location } from '@angular/common';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class ClaimpageComponent implements OnInit {
 
   uploadingObs:boolean = false;
-  constructor(private uploadService:UploadService, public location: Location, private commen:CommenServicesService, private router: Router) {
+  constructor(private uploadService:UploadService, public location: Location, private commen:SharedServices, private router: Router) {
     this.uploadService.uploadingObs.subscribe(value => this.uploadingObs = value);
   }
 

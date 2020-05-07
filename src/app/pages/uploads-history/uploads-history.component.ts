@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate, getLocaleDateFormat, FormatWidth } from '@angular/common';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { HttpRequest, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { filter, map } from 'rxjs/operators';
 import { Query } from 'src/app/models/searchData/query';
@@ -29,7 +29,7 @@ export class UploadsHistoryComponent implements OnInit {
 
   inCenter = false;
 
-  constructor(private uploadService: UploadService, private commen: CommenServicesService, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private uploadService: UploadService, private commen: SharedServices, @Inject(LOCALE_ID) private locale: string) { }
 
   ngOnInit() {
     this.fetchDate();

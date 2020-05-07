@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PaymentClaimSummary } from 'src/app/models/paymentClaimSummary';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { EventEmitter } from '@angular/core';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 

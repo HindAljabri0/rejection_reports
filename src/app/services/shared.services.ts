@@ -26,7 +26,7 @@ import { UploadService } from './claimfileuploadservice/upload.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CommenServicesService {
+export class SharedServices {
   loading: boolean = false;
   loadingChanged: Subject<boolean> = new Subject<boolean>();
 
@@ -47,6 +47,8 @@ export class CommenServicesService {
   uploadHistoryList: UploadSummary[];
   uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
   getUploadId: any;
+
+  
 
 
   constructor(public authService: AuthService,

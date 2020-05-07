@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CommenServicesService } from './commen-services.service';
+import { SharedServices } from './shared.services';
 
 describe('CommenServicesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: CommenServicesService = TestBed.get(CommenServicesService);
+    const service: SharedServices = TestBed.get(SharedServices);
     expect(service).toBeTruthy();
   });
 });

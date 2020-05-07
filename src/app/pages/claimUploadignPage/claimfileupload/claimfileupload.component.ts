@@ -1,7 +1,7 @@
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { Component, OnInit} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { CommenServicesService } from '../../../services/commen-services.service';
+import { SharedServices } from '../../../services/shared.services';
 
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -15,7 +15,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
-  constructor(public uploadService: UploadService, public common:CommenServicesService, private dialogService:DialogService) { }
+  constructor(public uploadService: UploadService, public common:SharedServices, private dialogService:DialogService) { }
 
   ngOnInit(): void {
   }

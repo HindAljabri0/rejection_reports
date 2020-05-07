@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ClaimStatus } from 'src/app/models/claimStatus';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { ClaimInfo } from 'src/app/models/claimInfo';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -103,7 +103,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(public location: Location, public uploadService: UploadService, public commen: CommenServicesService, private router: Router,
+  constructor(public location: Location, public uploadService: UploadService, public commen: SharedServices, private router: Router,
     private routeActive: ActivatedRoute, private dialogService: DialogService, private claimService: ClaimService) {
     this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)

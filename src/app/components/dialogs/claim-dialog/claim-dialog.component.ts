@@ -6,7 +6,7 @@ import { FormControl } from '@angular/forms';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { ClaimFields } from 'src/app/models/claimFields';
 import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { AdminService } from 'src/app/services/adminService/admin.service';
@@ -29,7 +29,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   maxNumberOfAttachment: number;
 
 
-  constructor(public commen: CommenServicesService,
+  constructor(public commen: SharedServices,
     public dialogRef: MatDialogRef<ClaimDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { claim: ViewedClaim, edit: boolean, maxNumberOfAttachment: any },
     public claimUpdateService: ClaimService,

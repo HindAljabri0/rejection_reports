@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Notification } from 'src/app/models/notification';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -35,7 +35,7 @@ export class NotificationsPageComponent implements OnInit {
   totalNotifications:number = 0;
   currentNotificationsCount:number = 0;
 
-  constructor(public commen:CommenServicesService, public routeActive:ActivatedRoute, public notificationService:NotificationsService) { }
+  constructor(public commen:SharedServices, public routeActive:ActivatedRoute, public notificationService:NotificationsService) { }
 
   ngOnInit() {
     this.routeActive.params.subscribe(value => {

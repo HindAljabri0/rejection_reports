@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { UploadSummary } from '../../../models/uploadSummary';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-upload-history-card',
@@ -12,7 +12,7 @@ export class UploadHistoryCardComponent implements OnInit {
   @Input() data: UploadSummary;
   @Input() isUploadHistroyCenter: boolean;
 
-  constructor(private commen:CommenServicesService) {
+  constructor(private commen:SharedServices) {
     
   }
 

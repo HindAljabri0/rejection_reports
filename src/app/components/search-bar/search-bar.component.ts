@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {FormControl, NgModel} from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap, RouterEvent, NavigationEnd } from '@angular/router';
-import { CommenServicesService } from '../../services/commen-services.service';
+import { SharedServices } from '../../services/shared.services';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -17,7 +17,7 @@ export class SearchBarComponent implements OnInit {
   dateFrom = new FormControl();
   dateTo = new FormControl();
   payer = new FormControl();
-  constructor(private routeActive:ActivatedRoute, private router:Router, private commen:CommenServicesService) {
+  constructor(private routeActive:ActivatedRoute, private router:Router, private commen:SharedServices) {
     
   }
 

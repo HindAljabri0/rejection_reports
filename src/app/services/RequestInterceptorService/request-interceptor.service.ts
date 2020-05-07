@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from '../authService/authService.service';
+import { SharedServices } from '../shared.services';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,9 +33,9 @@ export class RequestInterceptorService implements HttpInterceptor {
           }
         });
       }
-      return next.handle(this.addToken(req, this.authService.getAccessToken()));
+      return next.handle(this.addToken(req, this.authService.getAccessToken())).pipe(takeUntil(this.authService.onCancelPendingHttpRequests()));
     }
-    return next.handle(req);
+    return next.handle(req).pipe(takeUntil(this.authService.onCancelPendingHttpRequests()));
   }
       
 }

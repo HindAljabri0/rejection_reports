@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
@@ -47,7 +47,7 @@ export class RejectionReportComponent implements OnInit {
   rejectedClaims = Array();
 
 
-  constructor(public reportService: ReportsService, public commen: CommenServicesService, public routeActive: ActivatedRoute, public router: Router, private dialogService: DialogService) { }
+  constructor(public reportService: ReportsService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, private dialogService: DialogService) { }
 
   ngOnInit() {
     //this.fetchData();

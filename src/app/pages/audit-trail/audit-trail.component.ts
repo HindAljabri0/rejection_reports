@@ -5,7 +5,7 @@ import { AuditLog } from 'src/app/models/auditLog';
 import { filter, map, timeout } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-audit-trail',
@@ -31,7 +31,7 @@ export class AuditTrailComponent implements OnInit {
 
   watchLogsSubscription: Subscription;
 
-  constructor(private auditTrailService: AuditTrailService, private commenService: CommenServicesService) {
+  constructor(private auditTrailService: AuditTrailService, private commenService: SharedServices) {
   }
 
   ngOnInit() {

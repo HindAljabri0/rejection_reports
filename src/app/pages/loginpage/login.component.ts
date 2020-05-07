@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { filter } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import { filter } from 'rxjs/operators';
   export class LoginComponent {
 
     expired:boolean;
-    constructor(public authService:AuthService, public router:Router, public routeActive:ActivatedRoute, public commen:CommenServicesService){
+    constructor(public authService:AuthService, public router:Router, public routeActive:ActivatedRoute, public commen:SharedServices){
       this.router.events.pipe(
         filter((event: RouterEvent) => event instanceof NavigationEnd)
       ).subscribe(() => {

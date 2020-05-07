@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommenServicesService } from '../../services/commen-services.service';
+import { SharedServices } from '../../services/shared.services';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
 
   notificationIconClasses = "mat-icon-button mat-button-base ";
 
-  constructor(private commen: CommenServicesService, public router: Router, public authService: AuthService) {
+  constructor(private commen: SharedServices, public router: Router, public authService: AuthService) {
     this.commen.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
     });

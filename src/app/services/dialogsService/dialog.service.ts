@@ -7,7 +7,7 @@ import { ClaimDialogComponent } from 'src/app/components/dialogs/claim-dialog/cl
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { PaymentClaimDetail } from 'src/app/models/paymentClaimDetail';
 import { PaymentClaimDetailDailogComponent } from 'src/app/components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
-import { CommenServicesService } from '../commen-services.service';
+import { SharedServices } from '../shared.services';
 import { SearchService } from '../serchService/search.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ReportsService } from '../reportsService/reports.service';
@@ -21,7 +21,7 @@ export class DialogService {
 
   onClaimDialogClose: Subject<any> = new Subject;
 
-  constructor(private commenServices: CommenServicesService,
+  constructor(private commenServices: SharedServices,
     private dialog: MatDialog,
     private searchService: SearchService,
     private reportService: ReportsService) { }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { Notification } from 'src/app/models/notification';
 
 @Component({
@@ -10,7 +10,7 @@ import { Notification } from 'src/app/models/notification';
 export class NotificationCenterComponent implements OnInit {
   status;
   notificationsList:Notification[];
-  constructor(public commen:CommenServicesService) {
+  constructor(public commen:SharedServices) {
     this.commen.showNotificationCenterChange.subscribe(value => {
       this.toggleNotificationCenter(value);
     });

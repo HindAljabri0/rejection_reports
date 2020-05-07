@@ -4,7 +4,7 @@ import { NotificationTypes } from 'src/app/models/notificationsTypes';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { HttpResponse,HttpErrorResponse } from '@angular/common/http';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 

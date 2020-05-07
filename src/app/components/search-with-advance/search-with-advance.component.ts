@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, SystemJsNgModuleLoader } from '@angular/c
 import { Query } from 'src/app/models/searchData/query';
 import { QueryType } from 'src/app/models/searchData/queryType';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { MatMenuTrigger, MatDatepickerInputEvent, MatSelectChange, MatChipInputEvent } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -46,7 +46,7 @@ export class SearchWithAdvanceComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  constructor(private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private authService: AuthService) {
+  constructor(private router: Router, private routeActive: ActivatedRoute, private commen: SharedServices, private authService: AuthService) {
     this.authService.isUserNameUpdated.subscribe((isUpdated) => {
       if (isUpdated) {
         this.payers = this.commen.getPayersList();

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-upload-history-center',
@@ -12,7 +12,7 @@ export class UploadHistoryCenterComponent implements OnInit {
 
   showCenter:boolean = false;
 
-  constructor(private commen:CommenServicesService) {
+  constructor(private commen:SharedServices) {
     this.commen.showUploadHistoryCenterChange.subscribe(value => {
       this.showCenter = value;
     });

@@ -1,6 +1,6 @@
 import { AttachmentService } from './../../services/attachmentService/attachment.service';
 import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnDestroy, } from '@angular/core';
-import { CommenServicesService } from '../../services/commen-services.service';
+import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
@@ -31,7 +31,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
-    public commen: CommenServicesService, public routeActive: ActivatedRoute,
+    public commen: SharedServices, public routeActive: ActivatedRoute,
     public router: Router, public searchService: SearchService,
     private dialogService: DialogService,
     private claimService: ClaimService,

@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { CommenServicesService } from 'src/app/services/commen-services.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { filter } from 'rxjs/operators';
 import { SubmittedInvoicesComponent } from './submitted-invoices/submitted-invoices.component';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
@@ -59,7 +59,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   payerId: number[];
 
 
-  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: CommenServicesService, private reportsService: ReportsService, private dialogService: DialogService) { }
+  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: SharedServices, private reportsService: ReportsService, private dialogService: DialogService) { }
 
   ngOnInit() {
     this.payers = [];
