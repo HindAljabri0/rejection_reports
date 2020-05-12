@@ -149,7 +149,7 @@
                 </td>
                 <td style="width: 15%; ">
                     <div style="display: inline-block;">
-                        <button [disabled]="!(claim.numOfAttachments > 0) " style="color: #3060AA;" mat-icon-button
+                        <button [disabled]="!(claim.numOfAttachments > 0)" [ngStyle]="{'visibility': (claim.numOfAttachments > 0)? 'visible':'hidden'}" style="color: #3060AA;" mat-icon-button
                             [matTooltip]="claim.numOfAttachments + ' attachments'">
                             <mat-icon>attach_file</mat-icon>
                         </button>
