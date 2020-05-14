@@ -52,7 +52,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   card0Title = this.commen.statusToName(ClaimStatus.ALL);
   card0ActionText = 'details';
   card0AccentColor = "#3060AA";
-  private searchClaimsComponent : SearchClaimsComponent;
+  private searchClaimsComponent: SearchClaimsComponent;
 
   card0Action() {
     this.showClaims = true;
@@ -177,7 +177,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
         this.results = [];
         this.paginatedResult.content.forEach(result => {
-          if (result.uploadSubStatus == ClaimStatus.Accepted) {
+          if (result.claimErrors != null && result.claimErrors.length > 0) {
             let col: any = {};
             col.description = '-';
             col.fieldName = '-';
@@ -236,10 +236,10 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   accentColor(status) {
     return this.commen.getCardAccentColor(status);
   }
-  get providerId(){
+  get providerId() {
     return this.commen.providerId;
   }
-  get uploadId(){
+  get uploadId() {
     return this.commen.uploadId;
   }
   viewClaims() {
@@ -247,32 +247,32 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
 
 
-  deleteClaimByUploadid(uploadSummaryID: number, refNumber:string){
+  deleteClaimByUploadid(uploadSummaryID: number, refNumber: string) {
     this.dialogService.openMessageDialog(new MessageDialogData('Delete Upload?', `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
-    .subscribe(result => {
-      if(result === true){
-        this.commen.loadingChanged.next(true);
-        this.uploadService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event =>{
-          if(event instanceof HttpResponse){
-            this.commen.loadingChanged.next(false);
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.uploadService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
 
-            this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
-            .subscribe(afterColse => {
-              this.uploadService.summaryChange.next(new UploadSummary());
-              this.router.navigate(['']);
-            });
-          }
-        }, errorEvent => {
-          if(errorEvent instanceof HttpErrorResponse){
-            this.commen.loadingChanged.next(false);
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-          }
-        });
-      }
-    });
+              this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
+                .subscribe(afterColse => {
+                  this.uploadService.summaryChange.next(new UploadSummary());
+                  this.router.navigate(['']);
+                });
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+            }
+          });
+        }
+      });
   }
 
-  get uploading(){
+  get uploading() {
     return this.uploadService.uploading;
   }
 }
