@@ -15,6 +15,7 @@ import { SearchService } from 'src/app/services/serchService/search.service';
 import { Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { sampleTime } from 'rxjs/operators';
+import { UploadAttachmentType } from 'src/app/models/UploadAttacchmentType';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -25,8 +26,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   files: File[] = [];
   newAttachmentsPreview: { src: (string | ArrayBuffer), name: string, index: number }[] = [];
   toDeleteAttachments = [];
-
   maxNumberOfAttachment: number;
+  fileType: string;
 
 
   constructor(public commen: SharedServices,
@@ -81,6 +82,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   options: ICDDiagnosis[] = [];
 
   diagnosisList: ICDDiagnosis[] = [];
+  toAddFileTypeAttachments:UploadAttachmentType [] = [];
+
 
   setErrors() {
     this.commentBoxClasses = 'error';
@@ -129,6 +132,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       this.removeAddedDiagFromClaimList();
       this.toDeleteAttachments.forEach(attachment => this.data.claim.attachments.push(attachment))
       this.toDeleteAttachments = [];
+      this.toAddFileTypeAttachments = [];
       this.files = [];
       this.newAttachmentsPreview = [];
     }
@@ -228,6 +232,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     if (this.files.length > 0) {
       flag = true;
     }
+  
+    if (this.toAddFileTypeAttachments.length > 0) {
+      claim.types = this.toAddFileTypeAttachments;
+      flag = true;
+    }
 
     if (this.toDeleteAttachments.length > 0) {
       flag = true;
@@ -324,21 +333,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       }
       );
   }
-  deleteAttachmentFromBackend(attachmentId: string) {
-    this.attachmentService.deleteAttachment(this.data.claim.providerId, attachmentId)
-      .subscribe(event => {
-        if (event instanceof HttpResponse) {
-          this.loadingResponse += `${attachmentId} deleted`;
-          console.log(`${attachmentId} deleted`);
-        }
-      }, errorEvent => {
-        if (errorEvent instanceof HttpErrorResponse) {
-          this.loadingResponse += `${attachmentId} error while deleting`;
-          console.log(`${attachmentId} error while deleting`);
-        }
-      }
-      );
-  }
+
+
   getImageOfBlob(attachment) {
     let fileExt = attachment.filename.split(".").pop();
     if (fileExt.toLowerCase() == 'pdf') {
@@ -375,7 +371,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
         return;
       }
       this.files.push(file);
+      if(this.fileType!=null && this.fileType != "")
+      this.toAddFileTypeAttachments.push(new UploadAttachmentType (file.name, this.fileType));
       this.preview(file, this.files.length - 1);
+      console.log(this.fileType);
     }
   }
 

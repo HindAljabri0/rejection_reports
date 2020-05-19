@@ -25,6 +25,10 @@
         {{data.claim.payerclaimrefno}}
     </p>
 </div>
+<div class="header sub">
+    <p>Status</p>
+    <span class="spacer"></span>
+</div>
 <div class="content">
     <div class="gInfo">
         <table style="width: 82%; margin-right: 3%;">
@@ -246,10 +250,10 @@
         <div class="attachments">
             <div class="attachment" *ngFor="let attachment of data.claim.attachments">
                 <div class="thumbnail">
-                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)"
-                        [alt]="attachment.filename">
-                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)" src="../../../../assets/pdfIcon.png"
-                        [alt]="attachment.filename">
+                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)"
+                        [src]="getImageOfBlob(attachment)" [alt]="attachment.filename">
+                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)"
+                        src="../../../../assets/pdfIcon.png" [alt]="attachment.filename">
                 </div>
                 <p style="margin: auto 5px">{{attachment.filename}}</p>
                 <span class="spacer"></span>
@@ -280,15 +284,50 @@
                     </div>
                 </div>
             </ng-container>
+
             <div class="attachment"
                 *ngIf="isEditMode && (newAttachmentsPreview.length + data.claim.attachments.length) < maxNumberOfAttachment">
-                <button mat-icon-button color="primary" (click)="fileInput.click()" style="margin: auto">
+                <button mat-button [matMenuTriggerFor]="menu" mat-icon-button mat-icon-button color="primary"
+                    style="margin: auto">
                     <mat-icon>add</mat-icon>
-                    <input hidden type="file" #fileInput id="file" onclick="this.value = null"
-                        (change)="selectFile($event.target.files)"
-                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
                 </button>
+               
+                <mat-menu #menu="matMenu">
+                    <div style="padding: 10px;">
+                    <label>What Type of Attachment?</label>
+                    <mat-radio-group (click)="fileInput.click()" aria-label="Select an option">
+                       
+                        <mat-radio-button class="block" (click)="this.fileType = 'MEDICAL_REPORT'" id="MEDICAL_REPORT"
+                            value="MEDICAL_REPORT">Medical Report</mat-radio-button>
+                        
+                        <mat-radio-button class="block" (click)="this.fileType = 'IQAMA_ID_COPY'" id="IQAMA_ID_COPY"
+                            value="IQAMA_ID_COPY">Iqama/ID Copy</mat-radio-button>
+                        
+                        <mat-radio-button class="block" (click)="this.fileType = 'X_RAY_RESULT'" id="X_RAY_RESULT"
+                            value="X_RAY_RESULT">X-Ray Result</mat-radio-button>
+                        
+                        <mat-radio-button class="block" (click)="this.fileType = 'LAB_RESULT'" id="LAB_RESULT" value="LAB_RESULT">Lab
+                            Result</mat-radio-button>
+
+                        <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                            (change)="selectFile($event.target.files)"
+                            accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                    </mat-radio-group>
+                    <!--button mat-menu-item (click)="fileInput.click()">Item 1
+                                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                                (change)="selectFile($event.target.files)"
+                                accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                            </button>
+                            <button mat-menu-item (click)="fileInput.click()">Item 2
+                                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+                                (change)="selectFile($event.target.files)"
+                                accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                            </button-->
+                        </div>
+                </mat-menu>
+            
             </div>
+
         </div>
 
     </div>

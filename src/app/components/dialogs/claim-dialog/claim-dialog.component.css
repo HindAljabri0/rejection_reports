@@ -187,6 +187,26 @@ mat-icon {
     z-index: 5;
 }
 
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+  
+.mat-radio-button {
+    margin-top: 10px;
+    vertical-align: middle;
+    color: #3060AA;
+    background-color: #EFF5FF;
+  }
+
+  .mat-menu-content {
+      padding: 10px !important;
+  }
+  .block {
+    display: block;
+    margin-left: 16px;
+    margin-right: 16px;
+ }
+
 /* .thumbnail:hover .thumbnailImage {
     width: unset !important;
     height: unset !important;
