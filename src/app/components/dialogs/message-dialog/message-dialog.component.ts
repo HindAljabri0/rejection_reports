@@ -14,7 +14,7 @@ export class MessageDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
   // textColor = '#8FBE9A';
