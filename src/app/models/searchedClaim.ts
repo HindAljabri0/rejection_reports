@@ -19,6 +19,7 @@ export class SearchedClaim extends Paginateable{
   payerId:string;
   eligibilitycheck:string;
   numOfAttachments:number;
+  numOfPriceListErrors:number;
 
   constructor (body: {}){
     super(body);
@@ -40,6 +41,7 @@ export class SearchedClaim extends Paginateable{
       this.payerId = body['payerId'];
       this.eligibilitycheck = body['eligibilityCheck'];
       this.numOfAttachments = body['numOfAttachments'];
+      this.numOfPriceListErrors = body['numOfPriceListErrors'];
     }
   }
 }
