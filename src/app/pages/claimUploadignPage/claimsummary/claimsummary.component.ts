@@ -177,7 +177,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
         this.results = [];
         this.paginatedResult.content.forEach(result => {
-          if (result.claimErrors != null && result.claimErrors.length > 0) {
+          if (result.claimErrors != null && result.claimErrors.length == 0) {
             let col: any = {};
             col.description = '-';
             col.fieldName = '-';

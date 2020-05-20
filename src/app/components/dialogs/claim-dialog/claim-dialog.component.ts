@@ -64,6 +64,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   genderClasses: string;
   approvalClasses: string;
   eligibilityClasses: string;
+  servicesErrors:string[] = [];
 
   isEditMode: boolean = false;
   editButtonLabel: string = "Edit";
@@ -89,7 +90,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     this.commentBoxClasses = 'error';
     this.commentBoxText = "";
     for (let error of this.data.claim.errors) {
-      this.commentBoxText += `${error.description}\n`;
+      if(error.code != 'SERVCOD-VERFIY'){
+        this.commentBoxText += `${error.description}\n`;
+      } else {
+        this.servicesErrors.push(error.fieldName.split(':')[1]);
+      }
       if (error.fieldName == ClaimFields.APPNO) {
         this.approvalClasses = 'error';
       }

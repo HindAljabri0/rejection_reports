@@ -84,15 +84,6 @@
                     {{data.claim.patientfilenumber}}
                 </td>
             </tr>
-
-
-
-
-
-
-
-
-
             <tr>
 
                 <th>
@@ -217,7 +208,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let service of data.claim.services">
-                    <td>{{service.servicecode}}</td>
+                    <td *ngIf="!servicesErrors.includes(service.servicecode)">{{service.servicecode}}</td>
+                    <td *ngIf="servicesErrors.includes(service.servicecode)" style="background-color: #ffffd7;" matTooltip="Out of price list">{{service.servicecode}}</td>
                     <td>{{service.gross}}</td>
                     <td>{{service.invoicedepartment}}</td>
                     <td>

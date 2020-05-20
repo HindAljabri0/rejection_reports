@@ -144,11 +144,13 @@ export class ClaimfileuploadComponent implements OnInit {
     });
     let summaryObservable = this.uploadService.summaryChange.subscribe(async value => {
       summaryObservable.unsubscribe();
+      this.uploading = false;
       this.cancel();
     });
     let errorobservable = this.uploadService.errorChange.subscribe(error => {
       this.dialogService.openMessageDialog(new MessageDialogData("", error, true));
       errorobservable.unsubscribe();
+      this.uploading = false;
       this.cancel();
     });
   }
