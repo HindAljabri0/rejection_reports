@@ -9,8 +9,8 @@ export class ClaimService {
 
   constructor(private httpClient:HttpClient) { }
 
-  updateClaim(providerId:string, payerId:string, claimId:number, data:{}){
-    const requestUrl = `/providers/${providerId}/${claimId}`;
+  updateClaim(providerId:string, payerId:string, claimId:number, data:{}, verifyServiceCode:boolean){
+    const requestUrl = `/providers/${providerId}/${claimId}?verifyServiceCode=${verifyServiceCode}`;
     const httpRequest = new HttpRequest('PUT', environment.claimServiceHost+requestUrl, data);
     return this.httpClient.request(httpRequest);
   }

@@ -165,6 +165,11 @@ mat-icon {
     /* overflow: visible; */
 }
 
+.servicesWarning{
+    background-color: #fadfbd !important;
+    color: #f59517 !important;
+}
+
 .attachment {
     background-color: #EFF5FF;
     min-width: 250px;
@@ -206,6 +211,11 @@ mat-icon {
     margin-left: 16px;
     margin-right: 16px;
  }
+
+ ::ng-deep.mat-menu-panel {
+    width: 400px !important;
+    max-width: 400px !important;
+  }
 
 /* .thumbnail:hover .thumbnailImage {
     width: unset !important;
