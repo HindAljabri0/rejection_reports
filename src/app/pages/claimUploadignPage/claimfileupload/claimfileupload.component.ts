@@ -96,18 +96,20 @@ export class ClaimfileuploadComponent implements OnInit {
     this.priceListDoesNotExistMessages = [];
     let count = this.payerIdsFromCurrentFIle.length;
     this.payerIdsFromCurrentFIle.forEach(payerId => {
-      this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          count--;
-          if (count <= 0) this.common.loadingChanged.next(false);
-        }
-      }, errorEvent => {
-        if (errorEvent instanceof HttpErrorResponse) {
-          count--;
-          this.priceListDoesNotExistMessages.push(payerId);
-          if (count <= 0) this.common.loadingChanged.next(false);
-        }
-      })
+      if (payerId != undefined) {
+        this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            count--;
+            if (count <= 0) this.common.loadingChanged.next(false);
+          }
+        }, errorEvent => {
+          if (errorEvent instanceof HttpErrorResponse) {
+            count--;
+            this.priceListDoesNotExistMessages.push(payerId);
+            if (count <= 0) this.common.loadingChanged.next(false);
+          }
+        })
+      }
     });
   }
 
@@ -130,10 +132,10 @@ export class ClaimfileuploadComponent implements OnInit {
     } else {
       this.startUpload(true);
     }
-    
+
   }
 
-  startUpload(verifyServiceCode:boolean) {
+  startUpload(verifyServiceCode: boolean) {
     let providerId = this.common.providerId;
     this.uploading = true;
     this.uploadService.pushFileToStorage(providerId, this.currentFileUpload, verifyServiceCode);
