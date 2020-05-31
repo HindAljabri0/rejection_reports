@@ -46,6 +46,12 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
+import { MatIconModule } from '@angular/material/icon'
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip'
+
 
 
 
@@ -103,6 +109,11 @@ import { MatiralModule } from './modules/matiral/matiral.module';
 
     ]),
     BrowserModule,
+    MatIconModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
     HttpClientModule,
     BrowserAnimationsModule,
     StepperProgressBarModule,
