@@ -1,0 +1,45 @@
+.blackBackground{
+    position: fixed;
+    top: 68px;
+    left: 0px;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: #00000080;
+    z-index: 3;
+    transition: opacity 500ms ease-in;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.blackBackground.show{
+    opacity: 1;
+    visibility: visible;
+    
+}
+
+.announcementCenter{
+    position: fixed;
+    overflow-y: auto;
+    height: 100%;
+    width: 25%;
+    top: 68px;
+    right: -25%;
+    transition: right 500ms ease-in;
+    background: #183663;
+    z-index: 4;
+    color: white;
+    text-align: center;
+}
+
+.announcementCenter.show{
+    right: 0%;
+}
+
+.announcementCenter *{
+    width: 100%;
+    height: fit-content;
+}
+.announcementCenter *:last-child{
+    margin-bottom: 50px;
+}

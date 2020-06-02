@@ -1,0 +1,8 @@
+<div class="blackBackground {{status}}" (click)="this.commen.showAnnouncementCenterChange.next(false)"></div>
+<div class="announcementCenter {{status}}">
+    <p *ngIf="numOfAnnouncements >= 0"><br>There are {{numOfAnnouncements}} announcements. <a routerLink="{{providerId}}/announcements">See All</a></p>
+    <p *ngIf="numOfAnnouncements < 0"><br>Could not reach the server at the moment!</p>
+    <app-announcement-card *ngFor="let announcement of announcementsList" [announcement]="announcement" ></app-announcement-card>
+    <div style="height: 50px;">
+    </div>
+</div>

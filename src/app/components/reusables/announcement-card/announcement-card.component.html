@@ -1,0 +1,26 @@
+<div class="announcement clickable"(click)="getAnnouncements()" >
+    <div class="header">
+        <table>
+            <thead>
+                <!--th><span class="spacer"></span>Date: {{date}}</th-->
+            </thead>
+        </table>
+    </div>
+    <div  class="batchContent">
+        <table style="text-align: start;">
+            <tr style="padding: 5px 15px;">
+                <th>
+                    <p class="totalPaid">{{announcement.criteriaType}}</p>
+                    <p class="totalPaid">{{announcement.criteriaValue}}</p>
+                    
+                    <p class="totalUnpaid">{{announcement.messageDescription}}</p>
+                </th>
+                <!--th>
+                    <div class="nIcon">
+                        <img src="../../../../assets/box.png" alt="">
+                    </div>
+                </th-->
+            </tr>
+        </table>
+    </div>
+</div>
