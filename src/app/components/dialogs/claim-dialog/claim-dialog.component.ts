@@ -17,7 +17,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { sampleTime, filter } from 'rxjs/operators';
 import { UploadAttachmentType } from 'src/app/models/UploadAttacchmentType';
 import { Service } from 'src/app/models/service';
-import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
 
 @Component({
@@ -31,7 +30,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   toDeleteAttachments = [];
   maxNumberOfAttachment: number;
   fileType: string;
-  claims: SearchedClaim[];
 
 
   constructor(public commen: SharedServices,
@@ -47,6 +45,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
+    
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
@@ -102,19 +101,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   diagnosisList: ICDDiagnosis[] = [];
   toAddFileTypeAttachments: UploadAttachmentType[] = [];
   eligibilityWaitingList:{result:string, waiting:boolean}[] = [];
-
-  providerId: string;
-  payerId: string;
-
-
-  claimIsWaitingEligibility(claimId:string){
-    return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
-  }
-
-  isEligibleState(status:string){
-    if(status == null) return false;
-    return status.toLowerCase() == 'eligible';
-  }
 
   setErrors() {
     this.commentBoxText = "";

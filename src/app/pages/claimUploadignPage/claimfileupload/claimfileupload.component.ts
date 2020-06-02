@@ -94,6 +94,7 @@ export class ClaimfileuploadComponent implements OnInit {
 
   checkPriceList() {
     this.priceListDoesNotExistMessages = [];
+    this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined);
     let count = this.payerIdsFromCurrentFIle.length;
     this.payerIdsFromCurrentFIle.forEach(payerId => {
       if (payerId != undefined) {

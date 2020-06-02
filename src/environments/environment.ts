@@ -7,7 +7,7 @@ export const environment = {
   uploaderHost: "http://localhost:8080",
   claimSearchHost: "http://localhost:8082",
   claimServiceHost: "http://localhost:8081",
-  NotificationServiceHost: "http://localhost:8222",
+  NotificationServiceHost: "http://localhost:8222/notification-service",
   authenticationHost: "http://localhost:8086",
   adminServiceHost: "http://localhost:8087",
   auditTrailServiceHost: "http://localhost:8089"

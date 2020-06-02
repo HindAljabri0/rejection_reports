@@ -6,8 +6,10 @@ import { ClaimStatus } from '../models/claimStatus';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { NotificationsService } from './notificationService/notifications.service';
+import { AnnouncementsService } from './announcementService/announcements.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Notification } from '../models/notification';
+import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
 import { MessageDialogData } from '../models/dialogData/messageDialogData';
 import { ViewedClaim } from '../models/viewedClaim';
@@ -36,6 +38,16 @@ export class SharedServices {
   showNotificationCenter: boolean;
   showNotificationCenterChange: Subject<boolean> = new Subject();
 
+  showAnnouncementCenter: boolean;
+  showAnnouncementCenterChange: Subject<boolean> = new Subject();
+
+  //unReadAnnouncementsCount: number = 0;
+  //unReadAnnouncementsCountChange: Subject<number> = new Subject();
+  announcementsCount: number = 0;
+  announcementsCountChange: Subject<number> = new Subject();
+  announcementsList: Announcement[];
+  announcementsListChange: Subject<Announcement[]> = new Subject();
+
   showUploadHistoryCenter: boolean;
   showUploadHistoryCenterChange: Subject<boolean> = new Subject();
 
@@ -48,13 +60,11 @@ export class SharedServices {
   uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
   getUploadId: any;
 
-  
-
-
   constructor(public authService: AuthService,
-    private router: Router,
-    private notifications: NotificationsService,
-    private uploadService: UploadService) {
+              private router: Router,
+              private notifications: NotificationsService,
+              private announcements: AnnouncementsService,
+              private uploadService: UploadService) {
     this.loadingChanged.subscribe((value) => {
       this.loading = value;
     });
@@ -63,17 +73,27 @@ export class SharedServices {
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
-      if(value) this.showUploadHistoryCenterChange.next(false);
-    });
-    this.showUploadHistoryCenterChange.subscribe(value => {
-      this.showUploadHistoryCenter = value;
-      if(value) this.showNotificationCenterChange.next(false);
+      if (value) { this.showUploadHistoryCenterChange.next(false); }
     });
     this.unReadNotificationsCountChange.subscribe(value => {
       this.unReadNotificationsCount = value;
     });
     this.notificationsListChange.subscribe(value => {
       this.notificationsList = value;
+    });
+    this.showAnnouncementCenterChange.subscribe(value => {
+      this.showAnnouncementCenter = value;
+      if (value) { this.showUploadHistoryCenterChange.next(false); }
+    });
+    this.showUploadHistoryCenterChange.subscribe(value => {
+      this.showUploadHistoryCenter = value;
+      if (value) { this.showNotificationCenterChange.next(false); }
+    });
+    this.announcementsCountChange.subscribe(value => {
+      this.announcementsCount = value;
+    });
+    this.announcementsListChange.subscribe(value => {
+      this.announcementsList = value;
     });
     this.uploadHistoryListChange.subscribe(value => {
       this.uploadHistoryList = value.map(upload => {
@@ -86,20 +106,22 @@ export class SharedServices {
     ).subscribe(() => {
       this.getNotifications();
       this.getUploadHistory();
+      this.getAnnouncements();
     });
   }
 
   getNotifications() {
-    if (this.providerId == null) return;
+    if (this.providerId == null) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`);
-        if (!Number.isNaN(count))
+        if (!Number.isNaN(count)) {
           this.unReadNotificationsCountChange.next(count);
+        }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadNotificationsCountChange.next(errorEvent.status == 0 ? -1 : (errorEvent.status * -1));
+        this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
     this.notifications.getNotifications(this.providerId, 0, 10).subscribe(event => {
@@ -109,7 +131,33 @@ export class SharedServices {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadNotificationsCountChange.next(errorEvent.status == 0 ? -1 : (errorEvent.status * -1));
+        this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  getAnnouncements() {
+    if (this.providerId == null) { return; }
+    this.announcements.getAnnouncementsCount(this.providerId, '204').subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`);
+        if (!Number.isNaN(count)) {
+          this.announcementsCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.announcementsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+    this.announcements.getAnnouncements(this.providerId, '204', 0, 10).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const paginatedResult: PaginatedResult<Announcement> = new PaginatedResult(event.body, Announcement);
+        this.announcementsListChange.next(paginatedResult.content);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.announcementsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
   }

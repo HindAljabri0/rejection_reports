@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
         this.getUserData();
         this.commen.getNotifications();
         this.commen.getUploadHistory();
+        this.commen.getAnnouncements();
       }
     }
     );
@@ -49,6 +50,10 @@ export class HeaderComponent implements OnInit {
     } else {
       this.notificationIconClasses = "mat-icon-button mat-button-base ";
     }
+  }
+
+  toggleAnnouncementCenter() {
+    this.commen.showAnnouncementCenterChange.next(!this.commen.showAnnouncementCenter);
   }
 
   toggleNotificationCenter() {

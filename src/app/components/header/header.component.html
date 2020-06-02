@@ -11,9 +11,13 @@
     <mat-icon aria-hidden="false">cloud</mat-icon>
     <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon>
   </button>
-  <button (click)="toggleNotificationCenter()" style="margin-right: 25px;"
+  <button (click)="toggleNotificationCenter()" style="margin-right: 5px;"
     class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Notifications">
     <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
+  </button>
+  <button (click)="toggleAnnouncementCenter()" style="margin-right: 10px;"
+    class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Announcements">
+    <mat-icon aria-hidden="false" aria-label="Announcements">announcements</mat-icon>
   </button>
   <span class="user-info">
     <span>
@@ -21,7 +25,7 @@
       <div class="inner-user-info">{{providerName}}</div>
     </span>
 
-    <button (click)="logout()" class="{{notificationIconClasses}}" style="margin-left: 70px; background-color: #22477f"
+    <button (click)="logout()" class="{{notificationIconClasses}}" style="margin-left: 50px; background-color: #22477f"
       mat-icon-button matTooltip="Sign Out">
       <mat-icon aria-hidden="false" aria-label="Sing Out" style="font-size: large;">exit_to_app</mat-icon>
     </button>

@@ -24,6 +24,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UploadService } from './services/claimfileuploadservice/upload.service';
 import { NotificationCenterComponent } from './components/notification-center/notification-center.component';
 import { NotificationCardComponent } from './components/reusables/notification-card/notification-card.component';
+import { AnnouncementCenterComponent } from './components/announcement-center/announcement-center.component';
+import { AnnouncementCardComponent } from './components/reusables/announcement-card/announcement-card.component';
 import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-dialog.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { Router } from '@angular/router';
@@ -46,12 +48,12 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
+import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { MatIconModule } from '@angular/material/icon'
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip'
-
 
 
 
@@ -73,8 +75,11 @@ import { MatTooltipModule } from '@angular/material/tooltip'
     MessageDialogComponent,
     NotificationCenterComponent,
     NotificationCardComponent,
+    AnnouncementCenterComponent,
+    AnnouncementCardComponent,
     ClaimDialogComponent,
     NotificationsPageComponent,
+    AnnouncementsPageComponent,
     LoginComponent,
     ReportsComponent,
     DashboardComponent,
@@ -96,6 +101,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'
       { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
       { path: 'login', component: LoginComponent },
       { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
       { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },

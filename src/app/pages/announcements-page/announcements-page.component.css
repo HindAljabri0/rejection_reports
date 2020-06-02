@@ -1,0 +1,22 @@
+#infinitScroll{
+    height: 730px;
+    overflow: auto;
+}
+
+.announcements{
+    overflow-wrap: break-word;
+}
+app-announcement-card{
+    min-width: 325px;
+}
+.announcement{
+    width: 800px;
+    display: inline-block;
+}
+
+#loadMore{
+    background-color: #3060AA; color: #fff; text-align: center; width: 100%;
+}
+#loadMore:hover{
+    cursor: pointer;
+}
