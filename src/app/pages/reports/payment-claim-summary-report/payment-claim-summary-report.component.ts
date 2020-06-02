@@ -23,7 +23,7 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
   @Output() onPaginationChange = new EventEmitter();
 
   paginatorPagesNumbers: number[];
-  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginator', {static: false}) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 

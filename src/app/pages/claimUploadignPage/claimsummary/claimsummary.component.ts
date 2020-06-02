@@ -34,7 +34,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
 
   paginatorPagesNumbers: number[];
-  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginator', {static: false}) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 

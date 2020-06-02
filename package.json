@@ -37,30 +37,18 @@
     "moment": "^2.26.0",
     "ng-event-source": "^1.0.14",
     "ng2-file-upload": "^1.4.0",
-<<<<<<< HEAD
-    "ngx-infinite-scroll": "^8.0.2",
-    "rxjs": "~6.4.0",
-=======
     "ngx-infinite-scroll": "^8.0.1",
     "rxjs": "~6.5.5",
->>>>>>> 0ef9a78ee8501a12ce7be08a818da4db1f08a728
     "stepper-progress-bar": "0.0.8",
     "tslib": "^1.13.0",
     "xlsx": "^0.16.1",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@angular-devkit/build-angular": "^0.803.26",
-    "@angular/cli": "^8.3.26",
-    "@angular/compiler-cli": "^8.2.12",
-    "@angular/language-service": "^8.2.12",
-=======
     "@angular-devkit/build-angular": "^0.901.7",
     "@angular/cli": "^9.1.7",
     "@angular/compiler-cli": "^9.1.9",
     "@angular/language-service": "^9.1.9",
->>>>>>> 0ef9a78ee8501a12ce7be08a818da4db1f08a728
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
@@ -71,13 +59,8 @@
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
-<<<<<<< HEAD
-    "karma-jasmine-html-reporter": "^1.5.4",
-    "protractor": "^5.4.4",
-=======
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "^7.0.0",
->>>>>>> 0ef9a78ee8501a12ce7be08a818da4db1f08a728
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.8.3"

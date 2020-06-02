@@ -13,7 +13,7 @@ import { filter } from 'rxjs/operators';
 export class SearchBarComponent implements OnInit {
 
 
-  @ViewChild('fromDate') fromDate: ElementRef;
+  @ViewChild('fromDate', {static: false}) fromDate: ElementRef;
   dateFrom = new FormControl();
   dateTo = new FormControl();
   payer = new FormControl();

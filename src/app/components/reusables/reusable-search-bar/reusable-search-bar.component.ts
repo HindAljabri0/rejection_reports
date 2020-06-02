@@ -18,7 +18,7 @@ export class ReusableSearchBarComponent implements OnInit {
   @Output() onSearch = new EventEmitter();
   @Output() onQueryRemoved = new EventEmitter();
 
-  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
 
   searchTextControl: FormControl = new FormControl();
 

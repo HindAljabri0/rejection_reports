@@ -24,7 +24,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { value: "OUTPATIENT", name: "Outpatient" },
     { value: "INPATIENT", name: "Inpatient" },
   ];
-  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
 
   searchControl: FormControl = new FormControl();
 
