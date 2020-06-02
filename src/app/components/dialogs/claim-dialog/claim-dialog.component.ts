@@ -51,12 +51,12 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.TofetchData();
-    this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims"))
-    ).subscribe(() => {
-      this.TofetchData();
-    });
+    // this.TofetchData();
+    // this.router.events.pipe(
+    //   filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims"))
+    // ).subscribe(() => {
+    //   this.TofetchData();
+    // });
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
