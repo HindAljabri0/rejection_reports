@@ -52,10 +52,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   claimId: string;
   criteria: string;
 
-  @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
-  @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
-  @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
-  @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: SubmittedInvoicesComponent;
+  @ViewChild('paymentSearchResult') paymentSearchResult: PaymentReferenceReportComponent;
+  @ViewChild('paymentClaimSummaryReport') paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
+  @ViewChild('submittedInvoicesSearchResult') submittedInvoicesSearchResult: SubmittedInvoicesComponent;
+  @ViewChild('rejectionReport') rejectionReportComponent: SubmittedInvoicesComponent;
   payerId: number[];
 
 

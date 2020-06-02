@@ -25,9 +25,13 @@
         {{data.claim.payerclaimrefno}}
     </p>
 </div>
-<div class="header sub">
-    <p>Status</p>
-    <span class="spacer"></span>
+<div class="header sub" >
+    <tr>
+        <p style="color: #21B744;" *ngIf="data.claim.status == 'Accepted'">
+            Status: {{data.claim.status}}</p>
+        <p style="color: #E988AD;" *ngIf="data.claim.status !== 'Accepted'">
+            Status: {{data.claim.status}}</p>
+    </tr>
 </div>
 <div class="content">
     <div class="gInfo">
@@ -157,7 +161,7 @@
             <input type="text" placeholder="Select diagnosis" aria-label="ICD10" matInput [formControl]="searchDiag"
                 [matAutocomplete]="auto" (keyup)="searchICDCodes()">
             <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of options" (click)="addICDDignosis(option)">
+                <mat-option *ngFor="let option of icedOptions" (click)="addICDDignosis(option)">
                     {{option.diagnosisCode}} | {{option.diagnosisDescription}}
                 </mat-option>
             </mat-autocomplete>
@@ -174,8 +178,10 @@
                         <span *ngIf="isEditMode">
                             <button (click)="deleteDiagnosis(diag)" mat-icon-button matTooltip="Remove">
                                 <mat-icon aria-hidden="false" aria-label="Remove" style="color: red; font-size: 25px">
-                                    remove_circle</mat-icon>
-                            </button></span>
+                                    remove_circle
+                                </mat-icon>
+                            </button>
+                        </span>
                         <td>{{diag.diagnosisCode}}</td>
                         <td>{{diag.diagnosisDescription}}</td>
                     </tr>
@@ -208,29 +214,45 @@
             </thead>
             <tbody>
                 <tr *ngFor="let service of data.claim.services">
-                    <td *ngIf="!servicesErrors.includes(service.servicecode)">{{service.servicecode}}</td>
-                    <td *ngIf="servicesErrors.includes(service.servicecode)" style="background-color: #ffffd7;" matTooltip="Out of price list">{{service.servicecode}}</td>
-                    <td>{{service.gross}}</td>
-                    <td>{{service.invoicedepartment}}</td>
-                    <td>
+                    <td *ngIf="!servicesErrors.includes(service.servicecode)" [matTooltip]="service.servicedescription">{{service.servicecode}}</td>
+                    <td *ngIf="servicesErrors.includes(service.servicecode)" class="servicesWarning">
+                        {{service.servicecode}}
+                        <mat-icon *ngIf="!isEditMode" style="font-size:15px; display: inline;" matTooltip="Out of price list" >error</mat-icon>
+                        <mat-icon *ngIf="isEditMode" [matMenuTriggerFor]="editServiceCodeMenu" (click)="serviceUnderEditting = service" style="font-size:15px; display: inline; cursor: pointer;" matTooltip="Edit">edit</mat-icon>
+                    </td>
+                    <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">{{service.gross}}</td>
+                    <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">{{service.invoicedepartment}}</td>
+                    <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">
                         <div style="width: 100%; display: flex;">
                             <div>{{service.patientshare}} {{service.unitofpatientshare}}</div>
                             <div style="margin-left: auto;">{{service.patientsharevatamount}}
                                 {{service.unitofpatientsharevatamount}}</div>
                         </div>
                     </td>
-                    <td>
+                    <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">
                         <div style="width: 100%; display: flex;">
                             <div>{{service.net}} {{service.unitofnet}}</div>
                             <div style="margin-left: auto;">{{service.netvatamount}} {{service.unitofnetvatamount}}
                             </div>
                         </div>
                     </td>
-                    <td>{{service.servicedate}}</td>
-                    <td>{{service.invoicenumber}}</td>
+                    <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">{{service.servicedate}}</td>
+                    <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">{{service.invoicenumber}}</td>
                 </tr>
             </tbody>
         </table>
+        <mat-menu #editServiceCodeMenu class="serviceCodesEditMenu">
+            <mat-form-field *ngIf="priceListExist" style="width: 90%; margin: 20px 10px 20px 20px;" (click)="$event.stopPropagation()">
+                <input type="text" placeholder="Select service code" matInput [formControl]="searchServicesController"
+                    [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()" (click)="$event.stopPropagation()">
+                <mat-autocomplete #servicesOptionsAutoComplete>
+                    <mat-option [matMenuTriggerFor]="editServiceCodeMenu" *ngFor="let option of servicesOptions" (click)="editService(option)">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <p *ngIf="!priceListExist" style="width: 90%; margin: 20px 10px 20px 20px; color: #f59517;">Price list does not exist! <mat-icon style="display: inline; font-size: 15px;">error</mat-icon></p>
+        </mat-menu>
     </div>
     <div class="services">
         <p>Attachment
@@ -279,12 +301,12 @@
 
             <div class="attachment"
                 *ngIf="isEditMode && (newAttachmentsPreview.length + data.claim.attachments.length) < maxNumberOfAttachment">
-                <button mat-button [matMenuTriggerFor]="menu" mat-icon-button mat-icon-button color="primary"
+                <button mat-button [matMenuTriggerFor]="attachmentTypeMenu" mat-icon-button mat-icon-button color="primary"
                     style="margin: auto">
                     <mat-icon>add</mat-icon>
                 </button>
                
-                <mat-menu #menu="matMenu">
+                <mat-menu #attachmentTypeMenu="matMenu">
                     <div style="padding: 10px;">
                     <label>What Type of Attachment?</label>
                     <mat-radio-group (click)="fileInput.click()" aria-label="Select an option">

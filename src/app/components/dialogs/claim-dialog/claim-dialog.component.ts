@@ -14,8 +14,13 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { SearchService } from 'src/app/services/serchService/search.service';
 import { Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { sampleTime } from 'rxjs/operators';
+import { sampleTime, filter } from 'rxjs/operators';
 import { UploadAttachmentType } from 'src/app/models/UploadAttacchmentType';
+import { Service } from 'src/app/models/service';
+import { SearchedClaim } from 'src/app/models/searchedClaim';
+import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-claims.component';
+import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -28,6 +33,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   toDeleteAttachments = [];
   maxNumberOfAttachment: number;
   fileType: string;
+  claims: SearchedClaim[];
+  private searchClaimsComponent: SearchClaimsComponent;
 
 
   constructor(public commen: SharedServices,
@@ -37,21 +44,42 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     public adminService: AdminService,
     private searchService: SearchService,
     private attachmentService: AttachmentService,
+    private eligibilityService: EligibilityService,
+    public router: Router,
+
     private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
+    this.TofetchData();
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims"))
+    ).subscribe(() => {
+      this.TofetchData();
+    });
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
     this.maxNumberOfAttachment = Number.parseInt(this.data.maxNumberOfAttachment);
+    this.adminService.checkIfPriceListExist(this.data.claim.providerId, this.data.claim.payerid).subscribe(event => {
+      if(event instanceof HttpResponse){
+        this.priceListExist = true;
+      }
+    });
   }
+
+
+ TofetchData(){
+   this.searchClaimsComponent.fetchData();
+ }
 
   ngAfterContentInit() {
     if (this.data.edit) {
       this.toggleEditMode()
     }
   }
+
+  priceListExist:boolean = false;
 
   loading: boolean = false;
   loadingResponse: string;
@@ -64,9 +92,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   genderClasses: string;
   approvalClasses: string;
   eligibilityClasses: string;
-  servicesErrors:string[] = [];
+  servicesErrors: string[] = [];
 
   isEditMode: boolean = false;
+  serviceUnderEditting: Service;
+  edittedServices: { index: number, oldValue: string, newValue: string }[] = [];
   editButtonLabel: string = "Edit";
 
   memberid = new FormControl(this.data.claim.memberid);
@@ -79,19 +109,39 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
 
   searchDiag = new FormControl("");
+  searchServicesController = new FormControl("");
 
-  options: ICDDiagnosis[] = [];
+  icedOptions: ICDDiagnosis[] = [];
+  servicesOptions: string[] = [];
 
   diagnosisList: ICDDiagnosis[] = [];
-  toAddFileTypeAttachments:UploadAttachmentType [] = [];
+  toAddFileTypeAttachments: UploadAttachmentType[] = [];
+  eligibilityWaitingList:{result:string, waiting:boolean}[] = [];
 
+  providerId: string;
+  payerId: string;
+
+
+  claimIsWaitingEligibility(claimId:string){
+    return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
+  }
+
+  isEligibleState(status:string){
+    if(status == null) return false;
+    return status.toLowerCase() == 'eligible';
+  }
+
+  checkClaim(id: string) {
+    this.eligibilityWaitingList[id] = {result:'', waiting:true};
+    this.searchClaimsComponent.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id)]));
+  }
 
   setErrors() {
-    this.commentBoxClasses = 'error';
     this.commentBoxText = "";
     for (let error of this.data.claim.errors) {
-      if(error.code != 'SERVCOD-VERFIY'){
+      if (error.code != 'SERVCOD-VERFIY') {
         this.commentBoxText += `${error.description}\n`;
+        this.commentBoxClasses = 'error';
       } else {
         this.servicesErrors.push(error.fieldName.split(':')[1]);
       }
@@ -140,6 +190,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       this.toAddFileTypeAttachments = [];
       this.files = [];
       this.newAttachmentsPreview = [];
+      this.edittedServices.forEach(edittedService => {
+        this.data.claim.services[edittedService.index].servicecode = edittedService.oldValue.split('|')[0].trim();
+        this.data.claim.services[edittedService.index].servicedescription = edittedService.oldValue.split('|')[1].trim();
+      });
+      this.edittedServices = [];
     }
   }
 
@@ -158,18 +213,31 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
 
   searchICDCodes() {
-    this.options = [];
+    this.icedOptions = [];
     if (this.searchDiag.value != "")
       this.adminService.searchICDCode(this.searchDiag.value).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object)
               Object.keys(event.body).forEach(key => {
-                this.options.push(new ICDDiagnosis(null,
+                this.icedOptions.push(new ICDDiagnosis(null,
                   event.body[key]["icddiagnosisCode"],
                   event.body[key]["description"]
-                )
-                )
+                ))
+              });
+          }
+        }
+      );
+  }
+  searchServices() {
+    this.servicesOptions = [];
+    if (this.searchServicesController.value != "")
+      this.adminService.searchSeviceCode(this.searchServicesController.value, this.data.claim.providerId, this.data.claim.payerid).subscribe(
+        event => {
+          if (event instanceof HttpResponse) {
+            if (event.body instanceof Object)
+              Object.keys(event.body['content']).forEach(key => {
+                this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`)
               });
           }
         }
@@ -237,7 +305,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     if (this.files.length > 0) {
       flag = true;
     }
-  
+
     if (this.toAddFileTypeAttachments.length > 0) {
       claim.types = this.toAddFileTypeAttachments;
       flag = true;
@@ -248,13 +316,22 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       claim.deletedAttachments = this.toDeleteAttachments.map(attachment => attachment.attachmentid);
     }
 
+    if(this.edittedServices.length > 0){
+      flag = true;
+      claim.serviceUpdates = this.edittedServices.map(edittedService => ({
+        serviceid:this.data.claim.services[edittedService.index].serviceid,
+        serviceCode: edittedService.newValue.split('|')[0].trim(),
+        serviceDescription: edittedService.newValue.split('|')[1].trim()
+      }));
+    }
+
     if (flag) {
       this.loading = true;
       let body: FormData = new FormData();
-      if(claim != {})
+      if (claim != {})
         body.append('claim', JSON.stringify(claim));
       this.files.forEach(file => body.append("files", file, file.name));
-      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body).subscribe(event => {
+      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body, this.priceListExist).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
@@ -376,8 +453,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
         return;
       }
       this.files.push(file);
-      if(this.fileType!=null && this.fileType != "")
-      this.toAddFileTypeAttachments.push(new UploadAttachmentType (file.name, this.fileType));
+      if (this.fileType != null && this.fileType != "")
+        this.toAddFileTypeAttachments.push(new UploadAttachmentType(file.name, this.fileType));
       this.preview(file, this.files.length - 1);
       console.log(this.fileType);
     }
@@ -414,5 +491,22 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     let index = this.newAttachmentsPreview.indexOf(attachment);
     if (index >= 0)
       this.newAttachmentsPreview.splice(index, 1);
+  }
+
+  editService(newValue: string) {
+    if (this.serviceUnderEditting == null) {
+      return;
+    }
+    const index = this.data.claim.services.findIndex(service => service == this.serviceUnderEditting);
+    if(index >= 0){
+      this.edittedServices.push({
+        index: index,
+        oldValue: `${this.data.claim.services[index].servicecode} | ${this.data.claim.services[index].servicedescription}`,
+        newValue: newValue
+      });
+      this.data.claim.services[index].servicecode = newValue.split('|')[0].trim();
+      this.data.claim.services[index].servicedescription = newValue.split('|')[1].trim();
+      this.servicesOptions = [];
+    }
   }
 }
