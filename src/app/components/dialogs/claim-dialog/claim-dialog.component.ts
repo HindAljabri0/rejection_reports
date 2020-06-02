@@ -18,9 +18,7 @@ import { sampleTime, filter } from 'rxjs/operators';
 import { UploadAttachmentType } from 'src/app/models/UploadAttacchmentType';
 import { Service } from 'src/app/models/service';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
-import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-claims.component';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-claim-dialog',
@@ -34,7 +32,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   maxNumberOfAttachment: number;
   fileType: string;
   claims: SearchedClaim[];
-  private searchClaimsComponent: SearchClaimsComponent;
 
 
   constructor(public commen: SharedServices,
@@ -45,18 +42,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     private searchService: SearchService,
     private attachmentService: AttachmentService,
     private eligibilityService: EligibilityService,
-    public router: Router,
 
     private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
-    this.TofetchData();
-    this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims"))
-    ).subscribe(() => {
-      this.TofetchData();
-    });
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
@@ -67,11 +57,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       }
     });
   }
-
-
- TofetchData(){
-   this.searchClaimsComponent.fetchData();
- }
 
   ngAfterContentInit() {
     if (this.data.edit) {
@@ -129,11 +114,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   isEligibleState(status:string){
     if(status == null) return false;
     return status.toLowerCase() == 'eligible';
-  }
-
-  checkClaim(id: string) {
-    this.eligibilityWaitingList[id] = {result:'', waiting:true};
-    this.searchClaimsComponent.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id)]));
   }
 
   setErrors() {
