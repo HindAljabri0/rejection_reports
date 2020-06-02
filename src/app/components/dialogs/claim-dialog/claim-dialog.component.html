@@ -29,7 +29,9 @@
     <tr>
         <p style="color: #21B744;" *ngIf="data.claim.status == 'Accepted'">
             Status: {{data.claim.status}}</p>
-        <p style="color: #E988AD;" *ngIf="data.claim.status !== 'Accepted'">
+        <p style="color: #E988AD;" *ngIf="data.claim.status == 'NotAccepted'">
+            Status: {{data.claim.status}}</p>
+        <p style="color: #adadad;" *ngIf="data.claim.status == 'INVALID'">
             Status: {{data.claim.status}}</p>
     </tr>
 </div>
