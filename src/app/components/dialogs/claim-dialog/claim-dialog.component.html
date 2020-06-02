@@ -25,9 +25,13 @@
         {{data.claim.payerclaimrefno}}
     </p>
 </div>
-<div class="header sub">
-    <p>Status</p>
-    <span class="spacer"></span>
+<div class="header sub" >
+    <tr>
+        <p style="color: #21B744;" *ngIf="data.claim.status == 'Accepted'">
+            Status: {{data.claim.status}}</p>
+        <p style="color: #E988AD;" *ngIf="data.claim.status !== 'Accepted'">
+            Status: {{data.claim.status}}</p>
+    </tr>
 </div>
 <div class="content">
     <div class="gInfo">
