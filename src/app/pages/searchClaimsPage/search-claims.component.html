@@ -76,7 +76,7 @@
                 {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
             </p>
             <span class="spacer"></span>
-            <div *ngIf="searchResult != null && searchResult.totalPages > 0"
+            <div *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null"
                 style="font-size: small; display: flex; align-items: end;"
                 [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
                 <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>&nbsp;&nbsp;&nbsp;

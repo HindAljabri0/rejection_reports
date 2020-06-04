@@ -11,7 +11,7 @@
 </mat-card>
 <div *ngIf="loading" class="loadingBG"></div>
 <div class="header">
-    <button mat-icon-button [mat-dialog-close]="false">
+    <button mat-icon-button [mat-dialog-close]="data.claim">
         <mat-icon>clear</mat-icon>
     </button>
     <p>{{data.claim.casetype}}</p>
@@ -27,12 +27,7 @@
 </div>
 <div class="header sub" >
     <tr>
-        <p style="color: #21B744;" *ngIf="data.claim.status == 'Accepted'">
-            Status: {{data.claim.status}}</p>
-        <p style="color: #E988AD;" *ngIf="data.claim.status == 'NotAccepted'">
-            Status: {{data.claim.status}}</p>
-        <p style="color: #adadad;" *ngIf="data.claim.status == 'INVALID'">
-            Status: {{data.claim.status}}</p>
+        <p [style.color]="statusToColor(data.claim.status)">Status: {{statusToName(data.claim.status)}}</p>
     </tr>
 </div>
 <div class="content">
@@ -311,18 +306,18 @@
                 <mat-menu #attachmentTypeMenu="matMenu">
                     <div style="padding: 10px;">
                     <label>What Type of Attachment?</label>
-                    <mat-radio-group (click)="fileInput.click()" aria-label="Select an option">
+                    <mat-radio-group  aria-label="Select an option">
                        
-                        <mat-radio-button class="block" (click)="this.fileType = 'MEDICAL_REPORT'" id="MEDICAL_REPORT"
+                        <mat-radio-button class="block" (click)="this.fileType = 'MEDICAL_REPORT'; fileInput.click();" id="MEDICAL_REPORT"
                             value="MEDICAL_REPORT">Medical Report</mat-radio-button>
                         
-                        <mat-radio-button class="block" (click)="this.fileType = 'IQAMA_ID_COPY'" id="IQAMA_ID_COPY"
+                        <mat-radio-button class="block" (click)="this.fileType = 'IQAMA_ID_COPY'; fileInput.click();" id="IQAMA_ID_COPY"
                             value="IQAMA_ID_COPY">Iqama/ID Copy</mat-radio-button>
                         
-                        <mat-radio-button class="block" (click)="this.fileType = 'X_RAY_RESULT'" id="X_RAY_RESULT"
+                        <mat-radio-button class="block" (click)="this.fileType = 'X_RAY_RESULT'; fileInput.click()" id="X_RAY_RESULT"
                             value="X_RAY_RESULT">X-Ray Result</mat-radio-button>
                         
-                        <mat-radio-button class="block" (click)="this.fileType = 'LAB_RESULT'" id="LAB_RESULT" value="LAB_RESULT">Lab
+                        <mat-radio-button class="block" (click)="this.fileType = 'LAB_RESULT'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">Lab
                             Result</mat-radio-button>
 
                         <input hidden type="file" #fileInput id="file" onclick="this.value = null"
