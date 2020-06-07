@@ -4,66 +4,54 @@
             <li><a class="nav-link" routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
             <li><a class="nav-link" routerLink="upload" routerLinkActive="is-active">Upload</a></li>
         </ul> -->
-  <div class="list-container">
+  <div class="list-container" *ngIf="!isAdmin">
     <div class="list-tittle"> Claim </div>
-
     <ul id="zero">
-
       <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
         <li id="li-container">
-
           <img class="icon" src="../../../assets/dashboard.svg" />
           Dashboard
         </li>
       </a>
-
       <a routerLink="upload" routerLinkActive="is-active">
         <li id="li-container">
           <img class="icon" src="../../../assets/uploadclaim.svg" />
           Upload Claim
         </li>
       </a>
-
       <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
         <li id="li-container">
           <img class="icon" src="../../../assets/summary.svg" />
           Summary
         </li>
       </a>
-
       <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
         <li id="li-container" class="new">
           <img class="icon" src="../../../assets/summary.svg" />
           Summary
         </li>
       </a>
-
       <a routerLink="create" routerLinkActive="is-active">
         <li id="li-container">
           <img class="icon" src="../../../assets/addclaim.svg" />
           Create Claim
         </li>
       </a>
-
       <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
         <li id="li-container">
           <img class="icon" src="../../../assets/notification.svg" />
           Notification
         </li>
       </a>
-
       <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
         <li id="li-container">
           <img class="icon" src="../../../assets/notification.svg" />
           Announcement
         </li>
       </a>
-
     </ul>
-
     <div>
       <div class="list-tittle"> Reports </div>
-
       <ul id="zero">
         <a routerLink="{{providerId}}/reports" routerLinkActive="is-active">
           <li id="li-container">
@@ -72,10 +60,25 @@
           </li>
         </a>
       </ul>
-
     </div>
   </div>
+  <div class="list-container" *ngIf="isAdmin">
+    <div class="list-tittle"> Configrations </div>
+    <ul id="zero">
+      <a routerLink="administration/config/providers" routerLinkActive="is-active">
+        <li id="li-container">
+          Providers Config
+        </li>
+      </a>
+    </ul>
 
-
-
+    <div class="list-tittle"> Audit </div>
+    <ul id="zero">
+      <a routerLink="administration/auditLogs" routerLinkActive="is-active">
+        <li id="li-container">
+          Audit Trail
+        </li>
+      </a>
+    </ul>
+  </div>
 </div>

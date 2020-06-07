@@ -9,23 +9,30 @@ import { UploadService } from 'src/app/services/claimfileuploadservice/upload.se
 })
 export class SidebarComponent implements OnInit {
 
-  providerId:string;
+  providerId: string;
+  isAdmin: boolean = false;
 
-  constructor(private auth:AuthService, private uploadService:UploadService) {
-    this.auth.isUserNameUpdated.subscribe(updated=>{
-      this.providerId = this.auth.getProviderId();
+  constructor(private auth: AuthService, private uploadService: UploadService) {
+    this.auth.isUserNameUpdated.subscribe(updated => {
+      this.init();
     });
   }
 
   ngOnInit() {
-    this.providerId = this.auth.getProviderId();
+    this.init();
   }
 
-  get uploadProgress():number {
+  init(){
+    this.providerId = this.auth.getProviderId();
+    let privilege = localStorage.getItem('101101');
+    this.isAdmin = privilege != null && privilege.includes('|22');
+  }
+
+  get uploadProgress(): number {
     return this.uploadService.progress.percentage;
   }
 
-  get uploadSummaryIsNotNull():boolean{
+  get uploadSummaryIsNotNull(): boolean {
     return this.uploadService.summary.uploadSummaryID != null;
   }
 
