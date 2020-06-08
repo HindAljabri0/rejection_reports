@@ -1,5 +1,5 @@
 <div class="mainPage" style="margin: 80px 20px 0px 20px;">
-    <app-detailscard title="Providers Configration" [accentColor]="'#3060AA'">
+    <app-detailscard title="Providers Configration" [accentColor]="'white'">
         <div class="selectProvider">
             <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
                 <mat-label>Select Provider</mat-label>
@@ -8,14 +8,30 @@
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-autocomplete autoActiveFirstOption #auto>
-                    <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.name">
+                    <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.name" (click)="selectProvider(provider.switchAccountId)">
                         {{provider.switchAccountId}} | {{provider.name}}
                     </mat-option>
-                    <mat-option *ngIf="error != null && error != '' && !isLoading">
-                        {{error}}
+                    <mat-option *ngIf="providersError != null && providersError != '' && !isLoading">
+                        {{providersError}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
+        </div>
+
+        <div class="serviceCodeValidation" *ngIf="selectedProvider != null && selectedProvider != ''">
+            <div class="header">
+                <h5>Service Code Validation</h5>
+            </div>
+            <div *ngIf="payerError == null || payerError == ''">
+                <div *ngFor="let payer of associatedPayers" style="width: 100%; padding: 10px 30px; display: flex;">
+                    <p [ngStyle]="{'color': (payer.hasAssociatedPriceList)? 'black':'gray'}">{{payer.name}}</p>
+                    <span class="spacer"></span>
+                    <mat-slide-toggle style="z-index: 0;" [disabled]="!payer.hasAssociatedPriceList"></mat-slide-toggle>
+                </div>
+            </div>
+            <div *ngIf="payerError != null && payerError != ''" style="width: 100%; padding: 10px 30px; display: flex;">
+                <p>{{payerError}}</p>
+            </div>
         </div>
     </app-detailscard>
 </div>

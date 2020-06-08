@@ -16,4 +16,10 @@ export class SuperAdminService {
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
+
+  getAssociatedPayers(providerId:string){
+    const requestURL: string = `/providers/${providerId}/payers`;
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
 }
