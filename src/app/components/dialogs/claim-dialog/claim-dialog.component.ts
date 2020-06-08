@@ -55,6 +55,9 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
         this.priceListExist = true;
       }
     });
+    this.dialogRef.backdropClick().subscribe(()=>{
+      this.dialogRef.close(this.data.claim);
+    })
   }
 
   ngAfterContentInit() {
@@ -198,12 +201,12 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   searchServices() {
     this.servicesOptions = [];
     if (this.searchServicesController.value != "")
-      this.adminService.searchSeviceCode(this.searchServicesController.value, this.data.claim.providerId, this.data.claim.payerid).subscribe(
+      this.adminService.searchSeviceCode(this.searchServicesController.value.toUpperCase(), this.data.claim.providerId, this.data.claim.payerid).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object)
               Object.keys(event.body['content']).forEach(key => {
-                this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`)
+                this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`.toUpperCase())
               });
           }
         }
@@ -301,7 +304,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
-            this.reloadeClaim();
+            this.reloadeClaim(event.body['status']);
           }
         }
       }, eventError => {
@@ -316,14 +319,15 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     return this.loadingResponse != null && this.loadingResponse.includes(this.commen.statusToName(ClaimStatus.Accepted));
   }
   onDoneSaving() {
-    if (this.isAccepted()) {
-      this.dialogRef.close(true);
-    }
+    this.toggleEditMode();
     this.loading = false;
     this.loadingResponse = null;
   }
 
-  reloadeClaim() {
+  reloadeClaim(status?:string) {
+    if(status != null){
+      this.data.claim.status = status;
+    }
     this.toDeleteAttachments = [];
     this.files = [];
     this.newAttachmentsPreview = [];
@@ -343,7 +347,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogRef.close(true);
+        this.dialogRef.close(this.data.claim);
       }
     });
   }
@@ -457,6 +461,13 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     let index = this.newAttachmentsPreview.indexOf(attachment);
     if (index >= 0)
       this.newAttachmentsPreview.splice(index, 1);
+  }
+
+  statusToName(status:string){
+    return this.commen.statusToName(status);
+  }
+  statusToColor(status:string){
+    return this.commen.getCardAccentColor(status);
   }
 
   editService(newValue: string) {

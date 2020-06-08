@@ -8,13 +8,11 @@ import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angu
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-// import { ApmService, ApmErrorHandler } from '@elastic/apm-rum-angular';
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ClaimsummaryComponent } from './pages/claimUploadignPage/claimsummary/claimsummary.component';
-import { DetailscardComponent } from './components/reusables/detailscard/detailscard.component';
 import { ClaimpageComponent } from './pages/claimUploadignPage/claimpage.component';
 import { AbstractcardComponent } from './components/reusables/abstractcard/abstractcard.component';
 import { DragdropDirective } from './pages/claimUploadignPage/claimfileupload/dragdrop.directive';
@@ -28,18 +26,15 @@ import { AnnouncementCenterComponent } from './components/announcement-center/an
 import { AnnouncementCardComponent } from './components/reusables/announcement-card/announcement-card.component';
 import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-dialog.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
-import { Router } from '@angular/router';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
 import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
-import { from } from 'rxjs';
 import { PaymentReferenceReportComponent } from './pages/reports/payment-reference-report/payment-reference-report.component';
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
-
 import { RejectionReportClaimDialogComponent } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadHistoryCenterComponent } from './components/upload-history-center/upload-history-center.component';
 import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
@@ -49,11 +44,7 @@ import { RejectionReportComponent } from './pages/reports/rejection-report/rejec
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
 import { MatiralModule } from './modules/matiral/matiral.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
-import { MatIconModule } from '@angular/material/icon'
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip'
+import { SharedModule } from './modules/shared.module';
 
 
 
@@ -66,7 +57,6 @@ import { MatTooltipModule } from '@angular/material/tooltip'
     SidebarComponent,
     HeaderComponent,
     ClaimsummaryComponent,
-    DetailscardComponent,
     ClaimpageComponent,
     AbstractcardComponent,
     DragdropDirective,
@@ -115,11 +105,6 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 
     ]),
     BrowserModule,
-    MatIconModule,
-    MatCardModule,
-    MatTooltipModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
     HttpClientModule,
     BrowserAnimationsModule,
     StepperProgressBarModule,
@@ -128,6 +113,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'
     ScrollingModule,
     InfiniteScrollModule,
     MatiralModule,
+    SharedModule
   ],
   providers: [
     UploadService,

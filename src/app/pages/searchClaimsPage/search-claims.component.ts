@@ -1,5 +1,5 @@
 import { AttachmentService } from './../../services/attachmentService/attachment.service';
-import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnDestroy, } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnDestroy, NgZone, } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { EligibilityService } from 'src/app/services/eligibilityService/eligibil
 import { Observable, Subject } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
+import { ViewedClaim } from 'src/app/models/viewedClaim';
 
 @Component({
   selector: 'app-search-claims',
@@ -28,7 +29,6 @@ import { UploadSummary } from 'src/app/models/uploadSummary';
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
   file: File;
   buttonDisabled: boolean = false;
-
 
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
     public commen: SharedServices, public routeActive: ActivatedRoute,
@@ -45,7 +45,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   isViewChecked: boolean = false;
 
-  progressChange:Subject<{ percentage: number }> = new Subject();
+  progressChange: Subject<{ percentage: number }> = new Subject();
 
 
   placeholder = '-';
@@ -94,8 +94,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   queryStatus: number;
   queryPage: number;
 
-  waitingEligibilityCheck:boolean = false;
-  eligibilityWaitingList:{result:string, waiting:boolean}[] = [];
+  waitingEligibilityCheck: boolean = false;
+  eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility: boolean = false;
 
   ngOnInit() {
@@ -106,8 +106,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.fetchData();
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
-      if (value != null && value) {
-        this.fetchData();
+      if (value != null) {
+        this.reloadClaim(value)
       }
     })
     this.submittionErrors = new Map();
@@ -271,7 +271,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           for (let claim of this.claims) {
             if (this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCountOfPage++;
           }
-          if(this.payerId == null) this.payerId = this.claims[0].payerId;
+          if (this.payerId == null) this.payerId = this.claims[0].payerId;
           this.setAllCheckBoxIsIndeterminate();
           this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
           this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
@@ -462,27 +462,72 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    if(this.commen.loading) return;
+    if (this.commen.loading) return;
     this.commen.loadingChanged.next(true);
     this.attachmentService.getMaxAttachmentAllowed(this.providerId).subscribe(
       event => {
-        if(event instanceof HttpResponse){
+        if (event instanceof HttpResponse) {
           let maxNumber = event.body;
           this.commen.loadingChanged.next(false);
           this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId, maxNumber, edit);
         }
       }
     )
-    
+
+  }
+
+  reloadClaim(claim: ViewedClaim) {
+    let flag = false;
+    let index = this.claims.findIndex(oldClaim => oldClaim.claimId == `${claim.claimid}`);
+    if (this.claims[index].status != claim.status) {
+      let summaries = this.summaries;
+      
+      let oldSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(this.claims[index].status.toLowerCase()));
+      summaries[oldSummaryIndex] = {
+        totalClaims: this.summaries[oldSummaryIndex].totalClaims - 1,
+        totalNetAmount: this.summaries[oldSummaryIndex].totalNetAmount - claim.net,
+        totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
+        statuses: this.summaries[oldSummaryIndex].statuses,
+        uploadName: this.summaries[oldSummaryIndex].uploadName
+      }
+      this.claims[index].status = claim.status;
+      let newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
+      if (newSummaryIndex != -1) {
+        summaries[newSummaryIndex] = {
+          totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
+          totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
+          totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
+          statuses: this.summaries[newSummaryIndex].statuses,
+          uploadName: this.summaries[newSummaryIndex].uploadName
+        }
+        window.setTimeout(()=>this.summaries = summaries, 1000);
+      } else {
+        flag = true;
+        this.fetchData();
+      }
+    }
+    if (!flag) {
+      if (this.selectedCardKey != 0) {
+        this.claims.splice(index, 1);
+      } else {
+        this.claims[index].memberId = claim.memberid;
+        this.claims[index].policyNumber = claim.policynumber;
+        this.claims[index].nationalId = claim.nationalId;
+        this.claims[index].numOfPriceListErrors = claim.errors.filter(error => error.code == 'SERVCOD-VERFIY').length;
+        this.claims[index].numOfAttachments = claim.attachments.length;
+        this.claims[index].eligibilitycheck = null;
+      }
+
+    }
   }
 
   checkClaim(id: string) {
-    this.eligibilityWaitingList[id] = {result:'', waiting:true};
+    this.eligibilityWaitingList[id] = { result: '', waiting: true };
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id)]));
   }
 
   checkSelectedClaims() {
-    this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = {result:'', waiting:true});
+    this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = { result: '', waiting: true });
     this.waitingEligibilityCheck = true;
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, this.selectedClaims.map(id => Number.parseInt(id))));
   }
@@ -513,36 +558,36 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     })
   }
   watchEligibilityChanges() {
-    if(this.watchingEligibility) return;
+    if (this.watchingEligibility) return;
 
     this.watchingEligibility = true;
 
     this.notificationService.startWatchingMessages(this.providerId, 'eligibility');
     this.notificationService._messageWatchSources['eligibility'].subscribe(value => {
       value = value.replace(`"`, '').replace(`"`, '');
-      const splitedValue:string[] =  value.split(':');
-      if(splitedValue.length == 2){
+      const splitedValue: string[] = value.split(':');
+      if (splitedValue.length == 2) {
         const index = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
-        if(index > -1){
+        if (index > -1) {
           this.claims[index].eligibilitycheck = splitedValue[1];
         }
-        if(this.eligibilityWaitingList[splitedValue[0]] != null){
+        if (this.eligibilityWaitingList[splitedValue[0]] != null) {
           this.eligibilityWaitingList[splitedValue[0]].result = splitedValue[1];
           this.eligibilityWaitingList[splitedValue[0]].waiting = false;
         }
       }
-      if((this.eligibilityWaitingList.length != 0 && this.eligibilityWaitingList.every(claim => !claim.waiting))
-      || this.claims.every(claim => claim.status == 'Accepted' && claim.eligibilitycheck != null)){
+      if ((this.eligibilityWaitingList.length != 0 && this.eligibilityWaitingList.every(claim => !claim.waiting))
+        || this.claims.every(claim => claim.status == 'Accepted' && claim.eligibilitycheck != null)) {
         // this.notificationService.stopWatchingMessages('eligibility');
         this.waitingEligibilityCheck = false;
       }
     });
   }
 
-  claimIsWaitingEligibility(claimId:string){
+  claimIsWaitingEligibility(claimId: string) {
     return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
   }
-  get isWaitingForEligibility(){
+  get isWaitingForEligibility() {
     return this.waitingEligibilityCheck;
   }
 
@@ -669,8 +714,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.currentSummariesPage--;
   }
 
-  isEligibleState(status:string){
-    if(status == null) return false;
+  isEligibleState(status: string) {
+    if (status == null) return false;
     return status.toLowerCase() == 'eligible';
   }
 }
