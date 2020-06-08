@@ -146,7 +146,6 @@ export class SharedServices {
     if (this.providerId == null) { return; }
     this.payers = this.getPayersList();
     this.payerids = this.payers.map(item => item.id);
-    console.log(this.payerids);
     this.announcements.getAnnouncementsCount(this.providerId, this.payerids).subscribe(event => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`);
