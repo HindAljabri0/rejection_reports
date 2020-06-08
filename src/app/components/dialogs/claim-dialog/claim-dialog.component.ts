@@ -201,12 +201,12 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   searchServices() {
     this.servicesOptions = [];
     if (this.searchServicesController.value != "")
-      this.adminService.searchSeviceCode(this.searchServicesController.value, this.data.claim.providerId, this.data.claim.payerid).subscribe(
+      this.adminService.searchSeviceCode(this.searchServicesController.value.toUpperCase(), this.data.claim.providerId, this.data.claim.payerid).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object)
               Object.keys(event.body['content']).forEach(key => {
-                this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`)
+                this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`.toUpperCase())
               });
           }
         }
