@@ -18,22 +18,14 @@ export class AnnouncementCardComponent implements OnInit {
   @Input() announcement: Announcement;
     
     payerIcon: string;
-    payers: { id: number, name: string }[];
     payerids: number[];
 
     ngOnInit() {
-      this.payers = this.commen.getPayersList();
-      this.payerids = this.payers.map(item => item.id);
+      this.payerids = this.commen.payers.map(item => item.id);
     }
     constructor(private router: Router, public announcementService: AnnouncementsService,
                 public dialogService: DialogService, private commen: SharedServices,
                 public routeActive: ActivatedRoute) {
-  }
-
-
-  getPayerIcon(payerid: number )
-  {
-    console.log(this.payers.filter(item => item.id === payerid));
   }
 
   parseInt(str: string) {

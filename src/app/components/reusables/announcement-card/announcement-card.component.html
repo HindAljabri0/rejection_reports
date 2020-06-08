@@ -10,15 +10,10 @@
         <table style="text-align: start;">
             <tr style="padding: 5px 15px;">
                 <th>
-                    <p class="totalPaid">{{announcement.criteriaType}}</p>
-                    <p class="totalPaid">{{announcement.criteriaValue}}</p>
+                    <img  *ngIf="announcement.criteriaType!='PAYER'" src="../../../../assets/{{announcement.criteriaValue}}.jpeg" height="100px" alt='{{announcement.criteriaValue}}' />
+                    <img  *ngIf="announcement.criteriaType=='PAYER'" src="../../../../assets/waseel_announcements.jpg" height="50px" alt='{{announcement.criteriaValue}}' />
                     <div  [innerHTML]="announcement.messageDescription"></div>
                 </th>
-                <!--th>
-                    <div class="nIcon">
-                        <img src="../../../../assets/box.png" alt="">
-                    </div>
-                </th-->
             </tr>
         </table>
     </div>
