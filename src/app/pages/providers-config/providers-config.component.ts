@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
@@ -16,11 +17,13 @@ export class ProvidersConfigComponent implements OnInit {
   providers: any[] = [];
   filteredProviders: any[] = [];
   providerController: FormControl = new FormControl();
-  error: String;
+  providersError: String;
+  payersError: String;
 
   selectedProvider: string;
+  associatedPayers: any[] = [];
 
-  constructor(private superAdmin: SuperAdminService, private router: Router, private sharedServices: SharedServices) {
+  constructor(private superAdmin: SuperAdminService, private router: Router, private sharedServices: SharedServices, private location: Location) {
     sharedServices.loadingChanged.next(true);
   }
 
@@ -35,33 +38,65 @@ export class ProvidersConfigComponent implements OnInit {
           this.filteredProviders = this.providers;
           if (!location.href.endsWith('providers')) {
             let paths = location.href.split('/');
-            this.selectedProvider = paths[paths.length-1];
-            console.log(this.selectedProvider);
+            this.selectedProvider = paths[paths.length - 1];
+
             let provider = this.providers.find(provider => provider.switchAccountId == this.selectedProvider);
             if (provider != undefined) {
               console.log(provider);
               this.providerController.setValue(`${provider.switchAccountId} | ${provider.name}`);
               this.updateFilter();
-            }
-          }
-          this.sharedServices.loadingChanged.next(false);
+              this.getAssociatedPayers();
+            } else this.sharedServices.loadingChanged.next(false);
+          } else this.sharedServices.loadingChanged.next(false);
         }
       }
     }, error => {
       this.sharedServices.loadingChanged.next(false);
-      this.error = 'could not load providers, please try again later.'
+      this.providersError = 'could not load providers, please try again later.'
       console.log(error);
     });
   }
 
   updateFilter() {
-    console.log('test');
     this.filteredProviders = this.providers.filter(provider =>
       `${provider.switchAccountId} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
     );
   }
 
-  get isLoading(){
+  selectProvider(providerId: string) {
+    this.selectedProvider = providerId;
+    this.location.go(`/administration/config/providers/${providerId}`);
+    this.getAssociatedPayers();
+  }
+
+  getAssociatedPayers() {
+    if(this.selectedProvider == null || this.selectedProvider == '') return;
+    this.sharedServices.loadingChanged.next(true);
+    this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if(event.body instanceof Array){
+          this.associatedPayers = event.body;
+        }
+        if(this.associatedPayers.length == 0){
+          this.payersError = 'There are no payers associated with this provider.';
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if(error instanceof HttpErrorResponse){
+        if(error.status == 404){
+          this.payersError = 'There are no payers associated with this provider.';
+        } else {
+          this.payersError = 'Could not load payers, please try again later.';
+        }
+      }
+      
+      console.log(error);
+      this.sharedServices.loadingChanged.next(false);
+    })
+  }
+
+  get isLoading() {
     return this.sharedServices.loading;
   }
 

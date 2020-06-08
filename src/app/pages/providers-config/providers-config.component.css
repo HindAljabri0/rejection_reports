@@ -1,7 +1,21 @@
 .selectProvider{
     width: 100%;
-    background-color: white;
+    background-color: #fbfbfb;
     border-radius: 10px;
     text-align: center;
     height: 64px;
+}
+
+.serviceCodeValidation{
+    margin-top: 30px;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.serviceCodeValidation .header{
+    padding: 15px 25px;
+    color: #3060AA;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #fbfbfb;
 }

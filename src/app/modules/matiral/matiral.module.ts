@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule, MatButtonModule, MatGridListModule, MatDividerModule, MatExpansionModule, MatCheckboxModule, MatRippleModule, MatToolbarModule, MatMenuModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatIconModule, MatSelectModule, MatRadioModule, MatChipsModule, MatProgressBarModule, MatPaginatorModule, MatDialogModule, MatProgressSpinnerModule, MatTooltipModule, MatAutocompleteModule, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -46,6 +46,7 @@ export const MY_FORMATS = {
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    MatSlideToggleModule,
   ],
   providers: [
     {
