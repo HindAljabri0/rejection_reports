@@ -10,7 +10,8 @@ export const environment = {
   NotificationServiceHost: "http://localhost:8222/notification-service",
   authenticationHost: "http://localhost:8086",
   adminServiceHost: "http://localhost:8087",
-  auditTrailServiceHost: "http://localhost:8089"
+  auditTrailServiceHost: "http://localhost:8089",
+  settingsServiceHost:"http://localhost:8111"
 };
 
 /*

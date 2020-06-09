@@ -1,37 +1,83 @@
 <div class="mainPage" style="margin: 80px 20px 0px 20px;">
-    <app-detailscard title="Providers Configration" [accentColor]="'white'">
+    <app-detailscard 
+        title="Providers Configration"
+        [accentColor]="'white'"
+        [bottomLeftActionText]="(isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '': 'Reset'"
+        [bottomRightActionText]="(isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '': 'Save'"
+        (bottomLeftAction)="reset()"
+        (bottomRightAction)="save()">
         <div class="selectProvider">
             <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
                 <mat-label>Select Provider</mat-label>
-                <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()" [readonly]="isLoading">
+                <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
+                    [readonly]="isLoading">
                 <button mat-button matSuffix mat-icon-button>
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-autocomplete autoActiveFirstOption #auto>
-                    <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.name" (click)="selectProvider(provider.switchAccountId)">
+                    <mat-option *ngFor="let provider of filteredProviders"
+                        [value]="provider.switchAccountId + ' | ' + provider.name"
+                        (click)="selectProvider(provider.switchAccountId)">
                         {{provider.switchAccountId}} | {{provider.name}}
                     </mat-option>
-                    <mat-option *ngIf="providersError != null && providersError != '' && !isLoading">
-                        {{providersError}}
+                    <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
+                        {{errors.providersError}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
         </div>
 
-        <div class="serviceCodeValidation" *ngIf="selectedProvider != null && selectedProvider != ''">
-            <div class="header">
-                <h5>Service Code Validation</h5>
-            </div>
-            <div *ngIf="payersError == null || payersError == ''">
-                <div *ngFor="let payer of associatedPayers" style="width: 100%; padding: 10px 30px; display: flex;">
-                    <p [ngStyle]="{'color': (payer.hasAssociatedPriceList)? 'black':'gray'}">{{payer.name}}</p>
-                    <span class="spacer"></span>
-                    <mat-slide-toggle style="z-index: 0;" [disabled]="!payer.hasAssociatedPriceList"></mat-slide-toggle>
+        <mat-accordion *ngIf="selectedProvider != null && selectedProvider != ''" multi="true">
+            <mat-expansion-panel expanded="true">
+                <mat-expansion-panel-header style="background-color: #fbfbfb;">
+                    <mat-panel-title style="color: #3060AA;">
+                        Service Code Validation
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
+                    <div *ngFor="let payer of associatedPayers" style="width: 100%; padding: 10px 30px; display: flex;">
+                        <p [ngStyle]="{'color': (payer.hasAssociatedPriceList)? 'black':'gray'}">{{payer.name}}</p>
+                        <span class="spacer"></span>
+                        <mat-slide-toggle style="z-index: 0;" [disabled]="!payer.hasAssociatedPriceList" color="primary"
+                            [checked]="getServiceCodeSettingsOfPayer(payer.switchAccountId)"
+                            (change)="onServiceCodeSettingChange(payer.switchAccountId, $event)">
+                        </mat-slide-toggle>
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="payersError != null && payersError != ''" style="width: 100%; padding: 10px 30px; display: flex;">
-                <p>{{payersError}}</p>
-            </div>
-        </div>
+                <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.serviceCode"
+                    style="width: 100%; padding: 10px 30px; display: flex;">
+                    <p>{{errors.payersError}}</p>
+                </div>
+                <div *ngIf="componentLoading.serviceCode" style="width: 100%; padding: 10px;">
+                    <mat-spinner style="margin: 0px auto;"></mat-spinner>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel expanded="true">
+                <mat-expansion-panel-header style="background-color: #fbfbfb;">
+                    <mat-panel-title style="color: #3060AA;">
+                        Portal User Configration
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser"
+                    style="margin-top: 20px;">
+                    <mat-form-field appearance="fill" style="width: 49%; margin-right: 2%;">
+                        <input matInput placeholder="Portal Username" [formControl]="portalUsernameController" st>
+                        <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 49%;">
+                        <input type="password" matInput placeholder="Passowrd" [formControl]="portalPasswordController">
+                        <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="errors.portalUserError != null && errors.portalUserError != '' && !componentLoading.portalUser"
+                    style="width: 100%; padding: 10px 30px; display: flex;">
+                    <p>{{errors.portalUserError}}</p>
+                </div>
+                <div *ngIf="componentLoading.portalUser" style="width: 100%; padding: 10px;">
+                    <mat-spinner style="margin: 0px auto;"></mat-spinner>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
     </app-detailscard>
 </div>
