@@ -79,7 +79,9 @@ export class SharedServices {
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
-      if (value) { this.showUploadHistoryCenterChange.next(false); }
+      if (value) { this.showUploadHistoryCenterChange.next(false);
+                   this.showAnnouncementCenterChange.next(false);
+                 }
     });
     this.unReadNotificationsCountChange.subscribe(value => {
       this.unReadNotificationsCount = value;
@@ -89,11 +91,13 @@ export class SharedServices {
     });
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
-      if (value) { this.showUploadHistoryCenterChange.next(false); }
+      if (value) { this.showUploadHistoryCenterChange.next(false);
+                   this.showNotificationCenterChange.next(false); }
     });
     this.showUploadHistoryCenterChange.subscribe(value => {
       this.showUploadHistoryCenter = value;
-      if (value) { this.showNotificationCenterChange.next(false); }
+      if (value) { this.showNotificationCenterChange.next(false);
+                   this.showAnnouncementCenterChange.next(false); }
     });
     this.announcementsCountChange.subscribe(value => {
       this.announcementsCount = value;
