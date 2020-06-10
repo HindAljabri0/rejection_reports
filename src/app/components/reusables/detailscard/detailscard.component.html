@@ -15,7 +15,7 @@
     <div class="sperator"></div>
     <div class="footer">
         <p>{{bottomDetails}}</p>
-        <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()">{{bottomLeftActionText}}</button>
-        <button *ngIf="bottomRightActionText!=null" mat-raised-button color="primary" (click)="bottomRightAction.emit()">{{bottomRightActionText}}</button>
+        <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()" [disabled]="bottomLeftActionDisabled">{{bottomLeftActionText}}</button>
+        <button *ngIf="bottomRightActionText!=null" mat-raised-button color="primary" (click)="bottomRightAction.emit()" [disabled]="bottomRightActionDisabled">{{bottomRightActionText}}</button>
     </div>
 </mat-card>

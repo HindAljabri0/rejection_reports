@@ -7,5 +7,6 @@ export const environment = {
   NotificationServiceHost: `${host}/notification-service`,
   authenticationHost: `${host}/authentication`,
   adminServiceHost: `${host}/admin-service`,
-  auditTrailServiceHost: `${host}/audit-trail`
+  auditTrailServiceHost: `${host}/audit-trail`,
+  settingsServiceHost:`${host}/settings`
 };

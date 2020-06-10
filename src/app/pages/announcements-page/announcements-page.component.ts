@@ -34,13 +34,19 @@ export class AnnouncementsPageComponent implements OnInit {
 
   totalAnnouncements: number = 0;
   currentAnnouncementsCount:number = 0;
+  payers: { id: number, name: string }[];
+  payerids: number[];
 
-  constructor(public commen:SharedServices, public routeActive:ActivatedRoute, public announcementsService: AnnouncementsService) { }
+  constructor(public commen:SharedServices, public routeActive:ActivatedRoute, 
+              public announcementsService: AnnouncementsService,
+              ) { }
 
   ngOnInit() {
     this.routeActive.params.subscribe(value => {
       this.providerId = value.providerId;
     });
+    this.payers = this.commen.getPayersList();
+    this.payerids = this.payers.map(item => item.id);
     this.getData(false);
   }
 
@@ -48,7 +54,7 @@ export class AnnouncementsPageComponent implements OnInit {
 
   getData(nextPage:boolean){
     if(nextPage) this.currentPage++;
-    this.announcementsService.getAnnouncements(this.providerId, '204', this.currentPage, this.pageSize).subscribe(event => {
+    this.announcementsService.getAnnouncements(this.providerId, this.payerids, this.currentPage, this.pageSize).subscribe(event => {
       if(event instanceof HttpResponse){
         const paginatedResult:PaginatedResult<Announcement> = new PaginatedResult(event.body, Announcement);
         this.totalAnnouncements = paginatedResult.totalElements;

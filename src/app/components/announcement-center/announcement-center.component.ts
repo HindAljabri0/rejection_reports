@@ -20,7 +20,7 @@ export class AnnouncementCenterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.commen.showNotificationCenterChange.next(true);
+   //  this.commen.showAnnouncementCenterChange.next(true);
   }
 
   toggleAnnouncementCenter(show: boolean) {

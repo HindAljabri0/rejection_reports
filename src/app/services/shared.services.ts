@@ -29,6 +29,8 @@ import { UploadService } from './claimfileuploadservice/upload.service';
   providedIn: 'root'
 })
 export class SharedServices {
+  payers: { id: number, name: string }[];
+  payerids: number[];
   loading: boolean = false;
   loadingChanged: Subject<boolean> = new Subject<boolean>();
 
@@ -64,16 +66,22 @@ export class SharedServices {
               private router: Router,
               private notifications: NotificationsService,
               private announcements: AnnouncementsService,
-              private uploadService: UploadService) {
+              private uploadService: UploadService
+              ) {
+    
+    
     this.loadingChanged.subscribe((value) => {
       this.loading = value;
     });
+    
     this.searchIsOpenChange.subscribe(value => {
       this.searchIsOpen = value;
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
-      if (value) { this.showUploadHistoryCenterChange.next(false); }
+      if (value) { this.showUploadHistoryCenterChange.next(false);
+                   this.showAnnouncementCenterChange.next(false);
+                 }
     });
     this.unReadNotificationsCountChange.subscribe(value => {
       this.unReadNotificationsCount = value;
@@ -83,11 +91,13 @@ export class SharedServices {
     });
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
-      if (value) { this.showUploadHistoryCenterChange.next(false); }
+      if (value) { this.showUploadHistoryCenterChange.next(false);
+                   this.showNotificationCenterChange.next(false); }
     });
     this.showUploadHistoryCenterChange.subscribe(value => {
       this.showUploadHistoryCenter = value;
-      if (value) { this.showNotificationCenterChange.next(false); }
+      if (value) { this.showNotificationCenterChange.next(false);
+                   this.showAnnouncementCenterChange.next(false); }
     });
     this.announcementsCountChange.subscribe(value => {
       this.announcementsCount = value;
@@ -138,7 +148,9 @@ export class SharedServices {
 
   getAnnouncements() {
     if (this.providerId == null) { return; }
-    this.announcements.getAnnouncementsCount(this.providerId, '204').subscribe(event => {
+    this.payers = this.getPayersList();
+    this.payerids = this.payers.map(item => item.id);
+    this.announcements.getAnnouncementsCount(this.providerId, this.payerids).subscribe(event => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`);
         if (!Number.isNaN(count)) {
@@ -150,7 +162,7 @@ export class SharedServices {
         this.announcementsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
-    this.announcements.getAnnouncements(this.providerId, '204', 0, 10).subscribe(event => {
+    this.announcements.getAnnouncements(this.providerId, this.payerids, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const paginatedResult: PaginatedResult<Announcement> = new PaginatedResult(event.body, Announcement);
         this.announcementsListChange.next(paginatedResult.content);

@@ -17,13 +17,13 @@ export class AnnouncementsService {
 
   constructor(private httpClient: HttpClient, private zone: NgZone) { }
 
-  getAnnouncements(providerId: string, payerids: string, page: number, pageSize: number) {
+  getAnnouncements(providerId: string, payerids: number[], page: number, pageSize: number) {
     const requestUrl = `/announcements/${providerId}/${payerids}?page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestUrl);
     return this.httpClient.request(request);
   }
 
-  getAnnouncementsCount(providerId: string, payerids: string) {
+  getAnnouncementsCount(providerId: string, payerids: number[]) {
     const requestUrl = `/announcements/${providerId}/${payerids}/count`;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestUrl);
     return this.httpClient.request(request);
