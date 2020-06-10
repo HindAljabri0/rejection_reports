@@ -29,12 +29,23 @@ export class SuperAdminService {
     return this.http.request(request);
   }
 
+  saveProviderPayerSettings(providerId:string, settings:{payerId:string, key:string, value:string}[]){
+    const requestURL: string = `/providers/${providerId}/config`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, settings);
+    return this.http.request(request);
+  }
+
   getPortalUserSettings(providerId:string){
     const requestURL: string = `/providers/${providerId}/portal-user`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
 
+  savePortalUserSettings(providerId:string, username:string, password:string){
+    const requestURL = `/providers/${providerId}/portal-user`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, {username: username, password:password});
+    return this.http.request(request);
+  }
   
 }
 

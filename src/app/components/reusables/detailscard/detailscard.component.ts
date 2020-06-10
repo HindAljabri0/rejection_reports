@@ -16,7 +16,9 @@ export class DetailscardComponent  {
   @Input() topRightActionText: string;
 
   @Input() bottomLeftActionText: string;
+  @Input() bottomLeftActionDisabled: boolean = false;
   @Input() bottomRightActionText: string;
+  @Input() bottomRightActionDisabled: boolean = false;
 
   @Input() bottomDetails: string;
 

@@ -26,8 +26,8 @@ export class ProvidersConfigComponent implements OnInit {
   serviceCodeValidationSettings: any[] = [];
   newServiceCodeValidationSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
-  portalUsernameController: FormControl = new FormControl();
-  portalPasswordController: FormControl = new FormControl();
+  portalUsernameController: FormControl = new FormControl('');
+  portalPasswordController: FormControl = new FormControl('');
 
   constructor(private superAdmin: SuperAdminService, private router: Router, private sharedServices: SharedServices, private location: Location) {
     sharedServices.loadingChanged.next(true);
@@ -71,6 +71,7 @@ export class ProvidersConfigComponent implements OnInit {
   selectProvider(providerId: string) {
     this.selectedProvider = providerId;
     this.location.go(`/administration/config/providers/${providerId}`);
+    this.reset();
     this.getAssociatedPayers();
   }
 
@@ -108,15 +109,77 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   save() {
+    if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser) {
+      return;
+    }
+    this.saveServiceCodeValidationSettings();
+    this.savePortalUserSettings();
 
   }
 
+  saveServiceCodeValidationSettings() {
+    let payers = Object.keys(this.newServiceCodeValidationSettings);
+    if (payers.length > 0) {
+      let newSettingsKeys = payers.filter(payerId => {
+        let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payerId);
+        return (setting != null && (setting.value == '1') != this.newServiceCodeValidationSettings[payerId])
+        || setting == null;
+      });
+      if (newSettingsKeys.length > 0) {
+        this.componentLoading.serviceCode = true;
+        this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
+          payerId: payerId,
+          key: SERVICE_CODE_VALIDATION_KEY,
+          value: (this.newServiceCodeValidationSettings[payerId]) ? '1' : '0'
+        })
+        )).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            //TODO: give success message
+            this.componentLoading.serviceCode = false;
+          }
+        }, error => {
+          //TODO: give error message
+          this.resetServiceCodeValidationSettings();
+          this.componentLoading.serviceCode = false;
+        });
+      }
+    }
+  }
+  savePortalUserSettings(){
+    if(this.portalUsernameController.value != '' && this.portalPasswordController.value != ''){
+      let password:string = this.portalPasswordController.value;
+      let match = password.match("(.)\\1*");
+      if(this.portalUserSettings == null
+        || (this.portalUserSettings != null && this.portalUsernameController.value != this.portalUserSettings.username)
+        || match[0] != match['input']){
+          this.componentLoading.portalUser = true;
+          this.superAdmin.savePortalUserSettings(this.selectedProvider, this.portalUsernameController.value, password).subscribe(event => {
+            if(event instanceof HttpResponse){
+              //TODO:show success message
+              this.componentLoading.portalUser = false;
+            }
+          }, error => {
+            //TODO: give error message
+            this.resetPortalUserSettings();
+            this.componentLoading.portalUser = false;
+          });
+        }
+    }
+  }
+
   reset() {
+    this.resetServiceCodeValidationSettings();
+    this.resetPortalUserSettings();
+  }
+
+  resetServiceCodeValidationSettings() {
     if (Object.keys(this.newServiceCodeValidationSettings).length > 0) {
       this.componentLoading.serviceCode = true;
       setTimeout(() => this.componentLoading.serviceCode = false, 100);
       this.newServiceCodeValidationSettings = {};
     }
+  }
+  resetPortalUserSettings() {
     if (this.portalUserSettings != null) {
       this.portalUsernameController.setValue(this.portalUserSettings.username);
       this.portalPasswordController.setValue('************************');
