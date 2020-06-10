@@ -7,15 +7,16 @@
                     <div class="menuContent">
                         <div class="searchByDate" *ngIf="paymentReference == null">
                             <mat-form-field floatLabel="never" 
-                                style="margin-right: 5%; width: 15%;">
+                                style="margin-right: 5%; width: 15%;" >
                                 <mat-label>Select Report</mat-label>
                                 <mat-select [formControl]="reportTypeControl" (keyup.enter)="search()" required>
                                     <mat-option *ngFor="let report of reports" [value]="report.id">
                                         {{report.name}}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="reportTypeControl.hasError('required')">Please choose a Report</mat-error>
                             </mat-form-field>
-                            <mat-form-field floatLabel="never"
+                            <mat-form-field floatLabel="never" 
                                 style="margin-right: 5%; width: 15%;">
                                 <mat-label>Select Payer</mat-label>
                                 <mat-select [formControl]="payerIdControl" (keyup.enter)="search()" required>
@@ -23,15 +24,17 @@
                                         {{payer.name}}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="payerIdControl.hasError('required')">Please choose a Payer</mat-error>
                             </mat-form-field>
                             <mat-form-field floatLabel="never" 
                                 style="width: 15%;margin-right: 5%;margin-left: 3%;border: none; border-radius: 4px; ">
                                 <input matInput [matDatepicker]="fromPicker" placeholder="From Date"
-                                    [formControl]="fromDateControl" (keyup.enter)="search()" required>
+                                    [formControl]="fromDateControl" (keyup.enter)="search()" required>                                    
                                 <mat-datepicker-toggle matSuffix [for]="fromPicker">
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #fromPicker></mat-datepicker>
+                                <mat-error *ngIf="fromDateControl.hasError('required')">Please choose a Date</mat-error>
                             </mat-form-field>
                             <mat-form-field floatLabel="never"
                                 style="margin-right: 5%;width: 15%;">
@@ -41,6 +44,7 @@
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #toPicker></mat-datepicker>
+                                <mat-error *ngIf="toDateControl.hasError('required')">Please choose a Date</mat-error>
                             </mat-form-field>
 
                             <mat-form-field floatLabel="never" 
@@ -53,8 +57,9 @@
                                 </mat-select>
                             </mat-form-field>
 
-                            <button mat-raised-button color="primary" (click)="search()"
-                                style="width: 15%;">Search</button>
+                            <button mat-raised-button color="primary" (click)="search()" 
+                                style="width: 15%;">Search
+                            </button>
                         </div>
                         <div *ngIf="paymentReference != null" style="color: #3060AA; width: 100%;">
                             <button mat-icon-button (click)="backButton()" style="background-color: #EFF5FF;">
@@ -88,7 +93,7 @@
                     [ngClass]="{'hidden':paymentReference != null && showSubmittedInvoicesSearch}"
                         *ngIf="showSubmittedInvoicesSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
                         [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
-                        (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
+                        (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)" required>
                     </app-submitted-invoices>
 
                     <app-rejection-report #rejectionReport 

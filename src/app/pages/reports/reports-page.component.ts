@@ -21,6 +21,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
+  isValidFormSubmitted = false;
   payers: { id: string[] | string, name: string }[];
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Payment Report" },
@@ -126,6 +127,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   search() {
+    this.isValidFormSubmitted = false;
     if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null) {
       return;
     }
@@ -155,6 +157,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.reportTypeControl.value == 3) {
       this.rejectionReportComponent.fetchData();
     }
+    this.isValidFormSubmitted = true;
   }
 
   onPaymentClick(ref) {
