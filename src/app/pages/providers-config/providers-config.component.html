@@ -1,11 +1,8 @@
 <div class="mainPage" style="margin: 80px 20px 0px 20px;">
-    <app-detailscard 
-        title="Providers Configration"
-        [accentColor]="'white'"
+    <app-detailscard title="Providers Configration" [accentColor]="'white'"
         [bottomLeftActionText]="(isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '': 'Reset'"
         [bottomRightActionText]="(isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '': 'Save'"
-        (bottomLeftAction)="reset()"
-        (bottomRightAction)="save()">
+        (bottomLeftAction)="reset()" (bottomRightAction)="save()">
         <div class="selectProvider">
             <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
                 <mat-label>Select Provider</mat-label>
@@ -33,6 +30,9 @@
                     <mat-panel-title style="color: #3060AA;">
                         Service Code Validation
                     </mat-panel-title>
+                    <mat-panel-description *ngIf="errors.serviceCodeSaveError != null">
+                        <span style="color: #ac4040;">{{errors.serviceCodeSaveError}}</span>
+                    </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
                     <div *ngFor="let payer of associatedPayers" style="width: 100%; padding: 10px 30px; display: flex;">
@@ -58,6 +58,9 @@
                     <mat-panel-title style="color: #3060AA;">
                         Portal User Configration
                     </mat-panel-title>
+                    <mat-panel-description *ngIf="errors.portalUserSaveError != null">
+                        <span style="color: #ac4040;">{{errors.portalUserSaveError}}</span>
+                    </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser"
                     style="margin-top: 20px;">

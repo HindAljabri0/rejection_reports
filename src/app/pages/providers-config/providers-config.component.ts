@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { MatSlideToggleChange } from '@angular/material';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-providers-config',
@@ -18,7 +19,7 @@ export class ProvidersConfigComponent implements OnInit {
   filteredProviders: any[] = [];
   providerController: FormControl = new FormControl();
 
-  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, portalUserError?: string } = {};
+  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string } = {};
   componentLoading = { serviceCode: true, portalUser: true };
 
   selectedProvider: string;
@@ -29,7 +30,11 @@ export class ProvidersConfigComponent implements OnInit {
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
 
-  constructor(private superAdmin: SuperAdminService, private router: Router, private sharedServices: SharedServices, private location: Location) {
+  constructor(private superAdmin: SuperAdminService,
+    private router: Router,
+    private sharedServices: SharedServices,
+    private location: Location,
+    private dialogService: DialogService) {
     sharedServices.loadingChanged.next(true);
   }
 
@@ -112,8 +117,17 @@ export class ProvidersConfigComponent implements OnInit {
     if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser) {
       return;
     }
-    this.saveServiceCodeValidationSettings();
-    this.savePortalUserSettings();
+    if (
+      this.saveServiceCodeValidationSettings() &&
+      this.savePortalUserSettings()
+    ) {
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: 'There is no changes to save!',
+        withButtons:false,
+        isError:false
+      });
+    }
 
   }
 
@@ -123,10 +137,11 @@ export class ProvidersConfigComponent implements OnInit {
       let newSettingsKeys = payers.filter(payerId => {
         let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payerId);
         return (setting != null && (setting.value == '1') != this.newServiceCodeValidationSettings[payerId])
-        || setting == null;
+          || setting == null;
       });
       if (newSettingsKeys.length > 0) {
         this.componentLoading.serviceCode = true;
+        this.errors.serviceCodeSaveError = null;
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId: payerId,
           key: SERVICE_CODE_VALIDATION_KEY,
@@ -134,37 +149,54 @@ export class ProvidersConfigComponent implements OnInit {
         })
         )).subscribe(event => {
           if (event instanceof HttpResponse) {
-            //TODO: give success message
+            newSettingsKeys.map(payerId => {
+              let index = this.serviceCodeValidationSettings.findIndex(setting => setting.payerId == payerId);
+              if (index != -1) {
+                this.serviceCodeValidationSettings[index].value = (this.newServiceCodeValidationSettings[payerId]) ? '1' : '0';
+              } else {
+                this.serviceCodeValidationSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId: payerId,
+                  key: SERVICE_CODE_VALIDATION_KEY,
+                  value: (this.newServiceCodeValidationSettings[payerId]) ? '1' : '0'
+                });
+              }
+            });
+            this.newServiceCodeValidationSettings = {};
             this.componentLoading.serviceCode = false;
           }
         }, error => {
-          //TODO: give error message
+          this.errors.serviceCodeSaveError = 'Could not save settings, please try again later.';
           this.resetServiceCodeValidationSettings();
           this.componentLoading.serviceCode = false;
         });
-      }
-    }
+        return false;
+      } return true;
+    } return true;
   }
-  savePortalUserSettings(){
-    if(this.portalUsernameController.value != '' && this.portalPasswordController.value != ''){
-      let password:string = this.portalPasswordController.value;
+  savePortalUserSettings() {
+    if (this.portalUsernameController.value != '' && this.portalPasswordController.value != '') {
+      let password: string = this.portalPasswordController.value;
       let match = password.match("(.)\\1*");
-      if(this.portalUserSettings == null
+      if (this.portalUserSettings == null
         || (this.portalUserSettings != null && this.portalUsernameController.value != this.portalUserSettings.username)
-        || match[0] != match['input']){
-          this.componentLoading.portalUser = true;
-          this.superAdmin.savePortalUserSettings(this.selectedProvider, this.portalUsernameController.value, password).subscribe(event => {
-            if(event instanceof HttpResponse){
-              //TODO:show success message
-              this.componentLoading.portalUser = false;
-            }
-          }, error => {
-            //TODO: give error message
-            this.resetPortalUserSettings();
+        || match[0] != match['input']) {
+        this.componentLoading.portalUser = true;
+        this.errors.portalUserSaveError = null;
+        this.superAdmin.savePortalUserSettings(this.selectedProvider, this.portalUsernameController.value, password).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            this.portalUserSettings = { username: this.portalUsernameController.value };
+            this.portalPasswordController.setValue('************************');
             this.componentLoading.portalUser = false;
-          });
-        }
-    }
+          }
+        }, error => {
+          this.errors.portalUserSaveError = 'Could not save settings, please try again later.';
+          this.resetPortalUserSettings();
+          this.componentLoading.portalUser = false;
+        });
+        return false;
+      } return true;
+    } return true;
   }
 
   reset() {
