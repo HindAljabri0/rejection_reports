@@ -262,7 +262,7 @@ export class ProvidersConfigComponent implements OnInit {
 
   getServiceCodeSettingsOfPayer(payerid: string) {
     let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payerid);
-    return setting != null && setting.value == '1';
+    return setting == null || (setting != null && setting.value == '1');
   }
 
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
