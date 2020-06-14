@@ -300,7 +300,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       if (claim != {})
         body.append('claim', JSON.stringify(claim));
       this.files.forEach(file => body.append("files", file, file.name));
-      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body, this.priceListExist).subscribe(event => {
+      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status == 201) {
             this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);

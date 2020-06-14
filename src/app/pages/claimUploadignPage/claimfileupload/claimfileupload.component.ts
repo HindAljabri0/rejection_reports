@@ -163,19 +163,19 @@ export class ClaimfileuploadComponent implements OnInit {
         withButtons: true
       }).subscribe(value => {
         if (value) {
-          this.startUpload(false);
+          this.startUpload();
         }
       })
     } else {
-      this.startUpload(true);
+      this.startUpload();
     }
 
   }
 
-  startUpload(verifyServiceCode: boolean) {
+  startUpload() {
     let providerId = this.common.providerId;
     this.uploading = true;
-    this.uploadService.pushFileToStorage(providerId, this.currentFileUpload, verifyServiceCode);
+    this.uploadService.pushFileToStorage(providerId, this.currentFileUpload);
     let progressObservable = this.uploadService.progressChange.subscribe(progress => {
       if (progress.percentage == 100) {
         progressObservable.unsubscribe();

@@ -30,14 +30,14 @@ export class UploadService {
     });
     this.errorChange.subscribe(value => this.error = value);
   }
-  pushFileToStorage(providerID:string, file: File, verifyServiceCode:boolean) {
+  pushFileToStorage(providerID:string, file: File) {
     if(this.uploading) return;
     this.uploading = true;
     this.uploadingObs.next(true);
     const formdata: FormData = new FormData();
 
     formdata.append('file', file, file.name);
-    const req = new HttpRequest('POST', environment.uploaderHost+`/providers/${providerID}/file?verifyServiceCode=${verifyServiceCode}`,  formdata, {
+    const req = new HttpRequest('POST', environment.uploaderHost+`/providers/${providerID}/file`,  formdata, {
       reportProgress: true,
     });
 
