@@ -161,9 +161,9 @@ export class SearchWithAdvanceComponent implements OnInit {
   }
 
   search() {
-    this.fromDateHasError = false;
-    this.toDateHasError = false;
-    this.payerIdHasError = false;
+    this.fromDateHasError = true;
+    this.toDateHasError = true;
+    this.payerIdHasError = true;
     if (this.queries.map(value => value.type == QueryType.DATEFROM || value.type == QueryType.DATETO || value.type == QueryType.PAYERID).includes(true)) {
       if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
         this.trigger.openMenu();
