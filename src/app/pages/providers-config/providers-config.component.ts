@@ -124,8 +124,8 @@ export class ProvidersConfigComponent implements OnInit {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
-        withButtons:false,
-        isError:false
+        withButtons: false,
+        isError: false
       });
     }
 
@@ -190,7 +190,18 @@ export class ProvidersConfigComponent implements OnInit {
             this.componentLoading.portalUser = false;
           }
         }, error => {
-          this.errors.portalUserSaveError = 'Could not save settings, please try again later.';
+          if (error instanceof HttpErrorResponse) {
+            if (error.status == 404) {
+              this.errors.portalUserSaveError = 'The provided user does not exist in the system.';
+            } else if (error.status == 401) {
+              this.errors.portalUserSaveError = 'username/password is not correct, or user does not have required privilages';
+            } else {
+              this.errors.portalUserSaveError = 'Could not save settings at the moment, please try again later.'
+            }
+          } else {
+            this.errors.portalUserSaveError = 'Could not save settings at the moment, please try again later.'
+          }
+
           this.resetPortalUserSettings();
           this.componentLoading.portalUser = false;
         });
