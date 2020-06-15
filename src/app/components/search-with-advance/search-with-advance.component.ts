@@ -161,9 +161,9 @@ export class SearchWithAdvanceComponent implements OnInit {
   }
 
   search() {
-    this.fromDateHasError = true;
-    this.toDateHasError = true;
-    this.payerIdHasError = true;
+    this.fromDateHasError = false;
+    this.toDateHasError = false;
+    this.payerIdHasError = false;
     if (this.queries.map(value => value.type == QueryType.DATEFROM || value.type == QueryType.DATETO || value.type == QueryType.PAYERID).includes(true)) {
       if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
         this.trigger.openMenu();
@@ -255,8 +255,11 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.queries = [];
     this.searchControl.setValue('');
     this.fromDateControl.setValue('');
+    this.toDateHasError = false;
     this.toDateControl.setValue('');
+    this.toDateHasError = false;
     this.payerIdControl.setValue('');
+    this.payerIdHasError = false;
   }
 
 }
