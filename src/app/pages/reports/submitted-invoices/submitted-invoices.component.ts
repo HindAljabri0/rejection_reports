@@ -67,6 +67,10 @@ export class SubmittedInvoicesComponent implements OnInit {
         this.paginator.pageIndex = this.paymentDetails.number;
         this.paginator.pageSize = this.paymentDetails.numberOfElements;
         console.log( this.paymentDetails);
+        if(this.claims.length == 0)
+        {
+          this.errorMessage = "No Results Found";
+        }
       }
       this.commen.loadingChanged.next(false);
     }, error => {

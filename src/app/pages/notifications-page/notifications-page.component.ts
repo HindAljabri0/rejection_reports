@@ -48,6 +48,7 @@ export class NotificationsPageComponent implements OnInit {
 
 
   getData(nextPage:boolean){
+    this.errorMessage = null;
     if(nextPage) this.currentPage++;
     this.notificationService.getNotifications(this.providerId, this.currentPage, this.pageSize).subscribe(event => {
       if(event instanceof HttpResponse){
