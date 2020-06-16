@@ -117,10 +117,9 @@ export class ProvidersConfigComponent implements OnInit {
     if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser) {
       return;
     }
-    if (
-      this.saveServiceCodeValidationSettings() &&
-      this.savePortalUserSettings()
-    ) {
+    let flag1 = this.saveServiceCodeValidationSettings();
+    let flag2 = this.savePortalUserSettings();
+    if (flag1 && flag2) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
