@@ -33,6 +33,9 @@
                     <mat-panel-description *ngIf="errors.serviceCodeSaveError != null">
                         <span style="color: #ac4040;">{{errors.serviceCodeSaveError}}</span>
                     </mat-panel-description>
+                    <mat-panel-description *ngIf="sucess.serviceCodeSaveSuccess != null">
+                        <span style="color: #40ac60;">{{sucess.serviceCodeSaveSuccess}}</span>
+                    </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
                     <div *ngFor="let payer of associatedPayers" style="width: 100%; padding: 10px 30px; display: flex;">
@@ -60,6 +63,9 @@
                     </mat-panel-title>
                     <mat-panel-description *ngIf="errors.portalUserSaveError != null">
                         <span style="color: #ac4040;">{{errors.portalUserSaveError}}</span>
+                    </mat-panel-description>
+                    <mat-panel-description *ngIf="sucess.portalUserSaveSucess != null">
+                        <span style="color: #40ac60;">{{sucess.portalUserSaveSucess}}</span>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser"

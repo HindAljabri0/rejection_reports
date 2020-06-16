@@ -38,6 +38,12 @@
     </mat-expansion-panel-header>
 </mat-expansion-panel>
 
+<div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
+        <mat-card>
+            <p>{{errorMessage}}</p>
+        </mat-card>
+    </div>
+
 
 <mat-expansion-panel *ngFor="let claim of claims" style="margin-bottom: 6px; cursor: unset;" hideToggle
     [disabled]="0 == 0" (click)="onPaymentClick.emit(claim.claimId)">
