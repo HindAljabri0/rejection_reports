@@ -34,6 +34,7 @@ export class NotificationsPageComponent implements OnInit {
 
   totalNotifications:number = 0;
   currentNotificationsCount:number = 0;
+  errorMessage:string;
 
   constructor(public commen:SharedServices, public routeActive:ActivatedRoute, public notificationService:NotificationsService) { }
 
@@ -62,12 +63,20 @@ export class NotificationsPageComponent implements OnInit {
           this.notificationMap.get(`${year}/${month}`).push(notification);
           this.currentNotificationsCount++;
         }
+        if( this.totalNotifications == 0 &&
+          this.currentNotificationsCount == 0)
+          {
+            this.errorMessage="No Notifications Found";
+          }
       }
     }, errorEvent => {
       if(errorEvent instanceof HttpErrorResponse){
         
       }
     });
+
+   
+
   }
 
   notificationsNotFinished(){
