@@ -1,14 +1,14 @@
 <div class="mainPage">
-    <div *ngIf="errorMessage != null && !loading" style="margin-bottom: 10px;">
+    <div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
         <mat-card class="errorCard">
             <p>{{errorMessage}}</p>
         </mat-card>
     </div>
-    <div class="header">
+    <div class="header" *ngIf="errorMessage == null">
         <p *ngIf="uploadNameExist">Upload Name: {{summaries[0].uploadName}}</p>
         <span class="spacer"></span>
     </div>
-    <div class="body">
+    <div class="body" *ngIf="errorMessage == null">
         <div class="cardsSummary">
             <app-abstractcard [clickable]="cardsClickAble" *ngIf="summaries != null && summaries[0] != null"
                 [title]="commen.statusToName(summaries[0].statuses[0])"

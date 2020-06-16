@@ -255,8 +255,11 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.queries = [];
     this.searchControl.setValue('');
     this.fromDateControl.setValue('');
+    this.toDateHasError = false;
     this.toDateControl.setValue('');
+    this.toDateHasError = false;
     this.payerIdControl.setValue('');
+    this.payerIdHasError = false;
   }
 
 }
