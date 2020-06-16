@@ -20,6 +20,7 @@ export class ProvidersConfigComponent implements OnInit {
   providerController: FormControl = new FormControl();
 
   errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string } = {};
+  sucess: { serviceCodeSaveSuccess?: string, portalUserSaveSucess?: string } = {};
   componentLoading = { serviceCode: true, portalUser: true };
 
   selectedProvider: string;
@@ -141,6 +142,7 @@ export class ProvidersConfigComponent implements OnInit {
       if (newSettingsKeys.length > 0) {
         this.componentLoading.serviceCode = true;
         this.errors.serviceCodeSaveError = null;
+        this.sucess.serviceCodeSaveSuccess = null;
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId: payerId,
           key: SERVICE_CODE_VALIDATION_KEY,
@@ -162,6 +164,7 @@ export class ProvidersConfigComponent implements OnInit {
               }
             });
             this.newServiceCodeValidationSettings = {};
+            this.sucess.serviceCodeSaveSuccess = "Settings were saved successfully";
             this.componentLoading.serviceCode = false;
           }
         }, error => {
@@ -182,10 +185,12 @@ export class ProvidersConfigComponent implements OnInit {
         || match[0] != match['input']) {
         this.componentLoading.portalUser = true;
         this.errors.portalUserSaveError = null;
+        this.sucess.portalUserSaveSucess = null;
         this.superAdmin.savePortalUserSettings(this.selectedProvider, this.portalUsernameController.value, password).subscribe(event => {
           if (event instanceof HttpResponse) {
             this.portalUserSettings = { username: this.portalUsernameController.value };
             this.portalPasswordController.setValue('************************');
+            this.sucess.portalUserSaveSucess = "Settings were saved successfully";
             this.componentLoading.portalUser = false;
           }
         }, error => {
