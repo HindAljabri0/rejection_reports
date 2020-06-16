@@ -20,9 +20,7 @@
 </div>
 <div class="header sub">
     <p style="    padding-right: 37%;">Doctor Name: {{data.claim.physicianname}}</p>
-    <mat-label *ngFor="let payer of payers"  >
-        <p>Payer Name:  {{payer.name}} </p>
-    </mat-label>
+
     <span class="spacer"></span>
     <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No:
         {{data.claim.payerclaimrefno}}
