@@ -41,7 +41,7 @@
     "rxjs": "~6.4.0",
     "stepper-progress-bar": "0.0.8",
     "tslib": "^1.10.0",
-    "xlsx": "^0.16.1",
+    "xlsx": "^0.16.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

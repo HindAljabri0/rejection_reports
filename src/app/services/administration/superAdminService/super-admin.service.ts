@@ -36,13 +36,13 @@ export class SuperAdminService {
   }
 
   getPortalUserSettings(providerId:string){
-    const requestURL: string = `/providers/${providerId}/portal-user`;
+    const requestURL: string = `/providers/${providerId}/portal-user/username`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
 
   savePortalUserSettings(providerId:string, username:string, password:string){
-    const requestURL = `/providers/${providerId}/portal-user`;
+    const requestURL = `/providers/${providerId}/portal-user/save`;
     const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, {username: username, password:password});
     return this.http.request(request);
   }

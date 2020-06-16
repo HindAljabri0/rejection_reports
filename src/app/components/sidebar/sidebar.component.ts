@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
   init(){
     this.providerId = this.auth.getProviderId();
     let privilege = localStorage.getItem('101101');
-    this.isAdmin = privilege != null && privilege.includes('|22');
+    this.isAdmin = privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
   }
 
   get uploadProgress(): number {

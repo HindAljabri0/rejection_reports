@@ -31,6 +31,7 @@ export class ClaimfileuploadComponent implements OnInit {
   selectedFiles: FileList;
   // data: AOA ;
   payerIdsFromCurrentFIle: string[] = [];
+  serviceCodeVaildationDisabledMessages: string[] = [];
   priceListDoesNotExistMessages: string[] = [];
   showFile = false;
   fileUploads: Observable<string[]>;
@@ -71,7 +72,7 @@ export class ClaimfileuploadComponent implements OnInit {
       data.splice(0, 1)
       data.map(row => this.payerIdsFromCurrentFIle.push(row[1]));
       this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
-      this.checkPriceList();
+      this.checkServiceCode();
     };
     reader.readAsBinaryString(this.currentFileUpload);
   }
@@ -92,25 +93,58 @@ export class ClaimfileuploadComponent implements OnInit {
     }
   }
 
-  checkPriceList() {
-    this.priceListDoesNotExistMessages = [];
+  checkServiceCode() {
+    this.serviceCodeVaildationDisabledMessages = [];
     this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined);
     let count = this.payerIdsFromCurrentFIle.length;
     this.payerIdsFromCurrentFIle.forEach(payerId => {
       if (payerId != undefined) {
-        this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
+        this.adminService.checkIfServiceCodeVaildationIsEnabled(this.common.providerId, payerId).subscribe(event => {
           if (event instanceof HttpResponse) {
+            let setting = JSON.parse(JSON.stringify(event.body));
+            if (setting.hasOwnProperty('value') && setting['value'] == 0) {
+              this.serviceCodeVaildationDisabledMessages.push(payerId);
+            }
             count--;
-            if (count <= 0) this.common.loadingChanged.next(false);
+            if (count <= 0) {
+              this.common.loadingChanged.next(false);
+              this.checkPriceList();
+            }
           }
         }, errorEvent => {
           if (errorEvent instanceof HttpErrorResponse) {
+            if (errorEvent.status == 404) {
+              this.serviceCodeVaildationDisabledMessages.push(payerId);
+            }
             count--;
-            this.priceListDoesNotExistMessages.push(payerId);
-            if (count <= 0) this.common.loadingChanged.next(false);
+            if (count <= 0) {
+              this.common.loadingChanged.next(false);
+              this.checkPriceList();
+            }
           }
-        })
+        });
       }
+    });
+  }
+
+  checkPriceList() {
+    this.priceListDoesNotExistMessages = [];
+    this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined && !this.serviceCodeVaildationDisabledMessages.includes(id));
+    let count = this.payerIdsFromCurrentFIle.length;
+    this.payerIdsFromCurrentFIle.forEach(payerId => {
+      this.common.loadingChanged.next(true);
+      this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          count--;
+          if (count <= 0) this.common.loadingChanged.next(false);
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          count--;
+          this.priceListDoesNotExistMessages.push(payerId);
+          if (count <= 0) this.common.loadingChanged.next(false);
+        }
+      });
     });
   }
 
@@ -119,27 +153,29 @@ export class ClaimfileuploadComponent implements OnInit {
       return;
     }
     console.log(this.priceListDoesNotExistMessages.length);
-    if (this.priceListDoesNotExistMessages.length > 0) {
+    if (this.priceListDoesNotExistMessages.length > 0 || this.serviceCodeVaildationDisabledMessages.length > 0) {
       this.dialogService.openMessageDialog({
         title: 'Caution!',
-        message: `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. Do you wish to continue?`,
+        message: (this.serviceCodeVaildationDisabledMessages.length > 0 ? `Service code vaildation is disabled in our system between you and the payer(s): ${this.serviceCodeVaildationDisabledMessages.toString()}. ` : '')
+          + (this.priceListDoesNotExistMessages.length > 0 ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
+          + 'Do you wish to continue?',
         isError: false,
         withButtons: true
       }).subscribe(value => {
         if (value) {
-          this.startUpload(false);
+          this.startUpload();
         }
       })
     } else {
-      this.startUpload(true);
+      this.startUpload();
     }
 
   }
 
-  startUpload(verifyServiceCode: boolean) {
+  startUpload() {
     let providerId = this.common.providerId;
     this.uploading = true;
-    this.uploadService.pushFileToStorage(providerId, this.currentFileUpload, verifyServiceCode);
+    this.uploadService.pushFileToStorage(providerId, this.currentFileUpload);
     let progressObservable = this.uploadService.progressChange.subscribe(progress => {
       if (progress.percentage == 100) {
         progressObservable.unsubscribe();
