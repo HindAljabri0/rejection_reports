@@ -44,6 +44,7 @@ export class PaymentReferenceReportComponent implements OnInit {
   payments = Array();
 
 
+
   constructor(public reportService: ReportsService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
@@ -63,6 +64,10 @@ export class PaymentReferenceReportComponent implements OnInit {
         this.manualPage = this.paymentDetails.number;
         this.paginator.pageIndex = this.paymentDetails.number;
         this.paginator.pageSize = this.paymentDetails.size;
+        if(this.payments.length == 0)
+        {
+          this.errorMessage = "No Results Found";
+        }
       }
       this.commen.loadingChanged.next(false);
     }, error => {

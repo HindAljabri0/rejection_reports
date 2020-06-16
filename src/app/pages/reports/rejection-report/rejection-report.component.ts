@@ -68,6 +68,11 @@ export class RejectionReportComponent implements OnInit {
         this.paginator.pageIndex = this.rejectionReportSummary.number;
         this.paginator.pageSize = this.rejectionReportSummary.numberOfElements;
         console.log(this.rejectionReportSummary);
+
+        if(this.rejectedClaims.length == 0)
+        {
+          this.errorMessage = "No Results Found";
+        }
       }
       this.commen.loadingChanged.next(false);
     }, error => {
