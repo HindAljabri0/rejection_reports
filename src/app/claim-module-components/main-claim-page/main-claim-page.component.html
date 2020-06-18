@@ -9,3 +9,15 @@
         <span class="spacer"></span>
     </div>
 </div>
+
+<button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu" *ngIf="claim == null">
+    <mat-icon>add</mat-icon>
+</button>
+
+<mat-menu #claimTypeMenu yPosition="above" xPosition="before">
+    <ng-template matMenuContent>
+        <label>Claim Type</label>
+        <button mat-menu-item (click)="startCreatingClaim('Dental')">Dental</button>
+        <button mat-menu-item (click)="startCreatingClaim('Optical')">Optical</button>
+    </ng-template>
+</mat-menu>

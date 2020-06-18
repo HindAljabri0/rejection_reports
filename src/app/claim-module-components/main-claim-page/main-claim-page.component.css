@@ -10,7 +10,11 @@
     padding: 10px;
     height: 40px;
 }
-
+label{
+    color: #3060AA;
+    padding: 5px;
+    font-size: small;
+}
 .body {
     padding: 10px 0px;
     background-color: #EFF5FF;
@@ -25,4 +29,14 @@
     border-bottom-right-radius: 5px;
     padding: 10px;
     height: 40px;
+}
+
+.fabButton {
+    position: fixed;
+    bottom: 10vh;
+    right: 5vw;
+}
+
+button:focus{
+    outline: unset;
 }

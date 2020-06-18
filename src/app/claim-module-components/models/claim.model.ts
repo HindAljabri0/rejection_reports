@@ -6,13 +6,14 @@ import { GDPN } from './GDPN.model';
 import { Invoice } from './invoice.model';
 import { Admission } from './admission.model';
 import { AttachmentRequest } from './attachmentRequest.model';
+import { CaseInfo } from './caseInfo.model';
 
 export class Claim {
 
     claimIdentities: ClaimIdentifier;
     member: Member;
     visitInformation: VisitInfo;
-    caseInformation: CaseDescription;
+    caseInformation: CaseInfo;
     claimGDPN: GDPN;
     invoice: Invoice[];
     comment: {

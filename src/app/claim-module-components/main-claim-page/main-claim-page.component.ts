@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { startCreatingNewClaim } from '../store/claim.actions';
+import { Claim } from '../models/claim.model';
+import { getClaim } from '../store/claim.reducer';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -8,7 +12,11 @@ import { Router } from '@angular/router';
 })
 export class MainClaimPageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  claim: Claim;
+
+  constructor(private router: Router, private store:Store) {
+    store.select(getClaim).subscribe(claim => this.claim = claim);
+  }
 
   ngOnInit() {
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
@@ -16,6 +24,10 @@ export class MainClaimPageComponent implements OnInit {
       //to be changed later if we decide to view/edit the claim here.
       this.router.navigate(['/']);
     }
+  }
+
+  startCreatingClaim(type:string){
+    this.store.dispatch(startCreatingNewClaim({caseType:type}));
   }
 
 }
