@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
+import { Claim } from '../models/claim.model';
 
-export const claim = {};
+export const claim: Claim = null;
 
 const _claimReducer = createReducer(claim);
 
