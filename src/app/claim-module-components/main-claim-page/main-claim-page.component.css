@@ -1,0 +1,28 @@
+.mainPage {
+    margin: 80px 20px 0px 20px;
+}
+.header {
+    display: flex;
+    color: #3060AA;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    height: 40px;
+}
+
+.body {
+    padding: 10px 0px;
+    background-color: #EFF5FF;
+    height: 77vh;
+}
+
+.footer {
+    display: flex;
+    color: #3060AA;
+    background-color: white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 10px;
+    height: 40px;
+}

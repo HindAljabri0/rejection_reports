@@ -58,7 +58,12 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       this.router.navigate(['/login']);
       return false;
     }
-    return localStorage.getItem('101101').includes('|22') || localStorage.getItem('101101').startsWith('22');
+    if(segments[0].path == 'administration'){
+      return localStorage.getItem('101101').includes('|22') || localStorage.getItem('101101').startsWith('22');
+    } else if(segments[0].path == 'claims'){
+      return true;
+    }
+    
   }
 
   

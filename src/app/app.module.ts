@@ -45,6 +45,7 @@ import { ReusableSearchBarComponent } from './components/reusables/reusable-sear
 import { MatiralModule } from './modules/matiral/matiral.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
+import { StoreModule } from '@ngrx/store';
 
 
 
@@ -101,9 +102,14 @@ import { SharedModule } from './modules/shared.module';
         path: 'administration',
         loadChildren: () => import('./modules/adminstration/adminstration.module').then(m => m.AdminstrationModule),
         canLoad: [RouteCanActiveService]
+      },
+      {
+        path: 'claims',
+        loadChildren: () => import('./modules/claim/claim.module').then(m => m.ClaimModule),
+        canLoad: [RouteCanActiveService]
       }
-
     ]),
+    StoreModule.forRoot([]),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,

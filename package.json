@@ -28,6 +28,7 @@
     "@elastic/apm-rum-angular": "^0.4.3",
     "@material-git/grid-list": "^2.0.0-git.20160919",
     "@material/card": "^3.2.0",
+    "@ngrx/store": "^9.2.0",
     "all": "0.0.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.3",
