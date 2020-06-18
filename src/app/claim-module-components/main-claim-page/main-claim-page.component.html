@@ -1,7 +1,7 @@
 <div class="mainPage">
     <div class="header">
         <p>Create Claim</p><span class="spacer"></span>
-        <p></p>
+        <p *ngIf="claim != null && claim.caseInformation != null">{{claim.caseInformation.caseType}}</p>
     </div>
     <div class="body">
     </div>

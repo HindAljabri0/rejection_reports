@@ -8,14 +8,14 @@ export const claim: Claim = null;
 const _claimReducer = createReducer(
     claim,
     on(actions.startCreatingNewClaim, (state, {caseType}) => {
-        let claim = new Claim();
-        claim.caseInformation = new CaseInfo();
-        claim.caseInformation.caseType = caseType;
+        let claim = new Claim(caseType);
         return claim;
     })
 );
 
-export const claimReducer = (state, action) => _claimReducer(state, action);
+export function claimReducer(state, action) {
+    return _claimReducer(state, action);
+}
 
 export const claimSelector = createFeatureSelector<Claim>('claim');
 export const getClaim = createSelector(claimSelector, (claim) => claim);

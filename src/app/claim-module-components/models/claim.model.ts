@@ -24,5 +24,7 @@ export class Claim {
     admission: Admission;
     attachment: AttachmentRequest[];
 
-    constructor(){}
+    constructor(caseType:string){
+        this.caseInformation = new CaseInfo(caseType);
+    }
 }

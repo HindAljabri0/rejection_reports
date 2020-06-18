@@ -12,4 +12,8 @@ export class CaseInfo {
     otherConditions: string;
     radiologyReport: string;
 
+    constructor(caseType:string){
+        this.caseType = caseType;
+    }
+
 }
