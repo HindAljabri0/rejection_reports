@@ -5,7 +5,7 @@
             [ngClass]="{'show':claim != null}">{{claim.caseInformation.caseType}}</p>
     </div>
     <div class="body">
-        <table class="hiddenByDefault" [ngClass]="{'show':claim != null}">
+        <table class="hiddenByDefault" *ngIf="claim != null" [ngClass]="{'show':claim != null}">
             <tbody>
                 <tr>
                     <td style="width: 62.5%;">

@@ -4,7 +4,7 @@
             <tr>
                 <td><label>Full Name</label></td>
                 <td style="display: flex; width: 100%;">
-                    <input id="fullNameInput" type="text" [formControl]="fullNameController">
+                    <input id="fullNameInput" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')">
                     <div id="genderDiv" [ngClass]="{'female': !isMale, 'male': isMale}" (click)="toggleGender()">
                         <i class="fa" [ngClass]="{'fa-venus': !isMale, 'fa-mars': isMale}" aria-hidden="true"></i>
                     </div>
@@ -25,7 +25,7 @@
                 </td>
                 <td><label>Member ID</label></td>
                 <td>
-                    <input type="number">
+                    <input type="number" [formControl]="memberIdController" (change)="updateClaim('memberId')">
                 </td>
             </tr>
             <tr>
@@ -37,14 +37,14 @@
                 </td>
                 <td><label>Policy No.</label></td>
                 <td>
-                    <input type="number">
+                    <input type="number" [formControl]="policyNumController" (change)="updateClaim('policyNum')">
                 </td>
             </tr>
             <tr>
                 <td><label>National ID</label></td>
-                <td><input type="number"></td>
+                <td><input type="number" [formControl]="nationalIdontroller" (change)="updateClaim('nationalId')"></td>
                 <td><label>Approval No.</label></td>
-                <td><input type="number"></td>
+                <td><input type="number" [formControl]="approvalNumontroller" (change)="updateClaim('approvalNum')"></td>
             </tr>
         </tbody>
     </table>

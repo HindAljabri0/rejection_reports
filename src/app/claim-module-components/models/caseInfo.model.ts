@@ -14,6 +14,9 @@ export class CaseInfo {
 
     constructor(caseType:string){
         this.caseType = caseType;
+        this.physician = new Physician();
+        this.patient = new Patient();
+        this.caseDescription = new CaseDescription();
     }
 
 }

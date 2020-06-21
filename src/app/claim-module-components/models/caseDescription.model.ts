@@ -14,9 +14,9 @@ export class CaseDescription {
 	lmp:Date;
 	illnessCategory: {inllnessCode:string[]};
 	illnessDuration: Period;
-	diagnosis:Diagnosis[];
+	diagnosis:Diagnosis[] = [];
 	optics:Optics;
-	investigation:Investigation[];
+	investigation:Investigation[] = [];
 	chiefComplaintSymptoms:string;
     signicantSigns:string;
     

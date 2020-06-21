@@ -7,10 +7,17 @@ export const claim: Claim = null;
 
 const _claimReducer = createReducer(
     claim,
-    on(actions.startCreatingNewClaim, (state, {caseType}) => {
+    on(actions.startCreatingNewClaim, (state, { caseType }) => {
         let claim = new Claim(caseType);
         return claim;
-    })
+    }),
+    on(actions.updatePatientName, (state, { name }) => ({ ...state, caseInformation: { ...state.caseInformation, patient: { ...state.caseInformation.patient, fullName: name } } })),
+    on(actions.updatePatientGender, (state, { gender }) => ({ ...state, caseInformation: { ...state.caseInformation, patient: { ...state.caseInformation.patient, gender: gender } } })),
+    on(actions.updatePayer, (state, { payerId }) => ({ ...state, claimIdentities: { ...state.claimIdentities, payerID: `${payerId}` } })),
+    on(actions.updatePatientMemberId, (state, { memberId }) => ({ ...state, member: { ...state.member, memberID: memberId } })),
+    on(actions.updateNationalId, (state, { nationalId }) => ({ ...state, member: { ...state.member, idNumber: nationalId } })),
+    on(actions.updatePolicyNum, (state, { policyNo }) => ({ ...state, member: { ...state.member, policyNumber: policyNo } })),
+    on(actions.updateApprovalNum, (state, { approvalNo }) => ({ ...state, claimIdentities: { ...state.claimIdentities, approvalNumber: approvalNo } })),
 );
 
 export function claimReducer(state, action) {
