@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenInfoLeftHeaderComponent } from './gen-info-left-header.component';
+import { ClaimPatientInfo } from './claim-patient-info.component';
 
 describe('GenInfoLeftHeaderComponent', () => {
-  let component: GenInfoLeftHeaderComponent;
-  let fixture: ComponentFixture<GenInfoLeftHeaderComponent>;
+  let component: ClaimPatientInfo;
+  let fixture: ComponentFixture<ClaimPatientInfo>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenInfoLeftHeaderComponent ]
+      declarations: [ ClaimPatientInfo ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GenInfoLeftHeaderComponent);
+    fixture = TestBed.createComponent(ClaimPatientInfo);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

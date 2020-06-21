@@ -8,13 +8,13 @@ import { RouterModule } from '@angular/router';
 import { MainClaimPageComponent } from 'src/app/claim-module-components/main-claim-page/main-claim-page.component';
 import { StoreModule } from '@ngrx/store';
 import { claimReducer } from 'src/app/claim-module-components/store/claim.reducer';
-import { GenInfoLeftHeaderComponent } from 'src/app/claim-module-components/gen-info-left-header/gen-info-left-header.component';
+import { ClaimPatientInfo } from 'src/app/claim-module-components/claimPatientInfo/claim-patient-info.component';
 import { PhysicianComponent } from 'src/app/claim-module-components/physician/physician.component';
 
 @NgModule({
   declarations: [
     MainClaimPageComponent,
-    GenInfoLeftHeaderComponent,
+    ClaimPatientInfo,
     PhysicianComponent
   ],
   imports: [
