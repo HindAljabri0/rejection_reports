@@ -46,6 +46,7 @@ import { MatiralModule } from './modules/matiral/matiral.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 
@@ -112,6 +113,7 @@ import { environment } from 'src/environments/environment';
       }
     ]),
     StoreModule.forRoot([]),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserModule,
     HttpClientModule,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { startCreatingNewClaim } from '../store/claim.actions';
+import { startCreatingNewClaim, loadLOVs } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim } from '../store/claim.reducer';
 
@@ -28,6 +28,7 @@ export class MainClaimPageComponent implements OnInit {
 
   startCreatingClaim(type:string){
     this.store.dispatch(startCreatingNewClaim({caseType:type}));
+    this.store.dispatch(loadLOVs());
   }
 
 }

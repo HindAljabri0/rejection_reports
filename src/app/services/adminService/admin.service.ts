@@ -34,5 +34,11 @@ export class AdminService {
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
+
+  getLOVsForClaimCreation(){
+    const requestURL: string = `/lov/get`
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
   
 }

@@ -11,6 +11,8 @@ import { claimReducer } from 'src/app/claim-module-components/store/claim.reduce
 import { ClaimPatientInfo } from 'src/app/claim-module-components/claimPatientInfo/claim-patient-info.component';
 import { PhysicianComponent } from 'src/app/claim-module-components/physician/physician.component';
 import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-calculation/gdpn-calculation.component';
+import { EffectsModule } from '@ngrx/effects';
+import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-c
     RouterModule.forChild([
       {path: ':id', component: MainClaimPageComponent}
     ]),
-    StoreModule.forFeature('claim', claimReducer),
+    StoreModule.forFeature('claimState', claimReducer),
+    EffectsModule.forFeature([ClaimEffects]),
     CommonModule,
     MatiralModule,
     ReactiveFormsModule,

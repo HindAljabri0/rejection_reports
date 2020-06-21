@@ -1,6 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
+export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
+export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{LOVs:any}>());
+export const setError = createAction('[ Claim ] set error', props<{error:any}>());
 
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: 'M' | 'F' }>());
