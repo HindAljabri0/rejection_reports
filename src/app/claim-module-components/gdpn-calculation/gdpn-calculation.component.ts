@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Claim } from '../models/claim.model';
+import { getClaim } from '../store/claim.reducer';
 
 @Component({
   selector: 'gdpn-calculation',
@@ -7,7 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GdpnCalculationComponent implements OnInit {
 
-  constructor() { }
+  claim:Claim;
+
+  constructor(private store:Store) {
+    store.select(getClaim).subscribe(claim => this.claim = claim);
+  }
 
   ngOnInit() {
   }

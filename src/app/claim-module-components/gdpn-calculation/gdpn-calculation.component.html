@@ -7,8 +7,8 @@
                 <td><label>VAT</label></td>
             </tr>
             <tr>
-                <td><label style="font-weight:bold;">0.0</label></td>
-                <td><label style="font-weight:bold;">0.0</label></td>
+                <td><label style="font-weight:bold;">{{claim.claimGDPN.net.value}}</label></td>
+                <td><label style="font-weight:bold;">{{claim.claimGDPN.netVATamount.value}}</label></td>
             </tr>
         </tbody>
     </table>
@@ -19,28 +19,28 @@
         <tbody>
             <tr>
                 <td><label>Gross Amount</label></td>
-                <td><label>0.0</label></td>
+                <td><label>{{claim.claimGDPN.gross.value}}</label></td>
 
             </tr>
             <tr>
                 <td><label>Discount</label></td>
-                <td><label>0.0</label></td>
+                <td><label>{{claim.claimGDPN.discount.value}}</label></td>
             </tr>
             <tr>
                 <td><label>Patient Share</label></td>
-                <td><label>0.0</label></td>
+                <td><label>{{claim.claimGDPN.patientShare.value}}</label></td>
             </tr>
             <tr>
                 <td><label>Net Amount</label></td>
-                <td><label>0.0</label></td>
+                <td><label>{{claim.claimGDPN.net.value}}</label></td>
             </tr>
             <tr>
                 <td><label>Net VAT Amount</label></td>
-                <td><label>0.0</label></td>
+                <td><label>{{claim.claimGDPN.netVATamount.value}}</label></td>
             </tr>
             <tr>
                 <td><label>Patient Share VAT Amount</label></td>
-                <td><label>0.0</label></td>
+                <td><label>{{claim.claimGDPN.patientShareVATamount.value}}</label></td>
             </tr>
         </tbody>
     </table>

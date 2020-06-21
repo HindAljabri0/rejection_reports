@@ -12,6 +12,19 @@ export class GDPN {
     priceCorrection: Amount;
     rejection: Amount;
 
+    constructor() {
+        this.net = { value: 0.0, type: 'SAR' };
+        this.netVATrate = { value: 0.0, type: 'SAR' };
+        this.netVATamount = { value: 0.0, type: 'SAR' };
+        this.patientShare = { value: 0.0, type: 'SAR' };
+        this.patientShareVATrate = { value: 0.0, type: 'SAR' };
+        this.patientShareVATamount = { value: 0.0, type: 'SAR' };
+        this.discount = { value: 0.0, type: 'SAR' };
+        this.gross = { value: 0.0, type: 'SAR' };
+        this.priceCorrection = { value: 0.0, type: 'SAR' };
+        this.rejection = { value: 0.0, type: 'SAR' };
+    }
+
 }
 
 export type Amount = {
