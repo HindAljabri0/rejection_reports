@@ -12,3 +12,5 @@ export const updatePatientMemberId = createAction('[ Claim Patient Info ] update
 export const updateNationalId = createAction('[ Claim Patient Info ] update national id', props<{ nationalId : string }>());
 export const updatePolicyNum = createAction('[ Claim Patient Info ] update policy no', props<{ policyNo : string }>());
 export const updateApprovalNum = createAction('[ Claim Patient Info ] update approval no', props<{ approvalNo : string }>());
+export const updatePhysicianId = createAction('[ Claim Physician Info ] update Physician Id', props<{ physicianId: string }>());
+export const updatePhysicianName = createAction('[ Claim Physician Info ] update Physician name', props<{ physicianName: string }>());

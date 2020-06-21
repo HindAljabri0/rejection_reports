@@ -5,12 +5,12 @@ import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 export interface ClaimState {
     claim: Claim;
-    LOVs: any;
+    LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
 }
 
 const initState: ClaimState = {
     claim: null,
-    LOVs: null
+    LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] }
 }
 
 const _claimReducer = createReducer(
@@ -27,6 +27,8 @@ const _claimReducer = createReducer(
     on(actions.updateNationalId, (state, { nationalId }) => ({ ...state, claim: { ...state.claim, member: { ...state.claim.member, idNumber: nationalId } } })),
     on(actions.updatePolicyNum, (state, { policyNo }) => ({ ...state, claim: { ...state.claim, member: { ...state.claim.member, policyNumber: policyNo } } })),
     on(actions.updateApprovalNum, (state, { approvalNo }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, approvalNumber: approvalNo } } })),
+    on(actions.updatePhysicianId, (state, { physicianId }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianID: physicianId } } } })),
+    on(actions.updatePhysicianName, (state, { physicianName }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianName: physicianName } } } })),
 );
 
 export function claimReducer(state, action) {
@@ -35,6 +37,10 @@ export function claimReducer(state, action) {
 
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
+export const getVistType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
+export const getDepartments = createSelector(claimSelector, (state) => state.LOVs.Departments);
+export const getIllnessCode = createSelector(claimSelector, (state) => state.LOVs.IllnessCode);
+export const getPhysicianCategory = createSelector(claimSelector, (state) => state.LOVs.PhysicianCategory);
 
 
 

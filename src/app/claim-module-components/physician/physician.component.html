@@ -4,14 +4,14 @@
             <tr>
                 <td><label>Physician ID</label></td>
                 <td>
-                    <input type="text">
+                    <input type="text" [formControl]="physicianIdController" (change)="updateClaim('PhysicianId')">
                 </td>
 
             </tr>
             <tr>
 
                 <td><label>Physician Name</label></td>
-                <td><input type="text" [formControl]="physicianNameController"></td>
+                <td><input type="text" [formControl]="physicianNameController" (change)="updateClaim('PhysicianName')"></td>
 
             </tr>
             <tr>
