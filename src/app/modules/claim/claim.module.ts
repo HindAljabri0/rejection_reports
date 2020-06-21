@@ -10,12 +10,14 @@ import { StoreModule } from '@ngrx/store';
 import { claimReducer } from 'src/app/claim-module-components/store/claim.reducer';
 import { ClaimPatientInfo } from 'src/app/claim-module-components/claimPatientInfo/claim-patient-info.component';
 import { PhysicianComponent } from 'src/app/claim-module-components/physician/physician.component';
+import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-calculation/gdpn-calculation.component';
 
 @NgModule({
   declarations: [
     MainClaimPageComponent,
     ClaimPatientInfo,
-    PhysicianComponent
+    PhysicianComponent,
+    GdpnCalculationComponent,
   ],
   imports: [
     RouterModule.forChild([
