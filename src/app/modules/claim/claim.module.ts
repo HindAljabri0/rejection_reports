@@ -13,6 +13,8 @@ import { PhysicianComponent } from 'src/app/claim-module-components/physician/ph
 import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-calculation/gdpn-calculation.component';
 import { EffectsModule } from '@ngrx/effects';
 import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
+import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/claim-data.component';
+import { MatTabsModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effect
     ClaimPatientInfo,
     PhysicianComponent,
     GdpnCalculationComponent,
+    ClaimDataComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -31,7 +34,8 @@ import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effect
     MatiralModule,
     ReactiveFormsModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTabsModule
   ]
 })
 export class ClaimModule { }
