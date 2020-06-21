@@ -9,11 +9,13 @@ import { MainClaimPageComponent } from 'src/app/claim-module-components/main-cla
 import { StoreModule } from '@ngrx/store';
 import { claimReducer } from 'src/app/claim-module-components/store/claim.reducer';
 import { GenInfoLeftHeaderComponent } from 'src/app/claim-module-components/gen-info-left-header/gen-info-left-header.component';
+import { PhysicianComponent } from 'src/app/claim-module-components/physician/physician.component';
 
 @NgModule({
   declarations: [
     MainClaimPageComponent,
-    GenInfoLeftHeaderComponent
+    GenInfoLeftHeaderComponent,
+    PhysicianComponent
   ],
   imports: [
     RouterModule.forChild([
