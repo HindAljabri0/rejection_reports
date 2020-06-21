@@ -16,9 +16,24 @@ label{
     font-size: small;
 }
 .body {
-    padding: 10px 0px;
+    padding: 15px;
     background-color: #EFF5FF;
     height: 77vh;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 15px 5px;
+}
+
+.hiddenByDefault{
+    opacity: 0;
+    transition: opacity 500ms ease;
+}
+
+.show{
+    opacity: 1;
 }
 
 .footer {

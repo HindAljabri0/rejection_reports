@@ -1,0 +1,46 @@
+<div class="mainCardBody">
+    <table>
+        <tbody>
+            <tr>
+                <td><label>Full Name</label></td>
+                <td><input type="text" [formControl]="fullNameController"></td>
+                <td><label>Payer</label></td>
+                <td>
+                    <select>
+                        <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Visit Type</label></td>
+                <td>
+                    <select>
+                        <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
+                    </select>
+                </td>
+                <td><label>Member ID</label></td>
+                <td>
+                    <input type="text">
+                </td>
+            </tr>
+            <tr>
+                <td><label>Nationality</label></td>
+                <td>
+                    <select>
+                        <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
+                    </select>
+                </td>
+                <td><label>Policy No.</label></td>
+                <td>
+                    <input type="text">
+                </td>
+            </tr>
+            <tr>
+                <td><label>National ID</label></td>
+                <td><input type="text"></td>
+                <td><label>Approval No.</label></td>
+                <td><input type="text"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
