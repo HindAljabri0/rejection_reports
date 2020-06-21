@@ -24,11 +24,11 @@ export class MainClaimPageComponent implements OnInit {
       //to be changed later if we decide to view/edit the claim here.
       this.router.navigate(['/']);
     }
+    this.store.dispatch(loadLOVs());
   }
 
   startCreatingClaim(type:string){
     this.store.dispatch(startCreatingNewClaim({caseType:type}));
-    this.store.dispatch(loadLOVs());
   }
 
 }
