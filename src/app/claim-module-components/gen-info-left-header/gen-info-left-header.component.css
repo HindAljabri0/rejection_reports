@@ -27,6 +27,41 @@ td input, td select {
     border-radius: 3px;
 }
 
+#fullNameInput{
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    width: 80%;
+}
+
+#genderDiv{
+    color: white;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    padding: 5px;
+    width: 20%;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 500ms ease;
+}
+
+#genderDiv.male{
+    background-color: #5ED4FF;
+}
+
+#genderDiv.female{
+    background-color: #ff5ea9;
+}
+
 td input:focus, td select:focus{
     outline: unset;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

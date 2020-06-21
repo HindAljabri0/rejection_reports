@@ -3,7 +3,12 @@
         <tbody>
             <tr>
                 <td><label>Full Name</label></td>
-                <td><input type="text" [formControl]="fullNameController"></td>
+                <td style="display: flex; width: 100%;">
+                    <input id="fullNameInput" type="text" [formControl]="fullNameController">
+                    <div id="genderDiv" [ngClass]="{'female': !isMale, 'male': isMale}" (click)="toggleGender()">
+                        <i class="fa" [ngClass]="{'fa-venus': !isMale, 'fa-mars': isMale}" aria-hidden="true"></i>
+                    </div>
+                </td>
                 <td><label>Payer</label></td>
                 <td>
                     <select>
@@ -20,7 +25,7 @@
                 </td>
                 <td><label>Member ID</label></td>
                 <td>
-                    <input type="text">
+                    <input type="number">
                 </td>
             </tr>
             <tr>
@@ -32,14 +37,14 @@
                 </td>
                 <td><label>Policy No.</label></td>
                 <td>
-                    <input type="text">
+                    <input type="number">
                 </td>
             </tr>
             <tr>
                 <td><label>National ID</label></td>
-                <td><input type="text"></td>
+                <td><input type="number"></td>
                 <td><label>Approval No.</label></td>
-                <td><input type="text"></td>
+                <td><input type="number"></td>
             </tr>
         </tbody>
     </table>
