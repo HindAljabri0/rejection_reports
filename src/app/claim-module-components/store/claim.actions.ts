@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Diagnosis } from '../models/diagnosis.model';
 
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
@@ -19,3 +20,5 @@ export const updatePhysicianId = createAction('[ Claim Physician Info ] update P
 export const updatePhysicianName = createAction('[ Claim Physician Info ] update Physician name', props<{ physicianName: string }>());
 export const updatePhysicianCategory = createAction('[ Claim Physician Info ] update physician category', props<{ physicianCategory: string }>());
 export const updateDepartment = createAction('[ Claim Physician Info ] update department', props<{ department: string }>());
+
+export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update list', props<{ list: Diagnosis[] }>())

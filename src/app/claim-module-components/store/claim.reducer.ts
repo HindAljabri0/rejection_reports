@@ -38,6 +38,8 @@ const _claimReducer = createReducer(
     on(actions.updatePhysicianName, (state, { physicianName }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianName: physicianName } } } })),
     on(actions.updatePhysicianCategory, (state, { physicianCategory }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianCategory: physicianCategory } } } })),
     on(actions.updateDepartment, (state, { department }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, departmentCode: department } } })),
+
+    on(actions.updateDiagnosisList, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, diagnosis: list } } } }))
 );
 
 export function claimReducer(state, action) {

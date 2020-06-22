@@ -2,5 +2,10 @@
     padding: 10px;
     background-color: white;
     color: #3060AA;
+    width: 100%;
 }
 
+::ng-deep.mat-tab-body-wrapper {
+    height: 18.6rem;
+    max-height: 18.6rem;
+}

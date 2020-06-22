@@ -1,9 +1,9 @@
 
 export class Diagnosis {
 
-    diagnosisNumber: number;
+    diagnosisNumber?: number;
     diagnosisCode: string;
-    diagnosisType: string;
+    diagnosisType?: string;
     diagnosisDescription: string;
 
 }
