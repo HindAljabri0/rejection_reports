@@ -28,6 +28,8 @@
     </div>
     <div class="footer">
         <span class="spacer"></span>
+        <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;" (click)="save()">Save</button>
     </div>
 </div>
 

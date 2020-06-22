@@ -16,9 +16,9 @@ label{
     font-size: small;
 }
 .body {
-    padding: 15px;
+    padding: 10px;
     background-color: #EFF5FF;
-    height: 77vh;
+    height: 75vh;
 }
 
 table {
@@ -43,7 +43,7 @@ table {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 10px;
-    height: 40px;
+    height: 60px;
 }
 
 .fabButton {

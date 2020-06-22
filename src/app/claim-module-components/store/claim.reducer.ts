@@ -23,6 +23,7 @@ const _claimReducer = createReducer(
     }),
     on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractLOVsFromHttpResponse(LOVs) })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error })),
+    on(actions.cancelClaim, (state) => (initState)),
 
     on(actions.updatePatientName, (state, { name }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, fullName: name } } } })),
     on(actions.updatePatientGender, (state, { gender }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, gender: gender } } } })),
