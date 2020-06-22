@@ -1,0 +1,7 @@
+<div class="body">
+    <mat-button-toggle value="NA" (change)="updateIllnesses($event)" [checked]="selectedIllnesses.includes('NA')">N/A
+    </mat-button-toggle>
+    <mat-button-toggle *ngFor="let code of illnessOptionsList" [value]="code" (change)="updateIllnesses($event)"
+        [checked]="selectedIllnesses.includes(code)">
+        {{beautfyCode(code)}}</mat-button-toggle>
+</div>

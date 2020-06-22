@@ -21,4 +21,6 @@ export const updatePhysicianName = createAction('[ Claim Physician Info ] update
 export const updatePhysicianCategory = createAction('[ Claim Physician Info ] update physician category', props<{ physicianCategory: string }>());
 export const updateDepartment = createAction('[ Claim Physician Info ] update department', props<{ department: string }>());
 
-export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update list', props<{ list: Diagnosis[] }>())
+export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update list', props<{ list: Diagnosis[] }>());
+
+export const updateIllnesses = createAction('[ Claim Illnesses ] update illnesses', props<{list:string[]}>());

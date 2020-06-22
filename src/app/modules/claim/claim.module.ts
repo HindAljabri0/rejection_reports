@@ -16,6 +16,7 @@ import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effect
 import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/claim-data.component';
 import { MatTabsModule } from '@angular/material';
 import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-dignosis/claim-dignosis.component';
+import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-di
     PhysicianComponent,
     GdpnCalculationComponent,
     ClaimDataComponent,
-    ClaimDignosisComponent
+    ClaimDignosisComponent,
+    ClaimIllnessesComponent
   ],
   imports: [
     RouterModule.forChild([
