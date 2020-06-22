@@ -1,52 +1,69 @@
 <div class="mainCardBody">
 
-        <table>
-            <tbody>
-                <tr>
-                    <td><label>Claim Date</label></td>
-                    <td><label>Claim Type</label></td>
+    <table>
+        <tbody>
+            <tr>
+                <td><label>Claim Date</label></td>
+                <td><label>Claim Type</label></td>
+            </tr>
+            <tr>
+                <td>
+                        <input type="date" class="form-control" placeholder="dd/mm/yyyy"
+                        formControlName="inputNascimento" >
+                </td>
+                <td>
+                    <input id="fullNameInput" type="text" [formControl]="fullNameController"
+                        (change)="updateClaim('fullName')">
+                    </td>
+            </tr>
+
+            <tr>
+                    <td><label>Patient File Number</label></td>
+                    <td><label>Member DOB</label></td>
                 </tr>
                 <tr>
-                        <input matInput [matDatepicker]="claimDatePicker" placeholder="Claim Date"
-                        [formControl]="claimDateControl"
-                        (dateChange)="updateChips(claimDate, $event.value.format('DD-MM-YYYY'))">
-                    <mat-datepicker-toggle matSuffix [for]="claimDatePicker">
-                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                    </mat-datepicker-toggle>
-                    <td><input id="fullNameInput" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')"></td>
+                    <td>
+                            <input id="fullNameInput" type="text" [formControl]="fullNameController"
+                            (change)="updateClaim('fullName')">
+                    </td>
+                    <td>
+                        <input id="fullNameInput" type="text" [formControl]="fullNameController"
+                            (change)="updateClaim('fullName')">
+                        </td>
                 </tr>
-            </tbody>
-        </table>
-    
-        <hr />
-    
-        <table>
-            <tbody>
-                <tr>
-                    <td><label>Gross Amount</label></td>
-                    <td><label>{{claim.claimGDPN.gross.value}}</label></td>
-    
-                </tr>
-                <tr>
-                    <td><label>Discount</label></td>
-                    <td><label>{{claim.claimGDPN.discount.value}}</label></td>
-                </tr>
-                <tr>
-                    <td><label>Patient Share</label></td>
-                    <td><label>{{claim.claimGDPN.patientShare.value}}</label></td>
-                </tr>
-                <tr>
-                    <td><label>Net Amount</label></td>
-                    <td><label>{{claim.claimGDPN.net.value}}</label></td>
-                </tr>
-                <tr>
-                    <td><label>Net VAT Amount</label></td>
-                    <td><label>{{claim.claimGDPN.netVATamount.value}}</label></td>
-                </tr>
-                <tr>
-                    <td><label>Patient Share VAT Amount</label></td>
-                    <td><label>{{claim.claimGDPN.patientShareVATamount.value}}</label></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            
+        </tbody>
+    </table>
+
+    <hr />
+
+    <table>
+        <tbody>
+            <tr>
+                <td><label>Gross Amount</label></td>
+                <td><label>{{claim.claimGDPN.gross.value}}</label></td>
+
+            </tr>
+            <tr>
+                <td><label>Discount</label></td>
+                <td><label>{{claim.claimGDPN.discount.value}}</label></td>
+            </tr>
+            <tr>
+                <td><label>Patient Share</label></td>
+                <td><label>{{claim.claimGDPN.patientShare.value}}</label></td>
+            </tr>
+            <tr>
+                <td><label>Net Amount</label></td>
+                <td><label>{{claim.claimGDPN.net.value}}</label></td>
+            </tr>
+            <tr>
+                <td><label>Net VAT Amount</label></td>
+                <td><label>{{claim.claimGDPN.netVATamount.value}}</label></td>
+            </tr>
+            <tr>
+                <td><label>Patient Share VAT Amount</label></td>
+                <td><label>{{claim.claimGDPN.patientShareVATamount.value}}</label></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
