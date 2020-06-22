@@ -33,8 +33,11 @@ const _claimReducer = createReducer(
     on(actions.updateNationalId, (state, { nationalId }) => ({ ...state, claim: { ...state.claim, member: { ...state.claim.member, idNumber: nationalId } } })),
     on(actions.updatePolicyNum, (state, { policyNo }) => ({ ...state, claim: { ...state.claim, member: { ...state.claim.member, policyNumber: policyNo } } })),
     on(actions.updateApprovalNum, (state, { approvalNo }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, approvalNumber: approvalNo } } })),
+
     on(actions.updatePhysicianId, (state, { physicianId }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianID: physicianId } } } })),
     on(actions.updatePhysicianName, (state, { physicianName }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianName: physicianName } } } })),
+    on(actions.updatePhysicianCategory, (state, { physicianCategory }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianCategory: physicianCategory } } } })),
+    on(actions.updateDepartment, (state, { department }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, departmentCode: department } } })),
 );
 
 export function claimReducer(state, action) {
