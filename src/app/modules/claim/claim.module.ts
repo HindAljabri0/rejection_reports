@@ -15,6 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
 import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/claim-data.component';
 import { MatTabsModule } from '@angular/material';
+import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MatTabsModule } from '@angular/material';
     ClaimPatientInfo,
     PhysicianComponent,
     GdpnCalculationComponent,
-    ClaimDataComponent
+    ClaimDataComponent,
+    GenInfoComponent
   ],
   imports: [
     RouterModule.forChild([
