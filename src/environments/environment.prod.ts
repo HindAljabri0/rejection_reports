@@ -1,4 +1,4 @@
-const host = 'https://eclaims.waseel.com';
+const host = 'https://api.eclaims.waseel.com';
 export const environment = {
   production: true,
   uploaderHost: `${host}/upload`,
