@@ -17,7 +17,7 @@ import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/c
 import { MatTabsModule } from '@angular/material';
 import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-dignosis/claim-dignosis.component';
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
-
+import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-i
     GdpnCalculationComponent,
     ClaimDataComponent,
     ClaimDignosisComponent,
-    ClaimIllnessesComponent
+    ClaimIllnessesComponent,
+    GenInfoComponent
   ],
   imports: [
     RouterModule.forChild([
