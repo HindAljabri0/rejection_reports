@@ -355,6 +355,13 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     });
   }
 
+  payeridToPayername(){
+    if (this.data.claim.payerid == '102') return 'Tawuniya';
+    if (this.data.claim.payerid == '300') return 'Med Gulf';
+    if (this.data.claim.payerid == '306') return 'Saudi Enaya';
+    if (this.data.claim.payerid == '204') return 'AXA';
+  }
+
   genderToText(g: string) {
     if (g == 'M') return 'Male';
     if (g == 'F') return 'Female';
