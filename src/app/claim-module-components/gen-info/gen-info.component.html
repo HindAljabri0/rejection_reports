@@ -8,62 +8,86 @@
             </tr>
             <tr>
                 <td>
-                        <input type="date" class="form-control" placeholder="dd/mm/yyyy"
-                        formControlName="inputNascimento" >
+                    <input id="claimDateInput" type="date" [formControlName]="claimDateController"
+                    (change)="updateClaim('claimDate')">
                 </td>
                 <td>
-                    <input id="fullNameInput" type="text" [formControl]="fullNameController"
-                        (change)="updateClaim('fullName')">
-                    </td>
+                    <input id="claimTypeInput" type="text" [formControl]="claimTypeController"
+                        (change)="updateClaim('claimType')">
+                </td>
             </tr>
 
             <tr>
-                    <td><label>Patient File Number</label></td>
-                    <td><label>Member DOB</label></td>
-                </tr>
-                <tr>
-                    <td>
-                            <input id="fullNameInput" type="text" [formControl]="fullNameController"
-                            (change)="updateClaim('fullName')">
-                    </td>
-                    <td>
-                        <input id="fullNameInput" type="text" [formControl]="fullNameController"
-                            (change)="updateClaim('fullName')">
-                        </td>
-                </tr>
-            
+                <td><label>Patient File Number</label></td>
+                <td><label>Member DOB</label></td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="fileNumberInput" type="text" [formControl]="fielNumberController"
+                        (change)="updateClaim('fileNumber')">
+                </td>
+                <td>
+                    <input id="memberDobInput" type="date" [formControlName]="memberDobController"
+                    (change)="updateClaim('memberDob')">
+                </td>
+            </tr>
+
         </tbody>
     </table>
 
     <hr />
 
-    <!-- <table>
+    <table>
         <tbody>
             <tr>
-                <td><label>Gross Amount</label></td>
-                <td><label>{{claim.claimGDPN.gross.value}}</label></td>
+                <td><label>Duration of Illness</label></td>
+                <td><label>Unit of Duration</label></td>
 
             </tr>
             <tr>
-                <td><label>Discount</label></td>
-                <td><label>{{claim.claimGDPN.discount.value}}</label></td>
+                <td><label><input id="illnessDurationInput" type="text" [formControl]="illnessDurationController"
+                            (change)="updateClaim('illnessDuration')"></label></td>
+                <td>
+                    <mat-button-toggle-group unitIllness (change)="updateClaimUnit('illnessDurationUnit',$event)">
+                        <mat-button-toggle value="Day">
+                            Day
+                        </mat-button-toggle>
+                        <mat-button-toggle value="Week">
+                            Week
+                        </mat-button-toggle>
+                        <mat-button-toggle value="Month">
+                            Month
+                        </mat-button-toggle>
+                        <mat-button-toggle value="Year">
+                            Year
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </td>
             </tr>
             <tr>
-                <td><label>Patient Share</label></td>
-                <td><label>{{claim.claimGDPN.patientShare.value}}</label></td>
+                <td><label>Age</label></td>
+                <td><label>Unit of Age</label></td>
             </tr>
             <tr>
-                <td><label>Net Amount</label></td>
-                <td><label>{{claim.claimGDPN.net.value}}</label></td>
-            </tr>
-            <tr>
-                <td><label>Net VAT Amount</label></td>
-                <td><label>{{claim.claimGDPN.netVATamount.value}}</label></td>
-            </tr>
-            <tr>
-                <td><label>Patient Share VAT Amount</label></td>
-                <td><label>{{claim.claimGDPN.patientShareVATamount.value}}</label></td>
+                <td><label><input id="ageInput" type="text" [formControl]="ageController"
+                            (change)="updateClaim('age')"></label></td>
+                <td>
+                    <mat-button-toggle-group  (change)="updateClaimUnit('ageUnit',$event)">
+                        <mat-button-toggle value="Day">
+                            Day
+                        </mat-button-toggle>
+                        <mat-button-toggle value="Week">
+                            Week
+                        </mat-button-toggle>
+                        <mat-button-toggle value="Month">
+                            Month
+                        </mat-button-toggle>
+                        <mat-button-toggle value="Year">
+                            Year
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </td>
             </tr>
         </tbody>
-    </table> -->
+    </table>
 </div>

@@ -14,7 +14,7 @@ import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-c
 import { EffectsModule } from '@ngrx/effects';
 import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
 import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/claim-data.component';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatButtonToggleModule } from '@angular/material';
 import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-dignosis/claim-dignosis.component';
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
@@ -41,7 +41,8 @@ import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-i
     ReactiveFormsModule,
     SharedModule,
     HttpClientModule,
-    MatTabsModule
+    MatTabsModule,
+    MatButtonToggleModule
   ]
 })
 export class ClaimModule { }
