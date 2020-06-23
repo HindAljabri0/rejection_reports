@@ -20,16 +20,15 @@
 </div>
 <div class="header sub">
     <p style="    padding-right: 37%;">Doctor Name: {{data.claim.physicianname}}</p>
-
-    <span class="spacer"></span>
+        <span class="spacer"></span>
     <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No:
         {{data.claim.payerclaimrefno}}
     </p>
 </div>
 <div class="header sub" >
-    <tr>
         <p [style.color]="statusToColor(data.claim.status)">Status: {{statusToName(data.claim.status)}}</p>
-    </tr>
+        <span class="spacer"></span>
+        <p>Description: {{data.claim.statusdetail}}</p>    
 </div>
 <div class="content">
     <div class="gInfo">

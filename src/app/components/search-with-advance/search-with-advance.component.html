@@ -2,34 +2,37 @@
     <div class="menuContent" (click)="$event.stopPropagation()">
         <div class="searchByDate" (keyup.enter)="search()">
             <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}" style="margin-right: 45px; min-width: 205px;  margin-left: 15px;">
-                <mat-label>Select Payer</mat-label>
+                <mat-label>Select Payer *</mat-label>
                 <mat-select [formControl]="payerIdControl" (keyup.enter)="search()"
                     (selectionChange)="updateChips(payerId, $event.value)">
                     <mat-option *ngFor="let payer of payers" [value]="payer.id">
                         {{payer.name}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="payerIdControl.hasError('required')">Please choose a Payer</mat-error>
             </mat-form-field>
             <mat-checkbox [(checked)]="outpatientControl" (change)="toggleSelectionOutpatient()">Outpatient</mat-checkbox>
             <mat-checkbox [(checked)]="inpatientControl" (change)="toggleSelectionInpatient()">Inpatient</mat-checkbox>
         </div>
         <div class="searchByDate" (keyup.enter)="search()">
             <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 45px;">
-                <input matInput [matDatepicker]="fromPicker" placeholder="From claim date"
+                <input matInput [matDatepicker]="fromPicker" placeholder="From claim date *"
                     [formControl]="fromDateControl" (keyup.enter)="search()"
                     (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
                 <mat-datepicker-toggle matSuffix [for]="fromPicker">
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                 </mat-datepicker-toggle>
                 <mat-datepicker #fromPicker></mat-datepicker>
+                <mat-error *ngIf="fromDateControl.hasError('required')">Please choose a Date</mat-error>
             </mat-form-field>
             <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" style="margin-right: 5px;">
-                <input matInput [matDatepicker]="toPicker" placeholder="To claim date" [formControl]="toDateControl"
+                <input matInput [matDatepicker]="toPicker" placeholder="To claim date *" [formControl]="toDateControl"
                     (keyup.enter)="search()" (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
                 <mat-datepicker-toggle matSuffix [for]="toPicker">
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                 </mat-datepicker-toggle>
                 <mat-datepicker #toPicker></mat-datepicker>
+                <mat-error *ngIf="toDateControl.hasError('required')">Please choose a Date</mat-error>
             </mat-form-field>
         </div>
         <div style="width: 100%; text-align: end;">

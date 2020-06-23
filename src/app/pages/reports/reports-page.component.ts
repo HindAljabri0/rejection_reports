@@ -12,6 +12,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
 import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MatMenuTrigger, MatDatepickerInputEvent, MatSelectChange, MatChipInputEvent } from '@angular/material';
 
 
 @Component({
@@ -39,8 +40,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   reportTypeControl: FormControl = new FormControl();
   fromDateControl: FormControl = new FormControl();
+  fromDateHasError: boolean = false;
+
   toDateControl: FormControl = new FormControl();
+  toDateHasError: boolean = false;
+
   payerIdControl: FormControl = new FormControl();
+  payerIdHasError: boolean = false;
 
   rejectionCriteriaControl: FormControl = new FormControl();
 
@@ -57,6 +63,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild('paymentClaimSummaryReport', {static: false}) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', {static: false}) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
   @ViewChild('rejectionReport', {static: false}) rejectionReportComponent: SubmittedInvoicesComponent;
+  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
+
   payerId: number[];
 
 
@@ -127,9 +135,28 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   search() {
+    this.fromDateHasError = false;
+    this.toDateHasError = true;
+    this.payerIdHasError = true;
+
     this.isValidFormSubmitted = false;
     if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null) {
-      return;
+      this.toDateHasError = true;
+      this.payerIdHasError = true;
+      this.payerIdHasError = true;
+
+      /*if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
+        this.trigger.openMenu();
+        this.fromDateHasError = true;
+      }
+      else if (this.toDateControl.invalid || this.toDateControl.value == null) {
+        this.trigger.openMenu();
+        this.toDateHasError = true;
+      } else if (this.payerIdControl.invalid || this.payerIdControl.value == null) {
+      this.trigger.openMenu();
+      this.payerIdHasError = true;
+      }*/
+    //return;
     }
     let queryParams: Params = {};
     const fromDate: Date = new Date(this.fromDateControl.value);
@@ -157,7 +184,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.reportTypeControl.value == 3) {
       this.rejectionReportComponent.fetchData();
     }
+    //else {
+      //this.trigger.openMenu();
+    //}
     this.isValidFormSubmitted = true;
+
   }
 
   onPaymentClick(ref) {

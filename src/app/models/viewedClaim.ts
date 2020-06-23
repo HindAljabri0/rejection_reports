@@ -37,5 +37,7 @@ export class ViewedClaim {
 	providerId:string;
 	payerid:string;
 	status:string;
+	
+	statusdetail:string;
 
 }

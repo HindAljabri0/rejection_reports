@@ -46,15 +46,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.payers = [];
-    let allPayersIds = [];
-    this.commen.getPayersList().map(value => {
-      this.payers.push({
-        id: `${value.id}`,
-        name: value.name
-      });
-      allPayersIds.push(`${value.id}`);
-    });
     if (this.data.claim.errors.length > 0) {
       this.setErrors();
     }
@@ -345,10 +336,13 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
         const providerId = this.data.claim.providerId;
         const payerId = this.data.claim.payerid;
         const status = this.data.claim.status;
+        const statusdetail = this.data.claim.statusdetail;
+
         this.data.claim = JSON.parse(JSON.stringify(event.body));
         this.data.claim.providerId = providerId;
         this.data.claim.payerid = payerId;
         this.data.claim.status = status;
+        this.data.claim.statusdetail = statusdetail;
         this.resetErrors();
         if (this.data.claim.errors.length > 0) {
           this.setErrors();
@@ -366,6 +360,9 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     if (g == 'F') return 'Female';
     else return '';
   }
+  /*getStatusdescription(statusdescription: string) {
+    if (this.commen.statusToName('Ready for Submission') ) return statusdescription ='Aaaaaaaaa';
+  }*/
 
   getPatientFullName() {
     return `${this.data.claim.firstname != null ? this.data.claim.firstname : ""} ${this.data.claim.middlename != null ? this.data.claim.middlename : ""}  ${this.data.claim.lastname != null ? this.data.claim.lastname : ""}  `;
@@ -475,6 +472,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   statusToName(status:string){
     return this.commen.statusToName(status);
   }
+
   statusToColor(status:string){
     return this.commen.getCardAccentColor(status);
   }
