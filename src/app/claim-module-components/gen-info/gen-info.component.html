@@ -8,7 +8,7 @@
             </tr>
             <tr>
                 <td>
-                    <input id="claimDateInput" type="date" [formControlName]="claimDateController"
+                    <input id="claimDateInput" type="date" [formControl]="claimDateController"
                     (change)="updateClaim('claimDate')">
                 </td>
                 <td>
@@ -27,7 +27,7 @@
                         (change)="updateClaim('fileNumber')">
                 </td>
                 <td>
-                    <input id="memberDobInput" type="date" [formControlName]="memberDobController"
+                    <input id="memberDobInput" type="date" [formControl]="memberDobController"
                     (change)="updateClaim('memberDob')">
                 </td>
             </tr>

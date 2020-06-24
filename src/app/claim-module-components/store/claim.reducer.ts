@@ -43,6 +43,13 @@ const _claimReducer = createReducer(
     on(actions.updateDiagnosisList, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, diagnosis: list } } } })),
 
     on(actions.updateIllnesses, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessCategory: {inllnessCode:list} } } } })),
+
+    on(actions.updateClaimDate, (state, { claimDate }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, claimDate: claimDate } } })),
+    on(actions.updateClaimType, (state, { claimType }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, visitType: claimType } } })),
+    on(actions.updateFileNumber, (state, { fileNumber }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, patientFileNumber: fileNumber } } } })),
+    on(actions.updateMemberDob, (state, { memberDob }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, dob: memberDob } } } })),
+    on(actions.updateIllnessDuration, (state, { illnessDuration }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration:illnessDuration } } } })),
+    on(actions.updateAge, (state, { age }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, age: age } } } })),
 );
 
 export function claimReducer(state, action) {

@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
+import { Period } from '../models/period.type';
 
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
@@ -27,3 +28,11 @@ export const updateDepartment = createAction('[ Claim Physician Info ] update de
 export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update list', props<{ list: Diagnosis[] }>());
 
 export const updateIllnesses = createAction('[ Claim Illnesses ] update illnesses', props<{list:string[]}>());
+
+//GenInfo
+export const updateClaimDate = createAction('[ Claim Date ] update claim date', props<{ claimDate: Date }>());
+export const updateClaimType = createAction('[ Claim Type ] update claim type', props<{ claimType: string }>());
+export const updateFileNumber = createAction('[ File Number ] update File Number', props<{ fileNumber: string }>());
+export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
+export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration:any }>());
+export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
