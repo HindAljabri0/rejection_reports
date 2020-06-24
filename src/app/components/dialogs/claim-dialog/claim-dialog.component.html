@@ -21,7 +21,7 @@
 <div class="header sub">
     <p style="    padding-right: 37%;">Doctor Name: {{data.claim.physicianname}}</p>
         <span class="spacer"></span>
-    <p>Payer Name: {{payeridToPayername(data.claim.payerid)}}</p>
+    <p>Payer Name: {{payeridToPayername()}}</p>
     <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No:
         {{data.claim.payerclaimrefno}}
     </p>
