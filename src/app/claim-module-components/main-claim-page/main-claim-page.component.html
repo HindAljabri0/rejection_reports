@@ -1,11 +1,14 @@
 <div class="mainPage">
     <div class="header">
         <p>Create Claim</p><span class="spacer"></span>
-        <p *ngIf="claim != null && claim.caseInformation != null" class="hiddenByDefault"
-            [ngClass]="{'show':claim != null}">{{claim.caseInformation.caseType}}</p>
+        <p *ngIf="claim != null && errors == null && claim.caseInformation != null" class="hiddenByDefault"
+            [ngClass]="{'show':claim != null && errors == null}">{{claim.caseInformation.caseType}}</p>
     </div>
     <div class="body">
-        <table class="hiddenByDefault" *ngIf="claim != null" [ngClass]="{'show':claim != null}">
+        <div class="error" *ngIf="errors != null && !isLoading">
+            {{getError()}}
+        </div>
+        <table class="hiddenByDefault" *ngIf="claim != null && errors == null" [ngClass]="{'show':claim != null}">
             <tbody>
                 <tr>
                     <td style="width: 62.5%;">
@@ -33,7 +36,7 @@
     </div>
 </div>
 
-<button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu" *ngIf="claim == null">
+<button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu" *ngIf="claim == null && errors == null && !isLoading">
     <mat-icon>add</mat-icon>
 </button>
 

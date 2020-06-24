@@ -52,6 +52,14 @@ table {
     right: 5vw;
 }
 
+.error{
+    color: #c23a3a;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    text-align: center;
+}
+
 button:focus{
     outline: unset;
 }

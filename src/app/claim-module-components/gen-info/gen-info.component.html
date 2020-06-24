@@ -12,8 +12,10 @@
                     (change)="updateClaim('claimDate')">
                 </td>
                 <td>
-                    <input id="claimTypeInput" type="text" [formControl]="claimTypeController"
-                        (change)="updateClaim('claimType')">
+                    <select [value]="selectedClaimType" (change)="selectedClaimType = $event.target.value; updateClaim('claimType');">
+                        <option value="Dental">Dental</option>
+                        <option value="Optical">Optical</option>
+                    </select>
                 </td>
             </tr>
 

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
-import { updatePatientName, updatePatientGender, updatePayer, updatePatientMemberId, updatePolicyNum, updateNationalId, updateApprovalNum, updateVisitType, updateNationality } from '../store/claim.actions';
+import { updatePatientName, updatePatientGender, updatePayer, updatePatientMemberId, updatePolicyNum, updateNationalId, updateApprovalNum, updateVisitType, updateNationality, setError } from '../store/claim.actions';
 import { Observable } from 'rxjs';
-import { getVistType, nationalities } from '../store/claim.reducer';
+import { getVistType, nationalities, FieldError, getPatientErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-patient-info',
@@ -27,19 +27,26 @@ export class ClaimPatientInfo implements OnInit {
   visitTypes: any[] = [];
   nationalities = nationalities;
 
+  errors:FieldError[] = [];
+
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
     this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVistType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
-    this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
+    this.store.select(getPatientErrors).subscribe(errors => this.errors = errors);
+    
     if (this.payersList.length > 0) {
       this.selectedPayer = this.payersList[0].id;
+    } else {
+      this.store.dispatch(setError({error:{code:'PAYERS_LIST'}}));
     }
     if (this.visitTypes.length > 0) {
       this.selectedVisitType = this.visitTypes[0];
     }
     this.selectedNationality = nationalities[0].Code;
+
+    this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
     this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
     this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
     this.store.dispatch(updateNationality({ nationality: this.selectedNationality }))
@@ -73,12 +80,24 @@ export class ClaimPatientInfo implements OnInit {
         this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value }));
         break;
       case 'nationalId':
-        this.store.dispatch(updateNationalId({ nationalId: this.nationalIdontroller.value }));
+        this.store.dispatch(updateNationalId({ nationalId: this.nationalIdontroller.value == null? null:`${this.nationalIdontroller.value}` }));
         break;
       case 'approvalNum':
         this.store.dispatch(updateApprovalNum({ approvalNo: this.approvalNumontroller.value }));
         break;
     }
+  }
+
+  fieldHasError(fieldName){
+    return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  }
+
+  getFieldError(fieldName){
+    const index = this.errors.findIndex(error => error.fieldName == fieldName);
+    if(index > -1){
+      return this.errors[index].error || '';
+    }
+    return '';
   }
 
 }

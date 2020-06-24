@@ -65,3 +65,8 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.fieldError{
+    outline: auto !important;
+    outline-color: #c44848 !important;
+}

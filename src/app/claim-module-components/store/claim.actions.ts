@@ -2,13 +2,17 @@ import { createAction, props } from '@ngrx/store';
 import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
+import { FieldError } from './claim.reducer';
 
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
+export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{loading:boolean}>())
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());
 export const setError = createAction('[ Claim ] set error', props<{ error: any }>());
 export const saveClaim = createAction('[ Claim ] save', props<{claim:Claim}>());
 export const cancelClaim = createAction('[ Claim ] cancel');
+export const startValidatingClaim = createAction('[ Claim ] start claim validation');
+export const addClaimErrors = createAction('[ Claim ] add errors', props<{module:string, errors:FieldError[]}>())
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: 'M' | 'F' }>());
