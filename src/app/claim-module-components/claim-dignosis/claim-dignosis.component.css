@@ -28,3 +28,7 @@ table td {
     color: #c52020;
     cursor: pointer;
 }
+.fieldError{
+    outline: auto !important;
+    outline-color: #c44848 !important;
+}

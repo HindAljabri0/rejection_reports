@@ -17,6 +17,7 @@ export class ClaimValidationService {
 
   startValidation(){
     this.validatePatientInfo();
+    this.validateDiagnosis()
   }
 
   validatePatientInfo(){
@@ -47,5 +48,17 @@ export class ClaimValidationService {
       fieldErrors.push({fieldName:'approvalNum'});
     }
     this.store.dispatch(addClaimErrors({module:'patientInfoErrors', errors: fieldErrors}));
+  }
+
+  validateDiagnosis()
+  {
+    const diagnosis = this.claim.caseInformation.caseDescription.diagnosis;
+
+    let fieldErrors:FieldError[] = [];
+    if(diagnosis == null || diagnosis.length == 0){
+      fieldErrors.push({fieldName:'diagnosis'});
+    }
+    this.store.dispatch(addClaimErrors({module:'diagnosisErrors', errors: fieldErrors}));
+
   }
 }
