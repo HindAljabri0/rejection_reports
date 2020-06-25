@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
+  <g id="Group_1399" data-name="Group 1399" transform="translate(-33 -646)">
+    <rect id="Rectangle_3103" data-name="Rectangle 3103" width="25" height="25" transform="translate(33 646)" fill="#fff" opacity="0"/>
+    <g id="Rectangle_3104" data-name="Rectangle 3104" transform="translate(37 648)" fill="#f5f6f7" stroke="#707070" stroke-width="1">
+      <rect width="18" height="22" rx="3" stroke="none"/>
+      <rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="none"/>
+    </g>
+    <line id="Line_268" data-name="Line 268" x2="11.824" transform="translate(40 652.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <line id="Line_269" data-name="Line 269" x2="11.824" transform="translate(40 655.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <path id="Path_521" data-name="Path 521" d="M0,0H11.824" transform="translate(40 658.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <line id="Line_270" data-name="Line 270" x2="6.947" transform="translate(40 662.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <g id="Rectangle_3105" data-name="Rectangle 3105" transform="translate(35 646)" fill="#f5f6f7" stroke="#707070" stroke-width="1">
+      <rect width="18" height="22" rx="3" stroke="none"/>
+      <rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="none"/>
+    </g>
+    <line id="Line_277" data-name="Line 277" x2="11.824" transform="translate(38 653.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <line id="Line_278" data-name="Line 278" x2="11.824" transform="translate(38 650.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <line id="Line_279" data-name="Line 279" x2="2.5" transform="translate(38 656.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+    <g id="Icon_ionic-md-close-circle-outline" data-name="Icon ionic-md-close-circle-outline" transform="translate(41.223 655.811)">
+      <path id="Path_525" data-name="Path 525" d="M5.149,2.835a2.312,2.312,0,1,1-1.636.677,2.3,2.3,0,0,1,1.636-.677m0-.585a2.9,2.9,0,1,0,2.9,2.9,2.9,2.9,0,0,0-2.9-2.9Z" fill="#707070"/>
+      <path id="Path_526" data-name="Path 526" d="M10.024,9.618l-.406.406L8.574,8.98,7.531,10.024l-.406-.406L8.169,8.574,7.125,7.531l.406-.406L8.574,8.169,9.618,7.125l.406.406L8.98,8.574Z" transform="translate(-3.426 -3.426)" fill="#707070"/>
+    </g>
+  </g>
+</svg>
