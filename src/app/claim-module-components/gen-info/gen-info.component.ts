@@ -18,8 +18,8 @@ export class GenInfoComponent implements OnInit {
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
   ageController: FormControl = new FormControl();
-  unitIllness: string;
-  unitAge: string;
+  unitIllness: string = 'Day';
+  unitAge: string = 'Year';
 
   errors:FieldError[] = [];
 
