@@ -1,10 +1,11 @@
 <div class="body">
-    <mat-form-field style="width: 100%; margin: 10px 0px;">
+    <mat-form-field style="width: 100%; margin: 10px 0px;" [ngClass]="{'fieldError': fieldHasError('diagnosis')}">
         <mat-label>
             <mat-icon>add_circle</mat-icon> Add Diagnosis
         </mat-label>
-        <input type="text" [ngClass]="{'fieldError': fieldHasError('diagnosis')}" matInput [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()" [readonly]="diagnosisList.length >= 14">
+        <input type="text"  matInput [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()" [readonly]="diagnosisList.length >= 14">
         <mat-hint *ngIf="diagnosisList.length >= 14">You've reached maximum number of allowed diagnosises 14/14</mat-hint>
+        <mat-hint *ngIf="fieldHasError('diagnosis') && diagnosisList.length == 0">There must be at least one diagnosis.</mat-hint>
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of icedOptions" (click)="addICDDignosis(option)">
