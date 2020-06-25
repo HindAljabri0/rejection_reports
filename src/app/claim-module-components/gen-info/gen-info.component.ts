@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
 import { updateClaimDate, updateClaimType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge } from '../store/claim.actions';
-import { getClaimType } from '../store/claim.reducer';
+import { getClaimType, FieldError, getGenInfoErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'gen-info',
@@ -21,16 +21,19 @@ export class GenInfoComponent implements OnInit {
   unitIllness: string;
   unitAge: string;
 
+  errors:FieldError[] = [];
+
   constructor(private store: Store) { }
 
   ngOnInit() {
     this.store.select(getClaimType).subscribe(type => this.selectedClaimType = type);
+    this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
   }
 
   updateClaim(field: string) {
     switch (field) {
       case ('claimDate'):
-        this.store.dispatch(updateClaimDate({ claimDate: this.claimDateController.value }));
+        this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
         break;
       case ('claimType'):
         this.store.dispatch(updateClaimType({ claimType: this.selectedClaimType }));
@@ -39,7 +42,7 @@ export class GenInfoComponent implements OnInit {
         this.store.dispatch(updateFileNumber({ fileNumber: this.fielNumberController.value }));
         break;
       case ('memberDob'):
-        this.store.dispatch(updateMemberDob({ memberDob: this.memberDobController.value }));
+        this.store.dispatch(updateMemberDob({ memberDob: new Date(this.memberDobController.value) }));
         break;
       case ('illnessDuration'):
         var illnessPeriod = this.returnPeriod(this.illnessDurationController.value, this.unitIllness);
@@ -79,6 +82,18 @@ export class GenInfoComponent implements OnInit {
       return { 'Days': value };
     else
       return { 'Years': value };
+  }
+
+  fieldHasError(fieldName){
+    return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  }
+
+  getFieldError(fieldName){
+    const index = this.errors.findIndex(error => error.fieldName == fieldName);
+    if(index > -1){
+      return this.errors[index].error || '';
+    }
+    return '';
   }
 
 }

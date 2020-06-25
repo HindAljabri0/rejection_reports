@@ -26,3 +26,9 @@ td input, td select {
 td input:focus, td select:focus{
     outline: unset;
 }
+
+
+.fieldError{
+    outline: auto !important;
+    outline-color: #c44848 !important;
+}

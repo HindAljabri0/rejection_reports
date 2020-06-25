@@ -24,10 +24,6 @@ export class PhysicianComponent implements OnInit {
 
   ngOnInit() {
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
-    if (this.categories.length > 0) {
-      this.selectedCategery = this.categories[0];
-      this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.categories[0] }));
-    }
     this.store.select(getDepartments).subscribe(departments => this.departments = departments);
     if (this.departments.length > 0) {
       this.selectedDepartment = this.departments[0].departmentId;

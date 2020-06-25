@@ -44,12 +44,10 @@ export class ClaimPatientInfo implements OnInit {
     if (this.visitTypes.length > 0) {
       this.selectedVisitType = this.visitTypes[0];
     }
-    this.selectedNationality = nationalities[0].Code;
 
     this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
     this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
     this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
-    this.store.dispatch(updateNationality({ nationality: this.selectedNationality }))
   }
 
   toggleGender() {

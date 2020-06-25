@@ -32,6 +32,7 @@
                 <td><label>Nationality</label></td>
                 <td>
                     <select (change)="selectedNationality = $event.target.value; updateClaim('nationality');" required>
+                        <option value=""></option>
                         <option *ngFor="let nationality of nationalities" [value]="nationality.Code">{{nationality.Name}}</option>
                     </select>
                 </td>

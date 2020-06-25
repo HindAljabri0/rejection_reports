@@ -3,16 +3,17 @@
     <table>
         <tbody>
             <tr>
-                <td><label>Claim Date</label></td>
-                <td><label>Claim Type</label></td>
+                <td><label>Claim Date*</label></td>
+                <td><label>Claim Type*</label></td>
             </tr>
             <tr>
                 <td>
-                    <input id="claimDateInput" type="date" [formControl]="claimDateController"
-                    (change)="updateClaim('claimDate')">
+                    <input [ngClass]="{'fieldError': fieldHasError('claimDate')}" id="claimDateInput" type="date"
+                        [formControl]="claimDateController" (change)="updateClaim('claimDate')">
                 </td>
                 <td>
-                    <select [value]="selectedClaimType" (change)="selectedClaimType = $event.target.value; updateClaim('claimType');">
+                    <select [ngClass]="{'fieldError': fieldHasError('claimType')}" [value]="selectedClaimType"
+                        (change)="selectedClaimType = $event.target.value; updateClaim('claimType');">
                         <option value="Dental">Dental</option>
                         <option value="Optical">Optical</option>
                     </select>
@@ -20,17 +21,17 @@
             </tr>
 
             <tr>
-                <td><label>Patient File Number</label></td>
-                <td><label>Member DOB</label></td>
+                <td><label>Patient File Number*</label></td>
+                <td><label>Member DOB*</label></td>
             </tr>
             <tr>
                 <td>
-                    <input id="fileNumberInput" type="text" [formControl]="fielNumberController"
-                        (change)="updateClaim('fileNumber')">
+                    <input [ngClass]="{'fieldError': fieldHasError('fileNumber')}" id="fileNumberInput" type="text"
+                        [formControl]="fielNumberController" (change)="updateClaim('fileNumber')">
                 </td>
                 <td>
-                    <input id="memberDobInput" type="date" [formControl]="memberDobController"
-                    (change)="updateClaim('memberDob')">
+                    <input [ngClass]="{'fieldError': fieldHasError('memberDob')}" id="memberDobInput" type="date"
+                        [formControl]="memberDobController" (change)="updateClaim('memberDob')">
                 </td>
             </tr>
 
@@ -47,9 +48,10 @@
 
             </tr>
             <tr>
-                <td><label><input id="illnessDurationInput" type="text" [formControl]="illnessDurationController"
+                <td><label><input [ngClass]="{'fieldError': fieldHasError('illnessDuration')}" id="illnessDurationInput"
+                            type="text" [formControl]="illnessDurationController"
                             (change)="updateClaim('illnessDuration')"></label></td>
-                <td>
+                <td [ngClass]="{'fieldError': fieldHasError('illnessDurationUnit')}">
                     <mat-button-toggle-group unitIllness (change)="updateClaimUnit('illnessDurationUnit',$event)">
                         <mat-button-toggle value="Day">
                             Day
@@ -71,10 +73,10 @@
                 <td><label>Unit of Age</label></td>
             </tr>
             <tr>
-                <td><label><input id="ageInput" type="text" [formControl]="ageController"
-                            (change)="updateClaim('age')"></label></td>
-                <td>
-                    <mat-button-toggle-group  (change)="updateClaimUnit('ageUnit',$event)">
+                <td><label><input [ngClass]="{'fieldError': fieldHasError('age')}" id="ageInput" type="text"
+                            [formControl]="ageController" (change)="updateClaim('age')"></label></td>
+                <td [ngClass]="{'fieldError': fieldHasError('ageUnit')}">
+                    <mat-button-toggle-group (change)="updateClaimUnit('ageUnit',$event)">
                         <mat-button-toggle value="Day">
                             Day
                         </mat-button-toggle>
