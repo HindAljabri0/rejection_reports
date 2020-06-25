@@ -5,6 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { Store } from '@ngrx/store';
 import { updateDiagnosisList } from '../store/claim.actions';
+import { FieldError, getDiagnosisErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-dignosis',
@@ -16,10 +17,12 @@ export class ClaimDignosisComponent implements OnInit {
   diagnosisController: FormControl = new FormControl();
   diagnosisList: ICDDiagnosis[] = [];
   icedOptions: ICDDiagnosis[] = [];
+  errors:FieldError[] = [];
 
   constructor(private adminService: AdminService, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getDiagnosisErrors).subscribe(errors => this.errors = errors);
   }
 
   searchICDCodes() {
@@ -55,5 +58,10 @@ export class ClaimDignosisComponent implements OnInit {
       this.diagnosisList.splice(index, 1);
       this.store.dispatch(updateDiagnosisList({list: this.diagnosisList.map(diag => ({diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription}))}));
     }
+  }
+
+  fieldHasError(fieldName){
+    const temp = this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+    return temp;
   }
 }
