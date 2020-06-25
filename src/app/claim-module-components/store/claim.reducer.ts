@@ -29,7 +29,7 @@ const _claimReducer = createReducer(
     on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractLOVsFromHttpResponse(LOVs), loading: false })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false })),
-    on(actions.cancelClaim, (state) => (initState)),
+    on(actions.cancelClaim, (state) => ({...initState, loading: false})),
     on(actions.addClaimErrors, (state, { module, errors }) => {
         let claimErrors = initState.claimErrors;
         switch (module) {

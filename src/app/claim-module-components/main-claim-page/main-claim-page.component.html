@@ -10,7 +10,7 @@
         </div>
         <table class="hiddenByDefault" *ngIf="claim != null && errors == null" [ngClass]="{'show':claim != null}">
             <tbody>
-                <tr>
+                <tr style="height: 30%;">
                     <td style="width: 62.5%;">
                         <claim-patient-info></claim-patient-info>
                     </td>
@@ -18,7 +18,7 @@
                         <claim-physician-header></claim-physician-header>
                     </td>
                 </tr>
-                <tr>
+                <tr style="height: 70%;">
                     <td style="width: 62.5%;">
                         <claim-data></claim-data>
                     </td>

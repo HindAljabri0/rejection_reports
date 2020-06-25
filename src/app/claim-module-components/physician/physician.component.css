@@ -2,6 +2,7 @@
     padding: 10px;
     background-color: white;
     color: #3060AA;
+    min-height: 17vh;
 }
 
 table {
