@@ -165,10 +165,10 @@ export class SearchWithAdvanceComponent implements OnInit {
     this.toDateHasError = false;
     this.payerIdHasError = false;
     if (this.queries.map(value => value.type == QueryType.DATEFROM || value.type == QueryType.DATETO || value.type == QueryType.PAYERID).includes(true)) {
-      if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
+      if (this.fromDateControl.invalid || this.fromDateControl.value == null || Number.isNaN(new Date(this.fromDateControl.value).getTime())) {
         this.trigger.openMenu();
         this.fromDateHasError = true;
-      } else if (this.toDateControl.invalid || this.toDateControl.value == null) {
+      } else if (this.toDateControl.invalid || this.toDateControl.value == null || Number.isNaN(new Date(this.toDateControl.value).getTime())) {
         this.trigger.openMenu();
         this.toDateHasError = true;
       } else if (this.payerIdControl.invalid || this.payerIdControl.value == null) {
@@ -195,6 +195,7 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.router.navigate([this.commen.providerId, 'claims'], { queryParams: { batchId: batchId } });
     } else {
       this.trigger.openMenu();
+      this.payerIdHasError = true;
     }
   }
 
