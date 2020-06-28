@@ -238,6 +238,8 @@ export class SharedServices {
         return 'Partially Paid';
       case ClaimStatus.REJECTED.toLowerCase():
         return 'Rejected by Payer';
+      case ClaimStatus.Batched.toLowerCase():
+        return 'Undersubmission';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
