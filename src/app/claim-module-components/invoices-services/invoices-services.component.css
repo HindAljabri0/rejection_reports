@@ -1,0 +1,42 @@
+.body {
+    padding: 20px;
+    text-align: center;
+}
+
+mat-expansion-panel{
+    margin-top: 10px;
+    background-color: #B8D0FC;
+    color: #3060AA;
+}
+
+.serviceExpansionPanel{
+    background-color: #DBE7FD;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px 5px;
+}
+
+.invoices td {
+    width: 50%;
+    text-align: start;
+}
+
+.services td {
+    width: unset;
+}
+
+td input, td select {
+    width: 100%;
+    background-color: white;
+    border: unset;
+    padding: 5px;
+    color: black;
+    border-radius: 3px;
+}
+
+td input:focus, td select:focus{
+    outline: unset;
+}

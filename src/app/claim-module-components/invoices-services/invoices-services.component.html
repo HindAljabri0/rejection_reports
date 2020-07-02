@@ -1,0 +1,81 @@
+<div class="body">
+    <div *ngFor="let invoice of invoices; let i = index" class="invoices">
+        <mat-expansion-panel *ngIf="expandedInvoice == -1 || expandedInvoice == i" hideToggle
+            [expanded]="i == expandedInvoice" (afterExpand)="afterInvoiceExpanded(i)"
+            (afterCollapse)="afterInvoiceCollapse()">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="color: #3060AA;">
+                    Invoice {{(i+1)}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    <button mat-button style="margin-left: auto;" *ngIf="i == expandedInvoice">+ Add Another
+                        Invoice</button>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <table>
+                <tr>
+                    <td><label>Invoice Number*</label></td>
+                    <td><label>Invoice Date*</label></td>
+                </tr>
+                <tr>
+                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"></td>
+                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}" type="date"></td>
+                </tr>
+            </table>
+        </mat-expansion-panel>
+        <div *ngIf="i == expandedInvoice">
+            <div *ngFor="let service of invoice.service; let j = index " class="services">
+                <mat-expansion-panel class="serviceExpansionPanel" *ngIf="expandedService == -1 || expandedService == j"
+                    hideToggle [expanded]="j == expandedService" (afterExpand)="expandedService = j"
+                    (afterCollapse)="expandedService = -1">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="color: #3060AA;">
+                            Service {{(j+1)}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <button mat-button style="margin-left: auto;" *ngIf="j == expandedService">+ Add Another
+                                Service</button>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table>
+                        <tr>
+                            <td><label>Service Date</label></td>
+                            <td><label>Service Code</label></td>
+                            <td colspan="2"><label>Service Description</label></td>
+                        </tr>
+                        <tr>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"></td>
+                            <td colspan="2"><input [ngClass]="{'fieldError': fieldHasError('serviceDescription:'+i+':'+j)}" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Unit Price</label></td>
+                            <td><label>Quantity</label></td>
+                            <td><label>Patient Share</label></td>
+                            <td><label>Service Discount</label></td>
+                        </tr>
+                        <tr>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceDiscount:'+i+':'+j)}" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Tooth Number</label></td>
+                            <td><label>Net Vat Rate</label></td>
+                            <td><label>Patient Share Vat Rate</label></td>
+                            <td><label></label></td>
+                        </tr>
+                        <tr>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceToothNum:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}" type="text"></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+
+</div>

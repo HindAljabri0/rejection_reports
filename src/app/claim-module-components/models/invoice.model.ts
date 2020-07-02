@@ -7,6 +7,11 @@ export class Invoice {
 	invoiceDate:Date;
 	invoiceDepartment:string;
 	invoiceGDPN:GDPN;
-    service:Service[];
+	service:Service[];
+	
+	constructor(){
+		this.service = [];
+		this.service.push(new Service())
+	}
     
 }

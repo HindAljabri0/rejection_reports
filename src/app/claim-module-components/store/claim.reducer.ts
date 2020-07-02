@@ -5,7 +5,7 @@ import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 export interface ClaimState {
     claim: Claim;
-    claimErrors: { patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[] };
+    claimErrors: { patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
@@ -13,7 +13,7 @@ export interface ClaimState {
 
 const initState: ClaimState = {
     claim: null,
-    claimErrors: { patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [] },
+    claimErrors: { patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors:[] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
     loading: true
@@ -94,6 +94,7 @@ export const getPatientErrors = createSelector(claimSelector, (state) => state.c
 export const getDiagnosisErrors = createSelector(claimSelector, (state) => state.claimErrors.diagnosisErrors);
 export const getGenInfoErrors = createSelector(claimSelector, (state) => state.claimErrors.genInfoErrors);
 export const getPhysicianErrors = createSelector(claimSelector, (state) => state.claimErrors.physicianErrors);
+export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
 
 
 

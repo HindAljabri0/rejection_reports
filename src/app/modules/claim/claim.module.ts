@@ -18,6 +18,7 @@ import { MatTabsModule, MatButtonToggleModule } from '@angular/material';
 import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-dignosis/claim-dignosis.component';
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
+import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoices-services/invoices-services.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-i
     ClaimDataComponent,
     ClaimDignosisComponent,
     ClaimIllnessesComponent,
-    GenInfoComponent
+    GenInfoComponent,
+    InvoicesServicesComponent,
   ],
   imports: [
     RouterModule.forChild([
