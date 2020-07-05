@@ -1,16 +1,50 @@
 <div class="body">
-    <div *ngFor="let invoice of invoices; let i = index" class="invoices">
+    <table *ngIf="expandedInvoice == -1" class="headerTable">
+        <tr style="font-size: small;">
+            <th style="width: 16%;"></th>
+            <th style="width: 16%;">Invoice No.</th>
+            <th style="width: 16%;">Invoice Date</th>
+            <th style="width: 22%;">
+                <div style="width: 100%; display: flex;">
+                    <span>Net Amount</span>
+                    <span style="flex: 0.8 1 auto;"></span>
+                    <span>Vat</span>
+                </div>
+            </th>
+            <th style="width: 16%;">No. of Services</th>
+            <th style="width: 10%;"></th>
+        </tr>
+    </table>
+    <div *ngFor="let invoice of controllers; let i = index" class="invoices">
         <mat-expansion-panel *ngIf="expandedInvoice == -1 || expandedInvoice == i" hideToggle
             [expanded]="i == expandedInvoice" (afterExpand)="afterInvoiceExpanded(i)"
-            (afterCollapse)="afterInvoiceCollapse()">
+            (afterCollapse)="afterInvoiceCollapse(i)">
             <mat-expansion-panel-header>
-                <mat-panel-title style="color: #3060AA;">
-                    Invoice {{(i+1)}}
-                </mat-panel-title>
-                <mat-panel-description>
-                    <button mat-button style="margin-left: auto;" *ngIf="i == expandedInvoice">+ Add Another
-                        Invoice</button>
-                </mat-panel-description>
+                <table class="headerTable child">
+                    <tr style="font-size: small;">
+                        <td style="width: 16%;">Invoice {{(i+1)}}</td>
+                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceNumber}}</td>
+                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceDate}}</td>
+                        <td style="width: 22%;" *ngIf="expandedInvoice == -1">
+                            <div style="width: 100%; display: flex;">
+                                <span>{{invoice.invoice.invoiceGDPN.net.value}}</span>
+                                <span class="spacer"></span>
+                                <span>{{invoice.invoice.invoiceGDPN.netVATamount.value}}</span>
+                            </div>
+                        </td>
+                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.services.length}}</td>
+                        <td style="width: 10%;" *ngIf="expandedInvoice == -1">
+                            <button mat-icon-button (click)="onDeleteInvoiceClick($event, i)"
+                                *ngIf="controllers.length > 1">
+                                <mat-icon style="color: #af4848;">cancel</mat-icon>
+                            </button>
+                        </td>
+                        <td *ngIf="expandedInvoice != -1" colspan="5" style="text-align: end;"><button mat-button
+                                style="margin-left: auto;" *ngIf="i == expandedInvoice"
+                                (click)="onAddAnathorInvoiceClick($event, i)">+ Add Another
+                                Invoice</button></td>
+                    </tr>
+                </table>
             </mat-expansion-panel-header>
             <table>
                 <tr>
@@ -18,23 +52,30 @@
                     <td><label>Invoice Date*</label></td>
                 </tr>
                 <tr>
-                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"></td>
-                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}" type="date"></td>
+                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"
+                            [formControl]="invoice.invoiceNumber"></td>
+                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}" type="date"
+                            [formControl]="invoice.invoiceDate"></td>
                 </tr>
             </table>
         </mat-expansion-panel>
         <div *ngIf="i == expandedInvoice">
-            <div *ngFor="let service of invoice.service; let j = index " class="services">
+            <div *ngFor="let service of invoice.services; let j = index " class="services">
                 <mat-expansion-panel class="serviceExpansionPanel" *ngIf="expandedService == -1 || expandedService == j"
                     hideToggle [expanded]="j == expandedService" (afterExpand)="expandedService = j"
-                    (afterCollapse)="expandedService = -1">
+                    (afterCollapse)="afterServiceCollapse(i, j)">
                     <mat-expansion-panel-header>
                         <mat-panel-title style="color: #3060AA;">
                             Service {{(j+1)}}
                         </mat-panel-title>
                         <mat-panel-description>
-                            <button mat-button style="margin-left: auto;" *ngIf="j == expandedService">+ Add Another
+                            <button mat-button style="margin-left: auto;" *ngIf="j == expandedService"
+                                (click)="onAddAnathorServiceClick($event, i, j)">+ Add Another
                                 Service</button>
+                            <button mat-icon-button (click)="onDeleteServiceClick($event, i, j)"
+                                *ngIf="controllers[i].services.length > 1 && expandedService == -1">
+                                <mat-icon style="color: #af4848;">cancel</mat-icon>
+                            </button>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <table>
@@ -44,9 +85,13 @@
                             <td colspan="2"><label>Service Description</label></td>
                         </tr>
                         <tr>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"></td>
-                            <td colspan="2"><input [ngClass]="{'fieldError': fieldHasError('serviceDescription:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"
+                                    [formControl]="service.serviceDate"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"
+                                    [formControl]="service.serviceCode"></td>
+                            <td colspan="2"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceDescription:'+i+':'+j)}"
+                                    [formControl]="service.serviceDescription" type="text"></td>
                         </tr>
                         <tr>
                             <td><label>Unit Price</label></td>
@@ -55,27 +100,48 @@
                             <td><label>Service Discount</label></td>
                         </tr>
                         <tr>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}" type="text"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}" type="text"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceDiscount:'+i+':'+j)}" type="text"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}"
+                                    type="text" [formControl]="service.unitPrice"><span class="amountType">SAR</span>
+                            </td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"
+                                    [formControl]="service.quntity"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}"
+                                    type="text" [formControl]="service.patientShare"><span class="amountType">SAR</span>
+                            </td>
+                            <td>
+                                <input [ngClass]="{'fieldError': fieldHasError('serviceDiscount:'+i+':'+j)}" type="text"
+                                    [formControl]="service.serviceDiscount">
+                                <span class="amountType" style="cursor: pointer; color: #3060AA;"
+                                    [ngClass]="{'amountTypePerecent': service.serviceDiscountUnit == 'PERCENT'}"
+                                    (click)="service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')">{{service.serviceDiscountUnit == 'SAR'? 'SAR':'%'}}</span>
+                            </td>
                         </tr>
                         <tr>
                             <td><label>Tooth Number</label></td>
                             <td><label>Net Vat Rate</label></td>
                             <td><label>Patient Share Vat Rate</label></td>
-                            <td><label></label></td>
                         </tr>
                         <tr>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceToothNum:'+i+':'+j)}" type="text"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}" type="text"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}" type="text"></td>
-                            <td></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceToothNum:'+i+':'+j)}" type="text"
+                                    [formControl]="service.toothNumber"></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}"
+                                    type="text" [formControl]="service.netVatRate"><span
+                                    class="amountType amountTypePerecent">%</span></td>
+                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}"
+                                    type="text" [formControl]="service.patientShareVatRate"><span
+                                    class="amountType amountTypePerecent">%</span></td>
                         </tr>
                     </table>
                 </mat-expansion-panel>
             </div>
         </div>
+        <div style="text-align: end;" *ngIf="expandedService == -1 && expandedInvoice == i">
+            <hr>
+            <button mat-raised-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
+        </div>
     </div>
-
+    <div style="text-align: end;" *ngIf="expandedInvoice == -1">
+        <hr>
+        <button mat-raised-button color="primary" (click)="onAddInvoiceClick()">Add Invoice</button>
+    </div>
 </div>

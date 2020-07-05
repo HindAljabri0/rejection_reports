@@ -9,25 +9,25 @@ export class GDPN {
     patientShareVATamount: Amount;
     discount: Amount;
     gross: Amount;
-    priceCorrection: Amount;
-    rejection: Amount;
+    priceCorrection?: Amount;
+    rejection?: Amount;
 
     constructor() {
-        this.net = { value: 0.0, type: 'SAR' };
-        this.netVATrate = { value: 0.0, type: 'SAR' };
-        this.netVATamount = { value: 0.0, type: 'SAR' };
-        this.patientShare = { value: 0.0, type: 'SAR' };
-        this.patientShareVATrate = { value: 0.0, type: 'SAR' };
-        this.patientShareVATamount = { value: 0.0, type: 'SAR' };
-        this.discount = { value: 0.0, type: 'SAR' };
-        this.gross = { value: 0.0, type: 'SAR' };
-        this.priceCorrection = { value: 0.0, type: 'SAR' };
-        this.rejection = { value: 0.0, type: 'SAR' };
+        this.net = new Amount(0, 'SAR');
+        this.netVATrate = new Amount(0, 'PERCENT');
+        this.netVATamount = new Amount(0, 'SAR');
+        this.patientShare = new Amount(0, 'SAR');
+        this.patientShareVATrate = new Amount(0, 'PERCENT');
+        this.patientShareVATamount = new Amount(0, 'SAR');
+        this.discount = new Amount(0, 'SAR');
+        this.gross = new Amount(0, 'SAR');
+        this.priceCorrection = new Amount(0, 'SAR');
+        this.rejection = new Amount(0, 'SAR');
     }
 
 }
 
-export type Amount = {
+export class Amount {
     value: number;
     type: 'PERCENT' | 'AED' | 'AFN' | 'ALL' | 'AMD' | 'ANG' | 'AOA' | 'ARS' | 'AUD' | 'AWG' | 'AZN' | 'BAM' | 'BBD' | 'BDT' | 'BGN' | 'BHD' | 'BIF' | 'BMD' | 'BND' | 'BOB' | 'BOV' | 'BRL'
     | 'BSD' | 'BTN' | 'BWP' | 'BYR' | 'BZD' | 'CAD' | 'CDF' | 'CHE' | 'CHF' | 'CHW' | 'CLF' | 'CLP' | 'CNY' | 'COP' | 'COU' | 'CRC' | 'CUP' | 'CVE' | 'CYP' | 'CZK' | 'DJF' | 'DKK' | 'DOP'
@@ -37,4 +37,9 @@ export type Amount = {
     | 'OMR' | 'PAB' | 'PEN' | 'PGK' | 'PHP' | 'PKR' | 'PLN' | 'PYG' | 'QAR' | 'RON' | 'RSD' | 'RUB' | 'RWF' | 'SAR' | 'SBD' | 'SCR' | 'SDG' | 'SEK' | 'SGD' | 'SHP' | 'SKK' | 'SLL' | 'SOS'
     | 'SRD' | 'STD' | 'SYP' | 'SZL' | 'THB' | 'TJS' | 'TMM' | 'TND' | 'TOP' | 'TRY' | 'TTD' | 'TWD' | 'TZS' | 'UAH' | 'UGX' | 'USD' | 'USN' | 'USS' | 'UYU' | 'UZS' | 'VEB' | 'VND' | 'VUV'
     | 'WST' | 'XAF' | 'XAG' | 'XAU' | 'XBA' | 'XBB' | 'XBC' | 'XBD' | 'XCD' | 'XDR' | 'XFO' | 'XFU' | 'XOF' | 'XPD' | 'XPF' | 'XPT' | 'XTS' | 'XXX' | 'YER' | 'ZAR' | 'ZMK' | 'ZWD' | 'SR';
+
+    constructor(value, type){
+        this.value = value;
+        this.type = type;
+    }
 }

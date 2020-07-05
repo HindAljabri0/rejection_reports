@@ -3,6 +3,7 @@ import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
 import { FieldError } from './claim.reducer';
+import { Invoice } from '../models/invoice.model';
 
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{loading:boolean}>())
@@ -40,3 +41,6 @@ export const updateFileNumber = createAction('[ File Number ] update File Number
 export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
 export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration:any }>());
 export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
+
+//Invoices&Services
+export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{invoices:Invoice[]}>())

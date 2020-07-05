@@ -13,7 +13,7 @@ export interface ClaimState {
 
 const initState: ClaimState = {
     claim: null,
-    claimErrors: { patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors:[] },
+    claimErrors: { patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
     loading: true
@@ -29,7 +29,7 @@ const _claimReducer = createReducer(
     on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractLOVsFromHttpResponse(LOVs), loading: false })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false })),
-    on(actions.cancelClaim, (state) => ({...initState, loading: false})),
+    on(actions.cancelClaim, (state) => ({ ...initState, loading: false })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
         let claimErrors = initState.claimErrors;
         switch (module) {
@@ -67,13 +67,15 @@ const _claimReducer = createReducer(
     on(actions.updateDiagnosisList, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, diagnosis: list } } } })),
 
     on(actions.updateIllnesses, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessCategory: { inllnessCode: list } } } } })),
-    
+
     on(actions.updateClaimDate, (state, { claimDate }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, visitDate: claimDate } } })),
     on(actions.updateClaimType, (state, { claimType }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseType: claimType } } })),
     on(actions.updateFileNumber, (state, { fileNumber }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, patientFileNumber: fileNumber } } } })),
     on(actions.updateMemberDob, (state, { memberDob }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, dob: memberDob } } } })),
     on(actions.updateIllnessDuration, (state, { illnessDuration }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration: illnessDuration } } } })),
     on(actions.updateAge, (state, { age }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, age: age } } } })),
+
+    on(actions.updateInvoices_Services, (state, { invoices }) => ({ ...state, claim: { ...state.claim, invoice: invoices } }))
 );
 
 export function claimReducer(state, action) {
