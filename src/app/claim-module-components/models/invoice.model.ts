@@ -1,12 +1,17 @@
 import { GDPN } from './GDPN.model';
-import { Service } from 'src/app/models/service';
+import { Service } from './service.model';
 
 export class Invoice {
 
     invoiceNumber:string;
 	invoiceDate:Date;
 	invoiceDepartment:string;
-	invoiceGDPN:GDPN;
-    service:Service[];
+	invoiceGDPN:GDPN = new GDPN();
+	service:Service[];
+	
+	constructor(){
+		this.service = [];
+		this.service.push(new Service())
+	}
     
 }

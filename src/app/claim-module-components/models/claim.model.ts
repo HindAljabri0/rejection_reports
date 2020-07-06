@@ -30,7 +30,7 @@ export class Claim {
         this.member = new Member();
         this.visitInformation = new VisitInfo();
         this.claimGDPN = new GDPN();
-        this.invoice = [];
+        this.invoice = [new Invoice()];
         this.comment = [];
         this.admission = new Admission();
         this.attachment = [];

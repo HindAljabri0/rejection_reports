@@ -3,6 +3,7 @@ import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
 import { FieldError } from './claim.reducer';
+import { Invoice } from '../models/invoice.model';
 
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{loading:boolean}>())
@@ -12,7 +13,8 @@ export const setError = createAction('[ Claim ] set error', props<{ error: any }
 export const saveClaim = createAction('[ Claim ] save', props<{claim:Claim}>());
 export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
-export const addClaimErrors = createAction('[ Claim ] add errors', props<{module:string, errors:FieldError[]}>())
+export const addClaimErrors = createAction('[ Claim ] add errors', props<{module:string, errors:FieldError[]}>());
+export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{tab:number}>());
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: 'M' | 'F' }>());
@@ -40,3 +42,8 @@ export const updateFileNumber = createAction('[ File Number ] update File Number
 export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
 export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration:any }>());
 export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
+
+//Invoices&Services
+export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{invoices:Invoice[]}>());
+
+export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{invoiceIndex?:number, serviceIndex?:number}>());

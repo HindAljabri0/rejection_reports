@@ -3,6 +3,7 @@
     background-color: white;
     color: #3060AA;
     height: 47vh;
+    overflow-y: scroll;
 }
 
 table {

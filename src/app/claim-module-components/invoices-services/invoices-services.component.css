@@ -1,0 +1,103 @@
+.body {
+    padding: 20px;
+    text-align: center;
+}
+
+mat-expansion-panel{
+    margin-top: 3px;
+    background-color: #B8D0FC;
+    color: #3060AA;
+}
+
+.serviceExpansionPanel{
+    background-color: #DBE7FD;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px 5px;
+}
+
+.headerTable{
+    border-collapse: collapse;
+    border-spacing: unset;
+    text-align: left;
+    background-color: #3060AA;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px 24px;
+}
+
+.headerTable.child{
+    background-color: transparent;
+    color: #3060AA;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+    padding: unset;
+}
+
+.headerTable th {
+    padding: 10px;
+    text-align: center;
+}
+.headerTable td{
+    padding: 15px;
+    text-align: center !important;
+}
+
+.invoices td {
+    width: 50%;
+    text-align: start;
+}
+
+.services td {
+    width: unset;
+}
+
+td input, td select {
+    width: 100%;
+    background-color: white;
+    border: unset;
+    padding: 5px;
+    color: black;
+    border-radius: 3px;
+}
+
+td input:focus, td select:focus{
+    outline: unset;
+}
+
+.amountTypePerecent{
+    font-size: unset !important;
+}
+
+.amountType, .selectServiceButton{
+    position: relative;
+    left: 87%;
+    bottom: 23px;
+    width: 0px;
+    height: 0px;
+    display: flex;
+    color: #bac4d4;
+    font-size: xx-small;
+}
+
+.selectServiceButton{
+    left: 80%;
+    cursor: pointer;
+    color: #3060AA;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
