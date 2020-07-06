@@ -56,10 +56,10 @@ export class UploadService {
       this.uploadingObs.next(false);
       if(errorEvent instanceof HttpErrorResponse){
         if(errorEvent.status >= 500){
-          this.errorChange.next('Server could not handle your request at the moment. Please try Again later.');
+          this.errorChange.next('Server could not handle your request at the moment. Please try again later.');
         } else if (errorEvent.status >= 400){
           this.errorChange.next(errorEvent.error['message']);
-        } else this.errorChange.next('Server could not be reached at the moment. Please try Again later.');
+        } else this.errorChange.next('Server could not be reached at the moment. Please try again later.');
       }
     });
   }
