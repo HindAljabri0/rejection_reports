@@ -7,6 +7,10 @@ import { AuthService } from './services/authService/authService.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  languageList = [ // <--- add this
+    { code: 'en', label: 'English' },
+    { code: 'ar', label: 'عربى' }
+  ];
   title = 'Waseele';
   constructor(public authService: AuthService) {
   }
