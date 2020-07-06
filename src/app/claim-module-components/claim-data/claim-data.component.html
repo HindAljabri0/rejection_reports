@@ -1,4 +1,4 @@
-<mat-tab-group class="mainCardBody">
+<mat-tab-group class="mainCardBody" (selectedTabChange)="changeTab($event)">
     <mat-tab label="General Information">
         <gen-info></gen-info>
     </mat-tab>
