@@ -48,7 +48,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputPath": "dist/waseele-gui-en/",
+              "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
               "optimization": true,
@@ -80,7 +80,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputPath": "dist/waseele-gui-ar/",
+              "outputPath": "dist/waseele-gui/ar/",
               "deployUrl": "/ar/",
               "baseHref": "/ar/",
               "i18nFile": "src/locale/messages.ar.xlf",
@@ -116,7 +116,7 @@
                   "with": "src/environments/environment.qa.ts"
                 }
               ],
-              "outputPath": "dist/waseele-gui-en/",
+              "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
               "optimization": true,
@@ -148,7 +148,7 @@
                   "with": "src/environments/environment.qa.ts"
                 }
               ],
-              "outputPath": "dist/waseele-gui-ar/",
+              "outputPath": "dist/waseele-gui/ar/",
               "deployUrl": "/ar/",
               "baseHref": "/ar/",
               "i18nFile": "src/locale/messages.ar.xlf",
@@ -184,7 +184,7 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "outputPath": "dist/waseele-gui-en/",
+              "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
               "optimization": true,
@@ -216,7 +216,7 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "outputPath": "dist/waseele-gui-ar/",
+              "outputPath": "dist/waseele-gui/ar/",
               "deployUrl": "/ar/",
               "baseHref": "/ar/",
               "i18nFile": "src/locale/messages.ar.xlf",
