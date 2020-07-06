@@ -38,14 +38,34 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
-                    <div *ngFor="let payer of associatedPayers" style="width: 100%; padding: 10px 30px; display: flex;">
-                        <p [ngStyle]="{'color': (payer.hasAssociatedPriceList)? 'black':'gray'}">{{payer.name}}</p>
-                        <span class="spacer"></span>
-                        <mat-slide-toggle style="z-index: 0;" [disabled]="!payer.hasAssociatedPriceList" color="primary"
-                            [checked]="getServiceCodeSettingsOfPayer(payer.switchAccountId)"
-                            (change)="onServiceCodeSettingChange(payer.switchAccountId, $event)">
-                        </mat-slide-toggle>
-                    </div>
+                    <table style="width: 100%; margin: 10px">
+                        <thead>
+                            <th>Payer</th>
+                            <th style="text-align: center">service Code Warning</th>
+                            <th style="text-align: center">service Code Restriction</th>
+                        </thead>
+                        <tr *ngFor="let payer of associatedPayers" style="width: 100%">
+                            <td style="widows: 42%">
+                                <p [ngStyle]="{'color': (payer.hasAssociatedPriceList)? 'black':'gray'}">{{payer.name}}
+                                </p>
+                            </td>
+                            <td>
+                                <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
+                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
+                                    [checked]="getServiceCodeSettingsOfPayer(payer.switchAccountId)"
+                                    (change)="onServiceCodeSettingChange(payer.switchAccountId, $event)">
+                                </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
+                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="Tertiary"
+                                    [checked]="getServiceCodeRestrictionSettingsOfPayer(payer.switchAccountId)"
+                                    (change)="onServiceRestrictionSettingChange(payer.switchAccountId, $event)">
+                                </mat-slide-toggle>
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
                 <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.serviceCode"
                     style="width: 100%; padding: 10px 30px; display: flex;">

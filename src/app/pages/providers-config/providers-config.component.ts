@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,7 +26,9 @@ export class ProvidersConfigComponent implements OnInit {
   selectedProvider: string;
   associatedPayers: any[] = [];
   serviceCodeValidationSettings: any[] = [];
+  serviceCodeRestrictionSettings: any[] = [];
   newServiceCodeValidationSettings: { [key: string]: boolean } = {};
+  newServiceRestrictionSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
@@ -252,6 +254,25 @@ export class ProvidersConfigComponent implements OnInit {
     });
   }
 
+  getServiceCodeRestrictionSettings() {
+    this.componentLoading.serviceCode = true;
+    this.superAdmin.getProviderPayerSettings(this.selectedProvider, SERVICE_CODE_RESTRICTION_KEY).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.serviceCodeRestrictionSettings = event.body;
+          this.componentLoading.serviceCode = false;
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.serviceCodeError = 'Could not load service code settings, please try again later.';
+        }
+      }
+      this.componentLoading.serviceCode = false;
+    });
+  }
+
   getPortalUserSettings() {
     this.componentLoading.portalUser = true;
     this.superAdmin.getPortalUserSettings(this.selectedProvider).subscribe(event => {
@@ -280,8 +301,16 @@ export class ProvidersConfigComponent implements OnInit {
     return setting == null || (setting != null && setting.value == '1');
   }
 
+  getServiceCodeRestrictionSettingsOfPayer(payerid: string) {
+    let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payerid);
+    return setting == null || (setting != null && setting.value == '1');
+  }
+
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
     this.newServiceCodeValidationSettings[payerid] = event.checked;
+  }
+  onServiceRestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
+    this.newServiceRestrictionSettings[payerid] = event.checked;
   }
 
 }

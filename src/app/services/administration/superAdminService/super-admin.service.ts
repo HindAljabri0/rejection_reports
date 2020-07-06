@@ -50,3 +50,4 @@ export class SuperAdminService {
 }
 
 export const SERVICE_CODE_VALIDATION_KEY = 'serviceCodeValidation';
+export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';
