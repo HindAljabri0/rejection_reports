@@ -73,7 +73,7 @@ td input:focus, td select:focus{
     font-size: unset !important;
 }
 
-.amountType{
+.amountType, .selectServiceButton{
     position: relative;
     left: 87%;
     bottom: 23px;
@@ -82,4 +82,22 @@ td input:focus, td select:focus{
     display: flex;
     color: #bac4d4;
     font-size: xx-small;
+}
+
+.selectServiceButton{
+    left: 80%;
+    cursor: pointer;
+    color: #3060AA;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

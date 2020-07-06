@@ -2,6 +2,7 @@ import { createReducer, on, createFeatureSelector, createSelector } from '@ngrx/
 import * as actions from './claim.actions';
 import { Claim } from '../models/claim.model';
 import { HttpEvent, HttpResponse } from '@angular/common/http';
+import { GDPN } from '../models/GDPN.model';
 
 export interface ClaimState {
     claim: Claim;
@@ -9,6 +10,8 @@ export interface ClaimState {
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
+    selectedTab: number;
+    selectedGDPN: { invoiceIndex?: number, serviceIndex?: number };
 }
 
 const initState: ClaimState = {
@@ -16,7 +19,9 @@ const initState: ClaimState = {
     claimErrors: { patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
-    loading: true
+    loading: true,
+    selectedTab: 0,
+    selectedGDPN: {}
 }
 
 const _claimReducer = createReducer(
@@ -30,6 +35,7 @@ const _claimReducer = createReducer(
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false })),
+    on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
         let claimErrors = initState.claimErrors;
         switch (module) {
@@ -75,7 +81,20 @@ const _claimReducer = createReducer(
     on(actions.updateIllnessDuration, (state, { illnessDuration }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration: illnessDuration } } } })),
     on(actions.updateAge, (state, { age }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, age: age } } } })),
 
-    on(actions.updateInvoices_Services, (state, { invoices }) => ({ ...state, claim: { ...state.claim, invoice: invoices } }))
+    on(actions.updateInvoices_Services, (state, { invoices }) => {
+        let GDPN: GDPN = {
+            discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+            gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+            net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+            netVATamount: { value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+            netVATrate: { value: invoices.map(invoice => invoice.invoiceGDPN.netVATrate.value).reduce((pre, cur) => pre + cur), type: 'PERCENT' },
+            patientShare: { value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+            patientShareVATamount: { value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+            patientShareVATrate: { value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATrate.value).reduce((pre, cur) => pre + cur), type: 'PERCENT' },
+        };
+        return ({ ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN } });
+    }),
+    on(actions.selectGDPN, (state, { invoiceIndex, serviceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex, serviceIndex: serviceIndex } }))
 );
 
 export function claimReducer(state, action) {
@@ -85,7 +104,10 @@ export function claimReducer(state, action) {
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
 export const getClaimType = createSelector(claimSelector, (state) => state.claim.caseInformation.caseType);
+export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim.claimIdentities.payerID);
 export const getVistType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
+export const getVisitDate = createSelector(claimSelector, (state) => state.claim.visitInformation.visitDate);
+export const getSelectedTab = createSelector(claimSelector, (state) => state.selectedTab);
 export const getDepartments = createSelector(claimSelector, (state) => state.LOVs.Departments);
 export const getIllnessCode = createSelector(claimSelector, (state) => state.LOVs.IllnessCode);
 export const getPhysicianCategory = createSelector(claimSelector, (state) => state.LOVs.PhysicianCategory);
@@ -97,6 +119,7 @@ export const getDiagnosisErrors = createSelector(claimSelector, (state) => state
 export const getGenInfoErrors = createSelector(claimSelector, (state) => state.claimErrors.genInfoErrors);
 export const getPhysicianErrors = createSelector(claimSelector, (state) => state.claimErrors.physicianErrors);
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
+export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
 
 
 
