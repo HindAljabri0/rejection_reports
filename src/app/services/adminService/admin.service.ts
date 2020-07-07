@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 import {SERVICE_CODE_VALIDATION_KEY} from '../administration/superAdminService/super-admin.service';
+import {SERVICE_CODE_RESTRICTION_KEY} from '../administration/superAdminService/super-admin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,12 @@ export class AdminService {
 
   checkIfServiceCodeVaildationIsEnabled(providerId:string, payerId:string){
     const requestURL: string = `/providers/${providerId}/config/${SERVICE_CODE_VALIDATION_KEY}/payers/${payerId}`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+
+  checkIfServiceCodeRestrictionIsEnabled(providerId:string, payerId:string){
+    const requestURL: string = `/providers/${providerId}/config/${SERVICE_CODE_RESTRICTION_KEY}/payers/${payerId}`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }

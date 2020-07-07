@@ -29,7 +29,7 @@
 <div class="header sub" >
         <p [style.color]="statusToColor(data.claim.status)">Status: {{statusToName(data.claim.status)}}</p>
         <span class="spacer"></span>
-        <p>Description: {{data.claim.statusdetail}}</p>    
+        <p>Description: {{data.claim.statusdetail}}</p>
 </div>
 <div class="content">
     <div class="gInfo">
@@ -265,7 +265,7 @@
                     <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)"
                         [src]="getImageOfBlob(attachment)" [alt]="attachment.filename">
                     <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)"
-                        src="../../../../assets/pdfIcon.png" [alt]="attachment.filename">
+                        src="assets/pdfIcon.png" [alt]="attachment.filename">
                 </div>
                 <p style="margin: auto 5px">{{attachment.filename}}</p>
                 <span class="spacer"></span>
@@ -284,7 +284,7 @@
                         <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src != 'pdf'"
                             [src]="attachment.src" [alt]="attachment.name">
                         <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src == 'pdf'"
-                            src="../../../../assets/pdfIcon.png" [alt]="attachment.name">
+                            src="assets/pdfIcon.png" [alt]="attachment.name">
                     </div>
                     <div class="attachmentInfo">
                         <p style="margin: auto 5px">{{attachment.name}}</p>
@@ -303,21 +303,21 @@
                     style="margin: auto">
                     <mat-icon>add</mat-icon>
                 </button>
-               
+
                 <mat-menu #attachmentTypeMenu="matMenu">
                     <div style="padding: 10px;">
                     <label>What Type of Attachment?</label>
                     <mat-radio-group aria-label="Select an option">
-                       
+
                         <mat-radio-button class="block" (click)="this.fileType = 'MEDICAL_REPORT'; fileInput.click()" id="MEDICAL_REPORT"
                             value="MEDICAL_REPORT">Medical Report</mat-radio-button>
-                        
+
                         <mat-radio-button class="block" (click)="this.fileType = 'IQAMA_ID_COPY'; fileInput.click()" id="IQAMA_ID_COPY"
                             value="IQAMA_ID_COPY">Iqama/ID Copy</mat-radio-button>
-                        
+
                         <mat-radio-button class="block" (click)="this.fileType = 'X_RAY_RESULT'; fileInput.click()" id="X_RAY_RESULT"
                             value="X_RAY_RESULT">X-Ray Result</mat-radio-button>
-                        
+
                         <mat-radio-button class="block" (click)="this.fileType = 'LAB_RESULT'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">Lab
                             Result</mat-radio-button>
 
@@ -337,7 +337,7 @@
                             </button-->
                         </div>
                 </mat-menu>
-            
+
             </div>
 
         </div>

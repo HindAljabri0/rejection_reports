@@ -21,17 +21,17 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "nginx.conf",
-                "input": "src/.s2i",
-                "output": ""
-              },
-              {
-                "glob": "nginx-cfg",
-                "input": "src/.s2i",
-                "output": ""
-              }
+                "src/assets",
+                {
+                  "glob": "nginx.conf",
+                  "input": "src/.s2i",
+                  "output": "./../"
+                },
+                {
+                  "glob": "nginx-cfg",
+                  "input": "src/.s2i",
+                  "output": "./../"
+                }
             ],
             "styles": [
               "src/custom-theme.scss",
