@@ -42,7 +42,7 @@
                 *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage*3+1"
                 [clickable]="cardsClickAble" [title]="commen.statusToName(summary.value.statuses[0])"
                 [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
-                (action)="getResultsofStatus(summary.key)" style="margin: 0px 1%; width: 290px;">
+                (action)="getResultsofStatus(summary.key)" style="margin: 0px 1%; width: 260px;">
                 <table>
                     <tr>
                         <th>No. Of Claims:</th>
