@@ -114,6 +114,7 @@ export class ProvidersConfigComponent implements OnInit {
   fetchSettings() {
     this.getServiceCodeValidationSettings();
     this.getPortalUserSettings();
+    this.getServiceCodeRestrictionSettings();
   }
 
   save() {
@@ -122,7 +123,8 @@ export class ProvidersConfigComponent implements OnInit {
     }
     let flag1 = this.saveServiceCodeValidationSettings();
     let flag2 = this.savePortalUserSettings();
-    if (flag1 && flag2) {
+    let flag3 = this.saveServiceRestrictionSettings()
+    if (flag1 && flag2 && flag3) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -178,6 +180,53 @@ export class ProvidersConfigComponent implements OnInit {
       } return true;
     } return true;
   }
+
+  saveServiceRestrictionSettings() {
+    let payers = Object.keys(this.newServiceRestrictionSettings);
+    if (payers.length > 0) {
+      let newSettingsKeys = payers.filter(payerId => {
+        let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payerId);
+        return (setting != null && (setting.value == '1') != this.newServiceRestrictionSettings[payerId])
+          || setting == null;
+      });
+      if (newSettingsKeys.length > 0) {
+        this.componentLoading.serviceCode = true;
+        this.errors.serviceCodeSaveError = null;
+        this.sucess.serviceCodeSaveSuccess = null;
+        this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
+          payerId: payerId,
+          key: SERVICE_CODE_RESTRICTION_KEY,
+          value: (this.newServiceRestrictionSettings[payerId]) ? '1' : '0'
+        })
+        )).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            newSettingsKeys.map(payerId => {
+              let index = this.serviceCodeRestrictionSettings.findIndex(setting => setting.payerId == payerId);
+              if (index != -1) {
+                this.serviceCodeRestrictionSettings[index].value = (this.newServiceRestrictionSettings[payerId]) ? '1' : '0';
+              } else {
+                this.serviceCodeRestrictionSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId: payerId,
+                  key: SERVICE_CODE_RESTRICTION_KEY,
+                  value: (this.newServiceRestrictionSettings[payerId]) ? '1' : '0'
+                });
+              }
+            });
+            this.newServiceRestrictionSettings = {};
+            this.sucess.serviceCodeSaveSuccess = "Settings were saved successfully";
+            this.componentLoading.serviceCode = false;
+          }
+        }, error => {
+          this.errors.serviceCodeSaveError = 'Could not save settings, please try again later.';
+          this.resetServiceRestrictionSettings();
+          this.componentLoading.serviceCode = false;
+        });
+        return false;
+      } return true;
+    } return true;
+  }
+
   savePortalUserSettings() {
     if (this.portalUsernameController.value != '' && this.portalPasswordController.value != '') {
       let password: string = this.portalPasswordController.value;
@@ -218,6 +267,7 @@ export class ProvidersConfigComponent implements OnInit {
 
   reset() {
     this.resetServiceCodeValidationSettings();
+    this.resetServiceRestrictionSettings();
     this.resetPortalUserSettings();
   }
 
@@ -226,6 +276,13 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.serviceCode = true;
       setTimeout(() => this.componentLoading.serviceCode = false, 100);
       this.newServiceCodeValidationSettings = {};
+    }
+  }
+  resetServiceRestrictionSettings() {
+    if (Object.keys(this.newServiceRestrictionSettings).length > 0) {
+      this.componentLoading.serviceCode = true;
+      setTimeout(() => this.componentLoading.serviceCode = false, 100);
+      this.newServiceRestrictionSettings = {};
     }
   }
   resetPortalUserSettings() {

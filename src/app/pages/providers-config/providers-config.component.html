@@ -25,10 +25,10 @@
         </div>
 
         <mat-accordion *ngIf="selectedProvider != null && selectedProvider != ''" multi="true">
-            <mat-expansion-panel expanded="true">
+            <mat-expansion-panel expanded="false">
                 <mat-expansion-panel-header style="background-color: #fbfbfb;">
                     <mat-panel-title style="color: #3060AA;">
-                        Service Code Validation
+                        Price List Validation
                     </mat-panel-title>
                     <mat-panel-description *ngIf="errors.serviceCodeSaveError != null">
                         <span style="color: #ac4040;">{{errors.serviceCodeSaveError}}</span>
@@ -58,7 +58,7 @@
                             </td>
                             <td>
                                 <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="Tertiary"
+                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
                                     [checked]="getServiceCodeRestrictionSettingsOfPayer(payer.switchAccountId)"
                                     (change)="onServiceRestrictionSettingChange(payer.switchAccountId, $event)">
                                 </mat-slide-toggle>
@@ -76,7 +76,7 @@
                 </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel expanded="true">
+            <mat-expansion-panel expanded="false">
                 <mat-expansion-panel-header style="background-color: #fbfbfb;">
                     <mat-panel-title style="color: #3060AA;">
                         Portal User Configration
