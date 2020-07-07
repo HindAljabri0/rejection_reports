@@ -25,12 +25,12 @@
               {
                 "glob": "nginx.conf",
                 "input": "src/.s2i",
-                "output": ""
+                "output": "./../"
               },
               {
                 "glob": "nginx-cfg",
                 "input": "src/.s2i",
-                "output": ""
+                "output": "./../"
               }
             ],
             "styles": [
