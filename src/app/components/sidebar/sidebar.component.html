@@ -9,43 +9,43 @@
     <ul id="zero">
       <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
         <li id="li-container">
-          <img class="icon" src="../../../assets/dashboard.svg" />
+          <img class="icon" src="assets/dashboard.svg" />
           Dashboard
         </li>
       </a>
       <a routerLink="upload" routerLinkActive="is-active">
         <li id="li-container">
-          <img class="icon" src="../../../assets/uploadclaim.svg" />
+          <img class="icon" src="assets/uploadclaim.svg" />
           Upload Claim
         </li>
       </a>
       <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
         <li id="li-container">
-          <img class="icon" src="../../../assets/summary.svg" />
+          <img class="icon" src="assets/summary.svg" />
           Summary
         </li>
       </a>
       <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
         <li id="li-container" class="new">
-          <img class="icon" src="../../../assets/summary.svg" />
+          <img class="icon" src="assets/summary.svg" />
           Summary
         </li>
       </a>
       <a routerLink="claims/add" routerLinkActive="is-active">
         <li id="li-container">
-          <img class="icon" src="../../../assets/addclaim.svg" />
+          <img class="icon" src="assets/addclaim.svg" />
           Create Claim
         </li>
       </a>
       <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
         <li id="li-container">
-          <img class="icon" src="../../../assets/notification.svg" />
+          <img class="icon" src="assets/notification.svg" />
           Notifications
         </li>
       </a>
       <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
         <li id="li-container">
-          <img class="icon" src="../../../assets/Announcements.svg" />
+          <img class="icon" src="assets/Announcements.svg" />
           Announcements
         </li>
       </a>
@@ -55,19 +55,19 @@
       <ul id="zero">
         <a routerLink="{{providerId}}/reports"  [queryParams]="{type: '1'}" routerLinkActive="is-active">
           <li id="li-container">
-            <img class="icon" src="../../../assets/payment_report.svg" />
+            <img class="icon" src="assets/payment_report.svg" />
             Payemt Report
           </li>
         </a>
         <a routerLink="{{providerId}}/reports"  [queryParams]="{type: '2'}" routerLinkActive="is-active">
           <li id="li-container">
-            <img class="icon" src="../../../assets/submission_report.svg" />
+            <img class="icon" src="assets/submission_report.svg" />
             Claim Submission Report
           </li>
         </a>
         <a routerLink="{{providerId}}/reports"  [queryParams]="{type: '3'}" routerLinkActive="is-active">
           <li id="li-container">
-            <img class="icon" src="../../../assets/rejection_report.svg" />
+            <img class="icon" src="assets/rejection_report.svg" />
             Rejection Report
           </li>
         </a>

@@ -20,6 +20,7 @@ import { Observable, Subject } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
+import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -28,7 +29,7 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
   file: File;
-  buttonDisabled: boolean = false;
+  buttonDisabled: boolean = true;
 
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
     public commen: SharedServices, public routeActive: ActivatedRoute,
@@ -37,7 +38,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
     private notificationService: NotificationsService,
-    private attachmentService: AttachmentService) {
+    private attachmentService: AttachmentService,
+    private adminService: AdminService) {
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -285,6 +287,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         } else {
           console.log("000");
         }
+        this.getConfigRestriction();
       }
       this.commen.loadingChanged.next(false);
     }, error => {
@@ -481,7 +484,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let index = this.claims.findIndex(oldClaim => oldClaim.claimId == `${claim.claimid}`);
     if (this.claims[index].status != claim.status) {
       let summaries = this.summaries;
-      
+
       let oldSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(this.claims[index].status.toLowerCase()));
       summaries[oldSummaryIndex] = {
         totalClaims: this.summaries[oldSummaryIndex].totalClaims - 1,
@@ -500,7 +503,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName
         }
-        window.setTimeout(()=>this.summaries = summaries, 1000);
+        window.setTimeout(() => this.summaries = summaries, 1000);
       } else {
         flag = true;
         this.fetchData();
@@ -717,5 +720,26 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isEligibleState(status: string) {
     if (status == null) return false;
     return status.toLowerCase() == 'eligible';
+  }
+
+  getConfigRestriction() {
+    if (this.detailSubActionText != null) {
+      this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.providerId, this.payerId).subscribe(result => {
+        if (result.type == 1) {
+          this.adminService.checkIfPriceListExist(this.providerId, this.payerId).subscribe(result => {
+            if (event instanceof HttpResponse) {
+              this.buttonDisabled = true;
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.errorMessage = "Price list restriction is enabled but price list is not present";
+            }
+          });
+
+        } else if (result.type == 0) {
+          this.buttonDisabled = false;
+        }
+      });
+    }
   }
 }
