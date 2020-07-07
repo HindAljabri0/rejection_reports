@@ -12,8 +12,8 @@
     "buildProdEn": "ng build --prod",
     "buildProdAr": "ng build --configuration=production-ar",
     "build": "npm-run-all --parallel buildEn buildAr",
-    "buildStg": "ng build --configuration=staging-en",
-    "buildProd": "ng build --prod",
+    "buildStg": "npm-run-all --parallel buildStgEn buildStgAr",
+    "buildProd": "npm-run-all --parallel buildProdEn buildProdAr",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
