@@ -20,7 +20,18 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-
+              "src/favicon.ico",
+                "src/assets",
+                {
+                  "glob": "nginx.conf",
+                  "input": "src/.s2i",
+                  "output": "./../"
+                },
+                {
+                  "glob": "nginx-cfg",
+                  "input": "src/.s2i",
+                  "output": "./../"
+                }
             ],
             "styles": [
               "src/custom-theme.scss",
@@ -35,20 +46,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "assets": [
-                "src/favicon.ico",
-                "src/assets",
-                {
-                  "glob": "nginx.conf",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                },
-                {
-                  "glob": "nginx-cfg",
-                  "input": "src/.s2i",
-                  "output": "./../"
                 }
               ],
               "outputPath": "dist/waseele-gui/en/",
@@ -81,20 +78,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "assets": [
-                "src/favicon.ico",
-                "src/assets",
-                {
-                  "glob": "nginx.conf",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                },
-                {
-                  "glob": "nginx-cfg",
-                  "input": "src/.s2i",
-                  "output": "./../"
                 }
               ],
               "outputPath": "dist/waseele-gui/ar/",
@@ -133,20 +116,6 @@
                   "with": "src/environments/environment.qa.ts"
                 }
               ],
-              "assets": [
-                "src/favicon.ico",
-                "src/assets",
-                {
-                  "glob": "nginx.conf",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                },
-                {
-                  "glob": "nginx-cfg",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                }
-              ],
               "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
@@ -177,20 +146,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.qa.ts"
-                }
-              ],
-              "assets": [
-                "src/favicon.ico",
-                "src/assets",
-                {
-                  "glob": "nginx.conf",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                },
-                {
-                  "glob": "nginx-cfg",
-                  "input": "src/.s2i",
-                  "output": "./../"
                 }
               ],
               "outputPath": "dist/waseele-gui/ar/",
@@ -229,20 +184,6 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "assets": [
-                "src/favicon.ico",
-                "src/assets",
-                {
-                  "glob": "nginx.conf",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                },
-                {
-                  "glob": "nginx-cfg",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                }
-              ],
               "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
@@ -273,20 +214,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
-                }
-              ],
-              "assets": [
-                "src/favicon.ico",
-                "src/assets",
-                {
-                  "glob": "nginx.conf",
-                  "input": "src/.s2i",
-                  "output": "./../"
-                },
-                {
-                  "glob": "nginx-cfg",
-                  "input": "src/.s2i",
-                  "output": "./../"
                 }
               ],
               "outputPath": "dist/waseele-gui/ar/",
