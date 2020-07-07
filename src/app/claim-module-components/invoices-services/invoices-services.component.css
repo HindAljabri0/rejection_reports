@@ -48,7 +48,7 @@ table {
 }
 
 .invoices td {
-    width: 50%;
+    width: 33%;
     text-align: start;
 }
 
@@ -88,6 +88,11 @@ td input:focus, td select:focus{
     left: 80%;
     cursor: pointer;
     color: #3060AA;
+}
+
+.fieldError{
+    outline: auto !important;
+    outline-color: #c44848 !important;
 }
 
 /* Chrome, Safari, Edge, Opera */

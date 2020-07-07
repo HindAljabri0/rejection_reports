@@ -50,12 +50,22 @@
                 <tr>
                     <td><label>Invoice Number*</label></td>
                     <td><label>Invoice Date*</label></td>
+                    <td><label>Invoice Department*</label></td>
                 </tr>
                 <tr>
-                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"
+                    <td [matTooltip]="getFieldError('invoiceNumber:'+i)"><input
+                            [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"
                             [formControl]="invoice.invoiceNumber"></td>
-                    <td><input [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}" type="date"
+                    <td [matTooltip]="getFieldError('invoiceDate:'+i)"><input
+                            [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}" type="date"
                             [formControl]="invoice.invoiceDate"></td>
+                    <td>
+                        <select (change)="updateInvoiceDepartment(i, $event)"
+                            [value]="controllers[i].invoice.invoiceDepartment" required>
+                            <option *ngFor="let department of departments" [value]="department.departmentId">
+                                {{department.name}}</option>
+                        </select>
+                    </td>
                 </tr>
             </table>
         </mat-expansion-panel>
@@ -80,59 +90,70 @@
                     </mat-expansion-panel-header>
                     <table>
                         <tr>
-                            <td><label>Service Date</label></td>
-                            <td><label>Service Code</label></td>
-                            <td colspan="2"><label>Service Description</label></td>
+                            <td><label>Service Date*</label></td>
+                            <td><label>Service Code*</label></td>
+                            <td colspan="2"><label>Service Description*</label></td>
                         </tr>
                         <tr>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"
+                            <td [matTooltip]="getFieldError('serviceDate:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"
                                     [formControl]="service.serviceDate"></td>
-                            <td>
+                            <td [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"
                                     [formControl]="service.serviceCode">
                                 <span class="selectServiceButton"
                                     [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                             </td>
-                            <td colspan="2"><input
+                            <td [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)" colspan="2"><input
                                     [ngClass]="{'fieldError': fieldHasError('serviceDescription:'+i+':'+j)}"
                                     [formControl]="service.serviceDescription" type="text"></td>
                         </tr>
                         <tr>
-                            <td><label>Unit Price</label></td>
-                            <td><label>Quantity</label></td>
+                            <td><label>Unit Price*</label></td>
+                            <td><label>Quantity*</label></td>
                             <td><label>Patient Share</label></td>
                             <td><label>Service Discount</label></td>
                         </tr>
                         <tr>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}"
-                                    type="number" [formControl]="service.unitPrice"><span class="amountType">SAR</span>
+                            <td [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}" type="number"
+                                    [formControl]="service.unitPrice"><span class="amountType">SAR</span>
                             </td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"
+                            <td [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"
                                     [formControl]="service.quntity"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}"
-                                    type="number" [formControl]="service.patientShare"><span class="amountType">SAR</span>
+                            <td [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}"
+                                    type="number" [formControl]="service.patientShare"><span
+                                    class="amountType">SAR</span>
                             </td>
-                            <td>
-                                <input [ngClass]="{'fieldError': fieldHasError('serviceDiscount:'+i+':'+j)}" type="number"
-                                    [formControl]="service.serviceDiscount">
+                            <td [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
+                                <input [ngClass]="{'fieldError': fieldHasError('serviceDiscount:'+i+':'+j)}"
+                                    type="number" [formControl]="service.serviceDiscount">
                                 <span class="amountType" style="cursor: pointer; color: #3060AA;"
                                     [ngClass]="{'amountTypePerecent': service.serviceDiscountUnit == 'PERCENT'}"
                                     (click)="service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')">{{service.serviceDiscountUnit == 'SAR'? 'SAR':'%'}}</span>
                             </td>
                         </tr>
                         <tr>
-                            <td *ngIf="claimType == 'Dental'"><label>Tooth Number</label></td>
-                            <td><label>Net Vat Rate</label></td>
-                            <td><label>Patient Share Vat Rate</label></td>
+                            <td *ngIf="claimType == 'Dental'"><label>Tooth Number*</label></td>
+                            <td><label>Net Vat Rate*</label></td>
+                            <td><label>Patient Share Vat Rate*</label></td>
                         </tr>
                         <tr>
-                            <td *ngIf="claimType == 'Dental'"><input
-                                    [ngClass]="{'fieldError': fieldHasError('serviceToothNum:'+i+':'+j)}" type="text"
-                                    [formControl]="service.toothNumber"></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}"
+                            <td *ngIf="claimType == 'Dental'">
+                                <select (change)="updateServiceToothNumber(i, j, $event)"
+                                    [value]="service.toothNumber.value" required>
+                                    <option *ngFor="let number of toothNumbers" [value]="number">
+                                        {{number}}</option>
+                                </select>
+                            </td>
+                            <td [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}"
                                     type="number" [formControl]="service.netVatRate"><span
                                     class="amountType amountTypePerecent">%</span></td>
-                            <td><input [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}"
+                            <td [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}"
                                     type="number" [formControl]="service.patientShareVatRate"><span
                                     class="amountType amountTypePerecent">%</span></td>
                         </tr>
@@ -159,8 +180,7 @@
             [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()"
             (click)="$event.stopPropagation()">
         <mat-autocomplete #servicesOptionsAutoComplete>
-            <mat-option *ngFor="let option of servicesOptions"
-                (click)="selectService(option)">
+            <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option)">
                 {{option}}
             </mat-option>
         </mat-autocomplete>

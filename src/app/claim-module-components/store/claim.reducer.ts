@@ -6,7 +6,7 @@ import { GDPN } from '../models/GDPN.model';
 
 export interface ClaimState {
     claim: Claim;
-    claimErrors: { patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
+    claimErrors: { claimGDPN:FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
@@ -16,7 +16,7 @@ export interface ClaimState {
 
 const initState: ClaimState = {
     claim: null,
-    claimErrors: { patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
+    claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
     loading: true,
@@ -50,6 +50,12 @@ const _claimReducer = createReducer(
                 break;
             case 'physicianErrors':
                 claimErrors = { ...state.claimErrors, physicianErrors: errors };
+                break;
+            case 'invoiceErrors':
+                claimErrors = { ...state.claimErrors, invoicesErrors: errors };
+                break;
+            case 'claimGDPN':
+                claimErrors = {...state.claimErrors, claimGDPN: errors};
                 break;
         }
         return { ...state, claimErrors: claimErrors };
@@ -119,6 +125,7 @@ export const getDiagnosisErrors = createSelector(claimSelector, (state) => state
 export const getGenInfoErrors = createSelector(claimSelector, (state) => state.claimErrors.genInfoErrors);
 export const getPhysicianErrors = createSelector(claimSelector, (state) => state.claimErrors.physicianErrors);
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
+export const getClaimGDPNErrors = createSelector(claimSelector, (state) => state.claimErrors.claimGDPN);
 export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
 
 

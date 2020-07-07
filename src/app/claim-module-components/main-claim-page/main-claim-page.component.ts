@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { startCreatingNewClaim, loadLOVs, cancelClaim, saveClaim, startValidatingClaim, setLoading } from '../store/claim.actions';
+import { startCreatingNewClaim, loadLOVs, cancelClaim, saveClaim, startValidatingClaim, setLoading, saveInvoices_Services } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimType, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
 import { Observable } from 'rxjs';
@@ -42,6 +42,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   save() {
+    this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());
     this.store.select(getClaimModuleIsLoading).pipe(

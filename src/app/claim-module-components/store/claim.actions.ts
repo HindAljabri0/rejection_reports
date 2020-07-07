@@ -44,6 +44,7 @@ export const updateIllnessDuration = createAction('[ Illness Duration ] update i
 export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
 
 //Invoices&Services
+export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{invoices:Invoice[]}>());
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{invoiceIndex?:number, serviceIndex?:number}>());
