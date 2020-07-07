@@ -20,8 +20,6 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-              "src/favicon.ico",
-              "src/assets",
               {
                 "glob": "nginx.conf",
                 "input": "src/.s2i",
@@ -47,6 +45,10 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
+              ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
               ],
               "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
@@ -79,6 +81,10 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
+              ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
               ],
               "outputPath": "dist/waseele-gui/ar/",
               "deployUrl": "/ar/",
@@ -116,6 +122,10 @@
                   "with": "src/environments/environment.qa.ts"
                 }
               ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
+              ],
               "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
@@ -147,6 +157,10 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.qa.ts"
                 }
+              ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
               ],
               "outputPath": "dist/waseele-gui/ar/",
               "deployUrl": "/ar/",
@@ -184,6 +198,10 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
+              ],
               "outputPath": "dist/waseele-gui/en/",
               "deployUrl": "/en/",
               "baseHref": "/en/",
@@ -215,6 +233,10 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
                 }
+              ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
               ],
               "outputPath": "dist/waseele-gui/ar/",
               "deployUrl": "/ar/",
