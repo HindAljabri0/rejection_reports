@@ -5,12 +5,15 @@ import { Period } from '../models/period.type';
 import { FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 
-export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string }>());
+export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string, providerClaimNumber:string }>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{loading:boolean}>())
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());
 export const setError = createAction('[ Claim ] set error', props<{ error: any }>());
-export const saveClaim = createAction('[ Claim ] save', props<{claim:Claim}>());
+export const getUploadId = createAction('[ Claim ] get this month upload ID', props<{providerId:string}>());
+export const setUploadId = createAction('[ Claim ] set upload id', props<{id:any}>());
+// export const saveClaim = createAction('[ Claim ] save', props<{claim:Claim, providerId:string, uploadId:string}>());
+export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{uploadId:number}>());
 export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{module:string, errors:FieldError[]}>());
@@ -44,6 +47,7 @@ export const updateIllnessDuration = createAction('[ Illness Duration ] update i
 export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
 
 //Invoices&Services
+export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{invoices:Invoice[]}>());
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{invoiceIndex?:number, serviceIndex?:number}>());

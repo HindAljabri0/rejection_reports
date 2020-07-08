@@ -5,7 +5,7 @@ export class Service {
 
     serviceNumber?: number;
     serviceDate: Date;
-    serviceType?: string;
+    serviceType: string;
     serviceCode: string;
     serviceDescription: string;
     serviceComment?: string;
@@ -23,6 +23,7 @@ export class Service {
         this.requestedQuantity = 0;
         this.unitPrice = new Amount(0,'SAR');
         this.serviceGDPN = new GDPN();
+        this.serviceType = 'NA';
     }
 
 }

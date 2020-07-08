@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Claim } from 'src/app/claim-module-components/models/claim.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,18 @@ import { environment } from 'src/environments/environment';
 export class ClaimService {
 
   constructor(private httpClient:HttpClient) { }
+
+  getUploadIdForManuallyCreatedClaims(providerId:string){
+    const requestUrl = `/upload-details/create/${providerId}`;
+    const httpRequest = new HttpRequest('GET', environment.claimServiceHost+requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
+
+  saveManuallyCreatedClaim(claim:Claim, providerId:string){
+    const requestUrl = `/providers/${providerId}`;
+    const httpRequest = new HttpRequest('POST', environment.claimServiceHost+requestUrl, claim);
+    return this.httpClient.request(httpRequest);
+  }
 
   updateClaim(providerId:string, payerId:string, claimId:number, data:{}){
     const requestUrl = `/providers/${providerId}/${claimId}`;
