@@ -1,5 +1,8 @@
 <app-sidebar *ngIf="isLoggedIn"></app-sidebar>
 <app-header *ngIf="isLoggedIn"></app-header>
+<ng-container *ngFor="let language of languageList">
+    <button class="button" (click)="changeLanguage(language)">{{language.label}}</button>
+</ng-container>
 <div class="res">
 
     <router-outlet style="
