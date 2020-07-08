@@ -27,6 +27,7 @@ export class DialogService {
     private reportService: ReportsService) { }
 
   openMessageDialog(dialogData: MessageDialogData): Observable<any> {
+    this.closeAll();
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '35%',
       height: '30%',
@@ -64,6 +65,7 @@ export class DialogService {
     claim.providerId = providerId;
     claim.payerid = payerId;
     claim.status = status;
+    this.closeAll();
     const dialogRef = this.dialog.open(ClaimDialogComponent, {
       width: '50%',
       height: '70%',
@@ -76,6 +78,7 @@ export class DialogService {
   }
 
   getPaymentClaimDetailAndViewIt(claimId: number) {
+    this.closeAll();
     this.reportService.getPaymentClaimDetail(this.providerId, claimId).subscribe(event => {
       if (event instanceof HttpResponse) {
         const claim: PaymentClaimDetail = JSON.parse(JSON.stringify(event.body));
@@ -88,6 +91,7 @@ export class DialogService {
     });
   }
   openPaymentClaimDetailDialog(claim: PaymentClaimDetail) {
+    this.closeAll();
     const dialogRef = this.dialog.open(PaymentClaimDetailDailogComponent, {
       width: '80%',
       height: '90%',
@@ -100,6 +104,7 @@ export class DialogService {
   }
 
   openRejectionReportClaimDialog(claim: RejectionReportClaimDialogData){
+    this.closeAll();
     const dialogRef = this.dialog.open(RejectionReportClaimDialogComponent, {
       width: '50%',
       height: '70%',
@@ -109,6 +114,10 @@ export class DialogService {
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);
     });
+  }
+
+  closeAll(){
+    this.dialog.closeAll();
   }
 
 

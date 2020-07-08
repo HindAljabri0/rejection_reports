@@ -6,7 +6,7 @@ import { GDPN } from '../models/GDPN.model';
 
 export interface ClaimState {
     claim: Claim;
-    claimErrors: { claimGDPN:FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
+    claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
@@ -26,13 +26,14 @@ const initState: ClaimState = {
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.startCreatingNewClaim, (state, { caseType }) => {
-        let claim = new Claim(caseType);
+    on(actions.startCreatingNewClaim, (state, { caseType, providerClaimNumber }) => {
+        let claim = new Claim(caseType, providerClaimNumber);
         return { ...state, claim: claim };
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
-    on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractLOVsFromHttpResponse(LOVs), loading: false })),
+    on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: false })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
+    on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
@@ -55,7 +56,7 @@ const _claimReducer = createReducer(
                 claimErrors = { ...state.claimErrors, invoicesErrors: errors };
                 break;
             case 'claimGDPN':
-                claimErrors = {...state.claimErrors, claimGDPN: errors};
+                claimErrors = { ...state.claimErrors, claimGDPN: errors };
                 break;
         }
         return { ...state, claimErrors: claimErrors };
@@ -130,7 +131,7 @@ export const getSelectedGDPN = createSelector(claimSelector, (state) => state.se
 
 
 
-function extractLOVsFromHttpResponse(response: HttpEvent<any>) {
+function extractFromHttpResponse(response: HttpEvent<any>) {
     if (response instanceof HttpResponse) {
         return response.body;
     }

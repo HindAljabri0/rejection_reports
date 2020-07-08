@@ -22,9 +22,12 @@
             <mat-expansion-panel-header>
                 <table class="headerTable child">
                     <tr style="font-size: small;">
-                        <td style="width: 16%;">Invoice {{(i+1)}}</td>
+                        <td style="width: 16%;">
+                            <mat-icon *ngIf="invoiceHasErrors(i)" style="color: #bb3131;">error</mat-icon>
+                            Invoice {{(i+1)}}
+                        </td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceNumber}}</td>
-                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceDate}}</td>
+                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceDate.toLocaleDateString()}}</td>
                         <td style="width: 22%;" *ngIf="expandedInvoice == -1">
                             <div style="width: 100%; display: flex;">
                                 <span>{{invoice.invoice.invoiceGDPN.net.value}}</span>
@@ -76,6 +79,7 @@
                     (afterCollapse)="afterServiceCollapse(i, j)">
                     <mat-expansion-panel-header>
                         <mat-panel-title style="color: #3060AA;">
+                            <mat-icon *ngIf="serviceHasErrors(i, j)" style="color: #bb3131;">error</mat-icon>
                             Service {{(j+1)}}
                         </mat-panel-title>
                         <mat-panel-description>
@@ -179,8 +183,8 @@
         <input type="text" placeholder="Search Service Code" matInput [formControl]="searchServicesController"
             [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()"
             (click)="$event.stopPropagation()">
-        <mat-autocomplete #servicesOptionsAutoComplete>
-            <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option)">
+        <mat-autocomplete #servicesOptionsAutoComplete style="width: fit-content;">
+            <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option);">
                 {{option}}
             </mat-option>
         </mat-autocomplete>

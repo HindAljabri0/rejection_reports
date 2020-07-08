@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { startCreatingNewClaim, loadLOVs, cancelClaim, saveClaim, startValidatingClaim, setLoading, saveInvoices_Services } from '../store/claim.actions';
+import { startCreatingNewClaim, loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimType, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
 import { Observable } from 'rxjs';
 import { SharedServices } from 'src/app/services/shared.services';
 import { skipWhile, withLatestFrom } from 'rxjs/operators';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -19,9 +20,19 @@ export class MainClaimPageComponent implements OnInit {
   errors: any;
   isLoading: boolean = true;
 
-  constructor(private router: Router, private store: Store, private sharedService: SharedServices) {
+  constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
     store.select(getClaim).subscribe(claim => this.claim = claim);
-    store.select(getClaimModuleError).subscribe(errors => this.errors = errors);
+    store.select(getClaimModuleError).subscribe(errors => {
+      if (errors.hasOwnProperty('code')) {
+        switch (errors['code']) {
+          case 'LOV_ERROR': case 'PAYERS_LIST':
+            this.errors = errors
+            break;
+          case 'UPLOAD_ID_ERROR': case 'CLAIM_SAVING_ERROR':
+            break;
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -38,7 +49,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   startCreatingClaim(type: string) {
-    this.store.dispatch(startCreatingNewClaim({ caseType: type }));
+    this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: `${this.sharedService.providerId}-${Date.now}` }));
   }
 
   save() {
@@ -53,8 +64,24 @@ export class MainClaimPageComponent implements OnInit {
         && values[1].genInfoErrors.length == 0
         && values[1].patientInfoErrors.length == 0
         && values[1].physicianErrors.length == 0
+        && values[1].claimGDPN.length == 0
+        && values[1].invoicesErrors.length == 0
       ) {
-        this.store.dispatch(saveClaim({ claim: this.claim }));
+        if (this.claim.claimIdentities.uploadID == null) {
+          this.store.dispatch(setLoading({ loading: true }));
+          this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
+        }
+      } else if (values[1].claimGDPN.length > 0
+        && values[1].diagnosisErrors.length == 0
+        && values[1].genInfoErrors.length == 0
+        && values[1].patientInfoErrors.length == 0
+        && values[1].physicianErrors.length == 0
+        && values[1].invoicesErrors.length == 0) {
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
+          isError: true
+        })
       }
     });
   }
@@ -70,8 +97,6 @@ export class MainClaimPageComponent implements OnInit {
           return 'Could not load required data to create new claim, please try again later.';
       }
     }
-    console.log(this.errors);
-    return 'Something went wrong! please try again later.'
   }
 
 }

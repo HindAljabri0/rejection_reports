@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
 import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Actions, ofType } from '@ngrx/effects';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -150,7 +151,7 @@ export class InvoicesServicesComponent implements OnInit {
   createInvoiceFromControl(i: number) {
     let invoice: Invoice = new Invoice();
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
-    invoice.invoiceDate = this.controllers[i].invoiceDate.value;
+    invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null:new Date(this.controllers[i].invoiceDate.value);
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
     
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
@@ -183,7 +184,7 @@ export class InvoicesServicesComponent implements OnInit {
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     let newService: Service = {
       serviceType: 'NA',
-      serviceDate: new Date(service.serviceDate.value),
+      serviceDate: service.serviceDate.value == null? null:new Date(service.serviceDate.value),
       serviceCode: service.serviceCode.value,
       serviceDescription: service.serviceDescription.value,
       unitPrice: {value: service.unitPrice.value, type:'SAR'},
@@ -286,6 +287,14 @@ export class InvoicesServicesComponent implements OnInit {
     for (let i = 0; i <= 85; i++) {
       this.toothNumbers.push(`${i}`);
     }
+  }
+
+  invoiceHasErrors(index){
+    return this.errors.findIndex(error => error.fieldName.split(':')[1] == index) != -1;
+  }
+
+  serviceHasErrors(invoiceIndex, serviceIndex){
+    return this.errors.findIndex(error => error.fieldName.includes(`:${invoiceIndex}:${serviceIndex}`)) != -1;
   }
 
 }

@@ -90,6 +90,10 @@ td input:focus, td select:focus{
     color: #3060AA;
 }
 
+::ng-deep.cdk-overlay-pane{
+    width: unset !important;
+}
+
 .fieldError{
     outline: auto !important;
     outline-color: #c44848 !important;

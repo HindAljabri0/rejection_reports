@@ -12,4 +12,8 @@ export class ClaimIdentifier {
 	eligibilityNumber: string;
 	uploadID: number;
 
+	constructor(providerClaimNumber:string){
+		this.providerClaimNumber = providerClaimNumber;
+	}
+
 }
