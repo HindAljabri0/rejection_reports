@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "startQAAr": "ng serve --configuration=qa-ar",
+    "startQAEn": "ng serve --configuration=qa-en",
     "int:extractAr": "ng xi18n --i18n-locale ar --out-file src/locale/messages.ar.xlf",
     "buildEn": "ng build --configuration=qa-en",
     "buildAr": "ng build --configuration=qa-ar",
