@@ -49,7 +49,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   startCreatingClaim(type: string) {
-    this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: `${this.sharedService.providerId}-${Date.now}` }));
+    this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: `${this.sharedService.providerId}-${Date.now()}` }));
   }
 
   save() {
