@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
@@ -12,6 +12,10 @@ export class HeaderComponent implements OnInit {
   collapsed = true;
   userName: string;
   providerName: string;
+
+  @Input() activeLanguageLabel: string;
+
+  @Input() languageList;
 
   notificationIconClasses = "mat-icon-button mat-button-base ";
 

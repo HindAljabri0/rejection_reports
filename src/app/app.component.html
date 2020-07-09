@@ -1,10 +1,7 @@
 <app-sidebar *ngIf="isLoggedIn"></app-sidebar>
-<app-header *ngIf="isLoggedIn"></app-header>
-<ng-container *ngFor="let language of languageList">
-    <a href="/{{language.code}}/">
-        <button class="button">{{language.label}}</button>
-    </a>
-</ng-container>
+<app-header *ngIf="isLoggedIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
+<app-language-switcher *ngIf="!isLoggedIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
+
 <div class="res">
 
     <router-outlet style="
@@ -14,6 +11,7 @@
 
 
 </div>
+
 <app-notification-center *ngIf="isLoggedIn"></app-notification-center>
 <app-upload-history-center *ngIf="isLoggedIn"></app-upload-history-center>
 <app-announcement-center *ngIf="isLoggedIn"></app-announcement-center>

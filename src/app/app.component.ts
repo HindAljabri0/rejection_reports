@@ -1,7 +1,6 @@
 import { AuthService } from './services/authService/authService.service';
-import { Component, LOCALE_ID, Inject, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, Inject, OnInit, HostBinding } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { LocaleId } from './models/LocaleId';
 import { A } from '@angular/cdk/keycodes';
 
 @Component({
@@ -10,39 +9,35 @@ import { A } from '@angular/cdk/keycodes';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  languageList = [ // <--- add this
-    { code: 'en', label: 'English' },
-    { code: 'ar', label: 'عربى' }
-  ];
+ 
   title = 'Waseele';
+
+  languageList = [ // <--- add this
+    { code: 'en', label: 'English', dir:'ltr' },
+    { code: 'ar', label: 'عربى', dir: 'rtl' }
+  ];
+
+  @HostBinding('attr.dir') dir = 'ltr';
+
+  activeLanguageLabel = 'English';
   
-  constructor(public authService: AuthService,
-              @Inject(DOCUMENT) private document: Document,
+  constructor(public authService: AuthService, @Inject(DOCUMENT) private document: Document,
               @Inject(LOCALE_ID) protected locale: string) {
   }
 
   ngOnInit() {
-   // console.log(LocaleId.getCurrentLocale());
     console.log(this.locale);
     console.log(this.document.documentElement.lang);
+
+    if (this.locale.startsWith('ar')) {
+      this.activeLanguageLabel = 'عربى';
+      //this.dir = 'rtl';
+    }
+
     this.document.documentElement.lang = this.locale;
   }
 
-  public changeLanguage(loc: any ) {
-    console.log('after change');
-    
-    this.locale = loc.code;
-    this.document.documentElement.lang = this.locale;
-   // LocaleId.setCurrentLocale(loc.code);
-
-    console.log(this.locale);
-    console.log(this.document.documentElement.lang);
-   // console.log(LocaleId.getCurrentLocale());
-
-    window.location.reload();
-  }
-
-
+  
   get isLoggedIn() {
     return this.authService.loggedIn;
   }
