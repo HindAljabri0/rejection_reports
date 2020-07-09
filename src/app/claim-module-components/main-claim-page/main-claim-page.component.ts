@@ -56,7 +56,7 @@ export class MainClaimPageComponent implements OnInit {
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());
-    this.store.select(getClaimModuleIsLoading).pipe(
+    let sub = this.store.select(getClaimModuleIsLoading).pipe(
       skipWhile(loading => loading),
       withLatestFrom(this.store.select(getClaimObjectErrors))
     ).subscribe((values) => {
@@ -67,10 +67,9 @@ export class MainClaimPageComponent implements OnInit {
         && values[1].claimGDPN.length == 0
         && values[1].invoicesErrors.length == 0
       ) {
-        if (this.claim.claimIdentities.uploadID == null) {
-          this.store.dispatch(setLoading({ loading: true }));
-          this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
-        }
+        this.store.dispatch(setLoading({ loading: true }));
+        this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
+        
       } else if (values[1].claimGDPN.length > 0
         && values[1].diagnosisErrors.length == 0
         && values[1].genInfoErrors.length == 0
@@ -83,7 +82,7 @@ export class MainClaimPageComponent implements OnInit {
           isError: true
         })
       }
-    });
+    }).unsubscribe();
   }
 
   cancel() {

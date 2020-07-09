@@ -47,6 +47,7 @@ export class ClaimEffects {
         ofType(setUploadId),
         withLatestFrom(this.store.select(getClaim)),
         switchMap(value => this.claimService.saveManuallyCreatedClaim(value[1], this.sharedServices.providerId).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.store.dispatch(setLoading({loading:false}));
                 return viewThisMonthClaims({uploadId: value[1].claimIdentities.uploadID});
