@@ -1,7 +1,14 @@
 <div>
-    <ng-container *ngFor="let language of languageList">
-        <a href="/{{language.code}}/">
-            <button class="button">{{language.label}}</button>
-        </a>
-    </ng-container>
+    <button mat-button [matMenuTriggerFor]="menu">
+    <span class="material-icons">
+        language
+    </span> | {{activeLanguageLabel}}
+</button>
+    <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let language of languageList">
+            <div>
+                <a href="/{{language.code}}/">{{language.label}}</a>
+            </div>
+        </ng-container>
+    </mat-menu>
 </div>

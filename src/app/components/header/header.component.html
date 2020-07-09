@@ -6,7 +6,7 @@
     </div>
     <app-search-with-advance></app-search-with-advance>
     <span class="spacer"></span>
-    <app-language-switcher></app-language-switcher>
+    <app-language-switcher [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
     <button (click)="toggleUploadHistoryCenter()" style="margin-right: 5px;" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Upload History">
     <mat-icon aria-hidden="false">cloud</mat-icon>
     <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon>

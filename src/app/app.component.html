@@ -1,6 +1,6 @@
 <app-sidebar *ngIf="isLoggedIn"></app-sidebar>
-<app-header *ngIf="isLoggedIn"></app-header>
-<app-language-switcher *ngIf="!isLoggedIn"></app-language-switcher>
+<app-header *ngIf="isLoggedIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
+<app-language-switcher *ngIf="!isLoggedIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
 
 <div class="res">
 

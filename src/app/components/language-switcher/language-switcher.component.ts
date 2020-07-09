@@ -1,4 +1,4 @@
-import { Component, LOCALE_ID, Inject, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, Inject, OnInit, HostBinding, Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -8,20 +8,14 @@ import { DOCUMENT } from '@angular/common';
 })
 export class LanguageSwitcherComponent implements OnInit {
 
-  languageList = [ // <--- add this
-    { code: 'en', label: 'English' },
-    { code: 'ar', label: 'عربى' }
-  ];
+  @Input() activeLanguageLabel: string;
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(LOCALE_ID) protected locale: string) { }
+  @Input() languageList;
+
+  constructor() { }
 
   ngOnInit() {
-  // console.log(LocaleId.getCurrentLocale());
-    console.log(this.locale);
-    console.log(this.document.documentElement.lang);
-    this.document.documentElement.lang = this.locale;
+  
   }
 
 
