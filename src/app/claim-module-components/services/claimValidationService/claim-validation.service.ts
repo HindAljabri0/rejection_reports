@@ -3,6 +3,7 @@ import { Claim } from '../../models/claim.model';
 import { Store } from '@ngrx/store';
 import { getClaim, FieldError } from '../../store/claim.reducer';
 import { addClaimErrors } from '../../store/claim.actions';
+import { Service } from '../../models/service.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,9 @@ export class ClaimValidationService {
   startValidation() {
     this.validatePatientInfo();
     this.validateGenInfo();
-    this.validateDiagnosis()
+    this.validateDiagnosis();
+    this.validateInvoices();
+    this.validateClaimNetAmount();
   }
 
   validatePatientInfo() {
@@ -59,32 +62,113 @@ export class ClaimValidationService {
     const illnessDuration = this.claim.caseInformation.caseDescription.illnessDuration;
     const age = this.claim.caseInformation.patient.age;
 
-    let fieldErrors:FieldError[] = [];
+    let fieldErrors: FieldError[] = [];
 
-    console.log(claimDate);
-    console.log(memberDob);
-    if(claimDate == null || Number.isNaN(claimDate.getTime()) || Number.isNaN(claimDate.getFullYear()) || Number.isNaN(claimDate.getMonth()) || Number.isNaN(claimDate.getDay()) || claimDate.getTime() > Date.now()){
-      fieldErrors.push({fieldName:'claimDate'});
+    if (this._isInvalidDate(claimDate)) {
+      fieldErrors.push({ fieldName: 'claimDate' });
     }
     if (fileNumber == null || fileNumber.trim().length == 0) {
       fieldErrors.push({ fieldName: 'fileNumber' });
     }
-    if(memberDob == null || Number.isNaN(memberDob.getTime()) || Number.isNaN(memberDob.getFullYear()) || Number.isNaN(memberDob.getMonth()) || Number.isNaN(memberDob.getDay())  || memberDob.getTime() > Date.now()){
-      fieldErrors.push({fieldName:'memberDob'});
+    if (this._isInvalidDate(memberDob)) {
+      fieldErrors.push({ fieldName: 'memberDob' });
     }
 
     this.store.dispatch(addClaimErrors({ module: 'genInfoErrors', errors: fieldErrors }));
   }
 
-  validateDiagnosis()
-  {
+  validateDiagnosis() {
     const diagnosis = this.claim.caseInformation.caseDescription.diagnosis;
 
-    let fieldErrors:FieldError[] = [];
-    if(diagnosis == null || diagnosis.length == 0){
-      fieldErrors.push({fieldName:'diagnosis'});
+    let fieldErrors: FieldError[] = [];
+    if (diagnosis == null || diagnosis.length == 0) {
+      fieldErrors.push({ fieldName: 'diagnosis' });
     }
-    this.store.dispatch(addClaimErrors({module:'diagnosisErrors', errors: fieldErrors}));
+    this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
 
+  }
+
+  validateInvoices() {
+    const invoices = this.claim.invoice;
+
+    let fieldErrors: FieldError[] = [];
+    invoices.forEach((invoice, index) => {
+      if (this._isInvalidDate(invoice.invoiceDate)) {
+        fieldErrors.push({ fieldName: `invoiceDate:${index}` })
+      }
+      if (invoice.invoiceNumber == null || invoice.invoiceNumber.trim().length == 0) {
+        fieldErrors.push({ fieldName: `invoiceNumber:${index}` })
+      }
+      invoice.service.forEach((service, serviceIndex) => {
+        fieldErrors.push(...this.validateService(service, index, serviceIndex));
+      });
+    });
+
+    this.store.dispatch(addClaimErrors({ module: 'invoiceErrors', errors: fieldErrors }));
+  }
+
+  validateService(service: Service, invoiceIndex: number, serviceIndex: number): FieldError[] {
+    let fieldErrors: FieldError[] = [];
+
+    if (this._isInvalidDate(service.serviceDate)) {
+      fieldErrors.push({ fieldName: `serviceDate:${invoiceIndex}:${serviceIndex}` });
+    }
+
+    if (service.serviceCode == null || service.serviceCode.trim().length == 0 || service.serviceCode.startsWith('0')) {
+      fieldErrors.push({
+        fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`,
+        error: (service.serviceCode != null && service.serviceCode.startsWith('0')) ? 'service code cannot start with zero' : null
+      });
+    }
+
+    if (service.serviceDescription == null || service.serviceDescription.trim().length == 0) {
+      fieldErrors.push({ fieldName: `serviceDescription:${invoiceIndex}:${serviceIndex}` })
+    }
+
+    if (service.unitPrice == null || service.unitPrice.value == null || service.unitPrice.value <= 0) {
+      fieldErrors.push({ fieldName: `serviceUnitPrice:${invoiceIndex}:${serviceIndex}`, error: 'must be bigger than zero' });
+    }
+
+    if (service.requestedQuantity == null || service.requestedQuantity <= 0) {
+      fieldErrors.push({ fieldName: `serviceQuantity:${invoiceIndex}:${serviceIndex}`, error: 'must be bigger than zero' });
+    }
+
+    let GDPN = service.serviceGDPN;
+    if (GDPN.patientShare != null && GDPN.patientShare.value != null) {
+      if (GDPN.patientShare.value < 0)
+        fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}` });
+      else if (GDPN.patientShare.value > GDPN.gross.value)
+        fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}`, error: 'must be less than or equal (unit price * quantity)' });
+    }
+    if (GDPN.discount != null && GDPN.discount.value != null) {
+      if (GDPN.discount.value < 0)
+        fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}` });
+      else if (GDPN.discount.type == 'PERCENT' && GDPN.discount.value > 100)
+        fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}`, error: 'must be between 0% and 100%, or click on % to change it to exact value' });
+      else if (GDPN.discount.type == 'SAR' && GDPN.discount.value > ((GDPN.gross.value || 0) - (GDPN.patientShare.value || 0)))
+        fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}`, error: 'must be less than or equal (unit price * quantity - patientshare)' });
+    }
+    if (GDPN.netVATrate != null && GDPN.netVATrate.value != null && GDPN.netVATrate.value < 0) {
+      fieldErrors.push({ fieldName: `serviceNetVatRate:${invoiceIndex}:${serviceIndex}` });
+    }
+    if (GDPN.patientShareVATrate != null && GDPN.patientShareVATrate.value != null && GDPN.patientShareVATrate.value < 0) {
+      fieldErrors.push({ fieldName: `servicePatientShareVatRate:${invoiceIndex}:${serviceIndex}` });
+    }
+
+
+    return fieldErrors;
+  }
+
+  validateClaimNetAmount(){
+    let fieldErrors: FieldError[] = []
+    if(this.claim.claimGDPN.net == null || this.claim.claimGDPN.net.value == null || this.claim.claimGDPN.net.value <= 0){
+      fieldErrors.push({fieldName:'claimNetAmount'});
+    }
+    this.store.dispatch(addClaimErrors({module: 'claimGDPN', errors:fieldErrors}));
+  }
+
+
+  _isInvalidDate(date: Date) {
+    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
   }
 }

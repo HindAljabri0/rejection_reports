@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
-import { updateClaimDate, updateInvoices_Services, selectGDPN } from '../store/claim.actions';
+import { updateClaimDate, updateInvoices_Services, selectGDPN, saveInvoices_Services } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
 import { Service } from '../models/service.model';
 import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { Actions, ofType } from '@ngrx/effects';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -44,35 +46,53 @@ export class InvoicesServicesComponent implements OnInit {
 
   claimType: string;
   visitDate: Date;
+  toothNumbers: string[] = [];
+  departments: any[] = [];
 
   errors: FieldError[] = [];
 
-  constructor(private store: Store, private adminService: AdminService, private sharedServices: SharedServices) { }
+  constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
-    this.store.select(getClaimType).subscribe(type => this.claimType = type);
+    this.store.select(getClaimType).subscribe(type => {
+      this.claimType = type;
+      if (type == 'Dental') {
+        this.initToothNumbers();
+      }
+    });
     this.store.select(getVisitDate).subscribe(date => this.visitDate = date);
     this.store.select(getSelectedPayer).subscribe(payerId => {
       this.payerId = payerId
       this.priceListExist = true;
       this.searchServicesController.setValue('');
     });
-    this.addInvoice();
     this.expandedInvoice = 0;
     this.expandedService = 0;
 
     this.store.select(getSelectedTab).subscribe(index => {
-      if(index == 3){
-        this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+      if (index == 3) {
+        this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
       } else {
         this.store.dispatch(selectGDPN({}));
       }
     });
+
+    this.store.select(getDepartments).subscribe(departments => {
+      this.departments = departments;
+      this.addInvoice();
+    });
+
+    this.actions.pipe(
+      ofType(saveInvoices_Services)
+    ).subscribe(() => { if (this.expandedInvoice != -1) this.createInvoiceFromControl(this.expandedInvoice) });
   }
 
   addInvoice() {
     this.controllers.push({ invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(), services: [] });
+    if (this.departments.length > 0) {
+      this.controllers[this.controllers.length - 1].invoice.invoiceDepartment = `${this.departments[0].departmentId}`;
+    }
     this.addService(this.controllers.length - 1);
   }
 
@@ -81,38 +101,38 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDate: new FormControl(),
       serviceCode: new FormControl(),
       serviceDescription: new FormControl(),
-      unitPrice: new FormControl(),
-      quntity: new FormControl(),
-      patientShare: new FormControl(),
-      serviceDiscount: new FormControl(),
+      unitPrice: new FormControl(0),
+      quntity: new FormControl(0),
+      patientShare: new FormControl(0),
+      serviceDiscount: new FormControl(0),
       serviceDiscountUnit: 'PERCENT',
-      toothNumber: new FormControl(),
-      netVatRate: new FormControl(),
-      patientShareVatRate: new FormControl()
+      toothNumber: new FormControl(this.toothNumbers.length > 0? this.toothNumbers[0]:null),
+      netVatRate: new FormControl(0),
+      patientShareVatRate: new FormControl(0)
     });
     this.updateClaim();
   }
 
   afterInvoiceExpanded(i: number) {
     this.expandedInvoice = i;
-    this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
-  afterServiceExpanded(j:number){
+  afterServiceExpanded(j: number) {
     this.expandedService = j;
-    this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
   afterInvoiceCollapse(i: number) {
     this.expandedInvoice = -1;
     this.expandedService = -1;
     this.createInvoiceFromControl(i);
-    this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
   afterServiceCollapse(invoiceIndex, serviceIndex) {
     this.expandedService = -1
-    this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
   fieldHasError(fieldName) {
@@ -127,10 +147,13 @@ export class InvoicesServicesComponent implements OnInit {
     return '';
   }
 
+
   createInvoiceFromControl(i: number) {
     let invoice: Invoice = new Invoice();
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
-    invoice.invoiceDate = this.controllers[i].invoiceDate.value;
+    invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null:new Date(this.controllers[i].invoiceDate.value);
+    invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
+    
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
     let GDPN = invoice.invoiceGDPN;
     GDPN.discount.value = invoice.service.map(service => service.serviceGDPN.discount.value).reduce((pre, cur) => pre + cur);
@@ -147,23 +170,24 @@ export class InvoicesServicesComponent implements OnInit {
 
   createServiceFromControl(service) {
     let gross = service.unitPrice.value * service.quntity.value;
-    gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length+2));
+    gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
     let net = gross - service.patientShare.value;
     if (service.serviceDiscountUnit == 'PERCENT') {
       net -= (net * (service.serviceDiscount.value / 100));
     } else {
       net -= service.serviceDiscount.value;
     }
-    net = Number.parseFloat(net.toPrecision(net.toFixed().length+2));
+    net = Number.parseFloat(net.toPrecision(net.toFixed().length + 2));
     let netVat = (net * (service.netVatRate.value / 100));
-    netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length+2));
+    netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
-    patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length+2));
+    patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     let newService: Service = {
-      serviceDate: new Date(service.serviceDate.value),
+      serviceType: 'NA',
+      serviceDate: service.serviceDate.value == null? null:new Date(service.serviceDate.value),
       serviceCode: service.serviceCode.value,
       serviceDescription: service.serviceDescription.value,
-      unitPrice: service.unitPrice.value,
+      unitPrice: {value: service.unitPrice.value, type:'SAR'},
       requestedQuantity: service.quntity.value,
       toothNumber: service.toothNumber.value,
       serviceGDPN: {
@@ -179,6 +203,15 @@ export class InvoicesServicesComponent implements OnInit {
       },
     };
     return newService;
+  }
+
+  updateInvoiceDepartment(i, event) {
+    this.controllers[i].invoice = { ...this.controllers[i].invoice, invoiceDepartment: event.target.value };
+  }
+
+  updateServiceToothNumber(i, j, event){
+    this.controllers[i].services[j].toothNumber.setValue(event.target.value);
+
   }
 
   updateClaim() {
@@ -202,13 +235,13 @@ export class InvoicesServicesComponent implements OnInit {
     this.addInvoice();
     this.expandedInvoice = this.controllers.length - 1;
     this.expandedService = 0;
-    this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
   onAddServiceClick(invoiceIndex) {
     this.addService(invoiceIndex);
     this.expandedService = this.controllers[invoiceIndex].services.length - 1;
-    this.store.dispatch(selectGDPN({invoiceIndex: this.expandedInvoice, serviceIndex:this.expandedService}));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
   onDeleteInvoiceClick(event, i) {
@@ -247,6 +280,21 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[this.expandedInvoice].services[this.expandedService].serviceCode.setValue(code);
     this.controllers[this.expandedInvoice].services[this.expandedService].serviceDescription.setValue(des);
     this.searchServicesController.setValue('');
+  }
+
+  initToothNumbers() {
+    this.toothNumbers.push('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T');
+    for (let i = 0; i <= 85; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+  }
+
+  invoiceHasErrors(index){
+    return this.errors.findIndex(error => error.fieldName.split(':')[1] == index) != -1;
+  }
+
+  serviceHasErrors(invoiceIndex, serviceIndex){
+    return this.errors.findIndex(error => error.fieldName.includes(`:${invoiceIndex}:${serviceIndex}`)) != -1;
   }
 
 }

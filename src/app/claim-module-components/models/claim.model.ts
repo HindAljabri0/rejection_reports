@@ -24,9 +24,9 @@ export class Claim {
     admission: Admission;
     attachment: AttachmentRequest[];
 
-    constructor(caseType:string){
+    constructor(caseType:string, providerClaimNumber:string){
         this.caseInformation = new CaseInfo(caseType);
-        this.claimIdentities = new ClaimIdentifier();
+        this.claimIdentities = new ClaimIdentifier(providerClaimNumber);
         this.member = new Member();
         this.visitInformation = new VisitInfo();
         this.claimGDPN = new GDPN();
