@@ -27,7 +27,7 @@
                             Invoice {{(i+1)}}
                         </td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceNumber}}</td>
-                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceDate.toLocaleDateString()}}</td>
+                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceDate == null? '':invoice.invoice.invoiceDate.toLocaleDateString()}}</td>
                         <td style="width: 22%;" *ngIf="expandedInvoice == -1">
                             <div style="width: 100%; display: flex;">
                                 <span>{{invoice.invoice.invoiceGDPN.net.value}}</span>

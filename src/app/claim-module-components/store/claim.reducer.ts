@@ -87,6 +87,7 @@ const _claimReducer = createReducer(
     on(actions.updateMemberDob, (state, { memberDob }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, dob: memberDob } } } })),
     on(actions.updateIllnessDuration, (state, { illnessDuration }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration: illnessDuration } } } })),
     on(actions.updateAge, (state, { age }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, age: age } } } })),
+    on(actions.updateMainSymptoms, (state, { symptoms }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, chiefComplaintSymptoms: symptoms } } } })),
 
     on(actions.updateInvoices_Services, (state, { invoices }) => {
         let GDPN: GDPN = {

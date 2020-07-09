@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -44,17 +44,21 @@ export class ClaimEffects {
     ));
 
     saveClaim$ = createEffect(() => this.actions$.pipe(
-        ofType(setUploadId),
+        ofType(setUploadId || saveClaim),
         withLatestFrom(this.store.select(getClaim)),
         switchMap(value => this.claimService.saveManuallyCreatedClaim(value[1], this.sharedServices.providerId).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
-                this.store.dispatch(setLoading({loading:false}));
-                return viewThisMonthClaims({uploadId: value[1].claimIdentities.uploadID});
+                this.store.dispatch(setLoading({ loading: false }));
+                return viewThisMonthClaims({ uploadId: value[1].claimIdentities.uploadID });
             }),
             catchError(err => {
-                this.store.dispatch(setLoading({loading:false}));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR' } })
+                let status = '';
+                if (err instanceof HttpErrorResponse) {
+                    status = '_'+err.error['status'];
+                }
+                this.store.dispatch(setLoading({ loading: false }));
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR'+status } })
             })
         ))
     ));

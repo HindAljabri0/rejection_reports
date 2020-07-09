@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { startCreatingNewClaim, loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId } from '../store/claim.actions';
+import { startCreatingNewClaim, loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, saveClaim } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimType, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
 import { Observable } from 'rxjs';
@@ -69,7 +69,6 @@ export class MainClaimPageComponent implements OnInit {
       ) {
         this.store.dispatch(setLoading({ loading: true }));
         this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
-        
       } else if (values[1].claimGDPN.length > 0
         && values[1].diagnosisErrors.length == 0
         && values[1].genInfoErrors.length == 0

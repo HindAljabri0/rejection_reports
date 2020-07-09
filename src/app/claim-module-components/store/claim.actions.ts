@@ -12,7 +12,7 @@ export const setLOVs = createAction('[ Claim ] set LOVs object from backend', pr
 export const setError = createAction('[ Claim ] set error', props<{ error: any }>());
 export const getUploadId = createAction('[ Claim ] get this month upload ID', props<{providerId:string}>());
 export const setUploadId = createAction('[ Claim ] set upload id', props<{id:any}>());
-// export const saveClaim = createAction('[ Claim ] save', props<{claim:Claim, providerId:string, uploadId:string}>());
+export const saveClaim = createAction('[ Claim ] save the claim');
 export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{uploadId:number}>());
 export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
@@ -45,6 +45,7 @@ export const updateFileNumber = createAction('[ File Number ] update File Number
 export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
 export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration:any }>());
 export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
+export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymptoms', props<{symptoms:string}>())
 
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');

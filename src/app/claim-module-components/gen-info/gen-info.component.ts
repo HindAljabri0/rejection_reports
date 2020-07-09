@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
-import { updateClaimDate, updateClaimType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge } from '../store/claim.actions';
+import { updateClaimDate, updateClaimType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms } from '../store/claim.actions';
 import { getClaimType, FieldError, getGenInfoErrors } from '../store/claim.reducer';
 
 @Component({
@@ -13,15 +13,16 @@ import { getClaimType, FieldError, getGenInfoErrors } from '../store/claim.reduc
 export class GenInfoComponent implements OnInit {
 
   claimDateController: FormControl = new FormControl();
-  selectedClaimType:string;
+  selectedClaimType: string;
   fielNumberController: FormControl = new FormControl();
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
   ageController: FormControl = new FormControl();
+  mainSymptomsController: FormControl = new FormControl();
   unitIllness: string = 'Day';
   unitAge: string = 'Year';
 
-  errors:FieldError[] = [];
+  errors: FieldError[] = [];
 
   constructor(private store: Store) { }
 
@@ -52,6 +53,9 @@ export class GenInfoComponent implements OnInit {
         var agePeriod = this.returnPeriod(this.ageController.value, this.unitAge);
         this.store.dispatch(updateAge({ age: agePeriod }));
         break;
+      case ('mainSymptoms'):
+        this.store.dispatch(updateMainSymptoms({ symptoms: this.mainSymptomsController.value }));
+        break;
     }
   }
 
@@ -60,37 +64,37 @@ export class GenInfoComponent implements OnInit {
     switch (field) {
       case ('illnessDurationUnit'):
         this.unitIllness = event.value;
-        if(this.illnessDurationController.value!=null)
-        this.store.dispatch(updateIllnessDuration({ illnessDuration: this.returnPeriod(this.illnessDurationController.value,this.unitIllness) }));
+        if (this.illnessDurationController.value != null)
+          this.store.dispatch(updateIllnessDuration({ illnessDuration: this.returnPeriod(this.illnessDurationController.value, this.unitIllness) }));
         break;
       case ('ageUnit'):
         this.unitAge = event.value;
-        if(this.ageController.value!=null)
-        this.store.dispatch(updateAge({ age: this.returnPeriod(this.ageController.value,this.unitAge) }));
+        if (this.ageController.value != null)
+          this.store.dispatch(updateAge({ age: this.returnPeriod(this.ageController.value, this.unitAge) }));
         break;
     }
   }
 
-  returnPeriod(value: string, unit: string) {
+  returnPeriod(value: string, unit: string): Period {
     if (unit === 'Year')
-      return { 'Years': value };
+      return new Period(Number.parseInt(value), 'years');
     else;
     if (unit === 'Month')
-      return { 'Months': value };
+      return new Period(Number.parseInt(value), 'months');
     else;
     if (unit === 'Day')
-      return { 'Days': value };
+      return new Period(Number.parseInt(value), 'days');
     else
-      return { 'Years': value };
+      return new Period(Number.parseInt(value), 'years');
   }
 
-  fieldHasError(fieldName){
+  fieldHasError(fieldName) {
     return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
   }
 
-  getFieldError(fieldName){
+  getFieldError(fieldName) {
     const index = this.errors.findIndex(error => error.fieldName == fieldName);
-    if(index > -1){
+    if (index > -1) {
       return this.errors[index].error || '';
     }
     return '';

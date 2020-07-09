@@ -34,6 +34,15 @@
                         [formControl]="memberDobController" (change)="updateClaim('memberDob')">
                 </td>
             </tr>
+            <tr>
+                <td colspan="2"><label>Chief Complaint Symptoms</label></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea [ngClass]="{'fieldError': fieldHasError('mainSymptoms')}"
+                        [formControl]="mainSymptomsController" (change)="updateClaim('mainSymptoms')"></textarea>
+                </td>
+            </tr>
 
         </tbody>
     </table>
