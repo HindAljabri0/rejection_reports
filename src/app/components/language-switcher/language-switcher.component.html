@@ -1,0 +1,7 @@
+<div>
+    <ng-container *ngFor="let language of languageList">
+        <a href="/{{language.code}}/">
+            <button class="button">{{language.label}}</button>
+        </a>
+    </ng-container>
+</div>
