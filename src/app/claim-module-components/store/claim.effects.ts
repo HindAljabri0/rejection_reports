@@ -55,11 +55,15 @@ export class ClaimEffects {
             }),
             catchError(err => {
                 let status = '';
+                let description:string;
                 if (err instanceof HttpErrorResponse) {
-                    status = '_' + err.error['status'];
+                    status = err.error['status'];
+                    try{
+                        description = err.error['errors'][0]['description'];
+                    } catch (error){}
                 }
                 this.store.dispatch(setLoading({ loading: false }));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR' + status } })
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description} });
             })
         ))
     ));

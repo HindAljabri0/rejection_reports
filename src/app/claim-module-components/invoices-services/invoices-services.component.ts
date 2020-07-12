@@ -81,7 +81,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.select(getDepartments).subscribe(departments => {
       this.departments = departments;
       this.addInvoice();
-    });
+    }).unsubscribe();
 
     this.actions.pipe(
       ofType(saveInvoices_Services)

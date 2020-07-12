@@ -23,12 +23,24 @@ export class MainClaimPageComponent implements OnInit {
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getClaimModuleError).subscribe(errors => {
-      if (errors.hasOwnProperty('code')) {
+      if (errors != null && errors.hasOwnProperty('code')) {
         switch (errors['code']) {
           case 'LOV_ERROR': case 'PAYERS_LIST':
             this.errors = errors
             break;
-          case 'UPLOAD_ID_ERROR': case 'CLAIM_SAVING_ERROR':
+          case 'UPLOAD_ID_ERROR':
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: 'Could not reach the server at the moment please try again later.',
+              isError: true
+            })
+            break;
+          case 'CLAIM_SAVING_ERROR':
+            this.dialogService.openMessageDialog({
+              title: errors['status'],
+              message: errors['description'],
+              isError: true
+            });
             break;
         }
       }
@@ -50,7 +62,7 @@ export class MainClaimPageComponent implements OnInit {
 
   startCreatingClaim(type: string) {
     let now = new Date(Date.now());
-    let providerClaimNumber = `${this.sharedService.providerId}${now.getFullYear()%100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+    let providerClaimNumber = `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
     this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: providerClaimNumber }));
   }
 
