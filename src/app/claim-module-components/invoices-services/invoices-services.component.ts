@@ -163,6 +163,7 @@ export class InvoicesServicesComponent implements OnInit {
         return discount;
       } else return service.serviceGDPN.discount.value;
     }).reduce((pre, cur) => pre + cur);
+    GDPN.discount.type = "SAR";
     GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
     GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
     GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
