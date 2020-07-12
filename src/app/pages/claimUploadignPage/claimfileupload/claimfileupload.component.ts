@@ -152,12 +152,14 @@ export class ClaimfileuploadComponent implements OnInit {
     if (this.common.loading || this.uploading) {
       return;
     }
-    console.log(this.priceListDoesNotExistMessages.length);
-    if (this.priceListDoesNotExistMessages.length > 0 || this.serviceCodeVaildationDisabledMessages.length > 0) {
+    let isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
+    let isServiceCodeVaildationDisabled = this.serviceCodeVaildationDisabledMessages.length > 0;
+
+    if ( isPriseListDoesntExist ||isServiceCodeVaildationDisabled ) {
       this.dialogService.openMessageDialog({
         title: 'Caution!',
-        message: (this.serviceCodeVaildationDisabledMessages.length > 0 ? `Service code vaildation is disabled in our system between you and the payer(s): ${this.serviceCodeVaildationDisabledMessages.toString()}. ` : '')
-          + (this.priceListDoesNotExistMessages.length > 0 ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
+        message: (isServiceCodeVaildationDisabled ? `Service code vaildation is disabled in our system between you and the payer(s): ${this.serviceCodeVaildationDisabledMessages.toString()}. ` : '')
+          + (isPriseListDoesntExist ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
           + 'Do you wish to continue?',
         isError: false,
         withButtons: true

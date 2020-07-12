@@ -20,7 +20,6 @@ import { Observable, Subject } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
-import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -38,8 +37,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
     private notificationService: NotificationsService,
-    private attachmentService: AttachmentService,
-    private adminService: AdminService) {
+    private attachmentService: AttachmentService) {
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -287,7 +285,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         } else {
           console.log("000");
         }
-        this.getConfigRestriction();
       }
       this.commen.loadingChanged.next(false);
     }, error => {
@@ -646,25 +643,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     });
   }
 
-  /*uploadAttachment(claimID:string){
-    this.attachmentService.uploadAttachament(this.providerId, claimID, this.file)
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progressChange.next( { percentage:Math.round(100 * event.loaded / event.total)});
-        } else if (event instanceof HttpResponse) {
-          const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
-          this.progressChange.next( { percentage:101});
-        }
-      }, errorEvent => {
-          if(errorEvent instanceof HttpErrorResponse){
-          if(errorEvent.status >= 500){
-
-          }
-        }
-      });
-    
-
-  }*/
 
   doAction() {
     if (this.detailActionText.includes("Submit")) {
@@ -720,26 +698,5 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isEligibleState(status: string) {
     if (status == null) return false;
     return status.toLowerCase() == 'eligible';
-  }
-
-  getConfigRestriction() {
-    if (this.detailSubActionText != null) {
-      this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.providerId, this.payerId).subscribe(result => {
-        if (result.type == 1) {
-          this.adminService.checkIfPriceListExist(this.providerId, this.payerId).subscribe(result => {
-            if (event instanceof HttpResponse) {
-              this.buttonDisabled = true;
-            }
-          }, errorEvent => {
-            if (errorEvent instanceof HttpErrorResponse) {
-              this.errorMessage = "Price list restriction is enabled but price list is not present";
-            }
-          });
-
-        } else if (result.type == 0) {
-          this.buttonDisabled = false;
-        }
-      });
-    }
   }
 }
