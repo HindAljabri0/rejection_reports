@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AppComponent } from './app.component';
 import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -28,7 +28,6 @@ import { ClaimDialogComponent } from './components/dialogs/claim-dialog/claim-di
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { RequestInterceptorService } from './services/RequestInterceptorService/request-interceptor.service';
-import { RouteCanActiveService } from './services/routeCanActive/route-can-active.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SearchWithAdvanceComponent } from './components/search-with-advance/search-with-advance.component';
 import { PaymentReferenceReportComponent } from './pages/reports/payment-reference-report/payment-reference-report.component';
@@ -50,6 +49,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
+import { AppRoutingModule } from './modules/app-routing.module';
 
 
 
@@ -91,27 +91,7 @@ import { LanguageSwitcherComponent } from './components/language-switcher/langua
     LanguageSwitcherComponent,
   ],
   imports: [
-    RouterModule.forRoot([
-      { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
-      { path: 'login', component: LoginComponent },
-      { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-      { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
-      { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
-      {
-        path: 'administration',
-        loadChildren: () => import('./modules/adminstration/adminstration.module').then(m => m.AdminstrationModule),
-        canLoad: [RouteCanActiveService]
-      },
-      {
-        path: 'claims',
-        loadChildren: () => import('./modules/claim/claim.module').then(m => m.ClaimModule),
-        canLoad: [RouteCanActiveService]
-      }
-    ]),
+    AppRoutingModule,
     StoreModule.forRoot([]),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
