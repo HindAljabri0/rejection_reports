@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -10,6 +10,7 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
 import { getClaim } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -17,7 +18,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class ClaimEffects {
 
-    constructor(private actions$: Actions, private store: Store, private adminService: AdminService, private validationService: ClaimValidationService, private claimService: ClaimService, private sharedServices: SharedServices) { }
+    constructor(private actions$: Actions, private store: Store, private adminService: AdminService, private validationService: ClaimValidationService, private claimService: ClaimService, private sharedServices: SharedServices, private router: Router) { }
 
     loadLOVs$ = createEffect(() => this.actions$.pipe(
         ofType(loadLOVs),
@@ -55,12 +56,18 @@ export class ClaimEffects {
             catchError(err => {
                 let status = '';
                 if (err instanceof HttpErrorResponse) {
-                    status = '_'+err.error['status'];
+                    status = '_' + err.error['status'];
                 }
                 this.store.dispatch(setLoading({ loading: false }));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR'+status } })
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR' + status } })
             })
         ))
+    ));
+
+    viewThisMonthClaims$ = createEffect(() => this.actions$.pipe(
+        ofType(viewThisMonthClaims),
+        tap(value => this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId } })),
+        map(() => cancelClaim())
     ));
 
 }

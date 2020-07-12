@@ -103,7 +103,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   ngOnInit() {
     this.fetchData();
     this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims"))
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims") && !event.url.includes("/add"))
     ).subscribe(() => {
       this.fetchData();
     });

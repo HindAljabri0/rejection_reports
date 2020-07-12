@@ -49,7 +49,9 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   startCreatingClaim(type: string) {
-    this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: `${this.sharedService.providerId}-${Date.now()}` }));
+    let now = new Date(Date.now());
+    let providerClaimNumber = `${this.sharedService.providerId}${now.getFullYear()%100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+    this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: providerClaimNumber }));
   }
 
   save() {
