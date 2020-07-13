@@ -9,12 +9,9 @@
                             <mat-form-field floatLabel="never" 
                                 style="margin-right: 5%; width: 15%;" >
                                 <mat-label>Select Report</mat-label>
-                                <mat-select [formControl]="reportTypeControl" (keyup.enter)="search()" required>
+                                <mat-select [formControl]="reportTypeControl" (selectionChange)="searchSelect($event)" required>
                                     <mat-option *ngFor="let report of reports" [value]="report.id">
-                                        <a routerLink="{{providerId}}/reports" routerLinkActive="is-active" *ngIf="report.id==1" [queryParams]="{type: '1'}" ></a>
-                                        <a routerLink="{{providerId}}/reports" routerLinkActive="is-active" *ngIf="report.id==2" [queryParams]="{type: '2'}" ></a>
-                                        <a routerLink="{{providerId}}/reports" routerLinkActive="is-active" *ngIf="report.id==3" [queryParams]="{type: '3'}" ></a>
-                                        {{report.name}}                                    
+                                       {{report.name}}                                    
                                 </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="reportTypeControl.hasError('required')">Please choose a Report</mat-error>

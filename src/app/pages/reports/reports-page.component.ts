@@ -25,7 +25,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   isValidFormSubmitted = false;
   payers: { id: string[] | string, name: string }[];
   reports: { id: number, name: string }[] = [
-    { id: 1, name: "Payment Report" },
+    { id: 1, name: "Payment Report" }, 
     { id: 2, name: "Claim Submission Report" },
     { id: 3, name: "Rejection Report" },
   ];
@@ -135,6 +135,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   search() {
+    debugger;
     this.fromDateHasError = false;
     this.toDateHasError = true;
     this.payerIdHasError = true;
@@ -188,7 +189,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       //this.trigger.openMenu();
     //}
     this.isValidFormSubmitted = true;
-
+  }
+  searchSelect(event)
+  {
+    this.search();
   }
 
   onPaymentClick(ref) {
