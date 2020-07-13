@@ -44,10 +44,9 @@
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #toPicker></mat-datepicker>
-                                <mat-error *ngIf="toDateControl.hasError('required')">Please choose a Date</mat-error>
+                                <mat-error *ngIf="toDateControl.hasError('required')">Please choose a date</mat-error>
                             </mat-form-field>
-
-                            <mat-form-field floatLabel="never" 
+                            <mat-form-field [ngClass]="{'mat-form-field-invalid':rejectionCriteriaHasError}" floatLabel="never" 
                                 style="margin-right: 5%; width: 15%;" *ngIf="showRejectionReport">
                                 <mat-label>Select Date Type</mat-label>
                                 <mat-select [formControl]="rejectionCriteriaControl" (keyup.enter)="search()" required>
@@ -55,6 +54,7 @@
                                         {{criteria.name}}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="rejectionCriteriaControl.hasError('required')">Please choose date type</mat-error>
                             </mat-form-field>
 
                             <button mat-raised-button color="primary" (click)="search()" 

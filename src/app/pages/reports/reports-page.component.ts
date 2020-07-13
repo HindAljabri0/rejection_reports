@@ -49,6 +49,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   payerIdHasError: boolean = false;
 
   rejectionCriteriaControl: FormControl = new FormControl();
+  rejectionCriteriaHasError: boolean = false;
 
   page: number;
   pageSize: number;
@@ -110,7 +111,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
       if (value.criteria != null) {
         this.rejectionCriteriaControl.setValue(Number.parseInt(value.criteria));
-        this.criteria = value.criteria;
+        //this.criteria = value.criteria;
       }
       if (value.page != null) {
         this.page = Number.parseInt(value.page);
@@ -135,16 +136,18 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-    debugger;
+    //debugger;
     this.fromDateHasError = false;
     this.toDateHasError = true;
     this.payerIdHasError = true;
+    this.rejectionCriteriaHasError = true;
 
     this.isValidFormSubmitted = false;
-    if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null) {
+    if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null || this.rejectionCriteriaControl.invalid) {
       this.toDateHasError = true;
+      this.fromDateHasError = true;
       this.payerIdHasError = true;
-      this.payerIdHasError = true;
+      this.rejectionCriteriaHasError = true;
 
       /*if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
         this.trigger.openMenu();
