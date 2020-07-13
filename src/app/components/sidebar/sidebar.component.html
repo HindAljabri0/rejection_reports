@@ -1,96 +1,86 @@
 <div class="w3-sidebar w3-light-grey w3-bar-block ">
-  <!-- <h3 class="w3-bar-item">Menu</h3> -->
-  <!-- <ul class="nav navbar-nav" routerLinkActive="active">
+    <!-- <h3 class="w3-bar-item">Menu</h3> -->
+    <!-- <ul class="nav navbar-nav" routerLinkActive="active">
             <li><a class="nav-link" routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
             <li><a class="nav-link" routerLink="upload" routerLinkActive="is-active">Upload</a></li>
         </ul> -->
-  <div class="list-container" *ngIf="!isAdmin">
-    <div class="list-tittle"> Claim </div>
-    <ul id="zero">
-      <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-        <li id="li-container">
-          <img class="icon" src="assets/dashboard.svg" />
-          Dashboard
-        </li>
-      </a>
-      <a routerLink="upload" routerLinkActive="is-active">
-        <li id="li-container">
-          <img class="icon" src="assets/uploadclaim.svg" />
-          Upload Claim
-        </li>
-      </a>
-      <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
-        <li id="li-container">
-          <img class="icon" src="assets/summary.svg" />
-          Summary
-        </li>
-      </a>
-      <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
-        <li id="li-container" class="new">
-          <img class="icon" src="assets/summary.svg" />
-          Summary
-        </li>
-      </a>
-      <a routerLink="claims/add" routerLinkActive="is-active">
-        <li id="li-container">
-          <img class="icon" src="assets/addclaim.svg" />
-          Create Claim
-        </li>
-      </a>
-      <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
-        <li id="li-container">
-          <img class="icon" src="assets/notification.svg" />
-          Notifications
-        </li>
-      </a>
-      <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
-        <li id="li-container">
-          <img class="icon" src="assets/Announcements.svg" />
-          Announcements
-        </li>
-      </a>
-    </ul>
-    <div>
-      <div class="list-tittle"> Reports </div>
-      <ul id="zero">
-        <a routerLink="{{providerId}}/reports"  [queryParams]="{type: '1'}" routerLinkActive="is-active">
-          <li id="li-container">
-            <img class="icon" src="assets/payment_report.svg" />
-            Payemt Report
-          </li>
-        </a>
-        <a routerLink="{{providerId}}/reports"  [queryParams]="{type: '2'}" routerLinkActive="is-active">
-          <li id="li-container">
-            <img class="icon" src="assets/submission_report.svg" />
-            Claim Submission Report
-          </li>
-        </a>
-        <a routerLink="{{providerId}}/reports"  [queryParams]="{type: '3'}" routerLinkActive="is-active">
-          <li id="li-container">
-            <img class="icon" src="assets/rejection_report.svg" />
-            Rejection Report
-          </li>
-        </a>
-      </ul>
+    <div class="list-container" *ngIf="!isAdmin">
+        <div i18n="@@claims" class="list-tittle"> Claims </div>
+        <ul id="zero">
+            <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                <li i18n="@@dashboard" id="li-container">
+                    <img class="icon" src="assets/dashboard.svg" /> Dashboard
+                </li>
+            </a>
+            <a routerLink="upload" routerLinkActive="is-active">
+                <li i18n="@@uploadclaims" id="li-container">
+                    <img class="icon" src="assets/uploadclaim.svg" />Upload Claims
+                </li>
+            </a>
+            <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
+                <li i18n="@@uploadsummary" id="li-container">
+                    <img class="icon" src="assets/summary.svg" /> Upload Summary
+                </li>
+            </a>
+            <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
+                <li i18n="@@uploadsummary" id="li-container" class="new">
+                    <img class="icon" src="assets/summary.svg" /> Upload Summary
+                </li>
+            </a>
+            <a routerLink="claims/add" routerLinkActive="is-active">
+                <li i18n="@@createclaim" id="li-container">
+                    <img class="icon" src="assets/addclaim.svg" /> Create Claim
+                </li>
+            </a>
+            <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
+                <li i18n="@@notifications" id="li-container">
+                    <img class="icon" src="assets/notification.svg" /> Notifications
+                </li>
+            </a>
+            <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
+                <li i18n="@@announcements" id="li-container">
+                    <img class="icon" src="assets/Announcements.svg" /> Announcements
+                </li>
+            </a>
+        </ul>
+        <div>
+            <div i18n="@@reports" class="list-tittle"> Reports </div>
+            <ul id="zero">
+                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                    <li i18n="@@paymentreport" id="li-container">
+                        <img class="icon" src="assets/payment_report.svg" /> Payment Report
+                    </li>
+                </a>
+                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                    <li i18n="@@submissionreport" id="li-container">
+                        <img class="icon" src="assets/submission_report.svg" /> Submission Report
+                    </li>
+                </a>
+                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
+                    <li i18n="@@rejectionreport" id="li-container">
+                        <img class="icon" src="assets/rejection_report.svg" /> Rejection Report
+                    </li>
+                </a>
+            </ul>
+        </div>
     </div>
-  </div>
-  <div class="list-container" *ngIf="isAdmin">
-    <div class="list-tittle"> Configrations </div>
-    <ul id="zero">
-      <a routerLink="administration/config/providers" routerLinkActive="is-active">
-        <li id="li-container">
-          Providers Config
-        </li>
-      </a>
-    </ul>
+    <div class="list-container" *ngIf="isAdmin">
+        <div i18n="@@configuration" class="list-tittle"> Configuration </div>
+        <ul id="zero">
+            <a routerLink="administration/config/providers" routerLinkActive="is-active">
+                <li i18n="@@providerconfiguration" id="li-container">
+                    Provider Configuration
+                </li>
+            </a>
+        </ul>
 
-    <div class="list-tittle"> Audit </div>
-    <ul id="zero">
-      <a routerLink="administration/auditLogs" routerLinkActive="is-active">
-        <li id="li-container">
-          Audit Trail
-        </li>
-      </a>
-    </ul>
-  </div>
+        <div i18n="@@audit" class="list-tittle"> Audit </div>
+        <ul id="zero">
+            <a routerLink="administration/auditLogs" routerLinkActive="is-active">
+                <li i18n="@@audittrail" id="li-container">
+                    Audit Trail
+                </li>
+            </a>
+        </ul>
+    </div>
 </div>
