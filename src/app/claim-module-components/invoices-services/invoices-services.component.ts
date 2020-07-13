@@ -156,7 +156,14 @@ export class InvoicesServicesComponent implements OnInit {
     
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
     let GDPN = invoice.invoiceGDPN;
-    GDPN.discount.value = invoice.service.map(service => service.serviceGDPN.discount.value).reduce((pre, cur) => pre + cur);
+    GDPN.discount.value = invoice.service.map(service => {
+      if(service.serviceGDPN.discount.type == 'PERCENT'){
+        let discount = (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
+        discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
+        return discount;
+      } else return service.serviceGDPN.discount.value;
+    }).reduce((pre, cur) => pre + cur);
+    GDPN.discount.type = "SAR";
     GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
     GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
     GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
