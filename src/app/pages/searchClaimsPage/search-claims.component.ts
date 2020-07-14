@@ -513,7 +513,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.claims[index].memberId = claim.memberid;
         this.claims[index].policyNumber = claim.policynumber;
         this.claims[index].nationalId = claim.nationalId;
-        this.claims[index].numOfPriceListErrors = claim.errors.filter(error => error.code == 'SERVCOD-VERFIY').length;
+        this.claims[index].numOfPriceListErrors = claim.errors.filter(error => error.code == 'SERVCOD-VERFIY' || error.code == 'SERVCOD-RESTRICT').length;
         this.claims[index].numOfAttachments = claim.attachments.length;
         this.claims[index].eligibilitycheck = null;
       }

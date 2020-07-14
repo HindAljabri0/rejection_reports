@@ -108,7 +108,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   setErrors() {
     this.commentBoxText = "";
     for (let error of this.data.claim.errors) {
-      if (error.code != 'SERVCOD-VERFIY') {
+      if (error.code != 'SERVCOD-VERFIY' && error.code != 'SERVCOD-RESTRICR') {
         this.commentBoxText += `${error.description}\n`;
         this.commentBoxClasses = 'error';
       } else {
