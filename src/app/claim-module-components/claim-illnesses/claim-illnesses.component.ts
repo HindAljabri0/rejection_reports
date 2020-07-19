@@ -29,9 +29,16 @@ export class ClaimIllnessesComponent implements OnInit {
   updateIllnesses(event:MatButtonToggleChange){
     if(event.value == 'NA' && event.source.checked){
       this.selectedIllnesses = ['NA'];
-    } else {
+    } else if(event.source.checked) {
       this.selectedIllnesses = this.selectedIllnesses.filter(code => code != 'NA');
-      this.selectedIllnesses.push(event.value);
+      if(!this.selectedIllnesses.includes(event.value))
+        this.selectedIllnesses.push(event.value);
+    } else {
+      this.selectedIllnesses  = this.selectedIllnesses.filter(code => code != event.value);
+    }
+    if(this.selectedIllnesses.length == 0){
+      event.source.checked = true;
+      this.selectedIllnesses = ['NA'];
     }
     this.store.dispatch(updateIllnesses({list:this.selectedIllnesses}));
   }
