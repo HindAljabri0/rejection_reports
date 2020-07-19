@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getClaimType } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-physician-header',
@@ -30,10 +30,7 @@ export class PhysicianComponent implements OnInit {
   ngOnInit() {
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
-    if (this.departments.length > 0) {
-      this.selectedDepartment = this.departments[0].departmentId;
-      this.store.dispatch(updateDepartment({ department: this.departments[0].departmentId }));
-    }
+    this.store.select(getClaimType).subscribe(type => this.selectedDepartment = type);
   }
 
   updateClaim(field: string) {

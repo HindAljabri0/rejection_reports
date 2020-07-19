@@ -23,7 +23,7 @@ export class ClaimValidationService {
   startValidation() {
     this.validatePatientInfo();
     this.validatePhysicianInfo();
-    this.validateGenInfo();    
+    this.validateGenInfo();
     this.validateDiagnosis();
     this.validateInvoices();
     this.validateClaimNetAmount();
@@ -65,18 +65,18 @@ export class ClaimValidationService {
     this.store.dispatch(addClaimErrors({ module: 'patientInfoErrors', errors: fieldErrors }));
   }
 
-  validatePhysicianInfo(){
+  validatePhysicianInfo() {
     const physicianId = this.claim.caseInformation.physician.physicianID;
     const physicianName = this.claim.caseInformation.physician.physicianName;
-    
+
     let fieldErrors: FieldError[] = [];
 
-    if(physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)){
-      fieldErrors.push({fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)'});
+    if (physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)) {
+      fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
-    
-    if(physicianName != null && physicianName.trim().length > 0 && !this.regax.test(physicianName)){
-      fieldErrors.push({fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)'});
+
+    if (physicianName != null && physicianName.trim().length > 0 && !this.regax.test(physicianName)) {
+      fieldErrors.push({ fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
     }
 
     this.store.dispatch(addClaimErrors({ module: 'physicianErrors', errors: fieldErrors }));
@@ -112,9 +112,15 @@ export class ClaimValidationService {
   }
 
   validateDiagnosis() {
+    if (this.claim.claimIdentities.payerID == '102' && this.claim.visitInformation.departmentCode == '20') {
+      this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: [] }));
+      return;
+    }
+
     const diagnosis = this.claim.caseInformation.caseDescription.diagnosis;
 
     let fieldErrors: FieldError[] = [];
+
     if (diagnosis == null || diagnosis.length == 0) {
       fieldErrors.push({ fieldName: 'diagnosis' });
     }
