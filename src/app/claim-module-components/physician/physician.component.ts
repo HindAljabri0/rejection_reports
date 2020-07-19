@@ -38,7 +38,7 @@ export class PhysicianComponent implements OnInit {
       case 'physicianId':
         this.store.dispatch(updatePhysicianId({ physicianId: this.physicianIdController.value }));
         break;
-      case ' physicianName':
+      case 'physicianName':
         this.store.dispatch(updatePhysicianName({ physicianName: this.physicianNameController.value }));
         break;
       case 'physicianCategory':
