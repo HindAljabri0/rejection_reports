@@ -21,7 +21,7 @@
       <trans-unit id="uploadclaims" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>Upload Claims
-                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تحميل المطالبات</target>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>رفع مطالبة</target>
         
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
@@ -31,7 +31,7 @@
       <trans-unit id="uploadsummary" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Upload Summary
-                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تحميل ملخص</target>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>رفع ملخص</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">21</context>
