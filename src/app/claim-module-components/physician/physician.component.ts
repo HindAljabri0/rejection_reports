@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-physician-header',
@@ -23,9 +23,12 @@ export class PhysicianComponent implements OnInit {
     {name:'Optical', departmentId: '20'},
   ];
 
+  errors: FieldError[] = [];
+
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
     if (this.departments.length > 0) {
       this.selectedDepartment = this.departments[0].departmentId;
@@ -52,6 +55,18 @@ export class PhysicianComponent implements OnInit {
 
   beautfyCategory(category:string){
     return category.replace('_', ' ').toLowerCase();
+  }
+
+  fieldHasError(fieldName) {
+    return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  }
+
+  getFieldError(fieldName) {
+    const index = this.errors.findIndex(error => error.fieldName == fieldName);
+    if (index > -1) {
+      return this.errors[index].error || '';
+    }
+    return '';
   }
 
 }

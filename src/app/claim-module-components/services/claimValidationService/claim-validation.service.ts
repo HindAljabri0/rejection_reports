@@ -16,9 +16,14 @@ export class ClaimValidationService {
     this.store.select(getClaim).subscribe(claim => this.claim = claim);
   }
 
+  private regax = /^[A-Za-z0-9- ]+$/i;
+  private regaxWithOutSpace = /^[A-Za-z0-9-]+$/i;
+  private regaxWithSym = /^[A-Za-z0-9 $-/:-?{-~!"^_`\[\]]+$/i;
+
   startValidation() {
     this.validatePatientInfo();
-    this.validateGenInfo();
+    this.validatePhysicianInfo();
+    this.validateGenInfo();    
     this.validateDiagnosis();
     this.validateInvoices();
     this.validateClaimNetAmount();
@@ -38,9 +43,13 @@ export class ClaimValidationService {
     let fieldErrors: FieldError[] = [];
     if (fullName == null || fullName.trim().length == 0) {
       fieldErrors.push({ fieldName: 'fullName' });
+    } else if (!this.regax.test(fullName)) {
+      fieldErrors.push({ fieldName: 'fullName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
     }
     if (memberId == null || memberId.trim().length == 0) {
       fieldErrors.push({ fieldName: 'memberId' });
+    } else if (!this.regaxWithOutSpace.test(memberId)) {
+      fieldErrors.push({ fieldName: 'memberId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
     if (nationalId != null && nationalId.trim().length != 10) {
       fieldErrors.push({ fieldName: 'nationalId', error: 'National id must be 10 numbers or 0.' });
@@ -50,8 +59,27 @@ export class ClaimValidationService {
     }
     if (approvalNum == null || approvalNum.trim().length == 0) {
       fieldErrors.push({ fieldName: 'approvalNum' });
+    } else if (!this.regaxWithOutSpace.test(approvalNum)) {
+      fieldErrors.push({ fieldName: 'approvalNum', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
     this.store.dispatch(addClaimErrors({ module: 'patientInfoErrors', errors: fieldErrors }));
+  }
+
+  validatePhysicianInfo(){
+    const physicianId = this.claim.caseInformation.physician.physicianID;
+    const physicianName = this.claim.caseInformation.physician.physicianName;
+    
+    let fieldErrors: FieldError[] = [];
+
+    if(physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)){
+      fieldErrors.push({fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)'});
+    }
+    
+    if(physicianName != null && physicianName.trim().length > 0 && !this.regax.test(physicianName)){
+      fieldErrors.push({fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)'});
+    }
+
+    this.store.dispatch(addClaimErrors({ module: 'physicianErrors', errors: fieldErrors }));
   }
 
   validateGenInfo() {
@@ -59,6 +87,7 @@ export class ClaimValidationService {
     const claimType = this.claim.visitInformation.visitType;
     const fileNumber = this.claim.caseInformation.patient.patientFileNumber;
     const memberDob = this.claim.caseInformation.patient.dob;
+    const mainSymptoms = this.claim.caseInformation.caseDescription.chiefComplaintSymptoms;
     const illnessDuration = this.claim.caseInformation.caseDescription.illnessDuration;
     const age = this.claim.caseInformation.patient.age;
 
@@ -69,6 +98,11 @@ export class ClaimValidationService {
     }
     if (fileNumber == null || fileNumber.trim().length == 0) {
       fieldErrors.push({ fieldName: 'fileNumber' });
+    } else if (!this.regaxWithOutSpace.test(fileNumber)) {
+      fieldErrors.push({ fieldName: 'fileNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
+    }
+    if (mainSymptoms != null && !this.regax.test(mainSymptoms)) {
+      fieldErrors.push({ fieldName: 'mainSymptoms', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
     }
     if (this._isInvalidDate(memberDob)) {
       fieldErrors.push({ fieldName: 'memberDob' });
@@ -98,6 +132,8 @@ export class ClaimValidationService {
       }
       if (invoice.invoiceNumber == null || invoice.invoiceNumber.trim().length == 0) {
         fieldErrors.push({ fieldName: `invoiceNumber:${index}` })
+      } else if (!this.regaxWithOutSpace.test(invoice.invoiceNumber)) {
+        fieldErrors.push({ fieldName: `invoiceNumber:${index}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
       invoice.service.forEach((service, serviceIndex) => {
         fieldErrors.push(...this.validateService(service, index, serviceIndex));
@@ -119,10 +155,14 @@ export class ClaimValidationService {
         fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`,
         error: (service.serviceCode != null && service.serviceCode.startsWith('0')) ? 'service code cannot start with zero' : null
       });
+    } else if (!this.regaxWithOutSpace.test(service.serviceCode)) {
+      fieldErrors.push({ fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
 
     if (service.serviceDescription == null || service.serviceDescription.trim().length == 0) {
       fieldErrors.push({ fieldName: `serviceDescription:${invoiceIndex}:${serviceIndex}` })
+    } else if (!this.regaxWithSym.test(service.serviceDescription)) {
+      fieldErrors.push({ fieldName: `serviceDescription:${invoiceIndex}:${serviceIndex}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), and special characters' });
     }
 
     if (service.unitPrice == null || service.unitPrice.value == null || service.unitPrice.value <= 0) {
@@ -159,12 +199,12 @@ export class ClaimValidationService {
     return fieldErrors;
   }
 
-  validateClaimNetAmount(){
+  validateClaimNetAmount() {
     let fieldErrors: FieldError[] = []
-    if(this.claim.claimGDPN.net == null || this.claim.claimGDPN.net.value == null || this.claim.claimGDPN.net.value <= 0){
-      fieldErrors.push({fieldName:'claimNetAmount'});
+    if (this.claim.claimGDPN.net == null || this.claim.claimGDPN.net.value == null || this.claim.claimGDPN.net.value <= 0) {
+      fieldErrors.push({ fieldName: 'claimNetAmount' });
     }
-    this.store.dispatch(addClaimErrors({module: 'claimGDPN', errors:fieldErrors}));
+    this.store.dispatch(addClaimErrors({ module: 'claimGDPN', errors: fieldErrors }));
   }
 
 

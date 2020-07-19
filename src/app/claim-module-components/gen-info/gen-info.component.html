@@ -11,7 +11,7 @@
                     <input [ngClass]="{'fieldError': fieldHasError('claimDate')}" id="claimDateInput" type="date"
                         [formControl]="claimDateController" (change)="updateClaim('claimDate')">
                 </td>
-                <td>
+                <td [matTooltip]="getFieldError('fileNumber')">
                     <input [ngClass]="{'fieldError': fieldHasError('fileNumber')}" id="fileNumberInput" type="text"
                         [formControl]="fielNumberController" (change)="updateClaim('fileNumber')">
                 </td>
@@ -31,7 +31,7 @@
                 <td colspan="2"><label>Chief Complaint Symptoms</label></td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="2" [matTooltip]="getFieldError('mainSymptoms')">
                     <textarea [ngClass]="{'fieldError': fieldHasError('mainSymptoms')}"
                         [formControl]="mainSymptomsController" (change)="updateClaim('mainSymptoms')"></textarea>
                 </td>

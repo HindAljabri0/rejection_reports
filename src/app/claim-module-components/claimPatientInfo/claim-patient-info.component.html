@@ -3,7 +3,7 @@
         <tbody>
             <tr>
                 <td><label>Full Name*</label></td>
-                <td style="display: flex; width: 100%;">
+                <td style="display: flex; width: 100%;" [matTooltip]="getFieldError('fullName')">
                     <input id="fullNameInput" [ngClass]="{'fieldError': fieldHasError('fullName')}" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                     <div id="genderDiv" [ngClass]="{'female': !isMale, 'male': isMale}" (click)="toggleGender()">
                         <i class="fa" [ngClass]="{'fa-venus': !isMale, 'fa-mars': isMale}" aria-hidden="true"></i>
@@ -24,7 +24,7 @@
                     </select>
                 </td>
                 <td><label>Member ID*</label></td>
-                <td>
+                <td [matTooltip]="getFieldError('memberId')">
                     <input type="text" [ngClass]="{'fieldError': fieldHasError('memberId')}" [formControl]="memberIdController" (change)="updateClaim('memberId')" required>
                 </td>
             </tr>
@@ -37,7 +37,7 @@
                     </select>
                 </td>
                 <td><label>Policy No.<span *ngIf="selectedPayer != 102">*</span></label></td>
-                <td>
+                <td [matTooltip]="getFieldError('policyNum')">
                     <input type="text" [ngClass]="{'fieldError': fieldHasError('policyNum')}" [formControl]="policyNumController" (change)="updateClaim('policyNum')" [required]="selectedPayer != 102">
                 </td>
             </tr>

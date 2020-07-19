@@ -3,15 +3,15 @@
         <tbody>
             <tr>
                 <td><label>Physician ID</label></td>
-                <td>
-                    <input type="text" [formControl]="physicianIdController" (change)="updateClaim('physicianId')">
+                <td [matTooltip]="getFieldError('physicianId')">
+                    <input type="text" [ngClass]="{'fieldError': fieldHasError('physicianId')}" [formControl]="physicianIdController" (change)="updateClaim('physicianId')">
                 </td>
 
             </tr>
             <tr>
 
                 <td><label>Physician Name</label></td>
-                <td><input type="text" [formControl]="physicianNameController" (change)="updateClaim('physicianName')"></td>
+                <td [matTooltip]="getFieldError('physicianName')"><input type="text" [ngClass]="{'fieldError': fieldHasError('physicianName')}" [formControl]="physicianNameController" (change)="updateClaim('physicianName')"></td>
 
             </tr>
             <tr>

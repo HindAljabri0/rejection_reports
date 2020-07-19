@@ -281,10 +281,10 @@ export class InvoicesServicesComponent implements OnInit {
       );
   }
 
-  selectService(option) {
+  selectService(option:string) {
     let code = option.split('|')[0];
     let des = option.split('|')[1];
-    this.controllers[this.expandedInvoice].services[this.expandedService].serviceCode.setValue(code);
+    this.controllers[this.expandedInvoice].services[this.expandedService].serviceCode.setValue(code.trim());
     this.controllers[this.expandedInvoice].services[this.expandedService].serviceDescription.setValue(des);
     this.searchServicesController.setValue('');
   }

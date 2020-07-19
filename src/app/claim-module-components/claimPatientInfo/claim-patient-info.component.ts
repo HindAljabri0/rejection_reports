@@ -27,7 +27,7 @@ export class ClaimPatientInfo implements OnInit {
   visitTypes: any[] = [];
   nationalities = nationalities;
 
-  errors:FieldError[] = [];
+  errors: FieldError[] = [];
 
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
@@ -35,11 +35,11 @@ export class ClaimPatientInfo implements OnInit {
     this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVistType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
     this.store.select(getPatientErrors).subscribe(errors => this.errors = errors);
-    
+
     if (this.payersList.length > 0) {
       this.selectedPayer = this.payersList[0].id;
     } else {
-      this.store.dispatch(setError({error:{code:'PAYERS_LIST'}}));
+      this.store.dispatch(setError({ error: { code: 'PAYERS_LIST' } }));
     }
     if (this.visitTypes.length > 0) {
       this.selectedVisitType = this.visitTypes[0];
@@ -58,6 +58,8 @@ export class ClaimPatientInfo implements OnInit {
   printEvent(event) { console.log(event); }
 
   updateClaim(field: string) {
+    
+    this.errors = this.errors.filter(error => error.fieldName == field);
     switch (field) {
       case 'fullName':
         this.store.dispatch(updatePatientName({ name: this.fullNameController.value }));
@@ -72,13 +74,13 @@ export class ClaimPatientInfo implements OnInit {
         this.store.dispatch(updateNationality({ nationality: this.selectedNationality }))
         break;
       case 'memberId':
-        this.store.dispatch(updatePatientMemberId({ memberId: this.memberIdController.value }));
+        this.store.dispatch(updatePatientMemberId({ memberId: this.memberIdController.value }));       
         break;
       case 'policyNum':
-        this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value }));
+        this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value })); 
         break;
       case 'nationalId':
-        this.store.dispatch(updateNationalId({ nationalId: this.nationalIdontroller.value == null? null:`${this.nationalIdontroller.value}` }));
+        this.store.dispatch(updateNationalId({ nationalId: this.nationalIdontroller.value == null ? null : `${this.nationalIdontroller.value}` }));
         break;
       case 'approvalNum':
         this.store.dispatch(updateApprovalNum({ approvalNo: this.approvalNumontroller.value }));
@@ -86,13 +88,13 @@ export class ClaimPatientInfo implements OnInit {
     }
   }
 
-  fieldHasError(fieldName){
+  fieldHasError(fieldName) {
     return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
   }
 
-  getFieldError(fieldName){
+  getFieldError(fieldName) {
     const index = this.errors.findIndex(error => error.fieldName == fieldName);
-    if(index > -1){
+    if (index > -1) {
       return this.errors[index].error || '';
     }
     return '';
