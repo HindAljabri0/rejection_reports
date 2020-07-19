@@ -4,7 +4,7 @@
         <tbody>
             <tr>
                 <td><label>Claim Date*</label></td>
-                <td><label>Claim Type*</label></td>
+                <td><label>Patient File Number*</label></td>
             </tr>
             <tr>
                 <td>
@@ -12,23 +12,16 @@
                         [formControl]="claimDateController" (change)="updateClaim('claimDate')">
                 </td>
                 <td>
-                    <select [ngClass]="{'fieldError': fieldHasError('claimType')}" [value]="selectedClaimType"
-                        (change)="selectedClaimType = $event.target.value; updateClaim('claimType');">
-                        <option value="Dental">Dental</option>
-                        <option value="Optical">Optical</option>
-                    </select>
+                    <input [ngClass]="{'fieldError': fieldHasError('fileNumber')}" id="fileNumberInput" type="text"
+                        [formControl]="fielNumberController" (change)="updateClaim('fileNumber')">
                 </td>
             </tr>
 
             <tr>
-                <td><label>Patient File Number*</label></td>
                 <td><label>Member DOB*</label></td>
             </tr>
             <tr>
-                <td>
-                    <input [ngClass]="{'fieldError': fieldHasError('fileNumber')}" id="fileNumberInput" type="text"
-                        [formControl]="fielNumberController" (change)="updateClaim('fileNumber')">
-                </td>
+                
                 <td>
                     <input [ngClass]="{'fieldError': fieldHasError('memberDob')}" id="memberDobInput" type="date"
                         [formControl]="memberDobController" (change)="updateClaim('memberDob')">

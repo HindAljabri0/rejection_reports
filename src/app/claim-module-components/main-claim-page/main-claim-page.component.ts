@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { startCreatingNewClaim, loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, saveClaim } from '../store/claim.actions';
+import { startCreatingNewClaim, loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimType, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
-import { Observable } from 'rxjs';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { skipWhile, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -63,7 +62,7 @@ export class MainClaimPageComponent implements OnInit {
   startCreatingClaim(type: string) {
     let now = new Date(Date.now());
     let providerClaimNumber = `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-    this.store.dispatch(startCreatingNewClaim({ caseType: type, providerClaimNumber: providerClaimNumber }));
+    this.store.dispatch(startCreatingNewClaim({ claimType: type, providerClaimNumber: providerClaimNumber }));
   }
 
   save() {

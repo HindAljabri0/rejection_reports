@@ -1,8 +1,8 @@
 <div class="mainPage">
     <div class="header">
         <p>Create Claim</p><span class="spacer"></span>
-        <p *ngIf="claim != null && errors == null && claim.caseInformation != null" class="hiddenByDefault"
-            [ngClass]="{'show':claim != null && errors == null}">{{claim.caseInformation.caseType}}</p>
+        <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"
+            [ngClass]="{'show':claim != null && errors == null}">{{(claim.visitInformation.departmentCode=='2')?'Dental':'Optical'}}</p>
     </div>
     <div class="body">
         <div class="error" *ngIf="errors != null && !isLoading">
@@ -43,7 +43,7 @@
 <mat-menu #claimTypeMenu yPosition="above" xPosition="before">
     <ng-template matMenuContent>
         <label>Claim Type</label>
-        <button mat-menu-item (click)="startCreatingClaim('Dental')">Dental</button>
-        <button mat-menu-item (click)="startCreatingClaim('Optical')">Optical</button>
+        <button mat-menu-item (click)="startCreatingClaim('2')">Dental</button>
+        <button mat-menu-item (click)="startCreatingClaim('20')">Optical</button>
     </ng-template>
 </mat-menu>

@@ -5,7 +5,7 @@ import { Period } from '../models/period.type';
 import { FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 
-export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ caseType: string, providerClaimNumber: string }>());
+export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ claimType: string, providerClaimNumber: string }>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{ loading: boolean }>())
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());

@@ -24,11 +24,11 @@ export class Claim {
     admission: Admission;
     attachment: AttachmentRequest[];
 
-    constructor(caseType:string, providerClaimNumber:string){
-        this.caseInformation = new CaseInfo(caseType);
+    constructor(claimType:string, providerClaimNumber:string){
+        this.caseInformation = new CaseInfo('OUTPATINET');
         this.claimIdentities = new ClaimIdentifier(providerClaimNumber);
         this.member = new Member();
-        this.visitInformation = new VisitInfo();
+        this.visitInformation = new VisitInfo(claimType);
         this.claimGDPN = new GDPN();
         this.invoice = [new Invoice()];
         this.comment = [];

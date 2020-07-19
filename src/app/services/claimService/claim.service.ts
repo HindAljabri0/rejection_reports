@@ -18,7 +18,7 @@ export class ClaimService {
 
   saveManuallyCreatedClaim(claim: Claim, providerId: string) {
     const requestUrl = `/providers/${providerId}`;
-    let body: any = { ...claim, caseInformation: { ...claim.caseInformation, caseType: claim.caseInformation.caseType.toUpperCase() } };
+    let body: any = { ...claim };
     claim.caseInformation.caseType
     if (claim.caseInformation.caseDescription.illnessDuration != null) {
       body = { ...body, caseInformation: { ...body.caseInformation, caseDescription: { ...body.caseInformation.caseDescription, illnessDuration: body.caseInformation.caseDescription.illnessDuration.toPeriodFormat() } } };

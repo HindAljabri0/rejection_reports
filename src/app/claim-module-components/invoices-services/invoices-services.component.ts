@@ -57,7 +57,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
     this.store.select(getClaimType).subscribe(type => {
       this.claimType = type;
-      if (type == 'Dental') {
+      if (type == '2') {
         this.initToothNumbers();
       }
     });

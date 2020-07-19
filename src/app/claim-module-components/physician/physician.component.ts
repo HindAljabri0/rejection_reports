@@ -18,13 +18,15 @@ export class PhysicianComponent implements OnInit {
   selectedDepartment: string;
 
   categories: any[] = [];
-  departments: any[] = [];
+  departments: any[] = [
+    {name:'Dental', departmentId: '2'},
+    {name:'Optical', departmentId: '20'},
+  ];
 
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
-    this.store.select(getDepartments).subscribe(departments => this.departments = departments);
     if (this.departments.length > 0) {
       this.selectedDepartment = this.departments[0].departmentId;
       this.store.dispatch(updateDepartment({ department: this.departments[0].departmentId }));

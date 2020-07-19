@@ -140,12 +140,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td *ngIf="claimType == 'Dental'"><label>Tooth Number*</label></td>
+                            <td *ngIf="claimType == '2'"><label>Tooth Number*</label></td>
                             <td><label>Net Vat Rate*</label></td>
                             <td><label>Patient Share Vat Rate*</label></td>
                         </tr>
                         <tr>
-                            <td *ngIf="claimType == 'Dental'">
+                            <td *ngIf="claimType == '2'">
                                 <select (change)="updateServiceToothNumber(i, j, $event)"
                                     [value]="service.toothNumber.value" required>
                                     <option *ngFor="let number of toothNumbers" [value]="number">

@@ -26,8 +26,8 @@ const initState: ClaimState = {
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.startCreatingNewClaim, (state, { caseType, providerClaimNumber }) => {
-        let claim = new Claim(caseType, providerClaimNumber);
+    on(actions.startCreatingNewClaim, (state, { claimType, providerClaimNumber }) => {
+        let claim = new Claim(claimType, providerClaimNumber);
         return { ...state, claim: claim };
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
@@ -111,7 +111,7 @@ export function claimReducer(state, action) {
 
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
-export const getClaimType = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.caseInformation!=null?state.claim.caseInformation.caseType:null);
+export const getClaimType = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.visitInformation!=null?state.claim.visitInformation.departmentCode:null);
 export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.claimIdentities!=null?state.claim.claimIdentities.payerID:null);
 export const getVistType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
 export const getVisitDate = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.visitInformation!=null?state.claim.visitInformation.visitDate:null);
