@@ -111,7 +111,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
       if (value.criteria != null) {
         this.rejectionCriteriaControl.setValue(Number.parseInt(value.criteria));
-        //this.criteria = value.criteria;
+        this.criteria = value.criteria;
       }
       if (value.page != null) {
         this.page = Number.parseInt(value.page);

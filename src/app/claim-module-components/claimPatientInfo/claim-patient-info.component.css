@@ -31,7 +31,7 @@ td input, td select {
 #fullNameInput{
     border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
-    width: 80%;
+    width: 100%;
 }
 
 #genderDiv{
