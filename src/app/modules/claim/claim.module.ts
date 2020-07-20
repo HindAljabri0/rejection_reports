@@ -19,6 +19,7 @@ import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-di
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
 import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoices-services/invoices-services.component';
+import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/dialogs/create-by-approval-form/create-by-approval-form.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoi
     ClaimIllnessesComponent,
     GenInfoComponent,
     InvoicesServicesComponent,
+    CreateByApprovalFormComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -45,6 +47,12 @@ import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoi
     HttpClientModule,
     MatTabsModule,
     MatButtonToggleModule
+  ],
+  exports: [
+    CreateByApprovalFormComponent
+  ],
+  entryComponents: [
+    CreateByApprovalFormComponent
   ]
 })
 export class ClaimModule { }

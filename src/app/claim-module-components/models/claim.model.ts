@@ -7,6 +7,7 @@ import { Invoice } from './invoice.model';
 import { Admission } from './admission.model';
 import { AttachmentRequest } from './attachmentRequest.model';
 import { CaseInfo } from './caseInfo.model';
+import { HttpResponse } from '@angular/common/http';
 
 export class Claim {
 
@@ -34,5 +35,12 @@ export class Claim {
         this.comment = [];
         this.admission = new Admission();
         this.attachment = [];
+    }
+
+    static fromApprovalResponse(claimType:string, providerClaimNumber:string, response):Claim{
+
+        let claim = new Claim(claimType, providerClaimNumber);
+
+        return claim;
     }
 }

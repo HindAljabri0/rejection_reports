@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -11,6 +11,10 @@ import { Store } from '@ngrx/store';
 import { getClaim } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { CreateByApprovalFormComponent } from '../dialogs/create-by-approval-form/create-by-approval-form.component';
+import { ApprovalInquiryService } from '../services/approvalInquiryService/approval-inquiry.service';
+import { Claim } from '../models/claim.model';
 
 
 @Injectable({
@@ -18,7 +22,42 @@ import { Router } from '@angular/router';
 })
 export class ClaimEffects {
 
-    constructor(private actions$: Actions, private store: Store, private adminService: AdminService, private validationService: ClaimValidationService, private claimService: ClaimService, private sharedServices: SharedServices, private router: Router) { }
+    constructor(
+        private actions$: Actions,
+        private store: Store,
+        private adminService: AdminService,
+        private approvalInquireService: ApprovalInquiryService,
+        private validationService: ClaimValidationService,
+        private claimService: ClaimService,
+        private sharedServices: SharedServices,
+        private router: Router,
+        private dialog: MatDialog
+    ) { }
+
+    openApprovalFormDialog$ = createEffect(() => this.actions$.pipe(
+        ofType(openCreateByApprovalDialog),
+        tap(data => this.dialog.open( CreateByApprovalFormComponent, {
+            data:data,
+            closeOnNavigation:true,
+            height: '200px',
+            width: '600px',
+        }))
+    ), {dispatch: false});
+
+    getClaimDataFromApproval$ = createEffect(() => this.actions$.pipe(
+        ofType(getClaimDataByApproval),
+        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId, data.payerId, data.approvalNumber, data.claimType).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+            map(response => {
+                this.dialog.closeAll();
+                return startCreatingNewClaim({data:Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, response)});
+            }),
+            catchError(err => {
+                this.dialog.closeAll();
+                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType}`, } })
+            })
+        ))
+    ));
 
     loadLOVs$ = createEffect(() => this.actions$.pipe(
         ofType(loadLOVs),
@@ -55,15 +94,15 @@ export class ClaimEffects {
             }),
             catchError(err => {
                 let status = '';
-                let description:string;
+                let description: string;
                 if (err instanceof HttpErrorResponse) {
                     status = err.error['status'];
-                    try{
+                    try {
                         description = err.error['errors'][0]['description'];
-                    } catch (error){}
+                    } catch (error) { }
                 }
                 this.store.dispatch(setLoading({ loading: false }));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description} });
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description } });
             })
         ))
     ));

@@ -4,8 +4,11 @@ import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
 import { FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
+import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 
-export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ claimType: string, providerClaimNumber: string }>());
+export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
+export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{approvalNumber:string, payerId:string, claimType:string, providerClaimNumber:string}>())
+export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{data: { claimType: string, providerClaimNumber: string } | Claim}>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{ loading: boolean }>())
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());

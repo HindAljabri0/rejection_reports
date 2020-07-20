@@ -8,5 +8,6 @@ export const environment = {
   authenticationHost: `${host}/authentication`,
   adminServiceHost: `${host}/admin-service`,
   auditTrailServiceHost: `${host}/audit-trail`,
-  settingsServiceHost:`${host}/settings`
+  settingsServiceHost: `${host}/settings`,
+  claimInquireServiceHost: `${host}/claim-inquiry`
 };

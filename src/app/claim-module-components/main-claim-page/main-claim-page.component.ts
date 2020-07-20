@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { startCreatingNewClaim, loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -23,7 +23,8 @@ export class MainClaimPageComponent implements OnInit {
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {
-        switch (errors['code']) {
+        let code:string = errors['code'];
+        switch (code) {
           case 'LOV_ERROR': case 'PAYERS_LIST':
             this.errors = errors
             break;
@@ -39,6 +40,15 @@ export class MainClaimPageComponent implements OnInit {
               title: errors['status'],
               message: errors['description'],
               isError: true
+            });
+            break;
+          case 'APPROVAL_ERROR_DENTAL': case 'APPROVAL_ERROR_OPTICAL':
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: `There is no ${code.endsWith('DENTAL')? 'Dental':'Optical'} approval requrest approved by this number!`,
+              isError: true
+            }).subscribe(()=>{
+              this.startCreatingClaim(code.endsWith('DENTAL')?'2':'20');
             });
             break;
         }
@@ -62,7 +72,8 @@ export class MainClaimPageComponent implements OnInit {
   startCreatingClaim(type: string) {
     let now = new Date(Date.now());
     let providerClaimNumber = `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
-    this.store.dispatch(startCreatingNewClaim({ claimType: type, providerClaimNumber: providerClaimNumber }));
+    let payers = this.sharedService.getPayersList();
+    this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
   }
 
   save() {
@@ -92,7 +103,7 @@ export class MainClaimPageComponent implements OnInit {
           title: '',
           message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
           isError: true
-        })
+        });
       }
     }).unsubscribe();
   }

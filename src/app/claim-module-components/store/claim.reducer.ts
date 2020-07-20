@@ -12,6 +12,7 @@ export interface ClaimState {
     loading: boolean;
     selectedTab: number;
     selectedGDPN: { invoiceIndex?: number, serviceIndex?: number };
+    approvalFormLoading:boolean;
 }
 
 const initState: ClaimState = {
@@ -21,20 +22,26 @@ const initState: ClaimState = {
     error: null,
     loading: true,
     selectedTab: 0,
-    selectedGDPN: {}
+    selectedGDPN: {},
+    approvalFormLoading:false,
 }
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.startCreatingNewClaim, (state, { claimType, providerClaimNumber }) => {
-        let claim = new Claim(claimType, providerClaimNumber);
-        return { ...state, claim: claim };
+    on(actions.getClaimDataByApproval, (state) => ({...state, approvalFormLoading:true})),
+    on(actions.startCreatingNewClaim, (state, { data }) => {
+        if (data instanceof Claim) {
+            return { ...state, claim: data, approvalFormLoading:false };
+        } else {
+            let claim = new Claim(data.claimType, data.providerClaimNumber);
+            return { ...state, claim: claim };
+        }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
     on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: false })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
-    on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false })),
+    on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading:false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
@@ -110,11 +117,12 @@ export function claimReducer(state, action) {
 }
 
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
+export const getIsApprovalFormLoading = createSelector(claimSelector, (state) => state.approvalFormLoading);
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
-export const getClaimType = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.visitInformation!=null?state.claim.visitInformation.departmentCode:null);
-export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.claimIdentities!=null?state.claim.claimIdentities.payerID:null);
+export const getClaimType = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.departmentCode : null);
+export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim != null && state.claim.claimIdentities != null ? state.claim.claimIdentities.payerID : null);
 export const getVistType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
-export const getVisitDate = createSelector(claimSelector, (state) => state.claim!=null&&state.claim.visitInformation!=null?state.claim.visitInformation.visitDate:null);
+export const getVisitDate = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.visitDate : null);
 export const getSelectedTab = createSelector(claimSelector, (state) => state.selectedTab);
 export const getDepartments = createSelector(claimSelector, (state) => state.LOVs.Departments);
 export const getIllnessCode = createSelector(claimSelector, (state) => state.LOVs.IllnessCode);
