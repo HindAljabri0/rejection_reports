@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetreivedClaim } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
 import { updateClaimDate, updateInvoices_Services, selectGDPN, saveInvoices_Services } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
@@ -18,6 +18,8 @@ import { MatMenuTrigger } from '@angular/material';
 })
 export class InvoicesServicesComponent implements OnInit {
 
+  isRetreivedClaim: boolean = false;
+
   controllers: {
     invoice: Invoice,
     invoiceNumber: FormControl,
@@ -33,7 +35,9 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDiscountUnit: 'SAR' | 'PERCENT';
       toothNumber: FormControl,
       netVatRate: FormControl,
-      patientShareVatRate: FormControl
+      patientShareVatRate: FormControl,
+      priceCorrection: number,
+      rejection: number
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -54,6 +58,7 @@ export class InvoicesServicesComponent implements OnInit {
   constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
+    this.store.select(getIsRetreivedClaim).subscribe(isRetreived => this.isRetreivedClaim = isRetreived);
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
     this.store.select(getClaimType).subscribe(type => {
       this.claimType = type;
@@ -108,7 +113,9 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDiscountUnit: 'PERCENT',
       toothNumber: new FormControl(this.toothNumbers.length > 0? this.toothNumbers[0]:null),
       netVatRate: new FormControl(0),
-      patientShareVatRate: new FormControl(0)
+      patientShareVatRate: new FormControl(0),
+      priceCorrection: 0,
+      rejection: 0
     });
     this.updateClaim();
   }
@@ -184,6 +191,8 @@ export class InvoicesServicesComponent implements OnInit {
     } else {
       net -= service.serviceDiscount.value;
     }
+    net += service.priceCorrection;
+    net -= service.rejection;
     net = Number.parseFloat(net.toPrecision(net.toFixed().length + 2));
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
@@ -232,6 +241,10 @@ export class InvoicesServicesComponent implements OnInit {
     this.onAddInvoiceClick();
   }
 
+  onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex){
+    event.stopPropagation();
+  }
+
   onAddAnathorServiceClick(event, invoiceIndex, serviceIndex) {
     event.stopPropagation();
     this.afterServiceCollapse(invoiceIndex, serviceIndex);
@@ -243,6 +256,10 @@ export class InvoicesServicesComponent implements OnInit {
     this.expandedInvoice = this.controllers.length - 1;
     this.expandedService = 0;
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+  }
+
+  onAddRetrievedServiceClick(invoiceIndex){
+
   }
 
   onAddServiceClick(invoiceIndex) {

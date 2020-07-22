@@ -50,7 +50,7 @@ export class Claim {
                 const validityEffect = body['validityEffect'];
                 const editing = body['editing'];
                 const admissionResponse = body['admissionResponse'];
-                const serviceResponse = body['serviceResponse'];
+                
                 const comment = body['comment'];
                 const estimatedCost = body['estimatedCost'];
                 const approvedCost = body['approvedCost'];
@@ -95,7 +95,7 @@ export class Claim {
                     claim.caseInformation.caseDescription.lmp = new Date(caseDescription['lmp']);
                 claim.caseInformation.caseDescription.illnessCategory = caseDescription['illnessCategory'];
                 if (caseDescription['illnessDuration'] != null)
-                    claim.caseInformation.caseDescription.illnessDuration = this.getPeriod(caseDescription['illnessDuration']['value']);
+                    claim.caseInformation.caseDescription.illnessDuration = this.getPeriod(caseDescription['illnessDuration']);
                 claim.caseInformation.caseDescription.chiefComplaintSymptoms = caseDescription['chiefComplaintSymptoms'];
                 claim.caseInformation.caseDescription.diagnosis = caseDescription['diagnosis'];
 
@@ -103,7 +103,7 @@ export class Claim {
                 claim.caseInformation.radiologyReport = caseInformation['radiologyReport'];
                 claim.caseInformation.otherConditions = caseInformation['otherConditions'];
 
-
+                
 
                 return claim;
             }

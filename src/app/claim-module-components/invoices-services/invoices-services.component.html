@@ -27,7 +27,9 @@
                             Invoice {{(i+1)}}
                         </td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceNumber}}</td>
-                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceDate == null? '':invoice.invoice.invoiceDate.toLocaleDateString()}}</td>
+                        <td style="width: 16%;" *ngIf="expandedInvoice == -1">
+                            {{invoice.invoice.invoiceDate == null? '':invoice.invoice.invoiceDate.toLocaleDateString()}}
+                        </td>
                         <td style="width: 22%;" *ngIf="expandedInvoice == -1">
                             <div style="width: 100%; display: flex;">
                                 <span>{{invoice.invoice.invoiceGDPN.net.value}}</span>
@@ -83,6 +85,8 @@
                             Service {{(j+1)}}
                         </mat-panel-title>
                         <mat-panel-description>
+                            <button mat-button style="margin-left: auto;" *ngIf="isRetreivedClaim && j == expandedService"
+                                (click)="onSelectRetrievedServiceClick($event, i, j)">Select a retreived service</button>
                             <button mat-button style="margin-left: auto;" *ngIf="j == expandedService"
                                 (click)="onAddAnathorServiceClick($event, i, j)">+ Add Another
                                 Service</button>
@@ -167,6 +171,7 @@
         </div>
         <div style="text-align: end;" *ngIf="expandedService == -1 && expandedInvoice == i">
             <hr>
+            <button *ngIf="isRetreivedClaim" mat-raised-button color="primary" (click)="onAddRetrievedServiceClick(i)">Add a Retreived Service</button>
             <button mat-raised-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
         </div>
     </div>

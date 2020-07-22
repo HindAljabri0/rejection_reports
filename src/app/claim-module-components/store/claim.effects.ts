@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material';
 import { CreateByApprovalFormComponent } from '../dialogs/create-by-approval-form/create-by-approval-form.component';
 import { ApprovalInquiryService } from '../services/approvalInquiryService/approval-inquiry.service';
 import { Claim } from '../models/claim.model';
+import { Service } from '../models/service.model';
 
 
 @Injectable({
@@ -50,7 +51,7 @@ export class ClaimEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.dialog.closeAll();
-                return startCreatingNewClaim({ data: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response) });
+                return startCreatingNewClaim({ data: {claim: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response), services: Service.fromResponse(response)} });
             }),
             catchError(err => {
                 this.dialog.closeAll();

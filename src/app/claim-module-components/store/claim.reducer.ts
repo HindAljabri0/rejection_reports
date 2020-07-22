@@ -3,10 +3,12 @@ import * as actions from './claim.actions';
 import { Claim } from '../models/claim.model';
 import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { GDPN } from '../models/GDPN.model';
+import { Service } from '../models/service.model';
 
 export interface ClaimState {
     claim: Claim;
     isRetreivedClaim:boolean;
+    retreivedServices:Service[];
     claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
@@ -19,6 +21,7 @@ export interface ClaimState {
 const initState: ClaimState = {
     claim: null,
     isRetreivedClaim:false,
+    retreivedServices:[],
     claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
@@ -32,10 +35,10 @@ const _claimReducer = createReducer(
     initState,
     on(actions.getClaimDataByApproval, (state) => ({...state, approvalFormLoading:true})),
     on(actions.startCreatingNewClaim, (state, { data }) => {
-        if (data instanceof Claim) {
-            return { ...state, claim: data, approvalFormLoading:false, isRetreivedClaim:true };
+        if (data.hasOwnProperty('claim')) {
+            return { ...state, claim: data['claim'], retreivedServices: data['services'], approvalFormLoading:false, isRetreivedClaim:true };
         } else {
-            let claim = new Claim(data.claimType, data.providerClaimNumber);
+            let claim = new Claim(data['claimType'], data['providerClaimNumber']);
             return { ...state, claim: claim };
         }
     }),
