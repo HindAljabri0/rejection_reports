@@ -4,7 +4,8 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePatientName, updatePatientGender, updatePayer, updatePatientMemberId, updatePolicyNum, updateNationalId, updateApprovalNum, updateVisitType, updateNationality, setError } from '../store/claim.actions';
 import { Observable } from 'rxjs';
-import { getVistType, nationalities, FieldError, getPatientErrors } from '../store/claim.reducer';
+import { getVistType, nationalities, FieldError, getPatientErrors, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'claim-patient-info',
@@ -12,6 +13,8 @@ import { getVistType, nationalities, FieldError, getPatientErrors } from '../sto
   styleUrls: ['./claim-patient-info.component.css']
 })
 export class ClaimPatientInfo implements OnInit {
+
+  isRetreivedClaim: boolean = false;
 
   fullNameController: FormControl = new FormControl();
   isMale: boolean = true;
@@ -34,20 +37,44 @@ export class ClaimPatientInfo implements OnInit {
   ngOnInit() {
     this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVistType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
+
+    this.store.select(getIsRetreivedClaim).pipe(
+      withLatestFrom(this.store.select(getClaim))
+    ).subscribe(values => {
+      this.isRetreivedClaim = values[0];
+      if (this.isRetreivedClaim) {
+        this.selectedPayer = Number.parseInt(values[1].claimIdentities.payerID);
+        this.isMale = values[1].caseInformation.patient.gender == 'M';
+        this.selectedVisitType = values[1].visitInformation.visitType;
+        this.selectedNationality = values[1].caseInformation.patient.nationality;
+        this.nationalIdontroller.setValue(values[1].member.idNumber);
+        this.approvalNumontroller.setValue(values[1].claimIdentities.approvalNumber);
+        this.fullNameController.setValue(values[1].caseInformation.patient.fullName);
+        this.policyNumController.setValue(values[1].member.policyNumber);
+        this.memberIdController.setValue(values[1].member.memberID);
+      } else {
+
+        if (this.payersList.length > 0) {
+          this.selectedPayer = this.payersList[0].id;
+        } else {
+          this.store.dispatch(setError({ error: { code: 'PAYERS_LIST' } }));
+        }
+
+        if (this.visitTypes.length > 0) {
+          this.selectedVisitType = this.visitTypes[0];
+        }
+        this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
+        this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
+        this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
+
+      }
+
+    }).unsubscribe();
+
+
     this.store.select(getPatientErrors).subscribe(errors => this.errors = errors);
 
-    if (this.payersList.length > 0) {
-      this.selectedPayer = this.payersList[0].id;
-    } else {
-      this.store.dispatch(setError({ error: { code: 'PAYERS_LIST' } }));
-    }
-    if (this.visitTypes.length > 0) {
-      this.selectedVisitType = this.visitTypes[0];
-    }
 
-    this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
-    this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
-    this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
   }
 
   toggleGender() {
@@ -58,7 +85,7 @@ export class ClaimPatientInfo implements OnInit {
   printEvent(event) { console.log(event); }
 
   updateClaim(field: string) {
-    
+
     this.errors = this.errors.filter(error => error.fieldName == field);
     switch (field) {
       case 'fullName':
@@ -74,10 +101,10 @@ export class ClaimPatientInfo implements OnInit {
         this.store.dispatch(updateNationality({ nationality: this.selectedNationality }))
         break;
       case 'memberId':
-        this.store.dispatch(updatePatientMemberId({ memberId: this.memberIdController.value }));       
+        this.store.dispatch(updatePatientMemberId({ memberId: this.memberIdController.value }));
         break;
       case 'policyNum':
-        this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value })); 
+        this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value }));
         break;
       case 'nationalId':
         this.store.dispatch(updateNationalId({ nationalId: this.nationalIdontroller.value == null ? null : `${this.nationalIdontroller.value}` }));

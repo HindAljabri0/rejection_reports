@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatiralModule } from '../matiral/matiral.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
@@ -53,6 +53,9 @@ import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/d
   ],
   entryComponents: [
     CreateByApprovalFormComponent
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class ClaimModule { }

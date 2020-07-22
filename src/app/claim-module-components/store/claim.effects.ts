@@ -36,13 +36,13 @@ export class ClaimEffects {
 
     openApprovalFormDialog$ = createEffect(() => this.actions$.pipe(
         ofType(openCreateByApprovalDialog),
-        tap(data => this.dialog.open( CreateByApprovalFormComponent, {
-            data:data,
-            closeOnNavigation:true,
+        tap(data => this.dialog.open(CreateByApprovalFormComponent, {
+            data: data,
+            closeOnNavigation: true,
             height: '200px',
             width: '600px',
         }))
-    ), {dispatch: false});
+    ), { dispatch: false });
 
     getClaimDataFromApproval$ = createEffect(() => this.actions$.pipe(
         ofType(getClaimDataByApproval),
@@ -50,11 +50,14 @@ export class ClaimEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.dialog.closeAll();
-                return startCreatingNewClaim({data:Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, response)});
+                return startCreatingNewClaim({ data: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response) });
             }),
             catchError(err => {
                 this.dialog.closeAll();
-                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType}`, } })
+                if (err.hasOwnProperty('status') && (err.status == 0 || err.status >= 500)) {
+                    return of({ type: setError.type, error: { code: `APPROVAL_ERROR_SERVER`, } });
+                }
+                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType}`, } });
             })
         ))
     ));

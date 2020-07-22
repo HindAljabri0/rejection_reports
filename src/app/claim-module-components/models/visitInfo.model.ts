@@ -6,6 +6,6 @@ export class VisitInfo {
     visitType: string;
 
     constructor(claimType:string){
-        this.departmentCode = claimType;
+        this.departmentCode = claimType == 'DENTAL'? '2':'20';
     }
 }

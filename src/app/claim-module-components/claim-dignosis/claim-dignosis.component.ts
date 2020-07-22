@@ -5,7 +5,8 @@ import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { Store } from '@ngrx/store';
 import { updateDiagnosisList } from '../store/claim.actions';
-import { FieldError, getDiagnosisErrors } from '../store/claim.reducer';
+import { FieldError, getDiagnosisErrors, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'claim-dignosis',
@@ -14,14 +15,28 @@ import { FieldError, getDiagnosisErrors } from '../store/claim.reducer';
 })
 export class ClaimDignosisComponent implements OnInit {
 
+  isRetreivedClaim: boolean = false;
+
   diagnosisController: FormControl = new FormControl();
   diagnosisList: ICDDiagnosis[] = [];
   icedOptions: ICDDiagnosis[] = [];
-  errors:FieldError[] = [];
+  errors: FieldError[] = [];
 
   constructor(private adminService: AdminService, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getIsRetreivedClaim).pipe(
+      withLatestFrom(this.store.select(getClaim))
+    ).subscribe((values) => {
+      this.isRetreivedClaim = values[0];
+      if (this.isRetreivedClaim) {
+        if (values[1].caseInformation.caseDescription.diagnosis != null)
+          this.diagnosisList = values[1].caseInformation.caseDescription.diagnosis.map(dia => new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription));
+      } else {
+
+      }
+
+    }).unsubscribe();
     this.store.select(getDiagnosisErrors).subscribe(errors => this.errors = errors);
   }
 
@@ -44,23 +59,23 @@ export class ClaimDignosisComponent implements OnInit {
       );
   }
 
-  addICDDignosis(diag:ICDDiagnosis) {
+  addICDDignosis(diag: ICDDiagnosis) {
     if (this.diagnosisList.length < 14) {
       this.diagnosisList.push(diag);
-      this.store.dispatch(updateDiagnosisList({list: this.diagnosisList.map(diag => ({diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription}))}));
+      this.store.dispatch(updateDiagnosisList({ list: this.diagnosisList.map(diag => ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })) }));
       this.icedOptions = [];
     }
   }
 
-  removeDiagnosis(diag:ICDDiagnosis){
+  removeDiagnosis(diag: ICDDiagnosis) {
     const index = this.diagnosisList.findIndex(diagnosis => diag.diagnosisCode == diagnosis.diagnosisCode);
-    if(index != -1){
+    if (index != -1) {
       this.diagnosisList.splice(index, 1);
-      this.store.dispatch(updateDiagnosisList({list: this.diagnosisList.map(diag => ({diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription}))}));
+      this.store.dispatch(updateDiagnosisList({ list: this.diagnosisList.map(diag => ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })) }));
     }
   }
 
-  fieldHasError(fieldName){
+  fieldHasError(fieldName) {
     const temp = this.errors.findIndex(error => error.fieldName == fieldName) != -1;
     return temp;
   }

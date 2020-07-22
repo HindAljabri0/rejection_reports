@@ -3,7 +3,8 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getClaimType } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getClaimType, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'claim-physician-header',
@@ -11,6 +12,8 @@ import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, g
   styleUrls: ['./physician.component.css']
 })
 export class PhysicianComponent implements OnInit {
+
+  isRetreivedClaim: boolean = false;
 
   physicianNameController: FormControl = new FormControl();
   physicianIdController: FormControl = new FormControl();
@@ -28,6 +31,21 @@ export class PhysicianComponent implements OnInit {
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
+
+    this.store.select(getIsRetreivedClaim).pipe(
+      withLatestFrom(this.store.select(getClaim))
+    ).subscribe((values) => {
+      this.isRetreivedClaim = values[0];
+      if (this.isRetreivedClaim) {
+        this.physicianIdController.setValue(values[1].caseInformation.physician.physicianID);
+        this.physicianNameController.setValue(values[1].caseInformation.physician.physicianName);
+        this.selectedCategery = values[1].caseInformation.physician.physicianCategory;
+      } else {
+
+      }
+
+    }).unsubscribe();
+
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
     this.store.select(getClaimType).subscribe(type => this.selectedDepartment = type);

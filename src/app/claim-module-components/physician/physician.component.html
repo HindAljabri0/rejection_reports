@@ -17,7 +17,7 @@
             <tr>
                 <td><label>Physician Category</label></td>
                 <td>
-                    <select (change)="selectedCategery = $event.target.value; updateClaim('physicianCategory');">
+                    <select [value]="selectedCategery" (change)="selectedCategery = $event.target.value; updateClaim('physicianCategory');">
                         <option value=""></option>
                         <option *ngFor="let category of categories" [value]="category">{{beautfyCategory(category)}}</option>
                     </select>

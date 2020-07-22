@@ -42,10 +42,12 @@ export class MainClaimPageComponent implements OnInit {
               isError: true
             });
             break;
-          case 'APPROVAL_ERROR_DENTAL': case 'APPROVAL_ERROR_OPTICAL':
+          case 'APPROVAL_ERROR_DENTAL': case 'APPROVAL_ERROR_OPTICAL': case 'APPROVAL_ERROR_SERVER':
             this.dialogService.openMessageDialog({
               title: '',
-              message: `There is no ${code.endsWith('DENTAL')? 'Dental':'Optical'} approval requrest approved by this number!`,
+              message: code.endsWith('SERVER')? 
+              'Could not reach the server at the moment. Please try again later.':
+              `There is no ${code.endsWith('DENTAL')? 'Dental':'Optical'} approval requrest approved by this number!`,
               isError: true
             }).subscribe(()=>{
               this.startCreatingClaim(code.endsWith('DENTAL')?'2':'20');

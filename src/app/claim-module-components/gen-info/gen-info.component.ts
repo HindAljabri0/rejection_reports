@@ -3,7 +3,9 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
 import { updateClaimDate, updateClaimType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms } from '../store/claim.actions';
-import { getClaimType, FieldError, getGenInfoErrors } from '../store/claim.reducer';
+import { getClaimType, FieldError, getGenInfoErrors, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { withLatestFrom } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'gen-info',
@@ -11,6 +13,9 @@ import { getClaimType, FieldError, getGenInfoErrors } from '../store/claim.reduc
   styleUrls: ['./gen-info.component.css']
 })
 export class GenInfoComponent implements OnInit {
+
+  isRetreivedClaim: boolean = false;
+  
 
   claimDateController: FormControl = new FormControl();
   selectedClaimType: string;
@@ -24,9 +29,56 @@ export class GenInfoComponent implements OnInit {
 
   errors: FieldError[] = [];
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private datePipe: DatePipe) { }
 
   ngOnInit() {
+    this.store.select(getIsRetreivedClaim).pipe(
+      withLatestFrom(this.store.select(getClaim))
+    ).subscribe((values) => {
+      this.isRetreivedClaim = values[0];
+      if (this.isRetreivedClaim) {
+        this.fielNumberController.setValue(values[1].caseInformation.patient.patientFileNumber);
+        const illnessDuration = values[1].caseInformation.caseDescription.illnessDuration;
+        if (illnessDuration != null) {
+          if (illnessDuration.years != null) {
+            this.illnessDurationController.setValue(illnessDuration.years);
+            this.unitIllness = 'Year';
+          } else if (illnessDuration.months != null) {
+            this.illnessDurationController.setValue(illnessDuration.months);
+            this.unitIllness = 'Month';
+          } else if (illnessDuration.days != null) {
+            this.illnessDurationController.setValue(illnessDuration.days);
+            this.unitIllness = 'Day';
+          }
+        }
+        const ageDuration = values[1].caseInformation.patient.age;
+        if (ageDuration != null) {
+          if (ageDuration.years != null) {
+            this.ageController.setValue(ageDuration.years);
+            this.unitAge = 'Year';
+          } else if (ageDuration.months != null) {
+            this.ageController.setValue(ageDuration.months);
+            this.unitAge = 'Month';
+          } else if (ageDuration.days != null) {
+            this.ageController.setValue(ageDuration.days);
+            this.unitAge = 'Day';
+          }
+        }
+        this.mainSymptomsController.setValue(values[1].caseInformation.caseDescription.chiefComplaintSymptoms);
+        const visitDate = values[1].visitInformation.visitDate;
+        if(visitDate != null){
+          this.claimDateController.setValue(this.datePipe.transform(visitDate, 'yyyy-MM-dd'));
+        }
+        const dob = values[1].caseInformation.patient.dob;
+        if(dob != null){
+          this.memberDobController.setValue(this.datePipe.transform(dob, 'yyyy-MM-dd'));
+        }
+      } else {
+
+      }
+
+    }).unsubscribe();
+
     this.store.select(getClaimType).subscribe(type => this.selectedClaimType = type);
     this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
   }

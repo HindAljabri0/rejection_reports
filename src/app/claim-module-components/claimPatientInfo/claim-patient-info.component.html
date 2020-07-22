@@ -10,7 +10,7 @@
                 
                 <td><label>Payer*</label></td>
                 <td>
-                    <select (change)="selectedPayer = $event.target.value; updateClaim('payer');" required>
+                    <select [value]="selectedPayer" (change)="selectedPayer = $event.target.value; updateClaim('payer');" required>
                         <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
                     </select>
                 </td>
@@ -24,7 +24,7 @@
                 </td>
                 <td><label>Visit Type*</label></td>
                 <td>
-                    <select (change)="selectedVisitType = $event.target.value; updateClaim('visitType');" required>
+                    <select [value]="selectedVisitType" (change)="selectedVisitType = $event.target.value; updateClaim('visitType');" required>
                         <option *ngFor="let visitType of visitTypes" [value]="visitType">{{visitType}}</option>
                     </select>
                 </td>
@@ -33,7 +33,7 @@
             <tr>
                 <td><label>Nationality</label></td>
                 <td>
-                    <select (change)="selectedNationality = $event.target.value; updateClaim('nationality');" required>
+                    <select [value]="selectedNationality" (change)="selectedNationality = $event.target.value; updateClaim('nationality');" required>
                         <option value=""></option>
                         <option *ngFor="let nationality of nationalities" [value]="nationality.Code">{{nationality.Name}}</option>
                     </select>
