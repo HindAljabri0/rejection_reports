@@ -205,10 +205,10 @@
         </table>
         <div class="footer">
             <span class="spacer"></span>
-            <button *ngIf="detailSubActionText != null" (click)="doSubAction()" [disabled] = "buttonDisabled"
+            <button *ngIf="detailSubActionText != null" (click)="doSubAction()"
                 mat-button>{{detailSubActionText}}</button>
             <button *ngIf="detailActionText != null" (click)="doAction()" mat-raised-button
-                color="primary" [disabled] = "buttonDisabled">{{detailActionText}}</button>
+                color="primary">{{detailActionText}}</button>
 
 
         </div>

@@ -28,7 +28,6 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
   file: File;
-  buttonDisabled: boolean = true;
 
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
     public commen: SharedServices, public routeActive: ActivatedRoute,
