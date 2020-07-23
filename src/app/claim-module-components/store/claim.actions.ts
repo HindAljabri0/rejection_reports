@@ -6,6 +6,7 @@ import { FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 import { Service } from '../models/service.model';
+import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
 
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{approvalNumber:string, payerId:string, claimType:string, providerClaimNumber:string}>())
@@ -54,5 +55,6 @@ export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymp
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{ invoices: Invoice[] }>());
+export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retreived service', props<SelectServiceDialogData>());
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number, serviceIndex?: number }>());

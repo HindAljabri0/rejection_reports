@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -16,6 +16,7 @@ import { CreateByApprovalFormComponent } from '../dialogs/create-by-approval-for
 import { ApprovalInquiryService } from '../services/approvalInquiryService/approval-inquiry.service';
 import { Claim } from '../models/claim.model';
 import { Service } from '../models/service.model';
+import { SelectServiceDialogComponent } from '../dialogs/select-service-dialog/select-service-dialog.component';
 
 
 @Injectable({
@@ -51,7 +52,7 @@ export class ClaimEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.dialog.closeAll();
-                return startCreatingNewClaim({ data: {claim: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response), services: Service.fromResponse(response)} });
+                return startCreatingNewClaim({ data: { claim: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response), services: Service.fromResponse(response) } });
             }),
             catchError(err => {
                 this.dialog.closeAll();
@@ -71,6 +72,16 @@ export class ClaimEffects {
             catchError(err => of({ type: setError.type, error: { code: 'LOV_ERROR' } }))
         ))
     ));
+
+    openSelectServiceDialog$ = createEffect(() => this.actions$.pipe(
+        ofType(openSelectServiceDialog),
+        tap(data => this.dialog.open(SelectServiceDialogComponent, {
+            data: data,
+            closeOnNavigation: true,
+            height: '600px',
+            width: '800px',
+        }))
+    ), { dispatch: false });
 
     startValidatingClaim$ = createEffect(() => this.actions$.pipe(
         ofType(startValidatingClaim),

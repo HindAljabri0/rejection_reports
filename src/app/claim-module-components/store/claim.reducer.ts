@@ -143,6 +143,7 @@ export const getPhysicianErrors = createSelector(claimSelector, (state) => state
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
 export const getClaimGDPNErrors = createSelector(claimSelector, (state) => state.claimErrors.claimGDPN);
 export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
+export const getRetreivedServices = createSelector(claimSelector, (state) => state.retreivedServices);
 
 
 

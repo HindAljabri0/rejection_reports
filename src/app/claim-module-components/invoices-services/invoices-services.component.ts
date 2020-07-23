@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
 import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetreivedClaim } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
-import { updateClaimDate, updateInvoices_Services, selectGDPN, saveInvoices_Services } from '../store/claim.actions';
+import { updateClaimDate, updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
 import { Service } from '../models/service.model';
 import { HttpResponse } from '@angular/common/http';
@@ -243,6 +243,12 @@ export class InvoicesServicesComponent implements OnInit {
 
   onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex){
     event.stopPropagation();
+    this.store.dispatch(openSelectServiceDialog({
+      invoiceIndex: invoiceIndex,
+      invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
+      invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null? new Date(this.controllers[invoiceIndex].invoiceDate.value):null,
+      serviceIndex: serviceIndex,
+    }));
   }
 
   onAddAnathorServiceClick(event, invoiceIndex, serviceIndex) {
@@ -259,7 +265,12 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   onAddRetrievedServiceClick(invoiceIndex){
-
+    this.store.dispatch(openSelectServiceDialog({
+      invoiceIndex: invoiceIndex,
+      invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
+      invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null? new Date(this.controllers[invoiceIndex].invoiceDate.value):null,
+      serviceIndex: -1,
+    }));
   }
 
   onAddServiceClick(invoiceIndex) {

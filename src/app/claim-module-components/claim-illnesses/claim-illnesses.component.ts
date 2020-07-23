@@ -19,7 +19,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
 
   selectedIllnesses: string[] = ['NA'];
 
-  subscriptions:Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(private store: Store) { }
 
@@ -30,10 +30,12 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
       this.isRetreivedClaim = values[0];
       if (this.isRetreivedClaim) {
         this.selectedIllnesses = values[1].caseInformation.caseDescription.illnessCategory.inllnessCode;
+        if (this.selectedIllnesses.length == 0)
+          this.selectedIllnesses = ['NA'];
       } else {
         this.store.dispatch(updateIllnesses({ list: this.selectedIllnesses }));
       }
-      
+
     }).unsubscribe();
     this.subscriptions.push(this.store.select(getIllnessCode).subscribe(codes => this.illnessOptionsList = codes.filter(code => code != 'NA')));
   }

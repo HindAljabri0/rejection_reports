@@ -91,8 +91,9 @@ td input:focus, td select:focus{
 }
 
 ::ng-deep.cdk-overlay-pane{
-    width: unset !important;
+    min-width: fit-content;
 }
+
 
 .fieldError{
     outline: auto !important;

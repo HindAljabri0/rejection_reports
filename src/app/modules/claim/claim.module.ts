@@ -20,6 +20,7 @@ import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-i
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
 import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoices-services/invoices-services.component';
 import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/dialogs/create-by-approval-form/create-by-approval-form.component';
+import { SelectServiceDialogComponent } from 'src/app/claim-module-components/dialogs/select-service-dialog/select-service-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/d
     ClaimIllnessesComponent,
     GenInfoComponent,
     InvoicesServicesComponent,
-    CreateByApprovalFormComponent
+    CreateByApprovalFormComponent,
+    SelectServiceDialogComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -49,10 +51,12 @@ import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/d
     MatButtonToggleModule
   ],
   exports: [
-    CreateByApprovalFormComponent
+    CreateByApprovalFormComponent,
+    SelectServiceDialogComponent
   ],
   entryComponents: [
-    CreateByApprovalFormComponent
+    CreateByApprovalFormComponent,
+    SelectServiceDialogComponent
   ],
   providers: [
     DatePipe
