@@ -144,7 +144,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'))
     this.controllers[i].services[j].serviceCode.setValue(service.serviceCode);
     this.controllers[i].services[j].serviceDescription.setValue(service.serviceDescription);
-    this.controllers[i].services[j].unitPrice.setValue(decision.unitPrice);
+    this.controllers[i].services[j].unitPrice.setValue(decision.unitPrice.value);
     this.controllers[i].services[j].quntity.setValue(decision.approvedQuantity);
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
@@ -154,6 +154,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
     this.controllers[i].services[j].priceCorrection = decision.serviceGDPN.priceCorrection.value;
     this.controllers[i].services[j].rejection = decision.serviceGDPN.rejection.value;
+    this.updateClaim();
   }
 
   afterInvoiceExpanded(i: number) {
