@@ -1,24 +1,56 @@
 <div mat-dialog-title style="color: #3060AA; display: flex;">
-    <h4>Invoice No</h4>
+    <h4>Invoice No {{data.invoiceNumber}}</h4>
     <span class="spacer"></span>
-    <h4>Invoice Date</h4>
+    <h4>Invoice Date {{data.invoiceDate == null? '':data.invoiceDate.toLocaleDateString()}}</h4>
 </div>
 <div mat-dialog-content>
     <table>
         <thead>
-            <tr>
-                <th *ngIf="!isSelectingOne"></th>
+            <tr style="cursor: unset !important;">
+                <th style="width: 5%;" *ngIf="!isSelectingOne">
+                    <mat-checkbox [checked]="selectedServices.length == retrievedServices.length"
+                        [indeterminate]="selectedServices.length > 0 && selectedServices.length < retrievedServices.length"
+                        (change)="selectAll($event.checked)"></mat-checkbox>
+                </th>
                 <th>Service No</th>
-                <th>Service Code</th>
-                <th>Service Description</th>
-                <th></th>
-                <th></th>
+                <th style="width: 20%;">Service Code</th>
+                <th style="width: 40%;">Service Description</th>
+                <th style="width: 10%">Approved Quantity</th>
+                <th style="width: 20%;">Approved Net Amount</th>
+                <th style="width: 5%;"></th>
             </tr>
         </thead>
+        <tbody>
+            <ng-container *ngFor="let item of retrievedServices; let i = index">
+                <tr *ngIf="!item.used"
+                [ngClass]="{'disabled': item.decision.approvedQuantity == 0}" (click)="onServiceCLicked(i)">
+                    <td style="width: 5%;" *ngIf="!isSelectingOne">
+                        <mat-checkbox [checked]="isChecked(i)" disabled style="cursor: pointer;"></mat-checkbox>
+                    </td>
+                    <td>{{item.service.serviceNumber}}</td>
+                    <td style="width: 20%;">{{item.service.serviceCode}}</td>
+                    <td style="width: 40%;">{{item.service.serviceDescription}}</td>
+                    <td style="width: 10%">{{item.decision.approvedQuantity}}</td>
+                    <td style="width: 20%;">
+                        {{(item.decision.approvedQuantity == 0 || item.decision.serviceGDPN.net.value != 0? item.decision.serviceGDPN.net.value : item.service.serviceGDPN.net.value)}}
+                    </td>
+                    <td style="width: 5%;">
+                        <mat-icon style="color: #E9AD33;"
+                            [matTooltip]="'requested quantity: ' +  item.service.requestedQuantity"
+                            *ngIf="item.decision.approvedQuantity != item.service.requestedQuantity">
+                            error
+                        </mat-icon>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
     </table>
 </div>
-<div mat-dialog-actions style="text-align: end; margin-top: 20px;">
+<div mat-dialog-actions style="text-align: end; margin-top: 10px;">
 
-    <button class="formElement" mat-button color="primary" style="margin-left: auto;" >Cancel</button>
-    <button *ngIf="!isSelectingOne" class="formElement" mat-raised-button color="primary" >Add to Current Invoice</button>
+    <button class="formElement" mat-button color="primary" style="margin-left: auto;"
+        (click)="onCancelClicked()">Cancel</button>
+    <button *ngIf="!isSelectingOne" class="formElement" mat-raised-button color="primary" (click)="onAddClicked()">Add
+        to Current
+        Invoice</button>
 </div>

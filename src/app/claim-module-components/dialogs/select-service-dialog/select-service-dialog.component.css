@@ -1,4 +1,36 @@
-
-.formElement:focus{
+.formElement:focus {
     outline: unset;
 }
+
+th {
+    background-color: #B6D1FC !important;    
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    color: #4E70A4;
+}
+
+tr:hover{
+    cursor: pointer;
+    background-color: #afcafa !important;
+}
+
+tr:nth-child(odd) {
+    background-color: #E0EBFF;
+}
+
+tr:nth-child(even) {
+    background-color: #CADDFE;
+}
+
+tr.disabled {
+    background-color: #F2F6FF !important;
+    color: #D2DBE9 !important;
+}
+
+::ng-deep.mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame {
+    border-color: #0000008a;
+}
+

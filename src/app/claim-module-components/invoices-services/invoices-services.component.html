@@ -85,9 +85,9 @@
                             Service {{(j+1)}}
                         </mat-panel-title>
                         <mat-panel-description>
-                            <button mat-button style="margin-left: auto;" *ngIf="isRetreivedClaim && j == expandedService"
+                            <button mat-button style="margin-left: auto;" *ngIf="isRetrievedClaim && j == expandedService"
                                 (click)="onSelectRetrievedServiceClick($event, i, j)">Select a retreived service</button>
-                            <button mat-button style="margin-left: auto;" *ngIf="j == expandedService"
+                            <button mat-button *ngIf="j == expandedService"
                                 (click)="onAddAnathorServiceClick($event, i, j)">+ Add Another
                                 Service</button>
                             <button mat-icon-button (click)="onDeleteServiceClick($event, i, j)"
@@ -171,7 +171,7 @@
         </div>
         <div style="text-align: end;" *ngIf="expandedService == -1 && expandedInvoice == i">
             <hr>
-            <button *ngIf="isRetreivedClaim" mat-raised-button color="primary" (click)="onAddRetrievedServiceClick(i)">Add a Retreived Service</button>
+            <button *ngIf="isRetrievedClaim" mat-raised-button color="primary" (click)="onAddRetrievedServiceClick(i)" style="margin-right: 10px;">Add a Retreived Service</button>
             <button mat-raised-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
         </div>
     </div>

@@ -7,10 +7,11 @@ import { Invoice } from '../models/invoice.model';
 import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 import { Service } from '../models/service.model';
 import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
+import { ServiceDecision } from '../models/serviceDecision.model';
 
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{approvalNumber:string, payerId:string, claimType:string, providerClaimNumber:string}>())
-export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{data: { claimType: string, providerClaimNumber: string } | {claim:Claim, services:Service[]}}>());
+export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{data: { claimType: string, providerClaimNumber: string } | {claim:Claim, services:{service:Service, decision:ServiceDecision, used:boolean}[]}}>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{ loading: boolean }>())
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());
@@ -56,5 +57,7 @@ export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymp
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{ invoices: Invoice[] }>());
 export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retreived service', props<SelectServiceDialogData>());
+export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{services:{service:Service, decision:ServiceDecision}[], invoiceIndex: number, serviceIndex?: number}>());
+export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{serviceNumber:number}>());
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number, serviceIndex?: number }>());

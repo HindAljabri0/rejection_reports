@@ -1,6 +1,7 @@
 import { GDPN, Amount } from './GDPN.model';
 import { Period } from './period.type';
 import { HttpResponse } from '@angular/common/http';
+import { ServiceDecision } from './serviceDecision.model';
 
 export class Service {
 
@@ -27,14 +28,17 @@ export class Service {
         this.serviceType = 'NA';
     }
 
-    static fromResponse(response): Service[] {
-        let services: Service[] = [];
+    static fromResponse(response): {service:Service, decision:ServiceDecision, used:boolean}[] {
+        let services: {service:Service, decision:ServiceDecision, used:boolean}[] = [];
+
         if (response instanceof HttpResponse) {
             const body = response.body;
             const serviceResponse = body['serviceResponse'];
             if (serviceResponse != null && serviceResponse instanceof Array) {
                 serviceResponse.forEach(res => {
                     let service = new Service();
+                    let decision = new ServiceDecision();
+
                     const serviceCT = res['service'];
                     const serviceDecisionCT = res['serviceDecision'];
 
@@ -45,7 +49,7 @@ export class Service {
                     service.serviceNumber = serviceCT['serviceNumber']
                     if (serviceCT['unitPrice'] != null)
                         service.unitPrice = serviceCT['unitPrice'];
-                    service.requestedQuantity = Number.parseInt(serviceDecisionCT['approvedQuantity']);
+                    service.requestedQuantity = Number.parseInt(serviceCT['requestedQuantity']);
                     if (serviceCT['serviceGDPN'] != null) {
                         const gdpn = serviceCT['serviceGDPN'];
                         if (gdpn['net'] != null)
@@ -69,30 +73,34 @@ export class Service {
                         if (gdpn['priceCorrection'] != null)
                             service.serviceGDPN.priceCorrection = gdpn['priceCorrection'];
                     }
+
+                    decision.approvedQuantity = Number.parseInt(serviceDecisionCT['approvedQuantity']);
+                    if (serviceDecisionCT['unitPrice'] != null)
+                        decision.unitPrice = serviceDecisionCT['unitPrice'];
                     if (serviceDecisionCT['serviceGDPN'] != null) {
                         const gdpn = serviceDecisionCT['serviceGDPN'];
                         if (gdpn['net'] != null)
-                            service.serviceGDPN.net = gdpn['net'];
+                            decision.serviceGDPN.net = gdpn['net'];
                         if (gdpn['netVATamount'] != null)
-                            service.serviceGDPN.netVATamount = gdpn['netVATamount'];
+                            decision.serviceGDPN.netVATamount = gdpn['netVATamount'];
                         if (gdpn['netVATrate'] != null)
-                            service.serviceGDPN.netVATrate = gdpn['netVATrate'];
+                            decision.serviceGDPN.netVATrate = gdpn['netVATrate'];
                         if (gdpn['discount'] != null)
-                            service.serviceGDPN.discount = gdpn['discount'];
+                            decision.serviceGDPN.discount = gdpn['discount'];
                         if (gdpn['gross'] != null)
-                            service.serviceGDPN.gross = gdpn['gross'];
+                            decision.serviceGDPN.gross = gdpn['gross'];
                         if (gdpn['patientShare'] != null)
-                            service.serviceGDPN.patientShare = gdpn['patientShare'];
+                            decision.serviceGDPN.patientShare = gdpn['patientShare'];
                         if (gdpn['patientShareVATamount'] != null)
-                            service.serviceGDPN.patientShareVATamount = gdpn['patientShareVATamount'];
+                            decision.serviceGDPN.patientShareVATamount = gdpn['patientShareVATamount'];
                         if (gdpn['patientShareVATrate'] != null)
-                            service.serviceGDPN.patientShareVATrate = gdpn['patientShareVATrate'];
+                            decision.serviceGDPN.patientShareVATrate = gdpn['patientShareVATrate'];
                         if (gdpn['rejection'] != null)
-                            service.serviceGDPN.rejection = gdpn['rejection'];
+                            decision.serviceGDPN.rejection = gdpn['rejection'];
                         if (gdpn['priceCorrection'] != null)
-                            service.serviceGDPN.priceCorrection = gdpn['priceCorrection'];
+                            decision.serviceGDPN.priceCorrection = gdpn['priceCorrection'];
                     }
-                    services.push(service);
+                    services.push({service:service, decision:decision, used:false});
                 });
             }
         }

@@ -4,39 +4,40 @@ import { Claim } from '../models/claim.model';
 import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { GDPN } from '../models/GDPN.model';
 import { Service } from '../models/service.model';
+import { ServiceDecision } from '../models/serviceDecision.model';
 
 export interface ClaimState {
     claim: Claim;
-    isRetreivedClaim:boolean;
-    retreivedServices:Service[];
+    isRetreivedClaim: boolean;
+    retreivedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
     claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
     selectedTab: number;
     selectedGDPN: { invoiceIndex?: number, serviceIndex?: number };
-    approvalFormLoading:boolean;
+    approvalFormLoading: boolean;
 }
 
 const initState: ClaimState = {
     claim: null,
-    isRetreivedClaim:false,
-    retreivedServices:[],
+    isRetreivedClaim: false,
+    retreivedServices: [],
     claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
     loading: true,
     selectedTab: 0,
     selectedGDPN: {},
-    approvalFormLoading:false,
+    approvalFormLoading: false,
 }
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.getClaimDataByApproval, (state) => ({...state, approvalFormLoading:true})),
+    on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
-            return { ...state, claim: data['claim'], retreivedServices: data['services'], approvalFormLoading:false, isRetreivedClaim:true };
+            return { ...state, claim: data['claim'], retreivedServices: data['services'], approvalFormLoading: false, isRetreivedClaim: true };
         } else {
             let claim = new Claim(data['claimType'], data['providerClaimNumber']);
             return { ...state, claim: claim };
@@ -46,7 +47,7 @@ const _claimReducer = createReducer(
     on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: false })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
-    on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading:false })),
+    on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
@@ -114,6 +115,8 @@ const _claimReducer = createReducer(
         };
         return ({ ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN } });
     }),
+    on(actions.addRetrievedServices, (state, { services }) => ({ ...state, retreivedServices: [...state.retreivedServices.filter(s => services.findIndex(ns => ns.service.serviceNumber == s.service.serviceNumber) == -1), ...services.map(s => ({ service: s.service, decision: s.decision, used: true }))] })),
+    on(actions.makeRetrievedServiceUnused, (state, { serviceNumber }) => ({ ...state, retreivedServices: state.retreivedServices.map(s => s.service.serviceNumber == serviceNumber ? { ...s, used: false } : s) })),
     on(actions.selectGDPN, (state, { invoiceIndex, serviceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex, serviceIndex: serviceIndex } }))
 );
 

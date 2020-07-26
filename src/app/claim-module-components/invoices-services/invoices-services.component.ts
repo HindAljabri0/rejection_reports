@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetreivedClaim } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetreivedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
-import { updateClaimDate, updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog } from '../store/claim.actions';
+import {  updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
 import { Service } from '../models/service.model';
 import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Actions, ofType } from '@ngrx/effects';
-import { MatMenuTrigger } from '@angular/material';
+import { DatePipe } from '@angular/common';
+import { ServiceDecision } from '../models/serviceDecision.model';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -18,13 +19,15 @@ import { MatMenuTrigger } from '@angular/material';
 })
 export class InvoicesServicesComponent implements OnInit {
 
-  isRetreivedClaim: boolean = false;
+  isRetrievedClaim: boolean = false;
 
   controllers: {
     invoice: Invoice,
     invoiceNumber: FormControl,
     invoiceDate: FormControl,
     services: {
+      retrieved:boolean,
+      serviceNumber:number,
       serviceDate: FormControl,
       serviceCode: FormControl,
       serviceDescription: FormControl,
@@ -55,10 +58,10 @@ export class InvoicesServicesComponent implements OnInit {
 
   errors: FieldError[] = [];
 
-  constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices) { }
+  constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.store.select(getIsRetreivedClaim).subscribe(isRetreived => this.isRetreivedClaim = isRetreived);
+    this.store.select(getIsRetrievedClaim).subscribe(isRetrieved => this.isRetrievedClaim = isRetrieved);
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
     this.store.select(getClaimType).subscribe(type => {
       this.claimType = type;
@@ -91,6 +94,19 @@ export class InvoicesServicesComponent implements OnInit {
     this.actions.pipe(
       ofType(saveInvoices_Services)
     ).subscribe(() => { if (this.expandedInvoice != -1) this.createInvoiceFromControl(this.expandedInvoice) });
+
+    this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
+      if(data.serviceIndex != null){
+        const service = data.services[0].service;
+        const decision = data.services[0].decision;
+        this.editService(service, decision, data.invoiceIndex, data.serviceIndex);
+      } else {
+        data.services.forEach(s => {
+          this.addService(data.invoiceIndex);
+          this.editService(s.service, s.decision, data.invoiceIndex, this.controllers[data.invoiceIndex].services.length -1);
+        });
+      }
+    });
   }
 
   addInvoice() {
@@ -103,6 +119,8 @@ export class InvoicesServicesComponent implements OnInit {
 
   addService(invoiceIndex) {
     this.controllers[invoiceIndex].services.push({
+      retrieved: false,
+      serviceNumber: null,
       serviceDate: new FormControl(),
       serviceCode: new FormControl(),
       serviceDescription: new FormControl(),
@@ -118,6 +136,24 @@ export class InvoicesServicesComponent implements OnInit {
       rejection: 0
     });
     this.updateClaim();
+  }
+
+  editService(service:Service, decision:ServiceDecision, i:number, j:number){
+    this.controllers[i].services[j].retrieved = true;
+    this.controllers[i].services[j].serviceNumber = service.serviceNumber;
+    this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'))
+    this.controllers[i].services[j].serviceCode.setValue(service.serviceCode);
+    this.controllers[i].services[j].serviceDescription.setValue(service.serviceDescription);
+    this.controllers[i].services[j].unitPrice.setValue(decision.unitPrice);
+    this.controllers[i].services[j].quntity.setValue(decision.approvedQuantity);
+    this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
+    this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
+    this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT'? 'PERCENT':'SAR';
+    this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
+    this.controllers[i].services[j].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
+    this.controllers[i].services[j].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
+    this.controllers[i].services[j].priceCorrection = decision.serviceGDPN.priceCorrection.value;
+    this.controllers[i].services[j].rejection = decision.serviceGDPN.rejection.value;
   }
 
   afterInvoiceExpanded(i: number) {
@@ -243,6 +279,7 @@ export class InvoicesServicesComponent implements OnInit {
 
   onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex){
     event.stopPropagation();
+    this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
       invoiceIndex: invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
@@ -265,6 +302,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   onAddRetrievedServiceClick(invoiceIndex){
+    this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
       invoiceIndex: invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
@@ -281,12 +319,20 @@ export class InvoicesServicesComponent implements OnInit {
 
   onDeleteInvoiceClick(event, i) {
     event.stopPropagation();
+    this.controllers[i].services.forEach(s => {
+      if(s.retrieved){
+        this.store.dispatch(makeRetrievedServiceUnused({serviceNumber: s.serviceNumber}));
+      }
+    });
     this.controllers.splice(i, 1);
     this.updateClaim();
   }
 
   onDeleteServiceClick(event, i, j) {
     event.stopPropagation();
+    if(this.controllers[i].services[j].retrieved){
+      this.store.dispatch(makeRetrievedServiceUnused({serviceNumber: this.controllers[i].services[j].serviceNumber}));
+    }
     this.controllers[i].services.splice(j, 1);
     this.createInvoiceFromControl(i);
   }

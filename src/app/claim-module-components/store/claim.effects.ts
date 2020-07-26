@@ -52,9 +52,15 @@ export class ClaimEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.dialog.closeAll();
-                return startCreatingNewClaim({ data: { claim: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response), services: Service.fromResponse(response) } });
+                return startCreatingNewClaim({
+                    data: {
+                        claim: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response),
+                        services: Service.fromResponse(response),
+                    }
+                });
             }),
             catchError(err => {
+                console.log(err);
                 this.dialog.closeAll();
                 if (err.hasOwnProperty('status') && (err.status == 0 || err.status >= 500)) {
                     return of({ type: setError.type, error: { code: `APPROVAL_ERROR_SERVER`, } });
@@ -78,8 +84,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(SelectServiceDialogComponent, {
             data: data,
             closeOnNavigation: true,
-            height: '600px',
-            width: '800px',
+            width: '90%',
         }))
     ), { dispatch: false });
 
