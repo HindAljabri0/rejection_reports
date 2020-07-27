@@ -478,7 +478,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   reloadClaim(claim: ViewedClaim) {
     let flag = false;
     let index = this.claims.findIndex(oldClaim => oldClaim.claimId == `${claim.claimid}`);
-    if (this.claims[index].status != claim.status) {
+    const oldStatus = this.claims[index].status;
+    if (oldStatus != claim.status) {
       let summaries = this.summaries;
 
       let oldSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(this.claims[index].status.toLowerCase()));
@@ -506,7 +507,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }
     }
     if (!flag) {
-      if (this.selectedCardKey != 0) {
+      if (this.selectedCardKey != 0 && oldStatus != this.claims[index].status) {
         this.claims.splice(index, 1);
       } else {
         this.claims[index].memberId = claim.memberid;
@@ -516,7 +517,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.claims[index].numOfAttachments = claim.attachments.length;
         this.claims[index].eligibilitycheck = null;
       }
-
     }
   }
 
