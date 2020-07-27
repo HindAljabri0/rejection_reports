@@ -3,9 +3,17 @@
         <tbody>
             <tr>
                 <td><label>Full Name*</label></td>
-                <td [matTooltip]="getFieldError('fullName')">
+                <td [matTooltip]="getFieldError('fullName')" style="display: flex; width: 100%;">
                     <input id="fullNameInput" [ngClass]="{'fieldError': fieldHasError('fullName')}" type="text"
                         [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
+                    <select id="genderDiv" [ngClass]="{'female': selectedGender == 'F', 'male': selectedGender == 'M', 'fieldError': fieldHasError('gender')}"
+                    
+                        [value]="selectedGender" [disabled]="!editableFields.gender"
+                        (change)="selectedGender = $event.target.value; updateClaim('gender');"
+                        matTooltip="Select Gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
                 </td>
 
                 <td><label>Payer*</label></td>
@@ -17,21 +25,20 @@
                 </td>
             </tr>
             <tr>
-                <td><label>Gender</label></td>
-                <td>
-                    <div id="genderDiv" [ngClass]="{'female': !isMale, 'male': isMale}"
-                        (click)="editableFields.gender? toggleGender() : null">
-                        <i class="fa" [ngClass]="{'fa-venus': !isMale, 'fa-mars': isMale}" aria-hidden="true"></i>
-                    </div>
-                </td>
                 <td><label>Visit Type*</label></td>
                 <td>
                     <select [value]="selectedVisitType" [disabled]="!editableFields.visitType"
                         (change)="selectedVisitType = $event.target.value; updateClaim('visitType');" required>
-                        <option *ngFor="let visitType of visitTypes" [value]="visitType">{{beautifyVisitType(visitType)}}</option>
+                        <option *ngFor="let visitType of visitTypes" [value]="visitType">
+                            {{beautifyVisitType(visitType)}}</option>
                     </select>
                 </td>
-
+                <td><label>Policy No.<span *ngIf="selectedPayer != 102">*</span></label></td>
+                <td [matTooltip]="getFieldError('policyNum')">
+                    <input type="text" [ngClass]="{'fieldError': fieldHasError('policyNum')}"
+                        [formControl]="policyNumController" (change)="updateClaim('policyNum')"
+                        [required]="selectedPayer != 102">
+                </td>
             </tr>
             <tr>
                 <td><label>Nationality</label></td>
@@ -57,14 +64,6 @@
                 <td><label>Approval No.*</label></td>
                 <td><input type="text" [ngClass]="{'fieldError': fieldHasError('approvalNum')}"
                         [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required></td>
-            </tr>
-            <tr>
-                <td><label>Policy No.<span *ngIf="selectedPayer != 102">*</span></label></td>
-                <td [matTooltip]="getFieldError('policyNum')">
-                    <input type="text" [ngClass]="{'fieldError': fieldHasError('policyNum')}"
-                        [formControl]="policyNumController" (change)="updateClaim('policyNum')"
-                        [required]="selectedPayer != 102">
-                </td>
             </tr>
         </tbody>
     </table>

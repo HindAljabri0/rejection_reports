@@ -46,6 +46,9 @@ export class ClaimValidationService {
     } else if (!this.regax.test(fullName)) {
       fieldErrors.push({ fieldName: 'fullName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
     }
+    if (gender == null) {
+      fieldErrors.push({ fieldName: 'gender' });
+    }
     if (memberId == null || memberId.trim().length == 0) {
       fieldErrors.push({ fieldName: 'memberId' });
     } else if (!this.regaxWithOutSpace.test(memberId)) {
@@ -198,8 +201,8 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: `servicePatientShareVatRate:${invoiceIndex}:${serviceIndex}` });
     }
 
-    if(this.claim.visitInformation.departmentCode == '2'){
-      if(service.toothNumber == null){
+    if (this.claim.visitInformation.departmentCode == '2') {
+      if (service.toothNumber == null) {
         fieldErrors.push({ fieldName: `serviceToothNumber:${invoiceIndex}:${serviceIndex}` });
       }
     }

@@ -26,7 +26,7 @@ export const addClaimErrors = createAction('[ Claim ] add errors', props<{ modul
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: number }>());
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
-export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: 'M' | 'F' }>());
+export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: string }>());
 export const updatePayer = createAction('[ Claim Patient Info ] update payer', props<{ payerId: number }>());
 export const updateVisitType = createAction('[ Claim Patient Info ] update visit type', props<{ visitType: string }>());
 export const updateNationality = createAction('[ Claim Patient Info ] update Nationality', props<{ nationality: string }>());

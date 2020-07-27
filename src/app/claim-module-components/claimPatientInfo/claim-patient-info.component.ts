@@ -23,7 +23,7 @@ export class ClaimPatientInfo implements OnInit {
   };
 
   fullNameController: FormControl = new FormControl();
-  isMale: boolean = true;
+  selectedGender: string = '';
   selectedPayer: number;
   selectedVisitType: string;
   selectedNationality: string;
@@ -51,7 +51,7 @@ export class ClaimPatientInfo implements OnInit {
       if (this.isRetrievedClaim) {
         this.selectedPayer = Number.parseInt(values[1].claimIdentities.payerID);
         this.editableFields.payer = Number.isNaN(this.selectedPayer);
-        this.isMale = values[1].caseInformation.patient.gender == 'M';
+        this.selectedGender = values[1].caseInformation.patient.gender;
         this.editableFields.gender = values[1].caseInformation.patient.gender != 'F' && values[1].caseInformation.patient.gender != 'M';
         this.selectedVisitType = values[1].visitInformation.visitType;
         this.editableFields.visitType = !this.visitTypes.includes(this.selectedVisitType);
@@ -60,20 +60,20 @@ export class ClaimPatientInfo implements OnInit {
         if (values[1].member.idNumber != null) {
           this.nationalIdController.setValue(values[1].member.idNumber);
           let isEditable = values[1].member.idNumber.length != 10 || Number.isNaN(Number.parseInt(values[1].member.idNumber));
-          this.nationalIdController.disable({onlySelf: !isEditable});
+          this.nationalIdController.disable({ onlySelf: !isEditable });
         }
         this.approvalNumController.setValue(values[1].claimIdentities.approvalNumber);
         let isEditable = values[1].claimIdentities.approvalNumber == null || values[1].claimIdentities.approvalNumber.trim().length == 0;
-        this.approvalNumController.disable({onlySelf: !isEditable});
+        this.approvalNumController.disable({ onlySelf: !isEditable });
         this.fullNameController.setValue(values[1].caseInformation.patient.fullName);
         isEditable = values[1].caseInformation.patient.fullName == null || values[1].caseInformation.patient.fullName.trim().length == 0;
-        this.fullNameController.disable({onlySelf: !isEditable});
+        this.fullNameController.disable({ onlySelf: !isEditable });
         this.policyNumController.setValue(values[1].member.policyNumber);
         isEditable = values[1].member.policyNumber == null || values[1].member.policyNumber.trim().length == 0;
-        this.policyNumController.disable({onlySelf: !isEditable});
+        this.policyNumController.disable({ onlySelf: !isEditable });
         this.memberIdController.setValue(values[1].member.memberID);
         isEditable = values[1].member.memberID == null || values[1].member.memberID.trim().length == 0;
-        this.memberIdController.disable({onlySelf: !isEditable});
+        this.memberIdController.disable({ onlySelf: !isEditable });
       } else {
 
         if (this.payersList.length > 0) {
@@ -85,7 +85,6 @@ export class ClaimPatientInfo implements OnInit {
         if (this.visitTypes.length > 0) {
           this.selectedVisitType = this.visitTypes[0];
         }
-        this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
         this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
         this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
 
@@ -97,11 +96,6 @@ export class ClaimPatientInfo implements OnInit {
     this.store.select(getPatientErrors).subscribe(errors => this.errors = errors);
 
 
-  }
-
-  toggleGender() {
-    this.isMale = !this.isMale;
-    this.store.dispatch(updatePatientGender({ gender: this.isMale ? 'M' : 'F' }));
   }
 
   printEvent(event) { console.log(event); }
@@ -134,6 +128,10 @@ export class ClaimPatientInfo implements OnInit {
       case 'approvalNum':
         this.store.dispatch(updateApprovalNum({ approvalNo: this.approvalNumController.value }));
         break;
+      case 'gender':
+        this.store.dispatch(updatePatientGender({ gender: this.selectedGender }));
+        break;
+
     }
   }
 
@@ -149,9 +147,9 @@ export class ClaimPatientInfo implements OnInit {
     return '';
   }
 
-  beautifyVisitType(visitType:string){
+  beautifyVisitType(visitType: string) {
     let str = visitType.substr(0, 1) + visitType.substr(1).toLowerCase();
-    if(str.includes('_')){
+    if (str.includes('_')) {
       let split = str.split('_');
       str = split[0] + ' ' + this.beautifyVisitType(split[1].toUpperCase());
     }
