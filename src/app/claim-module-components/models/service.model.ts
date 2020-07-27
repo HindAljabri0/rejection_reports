@@ -28,8 +28,8 @@ export class Service {
         this.serviceType = 'NA';
     }
 
-    static fromResponse(response): {service:Service, decision:ServiceDecision, used:boolean}[] {
-        let services: {service:Service, decision:ServiceDecision, used:boolean}[] = [];
+    static fromResponse(response): { service: Service, decision: ServiceDecision, used: boolean }[] {
+        let services: { service: Service, decision: ServiceDecision, used: boolean }[] = [];
 
         if (response instanceof HttpResponse) {
             const body = response.body;
@@ -45,7 +45,9 @@ export class Service {
                     service.serviceCode = serviceCT['serviceCode'];
                     service.serviceDescription = serviceCT['serviceDescription'];
                     service.serviceDate = new Date(serviceCT['serviceDate']);
-                    service.toothNumber = serviceCT['toothNumber'];
+                    if (serviceCT['toothNumber'] != null)
+                        service.toothNumber = `${Number.parseInt(serviceCT['toothNumber'].split('_')[1]) - 1}`;
+                    console.log(service.toothNumber);
                     service.serviceNumber = serviceCT['serviceNumber']
                     if (serviceCT['unitPrice'] != null)
                         service.unitPrice = serviceCT['unitPrice'];
@@ -100,7 +102,7 @@ export class Service {
                         if (gdpn['priceCorrection'] != null)
                             decision.serviceGDPN.priceCorrection = gdpn['priceCorrection'];
                     }
-                    services.push({service:service, decision:decision, used:false});
+                    services.push({ service: service, decision: decision, used: false });
                 });
             }
         }

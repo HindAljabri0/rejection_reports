@@ -85,9 +85,12 @@
                             Service {{(j+1)}}
                         </mat-panel-title>
                         <mat-panel-description>
-                            <button mat-button style="margin-left: auto;" *ngIf="isRetrievedClaim && j == expandedService"
-                                (click)="onSelectRetrievedServiceClick($event, i, j)">Select a retreived service</button>
+                            <button mat-button style="margin-left: auto;"
+                                *ngIf="isRetrievedClaim && !service.retrieved && j == expandedService"
+                                (click)="onSelectRetrievedServiceClick($event, i, j)">Select a retrieved
+                                service</button>
                             <button mat-button *ngIf="j == expandedService"
+                                [ngStyle]="{'margin-left': service.retrieved? 'auto': 'unset'}"
                                 (click)="onAddAnathorServiceClick($event, i, j)">+ Add Another
                                 Service</button>
                             <button mat-icon-button (click)="onDeleteServiceClick($event, i, j)"
@@ -109,7 +112,7 @@
                             <td [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"
                                     [formControl]="service.serviceCode">
-                                <span class="selectServiceButton"
+                                <span *ngIf="!service.retrieved" class="selectServiceButton"
                                     [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                             </td>
                             <td [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)" colspan="2"><input
@@ -129,7 +132,7 @@
                             </td>
                             <td [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"
-                                    [formControl]="service.quntity"></td>
+                                    [formControl]="service.quantity"></td>
                             <td [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}"
                                     type="number" [formControl]="service.patientShare"><span
@@ -140,7 +143,7 @@
                                     type="number" [formControl]="service.serviceDiscount">
                                 <span class="amountType" style="cursor: pointer; color: #3060AA;"
                                     [ngClass]="{'amountTypePerecent': service.serviceDiscountUnit == 'PERCENT'}"
-                                    (click)="service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')">{{service.serviceDiscountUnit == 'SAR'? 'SAR':'%'}}</span>
+                                    (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit == 'SAR'? 'SAR':'%'}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -151,7 +154,9 @@
                         <tr>
                             <td *ngIf="claimType == '2'">
                                 <select (change)="updateServiceToothNumber(i, j, $event)"
-                                    [value]="service.toothNumber.value" required>
+                                [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
+                                    [disabled]="service.toothNumber.disabled" [value]="service.toothNumber.value"
+                                    required>
                                     <option *ngFor="let number of toothNumbers" [value]="number">
                                         {{number}}</option>
                                 </select>
@@ -171,7 +176,8 @@
         </div>
         <div style="text-align: end;" *ngIf="expandedService == -1 && expandedInvoice == i">
             <hr>
-            <button *ngIf="isRetrievedClaim" mat-raised-button color="primary" (click)="onAddRetrievedServiceClick(i)" style="margin-right: 10px;">Add a Retreived Service</button>
+            <button *ngIf="isRetrievedClaim" mat-raised-button color="primary" (click)="onAddRetrievedServiceClick(i)"
+                style="margin-right: 10px;">Add a Retreived Service</button>
             <button mat-raised-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
         </div>
     </div>

@@ -13,7 +13,7 @@
                 </td>
                 <td [matTooltip]="getFieldError('fileNumber')">
                     <input [ngClass]="{'fieldError': fieldHasError('fileNumber')}" id="fileNumberInput" type="text"
-                        [formControl]="fielNumberController" (change)="updateClaim('fileNumber')">
+                        [formControl]="fileNumberController" (change)="updateClaim('fileNumber')">
                 </td>
             </tr>
 
@@ -54,7 +54,7 @@
                             type="number" [formControl]="illnessDurationController"
                             (change)="updateClaim('illnessDuration')"></label></td>
                 <td [ngClass]="{'fieldError': fieldHasError('illnessDurationUnit')}">
-                    <mat-button-toggle-group unitIllness (change)="updateClaimUnit('illnessDurationUnit',$event)">
+                    <mat-button-toggle-group [disabled]="illnessDurationController.disabled" unitIllness (change)="updateClaimUnit('illnessDurationUnit',$event)">
                         <mat-button-toggle value="Day" checked="true">
                             Day
                         </mat-button-toggle>
@@ -78,7 +78,7 @@
                 <td><label><input [ngClass]="{'fieldError': fieldHasError('age')}" id="ageInput" type="number"
                             [formControl]="ageController" (change)="updateClaim('age')"></label></td>
                 <td [ngClass]="{'fieldError': fieldHasError('ageUnit')}">
-                    <mat-button-toggle-group (change)="updateClaimUnit('ageUnit',$event)">
+                    <mat-button-toggle-group (change)="updateClaimUnit('ageUnit',$event)" [disabled]="ageController.disabled">
                         <mat-button-toggle value="Day">
                             Day
                         </mat-button-toggle>

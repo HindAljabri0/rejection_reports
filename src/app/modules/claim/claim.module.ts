@@ -15,7 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
 import { ClaimDataComponent } from 'src/app/claim-module-components/claim-data/claim-data.component';
 import { MatTabsModule, MatButtonToggleModule } from '@angular/material';
-import { ClaimDignosisComponent } from 'src/app/claim-module-components/claim-dignosis/claim-dignosis.component';
+import { ClaimDiagnosisComponent } from 'src/app/claim-module-components/claim-diagnosis/claim-diagnosis.component';
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
 import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoices-services/invoices-services.component';
@@ -29,7 +29,7 @@ import { SelectServiceDialogComponent } from 'src/app/claim-module-components/di
     PhysicianComponent,
     GdpnCalculationComponent,
     ClaimDataComponent,
-    ClaimDignosisComponent,
+    ClaimDiagnosisComponent,
     ClaimIllnessesComponent,
     GenInfoComponent,
     InvoicesServicesComponent,

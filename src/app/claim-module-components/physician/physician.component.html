@@ -4,30 +4,37 @@
             <tr>
                 <td><label>Physician ID</label></td>
                 <td [matTooltip]="getFieldError('physicianId')">
-                    <input type="text" [ngClass]="{'fieldError': fieldHasError('physicianId')}" [formControl]="physicianIdController" (change)="updateClaim('physicianId')">
+                    <input type="text" [ngClass]="{'fieldError': fieldHasError('physicianId')}"
+                        [formControl]="physicianIdController" (change)="updateClaim('physicianId')">
                 </td>
 
             </tr>
             <tr>
 
                 <td><label>Physician Name</label></td>
-                <td [matTooltip]="getFieldError('physicianName')"><input type="text" [ngClass]="{'fieldError': fieldHasError('physicianName')}" [formControl]="physicianNameController" (change)="updateClaim('physicianName')"></td>
+                <td [matTooltip]="getFieldError('physicianName')"><input type="text"
+                        [ngClass]="{'fieldError': fieldHasError('physicianName')}"
+                        [formControl]="physicianNameController" (change)="updateClaim('physicianName')"></td>
 
             </tr>
             <tr>
                 <td><label>Physician Category</label></td>
                 <td>
-                    <select [value]="selectedCategery" (change)="selectedCategery = $event.target.value; updateClaim('physicianCategory');">
+                    <select [value]="selectedCategory" [disabled]="!categoryEditable"
+                        (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
                         <option value=""></option>
-                        <option *ngFor="let category of categories" [value]="category">{{beautfyCategory(category)}}</option>
+                        <option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
+                        </option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td><label>Department*</label></td>
                 <td>
-                    <select [value]="selectedDepartment" (change)="selectedDepartment = $event.target.value; updateClaim('department');" required>
-                        <option *ngFor="let department of departments" [value]="department.departmentId">{{department.name}}</option>
+                    <select [value]="selectedDepartment" [disabled]="!departmentEditable"
+                        (change)="selectedDepartment = $event.target.value; updateClaim('department');" required>
+                        <option *ngFor="let department of departments" [value]="department.departmentId">
+                            {{department.name}}</option>
                     </select>
                 </td>
             </tr>

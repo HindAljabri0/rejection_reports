@@ -127,10 +127,10 @@ export function claimReducer(state, action) {
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
 export const getIsApprovalFormLoading = createSelector(claimSelector, (state) => state.approvalFormLoading);
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
-export const getIsRetreivedClaim = createSelector(claimSelector, (state) => state.isRetreivedClaim);
+export const getIsRetrievedClaim = createSelector(claimSelector, (state) => state.isRetreivedClaim);
 export const getClaimType = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.departmentCode : null);
 export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim != null && state.claim.claimIdentities != null ? state.claim.claimIdentities.payerID : null);
-export const getVistType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
+export const getVisitType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
 export const getVisitDate = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.visitDate : null);
 export const getSelectedTab = createSelector(claimSelector, (state) => state.selectedTab);
 export const getDepartments = createSelector(claimSelector, (state) => state.LOVs.Departments);

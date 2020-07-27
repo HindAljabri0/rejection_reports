@@ -5,17 +5,17 @@ import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { Store } from '@ngrx/store';
 import { updateDiagnosisList } from '../store/claim.actions';
-import { FieldError, getDiagnosisErrors, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { FieldError, getDiagnosisErrors, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
-  selector: 'claim-dignosis',
-  templateUrl: './claim-dignosis.component.html',
-  styleUrls: ['./claim-dignosis.component.css']
+  selector: 'claim-diagnosis',
+  templateUrl: './claim-diagnosis.component.html',
+  styleUrls: ['./claim-diagnosis.component.css']
 })
-export class ClaimDignosisComponent implements OnInit {
+export class ClaimDiagnosisComponent implements OnInit {
 
-  isRetreivedClaim: boolean = false;
+  isRetrievedClaim: boolean = false;
 
   diagnosisController: FormControl = new FormControl();
   diagnosisList: ICDDiagnosis[] = [];
@@ -25,13 +25,15 @@ export class ClaimDignosisComponent implements OnInit {
   constructor(private adminService: AdminService, private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getIsRetreivedClaim).pipe(
+    this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))
     ).subscribe((values) => {
-      this.isRetreivedClaim = values[0];
-      if (this.isRetreivedClaim) {
-        if (values[1].caseInformation.caseDescription.diagnosis != null)
+      this.isRetrievedClaim = values[0];
+      if (this.isRetrievedClaim) {
+        if (values[1].caseInformation.caseDescription.diagnosis != null){
           this.diagnosisList = values[1].caseInformation.caseDescription.diagnosis.map(dia => new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription));
+          this.diagnosisController.disable({onlySelf:true});
+        }
       } else {
 
       }
@@ -59,7 +61,7 @@ export class ClaimDignosisComponent implements OnInit {
       );
   }
 
-  addICDDignosis(diag: ICDDiagnosis) {
+  addICDDiagnosis(diag: ICDDiagnosis) {
     if (this.diagnosisList.length < 14) {
       this.diagnosisList.push(diag);
       this.store.dispatch(updateDiagnosisList({ list: this.diagnosisList.map(diag => ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })) }));

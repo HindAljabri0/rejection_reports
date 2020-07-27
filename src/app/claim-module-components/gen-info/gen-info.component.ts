@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
 import { updateClaimDate, updateClaimType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms } from '../store/claim.actions';
-import { getClaimType, FieldError, getGenInfoErrors, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { getClaimType, FieldError, getGenInfoErrors, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
@@ -14,12 +14,12 @@ import { DatePipe } from '@angular/common';
 })
 export class GenInfoComponent implements OnInit {
 
-  isRetreivedClaim: boolean = false;
+  isRetrievedClaim: boolean = false;
   
 
   claimDateController: FormControl = new FormControl();
   selectedClaimType: string;
-  fielNumberController: FormControl = new FormControl();
+  fileNumberController: FormControl = new FormControl();
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
   ageController: FormControl = new FormControl();
@@ -32,22 +32,26 @@ export class GenInfoComponent implements OnInit {
   constructor(private store: Store, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.store.select(getIsRetreivedClaim).pipe(
+    this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))
     ).subscribe((values) => {
-      this.isRetreivedClaim = values[0];
-      if (this.isRetreivedClaim) {
-        this.fielNumberController.setValue(values[1].caseInformation.patient.patientFileNumber);
+      this.isRetrievedClaim = values[0];
+      if (this.isRetrievedClaim) {
+        this.fileNumberController.setValue(values[1].caseInformation.patient.patientFileNumber);
+        this.fileNumberController.disable({onlySelf: values[1].caseInformation.patient.patientFileNumber != null});
         const illnessDuration = values[1].caseInformation.caseDescription.illnessDuration;
         if (illnessDuration != null) {
           if (illnessDuration.years != null) {
             this.illnessDurationController.setValue(illnessDuration.years);
+            this.illnessDurationController.disable({onlySelf:true});
             this.unitIllness = 'Year';
           } else if (illnessDuration.months != null) {
             this.illnessDurationController.setValue(illnessDuration.months);
+            this.illnessDurationController.disable({onlySelf:true});
             this.unitIllness = 'Month';
           } else if (illnessDuration.days != null) {
             this.illnessDurationController.setValue(illnessDuration.days);
+            this.illnessDurationController.disable({onlySelf:true});
             this.unitIllness = 'Day';
           }
         }
@@ -55,23 +59,29 @@ export class GenInfoComponent implements OnInit {
         if (ageDuration != null) {
           if (ageDuration.years != null) {
             this.ageController.setValue(ageDuration.years);
+            this.ageController.disable({onlySelf:true});
             this.unitAge = 'Year';
           } else if (ageDuration.months != null) {
             this.ageController.setValue(ageDuration.months);
+            this.ageController.disable({onlySelf:true});
             this.unitAge = 'Month';
           } else if (ageDuration.days != null) {
             this.ageController.setValue(ageDuration.days);
+            this.ageController.disable({onlySelf:true});
             this.unitAge = 'Day';
           }
         }
         this.mainSymptomsController.setValue(values[1].caseInformation.caseDescription.chiefComplaintSymptoms);
+        this.mainSymptomsController.disable({onlySelf: values[1].caseInformation.caseDescription.chiefComplaintSymptoms != null});
         const visitDate = values[1].visitInformation.visitDate;
         if(visitDate != null){
           this.claimDateController.setValue(this.datePipe.transform(visitDate, 'yyyy-MM-dd'));
+          this.claimDateController.disable({onlySelf: true});
         }
         const dob = values[1].caseInformation.patient.dob;
         if(dob != null){
           this.memberDobController.setValue(this.datePipe.transform(dob, 'yyyy-MM-dd'));
+          this.memberDobController.disable({onlySelf: true});
         }
       } else {
 
@@ -92,7 +102,7 @@ export class GenInfoComponent implements OnInit {
         this.store.dispatch(updateClaimType({ claimType: this.selectedClaimType }));
         break;
       case ('fileNumber'):
-        this.store.dispatch(updateFileNumber({ fileNumber: this.fielNumberController.value }));
+        this.store.dispatch(updateFileNumber({ fileNumber: this.fileNumberController.value }));
         break;
       case ('memberDob'):
         this.store.dispatch(updateMemberDob({ memberDob: new Date(this.memberDobController.value) }));

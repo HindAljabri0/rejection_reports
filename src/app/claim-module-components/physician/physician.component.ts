@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getClaimType, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getClaimType, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -13,12 +13,14 @@ import { withLatestFrom } from 'rxjs/operators';
 })
 export class PhysicianComponent implements OnInit {
 
-  isRetreivedClaim: boolean = false;
+  isRetrievedClaim: boolean = false;
 
   physicianNameController: FormControl = new FormControl();
   physicianIdController: FormControl = new FormControl();
-  selectedCategery: string;
+  selectedCategory: string;
+  categoryEditable:boolean = true;
   selectedDepartment: string;
+  departmentEditable:boolean = true;
 
   categories: any[] = [];
   departments: any[] = [
@@ -28,27 +30,30 @@ export class PhysicianComponent implements OnInit {
 
   errors: FieldError[] = [];
 
-  constructor(private sharedServices: SharedServices, private store: Store) { }
+  constructor( private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
+    this.store.select(getClaimType).subscribe(type => this.selectedDepartment = type);
 
-    this.store.select(getIsRetreivedClaim).pipe(
+    this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))
     ).subscribe((values) => {
-      this.isRetreivedClaim = values[0];
-      if (this.isRetreivedClaim) {
+      this.isRetrievedClaim = values[0];
+      if (this.isRetrievedClaim) {
         this.physicianIdController.setValue(values[1].caseInformation.physician.physicianID);
+        this.physicianIdController.disable({onlySelf: values[1].caseInformation.physician.physicianID != null})
         this.physicianNameController.setValue(values[1].caseInformation.physician.physicianName);
-        this.selectedCategery = values[1].caseInformation.physician.physicianCategory;
+        this.physicianNameController.disable({onlySelf: values[1].caseInformation.physician.physicianName != null});
+        this.selectedCategory = values[1].caseInformation.physician.physicianCategory;
+        this.categoryEditable = !this.categories.includes(this.selectedCategory);
+        this.departmentEditable = false;
       } else {
 
       }
 
     }).unsubscribe();
-
-    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
-    this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
-    this.store.select(getClaimType).subscribe(type => this.selectedDepartment = type);
   }
 
   updateClaim(field: string) {
@@ -60,7 +65,7 @@ export class PhysicianComponent implements OnInit {
         this.store.dispatch(updatePhysicianName({ physicianName: this.physicianNameController.value }));
         break;
       case 'physicianCategory':
-        this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.selectedCategery }));
+        this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.selectedCategory }));
         break;
       case 'department':
         this.store.dispatch(updateDepartment({ department: this.selectedDepartment }));
@@ -68,8 +73,13 @@ export class PhysicianComponent implements OnInit {
     }
   }
 
-  beautfyCategory(category:string){
-    return category.replace('_', ' ').toLowerCase();
+  beautifyCategory(category:string){
+    let str = category.substr(0, 1) + category.substr(1).toLowerCase();
+    if(str.includes('_')){
+      let split = str.split('_');
+      str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
+    }
+    return str;
   }
 
   fieldHasError(fieldName) {

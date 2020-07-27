@@ -52,7 +52,7 @@ export class CreateByApprovalFormComponent implements OnInit {
     this.store.dispatch(getClaimDataByApproval({
       approvalNumber:this.approvalNumberController.value,
       payerId:`${this.selectedPayer}`,
-      claimType: (this.data.claimType == '2'? 'DENTAL':'OPTICAL'),
+      claimType: (this.data.claimType),
       providerClaimNumber: this.data.providerClaimNumber
     }));
   }

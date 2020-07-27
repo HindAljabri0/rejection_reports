@@ -4,11 +4,11 @@
             <mat-icon>add_circle</mat-icon> Add Diagnosis
         </mat-label>
         <input type="text"  matInput [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()" [readonly]="diagnosisList.length >= 14">
-        <mat-hint *ngIf="diagnosisList.length >= 14">You've reached maximum number of allowed diagnosises 14/14</mat-hint>
+        <mat-hint *ngIf="diagnosisList.length >= 14">You've reached maximum number of allowed diagnosis 14/14</mat-hint>
         <mat-hint *ngIf="fieldHasError('diagnosis') && diagnosisList.length == 0">There must be at least one diagnosis.</mat-hint>
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of icedOptions" (click)="addICDDignosis(option)">
+        <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
             {{option.diagnosisCode}} | {{option.diagnosisDescription}}
         </mat-option>
     </mat-autocomplete>
@@ -25,7 +25,7 @@
                 <td>{{diagnosis.diagnosisCode}}</td>
                 <td style="display: flex;">
                     <div style="margin-right: auto;">{{diagnosis.diagnosisDescription}}</div>
-                    <mat-icon class="removeButton" (click)="removeDiagnosis(diagnosis)" matTooltip="Remove">remove_circle</mat-icon>
+                    <mat-icon *ngIf="!diagnosisController.disabled" class="removeButton" (click)="removeDiagnosis(diagnosis)" matTooltip="Remove">remove_circle</mat-icon>
                 </td>
             </tr>
         </tbody>

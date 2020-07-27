@@ -48,7 +48,7 @@ export class ClaimEffects {
 
     getClaimDataFromApproval$ = createEffect(() => this.actions$.pipe(
         ofType(getClaimDataByApproval),
-        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId, data.payerId, data.approvalNumber, data.claimType).pipe(
+        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId, data.payerId, data.approvalNumber, data.claimType == '2'? 'DENTAL':'OPTICAL').pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.dialog.closeAll();

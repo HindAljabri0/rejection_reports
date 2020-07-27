@@ -101,9 +101,6 @@ export class ClaimValidationService {
     } else if (!this.regaxWithOutSpace.test(fileNumber)) {
       fieldErrors.push({ fieldName: 'fileNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
-    if (mainSymptoms != null && !this.regax.test(mainSymptoms)) {
-      fieldErrors.push({ fieldName: 'mainSymptoms', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
-    }
     if (this._isInvalidDate(memberDob)) {
       fieldErrors.push({ fieldName: 'memberDob' });
     }
@@ -201,6 +198,11 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: `servicePatientShareVatRate:${invoiceIndex}:${serviceIndex}` });
     }
 
+    if(this.claim.visitInformation.departmentCode == '2'){
+      if(service.toothNumber == null){
+        fieldErrors.push({ fieldName: `serviceToothNumber:${invoiceIndex}:${serviceIndex}` });
+      }
+    }
 
     return fieldErrors;
   }

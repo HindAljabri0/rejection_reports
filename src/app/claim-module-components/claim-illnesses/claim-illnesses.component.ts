@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getIllnessCode, getIsRetreivedClaim, getClaim } from '../store/claim.reducer';
+import { getIllnessCode, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
 import { MatButtonToggleChange } from '@angular/material';
 import { updateIllnesses } from '../store/claim.actions';
 import { withLatestFrom } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class ClaimIllnessesComponent implements OnInit, OnDestroy {
 
-  isRetreivedClaim: boolean = false;
+  isRetrievedClaim: boolean = false;
 
   illnessOptionsList: string[] = [];
 
@@ -24,11 +24,11 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   constructor(private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getIsRetreivedClaim).pipe(
+    this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))
     ).subscribe(values => {
-      this.isRetreivedClaim = values[0];
-      if (this.isRetreivedClaim) {
+      this.isRetrievedClaim = values[0];
+      if (this.isRetrievedClaim) {
         this.selectedIllnesses = values[1].caseInformation.caseDescription.illnessCategory.inllnessCode;
         if (this.selectedIllnesses.length == 0)
           this.selectedIllnesses = ['NA'];
@@ -44,8 +44,13 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  beautfyCode(code: string) {
-    return code.replace('_', ' ').replace('_', ' ');
+  beautifyCode(code:string){
+    let str = code.substr(0, 1) + code.substr(1).toLowerCase();
+    if(str.includes('_')){
+      let split = str.split('_');
+      str = split[0] + ' ' + this.beautifyCode(split[1].toUpperCase());
+    }
+    return str;
   }
 
   updateIllnesses(event: MatButtonToggleChange) {

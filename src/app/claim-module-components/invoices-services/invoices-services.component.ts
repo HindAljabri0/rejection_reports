@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetreivedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
-import {  updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
+import { updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
 import { Service } from '../models/service.model';
 import { HttpResponse } from '@angular/common/http';
@@ -26,13 +26,13 @@ export class InvoicesServicesComponent implements OnInit {
     invoiceNumber: FormControl,
     invoiceDate: FormControl,
     services: {
-      retrieved:boolean,
-      serviceNumber:number,
+      retrieved: boolean,
+      serviceNumber: number,
       serviceDate: FormControl,
       serviceCode: FormControl,
       serviceDescription: FormControl,
       unitPrice: FormControl,
-      quntity: FormControl,
+      quantity: FormControl,
       patientShare: FormControl,
       serviceDiscount: FormControl,
       serviceDiscountUnit: 'SAR' | 'PERCENT';
@@ -96,14 +96,14 @@ export class InvoicesServicesComponent implements OnInit {
     ).subscribe(() => { if (this.expandedInvoice != -1) this.createInvoiceFromControl(this.expandedInvoice) });
 
     this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
-      if(data.serviceIndex != null){
+      if (data.serviceIndex != null) {
         const service = data.services[0].service;
         const decision = data.services[0].decision;
         this.editService(service, decision, data.invoiceIndex, data.serviceIndex);
       } else {
         data.services.forEach(s => {
           this.addService(data.invoiceIndex);
-          this.editService(s.service, s.decision, data.invoiceIndex, this.controllers[data.invoiceIndex].services.length -1);
+          this.editService(s.service, s.decision, data.invoiceIndex, this.controllers[data.invoiceIndex].services.length - 1);
         });
       }
     });
@@ -125,11 +125,11 @@ export class InvoicesServicesComponent implements OnInit {
       serviceCode: new FormControl(),
       serviceDescription: new FormControl(),
       unitPrice: new FormControl(0),
-      quntity: new FormControl(0),
+      quantity: new FormControl(0),
       patientShare: new FormControl(0),
       serviceDiscount: new FormControl(0),
       serviceDiscountUnit: 'PERCENT',
-      toothNumber: new FormControl(this.toothNumbers.length > 0? this.toothNumbers[0]:null),
+      toothNumber: new FormControl(this.toothNumbers.length > 0 ? this.toothNumbers[0] : null),
       netVatRate: new FormControl(0),
       patientShareVatRate: new FormControl(0),
       priceCorrection: 0,
@@ -138,23 +138,34 @@ export class InvoicesServicesComponent implements OnInit {
     this.updateClaim();
   }
 
-  editService(service:Service, decision:ServiceDecision, i:number, j:number){
+  editService(service: Service, decision: ServiceDecision, i: number, j: number) {
     this.controllers[i].services[j].retrieved = true;
     this.controllers[i].services[j].serviceNumber = service.serviceNumber;
-    this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'))
+    this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
+    this.controllers[i].services[j].serviceDate.disable({ onlySelf: true });
     this.controllers[i].services[j].serviceCode.setValue(service.serviceCode);
+    this.controllers[i].services[j].serviceCode.disable({ onlySelf: true });
     this.controllers[i].services[j].serviceDescription.setValue(service.serviceDescription);
+    this.controllers[i].services[j].serviceDescription.disable({ onlySelf: true });
     this.controllers[i].services[j].unitPrice.setValue(decision.unitPrice.value);
-    this.controllers[i].services[j].quntity.setValue(decision.approvedQuantity);
+    this.controllers[i].services[j].unitPrice.disable({ onlySelf: true });
+    this.controllers[i].services[j].quantity.setValue(decision.approvedQuantity);
+    this.controllers[i].services[j].quantity.disable({ onlySelf: true });
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
+    this.controllers[i].services[j].patientShare.disable({ onlySelf: true });
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
-    this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT'? 'PERCENT':'SAR';
+    this.controllers[i].services[j].serviceDiscount.disable({ onlySelf: true });
+    this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
+    if (service.toothNumber != null)
+      this.controllers[i].services[j].toothNumber.disable({ onlySelf: true });
     this.controllers[i].services[j].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
+    this.controllers[i].services[j].netVatRate.disable({ onlySelf: true });
     this.controllers[i].services[j].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
+    this.controllers[i].services[j].patientShareVatRate.disable({ onlySelf: true });
     this.controllers[i].services[j].priceCorrection = decision.serviceGDPN.priceCorrection.value;
     this.controllers[i].services[j].rejection = decision.serviceGDPN.rejection.value;
-    this.updateClaim();
+    this.createInvoiceFromControl(i);
   }
 
   afterInvoiceExpanded(i: number) {
@@ -195,13 +206,13 @@ export class InvoicesServicesComponent implements OnInit {
   createInvoiceFromControl(i: number) {
     let invoice: Invoice = new Invoice();
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
-    invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null:new Date(this.controllers[i].invoiceDate.value);
+    invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
-    
+
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
     let GDPN = invoice.invoiceGDPN;
     GDPN.discount.value = invoice.service.map(service => {
-      if(service.serviceGDPN.discount.type == 'PERCENT'){
+      if (service.serviceGDPN.discount.type == 'PERCENT') {
         let discount = (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
         discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
         return discount;
@@ -220,7 +231,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   createServiceFromControl(service) {
-    let gross = service.unitPrice.value * service.quntity.value;
+    let gross = service.unitPrice.value * service.quantity.value;
     gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
     let net = gross - service.patientShare.value;
     if (service.serviceDiscountUnit == 'PERCENT') {
@@ -237,11 +248,11 @@ export class InvoicesServicesComponent implements OnInit {
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     let newService: Service = {
       serviceType: 'NA',
-      serviceDate: service.serviceDate.value == null? null:new Date(service.serviceDate.value),
+      serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
       serviceCode: service.serviceCode.value,
       serviceDescription: service.serviceDescription.value,
-      unitPrice: {value: service.unitPrice.value, type:'SAR'},
-      requestedQuantity: service.quntity.value,
+      unitPrice: { value: service.unitPrice.value, type: 'SAR' },
+      requestedQuantity: service.quantity.value,
       toothNumber: service.toothNumber.value,
       serviceGDPN: {
         patientShare: { value: service.patientShare.value, type: 'SAR' },
@@ -262,7 +273,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].invoice = { ...this.controllers[i].invoice, invoiceDepartment: event.target.value };
   }
 
-  updateServiceToothNumber(i, j, event){
+  updateServiceToothNumber(i, j, event) {
     this.controllers[i].services[j].toothNumber.setValue(event.target.value);
 
   }
@@ -278,13 +289,13 @@ export class InvoicesServicesComponent implements OnInit {
     this.onAddInvoiceClick();
   }
 
-  onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex){
+  onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex) {
     event.stopPropagation();
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
       invoiceIndex: invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
-      invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null? new Date(this.controllers[invoiceIndex].invoiceDate.value):null,
+      invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ? new Date(this.controllers[invoiceIndex].invoiceDate.value) : null,
       serviceIndex: serviceIndex,
     }));
   }
@@ -302,12 +313,12 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
   }
 
-  onAddRetrievedServiceClick(invoiceIndex){
+  onAddRetrievedServiceClick(invoiceIndex) {
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
       invoiceIndex: invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
-      invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null? new Date(this.controllers[invoiceIndex].invoiceDate.value):null,
+      invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ? new Date(this.controllers[invoiceIndex].invoiceDate.value) : null,
       serviceIndex: -1,
     }));
   }
@@ -321,8 +332,8 @@ export class InvoicesServicesComponent implements OnInit {
   onDeleteInvoiceClick(event, i) {
     event.stopPropagation();
     this.controllers[i].services.forEach(s => {
-      if(s.retrieved){
-        this.store.dispatch(makeRetrievedServiceUnused({serviceNumber: s.serviceNumber}));
+      if (s.retrieved) {
+        this.store.dispatch(makeRetrievedServiceUnused({ serviceNumber: s.serviceNumber }));
       }
     });
     this.controllers.splice(i, 1);
@@ -331,8 +342,8 @@ export class InvoicesServicesComponent implements OnInit {
 
   onDeleteServiceClick(event, i, j) {
     event.stopPropagation();
-    if(this.controllers[i].services[j].retrieved){
-      this.store.dispatch(makeRetrievedServiceUnused({serviceNumber: this.controllers[i].services[j].serviceNumber}));
+    if (this.controllers[i].services[j].retrieved) {
+      this.store.dispatch(makeRetrievedServiceUnused({ serviceNumber: this.controllers[i].services[j].serviceNumber }));
     }
     this.controllers[i].services.splice(j, 1);
     this.createInvoiceFromControl(i);
@@ -356,7 +367,7 @@ export class InvoicesServicesComponent implements OnInit {
       );
   }
 
-  selectService(option:string) {
+  selectService(option: string) {
     let code = option.split('|')[0];
     let des = option.split('|')[1];
     this.controllers[this.expandedInvoice].services[this.expandedService].serviceCode.setValue(code.trim());
@@ -365,17 +376,37 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   initToothNumbers() {
-    this.toothNumbers.push('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T');
-    for (let i = 0; i <= 85; i++) {
+    for (let i = 11; i <= 18; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 21; i <= 28; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 31; i <= 38; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 41; i <= 48; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 51; i <= 55; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 61; i <= 65; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 71; i <= 75; i++) {
+      this.toothNumbers.push(`${i}`);
+    }
+    for (let i = 81; i <= 85; i++) {
       this.toothNumbers.push(`${i}`);
     }
   }
 
-  invoiceHasErrors(index){
+  invoiceHasErrors(index) {
     return this.errors.findIndex(error => error.fieldName.split(':')[1] == index) != -1;
   }
 
-  serviceHasErrors(invoiceIndex, serviceIndex){
+  serviceHasErrors(invoiceIndex, serviceIndex) {
     return this.errors.findIndex(error => error.fieldName.includes(`:${invoiceIndex}:${serviceIndex}`)) != -1;
   }
 
