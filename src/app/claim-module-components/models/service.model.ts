@@ -25,7 +25,7 @@ export class Service {
         this.requestedQuantity = 0;
         this.unitPrice = new Amount(0, 'SAR');
         this.serviceGDPN = new GDPN();
-        this.serviceType = 'NA';
+        this.serviceType = 'N/A';
     }
 
     static fromResponse(response): { service: Service, decision: ServiceDecision, used: boolean }[] {
