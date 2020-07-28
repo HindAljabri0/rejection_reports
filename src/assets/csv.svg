@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="280" height="327" viewBox="0 0 280 327">
+  <defs>
+    <clipPath id="clip-CSV_Icon">
+      <rect width="280" height="327"/>
+    </clipPath>
+  </defs>
+  <g id="CSV_Icon" data-name="CSV Icon" clip-path="url(#clip-CSV_Icon)">
+    <path id="Path_367" data-name="Path 367" d="M107.214,0A11.247,11.247,0,0,0,96,11.214V168.209a11.247,11.247,0,0,0,11.214,11.214H219.353a11.247,11.247,0,0,0,11.214-11.214V44.856L185.711,0Z" transform="translate(-20.07 55.59)" fill="#e2e5e7"/>
+    <path id="Path_368" data-name="Path 368" d="M363.214,44.856h33.642L352,0V33.642A11.247,11.247,0,0,0,363.214,44.856Z" transform="translate(-186.359 61.195)" fill="#b0b7bd"/>
+    <path id="Path_369" data-name="Path 369" d="M417.642,161.642,384,128h33.642Z" transform="translate(-207.145 -25.9)" fill="#cad1d8"/>
+    <path id="Path_370" data-name="Path 370" d="M166.567,301.677a5.623,5.623,0,0,1-5.607,5.607H37.607A5.623,5.623,0,0,1,32,301.677v-56.07A5.623,5.623,0,0,1,37.607,240H160.96a5.623,5.623,0,0,1,5.607,5.607Z" transform="translate(21.504 -103.977)" fill="#d1be56"/>
+    <path id="Path_374" data-name="Path 374" d="M202.532,421.607H96v5.607H202.532a5.623,5.623,0,0,0,5.607-5.607V416A5.623,5.623,0,0,1,202.532,421.607Z" transform="translate(-20.07 -221.639)" fill="#cad1d8"/>
+    <text id="CSV" transform="translate(76 184)" fill="#fff" font-size="40" font-family="HelveticaNeue, Helvetica Neue"><tspan x="0" y="0">CSV</tspan></text>
+  </g>
+</svg>

@@ -64,21 +64,32 @@ export class ClaimfileuploadComponent implements OnInit {
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
       /* grab first sheet */
-      const wsname: string = wb.SheetNames[0];
-      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      let ws: XLSX.WorkSheet;
+      if (wb.Sheets.hasOwnProperty('GenInfo'))
+        ws = wb.Sheets['GenInfo'];
+      else {
+        ws = wb.Sheets[wb.SheetNames[0]];
+      }
 
       /* save data */
-      let data = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-      data.splice(0, 1)
-      data.map(row => this.payerIdsFromCurrentFIle.push(row[1]));
-      this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
-      this.checkServiceCode();
+      let data = <AOA>(XLSX.utils.sheet_to_json(ws));
+      if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
+        data.map(row => this.payerIdsFromCurrentFIle.push(row['PAYERID']));
+        this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
+        this.checkServiceCode();
+      } else {
+        this.currentFileUpload = null;
+        this.uploadContainerClass = 'uploadContainerErrorClass';
+        this.error = `Invalid file selected, it doesn't have 'PAYERID' colum`;
+        this.common.loadingChanged.next(false);
+      }
+
     };
     reader.readAsBinaryString(this.currentFileUpload);
   }
 
   checkfile() {
-    const validExts = new Array('.xlsx', '.xls');
+    const validExts = new Array('.xlsx', '.xls', '.csv');
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -155,7 +166,7 @@ export class ClaimfileuploadComponent implements OnInit {
     let isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
     let isServiceCodeVaildationDisabled = this.serviceCodeVaildationDisabledMessages.length > 0;
 
-    if ( isPriseListDoesntExist ||isServiceCodeVaildationDisabled ) {
+    if (isPriseListDoesntExist || isServiceCodeVaildationDisabled) {
       this.dialogService.openMessageDialog({
         title: 'Caution!',
         message: (isServiceCodeVaildationDisabled ? `Service code vaildation is disabled in our system between you and the payer(s): ${this.serviceCodeVaildationDisabledMessages.toString()}. ` : '')

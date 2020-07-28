@@ -8,7 +8,7 @@
                 <table style="text-align: center; margin: 5px 0px 150px 0px;">
                     <tbody>
                         <tr>
-                            <td><img src="assets/xls.svg" alt="{{currentFileUpload.name}}"></td>
+                            <td><img [src]="currentFileUpload.name.endsWith('.csv')? 'assets/csv.svg':'assets/xls.svg'" alt="{{currentFileUpload.name}}"></td>
                         </tr>
                         <tr>
                             <td style="padding: 20px; font-size: large; font-weight: 600;">{{currentFileUpload.name}}
@@ -30,7 +30,7 @@
                     here.<br>{{error}}</p>
                 <input hidden type="file" #fileInput id="file" onclick="this.value = null"
                     (change)="selectFile($event.target.files)"
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .csv" />
             </div>
         </div>
     </div>
