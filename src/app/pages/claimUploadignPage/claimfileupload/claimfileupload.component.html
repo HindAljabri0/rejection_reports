@@ -26,7 +26,7 @@
             </div>
             <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()"
                 appDragdrop (onFileDropped)="selectFile($event)">
-                <p *ngIf="currentFileUpload == undefined" class="containerText">Choose an Excel file or drag it
+                <p *ngIf="currentFileUpload == undefined" class="containerText">Click to choose a file or drag an excel or csv file
                     here.<br>{{error}}</p>
                 <input hidden type="file" #fileInput id="file" onclick="this.value = null"
                     (change)="selectFile($event.target.files)"
