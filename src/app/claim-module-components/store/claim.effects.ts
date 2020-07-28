@@ -65,7 +65,7 @@ export class ClaimEffects {
                 if (err.hasOwnProperty('status') && (err.status == 0 || err.status >= 500)) {
                     return of({ type: setError.type, error: { code: `APPROVAL_ERROR_SERVER`, } });
                 }
-                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType}`, } });
+                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType == '2'? 'DENTAL':'OPTICAL'}`, } });
             })
         ))
     ));
