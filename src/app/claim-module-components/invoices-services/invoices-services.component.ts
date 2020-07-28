@@ -247,7 +247,7 @@ export class InvoicesServicesComponent implements OnInit {
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     let newService: Service = {
-      serviceType: 'NA',
+      serviceType: 'N/A',
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
       serviceCode: service.serviceCode.value,
       serviceDescription: service.serviceDescription.value,
