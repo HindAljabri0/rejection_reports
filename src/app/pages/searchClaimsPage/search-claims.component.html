@@ -4,6 +4,24 @@
             <p>{{errorMessage}}</p>
         </mat-card>
     </div>
+    <div class="wrapper" style="width: 100%; height: 100%;">
+        <div class="overlay" style=" position: absolute;
+        z-index: 1002;
+        background-color: rgba(255, 255, 255, 0.5);
+        width: 100%;
+        height: 100%;" *ngIf="isLoading">
+            <div class="spinner-wrapper" style="display: flex;
+          justify-content: center;
+          justify-items: center;">
+                <mat-spinner diameter="40"></mat-spinner>
+            </div>
+        </div>
+
+        <div class="loaded-content" [class.blurred]="isLoading">
+            <ng-content></ng-content>
+        </div>
+    </div>
+
     <div class="header" *ngIf="errorMessage == null">
         <p *ngIf="uploadNameExist">Upload Name: {{summaries[0].uploadName}}</p>
         <span class="spacer"></span>
@@ -109,8 +127,8 @@
                 <td style="width: 5%; text-align: center;">Status</td>
                 <td style="width: 15%; text-align: center;">
                     <ng-container *ngIf="selectedClaims.length == 0 && !isWaitingForEligibility">
-                        <button style="color: #adadad; width:unset; padding-left: 38%;" mat-icon-button (click)="checkAllClaims()"
-                            matTooltip="Verify All Ready Claims' Eligibility">
+                        <button style="color: #adadad; width:unset; padding-left: 38%;" mat-icon-button
+                            (click)="checkAllClaims()" matTooltip="Verify All Ready Claims' Eligibility">
                             <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
                         </button>
                     </ng-container>
@@ -149,20 +167,24 @@
                 </td>
                 <td style="width: 15%; ">
                     <div style="display: inline-block;">
-                        <button [disabled]="!(claim.numOfPriceListErrors > 0)" [ngStyle]="{'visibility': (claim.numOfPriceListErrors > 0)? 'visible':'hidden'}" style="color: #f59517; width:unset;" mat-icon-button
+                        <button [disabled]="!(claim.numOfPriceListErrors > 0)"
+                            [ngStyle]="{'visibility': (claim.numOfPriceListErrors > 0)? 'visible':'hidden'}"
+                            style="color: #f59517; width:unset;" mat-icon-button
                             [matTooltip]="claim.numOfPriceListErrors + ' service(s) out of price list'">
                             <mat-icon style="font-size:20px">error</mat-icon>
                         </button>
                     </div>
                     <div style="display: inline-block;">
-                        <button [disabled]="!(claim.numOfAttachments > 0)" [ngStyle]="{'visibility': (claim.numOfAttachments > 0)? 'visible':'hidden'}" style="color: #3060AA; width:unset;" mat-icon-button
+                        <button [disabled]="!(claim.numOfAttachments > 0)"
+                            [ngStyle]="{'visibility': (claim.numOfAttachments > 0)? 'visible':'hidden'}"
+                            style="color: #3060AA; width:unset;" mat-icon-button
                             [matTooltip]="claim.numOfAttachments + ' attachments'">
                             <mat-icon style="font-size:20px">attach_file</mat-icon>
                         </button>
                     </div>
                     <div style="display: inline-block;">
                         <button style="color: #3060AA; width:unset;" mat-icon-button
-                        [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed')? 'visible':'hidden'}"
+                            [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed')? 'visible':'hidden'}"
                             [disabled]="!((claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed') && true)"
                             (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
                             <mat-icon style="font-size:20px">edit</mat-icon>
@@ -177,18 +199,21 @@
                     <div style="display: inline-block;">
                         <ng-container
                             *ngIf="claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
-                            <button style="color: #adadad; width:unset;" mat-icon-button (click)="checkClaim(claim.claimId)"
-                                matTooltip="Verify Eligibility">
+                            <button style="color: #adadad; width:unset;" mat-icon-button
+                                (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility">
                                 <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
+                        <ng-container
+                            *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
                             <button style="color: #21B744; width:unset;" mat-icon-button matTooltip="Eligible">
                                 <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                            <button style="color: #E988AD; width:unset;" mat-icon-button [matTooltip]="claim.eligibilitycheck">
+                        <ng-container
+                            *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #E988AD; width:unset;" mat-icon-button
+                                [matTooltip]="claim.eligibilitycheck">
                                 <mat-icon style="font-size:20px">error_outline</mat-icon>
                             </button>
                         </ng-container>

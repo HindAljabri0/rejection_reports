@@ -641,9 +641,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       });
   }
 
-  download() {
+  async download() {
     if (this.detailTopActionText == "check_circle") return;
-    this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).subscribe(event => {
+    this.commen.loadingChanged.next(true);
+    let event;
+    event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).toPromise().catch(error => {
+      if (error instanceof HttpErrorResponse) {
+      this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+    }});
+    
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
           var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
@@ -663,13 +669,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
           a.click();
           this.detailTopActionText = "check_circle";
+          this.commen.loadingChanged.next(false);
         }
       }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-      }
-    });
   }
 
 
