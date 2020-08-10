@@ -16,7 +16,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
@@ -40,6 +40,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
+    this.routerSubscription.unsubscribe();
   }
 
   isViewChecked: boolean = false;
@@ -67,6 +68,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   batchId: string;
   uploadId: string;
   casetype: string;
+  claimId: string;
+  editMode: string;
+  routerSubscription: Subscription;
 
   summaries: SearchStatusSummary[];
   currentSummariesPage: number = 1;
@@ -85,6 +89,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   selectedCardKey: number;
+  selectedPage: number;
 
   errorMessage: string;
 
@@ -99,16 +104,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.fetchData();
-    this.router.events.pipe(
+    this.routerSubscription = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims") && !event.url.includes("/add"))
     ).subscribe(() => {
       this.fetchData();
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null) {
-        this.reloadClaim(value)
+        this.reloadClaim(value);
       }
-    })
+      this.claimId = null;
+      this.editMode = null;
+      this.resetURL();
+    });
     this.submittionErrors = new Map();
   }
 
@@ -126,7 +134,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.errorMessage = null;
     this.routeActive.params.subscribe(value => {
       this.providerId = value.providerId;
-    });
+    }).unsubscribe();
     this.routeActive.queryParams.subscribe(value => {
       this.from = value.from;
       this.to = value.to;
@@ -138,7 +146,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) this.queryStatus = 0;
       if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
       this.casetype = value.casetype;
-    });
+      this.claimId = value.claimId;
+      this.editMode = value.editMode;
+    }).unsubscribe();
     if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '') && (this.uploadId == null || this.uploadId == '')) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
@@ -240,13 +250,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.selectedClaimsCountOfPage = 0;
       this.setAllCheckBoxIsIndeterminate();
     }
+    this.selectedCardKey = key;
+    this.selectedPage = page;
     this.resetURL();
-    if (key != 0) {
-      this.location.go(this.location.path() + `&status=${key}`);
-    }
-    if (page != null && page > 0) {
-      this.location.go(this.location.path() + `&page=${(page + 1)}`);
-    }
+    
+    
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
@@ -257,7 +265,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.detailActionText = null;
       this.detailSubActionText = null;
     }
-    this.selectedCardKey = key;
     this.searchResult = null;
     this.claims = new Array();
 
@@ -286,6 +293,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
       }
       this.commen.loadingChanged.next(false);
+      if (this.claimId != null) {
+        let index = this.claims.findIndex(claim => claim.claimId == this.claimId);
+        if (index != -1) {
+          this.showClaim(this.claims[index].status, this.claimId, (this.editMode != null && this.editMode == 'true'));
+        }
+      }
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if ((error.status / 100).toFixed() == "4") {
@@ -449,19 +462,36 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   resetURL() {
+    if (this.routerSubscription.closed) return;
+    let claimInfo: string = "";
+    if (this.claimId != null) {
+      claimInfo = `&claimId=${this.claimId}`;
+    }
+    if (this.editMode != null) {
+      claimInfo += `&editMode=${this.editMode}`;
+    }
     if (this.from != null && this.to != null && this.payerId != null) {
       this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-        + (this.casetype != null ? `&casetype=${this.casetype}` : ""));
+        + (this.casetype != null ? `&casetype=${this.casetype}` : "") + claimInfo);
     } else if (this.batchId != null) {
-      this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}`);
+      this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo);
     } else if (this.uploadId != null) {
-      this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}`);
+      this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo);
+    }
+    if (this.selectedCardKey != 0) {
+      this.location.go(this.location.path() + `&status=${this.selectedCardKey}`);
+    }
+    if (this.selectedPage != null && this.selectedPage > 0) {
+      this.location.go(this.location.path() + `&page=${(this.selectedPage + 1)}`);
     }
   }
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
     if (this.commen.loading) return;
+    this.claimId = claimId;
+    this.editMode = edit != null? `${edit}`:null;
+    this.resetURL();
     this.commen.loadingChanged.next(true);
     this.attachmentService.getMaxAttachmentAllowed(this.providerId).subscribe(
       event => {

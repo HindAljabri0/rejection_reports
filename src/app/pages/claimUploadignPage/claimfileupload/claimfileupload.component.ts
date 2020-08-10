@@ -80,7 +80,7 @@ export class ClaimfileuploadComponent implements OnInit {
       } else {
         this.currentFileUpload = null;
         this.uploadContainerClass = 'uploadContainerErrorClass';
-        this.error = `Invalid file selected, it doesn't have 'PAYERID' colum`;
+        this.error = `Invalid file selected, it doesn't have 'PAYERID' column`;
         this.common.loadingChanged.next(false);
       }
 

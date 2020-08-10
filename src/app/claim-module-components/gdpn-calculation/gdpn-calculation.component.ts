@@ -12,13 +12,11 @@ export class GdpnCalculationComponent implements OnInit {
 
   claim: Claim;
   selectedInvoice: number;
-  selectedService: number;
 
   constructor(private store: Store) {
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getSelectedGDPN).subscribe(indexes => {
       this.selectedInvoice = indexes.invoiceIndex == null ? -1 : indexes.invoiceIndex;
-      this.selectedService = indexes.serviceIndex == null ? -1 : indexes.serviceIndex;
     });
   }
 

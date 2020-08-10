@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -17,6 +17,8 @@ import { ApprovalInquiryService } from '../services/approvalInquiryService/appro
 import { Claim } from '../models/claim.model';
 import { Service } from '../models/service.model';
 import { SelectServiceDialogComponent } from '../dialogs/select-service-dialog/select-service-dialog.component';
+import { OnSavingDoneComponent } from '../dialogs/on-saving-done/on-saving-done.component';
+import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
 
 
 @Injectable({
@@ -110,7 +112,7 @@ export class ClaimEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.store.dispatch(setLoading({ loading: false }));
-                return viewThisMonthClaims({ uploadId: value[1].claimIdentities.uploadID });
+                return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, value[1].claimIdentities.uploadID));
             }),
             catchError(err => {
                 let status = '';
@@ -127,9 +129,24 @@ export class ClaimEffects {
         ))
     ));
 
+    openOnSavingDoneDialog$ = createEffect(() => this.actions$.pipe(
+        ofType(showOnSaveDoneDialog),
+        tap(data => this.dialog.open(OnSavingDoneComponent, {
+            data: data,
+            closeOnNavigation: true,
+            width: '40%',
+        }))
+    ), { dispatch: false });
+
     viewThisMonthClaims$ = createEffect(() => this.actions$.pipe(
         ofType(viewThisMonthClaims),
-        tap(value => this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId } })),
+        tap(value => {
+            if(value.claimId != null){
+                this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId, claimId: value.claimId, editMode:value.editMode || false } });
+            } else {
+                this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId } });
+            }
+        }),
         map(() => cancelClaim())
     ));
 

@@ -99,45 +99,67 @@
                             </button>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
-                    <table>
+                    <div class="serviceAutoCalc">
+                        <div class="left autoCalcElement">
+                            <label>Gross Amount</label>
+                            <h3>{{calcGross(controllers[i].services[j])}}</h3>
+                        </div>
+                        <div class="middle autoCalcElement">
+                            <div style="display: flex;">
+                                <label>Net Amount</label>
+                                <span class="spacer"></span>
+                                <label>Vat</label>
+                            </div>
+                            <div style="display: flex;">
+                                <h3>{{calcNet(controllers[i].services[j])}}</h3>
+                                <span class="spacer"></span>
+                                <h3>{{calcNetVat(controllers[i].services[j])}}</h3>
+                            </div>
+                        </div>
+                        <div class="right autoCalcElement">
+                            <label>Patient Share Vat Amount</label>
+                            <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
+                        </div>
+                    </div>
+                    <table class="serviceDetailsForm">
                         <tr>
-                            <td><label>Service Date*</label></td>
                             <td><label>Service Code*</label></td>
-                            <td colspan="2"><label>Service Description*</label></td>
-                        </tr>
-                        <tr>
-                            <td [matTooltip]="getFieldError('serviceDate:'+i+':'+j)"><input
-                                    [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"
-                                    [formControl]="service.serviceDate"></td>
                             <td [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"
                                     [formControl]="service.serviceCode">
                                 <span *ngIf="!service.retrieved" class="selectServiceButton"
                                     [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                             </td>
-                            <td [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)" colspan="2"><input
+                            <td><label>Service Description*</label></td>
+                            <td [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('serviceDescription:'+i+':'+j)}"
                                     [formControl]="service.serviceDescription" type="text"></td>
                         </tr>
                         <tr>
+                            <td><label>Service Date*</label></td>
+                            <td [matTooltip]="getFieldError('serviceDate:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"
+                                    [formControl]="service.serviceDate"></td>
                             <td><label>Unit Price*</label></td>
-                            <td><label>Quantity*</label></td>
-                            <td><label>Patient Share</label></td>
-                            <td><label>Service Discount</label></td>
-                        </tr>
-                        <tr>
                             <td [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}" type="number"
                                     [formControl]="service.unitPrice"><span class="amountType">SAR</span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td><label>Quantity*</label></td>
                             <td [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('serviceQuantity:'+i+':'+j)}" type="text"
                                     [formControl]="service.quantity"></td>
+                            <td><label>Patient Share</label></td>
                             <td [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('servicePatientShare:'+i+':'+j)}"
                                     type="number" [formControl]="service.patientShare"><span
                                     class="amountType">SAR</span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td><label>Service Discount</label></td>
                             <td [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceDiscount:'+i+':'+j)}"
                                     type="number" [formControl]="service.serviceDiscount">
@@ -145,30 +167,28 @@
                                     [ngClass]="{'amountTypePerecent': service.serviceDiscountUnit == 'PERCENT'}"
                                     (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit == 'SAR'? 'SAR':'%'}}</span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td *ngIf="claimType == '2'"><label>Tooth Number*</label></td>
                             <td><label>Net Vat Rate*</label></td>
-                            <td><label>Patient Share Vat Rate*</label></td>
+                            <td [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}"
+                                    type="number" [formControl]="service.netVatRate"><span
+                                    class="amountType amountTypePerecent">%</span></td>
                         </tr>
                         <tr>
+                            <td><label>Patient Share Vat Rate*</label></td>
+                            <td [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)"><input
+                                    [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}"
+                                    type="number" [formControl]="service.patientShareVatRate"><span
+                                    class="amountType amountTypePerecent">%</span></td>
+                            <td *ngIf="claimType == '2'"><label>Tooth Number*</label></td>
                             <td *ngIf="claimType == '2'">
                                 <select (change)="updateServiceToothNumber(i, j, $event)"
-                                [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
+                                    [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
                                     [disabled]="service.toothNumber.disabled" [value]="service.toothNumber.value"
                                     required>
                                     <option *ngFor="let number of toothNumbers" [value]="number">
                                         {{number}}</option>
                                 </select>
                             </td>
-                            <td [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)"><input
-                                    [ngClass]="{'fieldError': fieldHasError('serviceNetVatRate:'+i+':'+j)}"
-                                    type="number" [formControl]="service.netVatRate"><span
-                                    class="amountType amountTypePerecent">%</span></td>
-                            <td [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)"><input
-                                    [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}"
-                                    type="number" [formControl]="service.patientShareVatRate"><span
-                                    class="amountType amountTypePerecent">%</span></td>
                         </tr>
                     </table>
                 </mat-expansion-panel>

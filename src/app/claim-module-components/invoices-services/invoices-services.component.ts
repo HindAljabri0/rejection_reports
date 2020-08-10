@@ -80,7 +80,7 @@ export class InvoicesServicesComponent implements OnInit {
 
     this.store.select(getSelectedTab).subscribe(index => {
       if (index == 3) {
-        this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+        this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
       } else {
         this.store.dispatch(selectGDPN({}));
       }
@@ -152,17 +152,13 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].quantity.setValue(decision.approvedQuantity);
     this.controllers[i].services[j].quantity.disable({ onlySelf: true });
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
-    this.controllers[i].services[j].patientShare.disable({ onlySelf: true });
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
-    this.controllers[i].services[j].serviceDiscount.disable({ onlySelf: true });
     this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
     if (service.toothNumber != null)
       this.controllers[i].services[j].toothNumber.disable({ onlySelf: true });
     this.controllers[i].services[j].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
-    this.controllers[i].services[j].netVatRate.disable({ onlySelf: true });
     this.controllers[i].services[j].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
-    this.controllers[i].services[j].patientShareVatRate.disable({ onlySelf: true });
     this.controllers[i].services[j].priceCorrection = decision.serviceGDPN.priceCorrection.value;
     this.controllers[i].services[j].rejection = decision.serviceGDPN.rejection.value;
     this.createInvoiceFromControl(i);
@@ -170,24 +166,24 @@ export class InvoicesServicesComponent implements OnInit {
 
   afterInvoiceExpanded(i: number) {
     this.expandedInvoice = i;
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   afterServiceExpanded(j: number) {
     this.expandedService = j;
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   afterInvoiceCollapse(i: number) {
     this.expandedInvoice = -1;
     this.expandedService = -1;
     this.createInvoiceFromControl(i);
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   afterServiceCollapse(invoiceIndex, serviceIndex) {
     this.expandedService = -1
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   fieldHasError(fieldName) {
@@ -231,21 +227,10 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   createServiceFromControl(service) {
-    let gross = service.unitPrice.value * service.quantity.value;
-    gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
-    let net = gross - service.patientShare.value;
-    if (service.serviceDiscountUnit == 'PERCENT') {
-      net -= (net * (service.serviceDiscount.value / 100));
-    } else {
-      net -= service.serviceDiscount.value;
-    }
-    net += service.priceCorrection;
-    net -= service.rejection;
-    net = Number.parseFloat(net.toPrecision(net.toFixed().length + 2));
-    let netVat = (net * (service.netVatRate.value / 100));
-    netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
-    let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
-    patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
+    let gross = this.calcGross(service);
+    let net = this.calcNet(service, gross);
+    let netVat = this.calcNetVat(service, net);
+    let patientShareVATamount = this.calcPatientVatRate(service);
     let newService: Service = {
       serviceType: 'N/A',
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
@@ -267,6 +252,39 @@ export class InvoicesServicesComponent implements OnInit {
       },
     };
     return newService;
+  }
+
+  calcGross(service){
+    let gross = service.unitPrice.value * service.quantity.value;
+    gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
+    return gross;
+  }
+
+  calcNet(service, gross?){
+    if(gross == null) gross = this.calcGross(service);
+    let net = gross - service.patientShare.value;
+    if (service.serviceDiscountUnit == 'PERCENT') {
+      net -= (net * (service.serviceDiscount.value / 100));
+    } else {
+      net -= service.serviceDiscount.value;
+    }
+    net += service.priceCorrection;
+    net -= service.rejection;
+    net = Number.parseFloat(net.toPrecision(net.toFixed().length + 2));
+    return net;
+  }
+
+  calcNetVat(service, net?){
+    if(net == null) net = this.calcNet(service);
+    let netVat = (net * (service.netVatRate.value / 100));
+    netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
+    return netVat;
+  }
+
+  calcPatientVatRate(service){
+    let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
+    patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
+    return patientShareVATamount;
   }
 
   updateInvoiceDepartment(i, event) {
@@ -310,7 +328,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.addInvoice();
     this.expandedInvoice = this.controllers.length - 1;
     this.expandedService = 0;
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   onAddRetrievedServiceClick(invoiceIndex) {
@@ -326,7 +344,7 @@ export class InvoicesServicesComponent implements OnInit {
   onAddServiceClick(invoiceIndex) {
     this.addService(invoiceIndex);
     this.expandedService = this.controllers[invoiceIndex].services.length - 1;
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice, serviceIndex: this.expandedService }));
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   onDeleteInvoiceClick(event, i) {

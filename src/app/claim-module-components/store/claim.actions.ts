@@ -8,6 +8,7 @@ import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-a
 import { Service } from '../models/service.model';
 import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
 import { ServiceDecision } from '../models/serviceDecision.model';
+import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
 
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{approvalNumber:string, payerId:string, claimType:string, providerClaimNumber:string}>())
@@ -19,7 +20,8 @@ export const setError = createAction('[ Claim ] set error', props<{ error: any }
 export const getUploadId = createAction('[ Claim ] get this month upload ID', props<{ providerId: string }>());
 export const setUploadId = createAction('[ Claim ] set upload id', props<{ id: any }>());
 export const saveClaim = createAction('[ Claim ] save the claim');
-export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{ uploadId: number }>());
+export const showOnSaveDoneDialog = createAction('[ Claim ] show message dialog after saving is done', props<OnSavingDoneDialogData>());
+export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{ uploadId: number, claimId?:string, editMode?:boolean }>());
 export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
@@ -60,4 +62,4 @@ export const openSelectServiceDialog = createAction('[ Invoices & Services ] ope
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{services:{service:Service, decision:ServiceDecision}[], invoiceIndex: number, serviceIndex?: number}>());
 export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{serviceNumber:number}>());
 
-export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number, serviceIndex?: number }>());
+export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number }>());

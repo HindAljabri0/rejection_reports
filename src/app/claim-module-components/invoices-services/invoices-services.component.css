@@ -90,6 +90,42 @@ td input:focus, td select:focus{
     color: #3060AA;
 }
 
+.serviceAutoCalc{
+    display: grid;
+    grid-template: auto 1fr auto / auto 1fr auto;
+}
+
+.serviceAutoCalc .left{
+    grid-column: 1 / 2;
+}
+
+.serviceAutoCalc .middle{
+    grid-column: 2 / 3;
+}
+
+.serviceAutoCalc .right{
+    grid-column: 3 / 4;
+}
+
+.autoCalcElement{
+    border: 1px solid #3061aaa9;
+    border-radius: 5px;
+    background-color: #acc7f8;
+    color: #3060AA;
+    margin: 5px;
+    padding: 10px;
+}
+
+.serviceDetailsForm td:nth-child(odd){
+    width: 15%;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.serviceDetailsForm td:nth-child(even){
+    width: 35%;
+}
+
 ::ng-deep.cdk-overlay-pane{
     min-width: fit-content;
 }
