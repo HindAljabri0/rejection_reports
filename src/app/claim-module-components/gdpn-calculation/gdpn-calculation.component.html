@@ -75,31 +75,5 @@
                 </tr>
             </tbody>
         </table>
-        <hr>
-        <div *ngIf="selectedService != -1 && claim.invoice[selectedInvoice].service[selectedService] != null">
-            <p>Service {{selectedService+1}}</p>
-            <table>
-                <tbody>
-                    <tr>
-                        <td><label>Gross Amount</label></td>
-                        <td><label>{{claim.invoice[selectedInvoice].service[selectedService].serviceGDPN.gross.value}}</label></td>
-
-                    </tr>
-                    <tr>
-                        <td><label>Net Amount</label></td>
-                        <td><label>{{claim.invoice[selectedInvoice].service[selectedService].serviceGDPN.net.value}}</label></td>
-                    </tr>
-                    <tr>
-                        <td><label>Net VAT Amount</label></td>
-                        <td><label>{{claim.invoice[selectedInvoice].service[selectedService].serviceGDPN.netVATamount.value}}</label></td>
-                    </tr>
-                    <tr>
-                        <td><label>Patient Share VAT Amount</label></td>
-                        <td><label>{{claim.invoice[selectedInvoice].service[selectedService].serviceGDPN.patientShareVATamount.value}}</label>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>

@@ -62,4 +62,4 @@ export const openSelectServiceDialog = createAction('[ Invoices & Services ] ope
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{services:{service:Service, decision:ServiceDecision}[], invoiceIndex: number, serviceIndex?: number}>());
 export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{serviceNumber:number}>());
 
-export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number, serviceIndex?: number }>());
+export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number }>());
