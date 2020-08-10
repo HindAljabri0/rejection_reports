@@ -1,0 +1,11 @@
+<h1 mat-dialog-title style="color: #3060AA;">Claim was Saved with status: <span [style.color]="getStatusColor()">{{getStatusText()}}</span><span *ngIf="isNotAccepted"> because</span></h1>
+<div mat-dialog-content>
+    <div *ngIf="isNotAccepted">
+        <p *ngFor="let error of errors">{{error}}</p>
+    </div>
+</div>
+<div mat-dialog-actions >
+    <button class="formElement" mat-button color="primary" (click)="onViewAllClaimsClicked()">View All Claims</button>
+    <button class="formElement" mat-raised-button color="primary" style="margin-left: auto;" (click)="onCreateAnotherClaimClicked()">Create Another Claim</button>
+    <button class="formElement" mat-raised-button color="primary" (click)="onViewClaimClicked()">{{isNotAccepted? 'Edit':'View'}} Claim</button>
+</div>
