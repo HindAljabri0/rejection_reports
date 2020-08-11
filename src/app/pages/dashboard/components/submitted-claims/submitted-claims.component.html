@@ -1,0 +1,114 @@
+<div class="parent">
+    <app-abstractcard title="All Claims After Submission" [accentColor]="getCardColor('all')" [clickable]="false">
+        <label>No. of Claims</label>
+        <h6>{{allClaimsSummary.totalClaims}}</h6>
+        <div style="display: flex;">
+            <div class="box" style="width: 30%;">
+                <label>Gross</label>
+                <h6>{{allClaimsSummary.gross}}<span class="currency"> SR</span></h6>
+            </div>
+            <div class="box" style="width: 70%;">
+                <div style="display: flex;">
+                    <label>Net Amount</label>
+                    <span class="spacer"></span>
+                    <label>Vat</label>
+                </div>
+                <div style="display: flex;">
+                    <h6>{{allClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
+                    <span class="spacer"></span>
+                    <h6>{{allClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                </div>
+            </div>
+        </div>
+    </app-abstractcard>
+    <app-abstractcard [title]="getCardName('Paid')" [accentColor]="getCardColor('Paid')" [clickable]="false">
+        <label>No. of Claims</label>
+        <h6>{{paidClaimsSummary.totalClaims}}</h6>
+        <div style="display: flex;">
+            <div class="box" style="width: 30%;">
+                <label>Gross</label>
+                <h6>{{paidClaimsSummary.gross}}<span class="currency"> SR</span></h6>
+            </div>
+            <div class="box" style="width: 70%;">
+                <div style="display: flex;">
+                    <label>Net Amount</label>
+                    <span class="spacer"></span>
+                    <label>Vat</label>
+                </div>
+                <div style="display: flex;">
+                    <h6>{{paidClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
+                    <span class="spacer"></span>
+                    <h6>{{paidClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                </div>
+            </div>
+        </div>
+    </app-abstractcard>
+    <app-abstractcard [title]="getCardName('PARTIALLY PAID')" [accentColor]="getCardColor('PARTIALLY PAID')"
+        [clickable]="false">
+        <label>No. of Claims</label>
+        <h6>{{partiallyPaidClaimsSummary.totalClaims}}</h6>
+        <div style="display: flex;">
+            <div class="box" style="width: 30%;">
+                <label>Gross</label>
+                <h6>{{partiallyPaidClaimsSummary.gross}}<span class="currency"> SR</span></h6>
+            </div>
+            <div class="box" style="width: 70%;">
+                <div style="display: flex;">
+                    <label>Net Amount</label>
+                    <span class="spacer"></span>
+                    <label>Vat</label>
+                </div>
+                <div style="display: flex;">
+                    <h6>{{partiallyPaidClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
+                    <span class="spacer"></span>
+                    <h6>{{partiallyPaidClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                </div>
+            </div>
+        </div>
+    </app-abstractcard>
+    <app-abstractcard [title]="getCardName('REJECTED')" [accentColor]="getCardColor('REJECTED')" [clickable]="false">
+        <label>No. of Claims</label>
+        <h6>{{rejectedClaimsSummary.totalClaims}}</h6>
+        <div style="display: flex;">
+            <div class="box" style="width: 30%;">
+                <label>Gross</label>
+                <h6>{{rejectedClaimsSummary.gross}}<span class="currency"> SR</span></h6>
+            </div>
+            <div class="box" style="width: 70%;">
+                <div style="display: flex;">
+                    <label>Net Amount</label>
+                    <span class="spacer"></span>
+                    <label>Vat</label>
+                </div>
+                <div style="display: flex;">
+                    <h6>{{rejectedClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
+                    <span class="spacer"></span>
+                    <h6>{{rejectedClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                </div>
+            </div>
+        </div>
+    </app-abstractcard>
+    <app-abstractcard [title]="getCardName('OUTSTANDING')" [accentColor]="getCardColor('OUTSTANDING')"
+        [clickable]="false">
+        <label>No. of Claims</label>
+        <h6>{{underProcessingClaimsSummary.totalClaims}}</h6>
+        <div style="display: flex;">
+            <div class="box" style="width: 30%;">
+                <label>Gross</label>
+                <h6>{{underProcessingClaimsSummary.gross}}<span class="currency"> SR</span></h6>
+            </div>
+            <div class="box" style="width: 70%;">
+                <div style="display: flex;">
+                    <label>Net Amount</label>
+                    <span class="spacer"></span>
+                    <label>Vat</label>
+                </div>
+                <div style="display: flex;">
+                    <h6>{{underProcessingClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
+                    <span class="spacer"></span>
+                    <h6>{{underProcessingClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                </div>
+            </div>
+        </div>
+    </app-abstractcard>
+</div>

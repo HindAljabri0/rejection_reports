@@ -50,6 +50,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
 import { AppRoutingModule } from './modules/app-routing.module';
+import { SearchCriteriaComponent } from './pages/dashboard/components/search-criteria/search-criteria.component';
+import { NonSubmittedClaimsComponent } from './pages/dashboard/components/non-submitted-claims/non-submitted-claims.component';
+import { SubmittedClaimsComponent } from './pages/dashboard/components/submitted-claims/submitted-claims.component';
+import { dashboardReducer } from './pages/dashboard/store/dashboard.effects';
 
 
 
@@ -89,10 +93,13 @@ import { AppRoutingModule } from './modules/app-routing.module';
     RejectionReportComponent,
     ReusableSearchBarComponent,
     LanguageSwitcherComponent,
+    SearchCriteriaComponent,
+    NonSubmittedClaimsComponent,
+    SubmittedClaimsComponent,
   ],
   imports: [
     AppRoutingModule,
-    StoreModule.forRoot([]),
+    StoreModule.forRoot([dashboardReducer]),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserModule,
@@ -135,6 +142,8 @@ import { AppRoutingModule } from './modules/app-routing.module';
     ClaimDialogComponent,
     PaymentClaimDetailDailogComponent,
     RejectionReportClaimDialogComponent,
+    NonSubmittedClaimsComponent,
+    SubmittedClaimsComponent,
   ],
 })
 export class AppModule {}

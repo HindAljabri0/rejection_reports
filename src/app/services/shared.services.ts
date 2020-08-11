@@ -63,25 +63,26 @@ export class SharedServices {
   getUploadId: any;
 
   constructor(public authService: AuthService,
-              private router: Router,
-              private notifications: NotificationsService,
-              private announcements: AnnouncementsService,
-              private uploadService: UploadService
-              ) {
-    
-    
+    private router: Router,
+    private notifications: NotificationsService,
+    private announcements: AnnouncementsService,
+    private uploadService: UploadService
+  ) {
+
+
     this.loadingChanged.subscribe((value) => {
       this.loading = value;
     });
-    
+
     this.searchIsOpenChange.subscribe(value => {
       this.searchIsOpen = value;
     });
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
-      if (value) { this.showUploadHistoryCenterChange.next(false);
-                   this.showAnnouncementCenterChange.next(false);
-                 }
+      if (value) {
+        this.showUploadHistoryCenterChange.next(false);
+        this.showAnnouncementCenterChange.next(false);
+      }
     });
     this.unReadNotificationsCountChange.subscribe(value => {
       this.unReadNotificationsCount = value;
@@ -91,13 +92,17 @@ export class SharedServices {
     });
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
-      if (value) { this.showUploadHistoryCenterChange.next(false);
-                   this.showNotificationCenterChange.next(false); }
+      if (value) {
+        this.showUploadHistoryCenterChange.next(false);
+        this.showNotificationCenterChange.next(false);
+      }
     });
     this.showUploadHistoryCenterChange.subscribe(value => {
       this.showUploadHistoryCenter = value;
-      if (value) { this.showNotificationCenterChange.next(false);
-                   this.showAnnouncementCenterChange.next(false); }
+      if (value) {
+        this.showNotificationCenterChange.next(false);
+        this.showAnnouncementCenterChange.next(false);
+      }
     });
     this.announcementsCountChange.subscribe(value => {
       this.announcementsCount = value;
@@ -176,7 +181,7 @@ export class SharedServices {
 
   getUploadHistory() {
     if (this.providerId == null) return;
-    
+
     this.uploadService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.uploadHistoryListChange.next(event.body["content"]);
@@ -220,7 +225,15 @@ export class SharedServices {
       case '-':
         return '#bebebe';
       case ClaimStatus.REJECTED.toLowerCase():
-        return '#E988AD';
+        return '#FD76B5';
+      case ClaimStatus.PAID.toLowerCase():
+        return '#009633';
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase():
+        return '#00CED4';
+      case ClaimStatus.OUTSTANDING.toLowerCase():
+        return '#F3A264';
+      case ClaimStatus.Batched.toLowerCase():
+        return '#F3D34B'
       default:
         return '#E3A820';
     }
@@ -239,20 +252,22 @@ export class SharedServices {
       case ClaimStatus.REJECTED.toLowerCase():
         return 'Rejected by Payer';
       case ClaimStatus.Batched.toLowerCase():
-        return 'Undersubmission';
+        return 'Under Submission';
+      case ClaimStatus.OUTSTANDING.toLowerCase():
+        return 'Under Processing';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
   }
 
-  getPayersList():{id:number, name:string, arName:string}[]{
-    let payers:{id:number, name:string, arName:string}[] = [];
+  getPayersList(): { id: number, name: string, arName: string }[] {
+    let payers: { id: number, name: string, arName: string }[] = [];
     const payersStr = localStorage.getItem('payers');
-    if(payersStr != null){
+    if (payersStr != null) {
       const payersStrSplitted = payersStr.split('|');
       payersStrSplitted.map(value => payers.push({
         id: Number.parseInt(value.split(':')[0]),
-        name:value.split(':')[1].split(',')[0],
+        name: value.split(':')[1].split(',')[0],
         arName: value.split(':')[1].split(',')[1]
       }));
     }

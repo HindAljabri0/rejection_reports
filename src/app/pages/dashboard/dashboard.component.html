@@ -1,23 +1,15 @@
 <div class="mainPage">
-  <div class="dashboardCriteria">
-
-  </div>
-
+  <app-search-criteria></app-search-criteria>
   <div class="dashboardElementList" cdkDropList (cdkDropListDropped)="drop($event)">
-    <section class="dashboardElement" *ngFor="let section of dashboardSections" cdkDrag>
-      <header style="display: flex;">
-        <h5>{{section.label}}</h5>
-        <span class="spacer"></span>
-        <div style="cursor: grab;" cdkDragHandle>
-          <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-            </path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg>
-        </div>
+    <section class="dashboardElement" *ngFor="let section of dashboardSections; let i = index;" cdkDrag>
+      <header style="display: flex; place-items: center;">
+        <h5 cdkDragHandle style="cursor: grab;">{{section.label}}</h5>
+        <h3 *cdkDragPreview>{{section.label}}</h3>
+        <div class="custom-placeholder" *cdkDragPlaceholder></div>
       </header>
-      <div></div>
+      <div style="margin: 50px 0px;">
+        <ng-container *ngComponentOutlet="section.key"></ng-container>
+      </div>
     </section>
   </div>
 </div>
