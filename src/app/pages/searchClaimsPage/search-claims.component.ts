@@ -648,7 +648,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).toPromise().catch(error => {
       if (error instanceof HttpErrorResponse) {
       this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-    }});
+    }
+    this.commen.loadingChanged.next(false);
+  });
     
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
