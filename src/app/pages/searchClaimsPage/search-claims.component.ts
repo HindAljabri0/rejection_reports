@@ -1,11 +1,10 @@
 import { AttachmentService } from './../../services/attachmentService/attachment.service';
-import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef, OnDestroy, NgZone, } from '@angular/core';
+import { Component, OnInit,  AfterViewChecked, OnDestroy } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
-import { HttpResponse, HttpErrorResponse, HttpEventType, HttpEvent } from '@angular/common/http';
-import { MatPaginator } from '@angular/material';
+import { HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
 import { Location } from '@angular/common';
 import { ClaimStatus } from 'src/app/models/claimStatus';
@@ -157,11 +156,13 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if (status == ClaimStatus.INVALID) continue;
       let statusCode;
       if (status == ClaimStatus.OUTSTANDING) {
-        statusCode = await this.getSummaryOfStatus([status, 'PENDING']);
+        statusCode = await this.getSummaryOfStatus([status, 'PENDING', 'UNDER_PROCESS']);
       } else if (status == ClaimStatus.REJECTED) {
         statusCode = await this.getSummaryOfStatus([status, 'INVALID', 'DUPLICATE']);
       } else if (status == ClaimStatus.Accepted) {
         statusCode = await this.getSummaryOfStatus([status, 'Failed']);
+      } else if (status == ClaimStatus.PAID) {
+        statusCode = await this.getSummaryOfStatus([status, 'SETTLED'])
       } else
         statusCode = await this.getSummaryOfStatus([status]);
       if (statusCode != 200) {
@@ -253,8 +254,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.selectedCardKey = key;
     this.selectedPage = page;
     this.resetURL();
-    
-    
+
+
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
@@ -490,7 +491,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
     if (this.commen.loading) return;
     this.claimId = claimId;
-    this.editMode = edit != null? `${edit}`:null;
+    this.editMode = edit != null ? `${edit}` : null;
     this.resetURL();
     this.commen.loadingChanged.next(true);
     this.attachmentService.getMaxAttachmentAllowed(this.providerId).subscribe(
@@ -647,33 +648,33 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let event;
     event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).toPromise().catch(error => {
       if (error instanceof HttpErrorResponse) {
-      this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-    }
-    this.commen.loadingChanged.next(false);
-  });
-    
-      if (event instanceof HttpResponse) {
-        if (navigator.msSaveBlob) { // IE 10+
-          var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-          navigator.msSaveBlob(blob, exportedFilenmae);
-        } else {
-          var a = document.createElement("a");
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
-          a.target = '_blank';
-          if (this.from != null) {
-            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          } else if (this.batchId != null) {
-            a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-          } else {
-            a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
-          }
-
-          a.click();
-          this.detailTopActionText = "check_circle";
-          this.commen.loadingChanged.next(false);
-        }
+        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
+      this.commen.loadingChanged.next(false);
+    });
+
+    if (event instanceof HttpResponse) {
+      if (navigator.msSaveBlob) { // IE 10+
+        var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+        var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+        navigator.msSaveBlob(blob, exportedFilenmae);
+      } else {
+        var a = document.createElement("a");
+        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+        a.target = '_blank';
+        if (this.from != null) {
+          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+        } else if (this.batchId != null) {
+          a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
+        } else {
+          a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
+        }
+
+        a.click();
+        this.detailTopActionText = "check_circle";
+        this.commen.loadingChanged.next(false);
+      }
+    }
   }
 
 

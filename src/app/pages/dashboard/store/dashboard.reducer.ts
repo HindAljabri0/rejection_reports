@@ -26,10 +26,10 @@ const initState: DashboardStatus = {
     acceptedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed']) },
     notAcceptedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['NotAccepted']) },
     underSubmissionClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['Batched']) },
-    paidClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['PAID']) },
+    paidClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['PAID', 'SETTLED']) },
     partiallyPaidClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['PARTIALLY_PAID']) },
     rejectedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['REJECTED', 'INVALID', 'DUPLICATE']) },
-    underProcessingClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['OUTSTANDING', 'PENDING']) },
+    underProcessingClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['OUTSTANDING', 'PENDING', 'UNDER_PROCESS']) },
 }
 
 const _dashboardReducer = createReducer(

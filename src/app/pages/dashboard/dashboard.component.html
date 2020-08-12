@@ -1,13 +1,18 @@
 <div class="mainPage">
-  <app-search-criteria></app-search-criteria>
-  <div class="dashboardElementList" cdkDropList (cdkDropListDropped)="drop($event)">
-    <section class="dashboardElement" *ngFor="let section of dashboardSections; let i = index;" cdkDrag>
+  <div style="margin-top: 125px; width: 100%; display: flex;">
+    <span class="spacer"></span>
+    <app-search-criteria></app-search-criteria>
+  </div>
+  <div class="dashboardElementList">
+    <!-- <div class="dashboardElementList" cdkDropList (cdkDropListDropped)="drop($event)"> -->
+    <section class="dashboardElement" *ngFor="let section of dashboardSections; let i = index;">
+      <!-- <section class="dashboardElement" *ngFor="let section of dashboardSections; let i = index;" cdkDrag> -->
       <header style="display: flex; place-items: center;">
-        <h5 cdkDragHandle style="cursor: grab;">{{section.label}}</h5>
-        <h3 *cdkDragPreview>{{section.label}}</h3>
-        <div class="custom-placeholder" *cdkDragPlaceholder></div>
+        <h5 style="padding-left: 40px;">{{section.label}}</h5>
+        <!-- <h5 cdkDragHandle style="cursor: grab;">{{section.label}}</h5> -->
+        <!-- <div class="custom-placeholder" *cdkDragPlaceholder></div> -->
       </header>
-      <div style="margin: 50px 0px;">
+      <div style="margin: 20px 0px 50px 0px;">
         <ng-container *ngComponentOutlet="section.key"></ng-container>
       </div>
     </section>
