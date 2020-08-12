@@ -1,91 +1,37 @@
 <div class="parent">
-    <app-abstractcard title="All Claims Before Submission" [accentColor]="getCardColor('all')" [clickable]="false">
-        <label>No. of Claims</label>
-        <h6>{{allClaimsSummary.totalClaims}}</h6>
-        <div style="display: flex;">
-            <div class="box" style="width: 30%;">
-                <label>Gross</label>
-                <h6>{{allClaimsSummary.gross}}<span class="currency"> SR</span></h6>
-            </div>
-            <div class="box" style="width: 70%;">
-                <div style="display: flex;">
-                    <label>Net Amount</label>
-                    <span class="spacer"></span>
-                    <label>Vat</label>
+    <app-abstractcard *ngFor="let item of summaries"
+     [title]="item.title || getCardName(item.summary.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.summary.statuses[0])" [clickable]="false">
+        <ng-container *ngIf="item.summary != null && !item.loading && item.error == null">
+            <label>No. of Claims</label>
+            <h6>{{item.summary.totalClaims}}</h6>
+            <div style="display: flex;">
+                <div class="box" style="width: 35%;">
+                    <label>Gross</label>
+                    <h6>{{item.summary.gross}}<span class="currency"> SR</span></h6>
                 </div>
-                <div style="display: flex;">
-                    <h6>{{allClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
-                    <span class="spacer"></span>
-                    <h6>{{allClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
-                </div>
-            </div>
-        </div>
-    </app-abstractcard>
-    <app-abstractcard [title]="getCardName('Accepted')" [accentColor]="getCardColor('Accepted')" [clickable]="false">
-        <label>No. of Claims</label>
-        <h6>{{acceptedClaimsSummary.totalClaims}}</h6>
-        <div style="display: flex;">
-            <div class="box" style="width: 30%;">
-                <label>Gross</label>
-                <h6>{{acceptedClaimsSummary.gross}}<span class="currency"> SR</span></h6>
-            </div>
-            <div class="box" style="width: 70%;">
-                <div style="display: flex;">
-                    <label>Net Amount</label>
-                    <span class="spacer"></span>
-                    <label>Vat</label>
-                </div>
-                <div style="display: flex;">
-                    <h6>{{acceptedClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
-                    <span class="spacer"></span>
-                    <h6>{{acceptedClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                <div class="box" style="width: 65%;">
+                    <div style="display: flex;">
+                        <label>Net Amount</label>
+                        <span class="spacer"></span>
+                        <label>Vat</label>
+                    </div>
+                    <div style="display: flex;">
+                        <h6>{{item.summary.totalNetAmount}}<span class="currency"> SR</span></h6>
+                        <span class="spacer"></span>
+                        <h6>{{item.summary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
+                    </div>
                 </div>
             </div>
-        </div>
-    </app-abstractcard>
-    <app-abstractcard [title]="getCardName('NotAccepted')" [accentColor]="getCardColor('NotAccepted')"
-        [clickable]="false">
-        <label>No. of Claims</label>
-        <h6>{{notAcceptedClaimsSummary.totalClaims}}</h6>
-        <div style="display: flex;">
-            <div class="box" style="width: 30%;">
-                <label>Gross</label>
-                <h6>{{notAcceptedClaimsSummary.gross}}<span class="currency"> SR</span></h6>
+        </ng-container>
+        <ng-container *ngIf="item.loading">
+            <div style="display: grid; place-items: center; width: 100%; height: 126px;">
+                <mat-spinner diameter="40" [color]="getCardColor(item.title != null? 'all':item.summary.statuses[0])"></mat-spinner>
             </div>
-            <div class="box" style="width: 70%;">
-                <div style="display: flex;">
-                    <label>Net Amount</label>
-                    <span class="spacer"></span>
-                    <label>Vat</label>
-                </div>
-                <div style="display: flex;">
-                    <h6>{{notAcceptedClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
-                    <span class="spacer"></span>
-                    <h6>{{notAcceptedClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
-                </div>
+        </ng-container>
+        <ng-container *ngIf="item.error != null">
+            <div style="display: grid; place-items: center; width: 100%; height: 126px;">
+                <p style="color: #c44848;">Could not get data from server. Please try again later.</p>
             </div>
-        </div>
-    </app-abstractcard>
-    <app-abstractcard [title]="getCardName('Batched')" [accentColor]="getCardColor('Batched')" [clickable]="false">
-        <label>No. of Claims</label>
-        <h6>{{queuedClaimsSummary.totalClaims}}</h6>
-        <div style="display: flex;">
-            <div class="box" style="width: 30%;">
-                <label>Gross</label>
-                <h6>{{queuedClaimsSummary.gross}}<span class="currency"> SR</span></h6>
-            </div>
-            <div class="box" style="width: 70%;">
-                <div style="display: flex;">
-                    <label>Net Amount</label>
-                    <span class="spacer"></span>
-                    <label>Vat</label>
-                </div>
-                <div style="display: flex;">
-                    <h6>{{queuedClaimsSummary.totalNetAmount}}<span class="currency"> SR</span></h6>
-                    <span class="spacer"></span>
-                    <h6>{{queuedClaimsSummary.totalVatNetAmount}}<span class="currency"> SR</span></h6>
-                </div>
-            </div>
-        </div>
+        </ng-container>
     </app-abstractcard>
 </div>

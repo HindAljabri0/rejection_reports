@@ -35,6 +35,7 @@ export class SearchCriteriaComponent implements OnInit {
     } else {
       this.selectedPayer = this.payersList[0].id;
     }
+    this.search();
   }
 
   setLastMonthName(){
@@ -60,8 +61,8 @@ export class SearchCriteriaComponent implements OnInit {
     } else {
       let fromDate = new Date(this.fromDateControl.value);
       let toDate = new Date(this.toDateControl.value);
-      this.fromDateInvalid = this._isInvalidDate(fromDate);
-      this.toDateInvalid = this._isInvalidDate(toDate);
+      this.fromDateInvalid = this._isInvalidDate(fromDate) || this.fromDateControl.value == null;
+      this.toDateInvalid = this._isInvalidDate(toDate) || this.toDateControl.value == null;
       if(this.fromDateInvalid || this.toDateInvalid) return;
       this.store.dispatch(updateSearchCriteria({
         fromDate: `${fromDate.getFullYear()}-${fromDate.getMonth()+1}-${fromDate.getDate()}`,

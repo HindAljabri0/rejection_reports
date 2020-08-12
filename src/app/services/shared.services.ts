@@ -228,7 +228,7 @@ export class SharedServices {
         return '#FD76B5';
       case ClaimStatus.PAID.toLowerCase():
         return '#009633';
-      case ClaimStatus.PARTIALLY_PAID.toLowerCase():
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase():  case 'PARTIALLY_PAID'.toLowerCase():
         return '#00CED4';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return '#F3A264';

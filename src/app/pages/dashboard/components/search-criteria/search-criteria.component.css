@@ -51,3 +51,8 @@ input:focus{
     line-height: 30px;
     padding: 0 0px;
 }
+
+.fieldError{
+    outline: auto !important;
+    outline-color: #c44848 !important;
+}

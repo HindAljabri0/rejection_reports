@@ -3,8 +3,8 @@
     <div class="toggleButton" [ngClass]="{'checked': searchByLastMonth}"
         (click)="searchByLastMonth = true; resetDates();">Last Month - {{lastMonthName}}</div>
     <label>Or</label>
-    <input type="date" placeholder="From Date" [formControl]="fromDateControl" (change)="searchByLastMonth = false">
-    <input type="date" placeholder="To Date" [formControl]="toDateControl" (change)="searchByLastMonth = false">
+    <input type="date" [ngClass]="{'fieldError': fromDateInvalid}" placeholder="From Date" [formControl]="fromDateControl" (change)="searchByLastMonth = false">
+    <input type="date" [ngClass]="{'fieldError': toDateInvalid}" placeholder="To Date" [formControl]="toDateControl" (change)="searchByLastMonth = false">
     <select [value]="selectedPayer"
         (change)="selectedPayer = $event.target.value;" required>
         <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>

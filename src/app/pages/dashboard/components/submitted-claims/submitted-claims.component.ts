@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
+import { Store } from '@ngrx/store';
+import { getSubmittedClaims, getPaidClaims, getPartiallyPaidClaims, getUnderProcessingClaims, getRejectedClaims } from '../../store/dashboard.reducer';
 
 @Component({
   selector: 'app-submitted-claims',
@@ -9,61 +11,23 @@ import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 })
 export class SubmittedClaimsComponent implements OnInit {
 
-  allClaimsSummary: SearchStatusSummary = {
-    statuses: ['PAID', 'PARTIALLY PAID', 'REJECTED', 'INVALID', 'DUPLICATE', 'OUTSTANDING', 'PENDING'],
-    totalClaims: 0,
-    totalNetAmount: 0,
-    totalVatNetAmount: 0,
-    uploadName: null,
-    gross: 0
-  };
+  summaries: { loading: boolean, summary: SearchStatusSummary, error?: string, title?: string }[] = [];
 
-  paidClaimsSummary: SearchStatusSummary = {
-    statuses: ['PAID'],
-    totalClaims: 0,
-    totalNetAmount: 0,
-    totalVatNetAmount: 0,
-    uploadName: null,
-    gross: 0
-  };
-
-  partiallyPaidClaimsSummary: SearchStatusSummary = {
-    statuses: ['PARTIALLY PAID'],
-    totalClaims: 0,
-    totalNetAmount: 0,
-    totalVatNetAmount: 0,
-    uploadName: null,
-    gross: 0
-  };
-
-  rejectedClaimsSummary: SearchStatusSummary = {
-    statuses: ['REJECTED', 'INVALID', 'DUPLICATE'],
-    totalClaims: 0,
-    totalNetAmount: 0,
-    totalVatNetAmount: 0,
-    uploadName: null,
-    gross: 0
-  };
-
-  underProcessingClaimsSummary: SearchStatusSummary = {
-    statuses: ['OUTSTANDING', 'PENDING'],
-    totalClaims: 0,
-    totalNetAmount: 0,
-    totalVatNetAmount: 0,
-    uploadName: null,
-    gross: 0
-  };
-
-  constructor(private sharedServices:SharedServices) { }
+  constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getSubmittedClaims).subscribe(data => this.summaries[0] = { ...data, title: 'All Claims After Submission' });
+    this.store.select(getPaidClaims).subscribe(data => this.summaries[1] = data);
+    this.store.select(getPartiallyPaidClaims).subscribe(data => this.summaries[2] = data);
+    this.store.select(getRejectedClaims).subscribe(data => this.summaries[3] = data);
+    this.store.select(getUnderProcessingClaims).subscribe(data => this.summaries[4] = data);
   }
 
-  getCardName(status:string){
+  getCardName(status: string) {
     return this.sharedServices.statusToName(status);
   }
 
-  getCardColor(status:string){
+  getCardColor(status: string) {
     return this.sharedServices.getCardAccentColor(status);
   }
 

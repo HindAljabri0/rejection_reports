@@ -53,7 +53,8 @@ import { AppRoutingModule } from './modules/app-routing.module';
 import { SearchCriteriaComponent } from './pages/dashboard/components/search-criteria/search-criteria.component';
 import { NonSubmittedClaimsComponent } from './pages/dashboard/components/non-submitted-claims/non-submitted-claims.component';
 import { SubmittedClaimsComponent } from './pages/dashboard/components/submitted-claims/submitted-claims.component';
-import { dashboardReducer } from './pages/dashboard/store/dashboard.effects';
+import { dashboardReducer } from './pages/dashboard/store/dashboard.reducer';
+import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
 
 
 
@@ -99,8 +100,8 @@ import { dashboardReducer } from './pages/dashboard/store/dashboard.effects';
   ],
   imports: [
     AppRoutingModule,
-    StoreModule.forRoot([dashboardReducer]),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({ dashboardState: dashboardReducer }),
+    EffectsModule.forRoot([DashboardEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserModule,
     HttpClientModule,
@@ -146,5 +147,5 @@ import { dashboardReducer } from './pages/dashboard/store/dashboard.effects';
     SubmittedClaimsComponent,
   ],
 })
-export class AppModule {}
+export class AppModule { }
 // platformBrowserDynamic().bootstrapModule(AppModule);
