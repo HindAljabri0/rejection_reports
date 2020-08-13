@@ -360,7 +360,8 @@ export class ProvidersConfigComponent implements OnInit {
 
   getServiceCodeRestrictionSettingsOfPayer(payerid: string) {
     let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payerid);
-    return setting == null || (setting != null && setting.value == '1');
+    if(setting == null) return false
+    return (setting != null && setting.value == '1');
   }
 
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
