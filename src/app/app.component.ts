@@ -26,8 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.locale);
-    console.log(this.document.documentElement.lang);
 
     if (this.locale.startsWith('ar')) {
       this.activeLanguageLabel = 'عربى';
