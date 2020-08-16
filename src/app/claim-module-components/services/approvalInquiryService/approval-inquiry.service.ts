@@ -10,8 +10,13 @@ export class ApprovalInquiryService {
   constructor(private http:HttpClient) { }
 
   getClaimDataByApprovalNumber(providerId:string, payerId:string, approvalNumber:string, approvalType:string){
-    const requestUrl = `/providers/${providerId}/inquiry/approval/${payerId}/${approvalType}/${approvalNumber}`;
-    const request = new HttpRequest('POST', environment.claimInquireServiceHost+requestUrl, {});
+    const requestUrl = `/providers/${providerId}/inquiry/approval`;
+    const body = {
+      approvalReferenceNumber: approvalNumber, 
+      approvalType: approvalType,
+      payerId: payerId
+    }
+    const request = new HttpRequest('POST', environment.claimInquireServiceHost+requestUrl, body);
     return this.http.request(request);
   }
 }
