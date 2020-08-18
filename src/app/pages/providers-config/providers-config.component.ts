@@ -353,12 +353,20 @@ export class ProvidersConfigComponent implements OnInit {
     return this.sharedServices.loading;
   }
 
-  getServiceCodeSettingsOfPayer(payerid: string) {
+  getServiceCodeSettingsOfPayer(payerid: string,isToogle:boolean,toogleValue:boolean) {
+    if(isToogle && payerid == "207")
+    {
+      this.toggleSettings(payerid,toogleValue,this.serviceCodeValidationSettings,SERVICE_CODE_VALIDATION_KEY)
+    }
     let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payerid);
     return setting == null || (setting != null && setting.value == '1');
   }
 
-  getServiceCodeRestrictionSettingsOfPayer(payerid: string) {
+  getServiceCodeRestrictionSettingsOfPayer(payerid: string,isToogle:boolean,toogleValue:boolean) {
+    if(isToogle && payerid == "207")
+    {
+      this.toggleSettings(payerid,toogleValue,this.serviceCodeRestrictionSettings,SERVICE_CODE_RESTRICTION_KEY)
+    }
     let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payerid);
     if(setting == null) return false
     return (setting != null && setting.value == '1');
@@ -366,9 +374,28 @@ export class ProvidersConfigComponent implements OnInit {
 
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
     this.newServiceCodeValidationSettings[payerid] = event.checked;
+    this.newServiceRestrictionSettings[payerid] = !event.checked;
+    this.getServiceCodeRestrictionSettingsOfPayer(payerid,true,!event.checked);
   }
   onServiceRestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
     this.newServiceRestrictionSettings[payerid] = event.checked;
+    this.newServiceCodeValidationSettings[payerid] = !event.checked;
+    this.getServiceCodeSettingsOfPayer(payerid,true,!event.checked)
+  }
+
+  toggleSettings(payerid: string, toogleValue: boolean, settingArrayToChange: any[],key:string) {
+    let setting = settingArrayToChange.find(setting => setting.payerId == payerid);
+      if(setting == null){
+        settingArrayToChange.push({
+          providerId: this.selectedProvider,
+          payerId: payerid,
+          key: key,
+          value: (toogleValue) ? '1' : '0'
+        });
+      }
+      else{
+        settingArrayToChange.find(setting => setting.payerId == payerid).value = (toogleValue) ? '1' : '0';
+      }
   }
 
 }
