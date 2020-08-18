@@ -354,7 +354,7 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   getServiceCodeSettingsOfPayer(payerid: string,isToogle:boolean,toogleValue:boolean) {
-    if(isToogle && payerid == "207")
+    if(isToogle)
     {
       this.toggleSettings(payerid,toogleValue,this.serviceCodeValidationSettings,SERVICE_CODE_VALIDATION_KEY)
     }
@@ -363,7 +363,7 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   getServiceCodeRestrictionSettingsOfPayer(payerid: string,isToogle:boolean,toogleValue:boolean) {
-    if(isToogle && payerid == "207")
+    if(isToogle)
     {
       this.toggleSettings(payerid,toogleValue,this.serviceCodeRestrictionSettings,SERVICE_CODE_RESTRICTION_KEY)
     }
