@@ -179,8 +179,8 @@
                                     [ngClass]="{'fieldError': fieldHasError('servicePatientShareVatRate:'+i+':'+j)}"
                                     type="number" [formControl]="service.patientShareVatRate"><span
                                     class="amountType amountTypePerecent">%</span></td>
-                            <td *ngIf="claimType == '2'"><label>Tooth Number*</label></td>
-                            <td *ngIf="claimType == '2'">
+                            <td *ngIf="claimType == dentalDepartmentCode"><label>Tooth Number*</label></td>
+                            <td *ngIf="claimType == dentalDepartmentCode">
                                 <select (change)="updateServiceToothNumber(i, j, $event)"
                                     [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
                                     [disabled]="service.toothNumber.disabled" [value]="service.toothNumber.value"

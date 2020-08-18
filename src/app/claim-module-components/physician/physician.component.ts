@@ -18,23 +18,24 @@ export class PhysicianComponent implements OnInit {
   physicianNameController: FormControl = new FormControl();
   physicianIdController: FormControl = new FormControl();
   selectedCategory: string;
-  categoryEditable:boolean = true;
+  categoryEditable: boolean = true;
   selectedDepartment: string;
-  departmentEditable:boolean = true;
+  departmentEditable: boolean = true;
 
   categories: any[] = [];
-  departments: any[] = [
-    {name:'Dental', departmentId: '2'},
-    {name:'Optical', departmentId: '20'},
-  ];
+  departments: any[];
 
   errors: FieldError[] = [];
 
-  constructor( private store: Store) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
+    this.store.select(getDepartments).subscribe(
+      departments =>
+        this.departments = departments.filter(department => department.name == "Dental" || department.name == "Optical")
+    );
     this.store.select(getClaimType).subscribe(type => this.selectedDepartment = type);
 
     this.store.select(getIsRetrievedClaim).pipe(
@@ -43,9 +44,9 @@ export class PhysicianComponent implements OnInit {
       this.isRetrievedClaim = values[0];
       if (this.isRetrievedClaim) {
         this.physicianIdController.setValue(values[1].caseInformation.physician.physicianID);
-        this.physicianIdController.disable({onlySelf: values[1].caseInformation.physician.physicianID != null})
+        this.physicianIdController.disable({ onlySelf: values[1].caseInformation.physician.physicianID != null })
         this.physicianNameController.setValue(values[1].caseInformation.physician.physicianName);
-        this.physicianNameController.disable({onlySelf: values[1].caseInformation.physician.physicianName != null});
+        this.physicianNameController.disable({ onlySelf: values[1].caseInformation.physician.physicianName != null });
         this.selectedCategory = values[1].caseInformation.physician.physicianCategory;
         this.categoryEditable = !this.categories.includes(this.selectedCategory);
         this.departmentEditable = false;
@@ -73,9 +74,9 @@ export class PhysicianComponent implements OnInit {
     }
   }
 
-  beautifyCategory(category:string){
+  beautifyCategory(category: string) {
     let str = category.substr(0, 1) + category.substr(1).toLowerCase();
-    if(str.includes('_')){
+    if (str.includes('_')) {
       let split = str.split('_');
       str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
     }

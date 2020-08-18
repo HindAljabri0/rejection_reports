@@ -56,6 +56,9 @@ export class InvoicesServicesComponent implements OnInit {
   toothNumbers: string[] = [];
   departments: any[] = [];
 
+  dentalDepartmentCode: string;
+  opticalDepartmentCode: string;
+
   errors: FieldError[] = [];
 
   constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
@@ -63,9 +66,16 @@ export class InvoicesServicesComponent implements OnInit {
   ngOnInit() {
     this.store.select(getIsRetrievedClaim).subscribe(isRetrieved => this.isRetrievedClaim = isRetrieved);
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getDepartments)
+      .subscribe(departments => {
+        if (departments != null && departments.length > 0) {
+          this.dentalDepartmentCode = departments.find(department => department.name == "Dental").departmentId + '';
+          this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
+        }
+      });
     this.store.select(getClaimType).subscribe(type => {
       this.claimType = type;
-      if (type == '2') {
+      if (type == this.dentalDepartmentCode) {
         this.initToothNumbers();
       }
     });
@@ -254,14 +264,14 @@ export class InvoicesServicesComponent implements OnInit {
     return newService;
   }
 
-  calcGross(service){
+  calcGross(service) {
     let gross = service.unitPrice.value * service.quantity.value;
     gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
     return gross;
   }
 
-  calcNet(service, gross?){
-    if(gross == null) gross = this.calcGross(service);
+  calcNet(service, gross?) {
+    if (gross == null) gross = this.calcGross(service);
     let net = gross - service.patientShare.value;
     if (service.serviceDiscountUnit == 'PERCENT') {
       net -= (net * (service.serviceDiscount.value / 100));
@@ -274,14 +284,14 @@ export class InvoicesServicesComponent implements OnInit {
     return net;
   }
 
-  calcNetVat(service, net?){
-    if(net == null) net = this.calcNet(service);
+  calcNetVat(service, net?) {
+    if (net == null) net = this.calcNet(service);
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
     return netVat;
   }
 
-  calcPatientVatRate(service){
+  calcPatientVatRate(service) {
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     return patientShareVATamount;

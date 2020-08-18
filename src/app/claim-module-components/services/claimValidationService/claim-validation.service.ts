@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Claim } from '../../models/claim.model';
 import { Store } from '@ngrx/store';
-import { getClaim, FieldError } from '../../store/claim.reducer';
+import { getClaim, FieldError, getDepartments } from '../../store/claim.reducer';
 import { addClaimErrors } from '../../store/claim.actions';
 import { Service } from '../../models/service.model';
 
@@ -11,9 +11,18 @@ import { Service } from '../../models/service.model';
 export class ClaimValidationService {
 
   claim: Claim;
+  dentalDepartmentCode: string;
+  opticalDepartmentCode: string;
 
   constructor(private store: Store) {
     this.store.select(getClaim).subscribe(claim => this.claim = claim);
+    this.store.select(getDepartments)
+      .subscribe(departments => {
+        if (departments != null && departments.length > 0) {
+          this.dentalDepartmentCode = departments.find(department => department.name == "Dental").departmentId + '';
+          this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
+        }
+      });
   }
 
   private regax = /^[A-Za-z0-9- ]+$/i;
@@ -112,7 +121,7 @@ export class ClaimValidationService {
   }
 
   validateDiagnosis() {
-    if (this.claim.claimIdentities.payerID == '102' && this.claim.visitInformation.departmentCode == '20') {
+    if (this.claim.claimIdentities.payerID == '102' && this.claim.visitInformation.departmentCode == this.opticalDepartmentCode) {
       this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: [] }));
       return;
     }
@@ -201,7 +210,7 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: `servicePatientShareVatRate:${invoiceIndex}:${serviceIndex}` });
     }
 
-    if (this.claim.visitInformation.departmentCode == '2') {
+    if (this.claim.visitInformation.departmentCode == this.dentalDepartmentCode) {
       if (service.toothNumber == null) {
         fieldErrors.push({ fieldName: `serviceToothNumber:${invoiceIndex}:${serviceIndex}` });
       }

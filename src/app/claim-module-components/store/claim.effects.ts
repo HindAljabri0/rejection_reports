@@ -8,7 +8,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimValidationService } from '../services/claimValidationService/claim-validation.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
-import { getClaim } from './claim.reducer';
+import { getClaim, getDepartments } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -26,6 +26,9 @@ import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done
 })
 export class ClaimEffects {
 
+    dentalDepartmentCode: string;
+    opticalDepartmentCode: string;
+
     constructor(
         private actions$: Actions,
         private store: Store,
@@ -36,7 +39,15 @@ export class ClaimEffects {
         private sharedServices: SharedServices,
         private router: Router,
         private dialog: MatDialog
-    ) { }
+    ) {
+        this.store.select(getDepartments)
+            .subscribe(departments => {
+                if (departments != null && departments.length > 0) {
+                    this.dentalDepartmentCode = departments.find(department => department.name == "Dental").departmentId + '';
+                    this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
+                }
+            });
+    }
 
     openApprovalFormDialog$ = createEffect(() => this.actions$.pipe(
         ofType(openCreateByApprovalDialog),
@@ -50,7 +61,7 @@ export class ClaimEffects {
 
     getClaimDataFromApproval$ = createEffect(() => this.actions$.pipe(
         ofType(getClaimDataByApproval),
-        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId, data.payerId, data.approvalNumber, data.claimType == '2'? 'DENTAL':'OPTICAL').pipe(
+        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId, data.payerId, data.approvalNumber, data.claimType == this.dentalDepartmentCode ? 'DENTAL' : 'OPTICAL').pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.dialog.closeAll();
@@ -67,7 +78,7 @@ export class ClaimEffects {
                 if (err.hasOwnProperty('status') && (err.status == 0 || err.status >= 500)) {
                     return of({ type: setError.type, error: { code: `APPROVAL_ERROR_SERVER`, } });
                 }
-                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType == '2'? 'DENTAL':'OPTICAL'}`, } });
+                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType == this.dentalDepartmentCode ? 'DENTAL' : 'OPTICAL'}`, } });
             })
         ))
     ));
@@ -141,8 +152,8 @@ export class ClaimEffects {
     viewThisMonthClaims$ = createEffect(() => this.actions$.pipe(
         ofType(viewThisMonthClaims),
         tap(value => {
-            if(value.claimId != null){
-                this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId, claimId: value.claimId, editMode:value.editMode || false } });
+            if (value.claimId != null) {
+                this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId, claimId: value.claimId, editMode: value.editMode || false } });
             } else {
                 this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId } });
             }

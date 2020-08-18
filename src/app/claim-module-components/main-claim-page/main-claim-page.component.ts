@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
-import { skipWhile, withLatestFrom } from 'rxjs/operators';
+import { skipWhile, withLatestFrom, filter } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
@@ -19,11 +19,14 @@ export class MainClaimPageComponent implements OnInit {
   errors: any;
   isLoading: boolean = true;
 
+  dentalDepartmentCode: string;
+  opticalDepartmentCode: string;
+
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {
-        let code:string = errors['code'];
+        let code: string = errors['code'];
         switch (code) {
           case 'LOV_ERROR': case 'PAYERS_LIST':
             this.errors = errors
@@ -45,12 +48,12 @@ export class MainClaimPageComponent implements OnInit {
           case 'APPROVAL_ERROR_DENTAL': case 'APPROVAL_ERROR_OPTICAL': case 'APPROVAL_ERROR_SERVER':
             this.dialogService.openMessageDialog({
               title: '',
-              message: code.endsWith('SERVER')? 
-              'Could not reach the server at the moment. Please try again later.':
-              `There is no ${code.endsWith('DENTAL')? 'Dental':'Optical'} approval requrest approved by this number!`,
+              message: code.endsWith('SERVER') ?
+                'Could not reach the server at the moment. Please try again later.' :
+                `There is no ${code.endsWith('DENTAL') ? 'Dental' : 'Optical'} approval requrest approved by this number!`,
               isError: true
-            }).subscribe(()=>{
-              this.startCreatingClaim(code.endsWith('DENTAL')?'2':'20');
+            }).subscribe(() => {
+              this.startCreatingClaim(code.endsWith('DENTAL') ? this.dentalDepartmentCode : this.opticalDepartmentCode);
             });
             break;
         }
@@ -69,6 +72,13 @@ export class MainClaimPageComponent implements OnInit {
       this.router.navigate(['/']);
     }
     this.store.dispatch(loadLOVs());
+    this.store.select(getDepartments)
+      .subscribe(departments => {
+        if (departments != null && departments.length > 0) {
+          this.dentalDepartmentCode = departments.find(department => department.name == "Dental").departmentId + '';
+          this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
+        }
+      });
   }
 
   startCreatingClaim(type: string) {
