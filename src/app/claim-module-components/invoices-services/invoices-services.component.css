@@ -3,13 +3,13 @@
     text-align: center;
 }
 
-mat-expansion-panel{
+mat-expansion-panel {
     margin-top: 3px;
     background-color: #B8D0FC;
     color: #3060AA;
 }
 
-.serviceExpansionPanel{
+.serviceExpansionPanel {
     background-color: #DBE7FD;
 }
 
@@ -19,7 +19,7 @@ table {
     border-spacing: 5px 5px;
 }
 
-.headerTable{
+.headerTable {
     border-collapse: collapse;
     border-spacing: unset;
     text-align: left;
@@ -30,7 +30,7 @@ table {
     padding: 0px 24px;
 }
 
-.headerTable.child{
+.headerTable.child {
     background-color: transparent;
     color: #3060AA;
     border-top-left-radius: unset;
@@ -42,7 +42,8 @@ table {
     padding: 10px;
     text-align: center;
 }
-.headerTable td{
+
+.headerTable td {
     padding: 15px;
     text-align: center !important;
 }
@@ -65,15 +66,15 @@ td input, td select {
     border-radius: 3px;
 }
 
-td input:focus, td select:focus{
+td input:focus, td select:focus {
     outline: unset;
 }
 
-.amountTypePerecent{
+.amountTypePerecent {
     font-size: unset !important;
 }
 
-.amountType, .selectServiceButton{
+.amountType, .selectServiceButton {
     position: relative;
     left: 87%;
     bottom: 23px;
@@ -84,30 +85,30 @@ td input:focus, td select:focus{
     font-size: xx-small;
 }
 
-.selectServiceButton{
+.selectServiceButton {
     left: 80%;
     cursor: pointer;
     color: #3060AA;
 }
 
-.serviceAutoCalc{
+.serviceAutoCalc {
     display: grid;
     grid-template: auto 1fr auto / auto 1fr auto;
 }
 
-.serviceAutoCalc .left{
+.serviceAutoCalc .left {
     grid-column: 1 / 2;
 }
 
-.serviceAutoCalc .middle{
+.serviceAutoCalc .middle {
     grid-column: 2 / 3;
 }
 
-.serviceAutoCalc .right{
+.serviceAutoCalc .right {
     grid-column: 3 / 4;
 }
 
-.autoCalcElement{
+.autoCalcElement {
     border: 1px solid #3061aaa9;
     border-radius: 5px;
     background-color: #acc7f8;
@@ -116,34 +117,48 @@ td input:focus, td select:focus{
     padding: 10px;
 }
 
-.serviceDetailsForm td:nth-child(odd){
+.serviceDetailsForm td:nth-child(odd) {
     width: 15%;
     font-size: 10px;
     font-weight: 600;
 }
 
-.serviceDetailsForm td:nth-child(even){
+.serviceDetailsForm td:nth-child(even) {
     width: 35%;
 }
 
-::ng-deep.cdk-overlay-pane{
+::ng-deep.cdk-overlay-pane {
     min-width: fit-content;
 }
 
-
-.fieldError{
+.fieldError {
     outline: auto !important;
     outline-color: #c44848 !important;
 }
 
 /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
+
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.toothMenuItem {
+    position: relative;
+    background: #ffffff4d;
+    cursor: pointer;
+}
+
+.toothMenuItem:hover {
+    background: 0 0;
+}
+
+::ng-deep.mat-menu-panel {
+    overflow: unset !important;
 }

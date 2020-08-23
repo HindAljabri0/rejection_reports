@@ -53,7 +53,6 @@ export class InvoicesServicesComponent implements OnInit {
 
   claimType: string;
   visitDate: Date;
-  toothNumbers: string[] = [];
   departments: any[] = [];
 
   dentalDepartmentCode: string;
@@ -73,12 +72,7 @@ export class InvoicesServicesComponent implements OnInit {
           this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
         }
       });
-    this.store.select(getClaimType).subscribe(type => {
-      this.claimType = type;
-      if (type == this.dentalDepartmentCode) {
-        this.initToothNumbers();
-      }
-    });
+    this.store.select(getClaimType).subscribe(type => this.claimType = type);
     this.store.select(getVisitDate).subscribe(date => this.visitDate = date);
     this.store.select(getSelectedPayer).subscribe(payerId => {
       this.payerId = payerId
@@ -139,7 +133,7 @@ export class InvoicesServicesComponent implements OnInit {
       patientShare: new FormControl(0),
       serviceDiscount: new FormControl(0),
       serviceDiscountUnit: 'PERCENT',
-      toothNumber: new FormControl(this.toothNumbers.length > 0 ? this.toothNumbers[0] : null),
+      toothNumber: new FormControl(),
       netVatRate: new FormControl(0),
       patientShareVatRate: new FormControl(0),
       priceCorrection: 0,
@@ -403,39 +397,16 @@ export class InvoicesServicesComponent implements OnInit {
     this.searchServicesController.setValue('');
   }
 
-  initToothNumbers() {
-    for (let i = 11; i <= 18; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 21; i <= 28; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 31; i <= 38; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 41; i <= 48; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 51; i <= 55; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 61; i <= 65; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 71; i <= 75; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-    for (let i = 81; i <= 85; i++) {
-      this.toothNumbers.push(`${i}`);
-    }
-  }
-
   invoiceHasErrors(index) {
     return this.errors.findIndex(error => error.fieldName.split(':')[1] == index) != -1;
   }
 
   serviceHasErrors(invoiceIndex, serviceIndex) {
     return this.errors.findIndex(error => error.fieldName.includes(`:${invoiceIndex}:${serviceIndex}`)) != -1;
+  }
+
+  selectTooth(number) {
+    this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
   }
 
 }

@@ -181,13 +181,10 @@
                                     class="amountType amountTypePerecent">%</span></td>
                             <td *ngIf="claimType == dentalDepartmentCode"><label>Tooth Number*</label></td>
                             <td *ngIf="claimType == dentalDepartmentCode">
-                                <select (change)="updateServiceToothNumber(i, j, $event)"
-                                    [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
-                                    [disabled]="service.toothNumber.disabled" [value]="service.toothNumber.value"
-                                    required>
-                                    <option *ngFor="let number of toothNumbers" [value]="number">
-                                        {{number}}</option>
-                                </select>
+                                <input [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
+                                    type="number" readonly [formControl]="service.toothNumber">
+                                <span *ngIf="!service.toothNumber.disabled" class="selectServiceButton"
+                                    [matMenuTriggerFor]="SelectToothMenu">Select</span>
                             </td>
                         </tr>
                     </table>
@@ -223,4 +220,168 @@
     <p *ngIf="!priceListExist" style="width: 90%; margin: 20px 10px 20px 20px; color: #f59517;">Price list does not
         exist! <mat-icon style="display: inline; font-size: 15px;">error</mat-icon>
     </p>
+</mat-menu>
+<mat-menu #SelectToothMenu>
+    <div style="display: grid; place-items: center;">
+        <h4 style="text-align: center;">Click on the tooth to select</h4>
+        <img src="assets/toothsList.jpg" alt="">
+        <div style="width: 0px; height: 0px;">
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 527px; right: 33px;"
+                (click)="selectTooth(11)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 556px; right: 61px;"
+                (click)="selectTooth(12)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 18px; bottom: 578px; right: 83px;"
+                (click)="selectTooth(13)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 590px; right: 100px;"
+                (click)="selectTooth(14)">
+            </label>
+            <label class="toothMenuItem" style="width: 35px; height: 24px; bottom: 603px; right: 118px;"
+                (click)="selectTooth(15)">
+            </label>
+            <label class="toothMenuItem" style="width: 43px; height: 38px; bottom: 615px; right: 132px;"
+                (click)="selectTooth(16)">
+            </label>
+            <label class="toothMenuItem" style="width: 44px; height: 35px; bottom: 627px; right: 141px;"
+                (click)="selectTooth(17)">
+            </label>
+            <label class="toothMenuItem" style="width: 47px; height: 35px; bottom: 640px; right: 149px;"
+                (click)="selectTooth(18)">
+            </label>
+            <label class="toothMenuItem" style="width: 36px; height: 24px; bottom: 858px; right: 1px;"
+                (click)="selectTooth(21)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 891px; left: 34px;"
+                (click)="selectTooth(22)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 914px; left: 58px;"
+                (click)="selectTooth(23)">
+            </label>
+            <label class="toothMenuItem" style="width: 32px; height: 24px; bottom: 933px; left: 76px;"
+                (click)="selectTooth(24)">
+            </label>
+            <label class="toothMenuItem" style="width: 37px; height: 29px; bottom: 944px; left: 86px;"
+                (click)="selectTooth(25)">
+            </label>
+            <label class="toothMenuItem" style="width: 49px; height: 44px; bottom: 958px; left: 92px;"
+                (click)="selectTooth(26)">
+            </label>
+            <label class="toothMenuItem" style="width: 48px; height: 34px; bottom: 972px; left: 95px;"
+                (click)="selectTooth(27)">
+            </label>
+            <label class="toothMenuItem" style="width: 45px; height: 36px; bottom: 984px; left: 102px;"
+                (click)="selectTooth(28)">
+            </label>
+            <label class="toothMenuItem" style="width: 28px; height: 24px; bottom: 730px; right: 1px;"
+                (click)="selectTooth(31)">
+            </label>
+            <label class="toothMenuItem" style="width: 27px; height: 24px; bottom: 773px; left: 26px;"
+                (click)="selectTooth(32)">
+            </label>
+            <label class="toothMenuItem" style="width: 32px; height: 28px; bottom: 823px; left: 52px;"
+                (click)="selectTooth(33)">
+            </label>
+            <label class="toothMenuItem" style="width: 32px; height: 29px; bottom: 887px; left: 75px;"
+                (click)="selectTooth(34)">
+            </label>
+            <label class="toothMenuItem" style="width: 36px; height: 29px; bottom: 960px; left: 88px;"
+                (click)="selectTooth(35)">
+            </label>
+            <label class="toothMenuItem" style="width: 45px; height: 36px; bottom: 1043px; left: 93px;"
+                (click)="selectTooth(36)">
+            </label>
+            <label class="toothMenuItem" style="width: 40px; height: 33px; bottom: 1127px; left: 99px;"
+                (click)="selectTooth(37)">
+            </label>
+            <label class="toothMenuItem" style="width: 40px; height: 31px; bottom: 1206px; left: 99px;"
+                (click)="selectTooth(38)">
+            </label>
+            <label class="toothMenuItem" style="width: 25px; height: 24px; bottom: 1076px; right: 23px;"
+                (click)="selectTooth(41)">
+            </label>
+            <label class="toothMenuItem" style="width: 26px; height: 25px; bottom: 1119px; right: 49px;"
+                (click)="selectTooth(42)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 27px; bottom: 1171px; right: 72px;"
+                (click)="selectTooth(43)">
+            </label>
+            <label class="toothMenuItem" style="width: 40px; height: 24px; bottom: 1233px; right: 99px;"
+                (click)="selectTooth(44)">
+            </label>
+            <label class="toothMenuItem" style="width: 39px; height: 26px; bottom: 1297px; right: 110px;"
+                (click)="selectTooth(45)">
+            </label>
+            <label class="toothMenuItem" style="width: 47px; height: 39px; bottom: 1378px; right: 128px;"
+                (click)="selectTooth(46)">
+            </label>
+            <label class="toothMenuItem" style="width: 41px; height: 34px; bottom: 1465px; right: 135px;"
+                (click)="selectTooth(47)">
+            </label>
+            <label class="toothMenuItem" style="width: 41px; height: 35px; bottom: 1550px; right: 137px;"
+                (click)="selectTooth(48)">
+            </label>
+            <label class="toothMenuItem" style="width: 24px; height: 20px; bottom: 1865px; right: 21px;"
+                (click)="selectTooth(51)">
+            </label>
+            <label class="toothMenuItem" style="width: 25px; height: 21px; bottom: 1890px; right: 40px;"
+                (click)="selectTooth(52)">
+            </label>
+            <label class="toothMenuItem" style="width: 27px; height: 20px; bottom: 1910px; right: 54px;"
+                (click)="selectTooth(53)">
+            </label>
+            <label class="toothMenuItem" style="width: 27px; height: 25px; bottom: 1928px; right: 68px;"
+                (click)="selectTooth(54)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 1942px; right: 76px;"
+                (click)="selectTooth(55)">
+            </label>
+            <label class="toothMenuItem" style="width: 27px; height: 21px; bottom: 2045px; left: 4px;"
+                (click)="selectTooth(61)">
+            </label>
+            <label class="toothMenuItem" style="width: 22px; height: 20px; bottom: 2072px; left: 27px;"
+                (click)="selectTooth(62)">
+            </label>
+            <label class="toothMenuItem" style="width: 28px; height: 19px; bottom: 2090px; left: 40px;"
+                (click)="selectTooth(63)">
+            </label>
+            <label class="toothMenuItem" style="width: 27px; height: 24px; bottom: 2109px; left: 52px;"
+                (click)="selectTooth(64)">
+            </label>
+            <label class="toothMenuItem" style="width: 28px; height: 24px; bottom: 2121px; left: 57px;"
+                (click)="selectTooth(65)">
+            </label>
+            <label class="toothMenuItem" style="width: 20px; height: 21px; bottom: 1815px; left: 3px;"
+                (click)="selectTooth(71)">
+            </label>
+            <label class="toothMenuItem" style="width: 23px; height: 21px; bottom: 1853px; left: 24px;"
+                (click)="selectTooth(72)">
+            </label>
+            <label class="toothMenuItem" style="width: 26px; height: 21px; bottom: 1902px; left: 36px;"
+                (click)="selectTooth(73)">
+            </label>
+            <label class="toothMenuItem" style="width: 28px; height: 24px; bottom: 1959px; left: 47px;"
+                (click)="selectTooth(74)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 27px; bottom: 2024px; left: 54px;"
+                (click)="selectTooth(75)">
+            </label>
+            <label class="toothMenuItem" style="width: 20px; height: 24px; bottom: 1999px; right: 18px;"
+                (click)="selectTooth(81)">
+            </label>
+            <label class="toothMenuItem" style="width: 20px; height: 22px; bottom: 2040px; right: 37px;"
+                (click)="selectTooth(82)">
+            </label>
+            <label class="toothMenuItem" style="width: 27px; height: 23px; bottom: 2092px; right: 51px;"
+                (click)="selectTooth(83)">
+            </label>
+            <label class="toothMenuItem" style="width: 30px; height: 24px; bottom: 2149px; right: 63px;"
+                (click)="selectTooth(84)">
+            </label>
+            <label class="toothMenuItem" style="width: 31px; height: 24px; bottom: 2211px; right: 72px;"
+                (click)="selectTooth(85)">
+            </label>
+        </div>
+    </div>
 </mat-menu>
