@@ -1,8 +1,8 @@
 import { Component, OnInit, Type } from '@angular/core';
-import Chart from 'chart.js';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NonSubmittedClaimsComponent } from './components/non-submitted-claims/non-submitted-claims.component';
 import { SubmittedClaimsComponent } from './components/submitted-claims/submitted-claims.component';
+import { TopFiveRejectionsComponent } from './components/top-five-rejections/top-five-rejections.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   dashboardSections: { label: string, key: Type<any>, index: string }[] = [
     { label: 'All Claims Before Submission', key: NonSubmittedClaimsComponent, index: '0' },
     { label: 'All Claims After Submission', key: SubmittedClaimsComponent, index: '1' },
+    { label: 'Top 5 Rejections', key: TopFiveRejectionsComponent, index: '2' },
   ];
 
   ngOnInit() {

@@ -55,7 +55,9 @@ import { NonSubmittedClaimsComponent } from './pages/dashboard/components/non-su
 import { SubmittedClaimsComponent } from './pages/dashboard/components/submitted-claims/submitted-claims.component';
 import { dashboardReducer } from './pages/dashboard/store/dashboard.reducer';
 import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
-
+import { TopFiveRejectionsComponent } from './pages/dashboard/components/top-five-rejections/top-five-rejections.component';
+import { RejectionCardComponent } from './pages/dashboard/components/rejection-card/rejection-card.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -97,6 +99,8 @@ import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
     SearchCriteriaComponent,
     NonSubmittedClaimsComponent,
     SubmittedClaimsComponent,
+    TopFiveRejectionsComponent,
+    RejectionCardComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -112,7 +116,8 @@ import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
     ScrollingModule,
     InfiniteScrollModule,
     MatiralModule,
-    SharedModule
+    SharedModule,
+    ChartsModule,
   ],
   providers: [
     UploadService,
@@ -137,6 +142,7 @@ import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
     ClaimDialogComponent,
     PaymentClaimDetailDailogComponent,
     RejectionReportClaimDialogComponent,
+    TopFiveRejectionsComponent,
   ],
   entryComponents: [
     MessageDialogComponent,
@@ -145,6 +151,7 @@ import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
     RejectionReportClaimDialogComponent,
     NonSubmittedClaimsComponent,
     SubmittedClaimsComponent,
+    TopFiveRejectionsComponent,
   ],
 })
 export class AppModule { }
