@@ -15,7 +15,7 @@ export class RejectionCardComponent implements OnInit {
   @Input()
   storeSelector: MemoizedSelector<object, { loading: boolean; data: RejectionCardData; error?: string; }, DefaultProjectorFn<{ loading: boolean; data: RejectionCardData; error?: string; }>>;
   @Input()
-  unit:string = 'Claims';
+  unit: string = 'Claims';
 
   rejectionByPayerTotalClaims;
 
@@ -55,15 +55,25 @@ export class RejectionCardComponent implements OnInit {
 
   updateValues() {
     if (this.data == null) return;
+    this.doughnutChartData = [];
     this.doughnutChartLabels = this.data.topFive.map(item => item.label);
     this.doughnutChartData.push(this.data.topFive.map(item => item.total));
-    const othersValue = this.data.total - this.data.topFive.map(item => item.total).reduce((item1, item2) => item1 + item2);
-    if (othersValue > 0) {
-      this.doughnutChartLabels.push('Others');
-      this.doughnutChartData[0].push(othersValue);
+    if (this.data.total != null && this.data.total > 0) {
+      const othersValue = this.data.total - this.data.topFive.map(item => item.total).reduce((item1, item2) => item1 + item2);
+      if (othersValue > 0) {
+        this.doughnutChartLabels.push('Others');
+        this.doughnutChartData[0].push(othersValue);
+      }
     }
-    if(this.data.rejectionBy != 'Service'){
-      this.store.select(getRejectedClaims).subscribe(summary => this.rejectionByPayerTotalClaims = summary.data['totalClaims']).unsubscribe();
+    if (this.data.rejectionBy != 'Service') {
+      this.store.select(getRejectedClaims).subscribe(summary => {
+        this.rejectionByPayerTotalClaims = summary.data['totalClaims'];
+        const othersValue = this.rejectionByPayerTotalClaims - this.data.topFive.map(item => item.total).reduce((item1, item2) => item1 + item2);
+        if (othersValue > 0) {
+          this.doughnutChartLabels.push('Others');
+          this.doughnutChartData[0].push(othersValue);
+        }
+      }).unsubscribe();
     }
   }
 
