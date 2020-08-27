@@ -7,14 +7,17 @@
     <main>
         <section style="display: flex;">
             <div>
-                <h5>Rejected Claims</h5>
-                <h6>{{data.total}} <span style="font-size: medium; font-weight: 300;">Claims</span></h6>
+                <h5>Rejected {{unit}}</h5>
+                <h6>{{rejectionByPayerTotalClaims || data.total}} <span style="font-size: medium; font-weight: 300;">{{unit}}</span></h6>
+                <div class="error" *ngIf="error != null && !error.startsWith('Payer')">Could not get data from the server.</div>
+                <div class="error" *ngIf="error != null && error.startsWith('Payer')">{{error}}</div>
             </div>
             <span class="spacer"></span>
             <div style="width: 240px;">
-                <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                <canvas *ngIf="!loading" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
                     [chartType]="doughnutChartType" [options]="options" [colors]="colors">
                 </canvas>
+                <mat-spinner diameter="80" *ngIf="loading" style="margin: 15px auto;"></mat-spinner>
             </div>
         </section>
         <section>
@@ -23,7 +26,7 @@
                 </mat-icon>
                 <div style="grid-column: 2 / 3;">{{item.label}}</div>
                 <div style="grid-column: 3 / 4;">{{item.total}} <span
-                        style="font-size: small; font-weight: 300;">Claims</span></div>
+                        style="font-size: small; font-weight: 300;">{{unit}}</span></div>
             </div>
         </section>
     </main>

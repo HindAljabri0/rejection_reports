@@ -1,18 +1,25 @@
 import { createReducer, on, createFeatureSelector, createSelector } from '@ngrx/store';
 import * as actions from './dashboard.actions';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
+import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
+
+
+export type DashboardCardData = { loading: boolean, data: SearchStatusSummary | RejectionCardData, error?: string, title?:string };
 
 export interface DashboardStatus {
     searchCriteria: SearchCriteria,
-    notSubmittedClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    submittedClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    acceptedClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    notAcceptedClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    underSubmissionClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    paidClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    partiallyPaidClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    rejectedClaims: { loading: boolean, summary: SearchStatusSummary, error?:string },
-    underProcessingClaims: { loading: boolean, summary: SearchStatusSummary, error?:string }
+    notSubmittedClaims: DashboardCardData,
+    submittedClaims: DashboardCardData,
+    acceptedClaims: DashboardCardData,
+    notAcceptedClaims: DashboardCardData,
+    underSubmissionClaims: DashboardCardData,
+    paidClaims: DashboardCardData,
+    partiallyPaidClaims: DashboardCardData,
+    rejectedClaims: DashboardCardData,
+    underProcessingClaims: DashboardCardData,
+    rejectionByDepartment: DashboardCardData,
+    rejectionByDoctor: DashboardCardData,
+    rejectionByService: DashboardCardData
 }
 
 const initState: DashboardStatus = {
@@ -21,15 +28,18 @@ const initState: DashboardStatus = {
         toDate: null,
         payerId: null
     },
-    notSubmittedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed', 'NotAccepted', 'Batched']) },
-    submittedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['PAID', 'PARTIALLY_PAID', 'REJECTED', 'INVALID', 'DUPLICATE', 'OUTSTANDING', 'PENDING']) },
-    acceptedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed']) },
-    notAcceptedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['NotAccepted']) },
-    underSubmissionClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['Batched']) },
-    paidClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['PAID', 'SETTLED']) },
-    partiallyPaidClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['PARTIALLY_PAID']) },
-    rejectedClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['REJECTED', 'INVALID', 'DUPLICATE']) },
-    underProcessingClaims: { loading: false, summary: SearchStatusSummary.emptySummaryWithStatuses(['OUTSTANDING', 'PENDING', 'UNDER_PROCESS']) },
+    notSubmittedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed', 'NotAccepted', 'Batched']) },
+    submittedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['PAID', 'PARTIALLY_PAID', 'REJECTED', 'INVALID', 'DUPLICATE', 'OUTSTANDING', 'PENDING']) },
+    acceptedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed']) },
+    notAcceptedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['NotAccepted']) },
+    underSubmissionClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['Batched']) },
+    paidClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['PAID', 'SETTLED']) },
+    partiallyPaidClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['PARTIALLY_PAID']) },
+    rejectedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['REJECTED', 'INVALID', 'DUPLICATE']) },
+    underProcessingClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['OUTSTANDING', 'PENDING', 'UNDER_PROCESS']) },
+    rejectionByDepartment: { loading: false, data: new RejectionCardData('Department') },
+    rejectionByDoctor: { loading: false, data: new RejectionCardData('Doctor') },
+    rejectionByService: { loading: false, data: new RejectionCardData('Service') }
 }
 
 const _dashboardReducer = createReducer(
@@ -37,17 +47,22 @@ const _dashboardReducer = createReducer(
     on(actions.updateSearchCriteria, (state, criteria) => ({ ...state, searchCriteria: criteria })),
     on(actions.setCardIsLoading, (state, { name, loading }) => {
         let newState = { ...state };
-        newState[name] = { loading: loading, summary: state[name].summary, error: state[name].error };
+        newState[name] = { loading: loading, data: state[name].data, error: state[name].error };
         return newState;
     }),
-    on(actions.setCardSummary, (state, { name, summary }) => {
+    on(actions.setCardSummary, (state, { name, data: summary }) => {
         let newState = { ...state };
-        newState[name] = { loading: state[name].loading, summary: summary };
+        newState[name] = { loading: state[name].loading, data: summary };
         return newState;
     }),
     on(actions.setCardError, (state, { name, error }) => {
         let newState = { ...state };
-        newState[name] = { loading: state[name].loading, summary: SearchStatusSummary.emptySummaryWithStatuses(state[name].summary.statuses), error:error };
+        let data = state[name].data;
+        if (data['statuses'] != null) {
+            newState[name] = { loading: state[name].loading, data: SearchStatusSummary.emptySummaryWithStatuses(data['statuses']), error: error };
+        } else {
+            newState[name] = { loading: state[name].loading, data: new RejectionCardData(data['rejectionBy']), error: error };
+        }
         return newState;
     })
 )
@@ -67,6 +82,9 @@ export const getPaidClaims = createSelector(dashboardSelector, (state) => state.
 export const getPartiallyPaidClaims = createSelector(dashboardSelector, (state) => state.partiallyPaidClaims);
 export const getRejectedClaims = createSelector(dashboardSelector, (state) => state.rejectedClaims);
 export const getUnderProcessingClaims = createSelector(dashboardSelector, (state) => state.underProcessingClaims);
+export const getRejectionByDepartment = createSelector(dashboardSelector, (state) => state.rejectionByDepartment);
+export const getRejectionByDoctor = createSelector(dashboardSelector, (state) => state.rejectionByDoctor);
+export const getRejectionByService = createSelector(dashboardSelector, (state) => state.rejectionByService);
 
 export type SearchCriteria = {
     fromDate: string;

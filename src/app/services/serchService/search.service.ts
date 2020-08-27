@@ -63,4 +63,10 @@ export class SearchService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
+
+  getTopFiveRejections(rejectionBy:string, providerId:string, payerId:string, fromDate:string, toDate:string){
+    const requestURL = `/providers/${providerId}/top/${rejectionBy.toUpperCase()}?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
 }

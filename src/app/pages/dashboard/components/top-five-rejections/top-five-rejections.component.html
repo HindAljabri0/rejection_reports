@@ -1,5 +1,5 @@
 <div class="parent">
-    <dashboard-rejection-card [data]="departmentRejection"></dashboard-rejection-card>
-    <dashboard-rejection-card [data]="doctorRejection"></dashboard-rejection-card>
-    <dashboard-rejection-card [data]="ServiceRejection"></dashboard-rejection-card>
+    <dashboard-rejection-card [storeSelector]="departmentRejectionSelector"></dashboard-rejection-card>
+    <dashboard-rejection-card [storeSelector]="doctorRejectionSelector"></dashboard-rejection-card>
+    <dashboard-rejection-card [storeSelector]="ServiceRejectionSelector" unit="Services"></dashboard-rejection-card>
 </div>

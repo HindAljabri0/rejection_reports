@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { Store } from '@ngrx/store';
-import { getSubmittedClaims, getPaidClaims, getPartiallyPaidClaims, getUnderProcessingClaims, getRejectedClaims } from '../../store/dashboard.reducer';
+import { getSubmittedClaims, getPaidClaims, getPartiallyPaidClaims, getUnderProcessingClaims, getRejectedClaims, DashboardCardData } from '../../store/dashboard.reducer';
 
 @Component({
   selector: 'app-submitted-claims',
@@ -11,7 +11,7 @@ import { getSubmittedClaims, getPaidClaims, getPartiallyPaidClaims, getUnderProc
 })
 export class SubmittedClaimsComponent implements OnInit {
 
-  summaries: { loading: boolean, summary: SearchStatusSummary, error?: string, title?: string }[] = [];
+  summaries: DashboardCardData[] = [];
 
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
