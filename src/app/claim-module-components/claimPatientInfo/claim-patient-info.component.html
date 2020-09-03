@@ -6,11 +6,12 @@
                 <td [matTooltip]="getFieldError('fullName')" style="display: flex; width: 100%;">
                     <input id="fullNameInput" [ngClass]="{'fieldError': fieldHasError('fullName')}" type="text"
                         [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
-                    <select id="genderDiv" [ngClass]="{'female': selectedGender == 'F', 'male': selectedGender == 'M', 'fieldError': fieldHasError('gender')}"
-                    
+                    <select id="genderDiv"
+                        [ngClass]="{'female': selectedGender == 'F', 'male': selectedGender == 'M', 'fieldError': fieldHasError('gender')}"
                         [value]="selectedGender" [disabled]="!editableFields.gender"
                         (change)="selectedGender = $event.target.value; updateClaim('gender');"
                         matTooltip="Select Gender">
+                        <option value="">Gender</option>
                         <option value="M">Male</option>
                         <option value="F">Female</option>
                     </select>

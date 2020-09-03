@@ -180,9 +180,9 @@
                                     type="number" [formControl]="service.patientShareVatRate"><span
                                     class="amountType amountTypePerecent">%</span></td>
                             <td *ngIf="claimType == dentalDepartmentCode"><label>Tooth Number*</label></td>
-                            <td *ngIf="claimType == dentalDepartmentCode">
+                            <td *ngIf="claimType == dentalDepartmentCode" [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
-                                    type="number" readonly [formControl]="service.toothNumber">
+                                    type="number" [formControl]="service.toothNumber">
                                 <span *ngIf="!service.toothNumber.disabled" class="selectServiceButton"
                                     [matMenuTriggerFor]="SelectToothMenu">Select</span>
                             </td>
@@ -215,6 +215,8 @@
             <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option);">
                 {{option}}
             </mat-option>
+            <mat-option *ngIf="emptyOptions && serviceCodeSearchError == null">No results found, or price list does not exist.</mat-option>
+            <mat-option *ngIf="serviceCodeSearchError != null">Could not reach server at the moment. Please try again later.</mat-option>
         </mat-autocomplete>
     </mat-form-field>
     <p *ngIf="!priceListExist" style="width: 90%; margin: 20px 10px 20px 20px; color: #f59517;">Price list does not

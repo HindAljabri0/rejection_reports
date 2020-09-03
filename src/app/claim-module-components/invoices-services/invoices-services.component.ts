@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
 import { Service } from '../models/service.model';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Actions, ofType } from '@ngrx/effects';
@@ -48,6 +48,8 @@ export class InvoicesServicesComponent implements OnInit {
 
   priceListExist: boolean = true;
   servicesOptions: string[] = [];
+  emptyOptions: boolean = false;
+  serviceCodeSearchError;
   searchServicesController: FormControl = new FormControl();
   payerId: string;
 
@@ -151,7 +153,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].serviceCode.disable({ onlySelf: true });
     this.controllers[i].services[j].serviceDescription.setValue(service.serviceDescription);
     this.controllers[i].services[j].serviceDescription.disable({ onlySelf: true });
-    this.controllers[i].services[j].unitPrice.setValue(decision.unitPrice.value);
+    this.controllers[i].services[j].unitPrice.setValue(service.unitPrice.value);
     this.controllers[i].services[j].unitPrice.disable({ onlySelf: true });
     this.controllers[i].services[j].quantity.setValue(decision.approvedQuantity);
     this.controllers[i].services[j].quantity.disable({ onlySelf: true });
@@ -301,6 +303,8 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   updateClaim() {
+    this.emptyOptions = false;
+    this.serviceCodeSearchError = null;
     this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice) }));
   }
 
@@ -360,6 +364,8 @@ export class InvoicesServicesComponent implements OnInit {
     });
     this.controllers.splice(i, 1);
     this.updateClaim();
+    this.emptyOptions = false;
+    this.serviceCodeSearchError = null;
   }
 
   onDeleteServiceClick(event, i, j) {
@@ -369,6 +375,8 @@ export class InvoicesServicesComponent implements OnInit {
     }
     this.controllers[i].services.splice(j, 1);
     this.createInvoiceFromControl(i);
+    this.emptyOptions = false;
+    this.serviceCodeSearchError = null;
   }
 
   searchServices() {
@@ -380,11 +388,16 @@ export class InvoicesServicesComponent implements OnInit {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
               // this.priceListExist = event.body['content'].length > 0;
+              this.emptyOptions = event.body['empty'];
               Object.keys(event.body['content']).forEach(key => {
                 this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`.toUpperCase())
               });
             }
           }
+        } ,
+        error => {
+          if(error instanceof HttpErrorResponse)
+            this.serviceCodeSearchError = error.message;
         }
       );
   }
@@ -395,6 +408,8 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[this.expandedInvoice].services[this.expandedService].serviceCode.setValue(code.trim());
     this.controllers[this.expandedInvoice].services[this.expandedService].serviceDescription.setValue(des);
     this.searchServicesController.setValue('');
+    this.emptyOptions = false;
+    this.serviceCodeSearchError = null;
   }
 
   invoiceHasErrors(index) {
