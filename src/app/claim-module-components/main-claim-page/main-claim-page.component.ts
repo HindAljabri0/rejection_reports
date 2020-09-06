@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, isCreateMode } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { skipWhile, withLatestFrom, filter } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -22,7 +23,10 @@ export class MainClaimPageComponent implements OnInit {
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
 
+  isCreateMode:boolean = true;
+
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
+    store.select(isCreateMode).subscribe(isCreateMode => this.isCreateMode = isCreateMode);
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {
@@ -68,8 +72,8 @@ export class MainClaimPageComponent implements OnInit {
     });
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
     if (claimId != 'add') {
-      //to be changed later if we decide to view/edit the claim here.
-      this.router.navigate(['/']);
+      this.store.dispatch(hideHeaderAndSideMenu());
+      this.store.dispatch(retrieveClaim({ claimId: claimId }));
     }
     this.store.dispatch(loadLOVs());
     this.store.select(getDepartments)

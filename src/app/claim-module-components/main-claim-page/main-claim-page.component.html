@@ -1,4 +1,4 @@
-<div class="mainPage">
+<div [ngClass]="{'mainPage': isCreateMode}">
     <div class="header">
         <p>Create Claim</p><span class="spacer"></span>
         <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"

@@ -10,9 +10,10 @@ import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
 
+export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string }>());
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
-export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{approvalNumber:string, payerId:string, claimType:string, providerClaimNumber:string}>())
-export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{data: { claimType: string, providerClaimNumber: string } | {claim:Claim, services:{service:Service, decision:ServiceDecision, used:boolean}[]}}>());
+export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{ approvalNumber: string, payerId: string, claimType: string, providerClaimNumber: string }>())
+export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ data: { claimType: string, providerClaimNumber: string } | { claim: Claim, services: { service: Service, decision: ServiceDecision, used: boolean }[] } }>());
 export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{ loading: boolean }>())
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());
@@ -21,7 +22,7 @@ export const getUploadId = createAction('[ Claim ] get this month upload ID', pr
 export const setUploadId = createAction('[ Claim ] set upload id', props<{ id: any }>());
 export const saveClaim = createAction('[ Claim ] save the claim');
 export const showOnSaveDoneDialog = createAction('[ Claim ] show message dialog after saving is done', props<OnSavingDoneDialogData>());
-export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{ uploadId: number, claimId?:string, editMode?:boolean }>());
+export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{ uploadId: number, claimId?: string, editMode?: boolean }>());
 export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
@@ -59,7 +60,7 @@ export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymp
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{ invoices: Invoice[] }>());
 export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retreived service', props<SelectServiceDialogData>());
-export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{services:{service:Service, decision:ServiceDecision}[], invoiceIndex: number, serviceIndex?: number}>());
-export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{serviceNumber:number}>());
+export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{ services: { service: Service, decision: ServiceDecision }[], invoiceIndex: number, serviceIndex?: number }>());
+export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{ serviceNumber: number }>());
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number }>());

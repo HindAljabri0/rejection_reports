@@ -17,6 +17,7 @@ export interface ClaimState {
     selectedTab: number;
     selectedGDPN: { invoiceIndex?: number };
     approvalFormLoading: boolean;
+    createMode: boolean;
 }
 
 const initState: ClaimState = {
@@ -30,10 +31,12 @@ const initState: ClaimState = {
     selectedTab: 0,
     selectedGDPN: {},
     approvalFormLoading: false,
+    createMode: true,
 }
 
 const _claimReducer = createReducer(
     initState,
+    on(actions.retrieveClaim, (state) => ({ ...state, createMode: false })),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
@@ -147,6 +150,7 @@ export const getInvoicesErrors = createSelector(claimSelector, (state) => state.
 export const getClaimGDPNErrors = createSelector(claimSelector, (state) => state.claimErrors.claimGDPN);
 export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
 export const getRetreivedServices = createSelector(claimSelector, (state) => state.retreivedServices);
+export const isCreateMode = createSelector(claimSelector, (state) => state.createMode);
 
 
 
