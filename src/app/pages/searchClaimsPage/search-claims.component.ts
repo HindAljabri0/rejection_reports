@@ -357,7 +357,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return;
     }
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId).subscribe((event) => {
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.uploadId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
           this.dialogService.openMessageDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
