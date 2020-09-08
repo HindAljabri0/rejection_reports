@@ -489,8 +489,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null ? `?edit=${edit}` : ''));
-    return;
+    if (edit == null || !edit) {
+      window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null ? `?edit=${edit}` : ''));
+      return;
+    }
     if (this.commen.loading) return;
     this.claimId = claimId;
     this.editMode = edit != null ? `${edit}` : null;
