@@ -1,6 +1,12 @@
 .mainPage {
     margin: 80px 20px 0px 20px;
 }
+
+.parent {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
 .header {
     display: flex;
     color: #3060AA;
@@ -10,15 +16,18 @@
     padding: 10px 20px;
     height: 40px;
 }
-label{
+
+label {
     color: #3060AA;
     padding: 5px;
     font-size: small;
 }
+
 .body {
     padding: 10px;
     background-color: #EFF5FF;
-    height: 75vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
 }
 
 table {
@@ -27,12 +36,12 @@ table {
     border-spacing: 15px 5px;
 }
 
-.hiddenByDefault{
+.hiddenByDefault {
     opacity: 0;
     transition: opacity 500ms ease;
 }
 
-.show{
+.show {
     opacity: 1;
 }
 
@@ -52,7 +61,7 @@ table {
     right: 5vw;
 }
 
-.error{
+.error {
     color: #c23a3a;
     padding: 15px;
     background-color: white;
@@ -60,6 +69,6 @@ table {
     text-align: center;
 }
 
-button:focus{
+button:focus {
     outline: unset;
 }

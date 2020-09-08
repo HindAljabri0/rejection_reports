@@ -49,7 +49,7 @@ export const updateIllnesses = createAction('[ Claim Illnesses ] update illnesse
 
 //GenInfo
 export const updateClaimDate = createAction('[ Claim Date ] update claim date', props<{ claimDate: Date }>());
-export const updateClaimType = createAction('[ Claim Type ] update claim type', props<{ claimType: string }>());
+export const updateCaseType = createAction('[ Claim Type ] update case type', props<{ caseType: string }>());
 export const updateFileNumber = createAction('[ File Number ] update File Number', props<{ fileNumber: string }>());
 export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
 export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration: any }>());

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
-import { updateClaimDate, updateClaimType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms } from '../store/claim.actions';
-import { getClaimType, FieldError, getGenInfoErrors, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
+import { updateClaimDate, updateCaseType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms } from '../store/claim.actions';
+import { getDepartmentCode, FieldError, getGenInfoErrors, getIsRetrievedClaim, getClaim, ClaimPageType, getPageType } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
@@ -15,10 +15,12 @@ import { DatePipe } from '@angular/common';
 export class GenInfoComponent implements OnInit {
 
   isRetrievedClaim: boolean = false;
-  
+
+  departmentCode: string;
 
   claimDateController: FormControl = new FormControl();
-  selectedClaimType: string;
+  
+  
   fileNumberController: FormControl = new FormControl();
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
@@ -27,11 +29,21 @@ export class GenInfoComponent implements OnInit {
   unitIllness: string = 'Day';
   unitAge: string = 'Year';
 
+  significantSignController: FormControl = new FormControl();
+  commReportController: FormControl = new FormControl();
+  eligibilityNumController: FormControl = new FormControl();
+  selectedCaseType: string;
+  radiologyReportController: FormControl = new FormControl();
+  otherConditionController: FormControl = new FormControl();
+
   errors: FieldError[] = [];
+
+  claimPageType:ClaimPageType;
 
   constructor(private store: Store, private datePipe: DatePipe) { }
 
   ngOnInit() {
+    this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))
     ).subscribe((values) => {
@@ -89,7 +101,7 @@ export class GenInfoComponent implements OnInit {
 
     }).unsubscribe();
 
-    this.store.select(getClaimType).subscribe(type => this.selectedClaimType = type);
+    this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
     this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
   }
 
@@ -98,8 +110,8 @@ export class GenInfoComponent implements OnInit {
       case ('claimDate'):
         this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
         break;
-      case ('claimType'):
-        this.store.dispatch(updateClaimType({ claimType: this.selectedClaimType }));
+      case ('caseType'):
+        this.store.dispatch(updateCaseType({ caseType: this.selectedCaseType }));
         break;
       case ('fileNumber'):
         this.store.dispatch(updateFileNumber({ fileNumber: this.fileNumberController.value }));

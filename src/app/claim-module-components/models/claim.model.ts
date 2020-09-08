@@ -1,7 +1,6 @@
 import { ClaimIdentifier } from './claimIdentifier.model';
 import { Member } from './member.model';
 import { VisitInfo } from './visitInfo.model';
-import { CaseDescription } from './caseDescription.model';
 import { GDPN } from './GDPN.model';
 import { Invoice } from './invoice.model';
 import { Admission } from './admission.model';
@@ -18,11 +17,7 @@ export class Claim {
     caseInformation: CaseInfo;
     claimGDPN: GDPN;
     invoice: Invoice[];
-    comment: {
-        commentDate: Date;
-        commentText: string;
-        commentType: 'PAYER' | 'PROVIDER';
-    }[];
+    commreport: string;
     admission: Admission;
     attachment: AttachmentRequest[];
 
@@ -33,7 +28,6 @@ export class Claim {
         this.visitInformation = new VisitInfo(claimType);
         this.claimGDPN = new GDPN();
         this.invoice = [new Invoice()];
-        this.comment = [];
         this.admission = new Admission();
         this.attachment = [];
     }

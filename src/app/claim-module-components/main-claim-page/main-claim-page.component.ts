@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, isCreateMode } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { skipWhile, withLatestFrom, filter } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -23,10 +23,12 @@ export class MainClaimPageComponent implements OnInit {
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
 
-  isCreateMode:boolean = true;
+  pageMode:ClaimPageMode = 'CREATE';
+  pageType:ClaimPageType = 'DENTAL_OPTICAL'
 
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
-    store.select(isCreateMode).subscribe(isCreateMode => this.isCreateMode = isCreateMode);
+    store.select(getPageMode).subscribe(claimPageMode => this.pageMode = claimPageMode);
+    store.select(getPageType).subscribe(claimPageType => this.pageType = claimPageType);
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {

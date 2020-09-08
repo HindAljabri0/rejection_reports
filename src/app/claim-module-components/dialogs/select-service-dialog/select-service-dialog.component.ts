@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { SelectServiceDialogData } from './select-service-dialog-data';
 import { Service } from '../../models/service.model';
-import { getRetreivedServices as getRetrievedServices } from '../../store/claim.reducer';
+import { getRetrievedServices } from '../../store/claim.reducer';
 import { ServiceDecision } from '../../models/serviceDecision.model';
 import { addRetrievedServices } from '../../store/claim.actions';
 

@@ -6,10 +6,12 @@ import { GDPN } from '../models/GDPN.model';
 import { Service } from '../models/service.model';
 import { ServiceDecision } from '../models/serviceDecision.model';
 
+export type ClaimPageMode = 'CREATE' | 'VIEW' | 'EDIT';
+export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
-    isRetreivedClaim: boolean;
-    retreivedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
+    isRetrievedClaim: boolean;
+    retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
     claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
@@ -17,13 +19,14 @@ export interface ClaimState {
     selectedTab: number;
     selectedGDPN: { invoiceIndex?: number };
     approvalFormLoading: boolean;
-    createMode: boolean;
+    mode: ClaimPageMode;
+    type: ClaimPageType;
 }
 
 const initState: ClaimState = {
     claim: null,
-    isRetreivedClaim: false,
-    retreivedServices: [],
+    isRetrievedClaim: false,
+    retrievedServices: [],
     claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
@@ -31,16 +34,17 @@ const initState: ClaimState = {
     selectedTab: 0,
     selectedGDPN: {},
     approvalFormLoading: false,
-    createMode: true,
+    mode: 'CREATE',
+    type: 'INPATIENT_OUTPATIENT'
 }
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.retrieveClaim, (state) => ({ ...state, createMode: false })),
+    on(actions.retrieveClaim, (state) => ({ ...state, mode: 'VIEW' })),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
-            return { ...state, claim: data['claim'], retreivedServices: data['services'], approvalFormLoading: false, isRetreivedClaim: true };
+            return { ...state, claim: data['claim'], retrievedServices: data['services'], approvalFormLoading: false, isRetrievedClaim: true };
         } else {
             let claim = new Claim(data['claimType'], data['providerClaimNumber']);
             return { ...state, claim: claim };
@@ -98,7 +102,7 @@ const _claimReducer = createReducer(
     on(actions.updateIllnesses, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessCategory: { inllnessCode: list } } } } })),
 
     on(actions.updateClaimDate, (state, { claimDate }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, visitDate: claimDate } } })),
-    on(actions.updateClaimType, (state, { claimType }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseType: claimType } } })),
+    on(actions.updateCaseType, (state, { caseType }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseType: caseType } } })),
     on(actions.updateFileNumber, (state, { fileNumber }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, patientFileNumber: fileNumber } } } })),
     on(actions.updateMemberDob, (state, { memberDob }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, patient: { ...state.claim.caseInformation.patient, dob: memberDob } } } })),
     on(actions.updateIllnessDuration, (state, { illnessDuration }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration: illnessDuration } } } })),
@@ -118,8 +122,8 @@ const _claimReducer = createReducer(
         };
         return ({ ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN } });
     }),
-    on(actions.addRetrievedServices, (state, { services }) => ({ ...state, retreivedServices: [...state.retreivedServices.filter(s => services.findIndex(ns => ns.service.serviceNumber == s.service.serviceNumber) == -1), ...services.map(s => ({ service: s.service, decision: s.decision, used: true }))] })),
-    on(actions.makeRetrievedServiceUnused, (state, { serviceNumber }) => ({ ...state, retreivedServices: state.retreivedServices.map(s => s.service.serviceNumber == serviceNumber ? { ...s, used: false } : s) })),
+    on(actions.addRetrievedServices, (state, { services }) => ({ ...state, retrievedServices: [...state.retrievedServices.filter(s => services.findIndex(ns => ns.service.serviceNumber == s.service.serviceNumber) == -1), ...services.map(s => ({ service: s.service, decision: s.decision, used: true }))] })),
+    on(actions.makeRetrievedServiceUnused, (state, { serviceNumber }) => ({ ...state, retrievedServices: state.retrievedServices.map(s => s.service.serviceNumber == serviceNumber ? { ...s, used: false } : s) })),
     on(actions.selectGDPN, (state, { invoiceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex } }))
 );
 
@@ -130,8 +134,8 @@ export function claimReducer(state, action) {
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
 export const getIsApprovalFormLoading = createSelector(claimSelector, (state) => state.approvalFormLoading);
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
-export const getIsRetrievedClaim = createSelector(claimSelector, (state) => state.isRetreivedClaim);
-export const getClaimType = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.departmentCode : null);
+export const getIsRetrievedClaim = createSelector(claimSelector, (state) => state.isRetrievedClaim);
+export const getDepartmentCode = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.departmentCode : null);
 export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim != null && state.claim.claimIdentities != null ? state.claim.claimIdentities.payerID : null);
 export const getVisitType = createSelector(claimSelector, (state) => state.LOVs.VisitType);
 export const getVisitDate = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.visitDate : null);
@@ -149,8 +153,9 @@ export const getPhysicianErrors = createSelector(claimSelector, (state) => state
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
 export const getClaimGDPNErrors = createSelector(claimSelector, (state) => state.claimErrors.claimGDPN);
 export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
-export const getRetreivedServices = createSelector(claimSelector, (state) => state.retreivedServices);
-export const isCreateMode = createSelector(claimSelector, (state) => state.createMode);
+export const getRetrievedServices = createSelector(claimSelector, (state) => state.retrievedServices);
+export const getPageMode = createSelector(claimSelector, (state) => state.mode);
+export const getPageType = createSelector(claimSelector, (state) => state.type);
 
 
 

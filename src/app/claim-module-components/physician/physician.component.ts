@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getClaimType, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -36,7 +36,7 @@ export class PhysicianComponent implements OnInit {
       departments =>
         this.departments = departments.filter(department => department.name == "Dental" || department.name == "Optical")
     );
-    this.store.select(getClaimType).subscribe(type => this.selectedDepartment = type);
+    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
 
     this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))

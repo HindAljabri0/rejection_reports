@@ -30,22 +30,22 @@ export class ClaimDataComponent implements OnInit {
     this.store.dispatch(changeSelectedTab({ tab: event.index }));
   }
 
-  genInfoTabHasErrors(){
-    if(this.errors != null){
+  genInfoTabHasErrors() {
+    if (this.errors != null) {
       return this.errors.genInfoErrors.length > 0;
     }
     return false;
   }
 
-  diagnosisTabHasErrors(){
-    if(this.errors != null){
+  diagnosisTabHasErrors() {
+    if (this.errors != null) {
       return this.errors.diagnosisErrors.length > 0;
     }
     return false;
   }
 
-  invoiceServicesTabHasErrors(){
-    if(this.errors != null){
+  invoiceServicesTabHasErrors() {
+    if (this.errors != null) {
       return this.errors.invoicesErrors.length > 0;
     }
     return false;

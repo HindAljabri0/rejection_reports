@@ -1,42 +1,31 @@
-<div [ngClass]="{'mainPage': isCreateMode}">
+<div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE'}">
     <div class="header">
         <p>Create Claim</p><span class="spacer"></span>
         <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"
-            [ngClass]="{'show':claim != null && errors == null}">{{(claim.visitInformation.departmentCode==dentalDepartmentCode)?'Dental':'Optical'}}</p>
+            [ngClass]="{'show':claim != null && errors == null}">
+            {{(claim.visitInformation.departmentCode==dentalDepartmentCode)?'Dental':'Optical'}}</p>
     </div>
     <div class="body">
-        <div class="error" *ngIf="errors != null && !isLoading">
+        <div class="error" *ngIf="errors != null && !isLoading" style="grid-column: 1 / span 12;">
             {{getError()}}
         </div>
-        <table class="hiddenByDefault" *ngIf="claim != null && errors == null" [ngClass]="{'show':claim != null}">
-            <tbody>
-                <tr style="height: 30%;">
-                    <td style="width: 62.5%;">
-                        <claim-patient-info></claim-patient-info>
-                    </td>
-                    <td style="width: 32.5%;">
-                        <claim-physician-header></claim-physician-header>
-                    </td>
-                </tr>
-                <tr style="height: 70%;">
-                    <td style="width: 62.5%;">
-                        <claim-data></claim-data>
-                    </td>
-                    <td style="width: 32.5%;">
-                        <gdpn-calculation></gdpn-calculation>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <ng-container *ngIf="claim != null && errors == null">
+            <claim-patient-info style="grid-column: 1 / span 8; margin: 5px;"></claim-patient-info>
+            <claim-physician-header style="grid-column: 9 / span 4; margin: 5px;"></claim-physician-header>
+            <claim-data style="grid-column: 1 / span 8; margin: 5px;"></claim-data>
+            <gdpn-calculation style="grid-column: 9 / span 4; margin: 5px;"></gdpn-calculation>
+        </ng-container>
     </div>
     <div class="footer">
         <span class="spacer"></span>
         <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
-        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;" (click)="save()">Save</button>
+        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
+            (click)="save()">Save</button>
     </div>
 </div>
 
-<button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu" *ngIf="claim == null && errors == null && !isLoading">
+<button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu"
+    *ngIf="claim == null && errors == null && !isLoading">
     <mat-icon>add</mat-icon>
 </button>
 

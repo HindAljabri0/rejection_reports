@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getClaimType, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
 import { updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
@@ -74,7 +74,7 @@ export class InvoicesServicesComponent implements OnInit {
           this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
         }
       });
-    this.store.select(getClaimType).subscribe(type => this.claimType = type);
+    this.store.select(getDepartmentCode).subscribe(type => this.claimType = type);
     this.store.select(getVisitDate).subscribe(date => this.visitDate = date);
     this.store.select(getSelectedPayer).subscribe(payerId => {
       this.payerId = payerId
