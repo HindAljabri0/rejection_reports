@@ -19,6 +19,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-search-claims',
@@ -489,7 +490,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    if (edit == null || !edit) {
+    if ((edit == null || !edit) && !environment.production) {
       window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null ? `?edit=${edit}` : ''));
       return;
     }
