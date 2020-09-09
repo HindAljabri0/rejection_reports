@@ -12,7 +12,8 @@
         <ng-container *ngIf="claim != null && errors == null">
             <claim-patient-info style="grid-column: 1 / span 8; margin: 5px;"></claim-patient-info>
             <claim-physician-header style="grid-column: 9 / span 4; margin: 5px;"></claim-physician-header>
-            <claim-data style="grid-column: 1 / span 8; margin: 5px; height: 26vw;"></claim-data>
+            <claim-data style="grid-column: 1 / span 8; margin: 5px; height: 26vw;"
+            [ngStyle]="{'height': pageMode != 'CREATE' ? '34vw': '26vw'}"></claim-data>
             <gdpn-calculation style="grid-column: 9 / span 4; margin: 5px;"></gdpn-calculation>
         </ng-container>
     </div>

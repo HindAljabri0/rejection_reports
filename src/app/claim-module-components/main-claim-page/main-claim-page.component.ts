@@ -23,8 +23,8 @@ export class MainClaimPageComponent implements OnInit {
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
 
-  pageMode:ClaimPageMode = 'CREATE';
-  pageType:ClaimPageType = 'DENTAL_OPTICAL'
+  pageMode:ClaimPageMode;
+  pageType:ClaimPageType;
 
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
     store.select(getPageMode).subscribe(claimPageMode => this.pageMode = claimPageMode);
