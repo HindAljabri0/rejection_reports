@@ -26,12 +26,12 @@
         <input [ngClass]="{'fieldError': fieldHasError('memberDob')}" id="memberDobInput" type="date"
             [formControl]="memberDobController" (change)="updateClaim('memberDob')">
     </div>
-    <div style="grid-column: 7 / span 3;">
+    <div style="grid-column: 7 / span 2;">
         <label>Age</label>
         <input [ngClass]="{'fieldError': fieldHasError('age')}" id="ageInput" type="number"
             [formControl]="ageController" (change)="updateClaim('age')">
     </div>
-    <div style="grid-column: 10 / span 3;">
+    <div style="grid-column: 9 / span 3;">
         <label>Unit of Age</label>
         <mat-button-toggle-group (change)="updateClaimUnit('ageUnit',$event)" [disabled]="ageController.disabled"
             [ngClass]="{'fieldError': fieldHasError('ageUnit')}">
@@ -65,10 +65,10 @@
     </div>
     <div class="rightComponent" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
         <label>Radiology Report</label>
-        <input [ngClass]="{'fieldError': fieldHasError('radiologyReport')}"
-            [formControl]="radiologyReportController" (change)="updateClaim('radiologyReport')">
+        <input [ngClass]="{'fieldError': fieldHasError('radiologyReport')}" [formControl]="radiologyReportController"
+            (change)="updateClaim('radiologyReport')">
     </div>
-    <div style="grid-column: 1 / span 12;">
+    <div style="grid-column: 1 / span 12;" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
         <label>Other Condition</label>
         <textarea [ngClass]="{'fieldError': fieldHasError('otherCondition')}" [formControl]="otherConditionController"
             (change)="updateClaim('otherCondition')" [matTooltip]="getFieldError('otherCondition')"></textarea>
@@ -80,11 +80,11 @@
     </div>
     <div [ngStyle]="{'grid-column': claimPageType == 'INPATIENT_OUTPATIENT'? '7 / span 3' : '1 / span 6'}">
         <label>Duration of Illness</label>
-        <input [ngClass]="{'fieldError': fieldHasError('illnessDuration')}" id="illnessDurationInput" type="number"
+        <input [ngClass]="{'fieldError': fieldHasError('illnessDuration')}" type="number"
             [formControl]="illnessDurationController" (change)="updateClaim('illnessDuration')">
     </div>
     <div [ngStyle]="{'grid-column': claimPageType == 'INPATIENT_OUTPATIENT'? '10 / span 3' : '7 / span 6'}">
-        <label>Unit of Duration</label>
+        <label style="display: block;">Unit of Duration</label>
         <mat-button-toggle-group [disabled]="illnessDurationController.disabled" unitIllness
             (change)="updateClaimUnit('illnessDurationUnit',$event)"
             [ngClass]="{'fieldError': fieldHasError('illnessDurationUnit')}">
