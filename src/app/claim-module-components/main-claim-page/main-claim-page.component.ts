@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
-import { skipWhile, withLatestFrom, filter } from 'rxjs/operators';
+import { skipWhile, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
+import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -17,6 +18,7 @@ import { hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 export class MainClaimPageComponent implements OnInit {
 
   claim: Claim;
+  claimProps: RetrievedClaimProps;
   errors: any;
   isLoading: boolean = true;
 
@@ -30,6 +32,7 @@ export class MainClaimPageComponent implements OnInit {
     store.select(getPageMode).subscribe(claimPageMode => this.pageMode = claimPageMode);
     store.select(getPageType).subscribe(claimPageType => this.pageType = claimPageType);
     store.select(getClaim).subscribe(claim => this.claim = claim);
+    store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {
         let code: string = errors['code'];
@@ -125,6 +128,17 @@ export class MainClaimPageComponent implements OnInit {
         });
       }
     }).unsubscribe();
+  }
+
+  getClaimStatusLabel(status:string){
+    return this.sharedService.statusToName(status);
+  }
+
+  getClaimStatusColor(status:string){
+    if(status != null){
+      return this.sharedService.getCardAccentColor(status);
+    }
+    return '#3060AA';
   }
 
   cancel() {

@@ -16,6 +16,9 @@
     padding: 10px 20px;
     height: 40px;
 }
+.header>p{
+    padding: 0px 5px;
+}
 
 label {
     color: #3060AA;

@@ -169,6 +169,7 @@ export const getSelectedGDPN = createSelector(claimSelector, (state) => state.se
 export const getRetrievedServices = createSelector(claimSelector, (state) => state.retrievedServices);
 export const getPageMode = createSelector(claimSelector, (state) => state.mode);
 export const getPageType = createSelector(claimSelector, (state) => state.type);
+export const getRetrievedClaimProps = createSelector(claimSelector, (state) => state.retrievedClaimProps);
 
 
 
