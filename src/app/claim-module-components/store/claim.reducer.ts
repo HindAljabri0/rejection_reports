@@ -5,11 +5,13 @@ import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { GDPN } from '../models/GDPN.model';
 import { Service } from '../models/service.model';
 import { ServiceDecision } from '../models/serviceDecision.model';
+import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 
 export type ClaimPageMode = 'CREATE' | 'VIEW' | 'EDIT';
 export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
+    retrievedClaimProps: RetrievedClaimProps;
     isRetrievedClaim: boolean;
     retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
     claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
@@ -25,6 +27,7 @@ export interface ClaimState {
 
 const initState: ClaimState = {
     claim: null,
+    retrievedClaimProps: null,
     isRetrievedClaim: false,
     retrievedServices: [],
     claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
@@ -40,14 +43,24 @@ const initState: ClaimState = {
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.retrieveClaim, (state) => ({ ...state, mode: 'VIEW' })),
+    on(actions.retrieveClaim, (state) => ({ ...state, mode: 'VIEW', isRetrievedClaim: true })),
+    on(actions.viewRetrievedClaim, (state, response) => {
+        const body = response.body;
+        const dentalId = '4';
+        const opticalId = '50';
+        const departmentCode = body['claim']['visitInformation']['departmentCode'];
+        const caseType = body['claim']['caseInformation']['caseType']
+        const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
+        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
+        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props });
+    }),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
-            return { ...state, claim: data['claim'], retrievedServices: data['services'], approvalFormLoading: false, isRetrievedClaim: true };
+            return { ...state, claim: data['claim'], retrievedServices: data['services'], approvalFormLoading: false, isRetrievedClaim: true, mode: 'CREATE' };
         } else {
             let claim = new Claim(data['claimType'], data['providerClaimNumber']);
-            return { ...state, claim: claim };
+            return { ...state, claim: claim, mode: 'CREATE', isRetrievedClaim: false };
         }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),

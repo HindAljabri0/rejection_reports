@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -159,6 +159,15 @@ export class ClaimEffects {
             }
         }),
         map(() => cancelClaim())
+    ));
+
+    retrieveClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(retrieveClaim),
+        switchMap(action => this.claimService.viewClaim(this.sharedServices.providerId, action.claimId).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+            map(response => viewRetrievedClaim(response)),
+            catchError(err => of({ type: setError.type, error: { code: 'CLAIM_RETRIEVE_ERROR' } }))
+        ))
     ));
 
 }

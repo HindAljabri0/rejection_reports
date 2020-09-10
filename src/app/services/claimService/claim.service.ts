@@ -30,6 +30,12 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
+  viewClaim(providerId: string, claimId: string){
+    const requestUrl = `/providers/${providerId}/${claimId}`;
+    const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);
+    return this.httpClient.request(request);
+  }
+
   updateClaim(providerId: string, payerId: string, claimId: number, data: {}) {
     const requestUrl = `/providers/${providerId}/${claimId}`;
     const httpRequest = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, data);

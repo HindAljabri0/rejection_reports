@@ -23,8 +23,8 @@ export class MainClaimPageComponent implements OnInit {
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
 
-  pageMode:ClaimPageMode;
-  pageType:ClaimPageType;
+  pageMode: ClaimPageMode;
+  pageType: ClaimPageType;
 
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
     store.select(getPageMode).subscribe(claimPageMode => this.pageMode = claimPageMode);
@@ -34,6 +34,7 @@ export class MainClaimPageComponent implements OnInit {
       if (errors != null && errors.hasOwnProperty('code')) {
         let code: string = errors['code'];
         switch (code) {
+          case 'CLAIM_RETRIEVE_ERROR':
           case 'LOV_ERROR': case 'PAYERS_LIST':
             this.errors = errors
             break;
@@ -134,7 +135,9 @@ export class MainClaimPageComponent implements OnInit {
     if (this.errors.hasOwnProperty('code')) {
       switch (this.errors['code']) {
         case 'LOV_ERROR': case 'PAYERS_LIST':
-          return 'Could not load required data to create new claim, please try again later.';
+          return 'Could not load required data to create new claim. Please try again later.';
+        case 'CLAIM_RETRIEVE_ERROR':
+          return 'Could not load claim at the moment. Please try again later.'
       }
     }
   }
