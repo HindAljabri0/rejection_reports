@@ -4,7 +4,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePatientName, updatePatientGender, updatePayer, updatePatientMemberId, updatePolicyNum, updateNationalId, updateApprovalNum, updateVisitType, updateNationality, setError } from '../store/claim.actions';
 import { Observable } from 'rxjs';
-import { getVisitType, nationalities, FieldError, getPatientErrors, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
+import { getVisitType, nationalities, FieldError, getPatientErrors, getIsRetrievedClaim, getClaim, ClaimPageType, getPageType } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -32,15 +32,20 @@ export class ClaimPatientInfo implements OnInit {
   nationalIdController: FormControl = new FormControl();
   approvalNumController: FormControl = new FormControl();
 
+  planTypeController: FormControl = new FormControl();
+
   payersList: { id: number, name: string, arName: string }[] = [];
   visitTypes: any[] = [];
   nationalities = nationalities;
 
+  claimPageType:ClaimPageType;
+  
   errors: FieldError[] = [];
 
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
 

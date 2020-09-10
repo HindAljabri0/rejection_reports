@@ -92,6 +92,8 @@ export class Claim {
                     claim.caseInformation.caseDescription.illnessDuration = this.getPeriod(caseDescription['illnessDuration']);
                 claim.caseInformation.caseDescription.chiefComplaintSymptoms = caseDescription['chiefComplaintSymptoms'];
                 claim.caseInformation.caseDescription.diagnosis = caseDescription['diagnosis'];
+                if(claim.caseInformation.caseDescription.diagnosis != null)
+                claim.caseInformation.caseDescription.diagnosis = claim.caseInformation.caseDescription.diagnosis.map(diagnosis => ({...diagnosis, diagnosisCode: diagnosis.diagnosisCode.trim()}));
 
                 claim.caseInformation.possibleLineOfTreatment = caseInformation['possibleLineOfTreatment'];
                 claim.caseInformation.radiologyReport = caseInformation['radiologyReport'];

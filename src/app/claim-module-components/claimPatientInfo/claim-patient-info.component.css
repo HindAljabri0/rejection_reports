@@ -3,6 +3,25 @@
     background-color: white;
     color: #3060AA;
     height: 100%;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: baseline;
+}
+
+.leftLabel{
+    grid-column: 1 / span 2;
+    padding-left: 20%;
+}
+.leftComponent {
+    grid-column: 3 / span 4;
+}
+.rightLabel {
+    grid-column: 7 / span 2;
+    padding-left: 20%;
+}
+.rightComponent {
+    grid-column: 9 / span 4;
 }
 
 table {
@@ -19,7 +38,7 @@ td:nth-child(even) {
     width: 35%;
 }
 
-td input, td select {
+input, select {
     width: 100%;
     background-color: #EFF5FF;
     border: unset;
@@ -54,7 +73,7 @@ td input, td select {
     background-color: #ff5ea9;
 }
 
-td input:focus, td select:focus {
+input:focus, select:focus {
     outline: unset;
 }
 
