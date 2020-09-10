@@ -1,3 +1,4 @@
+import { getDepartmentNames } from './../../store/dashboard.actions';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -30,6 +31,8 @@ export class SearchCriteriaComponent implements OnInit {
   constructor(private sharedServices: SharedServices, private store: Store, private authService: AuthService) { }
 
   ngOnInit() {
+    this.store.dispatch(getDepartmentNames());
+
     this.setLastMonthName();
     if (this.sharedServices.getPayersList().length == 0) {
       this.authService.isUserNameUpdated.pipe(

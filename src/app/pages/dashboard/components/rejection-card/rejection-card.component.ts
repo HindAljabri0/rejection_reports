@@ -1,3 +1,4 @@
+import { getDepartments } from './../../store/dashboard.reducer';
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { MultiDataSet, Label, Color } from 'ng2-charts';
@@ -22,7 +23,7 @@ export class RejectionCardComponent implements OnInit {
   data: RejectionCardData = new RejectionCardData();
 
   loading: boolean = false;
-
+  departments: any;
   error: any;
 
   doughnutChartLabels: Label[] = [];
@@ -38,10 +39,17 @@ export class RejectionCardComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getDepartments).subscribe(departments => this.departments = departments);
     this.store.select(this.storeSelector).subscribe(rejectionData => {
       this.data = rejectionData.data;
       this.loading = rejectionData.loading;
       this.error = rejectionData.error;
+
+      /*if (this.data.rejectionBy == 'Department' && this.departments != null) {
+
+        this.data.topFive = 
+          this.data.topFive.map(value => this.departments.find(department => department.departmentId == value.label))
+      }*/
       this.updateValues();
     });
 
@@ -56,7 +64,7 @@ export class RejectionCardComponent implements OnInit {
   updateValues() {
     if (this.data == null) return;
     this.doughnutChartData = [];
-    this.doughnutChartLabels = this.data.topFive.map(item => item.label);
+    this.doughnutChartLabels = this.data.topFive.map(item =>this.getDepartmentName(item.label));
     this.doughnutChartData.push(this.data.topFive.map(item => item.total));
     if (this.data.total != null && this.data.total > 0) {
       const othersValue = this.data.total - this.data.topFive.map(item => item.total).reduce((item1, item2) => item1 + item2);
@@ -99,5 +107,15 @@ export class RejectionCardComponent implements OnInit {
   randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+  getDepartmentName(code:string){
+  if (this.departments != null){
+    const index = this.departments.findIndex(department => department.departmentId  + '' == code);
+    if (index != -1) {
+      return this.departments[index].name;
+    }
+  }
+  return code;
+  }
+
 }
 

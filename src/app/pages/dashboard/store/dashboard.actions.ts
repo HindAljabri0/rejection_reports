@@ -3,6 +3,9 @@ import { SearchCriteria } from './dashboard.reducer';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
 
+export const getDepartmentNames = createAction('[ Dashboard ] get department name');
+
+export const setDepartmentNames = createAction('[ Dashboard ] set deaprtment name', props<any>());
 
 export const updateSearchCriteria = createAction('[ Dashboard ] update search criteria', props<SearchCriteria>());
 

@@ -19,7 +19,8 @@ export interface DashboardStatus {
     underProcessingClaims: DashboardCardData,
     rejectionByDepartment: DashboardCardData,
     rejectionByDoctor: DashboardCardData,
-    rejectionByService: DashboardCardData
+    rejectionByService: DashboardCardData,
+    departmentNames: any,
 }
 
 const initState: DashboardStatus = {
@@ -39,7 +40,8 @@ const initState: DashboardStatus = {
     underProcessingClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['OUTSTANDING', 'PENDING', 'UNDER_PROCESS']) },
     rejectionByDepartment: { loading: false, data: new RejectionCardData('Department') },
     rejectionByDoctor: { loading: false, data: new RejectionCardData('Doctor') },
-    rejectionByService: { loading: false, data: new RejectionCardData('Service') }
+    rejectionByService: { loading: false, data: new RejectionCardData('Service') },
+    departmentNames:null
 }
 
 const _dashboardReducer = createReducer(
@@ -64,7 +66,8 @@ const _dashboardReducer = createReducer(
             newState[name] = { loading: state[name].loading, data: new RejectionCardData(data['rejectionBy']), error: error };
         }
         return newState;
-    })
+    }),
+    on(actions.setDepartmentNames, (state, response)=>({...state, departmentNames: response.body['Departments']}))
 )
 
 export function dashboardReducer(state, action) {
@@ -85,6 +88,8 @@ export const getUnderProcessingClaims = createSelector(dashboardSelector, (state
 export const getRejectionByDepartment = createSelector(dashboardSelector, (state) => state.rejectionByDepartment);
 export const getRejectionByDoctor = createSelector(dashboardSelector, (state) => state.rejectionByDoctor);
 export const getRejectionByService = createSelector(dashboardSelector, (state) => state.rejectionByService);
+
+export const getDepartments = createSelector(dashboardSelector, (state) => state.departmentNames);
 
 export type SearchCriteria = {
     fromDate: string;

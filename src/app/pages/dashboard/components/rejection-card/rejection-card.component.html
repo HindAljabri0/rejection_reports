@@ -24,7 +24,7 @@
             <div *ngFor="let item of data.topFive; let i = index" class="item">
                 <mat-icon [style.color]="colors[0].backgroundColor[i]" style="grid-column: 1 / 2;">fiber_manual_record
                 </mat-icon>
-                <div style="grid-column: 2 / 3;">{{item.label}}</div>
+                <div style="grid-column: 2 / 3;">{{getDepartmentName(item.label)}}</div> 
                 <div style="grid-column: 3 / 4;">{{item.total}} <span
                         style="font-size: small; font-weight: 300;">{{unit}}</span></div>
             </div>

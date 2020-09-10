@@ -1,14 +1,16 @@
+import { AdminService } from './../../../services/adminService/admin.service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { SearchService } from 'src/app/services/serchService/search.service';
-import { updateSearchCriteria, dashboardCardNames, setCardIsLoading, setCardSummary, setCardError } from './dashboard.actions';
-import { tap } from 'rxjs/operators';
+import { updateSearchCriteria, dashboardCardNames, setCardIsLoading, setCardSummary, setCardError, getDepartmentNames, setDepartmentNames } from './dashboard.actions';
+import { tap, switchMap, filter, map, catchError } from 'rxjs/operators';
 import { getSummaryByName } from './dashboard.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
+import { of } from 'rxjs/internal/observable/of';
 
 
 @Injectable({
@@ -20,9 +22,18 @@ export class DashboardEffects {
         private store: Store,
         private actions$: Actions,
         private searchService: SearchService,
-        private sharedServices: SharedServices
+        private sharedServices: SharedServices,
+        private adminService: AdminService
     ) { }
-
+    getDapertmentName = createEffect(()=> this.actions$.pipe(
+        ofType(getDepartmentNames),
+        switchMap(() => this.adminService.getLOVsForClaimCreation().pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+            map(response => setDepartmentNames(response)),
+            catchError(err => of({ type: setDepartmentNames.type }))
+        ))
+    ));
+    
     loadSummaries$ = createEffect(() => this.actions$.pipe(
         ofType(updateSearchCriteria),
         tap(criteria => {
