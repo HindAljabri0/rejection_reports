@@ -32,4 +32,7 @@
         </ng-template>
         <claim-invoices-services></claim-invoices-services>
     </mat-tab>
+    <mat-tab *ngIf="pageMode != 'CREATE'" [label]="'Errors'">
+        <claim-errors></claim-errors>
+    </mat-tab>
 </mat-tab-group>
