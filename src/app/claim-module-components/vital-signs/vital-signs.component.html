@@ -39,7 +39,7 @@
     </div>
     <div class="leftComponent">
         <label>Last Menstruation Period</label>
-        <input [ngClass]="{'fieldError': fieldHasError('lastMenstruationPeriod')}"
+        <input [ngClass]="{'fieldError': fieldHasError('lastMenstruationPeriod')}" type="date"
             [formControl]="lastMenstruationPeriodController" (change)="updateClaim('lastMenstruationPeriod')"
             [matTooltip]="getFieldError('lastMenstruationPeriod')">
     </div>
