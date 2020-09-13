@@ -1,0 +1,18 @@
+<div class="parent">
+
+    <div class="attachment" *ngFor="let attachment of attachments">
+        <div class="thumbnail">
+            <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)"
+                [src]="getImageOfBlob(attachment)" [alt]="attachment.filename">
+            <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)"
+                src="assets/pdfIcon.png" [alt]="attachment.filename">
+        </div>
+        <p style="margin: auto 5px">{{attachment.filename}}</p>
+        <span class="spacer"></span>
+        <a [href]="getImageOfBlob(attachment)" [download]="attachment.filename"
+            mat-icon-button color="primary" style="margin: auto;">
+            <mat-icon style="font-size: 20px;">save_alt</mat-icon>
+        </a>
+    </div>
+
+</div>

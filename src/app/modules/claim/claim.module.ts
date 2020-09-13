@@ -24,6 +24,7 @@ import { SelectServiceDialogComponent } from 'src/app/claim-module-components/di
 import { OnSavingDoneComponent } from 'src/app/claim-module-components/dialogs/on-saving-done/on-saving-done.component';
 import { VitalSignsComponent } from 'src/app/claim-module-components/vital-signs/vital-signs.component';
 import { AdmissionComponent } from 'src/app/claim-module-components/admission/admission.component';
+import { AttachmentsComponent } from 'src/app/claim-module-components/attachments/attachments.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AdmissionComponent } from 'src/app/claim-module-components/admission/ad
     OnSavingDoneComponent,
     VitalSignsComponent,
     AdmissionComponent,
+    AttachmentsComponent,
   ],
   imports: [
     RouterModule.forChild([
