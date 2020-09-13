@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { changeSelectedTab } from '../store/claim.actions';
 import { MatTabChangeEvent } from '@angular/material';
-import { getClaimObjectErrors, FieldError } from '../store/claim.reducer';
+import { getClaimObjectErrors, FieldError, ClaimPageType, getPageType } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-data',
@@ -20,9 +20,12 @@ export class ClaimDataComponent implements OnInit {
     invoicesErrors: FieldError[];
   };
 
+  pageType:ClaimPageType;
+
   constructor(private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getClaimObjectErrors).subscribe(errors => this.errors = errors);
   }
 

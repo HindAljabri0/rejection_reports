@@ -38,7 +38,7 @@ const initState: ClaimState = {
     selectedGDPN: {},
     approvalFormLoading: false,
     mode: 'CREATE',
-    type: 'INPATIENT_OUTPATIENT'
+    type: 'DENTAL_OPTICAL'
 }
 
 const _claimReducer = createReducer(
