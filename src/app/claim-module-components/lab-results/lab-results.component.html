@@ -8,7 +8,7 @@
             <th style="width: 16%;">No. of Components</th>
         </tr>
     </table>
-    <div *ngFor="let result of results; let i = index" class="results">
+    <div *ngFor="let result of resultsControls; let i = index" class="results">
         <mat-expansion-panel *ngIf="expandedResult == -1 || expandedResult == i" hideToggle
             [expanded]="i == expandedResult" (afterExpand)="afterResultExpanded(i)"
             (afterCollapse)="afterResultCollapse(i)">
@@ -33,23 +33,23 @@
                     <td><label>Test Serial</label></td>
                 </tr>
                 <tr>
-                    <td [matTooltip]="getFieldError('testDate:'+i)"><input
+                    <td [matTooltip]="getFieldError('testDate:'+i)"><input [formControl]="result.testDate"
                             [ngClass]="{'fieldError': fieldHasError('testDate:'+i)}" type="date"></td>
-                    <td [matTooltip]="getFieldError('testCode:'+i)"><input
+                    <td [matTooltip]="getFieldError('testCode:'+i)"><input [formControl]="result.testCode"
                             [ngClass]="{'fieldError': fieldHasError('testCode:'+i)}"></td>
-                    <td [matTooltip]="getFieldError('testSerial:'+i)"><input
+                    <td [matTooltip]="getFieldError('testSerial:'+i)"><input [formControl]="result.testSerial"
                             [ngClass]="{'fieldError': fieldHasError('testSerial:'+i)}"></td>
                 </tr>
                 <tr>
                     <td colspan="3" [matTooltip]="getFieldError('resultDescription:'+i)">
-                        <textarea rows="4" placeholder="Description"
+                        <textarea rows="4" placeholder="Description" [formControl]="result.resultDescription"
                             [ngClass]="{'fieldError': fieldHasError('resultDescription:'+i)}"></textarea>
                     </td>
                 </tr>
             </table>
         </mat-expansion-panel>
         <div *ngIf="i == expandedResult">
-            <div *ngFor="let component of result.observation; let j = index" class="components">
+            <div *ngFor="let component of result.componentsControls; let j = index" class="components">
                 <mat-expansion-panel class="componentExpansionPanel"
                     *ngIf="expandedComponent == -1 || expandedComponent == j" hideToggle
                     [expanded]="j == expandedComponent" (afterExpand)="afterComponentExpanded(j)"
@@ -66,11 +66,11 @@
                         <tr>
                             <td><label>Component Code</label></td>
                             <td [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
-                                <input [ngClass]="{'fieldError': fieldHasError('componentCode:'+i+':'+j)}" type="text">
+                                <input [formControl]="component.componentCode" [ngClass]="{'fieldError': fieldHasError('componentCode:'+i+':'+j)}" type="text">
                             </td>
                             <td><label>Component Serial</label></td>
                             <td [matTooltip]="getFieldError('componentSerial:'+i+':'+j)">
-                                <input [ngClass]="{'fieldError': fieldHasError('componentSerial:'+i+':'+j)}"
+                                <input [formControl]="component.componentSerial" [ngClass]="{'fieldError': fieldHasError('componentSerial:'+i+':'+j)}"
                                     type="text">
                             </td>
                         </tr>
@@ -80,19 +80,19 @@
                                     [ngClass]="{'fieldError': fieldHasError('componentDescription:'+i+':'+j)}"
                                     [formControl]="component.componentDescription" type="text"></td>
                             <td><label>LAB Result</label></td>
-                            <td [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)"><input
+                            <td [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)"><input [formControl]="component.componentLabResult"
                                     [ngClass]="{'fieldError': fieldHasError('componentLabResult:'+i+':'+j)}"></td>
                         </tr>
                         <tr>
                             <td><label>Result Unit</label></td>
-                            <td [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)"><input
+                            <td [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)"><input [formControl]="component.componentResultUnit"
                                     [ngClass]="{'fieldError': fieldHasError('componentResultUnit:'+i+':'+j)}">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4" [matTooltip]="getFieldError('componentResultComment:'+i+':'+j)">
-                                <textarea [ngClass]="{'fieldError': fieldHasError('componentResultUnit:'+i+':'+j)}"
-                                    placeholder="Comment"></textarea>
+                                <textarea [ngClass]="{'fieldError': fieldHasError('componentResultComment:'+i+':'+j)}"
+                                    placeholder="Comment" [formControl]="component.componentResultComment"></textarea>
                             </td>
                         </tr>
                     </table>

@@ -54,7 +54,7 @@
     <div class="leftComponent" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
         <label>Case Type</label>
         <select [ngClass]="{'fieldError': fieldHasError('caseType')}" [value]="selectedCaseType"
-            (change)="selectedCaseType = $event.target.value; updateClaim('caseType');">
+            (change)="selectedCaseType = $event.target.value; updateClaim('caseType');" [disabled]="pageMode != 'CREATE'">
             <option value="INPATIENT">Inpatient</option>
             <option value="OUTPATIENT">Outpatient</option>
             <option value="DENTAL">Dental</option>

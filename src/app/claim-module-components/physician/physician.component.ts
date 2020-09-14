@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getIsRetrievedClaim, getClaim, getPageType, ClaimPageType } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -27,15 +27,22 @@ export class PhysicianComponent implements OnInit {
 
   errors: FieldError[] = [];
 
+  pageType: ClaimPageType;
+
   constructor(private store: Store) { }
 
   ngOnInit() {
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
-    this.store.select(getDepartments).subscribe(
-      departments =>
-        this.departments = departments.filter(department => department.name == "Dental" || department.name == "Optical")
-    );
+    this.store.select(getPageType).subscribe(type => {
+      this.pageType = type;
+      if(type == 'DENTAL_OPTICAL'){
+        this.store.select(getDepartments).subscribe(departments => 
+          this.departments = departments.filter(department => department.name == "Dental" || department.name == "Optical")).unsubscribe();
+      } else if(type == 'INPATIENT_OUTPATIENT'){
+        this.store.select(getDepartments).subscribe(departments => this.departments = departments).unsubscribe();
+      }
+    });
     this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
 
     this.store.select(getIsRetrievedClaim).pipe(

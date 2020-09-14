@@ -28,7 +28,7 @@
                         </td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceNumber}}</td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">
-                            {{invoice.invoice.invoiceDate == null? '':invoice.invoice.invoiceDate.toLocaleDateString()}}
+                            {{formatDate(invoice.invoice.invoiceDate)}}
                         </td>
                         <td style="width: 22%;" *ngIf="expandedInvoice == -1">
                             <div style="width: 100%; display: flex;">
@@ -66,7 +66,7 @@
                             [formControl]="invoice.invoiceDate"></td>
                     <td>
                         <select (change)="updateInvoiceDepartment(i, $event)"
-                            [value]="controllers[i].invoice.invoiceDepartment" required>
+                            [value]="controllers[i].invoice.invoiceDepartment" [disabled]="pageMode != 'CREATE'" required>
                             <option *ngFor="let department of departments" [value]="department.departmentId">
                                 {{department.name}}</option>
                         </select>

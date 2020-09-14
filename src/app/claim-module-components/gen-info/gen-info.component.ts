@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
 import { updateClaimDate, updateCaseType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms } from '../store/claim.actions';
-import { getDepartmentCode, FieldError, getGenInfoErrors, getIsRetrievedClaim, getClaim, ClaimPageType, getPageType } from '../store/claim.reducer';
+import { getDepartmentCode, FieldError, getGenInfoErrors, getIsRetrievedClaim, getClaim, ClaimPageType, getPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
@@ -19,8 +19,8 @@ export class GenInfoComponent implements OnInit {
   departmentCode: string;
 
   claimDateController: FormControl = new FormControl();
-  
-  
+
+
   fileNumberController: FormControl = new FormControl();
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
@@ -38,63 +38,93 @@ export class GenInfoComponent implements OnInit {
 
   errors: FieldError[] = [];
 
-  claimPageType:ClaimPageType;
+  pageMode: ClaimPageMode;
+  claimPageType: ClaimPageType;
 
   constructor(private store: Store, private datePipe: DatePipe) { }
 
   ngOnInit() {
+    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.store.select(getIsRetrievedClaim).pipe(
-      withLatestFrom(this.store.select(getClaim))
+      withLatestFrom(this.store.select(getClaim)),
+      withLatestFrom(this.store.select(getPageMode))
     ).subscribe((values) => {
-      this.isRetrievedClaim = values[0];
+      this.isRetrievedClaim = values[0][0];
       if (this.isRetrievedClaim) {
-        this.fileNumberController.setValue(values[1].caseInformation.patient.patientFileNumber);
-        this.fileNumberController.disable({onlySelf: values[1].caseInformation.patient.patientFileNumber != null});
-        const illnessDuration = values[1].caseInformation.caseDescription.illnessDuration;
+        this.fileNumberController.setValue(values[0][1].caseInformation.patient.patientFileNumber);
+        this.fileNumberController.disable({ onlySelf: values[1] != 'CREATE' || values[0][1].caseInformation.patient.patientFileNumber != null });
+        const illnessDuration = values[0][1].caseInformation.caseDescription.illnessDuration;
         if (illnessDuration != null) {
           if (illnessDuration.years != null) {
             this.illnessDurationController.setValue(illnessDuration.years);
-            this.illnessDurationController.disable({onlySelf:true});
+            this.illnessDurationController.disable({ onlySelf: true });
             this.unitIllness = 'Year';
           } else if (illnessDuration.months != null) {
             this.illnessDurationController.setValue(illnessDuration.months);
-            this.illnessDurationController.disable({onlySelf:true});
+            this.illnessDurationController.disable({ onlySelf: true });
             this.unitIllness = 'Month';
           } else if (illnessDuration.days != null) {
             this.illnessDurationController.setValue(illnessDuration.days);
-            this.illnessDurationController.disable({onlySelf:true});
+            this.illnessDurationController.disable({ onlySelf: true });
             this.unitIllness = 'Day';
           }
         }
-        const ageDuration = values[1].caseInformation.patient.age;
+        const ageDuration = values[0][1].caseInformation.patient.age;
         if (ageDuration != null) {
           if (ageDuration.years != null) {
             this.ageController.setValue(ageDuration.years);
-            this.ageController.disable({onlySelf:true});
+            this.ageController.disable({ onlySelf: true });
             this.unitAge = 'Year';
           } else if (ageDuration.months != null) {
             this.ageController.setValue(ageDuration.months);
-            this.ageController.disable({onlySelf:true});
+            this.ageController.disable({ onlySelf: true });
             this.unitAge = 'Month';
           } else if (ageDuration.days != null) {
             this.ageController.setValue(ageDuration.days);
-            this.ageController.disable({onlySelf:true});
+            this.ageController.disable({ onlySelf: true });
             this.unitAge = 'Day';
           }
-        }
-        this.mainSymptomsController.setValue(values[1].caseInformation.caseDescription.chiefComplaintSymptoms);
-        this.mainSymptomsController.disable({onlySelf: values[1].caseInformation.caseDescription.chiefComplaintSymptoms != null});
-        const visitDate = values[1].visitInformation.visitDate;
-        if(visitDate != null){
+        } 
+        this.mainSymptomsController.setValue(values[0][1].caseInformation.caseDescription.chiefComplaintSymptoms);
+        this.mainSymptomsController.disable({ onlySelf: values[1] != 'CREATE' || values[0][1].caseInformation.caseDescription.chiefComplaintSymptoms != null });
+        const visitDate = values[0][1].visitInformation.visitDate;
+        if (visitDate != null) {
           this.claimDateController.setValue(this.datePipe.transform(visitDate, 'yyyy-MM-dd'));
-          this.claimDateController.disable({onlySelf: true});
+          this.claimDateController.disable({ onlySelf: true });
         }
-        const dob = values[1].caseInformation.patient.dob;
-        if(dob != null){
+        const dob = values[0][1].caseInformation.patient.dob;
+        if (dob != null) {
           this.memberDobController.setValue(this.datePipe.transform(dob, 'yyyy-MM-dd'));
-          this.memberDobController.disable({onlySelf: true});
+          this.memberDobController.disable({ onlySelf: true });
         }
+        if (values[1] != 'CREATE') {
+          this.illnessDurationController.disable({ onlySelf: true });
+          this.ageController.disable({ onlySelf: true });
+          this.claimDateController.disable({ onlySelf: true });
+          this.memberDobController.disable({ onlySelf: true });
+        }
+        const significantSign = values[0][1].caseInformation.caseDescription.signicantSigns;
+        this.significantSignController.setValue(significantSign);
+        this.significantSignController.disable({ onlySelf: values[1] != 'CREATE' || significantSign != null });
+
+        const commReport = values[0][1].commreport;
+        this.commReportController.setValue(commReport);
+        this.commReportController.disable({ onlySelf: values[1] != 'CREATE' || commReport != null });
+
+        const eligibliityNum = values[0][1].claimIdentities.eligibilityNumber;
+        this.eligibilityNumController.setValue(eligibliityNum);
+        this.eligibilityNumController.disable({ onlySelf: values[1] != 'CREATE' || eligibliityNum != null });
+
+        this.selectedCaseType = values[0][1].caseInformation.caseType;
+
+        const radiologyReport = values[0][1].caseInformation.radiologyReport;
+        this.radiologyReportController.setValue(radiologyReport);
+        this.radiologyReportController.disable({ onlySelf: values[1] != 'CREATE' || radiologyReport != null });
+
+        const otherCondition = values[0][1].caseInformation.otherConditions;
+        this.otherConditionController.setValue(otherCondition);
+        this.otherConditionController.disable({ onlySelf: values[1] != 'CREATE' || otherCondition != null });
       } else {
 
       }

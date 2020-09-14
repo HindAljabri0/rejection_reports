@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate"></mat-progress-bar>
 <div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE'}">
     <div class="header" [ngStyle]="{'color': pageMode == 'CREATE'? '#3060AA':getClaimStatusColor(claimProps?.statusCode),
         'background-color': pageMode == 'CREATE'? 'white':getClaimStatusColor(claimProps?.statusCode)+'40'}">
@@ -40,7 +41,7 @@
 </div>
 
 <button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu"
-    *ngIf="claim == null && errors == null && !isLoading">
+    *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
     <mat-icon>add</mat-icon>
 </button>
 

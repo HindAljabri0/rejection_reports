@@ -19,10 +19,10 @@
             [matTooltip]="getFieldError('respiratoryRate')">
     </div>
     <div class="rightComponent">
-        <label>Blood Pressure</label>
-        <input [ngClass]="{'fieldError': fieldHasError('bloodPressure')}"
-            [formControl]="bloodPressureController" (change)="updateClaim('bloodPressure')"
-            [matTooltip]="getFieldError('bloodPressure')">
+        <label>Pulse</label>
+        <input [ngClass]="{'fieldError': fieldHasError('pulse')}"
+            [formControl]="pulseController" (change)="updateClaim('pulse')"
+            [matTooltip]="getFieldError('pulse')">
     </div>
 
     <div class="leftComponent">

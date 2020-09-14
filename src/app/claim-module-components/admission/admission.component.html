@@ -7,7 +7,7 @@
     </div>
     <div class="rightComponent">
         <label>Admission Time</label>
-        <input [ngClass]="{'fieldError': fieldHasError('admissionTime')}"
+        <input [ngClass]="{'fieldError': fieldHasError('admissionTime')}" type="time"
             [formControl]="admissionTimeController" (change)="updateClaim('admissionTime')"
             [matTooltip]="getFieldError('admissionTime')">
     </div>
@@ -20,7 +20,7 @@
     </div>
     <div class="rightComponent">
         <label>Discharge Time</label>
-        <input [ngClass]="{'fieldError': fieldHasError('dischargeTime')}"
+        <input [ngClass]="{'fieldError': fieldHasError('dischargeTime')}" type="time"
             [formControl]="dischargeTimeController" (change)="updateClaim('dischargeTime')"
             [matTooltip]="getFieldError('dischargeTime')">
     </div>

@@ -43,7 +43,7 @@ const initState: ClaimState = {
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.retrieveClaim, (state) => ({ ...state, mode: 'VIEW', isRetrievedClaim: true })),
+    on(actions.retrieveClaim, (state) => ({ ...state, mode: 'VIEW', isRetrievedClaim: true, loading: true })),
     on(actions.viewRetrievedClaim, (state, response) => {
         const body = response.body;
         const dentalId = '4';
@@ -52,7 +52,7 @@ const _claimReducer = createReducer(
         const caseType = body['claim']['caseInformation']['caseType']
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
-        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props });
+        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false });
     }),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
