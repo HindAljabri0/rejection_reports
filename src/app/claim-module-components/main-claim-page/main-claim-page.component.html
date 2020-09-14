@@ -31,7 +31,7 @@
             <gdpn-calculation style="grid-column: 9 / span 4; margin: 5px;"></gdpn-calculation>
         </ng-container>
     </div>
-    <div class="footer">
+    <div class="footer" *ngIf="pageMode == 'CREATE'">
         <span class="spacer"></span>
         <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
         <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"

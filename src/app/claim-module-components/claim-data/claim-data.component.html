@@ -25,6 +25,9 @@
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Attachments'">
         <claim-attachments></claim-attachments>
     </mat-tab>
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'LAB Results'">
+        <claim-lab-results></claim-lab-results>
+    </mat-tab>
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon *ngIf="invoiceServicesTabHasErrors()" style="color: #bb3131;">error</mat-icon>

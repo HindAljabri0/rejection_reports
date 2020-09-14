@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim, ClaimPageMode, getPageMode } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
 import { updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
@@ -62,9 +62,12 @@ export class InvoicesServicesComponent implements OnInit {
 
   errors: FieldError[] = [];
 
+  pageMode: ClaimPageMode;
+
   constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
 
   ngOnInit() {
+    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
     this.store.select(getIsRetrievedClaim).subscribe(isRetrieved => this.isRetrievedClaim = isRetrieved);
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
     this.store.select(getDepartments)
@@ -394,9 +397,9 @@ export class InvoicesServicesComponent implements OnInit {
               });
             }
           }
-        } ,
+        },
         error => {
-          if(error instanceof HttpErrorResponse)
+          if (error instanceof HttpErrorResponse)
             this.serviceCodeSearchError = error.message;
         }
       );

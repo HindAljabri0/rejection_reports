@@ -40,11 +40,11 @@
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.services.length}}</td>
                         <td style="width: 10%;" *ngIf="expandedInvoice == -1">
                             <button mat-icon-button (click)="onDeleteInvoiceClick($event, i)"
-                                *ngIf="controllers.length > 1">
+                                *ngIf="pageMode == 'CREATE' && controllers.length > 1">
                                 <mat-icon style="color: #af4848;">cancel</mat-icon>
                             </button>
                         </td>
-                        <td *ngIf="expandedInvoice != -1" colspan="5" style="text-align: end;"><button mat-button
+                        <td *ngIf="pageMode == 'CREATE' && expandedInvoice != -1" colspan="5" style="text-align: end;"><button mat-button
                                 style="margin-left: auto;" *ngIf="i == expandedInvoice"
                                 (click)="onAddAnathorInvoiceClick($event, i)">+ Add Another
                                 Invoice</button></td>
@@ -84,7 +84,7 @@
                             <mat-icon *ngIf="serviceHasErrors(i, j)" style="color: #bb3131;">error</mat-icon>
                             Service {{(j+1)}}
                         </mat-panel-title>
-                        <mat-panel-description>
+                        <mat-panel-description *ngIf="pageMode == 'CREATE'">
                             <button mat-button style="margin-left: auto;"
                                 *ngIf="isRetrievedClaim && !service.retrieved && j == expandedService"
                                 (click)="onSelectRetrievedServiceClick($event, i, j)">Select a retrieved
@@ -127,7 +127,7 @@
                             <td [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceCode:'+i+':'+j)}" type="text"
                                     [formControl]="service.serviceCode">
-                                <span *ngIf="!service.retrieved" class="selectServiceButton"
+                                <span *ngIf="pageMode == 'CREATE' && !service.retrieved" class="selectServiceButton"
                                     [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                             </td>
                             <td><label>Service Description*</label></td>
@@ -183,7 +183,7 @@
                             <td *ngIf="claimType == dentalDepartmentCode" [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
                                     type="number" [formControl]="service.toothNumber">
-                                <span *ngIf="!service.toothNumber.disabled" class="selectServiceButton"
+                                <span *ngIf="pageMode == 'CREATE' && !service.toothNumber.disabled" class="selectServiceButton"
                                     [matMenuTriggerFor]="SelectToothMenu">Select</span>
                             </td>
                         </tr>
@@ -191,14 +191,14 @@
                 </mat-expansion-panel>
             </div>
         </div>
-        <div style="text-align: end;" *ngIf="expandedService == -1 && expandedInvoice == i">
+        <div style="text-align: end;" *ngIf="pageMode == 'CREATE' && expandedService == -1 && expandedInvoice == i">
             <hr>
             <button *ngIf="isRetrievedClaim" mat-raised-button color="primary" (click)="onAddRetrievedServiceClick(i)"
                 style="margin-right: 10px;">Add a Retreived Service</button>
             <button mat-raised-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
         </div>
     </div>
-    <div style="text-align: end;" *ngIf="expandedInvoice == -1">
+    <div style="text-align: end;" *ngIf="pageMode == 'CREATE' && expandedInvoice == -1">
         <hr>
         <button mat-raised-button color="primary" (click)="onAddInvoiceClick()">Add Invoice</button>
     </div>

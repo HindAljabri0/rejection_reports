@@ -5,7 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { Store } from '@ngrx/store';
 import { updateDiagnosisList } from '../store/claim.actions';
-import { FieldError, getDiagnosisErrors, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
+import { FieldError, getDiagnosisErrors, getIsRetrievedClaim, getClaim, ClaimPageMode, getPageMode } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -22,9 +22,12 @@ export class ClaimDiagnosisComponent implements OnInit {
   icedOptions: ICDDiagnosis[] = [];
   errors: FieldError[] = [];
 
+  pageMode: ClaimPageMode;
+
   constructor(private adminService: AdminService, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
     this.store.select(getIsRetrievedClaim).pipe(
       withLatestFrom(this.store.select(getClaim))
     ).subscribe((values) => {

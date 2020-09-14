@@ -26,6 +26,7 @@ import { VitalSignsComponent } from 'src/app/claim-module-components/vital-signs
 import { AdmissionComponent } from 'src/app/claim-module-components/admission/admission.component';
 import { AttachmentsComponent } from 'src/app/claim-module-components/attachments/attachments.component';
 import { ClaimErrorsComponent } from 'src/app/claim-module-components/claim-errors/claim-errors.component';
+import { LabResultsComponent } from 'src/app/claim-module-components/lab-results/lab-results.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ClaimErrorsComponent } from 'src/app/claim-module-components/claim-erro
     AdmissionComponent,
     AttachmentsComponent,
     ClaimErrorsComponent,
+    LabResultsComponent,
   ],
   imports: [
     RouterModule.forChild([
