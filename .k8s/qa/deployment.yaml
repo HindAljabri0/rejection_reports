@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gui
+  namespace: qa
   labels:
     app: gui
 spec:
@@ -14,6 +15,8 @@ spec:
       labels:
         app: gui
     spec:
+      nodeSelector:
+        name: DEV-NODE-POOL-01
       containers:
         - name: gui
           image: me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:latest
