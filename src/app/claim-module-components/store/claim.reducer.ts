@@ -63,8 +63,8 @@ const _claimReducer = createReducer(
             return { ...state, claim: claim, mode: 'CREATE', isRetrievedClaim: false };
         }
     }),
-    on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
-    on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: false })),
+    on(actions.loadLOVs, (state) => ({ ...state, loading: state.mode == 'CREATE' })),
+    on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: state.mode == 'CREATE'? false : state.loading })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),

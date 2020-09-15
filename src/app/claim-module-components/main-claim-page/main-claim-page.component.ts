@@ -7,7 +7,7 @@ import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectE
 import { SharedServices } from 'src/app/services/shared.services';
 import { skipWhile, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
+import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 
 @Component({
@@ -29,9 +29,17 @@ export class MainClaimPageComponent implements OnInit {
   pageType: ClaimPageType;
 
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
-    store.select(getPageMode).subscribe(claimPageMode => this.pageMode = claimPageMode);
+    store.select(getPageMode).subscribe(claimPageMode => {
+      this.pageMode = claimPageMode
+      this.store.dispatch(changePageTitle({title: `${claimPageMode.charAt(0)}${claimPageMode.substring(1).toLowerCase()} Claim`}))
+    });
     store.select(getPageType).subscribe(claimPageType => this.pageType = claimPageType);
-    store.select(getClaim).subscribe(claim => this.claim = claim);
+    store.select(getClaim).subscribe(claim => {
+      this.claim = claim;
+      if(claim != null && this.pageMode == 'VIEW'){
+        this.store.dispatch(changePageTitle({title: `View Claim | ${claim.claimIdentities.providerClaimNumber}`}));
+      }
+    });
     store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {

@@ -10,6 +10,7 @@
         </ng-container>
         <ng-template #statusHeader>
             <ng-container *ngIf="claim != null && claimProps != null">
+                <p style="margin-right: 50px;">View Claim</p>
                 <p><strong>Provider Reference No.:</strong> {{claim.claimIdentities.providerClaimNumber}}</p>
                 <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Batch ID:</strong>
                     {{claim.claimIdentities.providerBatchID}}</p>
