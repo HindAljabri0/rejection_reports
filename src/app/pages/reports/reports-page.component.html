@@ -14,7 +14,7 @@
                                        {{report.name}}                                    
                                 </mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="reportTypeControl.hasError('required')">Please choose a Report</mat-error>
+                                <mat-error *ngIf="reportTypeControl.hasError('required')">Please select a Report</mat-error>
                             </mat-form-field>
                             <mat-form-field  [ngClass]="{'mat-form-field-invalid':payerIdHasError}" floatLabel="never" 
                                 style="margin-right: 5%; width: 15%;">
@@ -24,7 +24,7 @@
                                         {{payer.name}}
                                     </mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="payerIdControl.hasError('required')">Please choose a Payer</mat-error>
+                                <mat-error *ngIf="payerIdControl.hasError('required')">Please select a Payer</mat-error>
                             </mat-form-field>
                             <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" floatLabel="never" 
                                 style="width: 15%;margin-right: 5%;margin-left: 3%;border: none; border-radius: 4px; ">
@@ -34,7 +34,7 @@
                                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #fromPicker></mat-datepicker>
-                                <mat-error *ngIf="fromDateControl.hasError('required')">Please choose a Date</mat-error>
+                                <mat-error *ngIf="fromDateControl.hasError('required')">Please choose a date</mat-error>
                             </mat-form-field>
                             <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" floatLabel="never"
                                 style="margin-right: 5%;width: 15%;">
@@ -54,9 +54,8 @@
                                         {{criteria.name}}
                                     </mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="rejectionCriteriaControl.hasError('required')">Please choose date type</mat-error>
+                                <mat-error *ngIf="rejectionCriteriaControl.hasError('required')">Please select date type</mat-error>
                             </mat-form-field>
-
                             <button mat-raised-button color="primary" (click)="search()" 
                                 style="width: 15%;">Search
                             </button>
