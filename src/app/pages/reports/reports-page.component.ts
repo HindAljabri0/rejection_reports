@@ -129,7 +129,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (this.paymentReference == null) {
-      this.search();
+    //  this.search();
     } else {
       this.paymentClaimSummaryReport.fetchData(this.paymentReference);
     }
