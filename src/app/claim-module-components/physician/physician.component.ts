@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
-import { withLatestFrom } from 'rxjs/operators';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getIsRetrievedClaim, getClaim, getPageType, ClaimPageType, getPageMode } from '../store/claim.reducer';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'claim-physician-header',
@@ -27,34 +27,54 @@ export class PhysicianComponent implements OnInit {
 
   errors: FieldError[] = [];
 
+  pageType: ClaimPageType;
+
   constructor(private store: Store) { }
 
   ngOnInit() {
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
-    this.store.select(getDepartments).subscribe(
-      departments =>
-        this.departments = departments.filter(department => department.name == "Dental" || department.name == "Optical")
-    );
+    this.store.select(getPageType).subscribe(type => this.pageType = type);
+    this.store.select(getDepartments).pipe(
+      withLatestFrom(this.store.select(getPageType)),
+      map(values => ({ departments: values[0], type: values[1] }))
+    ).subscribe(values => {
+      if (values.type == 'DENTAL_OPTICAL') {
+        this.departments = values.departments.filter(department => department.name == "Dental" || department.name == "Optical")
+      } else if (values.type = 'INPATIENT_OUTPATIENT') {
+        this.departments = values.departments;
+      }
+    });
     this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
 
     this.store.select(getIsRetrievedClaim).pipe(
-      withLatestFrom(this.store.select(getClaim))
+      withLatestFrom(this.store.select(getClaim)),
+      withLatestFrom(this.store.select(getPageMode)),
+      map(values => ({isRetrieved: values[0][0], claim: values[0][1], mode: values[1]}))
     ).subscribe((values) => {
-      this.isRetrievedClaim = values[0];
+      this.isRetrievedClaim = values.isRetrieved;
       if (this.isRetrievedClaim) {
-        this.physicianIdController.setValue(values[1].caseInformation.physician.physicianID);
-        this.physicianIdController.disable({ onlySelf: values[1].caseInformation.physician.physicianID != null })
-        this.physicianNameController.setValue(values[1].caseInformation.physician.physicianName);
-        this.physicianNameController.disable({ onlySelf: values[1].caseInformation.physician.physicianName != null });
-        this.selectedCategory = values[1].caseInformation.physician.physicianCategory;
-        this.categoryEditable = !this.categories.includes(this.selectedCategory);
+        this.physicianIdController.setValue(values.claim.caseInformation.physician.physicianID);
+        this.physicianIdController.disable({ onlySelf: values.claim.caseInformation.physician.physicianID != null })
+        this.physicianNameController.setValue(values.claim.caseInformation.physician.physicianName);
+        this.physicianNameController.disable({ onlySelf: values.claim.caseInformation.physician.physicianName != null });
+        this.selectedCategory = values.claim.caseInformation.physician.physicianCategory;
+        this.categoryEditable = !this.categories.includes(this.selectedCategory) && values.mode == 'CREATE';
+        if(values.mode != 'CREATE'){
+          this.selectedDepartment = `${values.claim.visitInformation.departmentCode}`;
+        }
         this.departmentEditable = false;
+
       } else {
 
       }
 
     }).unsubscribe();
+    setTimeout(() => {
+      const department = this.selectedDepartment;
+      this.selectedDepartment = '1';
+      setTimeout(() => this.selectedDepartment = department, 500);
+    }, 500);
   }
 
   updateClaim(field: string) {

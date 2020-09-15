@@ -1,0 +1,30 @@
+.mainCardBody {
+    padding: 10px;
+    background-color: white;
+    height: 100%;
+}
+
+table{
+    width: 100%;
+}
+
+th, td {
+    padding: 10px;
+}
+
+thead>tr {
+    background-color: #BBD5FF;
+    color: #3060AA;
+}
+
+tbody>tr {
+    color: #C25489;
+}
+
+tbody>tr:nth-child(even) {
+    background-color: #E2EDFE;
+}
+
+tbody>tr:nth-child(odd) {
+    background-color: #D1E2FD;
+}

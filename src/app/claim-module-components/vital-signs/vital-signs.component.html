@@ -1,0 +1,46 @@
+<div class="mainCardBody">
+    <div class="leftComponent">
+        <label>Temperature</label>
+        <input [ngClass]="{'fieldError': fieldHasError('temperature')}"
+            [formControl]="temperatureController" (change)="updateClaim('temperature')"
+            [matTooltip]="getFieldError('temperature')">
+    </div>
+    <div class="rightComponent">
+        <label>Blood Pressure</label>
+        <input [ngClass]="{'fieldError': fieldHasError('bloodPressure')}"
+            [formControl]="bloodPressureController" (change)="updateClaim('bloodPressure')"
+            [matTooltip]="getFieldError('bloodPressure')">
+    </div>
+
+    <div class="leftComponent">
+        <label>Respiratory Rate</label>
+        <input [ngClass]="{'fieldError': fieldHasError('respiratoryRate')}"
+            [formControl]="respiratoryRateController" (change)="updateClaim('respiratoryRate')"
+            [matTooltip]="getFieldError('respiratoryRate')">
+    </div>
+    <div class="rightComponent">
+        <label>Pulse</label>
+        <input [ngClass]="{'fieldError': fieldHasError('pulse')}"
+            [formControl]="pulseController" (change)="updateClaim('pulse')"
+            [matTooltip]="getFieldError('pulse')">
+    </div>
+
+    <div class="leftComponent">
+        <label>Weight</label>
+        <input [ngClass]="{'fieldError': fieldHasError('weight')}"
+            [formControl]="weightController" (change)="updateClaim('weight')"
+            [matTooltip]="getFieldError('weight')">
+    </div>
+    <div class="rightComponent">
+        <label>Height</label>
+        <input [ngClass]="{'fieldError': fieldHasError('height')}"
+            [formControl]="heightController" (change)="updateClaim('height')"
+            [matTooltip]="getFieldError('height')">
+    </div>
+    <div class="leftComponent">
+        <label>Last Menstruation Period</label>
+        <input [ngClass]="{'fieldError': fieldHasError('lastMenstruationPeriod')}" type="date"
+            [formControl]="lastMenstruationPeriodController" (change)="updateClaim('lastMenstruationPeriod')"
+            [matTooltip]="getFieldError('lastMenstruationPeriod')">
+    </div>
+</div>

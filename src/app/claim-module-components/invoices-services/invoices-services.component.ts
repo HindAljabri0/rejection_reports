@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, getIsRetrievedClaim as getIsRetrievedClaim, ClaimPageMode, getPageMode, getClaim } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
 import { updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
@@ -11,6 +11,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Actions, ofType } from '@ngrx/effects';
 import { DatePipe } from '@angular/common';
 import { ServiceDecision } from '../models/serviceDecision.model';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -62,10 +63,63 @@ export class InvoicesServicesComponent implements OnInit {
 
   errors: FieldError[] = [];
 
+  pageMode: ClaimPageMode;
+
   constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.store.select(getIsRetrievedClaim).subscribe(isRetrieved => this.isRetrievedClaim = isRetrieved);
+    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
+    this.store.select(getIsRetrievedClaim).pipe(
+      withLatestFrom(this.store.select(getClaim)),
+      withLatestFrom(this.store.select(getPageMode)),
+      map(values => ({ isRetrieved: values[0][0], claim: values[0][1], mode: values[1] }))
+    ).subscribe(values => {
+      this.isRetrievedClaim = values.isRetrieved;
+      if (values.isRetrieved && values.mode != 'CREATE') {
+        values.claim.invoice.forEach(invoice => {
+          this.addInvoice(false);
+          const index = this.controllers.length - 1;
+          this.controllers[index].invoice = invoice;
+          this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
+          this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
+          this.controllers[index].invoiceDate.disable({ onlySelf: true });
+          this.controllers[index].invoiceNumber.disable({ onlySelf: true });
+          invoice.service.forEach(service => {
+            this.addService(index, false);
+            const serviceIndex = this.controllers[index].services.length - 1;
+            this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
+            this.controllers[index].services[serviceIndex].serviceDate.disable({ onlySelf: true });
+            this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
+            this.controllers[index].services[serviceIndex].serviceCode.disable({ onlySelf: true });
+            this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
+            this.controllers[index].services[serviceIndex].serviceDescription.disable({ onlySelf: true });
+            this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
+            this.controllers[index].services[serviceIndex].quantity.disable({ onlySelf: true });
+            this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
+            this.controllers[index].services[serviceIndex].unitPrice.disable({ onlySelf: true });
+
+            this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
+            this.controllers[index].services[serviceIndex].serviceDiscount.disable({ onlySelf: true });
+            this.controllers[index].services[serviceIndex].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
+            if (service.serviceGDPN.netVATrate != null)
+              this.controllers[index].services[serviceIndex].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
+            this.controllers[index].services[serviceIndex].netVatRate.disable({ onlySelf: true });
+            this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
+            this.controllers[index].services[serviceIndex].patientShare.disable({ onlySelf: true });
+            if (service.serviceGDPN.patientShareVATrate != null)
+              this.controllers[index].services[serviceIndex].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
+            this.controllers[index].services[serviceIndex].patientShareVatRate.disable({ onlySelf: true });
+            if (service.serviceGDPN.priceCorrection != null)
+              this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
+            if (service.serviceGDPN.rejection != null)
+              this.controllers[index].services[serviceIndex].rejection = service.serviceGDPN.rejection.value;
+            this.controllers[index].services[serviceIndex].retrieved = true;
+            this.controllers[index].services[serviceIndex].toothNumber.setValue(service.toothNumber);
+            this.controllers[index].services[serviceIndex].toothNumber.disable({ onlySelf: true });
+          });
+        });
+      }
+    });
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
     this.store.select(getDepartments)
       .subscribe(departments => {
@@ -81,9 +135,12 @@ export class InvoicesServicesComponent implements OnInit {
       this.priceListExist = true;
       this.searchServicesController.setValue('');
     });
-    this.expandedInvoice = 0;
-    this.expandedService = 0;
 
+    if (this.pageMode == 'CREATE') {
+      this.expandedInvoice = 0;
+      this.expandedService = 0;
+    }
+    
     this.store.select(getSelectedTab).subscribe(index => {
       if (index == 3) {
         this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
@@ -94,7 +151,8 @@ export class InvoicesServicesComponent implements OnInit {
 
     this.store.select(getDepartments).subscribe(departments => {
       this.departments = departments;
-      this.addInvoice();
+      if (this.controllers.length == 0)
+        this.addInvoice();
     }).unsubscribe();
 
     this.actions.pipe(
@@ -115,15 +173,16 @@ export class InvoicesServicesComponent implements OnInit {
     });
   }
 
-  addInvoice() {
+  addInvoice(withService?: boolean) {
     this.controllers.push({ invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(), services: [] });
     if (this.departments.length > 0) {
       this.controllers[this.controllers.length - 1].invoice.invoiceDepartment = `${this.departments[0].departmentId}`;
     }
-    this.addService(this.controllers.length - 1);
+    if (withService == null || withService)
+      this.addService(this.controllers.length - 1);
   }
 
-  addService(invoiceIndex) {
+  addService(invoiceIndex, updateClaim?: boolean) {
     this.controllers[invoiceIndex].services.push({
       retrieved: false,
       serviceNumber: null,
@@ -141,7 +200,8 @@ export class InvoicesServicesComponent implements OnInit {
       priceCorrection: 0,
       rejection: 0
     });
-    this.updateClaim();
+    if (updateClaim == null || updateClaim)
+      this.updateClaim();
   }
 
   editService(service: Service, decision: ServiceDecision, i: number, j: number) {
@@ -303,6 +363,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   updateClaim() {
+    if (this.pageMode != 'CREATE') return;
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
     this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice) }));
@@ -394,9 +455,9 @@ export class InvoicesServicesComponent implements OnInit {
               });
             }
           }
-        } ,
+        },
         error => {
-          if(error instanceof HttpErrorResponse)
+          if (error instanceof HttpErrorResponse)
             this.serviceCodeSearchError = error.message;
         }
       );
@@ -424,4 +485,14 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[this.expandedInvoice].services[this.expandedService].toothNumber.setValue(number);
   }
 
+  formatDate(date: any) {
+    if (date != null) {
+      if (date instanceof Date) {
+        return date.toLocaleDateString();
+      } else {
+        return new Date(date).toLocaleDateString();
+      }
+    }
+    return '';
+  }
 }

@@ -1,0 +1,65 @@
+<div class="mainCardBody">
+    <div class="leftComponent">
+        <label>Admission Date</label>
+        <input [ngClass]="{'fieldError': fieldHasError('admissionDate')}" type="date"
+            [formControl]="admissionDateController" (change)="updateClaim('admissionDate')"
+            [matTooltip]="getFieldError('admissionDate')">
+    </div>
+    <div class="rightComponent">
+        <label>Admission Time</label>
+        <input [ngClass]="{'fieldError': fieldHasError('admissionTime')}" type="time"
+            [formControl]="admissionTimeController" (change)="updateClaim('admissionTime')"
+            [matTooltip]="getFieldError('admissionTime')">
+    </div>
+
+    <div class="leftComponent">
+        <label>Discharge Date</label>
+        <input [ngClass]="{'fieldError': fieldHasError('dischargeDate')}" type="date"
+            [formControl]="dischargeDateController" (change)="updateClaim('dischargeDate')"
+            [matTooltip]="getFieldError('respiratoryRate')">
+    </div>
+    <div class="rightComponent">
+        <label>Discharge Time</label>
+        <input [ngClass]="{'fieldError': fieldHasError('dischargeTime')}" type="time"
+            [formControl]="dischargeTimeController" (change)="updateClaim('dischargeTime')"
+            [matTooltip]="getFieldError('dischargeTime')">
+    </div>
+
+    <div class="leftComponent">
+        <label>Length of Stay</label>
+        <input [ngClass]="{'fieldError': fieldHasError('lengthOfStay')}" type="number"
+            [formControl]="lengthOfStayController" (change)="updateClaim('lengthOfStay')"
+            [matTooltip]="getFieldError('lengthOfStay')">
+    </div>
+    <div class="rightComponent">
+        <label style="display: block;">Unit of Stay</label>
+        <mat-button-toggle-group (change)="updateClaimUnit('stayUnit',$event)" [disabled]="lengthOfStayController.disabled"
+            [ngClass]="{'fieldError': fieldHasError('stayUnit')}">
+            <mat-button-toggle value="Day" checked="true">
+                Day
+            </mat-button-toggle>
+            <mat-button-toggle value="Week">
+                Week
+            </mat-button-toggle>
+            <mat-button-toggle value="Month">
+                Month
+            </mat-button-toggle>
+            <mat-button-toggle value="Year">
+                Year
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
+    <div class="leftComponent">
+        <label>Room Number</label>
+        <input [ngClass]="{'fieldError': fieldHasError('roomNumber')}"
+            [formControl]="roomNumberController" (change)="updateClaim('roomNumber')"
+            [matTooltip]="getFieldError('roomNumber')">
+    </div>
+    <div class="rightComponent">
+        <label>Bed Number</label>
+        <input [ngClass]="{'fieldError': fieldHasError('bedNumber')}"
+            [formControl]="bedNumberController" (change)="updateClaim('bedNumber')"
+            [matTooltip]="getFieldError('bedNumber')">
+    </div>
+</div>

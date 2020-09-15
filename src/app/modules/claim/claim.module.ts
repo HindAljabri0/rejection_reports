@@ -22,6 +22,11 @@ import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoi
 import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/dialogs/create-by-approval-form/create-by-approval-form.component';
 import { SelectServiceDialogComponent } from 'src/app/claim-module-components/dialogs/select-service-dialog/select-service-dialog.component';
 import { OnSavingDoneComponent } from 'src/app/claim-module-components/dialogs/on-saving-done/on-saving-done.component';
+import { VitalSignsComponent } from 'src/app/claim-module-components/vital-signs/vital-signs.component';
+import { AdmissionComponent } from 'src/app/claim-module-components/admission/admission.component';
+import { AttachmentsComponent } from 'src/app/claim-module-components/attachments/attachments.component';
+import { ClaimErrorsComponent } from 'src/app/claim-module-components/claim-errors/claim-errors.component';
+import { LabResultsComponent } from 'src/app/claim-module-components/lab-results/lab-results.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,11 @@ import { OnSavingDoneComponent } from 'src/app/claim-module-components/dialogs/o
     CreateByApprovalFormComponent,
     SelectServiceDialogComponent,
     OnSavingDoneComponent,
+    VitalSignsComponent,
+    AdmissionComponent,
+    AttachmentsComponent,
+    ClaimErrorsComponent,
+    LabResultsComponent,
   ],
   imports: [
     RouterModule.forChild([

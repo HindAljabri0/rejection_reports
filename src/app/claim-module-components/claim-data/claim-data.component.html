@@ -16,11 +16,26 @@
     <mat-tab [label]="'Illness'">
         <claim-illnesses></claim-illnesses>
     </mat-tab>
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
+        <claim-vital-signs></claim-vital-signs>
+    </mat-tab>
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Admission'">
+        <claim-admission></claim-admission>
+    </mat-tab>
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Attachments'">
+        <claim-attachments></claim-attachments>
+    </mat-tab>
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'LAB Results'">
+        <claim-lab-results></claim-lab-results>
+    </mat-tab>
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon *ngIf="invoiceServicesTabHasErrors()" style="color: #bb3131;">error</mat-icon>
             Invoices & Services
         </ng-template>
         <claim-invoices-services></claim-invoices-services>
+    </mat-tab>
+    <mat-tab *ngIf="pageMode != 'CREATE'" [label]="'Errors'">
+        <claim-errors></claim-errors>
     </mat-tab>
 </mat-tab-group>

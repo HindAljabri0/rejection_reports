@@ -4,7 +4,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePatientName, updatePatientGender, updatePayer, updatePatientMemberId, updatePolicyNum, updateNationalId, updateApprovalNum, updateVisitType, updateNationality, setError } from '../store/claim.actions';
 import { Observable } from 'rxjs';
-import { getVisitType, nationalities, FieldError, getPatientErrors, getIsRetrievedClaim, getClaim, ClaimPageType, getPageType } from '../store/claim.reducer';
+import { getVisitType, nationalities, FieldError, getPatientErrors, getIsRetrievedClaim, getClaim, ClaimPageType, getPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
@@ -38,47 +38,55 @@ export class ClaimPatientInfo implements OnInit {
   visitTypes: any[] = [];
   nationalities = nationalities;
 
-  claimPageType:ClaimPageType;
-  
+  pageMode: ClaimPageMode
+  claimPageType: ClaimPageType;
+
   errors: FieldError[] = [];
 
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
+    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
 
     this.store.select(getIsRetrievedClaim).pipe(
-      withLatestFrom(this.store.select(getClaim))
+      withLatestFrom(this.store.select(getClaim)),
+      withLatestFrom(this.store.select(getPageMode))
     ).subscribe(values => {
-      this.isRetrievedClaim = values[0];
+      this.isRetrievedClaim = values[0][0];
       if (this.isRetrievedClaim) {
-        this.selectedPayer = Number.parseInt(values[1].claimIdentities.payerID);
-        this.editableFields.payer = Number.isNaN(this.selectedPayer);
-        this.selectedGender = values[1].caseInformation.patient.gender;
-        this.editableFields.gender = values[1].caseInformation.patient.gender != 'F' && values[1].caseInformation.patient.gender != 'M';
-        this.selectedVisitType = values[1].visitInformation.visitType;
-        this.editableFields.visitType = !this.visitTypes.includes(this.selectedVisitType);
-        this.selectedNationality = values[1].caseInformation.patient.nationality;
-        this.editableFields.nationality = this.nationalities.findIndex(n => this.selectedNationality == n.Code) == -1;
-        if (values[1].member.idNumber != null) {
-          this.nationalIdController.setValue(values[1].member.idNumber);
-          let isEditable = values[1].member.idNumber.length != 10 || Number.isNaN(Number.parseInt(values[1].member.idNumber));
+        this.selectedPayer = Number.parseInt(values[0][1].claimIdentities.payerID);
+        this.editableFields.payer = values[1] == 'CREATE' && Number.isNaN(this.selectedPayer);
+        this.selectedGender = values[0][1].caseInformation.patient.gender;
+        this.editableFields.gender = values[1] == 'CREATE' && (values[0][1].caseInformation.patient.gender != 'F' && values[0][1].caseInformation.patient.gender != 'M');
+        this.selectedVisitType = values[0][1].visitInformation.visitType;
+        this.editableFields.visitType = values[1] == 'CREATE' && !this.visitTypes.includes(this.selectedVisitType);
+        this.selectedNationality = values[0][1].caseInformation.patient.nationality;
+        this.editableFields.nationality = values[1] == 'CREATE' && this.nationalities.findIndex(n => this.selectedNationality == n.Code) == -1;
+        if (values[0][1].member.idNumber != null) {
+          this.nationalIdController.setValue(values[0][1].member.idNumber);
+          let isEditable = values[1] == 'CREATE' && (values[0][1].member.idNumber.length != 10 || Number.isNaN(Number.parseInt(values[0][1].member.idNumber)));
           this.nationalIdController.disable({ onlySelf: !isEditable });
+        } else if (values[1] != 'CREATE') {
+          this.nationalIdController.disable({ onlySelf: true });
         }
-        this.approvalNumController.setValue(values[1].claimIdentities.approvalNumber);
-        let isEditable = values[1].claimIdentities.approvalNumber == null || values[1].claimIdentities.approvalNumber.trim().length == 0;
+        this.approvalNumController.setValue(values[0][1].claimIdentities.approvalNumber);
+        let isEditable = values[1] == 'CREATE' && (values[0][1].claimIdentities.approvalNumber == null || values[0][1].claimIdentities.approvalNumber.trim().length == 0);
         this.approvalNumController.disable({ onlySelf: !isEditable });
-        this.fullNameController.setValue(values[1].caseInformation.patient.fullName);
-        isEditable = values[1].caseInformation.patient.fullName == null || values[1].caseInformation.patient.fullName.trim().length == 0;
+        this.fullNameController.setValue(values[0][1].caseInformation.patient.fullName);
+        isEditable = values[1] == 'CREATE' && (values[0][1].caseInformation.patient.fullName == null || values[0][1].caseInformation.patient.fullName.trim().length == 0);
         this.fullNameController.disable({ onlySelf: !isEditable });
-        this.policyNumController.setValue(values[1].member.policyNumber);
-        isEditable = values[1].member.policyNumber == null || values[1].member.policyNumber.trim().length == 0;
+        this.policyNumController.setValue(values[0][1].member.policyNumber);
+        isEditable = values[1] == 'CREATE' && (values[0][1].member.policyNumber == null || values[0][1].member.policyNumber.trim().length == 0);
         this.policyNumController.disable({ onlySelf: !isEditable });
-        this.memberIdController.setValue(values[1].member.memberID);
-        isEditable = values[1].member.memberID == null || values[1].member.memberID.trim().length == 0;
+        this.memberIdController.setValue(values[0][1].member.memberID);
+        isEditable = values[1] == 'CREATE' && (values[0][1].member.memberID == null || values[0][1].member.memberID.trim().length == 0);
         this.memberIdController.disable({ onlySelf: !isEditable });
+        this.planTypeController.setValue(values[0][1].member.planType);
+        isEditable = values[1] == 'CREATE' && (values[0][1].member.planType == null || values[0][1].member.planType.trim().length == 0);
+        this.planTypeController.disable({ onlySelf: isEditable });
       } else {
 
         if (this.payersList.length > 0) {

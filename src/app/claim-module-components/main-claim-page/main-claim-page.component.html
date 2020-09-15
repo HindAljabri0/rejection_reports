@@ -1,9 +1,25 @@
+<mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate"></mat-progress-bar>
 <div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE'}">
-    <div class="header">
-        <p>Create Claim</p><span class="spacer"></span>
-        <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"
-            [ngClass]="{'show':claim != null && errors == null}">
-            {{(claim.visitInformation.departmentCode==dentalDepartmentCode)?'Dental':'Optical'}}</p>
+    <div class="header" [ngStyle]="{'color': pageMode == 'CREATE'? '#3060AA':getClaimStatusColor(claimProps?.statusCode),
+        'background-color': pageMode == 'CREATE'? 'white':getClaimStatusColor(claimProps?.statusCode)+'40'}">
+        <ng-container *ngIf="pageMode == 'CREATE'; else statusHeader">
+            <p>Create Claim</p><span class="spacer"></span>
+            <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"
+                [ngClass]="{'show':claim != null && errors == null}">
+                {{(claim.visitInformation.departmentCode==dentalDepartmentCode)?'Dental':'Optical'}}</p>
+        </ng-container>
+        <ng-template #statusHeader>
+            <ng-container *ngIf="claim != null && claimProps != null">
+                <p style="margin-right: 50px;">View Claim</p>
+                <p><strong>Provider Reference No.:</strong> {{claim.claimIdentities.providerClaimNumber}}</p>
+                <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Batch ID:</strong>
+                    {{claim.claimIdentities.providerBatchID}}</p>
+                <p><strong>Status:</strong> {{getClaimStatusLabel(claimProps.statusCode)}}</p>
+                <p *ngIf="claimProps.statusDetail != null"><strong>Status Description:</strong>
+                    {{claimProps.statusDetail}}</p>
+            </ng-container>
+
+        </ng-template>
     </div>
     <div class="body" [ngStyle]="{'height': claim == null? '40vw': 'unset'}">
         <div class="error" *ngIf="errors != null && !isLoading" style="grid-column: 1 / span 12;">
@@ -13,11 +29,11 @@
             <claim-patient-info style="grid-column: 1 / span 8; margin: 5px;"></claim-patient-info>
             <claim-physician-header style="grid-column: 9 / span 4; margin: 5px;"></claim-physician-header>
             <claim-data style="grid-column: 1 / span 8; margin: 5px; height: 26vw;"
-            [ngStyle]="{'height': pageMode != 'CREATE' ? '34vw': '26vw'}"></claim-data>
+                [ngStyle]="{'height': pageMode != 'CREATE' ? '34vw': '26vw'}"></claim-data>
             <gdpn-calculation style="grid-column: 9 / span 4; margin: 5px;"></gdpn-calculation>
         </ng-container>
     </div>
-    <div class="footer">
+    <div class="footer" *ngIf="pageMode == 'CREATE'">
         <span class="spacer"></span>
         <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
         <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
@@ -26,7 +42,7 @@
 </div>
 
 <button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu"
-    *ngIf="claim == null && errors == null && !isLoading">
+    *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
     <mat-icon>add</mat-icon>
 </button>
 

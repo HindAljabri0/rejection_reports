@@ -29,7 +29,8 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
     ).subscribe(values => {
       this.isRetrievedClaim = values[0];
       if (this.isRetrievedClaim) {
-        this.selectedIllnesses = values[1].caseInformation.caseDescription.illnessCategory.inllnessCode;
+        if (values[1].caseInformation.caseDescription.illnessCategory != null)
+          this.selectedIllnesses = values[1].caseInformation.caseDescription.illnessCategory.inllnessCode;
         if (this.selectedIllnesses.length == 0)
           this.selectedIllnesses = ['NA'];
       } else {
@@ -44,9 +45,9 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  beautifyCode(code:string){
+  beautifyCode(code: string) {
     let str = code.substr(0, 1) + code.substr(1).toLowerCase();
-    if(str.includes('_')){
+    if (str.includes('_')) {
       let split = str.split('_');
       str = split[0] + ' ' + this.beautifyCode(split[1].toUpperCase());
     }

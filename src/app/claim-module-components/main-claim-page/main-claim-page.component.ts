@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
-import { skipWhile, withLatestFrom, filter } from 'rxjs/operators';
+import { skipWhile, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
+import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
+import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -17,23 +18,34 @@ import { hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 export class MainClaimPageComponent implements OnInit {
 
   claim: Claim;
+  claimProps: RetrievedClaimProps;
   errors: any;
   isLoading: boolean = true;
 
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
 
-  pageMode:ClaimPageMode;
-  pageType:ClaimPageType;
+  pageMode: ClaimPageMode;
+  pageType: ClaimPageType;
 
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
-    store.select(getPageMode).subscribe(claimPageMode => this.pageMode = claimPageMode);
+    store.select(getPageMode).subscribe(claimPageMode => {
+      this.pageMode = claimPageMode
+      this.store.dispatch(changePageTitle({title: `${claimPageMode.charAt(0)}${claimPageMode.substring(1).toLowerCase()} Claim`}))
+    });
     store.select(getPageType).subscribe(claimPageType => this.pageType = claimPageType);
-    store.select(getClaim).subscribe(claim => this.claim = claim);
+    store.select(getClaim).subscribe(claim => {
+      this.claim = claim;
+      if(claim != null && this.pageMode == 'VIEW'){
+        this.store.dispatch(changePageTitle({title: `View Claim | ${claim.claimIdentities.providerClaimNumber}`}));
+      }
+    });
+    store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     store.select(getClaimModuleError).subscribe(errors => {
       if (errors != null && errors.hasOwnProperty('code')) {
         let code: string = errors['code'];
         switch (code) {
+          case 'CLAIM_RETRIEVE_ERROR':
           case 'LOV_ERROR': case 'PAYERS_LIST':
             this.errors = errors
             break;
@@ -126,6 +138,17 @@ export class MainClaimPageComponent implements OnInit {
     }).unsubscribe();
   }
 
+  getClaimStatusLabel(status:string){
+    return this.sharedService.statusToName(status);
+  }
+
+  getClaimStatusColor(status:string){
+    if(status != null){
+      return this.sharedService.getCardAccentColor(status);
+    }
+    return '#3060AA';
+  }
+
   cancel() {
     this.store.dispatch(cancelClaim());
   }
@@ -134,7 +157,9 @@ export class MainClaimPageComponent implements OnInit {
     if (this.errors.hasOwnProperty('code')) {
       switch (this.errors['code']) {
         case 'LOV_ERROR': case 'PAYERS_LIST':
-          return 'Could not load required data to create new claim, please try again later.';
+          return 'Could not load required data to create new claim. Please try again later.';
+        case 'CLAIM_RETRIEVE_ERROR':
+          return 'Could not load claim at the moment. Please try again later.'
       }
     }
   }

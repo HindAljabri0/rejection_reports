@@ -59,6 +59,7 @@ import { TopFiveRejectionsComponent } from './pages/dashboard/components/top-fiv
 import { RejectionCardComponent } from './pages/dashboard/components/rejection-card/rejection-card.component';
 import { ChartsModule } from 'ng2-charts';
 import { mainReducer } from './store/mainStore.reducer';
+import { MainStoreEffects } from './store/mainStore.effects';
 
 
 @NgModule({
@@ -106,7 +107,7 @@ import { mainReducer } from './store/mainStore.reducer';
   imports: [
     AppRoutingModule,
     StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer }),
-    EffectsModule.forRoot([DashboardEffects]),
+    EffectsModule.forRoot([DashboardEffects, MainStoreEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserModule,
     HttpClientModule,
