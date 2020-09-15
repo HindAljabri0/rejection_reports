@@ -1,13 +1,13 @@
-const host = 'http://gateway.okd.waseel.com';
+const host = 'https://api.qa-eclaims.waseel.com';
 export const environment = {
   production: true,
-  uploaderHost: `${host}/claim-uploader`,
-  claimSearchHost: `${host}/claim-search`,
-  claimServiceHost: `${host}/claim-service`,
-  NotificationServiceHost: `${host}/notification-service`,
-  authenticationHost: `${host}/authentication`,
-  adminServiceHost: `${host}/admin-service`,
-  auditTrailServiceHost: `${host}/audit-trail`,
+  uploaderHost: `${host}/upload`,
+  claimSearchHost: `${host}/search`,
+  claimServiceHost: `${host}/claims`,
+  NotificationServiceHost: `${host}/notifications`,
+  authenticationHost: `${host}/oauth`,
+  adminServiceHost: `${host}/admin`,
+  auditTrailServiceHost: `${host}/audit`,
   settingsServiceHost: `${host}/settings`,
   claimInquireServiceHost: `${host}/claim-inquiry`
 };

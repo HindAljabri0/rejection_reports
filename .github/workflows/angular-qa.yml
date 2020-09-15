@@ -31,8 +31,8 @@ jobs:
     - name: npm install and npm run build
       run: |
         npm install -s
-        npm run build
-          
+        npm run buildOciQA
+
     - name: docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}

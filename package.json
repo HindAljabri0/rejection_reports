@@ -17,6 +17,18 @@
         "build": "npm-run-all --parallel buildEn buildAr",
         "buildStg": "npm-run-all --parallel buildStgEn buildStgAr",
         "buildProd": "npm-run-all --parallel buildProdEn buildProdAr",
+
+        "buildOciQAEn": "ng build --configuration=oci_qa-en",
+        "buildOciQAAr": "ng build --configuration=oci_qa-ar",
+        "buildOciStgEn": "ng build --configuration=oci_staging-en",
+        "buildOciStgAr": "ng build --configuration=oci_staging-ar",
+        "buildOciProdEn": "ng build --configuration=oci_prod-en",
+        "buildOciProdAr": "ng build --configuration=oci_prod-ar",
+
+        "buildOciQA": "npm-run-all --parallel buildOciQAEn buildOciQAAr",
+        "buildOciStg": "npm-run-all --parallel buildOciStgEn buildOciStgAr",
+        "buildOciProd": "npm-run-all --parallel buildOciProdEn buildOciProdAr",
+
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
