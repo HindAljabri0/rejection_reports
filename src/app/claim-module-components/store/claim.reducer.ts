@@ -64,7 +64,7 @@ const _claimReducer = createReducer(
         }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: state.mode == 'CREATE' })),
-    on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: state.mode == 'CREATE'? false : state.loading })),
+    on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: state.mode == 'CREATE' ? false : state.loading })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
@@ -147,6 +147,7 @@ export function claimReducer(state, action) {
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
 export const getIsApprovalFormLoading = createSelector(claimSelector, (state) => state.approvalFormLoading);
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
+export const getCaseType = createSelector(claimSelector, (state) => state.claim != null && state.claim.caseInformation != null ? state.claim.caseInformation.caseType : null)
 export const getIsRetrievedClaim = createSelector(claimSelector, (state) => state.isRetrievedClaim);
 export const getDepartmentCode = createSelector(claimSelector, (state) => state.claim != null && state.claim.visitInformation != null ? state.claim.visitInformation.departmentCode : null);
 export const getSelectedPayer = createSelector(claimSelector, (state) => state.claim != null && state.claim.claimIdentities != null ? state.claim.claimIdentities.payerID : null);
