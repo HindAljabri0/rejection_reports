@@ -1,4 +1,4 @@
-const host = 'https://api.stg-eclaims.waseel.com';
+const host = 'https://ociapi.stg-eclaims.waseel.com';
 export const environment = {
   production: true,
   uploaderHost: `${host}/upload`,
