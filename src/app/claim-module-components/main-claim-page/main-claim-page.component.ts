@@ -67,7 +67,7 @@ export class MainClaimPageComponent implements OnInit {
               title: '',
               message: code.endsWith('SERVER') ?
                 'Could not reach the server at the moment. Please try again later.' :
-                `There is no ${code.endsWith('DENTAL') ? 'Dental' : 'Optical'} approval requrest approved by this number!`,
+                `There is no ${code.endsWith('DENTAL') ? 'Dental' : 'Optical'} approval request approved by this number!`,
               isError: true
             }).subscribe(() => {
               this.startCreatingClaim(code.endsWith('DENTAL') ? this.dentalDepartmentCode : this.opticalDepartmentCode);
@@ -155,8 +155,10 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   edit() {
-    this.location.go(this.location.path() + '#edit');
-    this.store.dispatch(toEditMode());
+    if (this.editable) {
+      this.location.go(this.location.path() + '#edit');
+      this.store.dispatch(toEditMode());
+    }
   }
 
   cancel() {
@@ -181,6 +183,10 @@ export class MainClaimPageComponent implements OnInit {
           return 'Could not load claim at the moment. Please try again later.'
       }
     }
+  }
+
+  get editable() {
+    return this.claimProps != null && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(this.claimProps.statusCode);
   }
 
 }

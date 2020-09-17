@@ -56,7 +56,8 @@ const _claimReducer = createReducer(
         const caseType = body['claim']['caseInformation']['caseType']
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
-        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (state.mode == 'EDIT'? body['claim']:null), claimPropsBeforeEdit: (state.mode == 'EDIT'? props:null) });
+        const editable = state.mode == 'EDIT' && props.statusCode in ['Accepted', 'NotAccepted', 'Failed', 'Invalid'];
+        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable? body['claim']:null), claimPropsBeforeEdit: (editable? props:null), mode: (editable? 'EDIT' : 'VIEW') });
     }),
     on(actions.toEditMode, (state) => ({ ...state, mode: 'EDIT', claimBeforeEdit: state.claim, claimPropsBeforeEdit: state.retrievedClaimProps })),
     on(actions.cancelEdit, (state) => ({ ...state, claim: state.claimBeforeEdit, retrievedClaimProps: state.claimPropsBeforeEdit, claimBeforeEdit: null, claimPropsBeforeEdit: null, mode: 'VIEW' })),

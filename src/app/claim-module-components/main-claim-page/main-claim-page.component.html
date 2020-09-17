@@ -42,7 +42,7 @@
     <div class="footer" *ngIf="pageMode == 'VIEW'">
         <span class="spacer"></span>
         <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="close()">Close</button>
-        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
+        <button *ngIf="claim != null && editable" mat-raised-button color="primary" style="margin-right: 10px;"
             (click)="edit()">Edit</button>
     </div>
     <div class="footer" *ngIf="pageMode == 'EDIT'">

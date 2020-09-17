@@ -62,7 +62,7 @@ export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymp
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{ invoices: Invoice[] }>());
-export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retreived service', props<SelectServiceDialogData>());
+export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retrieved service', props<SelectServiceDialogData>());
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{ services: { service: Service, decision: ServiceDecision }[], invoiceIndex: number, serviceIndex?: number }>());
 export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{ serviceNumber: number }>());
 
