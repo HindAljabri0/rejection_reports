@@ -490,25 +490,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    if ((edit == null || !edit)) {
-      window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null ? `?edit=${edit}` : ''));
-      return;
-    }
-    if (this.commen.loading) return;
-    this.claimId = claimId;
-    this.editMode = edit != null ? `${edit}` : null;
-    this.resetURL();
-    this.commen.loadingChanged.next(true);
-    this.attachmentService.getMaxAttachmentAllowed(this.providerId).subscribe(
-      event => {
-        if (event instanceof HttpResponse) {
-          let maxNumber = event.body;
-          this.commen.loadingChanged.next(false);
-          this.dialogService.getClaimAndViewIt(this.providerId, this.payerId, claimStatus, claimId, maxNumber, edit);
-        }
-      }
-    )
-
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null && edit? '#edit':''));
   }
 
   reloadClaim(claim: ViewedClaim) {

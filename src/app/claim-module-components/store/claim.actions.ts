@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
-import { FieldError } from './claim.reducer';
+import { ClaimPageMode, FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 import { Service } from '../models/service.model';
@@ -10,7 +10,7 @@ import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
 
-export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string }>());
+export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit:boolean }>());
 export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim', props<any>());
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{ approvalNumber: string, payerId: string, claimType: string, providerClaimNumber: string }>())
@@ -28,6 +28,8 @@ export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: number }>());
+export const toEditMode = createAction('[ Claim ] change page mode to edit');
+export const cancelEdit = createAction('[ Claim ] cancel editing');
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: string }>());
@@ -60,7 +62,7 @@ export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymp
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{ invoices: Invoice[] }>());
-export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retreived service', props<SelectServiceDialogData>());
+export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retrieved service', props<SelectServiceDialogData>());
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{ services: { service: Service, decision: ServiceDecision }[], invoiceIndex: number, serviceIndex?: number }>());
 export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{ serviceNumber: number }>());
 

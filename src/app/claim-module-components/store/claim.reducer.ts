@@ -12,6 +12,8 @@ export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
     retrievedClaimProps: RetrievedClaimProps;
+    claimBeforeEdit: Claim;
+    claimPropsBeforeEdit: RetrievedClaimProps;
     isRetrievedClaim: boolean;
     retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
     claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
@@ -28,6 +30,8 @@ export interface ClaimState {
 const initState: ClaimState = {
     claim: null,
     retrievedClaimProps: null,
+    claimBeforeEdit: null,
+    claimPropsBeforeEdit: null,
     isRetrievedClaim: false,
     retrievedServices: [],
     claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
@@ -43,7 +47,7 @@ const initState: ClaimState = {
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.retrieveClaim, (state) => ({ ...state, mode: 'VIEW', isRetrievedClaim: true, loading: true })),
+    on(actions.retrieveClaim, (state, {edit}) => ({ ...state, mode: (edit?'EDIT':'VIEW'), isRetrievedClaim: true, loading: true })),
     on(actions.viewRetrievedClaim, (state, response) => {
         const body = response.body;
         const dentalId = '4';
@@ -52,8 +56,11 @@ const _claimReducer = createReducer(
         const caseType = body['claim']['caseInformation']['caseType']
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
-        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false });
+        const editable = state.mode == 'EDIT' && props.statusCode in ['Accepted', 'NotAccepted', 'Failed', 'Invalid'];
+        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable? body['claim']:null), claimPropsBeforeEdit: (editable? props:null), mode: (editable? 'EDIT' : 'VIEW') });
     }),
+    on(actions.toEditMode, (state) => ({ ...state, mode: 'EDIT', claimBeforeEdit: state.claim, claimPropsBeforeEdit: state.retrievedClaimProps })),
+    on(actions.cancelEdit, (state) => ({ ...state, claim: state.claimBeforeEdit, retrievedClaimProps: state.claimPropsBeforeEdit, claimBeforeEdit: null, claimPropsBeforeEdit: null, mode: 'VIEW' })),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
