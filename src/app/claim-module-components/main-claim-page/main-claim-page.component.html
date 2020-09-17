@@ -39,6 +39,18 @@
         <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
             (click)="save()">Save</button>
     </div>
+    <div class="footer" *ngIf="pageMode == 'VIEW'">
+        <span class="spacer"></span>
+        <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="close()">Close</button>
+        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
+            (click)="edit()">Edit</button>
+    </div>
+    <div class="footer" *ngIf="pageMode == 'EDIT'">
+        <span class="spacer"></span>
+        <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
+            (click)="save()">Save</button>
+    </div>
 </div>
 
 <button mat-fab color="primary" class="fabButton" [matMenuTriggerFor]="claimTypeMenu"
