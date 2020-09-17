@@ -140,7 +140,7 @@ export class InvoicesServicesComponent implements OnInit {
       this.expandedInvoice = 0;
       this.expandedService = 0;
     }
-    
+
     this.store.select(getSelectedTab).subscribe(index => {
       if (index == 3) {
         this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
@@ -442,6 +442,8 @@ export class InvoicesServicesComponent implements OnInit {
 
   searchServices() {
     this.servicesOptions = [];
+    this.serviceCodeSearchError = null;
+    this.emptyOptions = false;
     let query: string = this.searchServicesController.value;
     if (query != null && query != '')
       this.adminService.searchSeviceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId).subscribe(
