@@ -36,8 +36,9 @@ export class MainClaimPageComponent implements OnInit {
     });
     store.select(getPageType).subscribe(claimPageType => this.pageType = claimPageType);
     store.select(getClaim).subscribe(claim => {
+      const updateTitle = this.claim == null;
       this.claim = claim;
-      this.editPageTitle();
+      if(updateTitle) this.editPageTitle();
     });
     store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     store.select(getClaimModuleError).subscribe(errors => {

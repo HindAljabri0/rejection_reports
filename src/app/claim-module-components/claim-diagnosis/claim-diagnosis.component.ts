@@ -5,8 +5,9 @@ import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { Store } from '@ngrx/store';
 import { updateDiagnosisList } from '../store/claim.actions';
-import { FieldError, getDiagnosisErrors, getIsRetrievedClaim, getClaim, ClaimPageMode, getPageMode } from '../store/claim.reducer';
-import { withLatestFrom } from 'rxjs/operators';
+import { FieldError, getDiagnosisErrors, getClaim, ClaimPageMode, getPageMode } from '../store/claim.reducer';
+import { map, withLatestFrom } from 'rxjs/operators';
+import { Claim } from '../models/claim.model';
 
 @Component({
   selector: 'claim-diagnosis',
@@ -27,22 +28,39 @@ export class ClaimDiagnosisComponent implements OnInit {
   constructor(private adminService: AdminService, private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
-    this.store.select(getIsRetrievedClaim).pipe(
-      withLatestFrom(this.store.select(getClaim))
-    ).subscribe((values) => {
-      this.isRetrievedClaim = values[0];
-      if (this.isRetrievedClaim) {
-        if (values[1].caseInformation.caseDescription.diagnosis != null){
-          this.diagnosisList = values[1].caseInformation.caseDescription.diagnosis.map(dia => new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription));
-          this.diagnosisController.disable({onlySelf:true});
-        }
-      } else {
-
+    this.store.select(getPageMode).pipe(
+      withLatestFrom(this.store.select(getClaim)),
+      map(values => ({ mode: values[0], claim: values[1] }))
+    ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
+      if (mode == 'VIEW') {
+        this.setData(claim);
+        this.toggleEdit(false);
+      } else if (mode == 'EDIT') {
+        this.setData(claim);
+        this.toggleEdit(true);
+      } else if (mode == 'CREATE_FROM_RETRIEVED') {
+        this.setData(claim)
+        this.toggleEdit(false, true);
       }
-
-    }).unsubscribe();
+    });
     this.store.select(getDiagnosisErrors).subscribe(errors => this.errors = errors);
+  }
+
+  setData(claim:Claim){
+    if(claim.caseInformation.caseDescription.diagnosis != null)
+      this.diagnosisList = claim.caseInformation.caseDescription.diagnosis.map(dia => new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription));
+  }
+
+  toggleEdit(allowEdit:boolean, enableForNulls?:boolean){
+    if(allowEdit){
+      this.diagnosisController.enable();
+    } else {
+      this.diagnosisController.disable();
+    }
+    if(enableForNulls && (this.diagnosisList == null || this.diagnosisList.length < 1)){
+      this.diagnosisController.enable();
+    }
   }
 
   searchICDCodes() {

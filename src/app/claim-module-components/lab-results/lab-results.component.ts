@@ -3,7 +3,7 @@ import { FieldError } from '../store/claim.reducer';
 import { Investigation } from '../models/investigation.model';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
-import { getClaim, getIsRetrievedClaim, getPageMode } from '../store/claim.reducer';
+import { getClaim, getPageMode } from '../store/claim.reducer';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
@@ -38,55 +38,55 @@ export class LabResultsComponent implements OnInit {
   constructor(private store: Store, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.store.select(getIsRetrievedClaim).pipe(
-      withLatestFrom(this.store.select(getClaim)),
-      withLatestFrom(this.store.select(getPageMode)),
-      map(values => ({ isRetrieved: values[0][0], claim: values[0][1], mode: values[1] }))
-    ).subscribe(
-      values => {
-        if (values.isRetrieved) {
-          if (values.claim.caseInformation.caseDescription.investigation != null) {
-            values.claim.caseInformation.caseDescription.investigation.forEach(
-              investigation => {
-                let controls = this.createEmptyResultControls();
-                if (investigation.investigationDate != null) {
-                  controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'))
-                }
-                controls.testCode.setValue(investigation.investigationCode);
-                controls.testSerial.setValue(investigation.investigationType);
-                controls.resultDescription.setValue(investigation.investigationDescription);
-                controls.testDate.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationDate != null });
-                controls.testCode.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationCode != null });
-                controls.testSerial.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationType != null });
-                controls.resultDescription.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationDescription != null });
+    // this.store.select(getIsRetrievedClaim).pipe(
+    //   withLatestFrom(this.store.select(getClaim)),
+    //   withLatestFrom(this.store.select(getPageMode)),
+    //   map(values => ({ isRetrieved: values[0][0], claim: values[0][1], mode: values[1] }))
+    // ).subscribe(
+    //   values => {
+    //     if (values.isRetrieved) {
+    //       if (values.claim.caseInformation.caseDescription.investigation != null) {
+    //         values.claim.caseInformation.caseDescription.investigation.forEach(
+    //           investigation => {
+    //             let controls = this.createEmptyResultControls();
+    //             if (investigation.investigationDate != null) {
+    //               controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'))
+    //             }
+    //             controls.testCode.setValue(investigation.investigationCode);
+    //             controls.testSerial.setValue(investigation.investigationType);
+    //             controls.resultDescription.setValue(investigation.investigationDescription);
+    //             controls.testDate.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationDate != null });
+    //             controls.testCode.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationCode != null });
+    //             controls.testSerial.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationType != null });
+    //             controls.resultDescription.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationDescription != null });
 
-                investigation.observation.forEach(observation => {
-                  let componentControls = this.createEmptyComponentControls();
-                  componentControls.componentCode.setValue(observation.observationCode);
-                  componentControls.componentCode.disable({ onlySelf: values.mode != 'CREATE' || observation.observationCode != null });
+    //             investigation.observation.forEach(observation => {
+    //               let componentControls = this.createEmptyComponentControls();
+    //               componentControls.componentCode.setValue(observation.observationCode);
+    //               componentControls.componentCode.disable({ onlySelf: values.mode != 'CREATE' || observation.observationCode != null });
 
-                  componentControls.componentDescription.setValue(observation.observationDescription);
-                  componentControls.componentDescription.disable({ onlySelf: values.mode != 'CREATE' || observation.observationDescription != null });
+    //               componentControls.componentDescription.setValue(observation.observationDescription);
+    //               componentControls.componentDescription.disable({ onlySelf: values.mode != 'CREATE' || observation.observationDescription != null });
 
-                  componentControls.componentLabResult.setValue(observation.observationValue);
-                  componentControls.componentLabResult.disable({ onlySelf: values.mode != 'CREATE' || observation.observationValue != null });
+    //               componentControls.componentLabResult.setValue(observation.observationValue);
+    //               componentControls.componentLabResult.disable({ onlySelf: values.mode != 'CREATE' || observation.observationValue != null });
 
-                  componentControls.componentResultUnit.setValue(observation.observationUnit);
-                  componentControls.componentResultUnit.disable({ onlySelf: values.mode != 'CREATE' || observation.observationUnit != null });
+    //               componentControls.componentResultUnit.setValue(observation.observationUnit);
+    //               componentControls.componentResultUnit.disable({ onlySelf: values.mode != 'CREATE' || observation.observationUnit != null });
 
-                  componentControls.componentResultComment.setValue(observation.observationComment);
-                  componentControls.componentResultComment.disable({ onlySelf: values.mode != 'CREATE' || observation.observationComment != null });
+    //               componentControls.componentResultComment.setValue(observation.observationComment);
+    //               componentControls.componentResultComment.disable({ onlySelf: values.mode != 'CREATE' || observation.observationComment != null });
 
-                  componentControls.componentSerial.disable({ onlySelf: values.mode != 'CREATE' });
-                  controls.componentsControls.push(componentControls);
-                });
-                this.resultsControls.push(controls);
-              }
-            );
-          }
-        }
-      }
-    )
+    //               componentControls.componentSerial.disable({ onlySelf: values.mode != 'CREATE' });
+    //               controls.componentsControls.push(componentControls);
+    //             });
+    //             this.resultsControls.push(controls);
+    //           }
+    //         );
+    //       }
+    //     }
+    //   }
+    // )
   }
 
   createEmptyResultControls() {

@@ -10,7 +10,7 @@ import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
 
-export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit:boolean }>());
+export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit: boolean }>());
 export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim', props<any>());
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{ approvalNumber: string, payerId: string, claimType: string, providerClaimNumber: string }>())
@@ -40,6 +40,7 @@ export const updatePatientMemberId = createAction('[ Claim Patient Info ] update
 export const updateNationalId = createAction('[ Claim Patient Info ] update national id', props<{ nationalId: string }>());
 export const updatePolicyNum = createAction('[ Claim Patient Info ] update policy no', props<{ policyNo: string }>());
 export const updateApprovalNum = createAction('[ Claim Patient Info ] update approval no', props<{ approvalNo: string }>());
+export const updatePlanType = createAction('[ Claim Patient Info ] upldate plan type', props<{ planType: string }>());
 //Physician
 export const updatePhysicianId = createAction('[ Claim Physician Info ] update Physician Id', props<{ physicianId: string }>());
 export const updatePhysicianName = createAction('[ Claim Physician Info ] update Physician name', props<{ physicianName: string }>());
@@ -51,13 +52,27 @@ export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update 
 export const updateIllnesses = createAction('[ Claim Illnesses ] update illnesses', props<{ list: string[] }>());
 
 //GenInfo
-export const updateClaimDate = createAction('[ Claim Date ] update claim date', props<{ claimDate: Date }>());
-export const updateCaseType = createAction('[ Claim Type ] update case type', props<{ caseType: string }>());
-export const updateFileNumber = createAction('[ File Number ] update File Number', props<{ fileNumber: string }>());
-export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
-export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration: any }>());
-export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
-export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymptoms', props<{ symptoms: string }>())
+export const updateClaimDate = createAction('[ Claim Gen Info ] update claim date', props<{ claimDate: Date }>());
+export const updateCaseType = createAction('[ Claim Gen Info ] update case type', props<{ caseType: string }>());
+export const updateFileNumber = createAction('[ Claim Gen Info ] update File Number', props<{ fileNumber: string }>());
+export const updateMemberDob = createAction('[ Claim Gen Info ] update member dob', props<{ memberDob: Date }>());
+export const updateIllnessDuration = createAction('[ Claim Gen Info ] update illness duration', props<{ illnessDuration: any }>());
+export const updateAge = createAction('[ Claim Gen Info ] update age', props<{ age: any }>());
+export const updateMainSymptoms = createAction('[ Claim Gen Info ] update mainSymptoms', props<{ symptoms: string }>());
+export const updateSignificantSign = createAction('[ Claim Gen Info ] update significant Sign', props<{ sign: string }>());
+export const updateCommReport = createAction('[ Claim Gen Info ] update comm report', props<{ report: string }>());
+export const updateEligibilityNum = createAction('[ Claim Gen Info ] update eligibility number', props<{ number: string }>());
+export const updateRadiologyReport = createAction('[ Claim Gen Info ] update radiology report', props<{ report: string }>());
+export const updateOtherCondition = createAction('[ Claim Gen Info ] update other condition', props<{ condition: string }>());
+
+//Vital Signs
+export const updateTemperature = createAction('[ Vital Signs ] update updateTemperature', props<{ temperature: number }>());
+export const updateBloodPressure = createAction('[ Vital Signs ] update updateBloodPressure', props<{ pressure: string }>());
+export const updatePulse = createAction('[ Vital Signs ] update updatePulse', props<{ pulse: number }>());
+export const updateRespiratoryRate = createAction('[ Vital Signs ] update updateRespiratoryRate', props<{ rate: number }>());
+export const updateWeight = createAction('[ Vital Signs ] update updateWeight', props<{ weight: number }>());
+export const updateHeight = createAction('[ Vital Signs ] update updateHeight', props<{ height: number }>());
+export const updateLastMenstruationPeriod = createAction('[ Vital Signs ] update updateLastMenstruationPeriod', props<{ period: Date }>());
 
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
