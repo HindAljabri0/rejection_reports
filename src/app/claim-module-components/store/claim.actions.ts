@@ -9,6 +9,8 @@ import { Service } from '../models/service.model';
 import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
+import { AttachmentView } from '../models/attachmentView.model';
+import { FileType } from '../models/attachmentRequest.model';
 
 export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit: boolean }>());
 export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim', props<any>());
@@ -66,13 +68,24 @@ export const updateRadiologyReport = createAction('[ Claim Gen Info ] update rad
 export const updateOtherCondition = createAction('[ Claim Gen Info ] update other condition', props<{ condition: string }>());
 
 //Vital Signs
-export const updateTemperature = createAction('[ Vital Signs ] update updateTemperature', props<{ temperature: number }>());
-export const updateBloodPressure = createAction('[ Vital Signs ] update updateBloodPressure', props<{ pressure: string }>());
-export const updatePulse = createAction('[ Vital Signs ] update updatePulse', props<{ pulse: number }>());
-export const updateRespiratoryRate = createAction('[ Vital Signs ] update updateRespiratoryRate', props<{ rate: number }>());
-export const updateWeight = createAction('[ Vital Signs ] update updateWeight', props<{ weight: number }>());
-export const updateHeight = createAction('[ Vital Signs ] update updateHeight', props<{ height: number }>());
-export const updateLastMenstruationPeriod = createAction('[ Vital Signs ] update updateLastMenstruationPeriod', props<{ period: Date }>());
+export const updateTemperature = createAction('[ Vital Signs ] update Temperature', props<{ temperature: number }>());
+export const updateBloodPressure = createAction('[ Vital Signs ] update Blood Pressure', props<{ pressure: string }>());
+export const updatePulse = createAction('[ Vital Signs ] update Pulse', props<{ pulse: number }>());
+export const updateRespiratoryRate = createAction('[ Vital Signs ] update Respiratory Rate', props<{ rate: number }>());
+export const updateWeight = createAction('[ Vital Signs ] update Weight', props<{ weight: number }>());
+export const updateHeight = createAction('[ Vital Signs ] update Height', props<{ height: number }>());
+export const updateLastMenstruationPeriod = createAction('[ Vital Signs ] update Last Menstruation Period', props<{ period: Date }>());
+
+//Admission
+export const updateAdmissionDate = createAction('[ Admission ] update Admission Date', props<{ date: Date }>());
+export const updateDischargeDate = createAction('[ Admission ] update Discharge Date', props<{ date: Date }>());
+export const updateLengthOfStay = createAction('[ Admission ] update Length Of Stay', props<{ length: Period }>());
+export const updateRoomNumber = createAction('[ Admission ] update Room Number', props<{ number: string }>());
+export const updateBedNumber = createAction('[ Admission ] update Bed Number', props<{ number: string }>());
+
+//attachments
+export const updateCurrentAttachments = createAction('[ Attachments ] update current attachments', props<{ attachments: AttachmentView[] }>());
+export const updateNewAttachments = createAction('[ Attachments ] update new attachments', props<{ attachments: { src: string | ArrayBuffer, name: string, fileType: FileType }[] }>());
 
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');

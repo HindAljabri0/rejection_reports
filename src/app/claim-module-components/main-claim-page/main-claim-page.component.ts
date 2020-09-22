@@ -38,7 +38,7 @@ export class MainClaimPageComponent implements OnInit {
     store.select(getClaim).subscribe(claim => {
       const updateTitle = this.claim == null;
       this.claim = claim;
-      if(updateTitle) this.editPageTitle();
+      if (updateTitle) this.editPageTitle();
     });
     store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     store.select(getClaimModuleError).subscribe(errors => {
@@ -101,8 +101,10 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   editPageTitle() {
-    const mode = this.pageMode.charAt(0) + this.pageMode.substring(1).toLowerCase();
-    this.store.dispatch(changePageTitle({ title: `${mode} Claim` + (this.claim == null ? '' : ` | ${this.claim.claimIdentities.providerClaimNumber}`) }))
+    if (this.pageMode == 'VIEW' || this.pageMode == 'EDIT') {
+      const mode = this.pageMode.charAt(0) + this.pageMode.substring(1).toLowerCase();
+      this.store.dispatch(changePageTitle({ title: `${mode} Claim` + (this.claim == null ? '' : ` | ${this.claim.claimIdentities.providerClaimNumber}`) }))
+    }
   }
 
   startCreatingClaim(type: string) {
@@ -163,7 +165,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   cancel() {
-    if (this.pageMode == 'CREATE')
+    if (this.pageMode == 'CREATE' || this.pageMode == 'CREATE_FROM_RETRIEVED')
       this.store.dispatch(cancelClaim());
     else if (this.pageMode == 'EDIT') {
       this.location.go(this.location.path().replace('#edit', ''));

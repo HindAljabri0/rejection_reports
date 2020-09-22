@@ -6,12 +6,14 @@ import { GDPN } from '../models/GDPN.model';
 import { Service } from '../models/service.model';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
+import { FileType } from '../models/attachmentRequest.model';
 
 export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT';
 export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
     retrievedClaimProps: RetrievedClaimProps;
+    newAttachments: { src: string | ArrayBuffer, name: string, fileType: FileType }[];
     claimBeforeEdit: Claim;
     claimPropsBeforeEdit: RetrievedClaimProps;
     retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
@@ -29,6 +31,7 @@ export interface ClaimState {
 const initState: ClaimState = {
     claim: null,
     retrievedClaimProps: null,
+    newAttachments: [],
     claimBeforeEdit: null,
     claimPropsBeforeEdit: null,
     retrievedServices: [],
@@ -53,12 +56,12 @@ const _claimReducer = createReducer(
         const departmentCode = body['claim']['visitInformation']['departmentCode'];
         const caseType = body['claim']['caseInformation']['caseType']
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
-        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
+        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], attachments: body['attachments'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
         const editable = state.mode == 'EDIT' && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(props.statusCode);
         return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? body['claim'] : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
     }),
     on(actions.toEditMode, (state) => ({ ...state, mode: 'EDIT', claimBeforeEdit: state.claim, claimPropsBeforeEdit: state.retrievedClaimProps })),
-    on(actions.cancelEdit, (state) => ({ ...state, claim: state.claimBeforeEdit, retrievedClaimProps: state.claimPropsBeforeEdit, claimBeforeEdit: null, claimPropsBeforeEdit: null, mode: 'VIEW' })),
+    on(actions.cancelEdit, (state) => ({ ...state, newAttachments: [], claim: state.claimBeforeEdit, retrievedClaimProps: state.claimPropsBeforeEdit, claimBeforeEdit: null, claimPropsBeforeEdit: null, mode: 'VIEW' })),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
@@ -68,7 +71,7 @@ const _claimReducer = createReducer(
             return { ...state, claim: claim, mode: 'CREATE' };
         }
     }),
-    on(actions.loadLOVs, (state) => ({ ...state, loading: state.mode == 'CREATE' })),
+    on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
     on(actions.setLOVs, (state, { LOVs }) => ({ ...state, LOVs: extractFromHttpResponse(LOVs), loading: state.mode == 'CREATE' ? false : state.loading })),
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
@@ -140,6 +143,15 @@ const _claimReducer = createReducer(
     on(actions.updateWeight, (state, { weight }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, weight: weight } } } })),
     on(actions.updateHeight, (state, { height }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, height: height } } } })),
     on(actions.updateLastMenstruationPeriod, (state, { period }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, lmp: period } } } })),
+
+    on(actions.updateAdmissionDate, (state, { date }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, admissionDate: date } } })),
+    on(actions.updateDischargeDate, (state, { date }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, discharge: { ...state.claim.admission.discharge, dischargeDate: date } } } })),
+    on(actions.updateLengthOfStay, (state, { length }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, discharge: { ...state.claim.admission.discharge, actualLengthOfStay: length } } } })),
+    on(actions.updateRoomNumber, (state, { number }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, roomNumber: number } } })),
+    on(actions.updateBedNumber, (state, { number }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, bedNumber: number } } })),
+
+    on(actions.updateCurrentAttachments, (state, { attachments }) => ({ ...state, retrievedClaimProps: { ...state.retrievedClaimProps, attachments: attachments } })),
+    on(actions.updateNewAttachments, (state, { attachments }) => ({ ...state, newAttachments: attachments })),
 
     on(actions.updateInvoices_Services, (state, { invoices }) => {
         let GDPN: GDPN = {

@@ -12,6 +12,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { DatePipe } from '@angular/common';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { map, withLatestFrom } from 'rxjs/operators';
+import { Claim } from '../models/claim.model';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -68,58 +69,19 @@ export class InvoicesServicesComponent implements OnInit {
   constructor(private store: Store, private actions: Actions, private adminService: AdminService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
-    // this.store.select(getIsRetrievedClaim).pipe(
-    //   withLatestFrom(this.store.select(getClaim)),
-    //   withLatestFrom(this.store.select(getPageMode)),
-    //   map(values => ({ isRetrieved: values[0][0], claim: values[0][1], mode: values[1] }))
-    // ).subscribe(values => {
-    //   this.isRetrievedClaim = values.isRetrieved;
-    //   if (values.isRetrieved && values.mode != 'CREATE') {
-    //     values.claim.invoice.forEach(invoice => {
-    //       this.addInvoice(false);
-    //       const index = this.controllers.length - 1;
-    //       this.controllers[index].invoice = invoice;
-    //       this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
-    //       this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
-    //       this.controllers[index].invoiceDate.disable({ onlySelf: true });
-    //       this.controllers[index].invoiceNumber.disable({ onlySelf: true });
-    //       invoice.service.forEach(service => {
-    //         this.addService(index, false);
-    //         const serviceIndex = this.controllers[index].services.length - 1;
-    //         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
-    //         this.controllers[index].services[serviceIndex].serviceDate.disable({ onlySelf: true });
-    //         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
-    //         this.controllers[index].services[serviceIndex].serviceCode.disable({ onlySelf: true });
-    //         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
-    //         this.controllers[index].services[serviceIndex].serviceDescription.disable({ onlySelf: true });
-    //         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
-    //         this.controllers[index].services[serviceIndex].quantity.disable({ onlySelf: true });
-    //         this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
-    //         this.controllers[index].services[serviceIndex].unitPrice.disable({ onlySelf: true });
-
-    //         this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
-    //         this.controllers[index].services[serviceIndex].serviceDiscount.disable({ onlySelf: true });
-    //         this.controllers[index].services[serviceIndex].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
-    //         if (service.serviceGDPN.netVATrate != null)
-    //           this.controllers[index].services[serviceIndex].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
-    //         this.controllers[index].services[serviceIndex].netVatRate.disable({ onlySelf: true });
-    //         this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
-    //         this.controllers[index].services[serviceIndex].patientShare.disable({ onlySelf: true });
-    //         if (service.serviceGDPN.patientShareVATrate != null)
-    //           this.controllers[index].services[serviceIndex].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
-    //         this.controllers[index].services[serviceIndex].patientShareVatRate.disable({ onlySelf: true });
-    //         if (service.serviceGDPN.priceCorrection != null)
-    //           this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
-    //         if (service.serviceGDPN.rejection != null)
-    //           this.controllers[index].services[serviceIndex].rejection = service.serviceGDPN.rejection.value;
-    //         this.controllers[index].services[serviceIndex].retrieved = true;
-    //         this.controllers[index].services[serviceIndex].toothNumber.setValue(service.toothNumber);
-    //         this.controllers[index].services[serviceIndex].toothNumber.disable({ onlySelf: true });
-    //       });
-    //     });
-    //   }
-    // });
+    this.store.select(getPageMode).pipe(
+      withLatestFrom(this.store.select(getClaim)),
+      map(values => ({ mode: values[0], claim: values[1] }))
+    ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
+      if (mode == 'VIEW') {
+        this.setData(claim);
+        this.toggleEdit(false);
+      } else if (mode == 'EDIT') {
+        this.setData(claim);
+        this.toggleEdit(true);
+      }
+    });
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
     this.store.select(getDepartments)
       .subscribe(departments => {
@@ -136,7 +98,7 @@ export class InvoicesServicesComponent implements OnInit {
       this.searchServicesController.setValue('');
     });
 
-    if (this.pageMode == 'CREATE') {
+    if (this.pageMode == 'CREATE' || this.pageMode == 'CREATE_FROM_RETRIEVED') {
       this.expandedInvoice = 0;
       this.expandedService = 0;
     }
@@ -170,6 +132,109 @@ export class InvoicesServicesComponent implements OnInit {
           this.editService(s.service, s.decision, data.invoiceIndex, this.controllers[data.invoiceIndex].services.length - 1);
         });
       }
+    });
+  }
+
+  setData(claim: Claim) {
+    this.controllers = [];
+    claim.invoice.forEach(invoice => {
+      this.addInvoice(false);
+      const index = this.controllers.length - 1;
+      this.controllers[index].invoice = invoice;
+      this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
+      this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
+      invoice.service.forEach(service => {
+        this.addService(index, false);
+        const serviceIndex = this.controllers[index].services.length - 1;
+        this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
+        this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
+        this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
+        this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
+        this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
+
+        this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
+        this.controllers[index].services[serviceIndex].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
+
+        if (service.serviceGDPN.netVATrate != null)
+          this.controllers[index].services[serviceIndex].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
+        else if (service.serviceGDPN.netVATamount != null)
+          this.controllers[index].services[serviceIndex].netVatRate.setValue(this.toTwoDecimalPoints(service.serviceGDPN.netVATamount.value / service.serviceGDPN.net.value * 100));
+        else
+          this.controllers[index].services[serviceIndex].netVatRate.setValue('');
+        this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
+
+        if (service.serviceGDPN.patientShareVATrate != null)
+          this.controllers[index].services[serviceIndex].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
+        else if (service.serviceGDPN.patientShareVATamount != null && service.serviceGDPN.patientShare != null && service.serviceGDPN.patientShare.value > 0)
+          this.controllers[index].services[serviceIndex].patientShareVatRate.setValue(this.toTwoDecimalPoints(service.serviceGDPN.patientShareVATamount.value / service.serviceGDPN.patientShare.value * 100));
+        else
+          this.controllers[index].services[serviceIndex].patientShareVatRate.setValue('');
+
+        if (service.serviceGDPN.priceCorrection != null)
+          this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
+        else
+          this.controllers[index].services[serviceIndex].priceCorrection = null;
+        if (service.serviceGDPN.rejection != null)
+          this.controllers[index].services[serviceIndex].rejection = service.serviceGDPN.rejection.value;
+        else
+          this.controllers[index].services[serviceIndex].rejection = null;
+        this.controllers[index].services[serviceIndex].toothNumber.setValue(service.toothNumber);
+      });
+    });
+  }
+
+  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+    this.controllers.forEach(invoiceControllers => {
+      invoiceControllers.invoiceDate.disable();
+      invoiceControllers.invoiceNumber.disable();
+      invoiceControllers.services.forEach(servicesControllers => {
+        if (allowEdit) {
+          servicesControllers.netVatRate.enable();
+          servicesControllers.patientShare.enable();
+          servicesControllers.patientShareVatRate.enable();
+          servicesControllers.quantity.enable();
+          servicesControllers.serviceCode.enable();
+          servicesControllers.serviceDate.enable();
+          servicesControllers.serviceDescription.enable();
+          servicesControllers.serviceDiscount.enable();
+          servicesControllers.toothNumber.enable();
+          servicesControllers.unitPrice.enable();
+        } else {
+          servicesControllers.netVatRate.disable();
+          servicesControllers.patientShare.disable();
+          servicesControllers.patientShareVatRate.disable();
+          servicesControllers.quantity.disable();
+          servicesControllers.serviceCode.disable();
+          servicesControllers.serviceDate.disable();
+          servicesControllers.serviceDescription.disable();
+          servicesControllers.serviceDiscount.disable();
+          servicesControllers.toothNumber.disable();
+          servicesControllers.unitPrice.disable();
+        }
+
+        if (enableForNulls) {
+          if (this.isControlNull(servicesControllers.netVatRate))
+            servicesControllers.netVatRate.enable();
+          if (this.isControlNull(servicesControllers.patientShare))
+            servicesControllers.patientShare.enable();
+          if (this.isControlNull(servicesControllers.patientShareVatRate))
+            servicesControllers.patientShareVatRate.enable();
+          if (this.isControlNull(servicesControllers.quantity))
+            servicesControllers.quantity.enable();
+          if (this.isControlNull(servicesControllers.serviceCode))
+            servicesControllers.serviceCode.enable();
+          if (this.isControlNull(servicesControllers.serviceDate))
+            servicesControllers.serviceDate.enable();
+          if (this.isControlNull(servicesControllers.serviceDescription))
+            servicesControllers.serviceDescription.enable();
+          if (this.isControlNull(servicesControllers.serviceDiscount))
+            servicesControllers.serviceDiscount.enable();
+          if (this.isControlNull(servicesControllers.toothNumber))
+            servicesControllers.toothNumber.enable();
+          if (this.isControlNull(servicesControllers.unitPrice))
+            servicesControllers.unitPrice.enable();
+        }
+      })
     });
   }
 
@@ -208,21 +273,21 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].retrieved = true;
     this.controllers[i].services[j].serviceNumber = service.serviceNumber;
     this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
-    this.controllers[i].services[j].serviceDate.disable({ onlySelf: true });
+    this.controllers[i].services[j].serviceDate.disable();
     this.controllers[i].services[j].serviceCode.setValue(service.serviceCode);
-    this.controllers[i].services[j].serviceCode.disable({ onlySelf: true });
+    this.controllers[i].services[j].serviceCode.disable();
     this.controllers[i].services[j].serviceDescription.setValue(service.serviceDescription);
-    this.controllers[i].services[j].serviceDescription.disable({ onlySelf: true });
+    this.controllers[i].services[j].serviceDescription.disable();
     this.controllers[i].services[j].unitPrice.setValue(service.unitPrice.value);
-    this.controllers[i].services[j].unitPrice.disable({ onlySelf: true });
+    this.controllers[i].services[j].unitPrice.disable();
     this.controllers[i].services[j].quantity.setValue(decision.approvedQuantity);
-    this.controllers[i].services[j].quantity.disable({ onlySelf: true });
+    this.controllers[i].services[j].quantity.disable();
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
     this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
     if (service.toothNumber != null)
-      this.controllers[i].services[j].toothNumber.disable({ onlySelf: true });
+      this.controllers[i].services[j].toothNumber.disable();
     this.controllers[i].services[j].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
     this.controllers[i].services[j].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
     this.controllers[i].services[j].priceCorrection = decision.serviceGDPN.priceCorrection.value;
@@ -363,7 +428,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   updateClaim() {
-    if (this.pageMode != 'CREATE') return;
+    if (this.pageMode == 'VIEW') return;
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
     this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice) }));
@@ -496,5 +561,13 @@ export class InvoicesServicesComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  isControlNull(control: FormControl) {
+    return control.value == null || control.value == '';
+  }
+
+  toTwoDecimalPoints(num:number){
+    return Number.parseFloat(num.toPrecision(num.toFixed().length + 2));
   }
 }

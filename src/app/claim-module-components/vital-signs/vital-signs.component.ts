@@ -43,38 +43,6 @@ export class VitalSignsComponent implements OnInit {
         this.toggleEdit(false, true);
       }
     });
-    // this.store.select(getIsRetrievedClaim).pipe(
-    //   withLatestFrom(this.store.select(getClaim)),
-    //   withLatestFrom(this.store.select(getPageMode)),
-    //   map(values => ({isRetrieved: values[0][0], claim: values[0][1], mode: values[1]}))
-    // ).subscribe(
-    //   values => {
-    //     if(values.isRetrieved){
-
-
-
-    //       this.temperatureController.disable({ onlySelf: values.mode != 'CREATE' || temperature != null});
-
-
-    //       this.bloodPressureController.disable({ onlySelf: values.mode != 'CREATE' || bloodPressure != null});
-
-
-    //       this.pulseController.disable({ onlySelf: values.mode != 'CREATE' || pulse != null});
-
-
-    //       this.respiratoryRateController.disable({ onlySelf: values.mode != 'CREATE' || respiratoryRate != null});
-
-
-    //       this.weightController.disable({ onlySelf: values.mode != 'CREATE' || weight != null});
-
-
-    //       this.heightController.disable({ onlySelf: values.mode != 'CREATE' || height != null});
-
-
-    //       this.lastMenstruationPeriodController.disable({ onlySelf: values.mode != 'CREATE' || lastMenstruationPeriod != null});
-    //     }
-    //   }
-    // )
   }
 
   setData(claim: Claim) {

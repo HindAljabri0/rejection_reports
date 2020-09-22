@@ -32,22 +32,6 @@ export class PhysicianComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getPageMode).pipe(
-      withLatestFrom(this.store.select(getClaim)),
-      map(values => ({ mode: values[0], claim: values[1] }))
-    ).subscribe(({ mode, claim }) => {
-      if (mode == 'VIEW') {
-        this.setData(claim);
-        this.toggleEdit(false);
-      } else if(mode == 'EDIT'){
-        this.setData(claim);
-        this.toggleEdit(true);
-      } else if(mode == 'CREATE_FROM_RETRIEVED'){
-        this.setData(claim)
-        this.toggleEdit(false, true);
-      }
-    });
-    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
     this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getDepartments).pipe(
@@ -60,8 +44,24 @@ export class PhysicianComponent implements OnInit {
         this.departments = values.departments;
       }
     });
+    this.store.select(getPageMode).pipe(
+      withLatestFrom(this.store.select(getClaim)),
+      map(values => ({ mode: values[0], claim: values[1] }))
+    ).subscribe(({ mode, claim }) => {
+      if (mode == 'VIEW') {
+        this.setData(claim);
+        this.toggleEdit(false);
+      } else if (mode == 'EDIT') {
+        this.setData(claim);
+        this.toggleEdit(true);
+      } else if (mode == 'CREATE_FROM_RETRIEVED') {
+        this.setData(claim)
+        this.toggleEdit(false, true);
+      }
+    });
+    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
+    
     this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
-
     setTimeout(() => {
       const department = this.selectedDepartment;
       this.selectedDepartment = '1';
@@ -75,15 +75,15 @@ export class PhysicianComponent implements OnInit {
     this.selectedCategory = claim.caseInformation.physician.physicianCategory;
     this.selectedDepartment = `${claim.visitInformation.departmentCode}`;
   }
-  toggleEdit(allowEdit: boolean, enableForNulls?:boolean) {
+  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
-    this.departmentEditable = allowEdit || (enableForNulls && !this.departments.includes(this.selectedDepartment));
+    this.departmentEditable = allowEdit && this.pageType != 'DENTAL_OPTICAL';
     if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == '')))
       this.physicianNameController.enable();
     else
       this.physicianNameController.disable();
-    if(enableForNulls){
-      if(this.physicianIdController.value == null || this.physicianIdController.value == ''){
+    if (enableForNulls) {
+      if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
         this.physicianIdController.disable();
       } else {
         this.physicianIdController.enable();
