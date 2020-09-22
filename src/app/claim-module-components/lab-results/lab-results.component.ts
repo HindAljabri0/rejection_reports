@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldError } from '../store/claim.reducer';
+import { ClaimPageMode, FieldError } from '../store/claim.reducer';
 import { Investigation } from '../models/investigation.model';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { getClaim, getPageMode } from '../store/claim.reducer';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Claim } from '../models/claim.model';
+import { saveLabResults, updateLabResults } from '../store/claim.actions';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'claim-lab-results',
@@ -18,75 +21,109 @@ export class LabResultsComponent implements OnInit {
   resultsControls: {
     testDate: FormControl,
     testCode: FormControl,
-    testSerial: FormControl,
     resultDescription: FormControl,
     componentsControls: {
       componentCode: FormControl,
-      componentSerial: FormControl,
       componentDescription: FormControl,
       componentLabResult: FormControl,
-      componentResultUnit: FormControl,
-      componentResultComment: FormControl
+      componentResultUnit: FormControl
     }[]
-  }[]
+  }[] = [];
 
   expandedResult = -1;
   expandedComponent = -1;
 
   errors: FieldError[] = [];
 
-  constructor(private store: Store, private datePipe: DatePipe) { }
+  pageMode: ClaimPageMode;
+
+  constructor(private store: Store, private actions: Actions, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    // this.store.select(getIsRetrievedClaim).pipe(
-    //   withLatestFrom(this.store.select(getClaim)),
-    //   withLatestFrom(this.store.select(getPageMode)),
-    //   map(values => ({ isRetrieved: values[0][0], claim: values[0][1], mode: values[1] }))
-    // ).subscribe(
-    //   values => {
-    //     if (values.isRetrieved) {
-    //       if (values.claim.caseInformation.caseDescription.investigation != null) {
-    //         values.claim.caseInformation.caseDescription.investigation.forEach(
-    //           investigation => {
-    //             let controls = this.createEmptyResultControls();
-    //             if (investigation.investigationDate != null) {
-    //               controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'))
-    //             }
-    //             controls.testCode.setValue(investigation.investigationCode);
-    //             controls.testSerial.setValue(investigation.investigationType);
-    //             controls.resultDescription.setValue(investigation.investigationDescription);
-    //             controls.testDate.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationDate != null });
-    //             controls.testCode.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationCode != null });
-    //             controls.testSerial.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationType != null });
-    //             controls.resultDescription.disable({ onlySelf: values.mode != 'CREATE' || investigation.investigationDescription != null });
+    this.store.select(getPageMode).pipe(
+      withLatestFrom(this.store.select(getClaim)),
+      map(values => ({ mode: values[0], claim: values[1] }))
+    ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
+      if (mode == 'VIEW') {
+        this.setData(claim);
+        this.toggleEdit(false);
+      } else if (mode == 'EDIT') {
+        this.setData(claim);
+        this.toggleEdit(true);
+      } else if (mode == 'CREATE_FROM_RETRIEVED') {
+        this.setData(claim)
+        this.toggleEdit(false, true);
+      }
+    });
 
-    //             investigation.observation.forEach(observation => {
-    //               let componentControls = this.createEmptyComponentControls();
-    //               componentControls.componentCode.setValue(observation.observationCode);
-    //               componentControls.componentCode.disable({ onlySelf: values.mode != 'CREATE' || observation.observationCode != null });
+    this.actions.pipe(
+      ofType(saveLabResults)
+    ).subscribe(() => { if (this.expandedResult != -1) this.updateClaimInvestigations() });
+  }
 
-    //               componentControls.componentDescription.setValue(observation.observationDescription);
-    //               componentControls.componentDescription.disable({ onlySelf: values.mode != 'CREATE' || observation.observationDescription != null });
+  setData(claim: Claim) {
+    this.resultsControls = [];
+    if (claim.caseInformation.caseDescription.investigation != null) {
+      claim.caseInformation.caseDescription.investigation.forEach(
+        investigation => {
+          let controls = this.createEmptyResultControls();
+          if (investigation.investigationDate != null) {
+            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'))
+          } else {
+            controls.testDate.setValue('');
+          }
+          controls.testCode.setValue(investigation.investigationCode);
+          controls.testSerial.setValue(investigation.investigationType);
+          controls.resultDescription.setValue(investigation.investigationDescription);
 
-    //               componentControls.componentLabResult.setValue(observation.observationValue);
-    //               componentControls.componentLabResult.disable({ onlySelf: values.mode != 'CREATE' || observation.observationValue != null });
+          investigation.observation.forEach(observation => {
+            let componentControls = this.createEmptyComponentControls();
+            componentControls.componentCode.setValue(observation.observationCode);
 
-    //               componentControls.componentResultUnit.setValue(observation.observationUnit);
-    //               componentControls.componentResultUnit.disable({ onlySelf: values.mode != 'CREATE' || observation.observationUnit != null });
+            componentControls.componentDescription.setValue(observation.observationDescription);
 
-    //               componentControls.componentResultComment.setValue(observation.observationComment);
-    //               componentControls.componentResultComment.disable({ onlySelf: values.mode != 'CREATE' || observation.observationComment != null });
+            componentControls.componentLabResult.setValue(observation.observationValue);
 
-    //               componentControls.componentSerial.disable({ onlySelf: values.mode != 'CREATE' });
-    //               controls.componentsControls.push(componentControls);
-    //             });
-    //             this.resultsControls.push(controls);
-    //           }
-    //         );
-    //       }
-    //     }
-    //   }
-    // )
+            componentControls.componentResultUnit.setValue(observation.observationUnit);
+
+            componentControls.componentResultComment.setValue(observation.observationComment);
+
+            controls.componentsControls.push(componentControls);
+          });
+          this.resultsControls.push(controls);
+        }
+      );
+    }
+  }
+
+  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+    this.resultsControls.forEach(resultControls => {
+      if (allowEdit) {
+        resultControls.testDate.enable();
+        resultControls.testCode.enable();
+        resultControls.resultDescription.enable();
+      } else {
+        resultControls.testDate.disable();
+        resultControls.testCode.disable();
+        resultControls.resultDescription.disable();
+      }
+
+      resultControls.componentsControls.forEach(componentControl => {
+        if (allowEdit) {
+          componentControl.componentCode.enable();
+          componentControl.componentDescription.enable();
+          componentControl.componentLabResult.enable();
+          componentControl.componentResultUnit.enable();
+        } else {
+          componentControl.componentCode.disable();
+          componentControl.componentDescription.disable();
+          componentControl.componentLabResult.disable();
+          componentControl.componentResultUnit.disable();
+        }
+      });
+
+    });
   }
 
   createEmptyResultControls() {
@@ -121,10 +158,12 @@ export class LabResultsComponent implements OnInit {
   afterResultCollapse(i: number) {
     this.expandedResult = -1;
     this.expandedComponent = -1;
+    this.updateClaimInvestigations();
   }
 
   afterComponentCollapse(resultIndex, componentIndex) {
     this.expandedComponent = -1
+    this.updateClaimInvestigations();
   }
 
   fieldHasError(fieldName) {
@@ -145,6 +184,35 @@ export class LabResultsComponent implements OnInit {
 
   componentHasErrors(resultIndex, componentIndex) {
     return this.errors.findIndex(error => error.fieldName.includes(`:${resultIndex}:${componentIndex}`)) != -1;
+  }
+
+  onAddResultClick() {
+    this.resultsControls.push(this.createEmptyResultControls());
+    this.expandedResult = this.resultsControls.length - 1;
+    this.updateClaimInvestigations();
+  }
+  onAddComponentClick(i: number) {
+    this.resultsControls[i].componentsControls.push(this.createEmptyComponentControls());
+    this.expandedComponent = this.resultsControls[i].componentsControls.length - 1;
+    this.updateClaimInvestigations();
+  }
+
+  updateClaimInvestigations() {
+    this.results = this.resultsControls.map(controllers => ({
+      investigationCode: controllers.testCode.value,
+      investigationComments: null,
+      investigationDescription: controllers.resultDescription.value,
+      investigationDate: controllers.testDate.value,
+      investigationType: null,
+      observation: controllers.componentsControls.map(controls => ({
+        observationCode: controls.componentCode.value,
+        observationDescription: controls.componentDescription.value,
+        observationValue: controls.componentLabResult.value,
+        observationUnit: controls.componentResultUnit.value,
+        observationComment: null
+      }))
+    }));
+    this.store.dispatch(updateLabResults({ investigations: this.results }));
   }
 
 }

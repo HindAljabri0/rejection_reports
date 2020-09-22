@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -115,6 +115,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   save() {
+    this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());

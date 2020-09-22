@@ -11,6 +11,7 @@ import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
 import { AttachmentView } from '../models/attachmentView.model';
 import { FileType } from '../models/attachmentRequest.model';
+import { Investigation } from '../models/investigation.model';
 
 export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit: boolean }>());
 export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim', props<any>());
@@ -86,6 +87,10 @@ export const updateBedNumber = createAction('[ Admission ] update Bed Number', p
 //attachments
 export const updateCurrentAttachments = createAction('[ Attachments ] update current attachments', props<{ attachments: AttachmentView[] }>());
 export const updateNewAttachments = createAction('[ Attachments ] update new attachments', props<{ attachments: { src: string | ArrayBuffer, name: string, fileType: FileType }[] }>());
+
+//LAB Results
+export const saveLabResults = createAction('[ LAB Results ] this will force lab results & components to dispatch updateLabResults action');
+export const updateLabResults = createAction('[ LAB Results ] update LAB Results', props<{ investigations: Investigation[] }>());
 
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');

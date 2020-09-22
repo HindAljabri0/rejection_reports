@@ -153,6 +153,8 @@ const _claimReducer = createReducer(
     on(actions.updateCurrentAttachments, (state, { attachments }) => ({ ...state, retrievedClaimProps: { ...state.retrievedClaimProps, attachments: attachments } })),
     on(actions.updateNewAttachments, (state, { attachments }) => ({ ...state, newAttachments: attachments })),
 
+    on(actions.updateLabResults, (state, { investigations }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, investigation: investigations } } } })),
+
     on(actions.updateInvoices_Services, (state, { invoices }) => {
         let GDPN: GDPN = {
             discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },

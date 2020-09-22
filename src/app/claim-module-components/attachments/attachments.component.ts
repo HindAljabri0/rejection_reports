@@ -35,7 +35,9 @@ export class AttachmentsComponent implements OnInit {
   }
 
   setData(attachments: AttachmentView[]) {
-    this.attachments = [...attachments];
+    if(attachments != null)
+      this.attachments = [...attachments];
+    else this.attachments = [];
     this.newAttachmentsPreview = [];
     this.selectFilesError = null;
   }
