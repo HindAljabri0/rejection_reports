@@ -1,7 +1,17 @@
 .parent {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+footer {
+    display: grid;
+    place-items: center;
 }
 
 .attachment {
@@ -19,7 +29,13 @@
     place-items: center;
 }
 
-.attachmentInfo{
+.attachmentInfo {
     display: flex;
     z-index: 1;
+}
+
+.block {
+    display: block;
+    margin-left: 16px;
+    margin-right: 16px;
 }

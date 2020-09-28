@@ -2,15 +2,18 @@ import { createAction, props } from '@ngrx/store';
 import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
-import { FieldError } from './claim.reducer';
+import { ClaimPageMode, FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 import { Service } from '../models/service.model';
 import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
+import { AttachmentView } from '../models/attachmentView.model';
+import { FileType } from '../models/attachmentRequest.model';
+import { Investigation } from '../models/investigation.model';
 
-export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string }>());
+export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit: boolean }>());
 export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim', props<any>());
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{ approvalNumber: string, payerId: string, claimType: string, providerClaimNumber: string }>())
@@ -28,6 +31,8 @@ export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: number }>());
+export const toEditMode = createAction('[ Claim ] change page mode to edit');
+export const cancelEdit = createAction('[ Claim ] cancel editing');
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: string }>());
@@ -38,6 +43,7 @@ export const updatePatientMemberId = createAction('[ Claim Patient Info ] update
 export const updateNationalId = createAction('[ Claim Patient Info ] update national id', props<{ nationalId: string }>());
 export const updatePolicyNum = createAction('[ Claim Patient Info ] update policy no', props<{ policyNo: string }>());
 export const updateApprovalNum = createAction('[ Claim Patient Info ] update approval no', props<{ approvalNo: string }>());
+export const updatePlanType = createAction('[ Claim Patient Info ] upldate plan type', props<{ planType: string }>());
 //Physician
 export const updatePhysicianId = createAction('[ Claim Physician Info ] update Physician Id', props<{ physicianId: string }>());
 export const updatePhysicianName = createAction('[ Claim Physician Info ] update Physician name', props<{ physicianName: string }>());
@@ -49,18 +55,47 @@ export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update 
 export const updateIllnesses = createAction('[ Claim Illnesses ] update illnesses', props<{ list: string[] }>());
 
 //GenInfo
-export const updateClaimDate = createAction('[ Claim Date ] update claim date', props<{ claimDate: Date }>());
-export const updateCaseType = createAction('[ Claim Type ] update case type', props<{ caseType: string }>());
-export const updateFileNumber = createAction('[ File Number ] update File Number', props<{ fileNumber: string }>());
-export const updateMemberDob = createAction('[ Member DOB ] update member dob', props<{ memberDob: Date }>());
-export const updateIllnessDuration = createAction('[ Illness Duration ] update illness duration', props<{ illnessDuration: any }>());
-export const updateAge = createAction('[ Age ] update age', props<{ age: any }>());
-export const updateMainSymptoms = createAction('[ mainSymptoms ] update mainSymptoms', props<{ symptoms: string }>())
+export const updateClaimDate = createAction('[ Claim Gen Info ] update claim date', props<{ claimDate: Date }>());
+export const updateCaseType = createAction('[ Claim Gen Info ] update case type', props<{ caseType: string }>());
+export const updateFileNumber = createAction('[ Claim Gen Info ] update File Number', props<{ fileNumber: string }>());
+export const updateMemberDob = createAction('[ Claim Gen Info ] update member dob', props<{ memberDob: Date }>());
+export const updateIllnessDuration = createAction('[ Claim Gen Info ] update illness duration', props<{ illnessDuration: any }>());
+export const updateAge = createAction('[ Claim Gen Info ] update age', props<{ age: any }>());
+export const updateMainSymptoms = createAction('[ Claim Gen Info ] update mainSymptoms', props<{ symptoms: string }>());
+export const updateSignificantSign = createAction('[ Claim Gen Info ] update significant Sign', props<{ sign: string }>());
+export const updateCommReport = createAction('[ Claim Gen Info ] update comm report', props<{ report: string }>());
+export const updateEligibilityNum = createAction('[ Claim Gen Info ] update eligibility number', props<{ number: string }>());
+export const updateRadiologyReport = createAction('[ Claim Gen Info ] update radiology report', props<{ report: string }>());
+export const updateOtherCondition = createAction('[ Claim Gen Info ] update other condition', props<{ condition: string }>());
+
+//Vital Signs
+export const updateTemperature = createAction('[ Vital Signs ] update Temperature', props<{ temperature: number }>());
+export const updateBloodPressure = createAction('[ Vital Signs ] update Blood Pressure', props<{ pressure: string }>());
+export const updatePulse = createAction('[ Vital Signs ] update Pulse', props<{ pulse: number }>());
+export const updateRespiratoryRate = createAction('[ Vital Signs ] update Respiratory Rate', props<{ rate: number }>());
+export const updateWeight = createAction('[ Vital Signs ] update Weight', props<{ weight: number }>());
+export const updateHeight = createAction('[ Vital Signs ] update Height', props<{ height: number }>());
+export const updateLastMenstruationPeriod = createAction('[ Vital Signs ] update Last Menstruation Period', props<{ period: Date }>());
+
+//Admission
+export const updateAdmissionDate = createAction('[ Admission ] update Admission Date', props<{ date: Date }>());
+export const updateDischargeDate = createAction('[ Admission ] update Discharge Date', props<{ date: Date }>());
+export const updateLengthOfStay = createAction('[ Admission ] update Length Of Stay', props<{ length: Period }>());
+export const updateRoomNumber = createAction('[ Admission ] update Room Number', props<{ number: string }>());
+export const updateBedNumber = createAction('[ Admission ] update Bed Number', props<{ number: string }>());
+
+//attachments
+export const updateCurrentAttachments = createAction('[ Attachments ] update current attachments', props<{ attachments: AttachmentView[] }>());
+export const updateNewAttachments = createAction('[ Attachments ] update new attachments', props<{ attachments: { src: string | ArrayBuffer, name: string, fileType: FileType }[] }>());
+
+//LAB Results
+export const saveLabResults = createAction('[ LAB Results ] this will force lab results & components to dispatch updateLabResults action');
+export const updateLabResults = createAction('[ LAB Results ] update LAB Results', props<{ investigations: Investigation[] }>());
 
 //Invoices&Services
 export const saveInvoices_Services = createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services', props<{ invoices: Invoice[] }>());
-export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retreived service', props<SelectServiceDialogData>());
+export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retrieved service', props<SelectServiceDialogData>());
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice', props<{ services: { service: Service, decision: ServiceDecision }[], invoiceIndex: number, serviceIndex?: number }>());
 export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] make retrieved service unused', props<{ serviceNumber: number }>());
 

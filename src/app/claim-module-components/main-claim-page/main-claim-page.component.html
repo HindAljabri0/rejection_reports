@@ -1,8 +1,8 @@
-<mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE'" mode="indeterminate"></mat-progress-bar>
-<div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE'}">
-    <div class="header" [ngStyle]="{'color': pageMode == 'CREATE'? '#3060AA':getClaimStatusColor(claimProps?.statusCode),
-        'background-color': pageMode == 'CREATE'? 'white':getClaimStatusColor(claimProps?.statusCode)+'40'}">
-        <ng-container *ngIf="pageMode == 'CREATE'; else statusHeader">
+<mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate"></mat-progress-bar>
+<div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'}">
+    <div class="header" [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '#3060AA':getClaimStatusColor(claimProps?.statusCode),
+        'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? 'white':getClaimStatusColor(claimProps?.statusCode)+'40'}">
+        <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
             <p>Create Claim</p><span class="spacer"></span>
             <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"
                 [ngClass]="{'show':claim != null && errors == null}">
@@ -29,11 +29,23 @@
             <claim-patient-info style="grid-column: 1 / span 8; margin: 5px;"></claim-patient-info>
             <claim-physician-header style="grid-column: 9 / span 4; margin: 5px;"></claim-physician-header>
             <claim-data style="grid-column: 1 / span 8; margin: 5px; height: 26vw;"
-                [ngStyle]="{'height': pageMode != 'CREATE' ? '34vw': '26vw'}"></claim-data>
+                [ngStyle]="{'height': pageMode != 'CREATE'  && pageMode != 'CREATE_FROM_RETRIEVED' ? '34vw': '26vw'}"></claim-data>
             <gdpn-calculation style="grid-column: 9 / span 4; margin: 5px;"></gdpn-calculation>
         </ng-container>
     </div>
-    <div class="footer" *ngIf="pageMode == 'CREATE'">
+    <div class="footer" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
+        <span class="spacer"></span>
+        <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
+            (click)="save()">Save</button>
+    </div>
+    <div class="footer" *ngIf="pageMode == 'VIEW'">
+        <span class="spacer"></span>
+        <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="close()">Close</button>
+        <button *ngIf="claim != null && editable" mat-raised-button color="primary" style="margin-right: 10px;"
+            (click)="edit()">Edit</button>
+    </div>
+    <div class="footer" *ngIf="pageMode == 'EDIT'">
         <span class="spacer"></span>
         <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
         <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"

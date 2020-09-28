@@ -1,8 +1,8 @@
 <div class="body">
-    <mat-button-toggle [disabled]="isRetrievedClaim" value="NA" (change)="updateIllnesses($event)"
+    <mat-button-toggle [disabled]="!enableEdit" value="NA" (change)="updateIllnesses($event)"
         [checked]="selectedIllnesses.includes('NA')">N/A
     </mat-button-toggle>
     <mat-button-toggle *ngFor="let code of illnessOptionsList" [value]="code" (change)="updateIllnesses($event)"
-        [disabled]="isRetrievedClaim" [checked]="selectedIllnesses.includes(code)">
+        [disabled]="!enableEdit" [checked]="selectedIllnesses.includes(code)">
         {{beautifyCode(code)}}</mat-button-toggle>
 </div>

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getIllnessCode, getIsRetrievedClaim, getClaim } from '../store/claim.reducer';
+import { getIllnessCode, getClaim, getPageMode } from '../store/claim.reducer';
 import { MatButtonToggleChange } from '@angular/material';
 import { updateIllnesses } from '../store/claim.actions';
-import { withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { Claim } from '../models/claim.model';
 
 @Component({
   selector: 'claim-illnesses',
@@ -13,7 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class ClaimIllnessesComponent implements OnInit, OnDestroy {
 
-  isRetrievedClaim: boolean = false;
+  enableEdit: boolean = true;
 
   illnessOptionsList: string[] = [];
 
@@ -24,21 +25,35 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   constructor(private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getIsRetrievedClaim).pipe(
-      withLatestFrom(this.store.select(getClaim))
-    ).subscribe(values => {
-      this.isRetrievedClaim = values[0];
-      if (this.isRetrievedClaim) {
-        if (values[1].caseInformation.caseDescription.illnessCategory != null)
-          this.selectedIllnesses = values[1].caseInformation.caseDescription.illnessCategory.inllnessCode;
-        if (this.selectedIllnesses.length == 0)
-          this.selectedIllnesses = ['NA'];
+    this.store.select(getPageMode).pipe(
+      withLatestFrom(this.store.select(getClaim)),
+      map(values => ({ mode: values[0], claim: values[1] }))
+    ).subscribe(({ mode, claim }) => {
+      if (mode == 'VIEW') {
+        this.setData(claim);
+        this.toggleEdit(false);
+      } else if (mode == 'EDIT') {
+        this.setData(claim);
+        this.toggleEdit(true);
+      } else if (mode == 'CREATE_FROM_RETRIEVED') {
+        this.setData(claim)
+        this.toggleEdit(false, claim.caseInformation.caseDescription.illnessCategory == null);
       } else {
         this.store.dispatch(updateIllnesses({ list: this.selectedIllnesses }));
       }
-
-    }).unsubscribe();
+    });
     this.subscriptions.push(this.store.select(getIllnessCode).subscribe(codes => this.illnessOptionsList = codes.filter(code => code != 'NA')));
+  }
+
+  setData(claim: Claim) {
+    if (claim.caseInformation.caseDescription.illnessCategory != null)
+      this.selectedIllnesses = claim.caseInformation.caseDescription.illnessCategory.inllnessCode;
+    else this.selectedIllnesses = ['NA'];
+    if (this.selectedIllnesses.length == 0)
+      this.selectedIllnesses = ['NA'];
+  }
+  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+    this.enableEdit = allowEdit || (enableForNulls || false);
   }
 
   ngOnDestroy() {

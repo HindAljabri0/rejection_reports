@@ -2,7 +2,9 @@
 export class AttachmentRequest {
 
     fileName: string;
-	fileType: 'Medical Report' | 'X-Ray result' | 'Lab Result' | 'Iqama/ID copy';
+	fileType: FileType;
 	attachmentFile: ArrayBuffer;
     userComment: string;
 }
+
+export type FileType = 'Medical Report' | 'X-Ray result' | 'Lab Result' | 'Iqama/ID copy';

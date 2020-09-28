@@ -47,7 +47,6 @@ export class Service {
                     service.serviceDate = new Date(serviceCT['serviceDate']);
                     if (serviceCT['toothNumber'] != null)
                         service.toothNumber = `${Number.parseInt(serviceCT['toothNumber'].split('_')[1]) - 1}`;
-                    console.log(service.toothNumber);
                     service.serviceNumber = serviceCT['serviceNumber']
                     if (serviceCT['unitPrice'] != null)
                         service.unitPrice = serviceCT['unitPrice'];

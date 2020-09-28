@@ -19,7 +19,7 @@
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
         <claim-vital-signs></claim-vital-signs>
     </mat-tab>
-    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Admission'">
+    <mat-tab *ngIf="isInpatientClaim" [label]="'Admission'">
         <claim-admission></claim-admission>
     </mat-tab>
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Attachments'">
@@ -35,7 +35,7 @@
         </ng-template>
         <claim-invoices-services></claim-invoices-services>
     </mat-tab>
-    <mat-tab *ngIf="pageMode != 'CREATE'" [label]="'Errors'">
+    <mat-tab *ngIf="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" [label]="'Errors'">
         <claim-errors></claim-errors>
     </mat-tab>
 </mat-tab-group>

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gui
-  namespace: qa
+  namespace: prod
   labels:
     app: gui
 spec:
@@ -16,10 +16,10 @@ spec:
         app: gui
     spec:
       nodeSelector:
-        environment: development
+        environment: production
       containers:
         - name: gui
-          image: me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:latest
+          image: me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:latest
           ports:
           - containerPort: 8080
       imagePullSecrets:

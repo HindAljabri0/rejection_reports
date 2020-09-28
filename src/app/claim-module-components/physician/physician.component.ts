@@ -3,8 +3,9 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getIsRetrievedClaim, getClaim, getPageType, ClaimPageType, getPageMode } from '../store/claim.reducer';
+import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getClaim, getPageType, ClaimPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
+import { Claim } from '../models/claim.model';
 
 @Component({
   selector: 'claim-physician-header',
@@ -12,8 +13,6 @@ import { map, withLatestFrom } from 'rxjs/operators';
   styleUrls: ['./physician.component.css']
 })
 export class PhysicianComponent implements OnInit {
-
-  isRetrievedClaim: boolean = false;
 
   physicianNameController: FormControl = new FormControl();
   physicianIdController: FormControl = new FormControl();
@@ -27,12 +26,12 @@ export class PhysicianComponent implements OnInit {
 
   errors: FieldError[] = [];
 
+
   pageType: ClaimPageType;
 
   constructor(private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
     this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getDepartments).pipe(
@@ -45,36 +44,53 @@ export class PhysicianComponent implements OnInit {
         this.departments = values.departments;
       }
     });
-    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
-
-    this.store.select(getIsRetrievedClaim).pipe(
+    this.store.select(getPageMode).pipe(
       withLatestFrom(this.store.select(getClaim)),
-      withLatestFrom(this.store.select(getPageMode)),
-      map(values => ({isRetrieved: values[0][0], claim: values[0][1], mode: values[1]}))
-    ).subscribe((values) => {
-      this.isRetrievedClaim = values.isRetrieved;
-      if (this.isRetrievedClaim) {
-        this.physicianIdController.setValue(values.claim.caseInformation.physician.physicianID);
-        this.physicianIdController.disable({ onlySelf: values.claim.caseInformation.physician.physicianID != null })
-        this.physicianNameController.setValue(values.claim.caseInformation.physician.physicianName);
-        this.physicianNameController.disable({ onlySelf: values.claim.caseInformation.physician.physicianName != null });
-        this.selectedCategory = values.claim.caseInformation.physician.physicianCategory;
-        this.categoryEditable = !this.categories.includes(this.selectedCategory) && values.mode == 'CREATE';
-        if(values.mode != 'CREATE'){
-          this.selectedDepartment = `${values.claim.visitInformation.departmentCode}`;
-        }
-        this.departmentEditable = false;
-
-      } else {
-
+      map(values => ({ mode: values[0], claim: values[1] }))
+    ).subscribe(({ mode, claim }) => {
+      if (mode == 'VIEW') {
+        this.setData(claim);
+        this.toggleEdit(false);
+      } else if (mode == 'EDIT') {
+        this.setData(claim);
+        this.toggleEdit(true);
+      } else if (mode == 'CREATE_FROM_RETRIEVED') {
+        this.setData(claim)
+        this.toggleEdit(false, true);
       }
-
-    }).unsubscribe();
+    });
+    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
+    
+    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
     setTimeout(() => {
       const department = this.selectedDepartment;
       this.selectedDepartment = '1';
       setTimeout(() => this.selectedDepartment = department, 500);
     }, 500);
+  }
+
+  setData(claim: Claim) {
+    this.physicianIdController.setValue(claim.caseInformation.physician.physicianID);
+    this.physicianNameController.setValue(claim.caseInformation.physician.physicianName);
+    this.selectedCategory = claim.caseInformation.physician.physicianCategory;
+    this.selectedDepartment = `${claim.visitInformation.departmentCode}`;
+  }
+  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+    this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
+    this.departmentEditable = allowEdit && this.pageType != 'DENTAL_OPTICAL';
+    if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == '')))
+      this.physicianNameController.enable();
+    else
+      this.physicianNameController.disable();
+    if (enableForNulls) {
+      if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
+        this.physicianIdController.disable();
+      } else {
+        this.physicianIdController.enable();
+      }
+    } else {
+      this.physicianIdController.disable();
+    }
   }
 
   updateClaim(field: string) {

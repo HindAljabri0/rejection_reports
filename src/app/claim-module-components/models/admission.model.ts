@@ -12,4 +12,7 @@ export class Admission {
         dischargeDate: Date;
     };
 
+    constructor(){
+        this.discharge = {actualLengthOfStay: null, dischargeDate: null}
+    }
 }

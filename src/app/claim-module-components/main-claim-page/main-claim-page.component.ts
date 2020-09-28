@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -9,6 +9,7 @@ import { skipWhile, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -28,17 +29,16 @@ export class MainClaimPageComponent implements OnInit {
   pageMode: ClaimPageMode;
   pageType: ClaimPageType;
 
-  constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService) {
+  constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService, private location: Location) {
     store.select(getPageMode).subscribe(claimPageMode => {
       this.pageMode = claimPageMode
-      this.store.dispatch(changePageTitle({title: `${claimPageMode.charAt(0)}${claimPageMode.substring(1).toLowerCase()} Claim`}))
+      this.editPageTitle();
     });
     store.select(getPageType).subscribe(claimPageType => this.pageType = claimPageType);
     store.select(getClaim).subscribe(claim => {
+      const updateTitle = this.claim == null;
       this.claim = claim;
-      if(claim != null && this.pageMode == 'VIEW'){
-        this.store.dispatch(changePageTitle({title: `View Claim | ${claim.claimIdentities.providerClaimNumber}`}));
-      }
+      if (updateTitle) this.editPageTitle();
     });
     store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
     store.select(getClaimModuleError).subscribe(errors => {
@@ -68,7 +68,7 @@ export class MainClaimPageComponent implements OnInit {
               title: '',
               message: code.endsWith('SERVER') ?
                 'Could not reach the server at the moment. Please try again later.' :
-                `There is no ${code.endsWith('DENTAL') ? 'Dental' : 'Optical'} approval requrest approved by this number!`,
+                `There is no ${code.endsWith('DENTAL') ? 'Dental' : 'Optical'} approval request approved by this number!`,
               isError: true
             }).subscribe(() => {
               this.startCreatingClaim(code.endsWith('DENTAL') ? this.dentalDepartmentCode : this.opticalDepartmentCode);
@@ -84,10 +84,11 @@ export class MainClaimPageComponent implements OnInit {
       this.isLoading = loading;
       this.sharedService.loadingChanged.next(loading);
     });
+
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
     if (claimId != 'add') {
       this.store.dispatch(hideHeaderAndSideMenu());
-      this.store.dispatch(retrieveClaim({ claimId: claimId }));
+      this.store.dispatch(retrieveClaim({ claimId: claimId, edit: this.router.routerState.snapshot.url.endsWith('#edit') }));
     }
     this.store.dispatch(loadLOVs());
     this.store.select(getDepartments)
@@ -99,6 +100,13 @@ export class MainClaimPageComponent implements OnInit {
       });
   }
 
+  editPageTitle() {
+    if (this.pageMode == 'VIEW' || this.pageMode == 'EDIT') {
+      const mode = this.pageMode.charAt(0) + this.pageMode.substring(1).toLowerCase();
+      this.store.dispatch(changePageTitle({ title: `${mode} Claim` + (this.claim == null ? '' : ` | ${this.claim.claimIdentities.providerClaimNumber}`) }))
+    }
+  }
+
   startCreatingClaim(type: string) {
     let now = new Date(Date.now());
     let providerClaimNumber = `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
@@ -107,6 +115,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   save() {
+    this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());
@@ -138,19 +147,35 @@ export class MainClaimPageComponent implements OnInit {
     }).unsubscribe();
   }
 
-  getClaimStatusLabel(status:string){
+  getClaimStatusLabel(status: string) {
     return this.sharedService.statusToName(status);
   }
 
-  getClaimStatusColor(status:string){
-    if(status != null){
+  getClaimStatusColor(status: string) {
+    if (status != null) {
       return this.sharedService.getCardAccentColor(status);
     }
     return '#3060AA';
   }
 
+  edit() {
+    if (this.editable) {
+      this.location.go(this.location.path() + '#edit');
+      this.store.dispatch(toEditMode());
+    }
+  }
+
   cancel() {
-    this.store.dispatch(cancelClaim());
+    if (this.pageMode == 'CREATE' || this.pageMode == 'CREATE_FROM_RETRIEVED')
+      this.store.dispatch(cancelClaim());
+    else if (this.pageMode == 'EDIT') {
+      this.location.go(this.location.path().replace('#edit', ''));
+      this.store.dispatch(cancelEdit());
+    }
+  }
+
+  close() {
+    window.close();
   }
 
   getError() {
@@ -162,6 +187,10 @@ export class MainClaimPageComponent implements OnInit {
           return 'Could not load claim at the moment. Please try again later.'
       }
     }
+  }
+
+  get editable() {
+    return this.claimProps != null && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(this.claimProps.statusCode);
   }
 
 }

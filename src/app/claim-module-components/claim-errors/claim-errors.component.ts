@@ -18,7 +18,10 @@ export class ClaimErrorsComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getRetrievedClaimProps).subscribe(props => this.errors = props.errors);
+    this.store.select(getRetrievedClaimProps).subscribe(props => {
+      if (props != null)
+        this.errors = props.errors
+    });
   }
 
 }

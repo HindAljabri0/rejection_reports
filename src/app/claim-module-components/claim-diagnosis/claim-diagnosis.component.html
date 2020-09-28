@@ -1,5 +1,5 @@
 <div class="body">
-    <ng-container *ngIf="pageMode=='CREATE'">
+    <ng-container *ngIf="pageMode != 'VIEW'">
         <mat-form-field style=" width: 100%; margin: 10px 0px;" [ngClass]="{'fieldError': fieldHasError('diagnosis')}">
             <mat-label>
                 <mat-icon>add_circle</mat-icon> Add Diagnosis
