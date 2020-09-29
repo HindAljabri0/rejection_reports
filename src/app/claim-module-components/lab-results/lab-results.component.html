@@ -4,7 +4,6 @@
             <th style="width: 16%;"></th>
             <th style="width: 16%;">Test Date</th>
             <th style="width: 16%;">Test Code</th>
-            <th style="width: 16%;">Test Serial</th>
             <th style="width: 16%;">No. of Components</th>
         </tr>
     </table>
@@ -19,17 +18,21 @@
                             <mat-icon *ngIf="resultHasErrors(i)" style="color: #bb3131;">error</mat-icon>
                             Result {{(i+1)}}
                         </td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">Test Date</td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">Test Code</td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">Test Serial</td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">No. of Components</td>
+                        <td *ngIf="expandedResult == -1" style="width: 16%;">{{formatDate(result.testDate.value)}}</td>
+                        <td *ngIf="expandedResult == -1" style="width: 16%;">{{result.testCode.value}}</td>
+                        <td *ngIf="expandedResult == -1" style="width: 16%;">{{result.componentsControls.length}}</td>
+                        <td style="width: 10%;" *ngIf="expandedResult == -1">
+                            <button mat-icon-button (click)="onDeleteResultClick($event, i)" *ngIf="pageMode == 'EDIT'">
+                                <mat-icon style="color: #af4848;">cancel</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </mat-expansion-panel-header>
             <table>
                 <tr>
                     <td><label>Test Date</label></td>
-                    <td><label>Test Code</label></td>
+                    <td><label>Test Code*</label></td>
                 </tr>
                 <tr>
                     <td [matTooltip]="getFieldError('testDate:'+i)"><input [formControl]="result.testDate"
@@ -57,11 +60,15 @@
                             Component {{(j+1)}}
                         </mat-panel-title>
                         <mat-panel-description>
+                            <button mat-icon-button (click)="onDeleteComponentClick($event, i, j)"
+                                style="margin-left: auto;" *ngIf="expandedComponent == -1">
+                                <mat-icon style="color: #af4848;">cancel</mat-icon>
+                            </button>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <table class="componentDetailsForm">
                         <tr>
-                            <td><label>Component Code</label></td>
+                            <td><label>Component Code*</label></td>
                             <td [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
                                 <input [formControl]="component.componentCode"
                                     [ngClass]="{'fieldError': fieldHasError('componentCode:'+i+':'+j)}" type="text">
@@ -77,7 +84,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4" [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
+                            <td colspan="6" style="padding: 0px;" [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
                                 <textarea [ngClass]="{'fieldError': fieldHasError('componentDescription:'+i+':'+j)}"
                                     placeholder="Description" [formControl]="component.componentDescription"></textarea>
                             </td>

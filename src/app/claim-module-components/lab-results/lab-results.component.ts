@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClaimPageMode, FieldError } from '../store/claim.reducer';
+import { ClaimPageMode, FieldError, getLabResultsErrors } from '../store/claim.reducer';
 import { Investigation } from '../models/investigation.model';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
@@ -60,6 +60,8 @@ export class LabResultsComponent implements OnInit {
     this.actions.pipe(
       ofType(saveLabResults)
     ).subscribe(() => { if (this.expandedResult != -1) this.updateClaimInvestigations() });
+
+    this.store.select(getLabResultsErrors).subscribe(errors => this.errors = errors);
   }
 
   setData(claim: Claim) {
@@ -147,6 +149,18 @@ export class LabResultsComponent implements OnInit {
     }
   }
 
+  onDeleteResultClick(event, i) {
+    event.stopPropagation();
+    this.resultsControls.splice(i, 1);
+    this.updateClaimInvestigations();
+  }
+
+  onDeleteComponentClick(event, i, j) {
+    event.stopPropagation();
+    this.resultsControls[i].componentsControls.splice(j, 1);
+    this.updateClaimInvestigations();
+  }
+
   afterResultExpanded(i: number) {
     this.expandedResult = i;
   }
@@ -213,6 +227,17 @@ export class LabResultsComponent implements OnInit {
       }))
     }));
     this.store.dispatch(updateLabResults({ investigations: this.results }));
+  }
+
+  formatDate(date: any) {
+    if (date != null) {
+      if (date instanceof Date) {
+        return date.toLocaleDateString();
+      } else {
+        return new Date(date).toLocaleDateString();
+      }
+    }
+    return '';
   }
 
 }

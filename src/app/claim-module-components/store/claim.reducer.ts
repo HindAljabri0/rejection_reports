@@ -17,7 +17,7 @@ export interface ClaimState {
     claimBeforeEdit: Claim;
     claimPropsBeforeEdit: RetrievedClaimProps;
     retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
-    claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[] };
+    claimErrors: { claimGDPN: FieldError[], patientInfoErrors: FieldError[], physicianErrors: FieldError[], genInfoErrors: FieldError[], diagnosisErrors: FieldError[], invoicesErrors: FieldError[], admissionErrors: FieldError[], vitalSignError: FieldError[], labResultsErrors: FieldError[] };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
@@ -35,7 +35,7 @@ const initState: ClaimState = {
     claimBeforeEdit: null,
     claimPropsBeforeEdit: null,
     retrievedServices: [],
-    claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [] },
+    claimErrors: { claimGDPN: [], patientInfoErrors: [], diagnosisErrors: [], genInfoErrors: [], physicianErrors: [], invoicesErrors: [], admissionErrors: [], vitalSignError: [], labResultsErrors: [] },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
     loading: true,
@@ -54,11 +54,11 @@ const _claimReducer = createReducer(
         const dentalId = '4';
         const opticalId = '50';
         const departmentCode = body['claim']['visitInformation']['departmentCode'];
-        const caseType = body['claim']['caseInformation']['caseType']
+        const caseType = body['claim']['caseInformation']['caseType'];
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], attachments: body['attachments'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
         const editable = state.mode == 'EDIT' && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(props.statusCode);
-        return ({ ...state, claim: body['claim'], type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? body['claim'] : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
+        return ({ ...state, claim: Claim.fromViewResponse(body['claim']), type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
     }),
     on(actions.toEditMode, (state) => ({ ...state, mode: 'EDIT', claimBeforeEdit: state.claim, claimPropsBeforeEdit: state.retrievedClaimProps })),
     on(actions.cancelEdit, (state) => ({ ...state, newAttachments: [], claim: state.claimBeforeEdit, retrievedClaimProps: state.claimPropsBeforeEdit, claimBeforeEdit: null, claimPropsBeforeEdit: null, mode: 'VIEW' })),
@@ -98,6 +98,15 @@ const _claimReducer = createReducer(
                 break;
             case 'claimGDPN':
                 claimErrors = { ...state.claimErrors, claimGDPN: errors };
+                break;
+            case 'admissionErrors':
+                claimErrors = { ...state.claimErrors, admissionErrors: errors };
+                break;
+            case 'vitalSignError':
+                claimErrors = { ...state.claimErrors, vitalSignError: errors };
+                break;
+            case 'labResultError':
+                claimErrors = { ...state.claimErrors, labResultsErrors: errors };
                 break;
         }
         return { ...state, claimErrors: claimErrors };
@@ -198,6 +207,9 @@ export const getGenInfoErrors = createSelector(claimSelector, (state) => state.c
 export const getPhysicianErrors = createSelector(claimSelector, (state) => state.claimErrors.physicianErrors);
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
 export const getClaimGDPNErrors = createSelector(claimSelector, (state) => state.claimErrors.claimGDPN);
+export const getAdmissionErrors = createSelector(claimSelector, (state) => state.claimErrors.admissionErrors);
+export const getVitalSignError = createSelector(claimSelector, (state) => state.claimErrors.vitalSignError);
+export const getLabResultsErrors = createSelector(claimSelector, (state) => state.claimErrors.labResultsErrors);
 export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
 export const getRetrievedServices = createSelector(claimSelector, (state) => state.retrievedServices);
 export const getPageMode = createSelector(claimSelector, (state) => state.mode);

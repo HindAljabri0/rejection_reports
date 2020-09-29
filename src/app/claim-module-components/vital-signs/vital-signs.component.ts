@@ -122,7 +122,13 @@ export class VitalSignsComponent implements OnInit {
         this.store.dispatch(updateHeight({ height: Number.parseInt(this.heightController.value) }));
         break;
       case "lastMenstruationPeriod":
-        this.store.dispatch(updateLastMenstruationPeriod({ period: this.lastMenstruationPeriodController.value }));
+        let date2: string;
+        if (!this.isControlNull(this.lastMenstruationPeriodController))
+          date2 = this.lastMenstruationPeriodController.value
+        if (date2 != null)
+          this.store.dispatch(updateLastMenstruationPeriod({ period: new Date(date2) }));
+        else
+          this.store.dispatch(updateLastMenstruationPeriod({ period: null }));
         break;
     }
   }

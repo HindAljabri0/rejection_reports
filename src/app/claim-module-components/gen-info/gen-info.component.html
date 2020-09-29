@@ -22,17 +22,17 @@
             [matTooltip]="getFieldError('fileNumber')">
     </div>
     <div class="leftComponent">
-        <label>Member DOB*</label>
+        <label>Member DOB<span *ngIf="isControlNull(ageController)">*</span></label>
         <input [ngClass]="{'fieldError': fieldHasError('memberDob')}" id="memberDobInput" type="date"
-            [formControl]="memberDobController" (change)="updateClaim('memberDob')">
+            [formControl]="memberDobController" (change)="updateClaim('memberDob')" [matTooltip]="getFieldError('memberDob')">
     </div>
     <div style="grid-column: 7 / span 2;">
-        <label>Age</label>
+        <label>Age<span *ngIf="isControlNull(memberDobController)">*</span></label>
         <input [ngClass]="{'fieldError': fieldHasError('age')}" id="ageInput" type="number"
-            [formControl]="ageController" (change)="updateClaim('age')">
+            [formControl]="ageController" (change)="updateClaim('age')" [matTooltip]="getFieldError('age')">
     </div>
     <div style="grid-column: 9 / span 3;">
-        <label>Unit of Age</label>
+        <label>Unit of Age<span *ngIf="isControlNull(memberDobController)">*</span></label>
         <mat-button-toggle-group (change)="updateClaimUnit('ageUnit',$event)" [disabled]="ageController.disabled"
             [ngClass]="{'fieldError': fieldHasError('ageUnit')}">
             <mat-button-toggle value="Day">
@@ -79,7 +79,7 @@
             (change)="updateClaim('significantSign')">
     </div>
     <div [ngStyle]="{'grid-column': claimPageType == 'INPATIENT_OUTPATIENT'? '7 / span 3' : '1 / span 6'}">
-        <label>Duration of Illness</label>
+        <label>Duration of Illness<span *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
         <input [ngClass]="{'fieldError': fieldHasError('illnessDuration')}" type="number"
             [formControl]="illnessDurationController" (change)="updateClaim('illnessDuration')">
     </div>
@@ -87,7 +87,8 @@
         <label style="display: block;">Unit of Duration</label>
         <mat-button-toggle-group [disabled]="illnessDurationController.disabled" unitIllness
             (change)="updateClaimUnit('illnessDurationUnit',$event)"
-            [ngClass]="{'fieldError': fieldHasError('illnessDurationUnit')}">
+            [ngClass]="{'fieldError': fieldHasError('illnessDurationUnit')}"
+            [matTooltip]="getFieldError('illnessDurationUnit')">
             <mat-button-toggle value="Day" checked="true">
                 Day
             </mat-button-toggle>
@@ -103,7 +104,7 @@
         </mat-button-toggle-group>
     </div>
     <div style="grid-column: 1 / span 12;">
-        <label>Chief Complaint Symptoms</label>
+        <label>Chief Complaint Symptoms<span *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
         <textarea [ngClass]="{'fieldError': fieldHasError('mainSymptoms')}" [formControl]="mainSymptomsController"
             (change)="updateClaim('mainSymptoms')" [matTooltip]="getFieldError('mainSymptoms')"></textarea>
     </div>

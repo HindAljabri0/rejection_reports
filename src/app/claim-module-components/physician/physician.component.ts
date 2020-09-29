@@ -63,9 +63,11 @@ export class PhysicianComponent implements OnInit {
     
     this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
     setTimeout(() => {
+      const category = this.selectedCategory;
       const department = this.selectedDepartment;
       this.selectedDepartment = '1';
-      setTimeout(() => this.selectedDepartment = department, 500);
+      this.selectedCategory = '-1';
+      setTimeout(() => {this.selectedDepartment = department; this.selectedCategory = category;}, 500);
     }, 500);
   }
 

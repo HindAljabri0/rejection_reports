@@ -1,32 +1,19 @@
 <div class="mainCardBody">
     <div class="leftComponent">
-        <label>Admission Date</label>
-        <input [ngClass]="{'fieldError': fieldHasError('admissionDate')}" type="date"
+        <label>Admission Date & Time*</label>
+        <input [ngClass]="{'fieldError': fieldHasError('admissionDate')}" type="datetime-local"
             [formControl]="admissionDateController" (change)="updateClaim('admissionDate')"
             [matTooltip]="getFieldError('admissionDate')">
     </div>
     <div class="rightComponent">
-        <label>Admission Time</label>
-        <input [ngClass]="{'fieldError': fieldHasError('admissionTime')}" type="time"
-            [formControl]="admissionTimeController" (change)="updateClaim('admissionTime')"
-            [matTooltip]="getFieldError('admissionTime')">
-    </div>
-
-    <div class="leftComponent">
-        <label>Discharge Date</label>
-        <input [ngClass]="{'fieldError': fieldHasError('dischargeDate')}" type="date"
+        <label>Discharge Date & Time*</label>
+        <input [ngClass]="{'fieldError': fieldHasError('dischargeDate')}" type="datetime-local"
             [formControl]="dischargeDateController" (change)="updateClaim('dischargeDate')"
             [matTooltip]="getFieldError('respiratoryRate')">
     </div>
-    <div class="rightComponent">
-        <label>Discharge Time</label>
-        <input [ngClass]="{'fieldError': fieldHasError('dischargeTime')}" type="time"
-            [formControl]="dischargeTimeController" (change)="updateClaim('dischargeTime')"
-            [matTooltip]="getFieldError('dischargeTime')">
-    </div>
 
     <div class="leftComponent">
-        <label>Length of Stay</label>
+        <label>Length of Stay*</label>
         <input [ngClass]="{'fieldError': fieldHasError('lengthOfStay')}" type="number"
             [formControl]="lengthOfStayController" (change)="updateClaim('lengthOfStay')"
             [matTooltip]="getFieldError('lengthOfStay')">
@@ -51,13 +38,13 @@
     </div>
 
     <div class="leftComponent">
-        <label>Room Number</label>
+        <label>Room Number*</label>
         <input [ngClass]="{'fieldError': fieldHasError('roomNumber')}"
             [formControl]="roomNumberController" (change)="updateClaim('roomNumber')"
             [matTooltip]="getFieldError('roomNumber')">
     </div>
     <div class="rightComponent">
-        <label>Bed Number</label>
+        <label>Bed Number*</label>
         <input [ngClass]="{'fieldError': fieldHasError('bedNumber')}"
             [formControl]="bedNumberController" (change)="updateClaim('bedNumber')"
             [matTooltip]="getFieldError('bedNumber')">

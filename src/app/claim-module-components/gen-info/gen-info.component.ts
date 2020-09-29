@@ -226,12 +226,12 @@ export class GenInfoComponent implements OnInit {
   returnPeriod(value: string, unit: string): Period {
     if (unit === 'Year')
       return new Period(Number.parseInt(value), 'years');
-    else;
-    if (unit === 'Month')
+    else if (unit === 'Month')
       return new Period(Number.parseInt(value), 'months');
-    else;
-    if (unit === 'Day')
+    else if (unit === 'Day')
       return new Period(Number.parseInt(value), 'days');
+    else if (unit == 'Week')
+      return new Period(Number.parseInt(value) * 7, 'days');
     else
       return new Period(Number.parseInt(value), 'years');
   }

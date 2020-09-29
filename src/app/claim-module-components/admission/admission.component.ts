@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldError, getClaim, getPageMode } from '../store/claim.reducer';
+import { FieldError, getAdmissionErrors, getClaim, getPageMode } from '../store/claim.reducer';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -17,9 +17,7 @@ import { Admission } from '../models/admission.model';
 export class AdmissionComponent implements OnInit {
 
   admissionDateController: FormControl = new FormControl();
-  admissionTimeController: FormControl = new FormControl();
   dischargeDateController: FormControl = new FormControl();
-  dischargeTimeController: FormControl = new FormControl();
   lengthOfStayController: FormControl = new FormControl();
   lengthOfStayUnit: string = 'Day';
   roomNumberController: FormControl = new FormControl();
@@ -46,6 +44,7 @@ export class AdmissionComponent implements OnInit {
         this.toggleEdit(false, true);
       }
     });
+    this.store.select(getAdmissionErrors).subscribe(errors => this.errors = errors);
   }
 
   setData(claim: Claim) {
@@ -56,18 +55,14 @@ export class AdmissionComponent implements OnInit {
     const roomNumber = admission.roomNumber;
     const bedNumber = admission.bedNumber;
     if (admissionDate != null) {
-      this.admissionDateController.setValue(this.datePipe.transform(admissionDate, 'yyyy-MM-dd'));
-      this.admissionTimeController.setValue(this.datePipe.transform(admissionDate, 'hh:mm:ss'));
+      this.admissionDateController.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'));
     } else {
       this.admissionDateController.setValue('');
-      this.admissionTimeController.setValue('');
     }
     if (dischargeDate != null) {
-      this.dischargeDateController.setValue(this.datePipe.transform(dischargeDate, 'yyyy-MM-dd'));
-      this.dischargeTimeController.setValue(this.datePipe.transform(dischargeDate, 'hh:mm:ss'));
+      this.dischargeDateController.setValue(this.datePipe.transform(dischargeDate, 'yyyy-MM-dd hh:mm:ss'));
     } else {
       this.dischargeDateController.setValue('');
-      this.dischargeTimeController.setValue('');
     }
     this.lengthOfStayController.setValue(lengthOfStay);
     this.roomNumberController.setValue(roomNumber);
@@ -77,17 +72,13 @@ export class AdmissionComponent implements OnInit {
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     if (allowEdit) {
       this.admissionDateController.enable();
-      this.admissionTimeController.enable();
       this.dischargeDateController.enable();
-      this.dischargeTimeController.enable();
       this.lengthOfStayController.enable();
       this.roomNumberController.enable();
       this.bedNumberController.enable();
     } else {
       this.admissionDateController.disable();
-      this.admissionTimeController.disable();
       this.dischargeDateController.disable();
-      this.dischargeTimeController.disable();
       this.lengthOfStayController.disable();
       this.roomNumberController.disable();
       this.bedNumberController.disable();
@@ -96,12 +87,8 @@ export class AdmissionComponent implements OnInit {
     if (enableForNulls) {
       if (this.isControlNull(this.admissionDateController))
         this.admissionDateController.enable();
-      if (this.isControlNull(this.admissionTimeController))
-        this.admissionTimeController.enable();
       if (this.isControlNull(this.dischargeDateController))
         this.dischargeDateController.enable();
-      if (this.isControlNull(this.dischargeTimeController))
-        this.dischargeTimeController.enable();
       if (this.isControlNull(this.lengthOfStayController))
         this.lengthOfStayController.enable();
       if (this.isControlNull(this.roomNumberController))
@@ -113,23 +100,23 @@ export class AdmissionComponent implements OnInit {
 
   updateClaim(fieldName: string) {
     switch (fieldName) {
-      case 'admissionDate': case 'admissionTime':
+      case 'admissionDate':
         let date1: string;
         if (!this.isControlNull(this.admissionDateController))
           date1 = this.admissionDateController.value
-        if (!this.isControlNull(this.admissionTimeController))
-          date1 += ' ' + this.admissionTimeController.value
         if (date1 != null)
           this.store.dispatch(updateAdmissionDate({ date: new Date(date1) }));
+        else
+          this.store.dispatch(updateAdmissionDate({ date: null }));
         break;
-      case 'dischargeDate': case 'dischargeTime':
+      case 'dischargeDate':
         let date2: string;
         if (!this.isControlNull(this.dischargeDateController))
           date2 = this.dischargeDateController.value
-        if (!this.isControlNull(this.dischargeTimeController))
-          date2 += ' ' + this.dischargeTimeController.value
         if (date2 != null)
           this.store.dispatch(updateDischargeDate({ date: new Date(date2) }));
+        else
+          this.store.dispatch(updateDischargeDate({ date: null }));
         break;
       case 'lengthOfStay':
         this.store.dispatch(updateLengthOfStay({ length: this.returnPeriod(this.lengthOfStayController.value, this.lengthOfStayUnit) }));
@@ -157,12 +144,12 @@ export class AdmissionComponent implements OnInit {
   returnPeriod(value: string, unit: string): Period {
     if (unit === 'Year')
       return new Period(Number.parseInt(value), 'years');
-    else;
-    if (unit === 'Month')
+    else if (unit === 'Month')
       return new Period(Number.parseInt(value), 'months');
-    else;
-    if (unit === 'Day')
+    else if (unit === 'Day')
       return new Period(Number.parseInt(value), 'days');
+    else if (unit == 'Week')
+      return new Period(Number.parseInt(value) * 7, 'days');
     else
       return new Period(Number.parseInt(value), 'years');
   }

@@ -2,25 +2,29 @@
     <table>
         <tbody>
             <tr>
-                <td><label>Physician ID</label></td>
+                <td><label>Physician ID<span *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label></td>
                 <td [matTooltip]="getFieldError('physicianId')">
                     <input type="text" [ngClass]="{'fieldError': fieldHasError('physicianId')}"
-                        [formControl]="physicianIdController" (change)="updateClaim('physicianId')">
+                        [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
+                        (change)="updateClaim('physicianId')">
                 </td>
 
             </tr>
             <tr>
 
-                <td><label>Physician Name</label></td>
+                <td><label>Physician Name<span *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label></td>
                 <td [matTooltip]="getFieldError('physicianName')"><input type="text"
+                        [required]="pageType == 'INPATIENT_OUTPATIENT'"
                         [ngClass]="{'fieldError': fieldHasError('physicianName')}"
                         [formControl]="physicianNameController" (change)="updateClaim('physicianName')"></td>
 
             </tr>
             <tr>
-                <td><label>Physician Category</label></td>
-                <td>
+                <td><label>Physician Category<span *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label></td>
+                <td [matTooltip]="getFieldError('physicianCategory')">
                     <select [value]="selectedCategory" [disabled]="!categoryEditable"
+                    [ngClass]="{'fieldError': fieldHasError('physicianCategory')}"
+                        [required]="pageType == 'INPATIENT_OUTPATIENT'"
                         (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
                         <option value=""></option>
                         <option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}

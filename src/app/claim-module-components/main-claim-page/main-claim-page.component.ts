@@ -129,6 +129,9 @@ export class MainClaimPageComponent implements OnInit {
         && values[1].physicianErrors.length == 0
         && values[1].claimGDPN.length == 0
         && values[1].invoicesErrors.length == 0
+        && values[1].admissionErrors.length == 0
+        && values[1].vitalSignError.length == 0
+        && values[1].labResultsErrors.length == 0
       ) {
         this.store.dispatch(setLoading({ loading: true }));
         this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
@@ -137,7 +140,10 @@ export class MainClaimPageComponent implements OnInit {
         && values[1].genInfoErrors.length == 0
         && values[1].patientInfoErrors.length == 0
         && values[1].physicianErrors.length == 0
-        && values[1].invoicesErrors.length == 0) {
+        && values[1].invoicesErrors.length == 0
+        && values[1].admissionErrors.length == 0
+        && values[1].vitalSignError.length == 0
+        && values[1].labResultsErrors.length == 0) {
         this.dialogService.openMessageDialog({
           title: '',
           message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',

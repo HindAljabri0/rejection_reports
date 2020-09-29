@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Claim } from '../../models/claim.model';
 import { Store } from '@ngrx/store';
-import { getClaim, FieldError, getDepartments } from '../../store/claim.reducer';
+import { getClaim, FieldError, getDepartments, ClaimPageType, getPageType } from '../../store/claim.reducer';
 import { addClaimErrors } from '../../store/claim.actions';
 import { Service } from '../../models/service.model';
+import { Period } from '../../models/period.type';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class ClaimValidationService {
   claim: Claim;
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
+  pageType: ClaimPageType;
 
   constructor(private store: Store) {
     this.store.select(getClaim).subscribe(claim => this.claim = claim);
@@ -23,6 +25,7 @@ export class ClaimValidationService {
           this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
         }
       });
+    this.store.select(getPageType).subscribe(type => this.pageType = type);
   }
 
   private regax = /^[A-Za-z0-9- ]+$/i;
@@ -36,6 +39,8 @@ export class ClaimValidationService {
     this.validateDiagnosis();
     this.validateInvoices();
     this.validateClaimNetAmount();
+    this.validateAdmission();
+    this.validateLabResults();
   }
 
   validatePatientInfo() {
@@ -55,7 +60,7 @@ export class ClaimValidationService {
     } else if (!this.regax.test(fullName)) {
       fieldErrors.push({ fieldName: 'fullName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
     }
-    if (gender == null || gender+'' == '') {
+    if (gender == null || gender + '' == '') {
       fieldErrors.push({ fieldName: 'gender' });
     }
     if (memberId == null || memberId.trim().length == 0) {
@@ -79,16 +84,40 @@ export class ClaimValidationService {
 
   validatePhysicianInfo() {
     const physicianId = this.claim.caseInformation.physician.physicianID;
+    const physicianCategory = this.claim.caseInformation.physician.physicianCategory;
     const physicianName = this.claim.caseInformation.physician.physicianName;
+    const department = this.claim.visitInformation.departmentCode;
 
     let fieldErrors: FieldError[] = [];
 
-    if (physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)) {
-      fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
-    }
+    if (this.pageType == 'DENTAL_OPTICAL') {
+      if (physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)) {
+        fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
+      }
 
-    if (physicianName != null && physicianName.trim().length > 0 && !this.regax.test(physicianName)) {
-      fieldErrors.push({ fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
+      if (physicianName != null && physicianName.trim().length > 0 && !this.regax.test(physicianName)) {
+        fieldErrors.push({ fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
+      }
+    } else if (this.pageType = 'INPATIENT_OUTPATIENT') {
+      if (physicianId == null || physicianId.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'physicianId' });
+      } else if (!this.regaxWithOutSpace.test(physicianId)) {
+        fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
+      }
+
+      if (physicianName == null || physicianName.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'physicianName' });
+      } else if (!this.regax.test(physicianName)) {
+        fieldErrors.push({ fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
+      }
+
+      if (physicianCategory == null || physicianCategory.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'physicianCategory' });
+      }
+
+      if (department == null || department.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'department' });
+      }
     }
 
     this.store.dispatch(addClaimErrors({ module: 'physicianErrors', errors: fieldErrors }));
@@ -102,6 +131,11 @@ export class ClaimValidationService {
     const mainSymptoms = this.claim.caseInformation.caseDescription.chiefComplaintSymptoms;
     const illnessDuration = this.claim.caseInformation.caseDescription.illnessDuration;
     const age = this.claim.caseInformation.patient.age;
+    const significantSign = this.claim.caseInformation.caseDescription.signicantSigns;
+    const commReport = this.claim.commreport;
+    const eligibilityNum = this.claim.claimIdentities.eligibilityNumber;
+    const radiologyReport = this.claim.caseInformation.radiologyReport;
+    const otherCondition = this.claim.caseInformation.otherConditions;
 
     let fieldErrors: FieldError[] = [];
 
@@ -113,8 +147,19 @@ export class ClaimValidationService {
     } else if (!this.regaxWithOutSpace.test(fileNumber)) {
       fieldErrors.push({ fieldName: 'fileNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
-    if (this._isInvalidDate(memberDob)) {
-      fieldErrors.push({ fieldName: 'memberDob' });
+    if (this._isInvalidDate(memberDob) && this._isInvalidPeriod(age)) {
+      const message = "Please enter Member DOB or Age."
+      fieldErrors.push({ fieldName: 'memberDob', error: message });
+      fieldErrors.push({ fieldName: 'age', error: message });
+    }
+
+    if (this.pageType == 'INPATIENT_OUTPATIENT') {
+      if (mainSymptoms == null || mainSymptoms.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'mainSymptoms' });
+      }
+      if (this._isInvalidPeriod(illnessDuration)) {
+        fieldErrors.push({ fieldName: 'illnessDuration' });
+      }
     }
 
     this.store.dispatch(addClaimErrors({ module: 'genInfoErrors', errors: fieldErrors }));
@@ -232,8 +277,70 @@ export class ClaimValidationService {
     this.store.dispatch(addClaimErrors({ module: 'claimGDPN', errors: fieldErrors }));
   }
 
+  validateAdmission() {
+    let fieldErrors: FieldError[] = [];
+    if (this.claim.caseInformation.caseType == 'INPATIENT') {
+      let admissionDate;
+      let dischargeDate;
+      let lengthOfStay;
+      let roomNumber;
+      let bedNumber;
+      if (this.claim.admission != null) {
+        admissionDate = this.claim.admission.admissionDate;
+        dischargeDate = this.claim.admission.discharge.dischargeDate;
+        lengthOfStay = this.claim.admission.discharge.actualLengthOfStay;
+        roomNumber = this.claim.admission.roomNumber;
+        bedNumber = this.claim.admission.bedNumber;
+      }
+      if (this._isInvalidDate(admissionDate)) {
+        fieldErrors.push({ fieldName: 'admissionDate' });
+      }
+      if (this._isInvalidDate(dischargeDate)) {
+        fieldErrors.push({ fieldName: 'dischargeDate' });
+      }
+      if (this._isInvalidPeriod(lengthOfStay)) {
+        fieldErrors.push({ fieldName: 'lengthOfStay' });
+      }
+      if (roomNumber == null || roomNumber.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'roomNumber' });
+      } else if (!this.regax.test(roomNumber)) {
+        fieldErrors.push({ fieldName: 'roomNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
+      }
+      if (bedNumber == null || bedNumber.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'bedNumber' });
+      } else if (!this.regax.test(bedNumber)) {
+        fieldErrors.push({ fieldName: 'bedNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
+      }
+    }
+    this.store.dispatch(addClaimErrors({ module: 'admissionErrors', errors: fieldErrors }));
+  }
+
+  validateLabResults() {
+    let fieldErrors: FieldError[] = [];
+    if (this.claim.caseInformation.caseDescription.investigation != null)
+      this.claim.caseInformation.caseDescription.investigation.forEach((investigation, i) => {
+        if (investigation.investigationCode == null || investigation.investigationCode.trim().length == 0) {
+          fieldErrors.push({ fieldName: `testCode:${i}` });
+        }
+        investigation.observation.forEach((observation, j) => {
+          if (observation.observationCode == null || observation.observationCode.trim().length == 0) {
+            fieldErrors.push({ fieldName: `componentCode:${i}:${j}` });
+          }
+        });
+      });
+
+    this.store.dispatch(addClaimErrors({ module: 'labResultError', errors: fieldErrors }));
+  }
+
 
   _isInvalidDate(date: Date) {
+    if (date != null && !(date instanceof Date)) {
+      date = new Date(date);
+    }
     return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
+  }
+
+  _isInvalidPeriod(period: Period) {
+    return period == null || ((period.days == null || Number.isNaN(period.days) || period.days <= 0) && (period.months == null || Number.isNaN(period.months) || period.months <= 0) && (period.years == null || Number.isNaN(period.years) || period.years <= 0));
   }
 }

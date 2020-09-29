@@ -86,14 +86,14 @@ td input:focus, td select:focus, textarea {
 }
 
 .componentDetailsForm td:nth-child(odd) {
-    width: 17%;
+    width: 11%;
     font-size: 10px;
     font-weight: 600;
     padding: 0px 15px;
 }
 
 .componentDetailsForm td:nth-child(even) {
-    width: 33%;
+    width: 21%;
 }
 
 .fieldError {

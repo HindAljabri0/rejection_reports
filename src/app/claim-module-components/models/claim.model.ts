@@ -44,7 +44,7 @@ export class Claim {
                 const validityEffect = body['validityEffect'];
                 const editing = body['editing'];
                 const admissionResponse = body['admissionResponse'];
-                
+
                 const comment = body['comment'];
                 const estimatedCost = body['estimatedCost'];
                 const approvedCost = body['approvedCost'];
@@ -92,14 +92,14 @@ export class Claim {
                     claim.caseInformation.caseDescription.illnessDuration = this.getPeriod(caseDescription['illnessDuration']);
                 claim.caseInformation.caseDescription.chiefComplaintSymptoms = caseDescription['chiefComplaintSymptoms'];
                 claim.caseInformation.caseDescription.diagnosis = caseDescription['diagnosis'];
-                if(claim.caseInformation.caseDescription.diagnosis != null)
-                claim.caseInformation.caseDescription.diagnosis = claim.caseInformation.caseDescription.diagnosis.map(diagnosis => ({...diagnosis, diagnosisCode: diagnosis.diagnosisCode.trim()}));
+                if (claim.caseInformation.caseDescription.diagnosis != null)
+                    claim.caseInformation.caseDescription.diagnosis = claim.caseInformation.caseDescription.diagnosis.map(diagnosis => ({ ...diagnosis, diagnosisCode: diagnosis.diagnosisCode.trim() }));
 
                 claim.caseInformation.possibleLineOfTreatment = caseInformation['possibleLineOfTreatment'];
                 claim.caseInformation.radiologyReport = caseInformation['radiologyReport'];
                 claim.caseInformation.otherConditions = caseInformation['otherConditions'];
 
-                
+
 
                 return claim;
             }
@@ -107,6 +107,31 @@ export class Claim {
             console.log(err);
         }
         throw new Error('Could not read response');
+    }
+
+    public static fromViewResponse(incomingClaim: any): Claim {
+        let claim: Claim = { ...incomingClaim };
+        const age = incomingClaim.caseInformation.patient.age;
+        const illnessDuration = incomingClaim.caseInformation.caseDescription.illnessDuration;
+        let fullName = incomingClaim.caseInformation.patient.fullName;
+        const firstName = incomingClaim.caseInformation.patient.firstName;
+        const middleName = incomingClaim.caseInformation.patient.middleName;
+        const lastName = incomingClaim.caseInformation.patient.lastName;
+        if (age != null) {
+            claim = { ...claim, caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, age: this.getPeriod(age) } } };
+        }
+        if (illnessDuration != null) {
+            claim = { ...claim, caseInformation: { ...claim.caseInformation, caseDescription: { ...claim.caseInformation.caseDescription, illnessDuration: this.getPeriod(illnessDuration) } } };
+        }
+        if (fullName == null || fullName.trim().length == 0) {
+            if (firstName != null) {
+                fullName = firstName;
+                if (middleName != null) fullName += ` ${middleName}`;
+                if (lastName != null) fullName += ` ${lastName}`;
+            }
+            claim = { ...claim, caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } } }
+        }
+        return claim;
     }
 
     private static getPeriod(duration: string): Period {
