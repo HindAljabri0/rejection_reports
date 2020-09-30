@@ -1,4 +1,7 @@
 ![QA - Angular Build](https://github.com/waseel-asp/waseele-gui/workflows/QA%20-%20Angular%20Build/badge.svg)
+![STG - Angular Build](https://github.com/waseel-asp/waseele-gui/workflows/STG%20-%20Angular%20Build/badge.svg)
+![PROD - Angular Build](https://github.com/waseel-asp/waseele-gui/workflows/PROD%20-%20Angular%20Build/badge.svg)
+
 
 # WaseeleGui
 
