@@ -12,18 +12,21 @@ import { getClaimObjectErrors, FieldError, ClaimPageType, getPageType, ClaimPage
 export class ClaimDataComponent implements OnInit {
 
   errors: {
-    claimGDPN: FieldError[];
-    patientInfoErrors: FieldError[];
-    physicianErrors: FieldError[];
-    genInfoErrors: FieldError[];
-    diagnosisErrors: FieldError[];
-    invoicesErrors: FieldError[];
+    claimGDPN: FieldError[],
+    patientInfoErrors: FieldError[],
+    physicianErrors: FieldError[],
+    genInfoErrors: FieldError[],
+    diagnosisErrors: FieldError[],
+    invoicesErrors: FieldError[],
+    admissionErrors: FieldError[],
+    vitalSignError: FieldError[],
+    labResultsErrors: FieldError[]
   };
 
-  pageMode:ClaimPageMode;
-  pageType:ClaimPageType;
+  pageMode: ClaimPageMode;
+  pageType: ClaimPageType;
 
-  isInpatientClaim:Boolean;
+  isInpatientClaim: Boolean;
 
   constructor(private store: Store) { }
 
@@ -55,6 +58,20 @@ export class ClaimDataComponent implements OnInit {
   invoiceServicesTabHasErrors() {
     if (this.errors != null) {
       return this.errors.invoicesErrors.length > 0;
+    }
+    return false;
+  }
+
+  admissionTabHasErrors() {
+    if (this.errors != null) {
+      return this.errors.admissionErrors.length > 0;
+    }
+    return false;
+  }
+
+  labResultsTabHasErrors() {
+    if (this.errors != null) {
+      return this.errors.labResultsErrors.length > 0;
     }
     return false;
   }

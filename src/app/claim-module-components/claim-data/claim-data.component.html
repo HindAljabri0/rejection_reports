@@ -19,13 +19,21 @@
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
         <claim-vital-signs></claim-vital-signs>
     </mat-tab>
-    <mat-tab *ngIf="isInpatientClaim" [label]="'Admission'">
+    <mat-tab *ngIf="isInpatientClaim">
+        <ng-template mat-tab-label>
+            <mat-icon *ngIf="admissionTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+            Admission
+        </ng-template>
         <claim-admission></claim-admission>
     </mat-tab>
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Attachments'">
         <claim-attachments></claim-attachments>
     </mat-tab>
-    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'LAB Results'">
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'">
+        <ng-template mat-tab-label>
+            <mat-icon *ngIf="labResultsTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+            LAB Results
+        </ng-template>
         <claim-lab-results></claim-lab-results>
     </mat-tab>
     <mat-tab>
