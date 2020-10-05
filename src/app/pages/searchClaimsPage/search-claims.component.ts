@@ -648,7 +648,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       } else {
         var a = document.createElement("a");
         var excelData = event.body;
-        console.log(excelData);
         a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI( excelData + "");
         a.target = '_blank';
         if (this.from != null) {
