@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AuditTrailComponent } from 'src/app/pages/audit-trail/audit-trail.component';
 import { MatiralModule } from '../matiral/matiral.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ProvidersConfigComponent } from 'src/app/pages/providers-config/providers-config.component';
 import { SharedModule } from '../shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,7 +26,8 @@ import { RequestInterceptorService } from 'src/app/services/RequestInterceptorSe
     MatiralModule,
     ReactiveFormsModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },

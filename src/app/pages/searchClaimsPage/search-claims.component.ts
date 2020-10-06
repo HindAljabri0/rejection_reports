@@ -647,7 +647,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         navigator.msSaveBlob(blob, exportedFilenmae);
       } else {
         var a = document.createElement("a");
-        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+        var excelData = event.body+""; 
+        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURIComponent(excelData) ;
         a.target = '_blank';
         if (this.from != null) {
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';

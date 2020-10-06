@@ -90,6 +90,10 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.associatedPayers = event.body;
+          this.associatedPayers.forEach(payer=>{
+            this.newServiceCodeValidationSettings[payer.switchAccountId] = this.getServiceCodeSettingsOfPayer(payer.switchAccountId);
+            this.newServiceRestrictionSettings[payer.switchAccountId] = this.getServiceCodeRestrictionSettingsOfPayer(payer.switchAccountId);
+          })
         }
         if (this.associatedPayers.length == 0) {
           this.errors.payersError = 'There are no payers associated with this provider.';
@@ -353,49 +357,28 @@ export class ProvidersConfigComponent implements OnInit {
     return this.sharedServices.loading;
   }
 
-  getServiceCodeSettingsOfPayer(payerid: string,isToogle:boolean,toogleValue:boolean) {
-    if(isToogle)
-    {
-      this.toggleSettings(payerid,toogleValue,this.serviceCodeValidationSettings,SERVICE_CODE_VALIDATION_KEY)
-    }
+  getServiceCodeSettingsOfPayer(payerid: string) {
     let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payerid);
     return setting == null || (setting != null && setting.value == '1');
   }
 
-  getServiceCodeRestrictionSettingsOfPayer(payerid: string,isToogle:boolean,toogleValue:boolean) {
-    if(isToogle)
-    {
-      this.toggleSettings(payerid,toogleValue,this.serviceCodeRestrictionSettings,SERVICE_CODE_RESTRICTION_KEY)
-    }
+  getServiceCodeRestrictionSettingsOfPayer(payerid: string) {
     let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payerid);
-    if(setting == null) return false
+    if (setting == null) return false
     return (setting != null && setting.value == '1');
   }
 
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
     this.newServiceCodeValidationSettings[payerid] = event.checked;
-    this.newServiceRestrictionSettings[payerid] = !event.checked;
-    this.getServiceCodeRestrictionSettingsOfPayer(payerid,true,!event.checked);
+    if (event.checked) {
+      this.newServiceRestrictionSettings[payerid] = !event.checked;
+    }
   }
   onServiceRestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
     this.newServiceRestrictionSettings[payerid] = event.checked;
-    this.newServiceCodeValidationSettings[payerid] = !event.checked;
-    this.getServiceCodeSettingsOfPayer(payerid,true,!event.checked)
-  }
-
-  toggleSettings(payerid: string, toogleValue: boolean, settingArrayToChange: any[],key:string) {
-    let setting = settingArrayToChange.find(setting => setting.payerId == payerid);
-      if(setting == null){
-        settingArrayToChange.push({
-          providerId: this.selectedProvider,
-          payerId: payerid,
-          key: key,
-          value: (toogleValue) ? '1' : '0'
-        });
-      }
-      else{
-        settingArrayToChange.find(setting => setting.payerId == payerid).value = (toogleValue) ? '1' : '0';
-      }
+    if (event.checked) {
+      this.newServiceCodeValidationSettings[payerid] = !event.checked;
+    }
   }
 
 }

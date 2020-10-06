@@ -40,7 +40,21 @@ jobs:
       run: docker login me-jeddah-1.ocir.io -u $DOCKER_USER -p $DOCKER_PASSWORD
 
     - name: Docker Build
-      run: docker build . -t me-jeddah-1.ocir.io/ax7dvcawpc84/stg/gui:latest
+      run: docker build . -t me-jeddah-1.ocir.io/ax7dvcawpc84/stg/gui:latest  -t me-jeddah-1.ocir.io/ax7dvcawpc84/stg/gui:${{ github.sha }}
 
     - name: Docker Push
-      run: docker push me-jeddah-1.ocir.io/ax7dvcawpc84/stg/gui:latest
+      run: docker push me-jeddah-1.ocir.io/ax7dvcawpc84/stg/gui
+
+    - name: Deploy to K8S
+      uses: waseel-asp/kubectl@v1.17.9
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: set image --record deployment/gui gui=me-jeddah-1.ocir.io/ax7dvcawpc84/stg/gui:${{ github.sha }} -n stg
+
+    - name: Verify Deployment
+      uses: waseel-asp/kubectl@v1.17.9
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: '"rollout status deployment/gui -n stg"'
