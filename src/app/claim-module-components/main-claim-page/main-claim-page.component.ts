@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults, saveClaim, saveClaimChanges } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -134,7 +134,11 @@ export class MainClaimPageComponent implements OnInit {
         && values[1].labResultsErrors.length == 0
       ) {
         this.store.dispatch(setLoading({ loading: true }));
-        this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
+        if (this.pageMode == 'CREATE') {
+          this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
+        } else {
+          this.store.dispatch(saveClaimChanges());
+        }
       } else if (values[1].claimGDPN.length > 0
         && values[1].diagnosisErrors.length == 0
         && values[1].genInfoErrors.length == 0

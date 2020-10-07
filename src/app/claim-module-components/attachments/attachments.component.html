@@ -19,23 +19,6 @@
                 <mat-icon style="font-size: 20px;">cancel</mat-icon>
             </button>
         </div>
-        <ng-container *ngFor="let attachment of newAttachmentsPreview; let i = index">
-            <div class="attachment" *ngIf="attachment != null">
-                <div class="thumbnail">
-                    <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src != 'pdf'"
-                        [src]="attachment.src" [alt]="attachment.name">
-                    <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src == 'pdf'"
-                        src="assets/pdfIcon.png" [alt]="attachment.name">
-                </div>
-                <div class="attachmentInfo">
-                    <p style="margin: auto 5px">{{attachment.name}}</p>
-                    <span class="spacer"></span>
-                    <button mat-icon-button color="warn" style="margin: auto;" (click)="deleteNewAttachment(i)">
-                        <mat-icon style="font-size: 20px;">cancel</mat-icon>
-                    </button>
-                </div>
-            </div>
-        </ng-container>
         <div class="attachment" *ngIf="pageMode != 'VIEW'">
             <button mat-button [matMenuTriggerFor]="attachmentTypeMenu" mat-icon-button mat-icon-button color="primary"
                 style="margin: auto">

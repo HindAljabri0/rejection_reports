@@ -1,4 +1,4 @@
-<mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate" style="position: fixed;"></mat-progress-bar>
 <div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'}">
     <div class="header" [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '#3060AA':getClaimStatusColor(claimProps?.statusCode),
         'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? 'white':getClaimStatusColor(claimProps?.statusCode)+'40'}">
@@ -47,8 +47,8 @@
     </div>
     <div class="footer" *ngIf="pageMode == 'EDIT'">
         <span class="spacer"></span>
-        <button *ngIf="claim != null" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
-        <button *ngIf="claim != null" mat-raised-button color="primary" style="margin-right: 10px;"
+        <button *ngIf="claim != null && !isLoading" mat-flat-button style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+        <button *ngIf="claim != null && !isLoading" mat-raised-button color="primary" style="margin-right: 10px;"
             (click)="save()">Save</button>
     </div>
 </div>

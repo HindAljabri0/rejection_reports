@@ -23,6 +23,10 @@ export class OnSavingDoneComponent implements OnInit {
     this.dialogRef.backdropClick().subscribe(() => this.store.dispatch(cancelClaim()));
   }
 
+  get showViewAllButton(){
+    return this.data.uploadId != null;
+  }
+
   onViewAllClaimsClicked(){
     this.store.dispatch(viewThisMonthClaims({uploadId:this.data.uploadId}));
     this.dialogRef.close();
@@ -36,6 +40,10 @@ export class OnSavingDoneComponent implements OnInit {
   onViewClaimClicked(){
     this.store.dispatch(viewThisMonthClaims({uploadId:this.data.uploadId, claimId:this.data.claimId, editMode: this.isNotAccepted}));
     this.dialogRef.close();
+  }
+
+  onOK(){
+    location.reload();
   }
 
   get isNotAccepted(){

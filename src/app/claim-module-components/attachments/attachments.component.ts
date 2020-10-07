@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
-import { FileType } from '../models/attachmentRequest.model';
-import { AttachmentView } from '../models/attachmentView.model';
-import { updateCurrentAttachments, updateNewAttachments } from '../store/claim.actions';
-import { ClaimPageMode, getPageMode, getRetrievedClaimProps } from '../store/claim.reducer';
+import { AttachmentRequest, FileType } from '../models/attachmentRequest.model';
+import { updateCurrentAttachments } from '../store/claim.actions';
+import { ClaimPageMode, getClaim, getPageMode } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-attachments',
@@ -16,8 +15,8 @@ export class AttachmentsComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer, private store: Store) { }
 
-  attachments: AttachmentView[];
-  newAttachmentsPreview: { src: string | ArrayBuffer, name: string, fileType: FileType }[] = [];
+  attachments: AttachmentRequest[];
+  // newAttachmentsPreview: { src: string | ArrayBuffer, name: string, fileType: FileType }[] = [];
 
   selectFilesError = null;
   fileType: FileType;
@@ -26,23 +25,22 @@ export class AttachmentsComponent implements OnInit {
 
   ngOnInit() {
     this.store.select(getPageMode).pipe(
-      withLatestFrom(this.store.select(getRetrievedClaimProps)),
-      map(values => ({ mode: values[0], retrievedAttachments: values[1].attachments }))
+      withLatestFrom(this.store.select(getClaim)),
+      map(values => ({ mode: values[0], retrievedAttachments: values[1].attachment }))
     ).subscribe(({ mode, retrievedAttachments }) => {
       this.pageMode = mode;
       this.setData(retrievedAttachments)
     });
   }
 
-  setData(attachments: AttachmentView[]) {
+  setData(attachments: AttachmentRequest[]) {
     if(attachments != null)
       this.attachments = [...attachments];
     else this.attachments = [];
-    this.newAttachmentsPreview = [];
     this.selectFilesError = null;
   }
 
-  getImageOfBlob(attachment: AttachmentView) {
+  getImageOfBlob(attachment: AttachmentRequest) {
     let fileExt = attachment.fileName.split(".").pop();
     if (fileExt.toLowerCase() == 'pdf') {
       let objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
@@ -53,7 +51,6 @@ export class AttachmentsComponent implements OnInit {
     }
 
   }
-
 
   selectFile(event) {
     this.selectFilesError = null;
@@ -71,11 +68,6 @@ export class AttachmentsComponent implements OnInit {
         this.selectFilesError = "A file with the same name already exists."
         return;
       }
-      if (this.newAttachmentsPreview.find(attachment => attachment.name == file.name) != undefined) {
-        this.fileType = null;
-        this.selectFilesError = "A file with the same name already exists."
-        return;
-      }
       if (file.size / 1024 / 1024 > 2) {
         this.fileType = null;
         this.selectFilesError = "Selected files should not be more than 2M."
@@ -86,31 +78,21 @@ export class AttachmentsComponent implements OnInit {
   }
 
   preview(file: File) {
-    var mimeType = file.type;
-    if (mimeType.includes('pdf')) {
-      this.newAttachmentsPreview.push({ src: 'pdf', name: file.name, fileType: this.fileType });
-      this.fileType = null;
-      this.updateNewAttachments();
-      return;
-    }
-
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
-      this.newAttachmentsPreview.push({ src: reader.result, name: file.name, fileType: this.fileType });
+      let data:string = reader.result as string;
+      console.log(data.indexOf(','));
+      data = data.substring(data.indexOf(',')+1);
+      this.attachments.push({ attachmentFile: data, fileName: file.name, fileType: this.fileType, userComment: null });
       this.fileType = null;
-      this.updateNewAttachments();
+      this.updateCurrentAttachments();
     }
-
   }
 
   deleteCurrentAttachment(index: number) {
     this.attachments.splice(index, 1);
     this.updateCurrentAttachments();
-  }
-  deleteNewAttachment(index: number) {
-    this.newAttachmentsPreview.splice(index, 1);
-    this.updateNewAttachments();
   }
 
   updateCurrentAttachments() {
@@ -118,12 +100,7 @@ export class AttachmentsComponent implements OnInit {
     this.selectFilesError = null;
   }
 
-  updateNewAttachments() {
-    this.store.dispatch(updateNewAttachments({ attachments: [...this.newAttachmentsPreview] }));
-    this.selectFilesError = null;
-  }
-
-  isPdf(attachment: AttachmentView) {
+  isPdf(attachment: AttachmentRequest) {
     let fileExt = attachment.fileName.split(".").pop();
     return fileExt.toLowerCase() == 'pdf';
   }

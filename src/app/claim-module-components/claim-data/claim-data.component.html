@@ -26,7 +26,7 @@
         </ng-template>
         <claim-admission></claim-admission>
     </mat-tab>
-    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Attachments'">
+    <mat-tab [label]="'Attachments'">
         <claim-attachments></claim-attachments>
     </mat-tab>
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'">

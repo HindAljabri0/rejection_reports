@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -8,7 +8,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimValidationService } from '../services/claimValidationService/claim-validation.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
-import { getClaim, getDepartments } from './claim.reducer';
+import { getClaim, getDepartments, getRetrievedClaimId, getRetrievedClaimProps } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -124,6 +124,32 @@ export class ClaimEffects {
             map(response => {
                 this.store.dispatch(setLoading({ loading: false }));
                 return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, value[1].claimIdentities.uploadID));
+            }),
+            catchError(err => {
+                let status = '';
+                let description: string;
+                if (err instanceof HttpErrorResponse) {
+                    status = err.error['status'];
+                    try {
+                        description = err.error['errors'][0]['description'];
+                    } catch (error) { }
+                }
+                this.store.dispatch(setLoading({ loading: false }));
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description } });
+            })
+        ))
+    ));
+
+    saveClaimChanges$ = createEffect(() => this.actions$.pipe(
+        ofType(saveClaimChanges),
+        withLatestFrom(this.store.select(getClaim)),
+        withLatestFrom(this.store.select(getRetrievedClaimId)),
+        map(values => ({ claim: values[0][1], id: values[1] })),
+        switchMap(values => this.claimService.saveChangesToExistingClaim(values.claim, this.sharedServices.providerId, values.id).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+            map(response => {
+                this.store.dispatch(setLoading({ loading: false }));
+                return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, values.claim.claimIdentities.uploadID));
             }),
             catchError(err => {
                 let status = '';

@@ -12,6 +12,7 @@ export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT'
 export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
+    retrievedClaimId: string;
     retrievedClaimProps: RetrievedClaimProps;
     newAttachments: { src: string | ArrayBuffer, name: string, fileType: FileType }[];
     claimBeforeEdit: Claim;
@@ -30,6 +31,7 @@ export interface ClaimState {
 
 const initState: ClaimState = {
     claim: null,
+    retrievedClaimId: null,
     retrievedClaimProps: null,
     newAttachments: [],
     claimBeforeEdit: null,
@@ -48,7 +50,7 @@ const initState: ClaimState = {
 
 const _claimReducer = createReducer(
     initState,
-    on(actions.retrieveClaim, (state, { edit }) => ({ ...state, mode: (edit ? 'EDIT' : 'VIEW'), loading: true })),
+    on(actions.retrieveClaim, (state, { edit, claimId }) => ({ ...state, mode: (edit ? 'EDIT' : 'VIEW'), loading: true, retrievedClaimId: claimId })),
     on(actions.viewRetrievedClaim, (state, response) => {
         const body = response.body;
         const dentalId = '4';
@@ -56,7 +58,7 @@ const _claimReducer = createReducer(
         const departmentCode = body['claim']['visitInformation']['departmentCode'];
         const caseType = body['claim']['caseInformation']['caseType'];
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
-        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], attachments: body['attachments'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
+        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
         const editable = state.mode == 'EDIT' && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(props.statusCode);
         return ({ ...state, claim: Claim.fromViewResponse(body['claim']), type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
     }),
@@ -159,9 +161,8 @@ const _claimReducer = createReducer(
     on(actions.updateRoomNumber, (state, { number }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, roomNumber: number } } })),
     on(actions.updateBedNumber, (state, { number }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, bedNumber: number } } })),
 
-    on(actions.updateCurrentAttachments, (state, { attachments }) => ({ ...state, retrievedClaimProps: { ...state.retrievedClaimProps, attachments: attachments } })),
-    on(actions.updateNewAttachments, (state, { attachments }) => ({ ...state, newAttachments: attachments })),
-
+    on(actions.updateCurrentAttachments, (state, { attachments }) => ({ ...state, claim: { ...state.claim, attachment: attachments } })),
+    
     on(actions.updateLabResults, (state, { investigations }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, investigation: investigations } } } })),
 
     on(actions.updateInvoices_Services, (state, { invoices }) => {
@@ -214,6 +215,7 @@ export const getSelectedGDPN = createSelector(claimSelector, (state) => state.se
 export const getRetrievedServices = createSelector(claimSelector, (state) => state.retrievedServices);
 export const getPageMode = createSelector(claimSelector, (state) => state.mode);
 export const getPageType = createSelector(claimSelector, (state) => state.type);
+export const getRetrievedClaimId = createSelector(claimSelector, (state) => state.retrievedClaimId);
 export const getRetrievedClaimProps = createSelector(claimSelector, (state) => state.retrievedClaimProps);
 
 

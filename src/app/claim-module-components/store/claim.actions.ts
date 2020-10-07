@@ -9,8 +9,7 @@ import { Service } from '../models/service.model';
 import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
-import { AttachmentView } from '../models/attachmentView.model';
-import { FileType } from '../models/attachmentRequest.model';
+import { AttachmentRequest, FileType } from '../models/attachmentRequest.model';
 import { Investigation } from '../models/investigation.model';
 
 export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit: boolean }>());
@@ -25,6 +24,7 @@ export const setError = createAction('[ Claim ] set error', props<{ error: any }
 export const getUploadId = createAction('[ Claim ] get this month upload ID', props<{ providerId: string }>());
 export const setUploadId = createAction('[ Claim ] set upload id', props<{ id: any }>());
 export const saveClaim = createAction('[ Claim ] save the claim');
+export const saveClaimChanges = createAction('[ Claim ] update the claim');
 export const showOnSaveDoneDialog = createAction('[ Claim ] show message dialog after saving is done', props<OnSavingDoneDialogData>());
 export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{ uploadId: number, claimId?: string, editMode?: boolean }>());
 export const cancelClaim = createAction('[ Claim ] cancel');
@@ -85,8 +85,7 @@ export const updateRoomNumber = createAction('[ Admission ] update Room Number',
 export const updateBedNumber = createAction('[ Admission ] update Bed Number', props<{ number: string }>());
 
 //attachments
-export const updateCurrentAttachments = createAction('[ Attachments ] update current attachments', props<{ attachments: AttachmentView[] }>());
-export const updateNewAttachments = createAction('[ Attachments ] update new attachments', props<{ attachments: { src: string | ArrayBuffer, name: string, fileType: FileType }[] }>());
+export const updateCurrentAttachments = createAction('[ Attachments ] update current attachments', props<{ attachments: AttachmentRequest[] }>());
 
 //LAB Results
 export const saveLabResults = createAction('[ LAB Results ] this will force lab results & components to dispatch updateLabResults action');

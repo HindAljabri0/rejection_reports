@@ -1,4 +1,3 @@
-import { AttachmentView } from './attachmentView.model';
 import { GDPN } from './GDPN.model';
 
 
@@ -21,5 +20,4 @@ export class RetrievedClaimProps {
         serviceDenialCode: string;
         decisionComment: string;
     }[];
-    attachments: AttachmentView[];
 }

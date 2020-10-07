@@ -3,7 +3,7 @@ export class AttachmentRequest {
 
     fileName: string;
 	fileType: FileType;
-	attachmentFile: ArrayBuffer;
+	attachmentFile: string;
     userComment: string;
 }
 

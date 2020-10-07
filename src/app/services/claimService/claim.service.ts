@@ -30,6 +30,20 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
+  saveChangesToExistingClaim(claim: Claim, providerId: string, claimId: string){
+    const requestUrl = `/providers/${providerId}/${claimId}`;
+    let body: any = { ...claim };
+    claim.caseInformation.caseType
+    if (claim.caseInformation.caseDescription.illnessDuration != null) {
+      body = { ...body, caseInformation: { ...body.caseInformation, caseDescription: { ...body.caseInformation.caseDescription, illnessDuration: body.caseInformation.caseDescription.illnessDuration.toPeriodFormat() } } };
+    }
+    if (claim.caseInformation.patient.age != null) {
+      body = { ...body, caseInformation: { ...body.caseInformation, patient: { ...body.caseInformation.patient, age: body.caseInformation.patient.age.toPeriodFormat() } } };
+    }
+    const httpRequest = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, body);
+    return this.httpClient.request(httpRequest);
+  }
+
   viewClaim(providerId: string, claimId: string){
     const requestUrl = `/providers/${providerId}/${claimId}`;
     const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);

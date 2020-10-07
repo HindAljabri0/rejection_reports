@@ -5,7 +5,8 @@
     </div>
 </div>
 <div mat-dialog-actions >
-    <button class="formElement" mat-button color="primary" (click)="onViewAllClaimsClicked()">View All Claims</button>
-    <button class="formElement" mat-raised-button color="primary" style="margin-left: auto;" (click)="onCreateAnotherClaimClicked()">Create Another Claim</button>
-    <button class="formElement" mat-raised-button color="primary" (click)="onViewClaimClicked()">{{isNotAccepted? 'Edit':'View'}} Claim</button>
+    <button class="formElement" *ngIf="showViewAllButton" mat-button color="primary" (click)="onViewAllClaimsClicked()">View All Claims</button>
+    <button class="formElement" *ngIf="showViewAllButton" mat-raised-button color="primary" style="margin-left: auto;" (click)="onCreateAnotherClaimClicked()">Create Another Claim</button>
+    <button class="formElement" *ngIf="showViewAllButton" mat-raised-button color="primary" (click)="onViewClaimClicked()">{{isNotAccepted? 'Edit':'View'}} Claim</button>
+    <button class="formElement" mat-raised-button color="primary" (click)="onOK()">OK</button>
 </div>
