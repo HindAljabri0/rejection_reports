@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { OnSavingDoneDialogData } from './on-saving-done.data';
 import { SharedServices } from 'src/app/services/shared.services';
 import { viewThisMonthClaims, cancelClaim } from '../../store/claim.actions';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-on-saving-done',
@@ -16,7 +17,8 @@ export class OnSavingDoneComponent implements OnInit {
     private dialogRef: MatDialogRef<OnSavingDoneComponent>,
     @Inject(MAT_DIALOG_DATA) private data:OnSavingDoneDialogData,
     private store:Store,
-    private sharedServices:SharedServices
+    private sharedServices:SharedServices,
+    private location:Location
   ) { }
 
   ngOnInit() {
@@ -43,6 +45,7 @@ export class OnSavingDoneComponent implements OnInit {
   }
 
   onOK(){
+    this.location.go(this.location.path().replace('#edit', ''));
     location.reload();
   }
 

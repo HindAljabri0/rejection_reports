@@ -2,14 +2,14 @@ import { createAction, props } from '@ngrx/store';
 import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
-import { ClaimPageMode, FieldError } from './claim.reducer';
+import { FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 import { Service } from '../models/service.model';
 import { SelectServiceDialogData } from '../dialogs/select-service-dialog/select-service-dialog-data';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
-import { AttachmentRequest, FileType } from '../models/attachmentRequest.model';
+import { AttachmentRequest } from '../models/attachmentRequest.model';
 import { Investigation } from '../models/investigation.model';
 
 export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit', props<{ claimId: string, edit: boolean }>());
@@ -17,7 +17,7 @@ export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim',
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number', props<ApprovalFormData>());
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{ approvalNumber: string, payerId: string, claimType: string, providerClaimNumber: string }>())
 export const startCreatingNewClaim = createAction('[ Claim ] start creating new claim', props<{ data: { claimType: string, providerClaimNumber: string } | { claim: Claim, services: { service: Service, decision: ServiceDecision, used: boolean }[] } }>());
-export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{ loading: boolean }>())
+export const setLoading = createAction('[ Claim ] set if claim module is loading', props<{ loading: boolean }>());
 export const loadLOVs = createAction('[ Claim ] start loading LOVs from backend');
 export const setLOVs = createAction('[ Claim ] set LOVs object from backend', props<{ LOVs: any }>());
 export const setError = createAction('[ Claim ] set error', props<{ error: any }>());
@@ -29,6 +29,7 @@ export const showOnSaveDoneDialog = createAction('[ Claim ] show message dialog 
 export const viewThisMonthClaims = createAction('[ Claim ] view this month claims', props<{ uploadId: number, claimId?: string, editMode?: boolean }>());
 export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
+export const finishValidation = createAction('[ Claim ] finishValidation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: number }>());
 export const toEditMode = createAction('[ Claim ] change page mode to edit');

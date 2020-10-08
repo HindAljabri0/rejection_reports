@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -8,7 +8,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimValidationService } from '../services/claimValidationService/claim-validation.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
-import { getClaim, getDepartments, getRetrievedClaimId, getRetrievedClaimProps } from './claim.reducer';
+import { getClaim, getClaimModuleError, getClaimObjectErrors, getDepartments, getPageMode, getRetrievedClaimId, getRetrievedClaimProps } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -19,6 +19,7 @@ import { Service } from '../models/service.model';
 import { SelectServiceDialogComponent } from '../dialogs/select-service-dialog/select-service-dialog.component';
 import { OnSavingDoneComponent } from '../dialogs/on-saving-done/on-saving-done.component';
 import { OnSavingDoneDialogData } from '../dialogs/on-saving-done/on-saving-done.data';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 
 @Injectable({
@@ -38,7 +39,8 @@ export class ClaimEffects {
         private claimService: ClaimService,
         private sharedServices: SharedServices,
         private router: Router,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private dialogService: DialogService
     ) {
         this.store.select(getDepartments)
             .subscribe(departments => {
@@ -104,7 +106,47 @@ export class ClaimEffects {
     startValidatingClaim$ = createEffect(() => this.actions$.pipe(
         ofType(startValidatingClaim),
         tap(() => this.validationService.startValidation()),
-        map(() => setLoading({ loading: false }))
+        map(() => finishValidation())
+    ));
+
+    onFinishValidation$ = createEffect(() => this.actions$.pipe(
+        ofType(finishValidation),
+        withLatestFrom(this.store.select(getClaimObjectErrors)),
+        withLatestFrom(this.store.select(getPageMode)),
+        map(values => ({errors: values[0][1], pageMode: values[1]})),
+        map(values => {
+            if (values.errors.diagnosisErrors.length == 0
+                && values.errors.genInfoErrors.length == 0
+                && values.errors.patientInfoErrors.length == 0
+                && values.errors.physicianErrors.length == 0
+                && values.errors.claimGDPN.length == 0
+                && values.errors.invoicesErrors.length == 0
+                && values.errors.admissionErrors.length == 0
+                && values.errors.vitalSignError.length == 0
+                && values.errors.labResultsErrors.length == 0
+              ) {
+                if (values.pageMode == 'CREATE') {
+                  return getUploadId({ providerId: this.sharedServices.providerId });
+                } else {
+                  return saveClaimChanges();
+                }
+              } else if (values.errors.claimGDPN.length > 0
+                && values.errors.diagnosisErrors.length == 0
+                && values.errors.genInfoErrors.length == 0
+                && values.errors.patientInfoErrors.length == 0
+                && values.errors.physicianErrors.length == 0
+                && values.errors.invoicesErrors.length == 0
+                && values.errors.admissionErrors.length == 0
+                && values.errors.vitalSignError.length == 0
+                && values.errors.labResultsErrors.length == 0) {
+                this.dialogService.openMessageDialog({
+                  title: '',
+                  message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
+                  isError: true
+                });
+                return setLoading({loading: false});
+              }
+        })
     ));
 
     getUploadId$ = createEffect(() => this.actions$.pipe(

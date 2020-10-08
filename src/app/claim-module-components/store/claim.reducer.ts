@@ -180,7 +180,7 @@ const _claimReducer = createReducer(
     }),
     on(actions.addRetrievedServices, (state, { services }) => ({ ...state, retrievedServices: [...state.retrievedServices.filter(s => services.findIndex(ns => ns.service.serviceNumber == s.service.serviceNumber) == -1), ...services.map(s => ({ service: s.service, decision: s.decision, used: true }))] })),
     on(actions.makeRetrievedServiceUnused, (state, { serviceNumber }) => ({ ...state, retrievedServices: state.retrievedServices.map(s => s.service.serviceNumber == serviceNumber ? { ...s, used: false } : s) })),
-    on(actions.selectGDPN, (state, { invoiceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex } }))
+    on(actions.selectGDPN, (state, { invoiceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex } })),
 );
 
 export function claimReducer(state, action) {

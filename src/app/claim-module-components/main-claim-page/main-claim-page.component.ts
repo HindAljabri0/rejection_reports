@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults, saveClaim, saveClaimChanges } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults, saveClaim, saveClaimChanges, finishValidation } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -10,6 +10,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { Location } from '@angular/common';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -115,46 +116,11 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   save() {
+    if(this.isLoading) return;
     this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());
-    let sub = this.store.select(getClaimModuleIsLoading).pipe(
-      skipWhile(loading => loading),
-      withLatestFrom(this.store.select(getClaimObjectErrors))
-    ).subscribe((values) => {
-      if (values[1].diagnosisErrors.length == 0
-        && values[1].genInfoErrors.length == 0
-        && values[1].patientInfoErrors.length == 0
-        && values[1].physicianErrors.length == 0
-        && values[1].claimGDPN.length == 0
-        && values[1].invoicesErrors.length == 0
-        && values[1].admissionErrors.length == 0
-        && values[1].vitalSignError.length == 0
-        && values[1].labResultsErrors.length == 0
-      ) {
-        this.store.dispatch(setLoading({ loading: true }));
-        if (this.pageMode == 'CREATE') {
-          this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }));
-        } else {
-          this.store.dispatch(saveClaimChanges());
-        }
-      } else if (values[1].claimGDPN.length > 0
-        && values[1].diagnosisErrors.length == 0
-        && values[1].genInfoErrors.length == 0
-        && values[1].patientInfoErrors.length == 0
-        && values[1].physicianErrors.length == 0
-        && values[1].invoicesErrors.length == 0
-        && values[1].admissionErrors.length == 0
-        && values[1].vitalSignError.length == 0
-        && values[1].labResultsErrors.length == 0) {
-        this.dialogService.openMessageDialog({
-          title: '',
-          message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
-          isError: true
-        });
-      }
-    }).unsubscribe();
   }
 
   getClaimStatusLabel(status: string) {
