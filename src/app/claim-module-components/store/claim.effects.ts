@@ -144,8 +144,8 @@ export class ClaimEffects {
                   message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
                   isError: true
                 });
-                return setLoading({loading: false});
               }
+              return setLoading({loading: false});
         })
     ));
 
