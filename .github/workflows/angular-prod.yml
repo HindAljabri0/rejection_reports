@@ -40,7 +40,7 @@ jobs:
       run: docker login me-jeddah-1.ocir.io -u $DOCKER_USER -p $DOCKER_PASSWORD
 
     - name: Docker Build
-      run: docker build . -t me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:latest  -t me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:${{ github.run_number }}
+      run: docker build . -t me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:latest  -t me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:${{ github.sha }}
 
     - name: Docker Push
       run: docker push me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui
@@ -50,7 +50,7 @@ jobs:
       env:
         KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: set image --record deployment/gui gui=me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:${{ github.run_number }} -n prod
+        args: set image --record deployment/gui gui=me-jeddah-1.ocir.io/ax7dvcawpc84/prod/gui:${{ github.sha }} -n prod
 
     - name: Verify Deployment
       uses: waseel-asp/kubectl@v1.17.9
