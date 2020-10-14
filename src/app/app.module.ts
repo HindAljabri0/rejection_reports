@@ -57,7 +57,7 @@ import { dashboardReducer } from './pages/dashboard/store/dashboard.reducer';
 import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
 import { TopFiveRejectionsComponent } from './pages/dashboard/components/top-five-rejections/top-five-rejections.component';
 import { RejectionCardComponent } from './pages/dashboard/components/rejection-card/rejection-card.component';
-import { ChartsModule } from 'ng2-charts';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 import { mainReducer } from './store/mainStore.reducer';
 import { MainStoreEffects } from './store/mainStore.effects';
 
@@ -122,6 +122,7 @@ import { MainStoreEffects } from './store/mainStore.effects';
     ChartsModule,
   ],
   providers: [
+    ThemeService,
     UploadService,
     // {
     //   provide: ApmService,
