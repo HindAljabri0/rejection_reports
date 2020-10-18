@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY,ICD10_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,16 +19,18 @@ export class ProvidersConfigComponent implements OnInit {
   filteredProviders: any[] = [];
   providerController: FormControl = new FormControl();
 
-  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string } = {};
-  sucess: { serviceCodeSaveSuccess?: string, portalUserSaveSucess?: string } = {};
-  componentLoading = { serviceCode: true, portalUser: true };
+  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string } = {};
+  sucess: { serviceCodeSaveSuccess?: string, portalUserSaveSucess?: string, ICD10SaveSucess?: string } = {};
+  componentLoading = { serviceCode: true, portalUser: true,ICD10Validation: true };
 
   selectedProvider: string;
   associatedPayers: any[] = [];
   serviceCodeValidationSettings: any[] = [];
   serviceCodeRestrictionSettings: any[] = [];
+  ICD10ValidationSettings: any[] = [];
   newServiceCodeValidationSettings: { [key: string]: boolean } = {};
   newServiceRestrictionSettings: { [key: string]: boolean } = {};
+  newICD10ValidationSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
@@ -93,6 +95,7 @@ export class ProvidersConfigComponent implements OnInit {
           this.associatedPayers.forEach(payer=>{
             this.newServiceCodeValidationSettings[payer.switchAccountId] = this.getServiceCodeSettingsOfPayer(payer.switchAccountId);
             this.newServiceRestrictionSettings[payer.switchAccountId] = this.getServiceCodeRestrictionSettingsOfPayer(payer.switchAccountId);
+            this.newICD10ValidationSettings[payer.switchAccountId] = this.getICD10SettingsOfPayer(payer.switchAccountId);
           })
         }
         if (this.associatedPayers.length == 0) {
@@ -119,6 +122,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getServiceCodeValidationSettings();
     this.getPortalUserSettings();
     this.getServiceCodeRestrictionSettings();
+    this.getICD10ValidationSettings()
   }
 
   save() {
@@ -127,8 +131,9 @@ export class ProvidersConfigComponent implements OnInit {
     }
     let flag1 = this.saveServiceCodeValidationSettings();
     let flag2 = this.savePortalUserSettings();
-    let flag3 = this.saveServiceRestrictionSettings()
-    if (flag1 && flag2 && flag3) {
+    let flag3 = this.saveServiceRestrictionSettings();
+    let flag4 = this.saveICD10ValidationSettings();
+    if (flag1 && flag2 && flag3 && flag4) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -269,10 +274,59 @@ export class ProvidersConfigComponent implements OnInit {
     } return true;
   }
 
+  saveICD10ValidationSettings() {
+    let payers = Object.keys(this.newICD10ValidationSettings);
+    if (payers.length > 0) {
+      let newSettingsKeys = payers.filter(payerId => {
+        let setting = this.ICD10ValidationSettings.find(setting => setting.payerId == payerId);
+        return (setting != null && (setting.value == '1') != this.newICD10ValidationSettings[payerId])
+          || setting == null;
+      });
+      if (newSettingsKeys.length > 0) {
+        this.componentLoading.ICD10Validation = true;
+        this.errors.ICD10SaveError = null;
+        this.sucess.ICD10SaveSucess = null;
+        this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
+          payerId: payerId,
+          key: ICD10_RESTRICTION_KEY,
+          value: (this.newICD10ValidationSettings[payerId]) ? '1' : '0'
+        })
+        )).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            newSettingsKeys.map(payerId => {
+              let index = this.ICD10ValidationSettings.findIndex(setting => setting.payerId == payerId);
+              if (index != -1) {
+                this.ICD10ValidationSettings[index].value = (this.ICD10ValidationSettings[payerId]) ? '1' : '0';
+              } else {
+                this.ICD10ValidationSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId: payerId,
+                  key: ICD10_RESTRICTION_KEY,
+                  value: (this.ICD10ValidationSettings[payerId]) ? '1' : '0'
+                });
+              }
+            });
+            this.newICD10ValidationSettings = {};
+            this.sucess.ICD10SaveSucess = "Settings were saved successfully";
+            this.componentLoading.ICD10Validation = false;
+          }
+        }, error => {
+          this.errors.ICD10SaveError = 'Could not save settings, please try again later.';
+          this.resetICD10ValidationSettings;
+          this.componentLoading.ICD10Validation = false;
+        });
+        return false;
+      } return true;
+    } return true;
+  }
+
+
+
   reset() {
     this.resetServiceCodeValidationSettings();
     this.resetServiceRestrictionSettings();
     this.resetPortalUserSettings();
+    this.resetICD10ValidationSettings();
   }
 
   resetServiceCodeValidationSettings() {
@@ -293,6 +347,14 @@ export class ProvidersConfigComponent implements OnInit {
     if (this.portalUserSettings != null) {
       this.portalUsernameController.setValue(this.portalUserSettings.username);
       this.portalPasswordController.setValue('************************');
+    }
+  }
+
+  resetICD10ValidationSettings() {
+    if (Object.keys(this.newICD10ValidationSettings).length > 0) {
+      this.componentLoading.ICD10Validation = true;
+      setTimeout(() => this.componentLoading.ICD10Validation = false, 100);
+      this.newICD10ValidationSettings = {};
     }
   }
 
@@ -353,6 +415,25 @@ export class ProvidersConfigComponent implements OnInit {
     });
   }
 
+  getICD10ValidationSettings() {
+    this.componentLoading.serviceCode = true;
+    this.superAdmin.getProviderPayerSettings(this.selectedProvider, ICD10_RESTRICTION_KEY).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.ICD10ValidationSettings = event.body;
+          this.componentLoading.serviceCode = false;
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.serviceCodeError = 'Could not load ICD10 settings, please try again later.';
+        }
+      }
+      this.componentLoading.serviceCode = false;
+    });
+  }
+
   get isLoading() {
     return this.sharedServices.loading;
   }
@@ -368,6 +449,11 @@ export class ProvidersConfigComponent implements OnInit {
     return (setting != null && setting.value == '1');
   }
 
+  getICD10SettingsOfPayer(payerid: string) {
+    let setting = this.ICD10ValidationSettings.find(setting => setting.payerId == payerid);
+    return setting == null || (setting != null && setting.value == '1');
+  }
+
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
     this.newServiceCodeValidationSettings[payerid] = event.checked;
     if (event.checked) {
@@ -381,4 +467,7 @@ export class ProvidersConfigComponent implements OnInit {
     }
   }
 
+  onICD10SettingChange(payerid: string, event: MatSlideToggleChange) {
+    this.newICD10ValidationSettings[payerid] = event.checked;
+  }
 }
