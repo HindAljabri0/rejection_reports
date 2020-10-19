@@ -93,9 +93,9 @@ export class ProvidersConfigComponent implements OnInit {
         if (event.body instanceof Array) {
           this.associatedPayers = event.body;
           this.associatedPayers.forEach(payer=>{
-            this.newServiceCodeValidationSettings[payer.switchAccountId] = this.getServiceCodeSettingsOfPayer(payer.switchAccountId);
-            this.newServiceRestrictionSettings[payer.switchAccountId] = this.getServiceCodeRestrictionSettingsOfPayer(payer.switchAccountId);
-            this.newICD10ValidationSettings[payer.switchAccountId] = this.getICD10SettingsOfPayer(payer.switchAccountId);
+            this.newServiceCodeValidationSettings[payer.switchAccountId] = true;
+            this.newServiceRestrictionSettings[payer.switchAccountId] = false;
+            this.newICD10ValidationSettings[payer.switchAccountId] = true;
           })
         }
         if (this.associatedPayers.length == 0) {
@@ -122,7 +122,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getServiceCodeValidationSettings();
     this.getPortalUserSettings();
     this.getServiceCodeRestrictionSettings();
-    this.getICD10ValidationSettings()
+    this.getICD10ValidationSettings();
   }
 
   save() {
@@ -176,7 +176,7 @@ export class ProvidersConfigComponent implements OnInit {
                 });
               }
             });
-            this.newServiceCodeValidationSettings = {};
+            
             this.sucess.serviceCodeSaveSuccess = "Settings were saved successfully";
             this.componentLoading.serviceCode = false;
           }
@@ -222,7 +222,7 @@ export class ProvidersConfigComponent implements OnInit {
                 });
               }
             });
-            this.newServiceRestrictionSettings = {};
+            
             this.sucess.serviceCodeSaveSuccess = "Settings were saved successfully";
             this.componentLoading.serviceCode = false;
           }
@@ -306,7 +306,6 @@ export class ProvidersConfigComponent implements OnInit {
                 });
               }
             });
-            this.newICD10ValidationSettings = {};
             this.sucess.ICD10SaveSucess = "Settings were saved successfully";
             this.componentLoading.ICD10Validation = false;
           }
@@ -364,6 +363,15 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.serviceCodeValidationSettings = event.body;
+
+          let payers = Object.keys(this.newServiceCodeValidationSettings);
+          if (payers.length > 0) {
+            payers.forEach(payer=>{
+              let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payer);
+              this.newServiceCodeValidationSettings[payer] = (setting==null ||setting.value == '1');
+            });
+          }
+
           this.componentLoading.serviceCode = false;
         }
       }
@@ -383,6 +391,15 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.serviceCodeRestrictionSettings = event.body;
+
+          let payers = Object.keys(this.newServiceRestrictionSettings);
+          if (payers.length > 0) {
+            payers.forEach(payer=>{
+              let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payer);
+              this.newServiceRestrictionSettings[payer] = (setting!=null && setting.value == '1');
+            });
+          }
+
           this.componentLoading.serviceCode = false;
         }
       }
@@ -416,21 +433,28 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   getICD10ValidationSettings() {
-    this.componentLoading.serviceCode = true;
+    this.componentLoading.ICD10Validation = true;
     this.superAdmin.getProviderPayerSettings(this.selectedProvider, ICD10_RESTRICTION_KEY).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.ICD10ValidationSettings = event.body;
-          this.componentLoading.serviceCode = false;
+          let payers = Object.keys(this.newICD10ValidationSettings);
+          if (payers.length > 0) {
+            payers.forEach(payer=>{
+              let setting = this.ICD10ValidationSettings.find(setting => setting.payerId == payer);
+              this.newICD10ValidationSettings[payer] = (setting==null ||setting.value == '1');
+            });
+          }
+          this.componentLoading.ICD10Validation = false;
         }
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status != 404) {
-          this.errors.serviceCodeError = 'Could not load ICD10 settings, please try again later.';
+          this.errors.ICD10SaveError = 'Could not load ICD10 settings, please try again later.';
         }
       }
-      this.componentLoading.serviceCode = false;
+      this.componentLoading.ICD10Validation = false;
     });
   }
 
@@ -438,36 +462,14 @@ export class ProvidersConfigComponent implements OnInit {
     return this.sharedServices.loading;
   }
 
-  getServiceCodeSettingsOfPayer(payerid: string) {
-    let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payerid);
-    return setting == null || (setting != null && setting.value == '1');
-  }
-
-  getServiceCodeRestrictionSettingsOfPayer(payerid: string) {
-    let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payerid);
-    if (setting == null) return false
-    return (setting != null && setting.value == '1');
-  }
-
-  getICD10SettingsOfPayer(payerid: string) {
-    let setting = this.ICD10ValidationSettings.find(setting => setting.payerId == payerid);
-    return setting == null || (setting != null && setting.value == '1');
-  }
-
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
-    this.newServiceCodeValidationSettings[payerid] = event.checked;
     if (event.checked) {
       this.newServiceRestrictionSettings[payerid] = !event.checked;
     }
   }
   onServiceRestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
-    this.newServiceRestrictionSettings[payerid] = event.checked;
     if (event.checked) {
       this.newServiceCodeValidationSettings[payerid] = !event.checked;
     }
-  }
-
-  onICD10SettingChange(payerid: string, event: MatSlideToggleChange) {
-    this.newICD10ValidationSettings[payerid] = event.checked;
   }
 }
