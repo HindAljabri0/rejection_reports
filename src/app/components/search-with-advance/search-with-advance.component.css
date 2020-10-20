@@ -1,4 +1,4 @@
-.searchField {
+/* .searchField {
     min-width: 710px;
     width: 100%;
     transition: width ease 500ms;
@@ -61,4 +61,34 @@ mat-checkbox::after {
     border-radius: 80%;
     background-color: #70707019;
     color: #70707019;
+} */
+
+.parent {
+    min-width: 650px;
+    display: grid;
+    grid-template-columns: minmax(150px, 25%) 1fr;
+}
+
+input:focus, select:focus, button:focus {
+    outline: 0px;
+}
+
+select {
+    font-size: .8rem;
+    padding: 5px;
+    background-color: #E6ECFC;
+    color: #315FAA;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 0px;
+}
+
+input {
+    padding: 5px;
+    font-size: 1rem;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 0px;
+    margin: unset !important;
+    width: 100% !important;
 }

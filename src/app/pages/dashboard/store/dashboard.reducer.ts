@@ -4,7 +4,7 @@ import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
 
 
-export type DashboardCardData = { loading: boolean, data: SearchStatusSummary | RejectionCardData, error?: string, title?:string };
+export type DashboardCardData = { loading: boolean, data: SearchStatusSummary | RejectionCardData, error?: string, title?: string };
 
 export interface DashboardStatus {
     searchCriteria: SearchCriteria,
@@ -41,7 +41,7 @@ const initState: DashboardStatus = {
     rejectionByDepartment: { loading: false, data: new RejectionCardData('Department') },
     rejectionByDoctor: { loading: false, data: new RejectionCardData('Doctor') },
     rejectionByService: { loading: false, data: new RejectionCardData('Service') },
-    departmentNames:null
+    departmentNames: null
 }
 
 const _dashboardReducer = createReducer(
@@ -67,7 +67,10 @@ const _dashboardReducer = createReducer(
         }
         return newState;
     }),
-    on(actions.setDepartmentNames, (state, response)=>({...state, departmentNames: response.body['Departments']}))
+    on(actions.setDepartmentNames, (state, response) => {
+        if (response.body == null) return ({ ...state });
+        return ({ ...state, departmentNames: response.body['Departments'] });
+    })
 )
 
 export function dashboardReducer(state, action) {
