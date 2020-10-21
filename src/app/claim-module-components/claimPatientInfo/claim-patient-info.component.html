@@ -49,7 +49,7 @@
     <input class="leftComponent" type="number" [matTooltip]="getFieldError('nationalId')"
         [ngClass]="{'fieldError': fieldHasError('nationalId')}" [formControl]="nationalIdController"
         (change)="updateClaim('nationalId')">
-    <label class="rightLabel">Approval No.*</label>
+    <label class="rightLabel">Approval No.<span *ngIf="claimPageType == 'DENTAL_OPTICAL'">*</span></label>
     <input class="rightComponent" type="text" [ngClass]="{'fieldError': fieldHasError('approvalNum')}"
         [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required>
 

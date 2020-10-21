@@ -74,10 +74,12 @@ export class ClaimValidationService {
     if (payer != '102' && (policyNum == null || policyNum.trim().length == 0)) {
       fieldErrors.push({ fieldName: 'policyNum' });
     }
-    if (approvalNum == null || approvalNum.trim().length == 0) {
-      fieldErrors.push({ fieldName: 'approvalNum' });
-    } else if (!this.regaxWithSym.test(approvalNum)) {
-      fieldErrors.push({ fieldName: 'approvalNum', error: 'Characters allowed: (0-9), (a-z), (A-Z), and special characters' });
+    if(this.pageType == 'DENTAL_OPTICAL'){
+      if (approvalNum == null || approvalNum.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'approvalNum' });
+      } else if (!this.regaxWithSym.test(approvalNum)) {
+        fieldErrors.push({ fieldName: 'approvalNum', error: 'Characters allowed: (0-9), (a-z), (A-Z), and special characters' });
+      }
     }
     this.store.dispatch(addClaimErrors({ module: 'patientInfoErrors', errors: fieldErrors }));
   }
