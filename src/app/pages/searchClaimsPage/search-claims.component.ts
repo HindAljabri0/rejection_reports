@@ -19,7 +19,6 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-search-claims',
@@ -35,8 +34,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private dialogService: DialogService,
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
-    private notificationService: NotificationsService,
-    private attachmentService: AttachmentService) {
+    private notificationService: NotificationsService) {
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -69,6 +67,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   uploadId: string;
   casetype: string;
   claimId: string;
+  claimRefNo: string;
+  memberId: string;
   editMode: string;
   routerSubscription: Subscription;
 
@@ -147,9 +147,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
       this.casetype = value.casetype;
       this.claimId = value.claimId;
+      this.claimRefNo = value.claimRefNo;
+      this.memberId = value.memberId;
       this.editMode = value.editMode;
     }).unsubscribe();
-    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '') && (this.uploadId == null || this.uploadId == '')) {
+    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '') && (this.uploadId == null || this.uploadId == '') && (this.claimRefNo == null || this.claimRefNo == '') && (this.memberId == null || this.memberId == '')) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
@@ -186,49 +188,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
-    if (this.batchId == null && this.uploadId == null) {
-      event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, undefined, undefined, this.casetype).toPromise().catch(error => {
-        this.commen.loadingChanged.next(false);
-        if (error instanceof HttpErrorResponse) {
-          if ((error.status / 100).toFixed() == "4") {
-            this.errorMessage = error.message;
-          } else if ((error.status / 100).toFixed() == "5") {
-            this.errorMessage = 'Server could not handle the request. Please try again later.';
-          } else {
-            this.errorMessage = 'Somthing went wrong.';
-          }
-          return error.status;
+    event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).toPromise().catch(error => {
+      this.commen.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == "4") {
+          this.errorMessage = error.message;
+        } else if ((error.status / 100).toFixed() == "5") {
+          this.errorMessage = 'Server could not handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
         }
-      });
-    } else if (this.uploadId != null) {
-      event = await this.searchService.getSummaries(this.providerId, statuses, undefined, undefined, undefined, undefined, this.uploadId).toPromise().catch(error => {
-        this.commen.loadingChanged.next(false);
-        if (error instanceof HttpErrorResponse) {
-          if ((error.status / 100).toFixed() == "4") {
-            this.errorMessage = 'Sorry, we could not find any result.';
-          } else if ((error.status / 100).toFixed() == "5") {
-            this.errorMessage = 'Server could not handle the request. Please try again later.';
-          } else {
-            this.errorMessage = 'Somthing went wrong.';
-          }
-          return error.status;
-        }
-      });
-    } else {
-      event = await this.searchService.getSummaries(this.providerId, statuses, undefined, undefined, undefined, this.batchId).toPromise().catch(error => {
-        this.commen.loadingChanged.next(false);
-        if (error instanceof HttpErrorResponse) {
-          if ((error.status / 100).toFixed() == "4") {
-            this.errorMessage = 'Sorry, we could not find any result.';
-          } else if ((error.status / 100).toFixed() == "5") {
-            this.errorMessage = 'Server could not handle the request. Please try again later.';
-          } else {
-            this.errorMessage = 'Somthing went wrong.';
-          }
-          return error.status;
-        }
-      });
-    }
+        return error.status;
+      }
+    });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == "2") {
         const summary = new SearchStatusSummary(event.body);
@@ -270,7 +242,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.searchResult = null;
     this.claims = new Array();
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype).subscribe((event) => {
+    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -490,7 +462,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null && edit? '#edit':''));
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null && edit ? '#edit' : ''));
   }
 
   reloadClaim(claim: ViewedClaim) {
@@ -647,8 +619,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         navigator.msSaveBlob(blob, exportedFilenmae);
       } else {
         var a = document.createElement("a");
-        var excelData = event.body+""; 
-        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURIComponent(excelData) ;
+        var excelData = event.body + "";
+        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURIComponent(excelData);
         a.target = '_blank';
         if (this.from != null) {
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';

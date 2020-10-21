@@ -9,7 +9,7 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
-  getSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, casetype?: string) {
+  getSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {
     let requestURL: string = `/providers/${providerId}/claims?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + fromDate
@@ -22,11 +22,17 @@ export class SearchService {
     if(uploadId != null){
       requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString();
     }
+    if(claimRefNo != null){
+      requestURL += `claimRefNo=${claimRefNo}` + '&status=' + statuses.toString();
+    }
+    if(memberId != null){
+      requestURL += `memberId=${memberId}` + '&status=' + statuses.toString();
+    }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
 
-  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string,  uploadId?: string, casetype?: string) {
+  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string,  uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     let requestURL: string = `/providers/${providerId}/claims/details?`;
@@ -40,6 +46,12 @@ export class SearchService {
     }
     if(uploadId != null){
       requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
+    }
+    if(claimRefNo != null){
+      requestURL += `claimRefNo=${claimRefNo}` + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
+    }
+    if(memberId != null){
+      requestURL += `memberId=${memberId}` + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
