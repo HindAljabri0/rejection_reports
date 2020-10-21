@@ -40,8 +40,11 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         let batchId = route.queryParamMap.get("batchId");
         if (batchId != null && batchId != '') return true;
         let uploadId = route.queryParamMap.get('uploadId');
-        console.log(uploadId);
         if (uploadId != null && uploadId != '') return true;
+        let claimRefNo = route.queryParamMap.get('claimRefNo');
+        if(claimRefNo != null && claimRefNo != '') return true;
+        let memberId = route.queryParamMap.get('memberId');
+        if(memberId != null && memberId != '') return true;
         payerId = route.queryParamMap.get("payer");
         authority = localStorage.getItem(providerId + payerId);
         if (providerId == null || providerId == "" || payerId == null || payerId == "" || authority == null) {
