@@ -69,9 +69,18 @@ export class Claim {
 
                 const patient = caseInformation['patient'];
                 claim.caseInformation.patient.fullName = patient['patientName'];
+                if(patient['patientName'] == null || patient['patientName'] == "")
+                {
+                    claim.caseInformation.patient.fullName = memberInfo['fullName'];
+
+                }
                 if (patient['age'] != null)
                     claim.caseInformation.patient.age = this.getPeriod(patient['age']['value']);
                 claim.caseInformation.patient.gender = patient['gender'];
+                if(patient['gender']==null || patient['gender']=="")
+                {
+                    claim.caseInformation.patient.gender = memberInfo['gender'];
+                }
                 claim.caseInformation.patient.nationality = patient['nationality'];
                 claim.caseInformation.patient.patientFileNumber = patient['patientFileNumber'];
                 claim.caseInformation.patient.contactNumber = patient['contactNumber'];
