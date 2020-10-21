@@ -1,5 +1,5 @@
 <div class="mainCardBody">
-    <label class="leftLabel">Full Name*</label>
+    <label class="leftLabel">Full Name</label>
     <div class="leftComponent" [matTooltip]="getFieldError('fullName')" style="display: flex; width: 100%;">
         <input id="fullNameInput" [ngClass]="{'fieldError': fieldHasError('fullName')}" type="text"
             [formControl]="fullNameController" (change)="updateClaim('fullName')" required>

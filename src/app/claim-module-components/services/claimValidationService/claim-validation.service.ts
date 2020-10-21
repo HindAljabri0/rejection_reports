@@ -55,11 +55,11 @@ export class ClaimValidationService {
     const approvalNum = this.claim.claimIdentities.approvalNumber;
 
     let fieldErrors: FieldError[] = [];
-    if (fullName == null || fullName.trim().length == 0) {
-      fieldErrors.push({ fieldName: 'fullName' });
-    } else if (!this.regax.test(fullName)) {
-      fieldErrors.push({ fieldName: 'fullName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
-    }
+    // if (fullName == null || fullName.trim().length == 0) {
+    //   fieldErrors.push({ fieldName: 'fullName' });
+    // } else if (!this.regax.test(fullName)) {
+    //   fieldErrors.push({ fieldName: 'fullName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
+    // }
     if (gender == null || gender + '' == '') {
       fieldErrors.push({ fieldName: 'gender' });
     }
