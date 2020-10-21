@@ -137,9 +137,9 @@ export class Claim {
                 fullName = firstName;
                 if (middleName != null) fullName += ` ${middleName}`;
                 if (lastName != null) fullName += ` ${lastName}`;
-            }
-            claim = { ...claim, caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } } }
+            }    
         }
+        claim = { ...claim, caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } } }
         return claim;
     }
 
