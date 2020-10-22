@@ -89,6 +89,7 @@ export class MainClaimPageComponent implements OnInit {
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
     if (claimId != 'add') {
       this.store.dispatch(hideHeaderAndSideMenu());
+      console.log(this.router.routerState.snapshot.url.endsWith('#edit'));
       this.store.dispatch(retrieveClaim({ claimId: claimId, edit: this.router.routerState.snapshot.url.endsWith('#edit') }));
     }
     this.store.dispatch(loadLOVs());
@@ -166,7 +167,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   get editable() {
-    return this.claimProps != null && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(this.claimProps.statusCode);
+    return this.claimProps != null && ['accepted', 'notaccepted', 'failed', 'invalid'].includes(this.claimProps.statusCode.toLowerCase());
   }
 
 }

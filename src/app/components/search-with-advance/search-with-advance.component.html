@@ -73,11 +73,11 @@
     </select>
     <div style="height: 42px;">
         <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off"
-            [readonly]="selectedSearchMode == 'payer&date'">
+            [readonly]="selectedSearchMode == 'payer&date'" (keyup.enter)="search()">
         <button mat-icon-button (click)="search()" style="position: relative; right: 40px; color: black; z-index: 10;">
             <mat-icon>search</mat-icon>
         </button>
-        <mat-chip-list #chipList style="position: relative; left: 10px; bottom: 37px;">
+        <mat-chip-list #chipList style="position: relative; left: 10px; bottom: 37px;" (keyup.enter)="search()">
             <ng-container *ngIf="selectedSearchMode == 'payer&date'">
                 <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu">
                     <span

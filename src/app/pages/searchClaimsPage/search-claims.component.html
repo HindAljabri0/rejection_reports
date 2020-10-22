@@ -184,8 +184,8 @@
                     </div>
                     <div style="display: inline-block;">
                         <button style="color: #3060AA; width:unset;" mat-icon-button
-                            [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed')? 'visible':'hidden'}"
-                            [disabled]="!((claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed') && true)"
+                            [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
+                            [disabled]="!((claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
                             (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
                             <mat-icon style="font-size:20px">edit</mat-icon>
                         </button>
