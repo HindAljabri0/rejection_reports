@@ -19,6 +19,7 @@ export class PhysicianComponent implements OnInit {
   selectedCategory: string;
   categoryEditable: boolean = true;
   selectedDepartment: string;
+  departmentEditable: boolean = true;
 
   categories: any[] = [];
   departments: any[];
@@ -78,6 +79,7 @@ export class PhysicianComponent implements OnInit {
   }
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
+    this.departmentEditable = allowEdit;
     if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == '')))
       this.physicianNameController.enable();
     else
