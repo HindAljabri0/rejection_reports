@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
-import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment } from '../store/claim.actions';
+import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment, updatePageType } from '../store/claim.actions';
 import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getClaim, getPageType, ClaimPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
@@ -19,7 +19,6 @@ export class PhysicianComponent implements OnInit {
   selectedCategory: string;
   categoryEditable: boolean = true;
   selectedDepartment: string;
-  departmentEditable: boolean = true;
 
   categories: any[] = [];
   departments: any[];
@@ -35,12 +34,12 @@ export class PhysicianComponent implements OnInit {
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
     this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getDepartments).pipe(
-      withLatestFrom(this.store.select(getPageType)),
-      map(values => ({ departments: values[0], type: values[1] }))
+      withLatestFrom(this.store.select(getPageMode)),
+      map(values => ({ departments: values[0], mode: values[1] }))
     ).subscribe(values => {
-      if (values.type == 'DENTAL_OPTICAL') {
+      if (values.mode.startsWith('CREATE')) {
         this.departments = values.departments.filter(department => department.name == "Dental" || department.name == "Optical")
-      } else if (values.type = 'INPATIENT_OUTPATIENT') {
+      } else {
         this.departments = values.departments;
       }
     });
@@ -60,14 +59,14 @@ export class PhysicianComponent implements OnInit {
       }
     });
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
-    
+
     this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
     setTimeout(() => {
       const category = this.selectedCategory;
       const department = this.selectedDepartment;
       this.selectedDepartment = '1';
       this.selectedCategory = '-1';
-      setTimeout(() => {this.selectedDepartment = department; this.selectedCategory = category;}, 500);
+      setTimeout(() => { this.selectedDepartment = department; this.selectedCategory = category; }, 500);
     }, 500);
   }
 
@@ -79,7 +78,6 @@ export class PhysicianComponent implements OnInit {
   }
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
-    this.departmentEditable = allowEdit && this.pageType != 'DENTAL_OPTICAL';
     if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == '')))
       this.physicianNameController.enable();
     else
@@ -107,6 +105,14 @@ export class PhysicianComponent implements OnInit {
         this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.selectedCategory }));
         break;
       case 'department':
+        const dental = this.departments.find(department => department.name == "Dental");
+        const optical = this.departments.find(department => department.name == "Optical");
+        const pharmacy = this.departments.find(department => department.name == "Pharmacy");
+        if ((dental != null && this.selectedDepartment == dental.departmentId) || (optical != null && this.selectedDepartment == optical.departmentId) || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
+          this.store.dispatch(updatePageType({ pageType: 'DENTAL_OPTICAL' }));
+        } else {
+          this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }))
+        }
         this.store.dispatch(updateDepartment({ department: this.selectedDepartment }));
         break;
     }

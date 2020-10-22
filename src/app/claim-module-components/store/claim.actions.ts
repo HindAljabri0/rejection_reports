@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Diagnosis } from '../models/diagnosis.model';
 import { Claim } from '../models/claim.model';
 import { Period } from '../models/period.type';
-import { FieldError } from './claim.reducer';
+import { ClaimPageType, FieldError } from './claim.reducer';
 import { Invoice } from '../models/invoice.model';
 import { ApprovalFormData } from '../dialogs/create-by-approval-form/create-by-approval-form.data';
 import { Service } from '../models/service.model';
@@ -50,6 +50,7 @@ export const updatePhysicianId = createAction('[ Claim Physician Info ] update P
 export const updatePhysicianName = createAction('[ Claim Physician Info ] update Physician name', props<{ physicianName: string }>());
 export const updatePhysicianCategory = createAction('[ Claim Physician Info ] update physician category', props<{ physicianCategory: string }>());
 export const updateDepartment = createAction('[ Claim Physician Info ] update department', props<{ department: string }>());
+export const updatePageType = createAction('[ Claim Physician Info ] update page type', props<{pageType:ClaimPageType}>());
 
 export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update list', props<{ list: Diagnosis[] }>());
 

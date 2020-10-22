@@ -55,9 +55,10 @@ const _claimReducer = createReducer(
         const body = response.body;
         const dentalId = '4';
         const opticalId = '50';
+        const pharmacyId = '68';
         const departmentCode = body['claim']['visitInformation']['departmentCode'];
         const caseType = body['claim']['caseInformation']['caseType'];
-        const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
+        const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId || departmentCode == pharmacyId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
         const editable = state.mode == 'EDIT' && ['Accepted', 'NotAccepted', 'Failed', 'Invalid'].includes(props.statusCode);
         return ({ ...state, claim: Claim.fromViewResponse(body['claim']), type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
@@ -129,6 +130,7 @@ const _claimReducer = createReducer(
     on(actions.updatePhysicianName, (state, { physicianName }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianName: physicianName } } } })),
     on(actions.updatePhysicianCategory, (state, { physicianCategory }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianCategory: physicianCategory } } } })),
     on(actions.updateDepartment, (state, { department }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, departmentCode: department } } })),
+    on(actions.updatePageType, (state, {pageType}) => ({...state, type: pageType})),
 
     on(actions.updateDiagnosisList, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, diagnosis: list } } } })),
 
