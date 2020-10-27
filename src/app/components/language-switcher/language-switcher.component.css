@@ -1,0 +1,20 @@
+a {
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+a:hover {
+    text-decoration: none;
+    background-color: #e6e6e6;
+}
+
+.menuItem {
+    display: grid;
+    place-items: center;
+}
+
+button:focus {
+    outline: none;
+}
