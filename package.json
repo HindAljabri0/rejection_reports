@@ -62,7 +62,6 @@
         "ng2-file-upload": "^1.4.0",
         "ngx-infinite-scroll": "^8.0.1",
         "rxjs": "~6.4.0",
-        "stepper-progress-bar": "0.0.8",
         "tslib": "^1.10.0",
         "xlsx": "^0.16.2",
         "zone.js": "~0.9.1"

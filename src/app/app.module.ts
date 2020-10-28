@@ -6,7 +6,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
 import { AppComponent } from './app.component';
-import { StepperProgressBarModule } from 'stepper-progress-bar';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
@@ -112,7 +111,6 @@ import { MainStoreEffects } from './store/mainStore.effects';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    StepperProgressBarModule,
     ReactiveFormsModule,
     FormsModule,
     ScrollingModule,
