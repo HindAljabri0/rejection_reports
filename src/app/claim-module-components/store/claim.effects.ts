@@ -197,13 +197,13 @@ export class ClaimEffects {
                 let status = '';
                 let description: string;
                 if (err instanceof HttpErrorResponse) {
-                    status = err.error['status'];
                     try {
+                        status = err.error['status'];
                         description = err.error['errors'][0]['description'];
                     } catch (error) { }
                 }
                 this.store.dispatch(setLoading({ loading: false }));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description } });
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description || 'Could not handle the request.' } });
             })
         ))
     ));

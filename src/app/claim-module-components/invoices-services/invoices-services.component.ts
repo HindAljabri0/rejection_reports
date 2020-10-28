@@ -146,6 +146,7 @@ export class InvoicesServicesComponent implements OnInit {
       invoice.service.forEach(service => {
         this.addService(index, false);
         const serviceIndex = this.controllers[index].services.length - 1;
+        this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
@@ -363,6 +364,7 @@ export class InvoicesServicesComponent implements OnInit {
     let netVat = this.calcNetVat(service, net);
     let patientShareVATamount = this.calcPatientVatRate(service);
     let newService: Service = {
+      serviceNumber: service.serviceNumber,
       serviceType: 'N/A',
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
       serviceCode: service.serviceCode.value,
