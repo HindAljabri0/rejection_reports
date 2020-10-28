@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   collapsed = true;
   userName: string;
   providerName: string;
+  providerId: string;
 
   @Input() activeLanguageLabel: string;
 
@@ -37,6 +38,7 @@ export class HeaderComponent implements OnInit {
   getUserData() {
     this.userName = this.authService.getUserName();
     this.providerName = this.authService.getProviderName();
+    this.providerId = this.authService.getProviderId();
   }
 
   get loading(): boolean {
