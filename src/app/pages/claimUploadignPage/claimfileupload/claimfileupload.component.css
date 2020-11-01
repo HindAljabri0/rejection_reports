@@ -44,8 +44,10 @@ table {
   background-repeat: no-repeat;
   background-size: 100px;
   background-position: center;
-  height: 100%;
+  min-height: 45vh;
   width: 100%;
+  display: grid;
+  place-items: center;
   /* margin: auto; */
   border: 2px dashed #70707041;
   background-color: #FAFAFA !important;
@@ -62,8 +64,10 @@ table {
   background-repeat: no-repeat;
   background-size: 100px;
   background-position: center;
-  height: 100%;
+  min-height: 45vh;
   width: 100%;
+  display: grid;
+  place-items: center;
   /* margin: auto; */
   border: 2px dashed #be363641;
   background-color: #e7313141 !important;
@@ -84,12 +88,15 @@ table {
 }
 
 .containerText {
-  font-size: 20px;
-  text-align: center;
-  margin: 15% 0px;
-  overflow-wrap: anywhere;
+  font-size: 1.2rem;
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
   padding: 10px;
   color: inherit;
+  max-width: 55vw;
 }
 
 .header {

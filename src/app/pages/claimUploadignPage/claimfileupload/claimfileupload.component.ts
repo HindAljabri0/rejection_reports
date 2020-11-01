@@ -86,10 +86,10 @@ export class ClaimfileuploadComponent implements OnInit {
           this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
           this.checkServiceCode();
         } else {
-          this.showError(`Invalid file selected. It doesn't have 'PAYERID' column`);
+          this.showError(`Invalid file selected! It doesn't have 'PAYERID' column`);
         }
       } else {
-        this.showError(`Invalid file selected.\n${validationResult}\n\n`);
+        this.showError(`Invalid file selected!\n${validationResult}\n\n`);
       }
     };
     reader.readAsBinaryString(this.currentFileUpload);

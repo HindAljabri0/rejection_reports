@@ -96,10 +96,6 @@ export class ClaimValidationService {
       if (physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)) {
         fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
-
-      if (physicianName != null && physicianName.trim().length > 0 && !this.regax.test(physicianName)) {
-        fieldErrors.push({ fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
-      }
     } else if (this.pageType = 'INPATIENT_OUTPATIENT') {
       if (physicianId == null || physicianId.trim().length == 0) {
         fieldErrors.push({ fieldName: 'physicianId' });
@@ -109,8 +105,6 @@ export class ClaimValidationService {
 
       if (physicianName == null || physicianName.trim().length == 0) {
         fieldErrors.push({ fieldName: 'physicianName' });
-      } else if (!this.regax.test(physicianName)) {
-        fieldErrors.push({ fieldName: 'physicianName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
 
       if (physicianCategory == null || physicianCategory.trim().length == 0) {
@@ -217,14 +211,10 @@ export class ClaimValidationService {
         fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`,
         error: (service.serviceCode != null && service.serviceCode.startsWith('0')) ? 'service code cannot start with zero' : null
       });
-    } else if (!this.regaxWithOutSpace.test(service.serviceCode)) {
-      fieldErrors.push({ fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
 
     if (service.serviceDescription == null || service.serviceDescription.trim().length == 0) {
       fieldErrors.push({ fieldName: `serviceDescription:${invoiceIndex}:${serviceIndex}` })
-    } else if (!this.regaxWithSym.test(service.serviceDescription)) {
-      fieldErrors.push({ fieldName: `serviceDescription:${invoiceIndex}:${serviceIndex}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), and special characters' });
     }
 
     if (service.unitPrice == null || service.unitPrice.value == null || service.unitPrice.value <= 0) {

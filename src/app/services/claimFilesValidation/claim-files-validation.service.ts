@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 })
 export class ClaimFilesValidationService {
 
-  private regex:RegExp = /^[A-Z]+$/;
+  private regex: RegExp = /^[A-Z]+$/;
 
   constructor() { }
   wrongFormattedHeaders: string[];
@@ -60,7 +60,7 @@ export class ClaimFilesValidationService {
 
   private checkAllHeaders(headers: string[]) {
     headers.forEach(header => {
-      if (!this.regex.test(header)) {
+      if (header.length > 0 && !this.regex.test(header)) {
         this.wrongFormattedHeaders.push(header);
       }
     });
@@ -86,11 +86,11 @@ export class ClaimFilesValidationService {
 
   private errorsToString(): string {
     let str = '';
-    if(this.wrongFormattedHeaders.length > 0){
-      str = `The following headers format is invalid: [${this.wrongFormattedHeaders.toString()}]\nThey Should be upper case letters with no spaces, numbers, or special characters.\n`;
+    if (this.wrongFormattedHeaders.length > 0) {
+      str = `- The format for the following header is invalid: [${this.wrongFormattedHeaders.toString()}]\nThey Should be upper case letters with no spaces, numbers, or special characters.\n`;
     }
     if (this.missingHeaders.length > 0) {
-      str += 'The following headers are missing: [';
+      str += '- The following headers are missing: [';
       this.missingHeaders.forEach(header => str += header.header + (header.sheet != null ? `(sheet: ${header.sheet}), ` : ', '));
       str = str.substr(0, str.length - 2) + ']';
     }
