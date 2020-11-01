@@ -57,7 +57,7 @@
                 <mat-icon>navigate_before</mat-icon>
             </button>
             <app-abstractcard
-                *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage*3+1"
+                *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage+3"
                 [clickable]="cardsClickAble" [title]="commen.statusToName(summary.value.statuses[0])"
                 [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
                 (action)="getResultsofStatus(summary.key)" style="margin: 0px 1%; width: 260px;">
