@@ -1,6 +1,6 @@
 import { UploadService } from '../../../services/claimfileuploadservice/upload.service';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SharedServices } from '../../../services/shared.services';
 
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
@@ -8,6 +8,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import * as XLSX from 'xlsx';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidation/claim-files-validation.service';
 
 type AOA = any[][];
 
@@ -19,7 +20,8 @@ type AOA = any[][];
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
   constructor(public uploadService: UploadService, public common: SharedServices,
-    private dialogService: DialogService, private adminService: AdminService) { }
+    private dialogService: DialogService, private adminService: AdminService,
+    private fileValidationService: ClaimFilesValidationService) { }
 
   ngOnInit(): void {
   }
@@ -62,40 +64,44 @@ export class ClaimfileuploadComponent implements OnInit {
       /* read workbook */
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-
-      /* grab first sheet */
-      let ws: XLSX.WorkSheet;
-      if (wb.Sheets.hasOwnProperty('GenInfo'))
-        ws = wb.Sheets['GenInfo'];
-      else {
-        ws = wb.Sheets[wb.SheetNames[0]];
+      let validationResult: string;
+      try {
+        validationResult = this.fileValidationService.validateHeaders(wb);
+      } catch (error) {
+        this.showError(error);
       }
+      if (validationResult.length == 0) {
+        /* grab first sheet */
+        let ws: XLSX.WorkSheet;
+        if (wb.Sheets.hasOwnProperty('GenInfo'))
+          ws = wb.Sheets['GenInfo'];
+        else {
+          ws = wb.Sheets[wb.SheetNames[0]];
+        }
 
-      /* save data */
-      let data = <AOA>(XLSX.utils.sheet_to_json(ws));
-      if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
-        data.map(row => this.payerIdsFromCurrentFIle.push(row['PAYERID']));
-        this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
-        this.checkServiceCode();
+        /* save data */
+        let data = <AOA>(XLSX.utils.sheet_to_json(ws));
+        if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
+          data.map(row => this.payerIdsFromCurrentFIle.push(row['PAYERID']));
+          this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
+          this.checkServiceCode();
+        } else {
+          this.showError(`Invalid file selected. It doesn't have 'PAYERID' column`);
+        }
       } else {
-        this.currentFileUpload = null;
-        this.uploadContainerClass = 'uploadContainerErrorClass';
-        this.error = `Invalid file selected, it doesn't have 'PAYERID' column`;
-        this.common.loadingChanged.next(false);
+        this.showError(`Invalid file selected. ${validationResult}`);
       }
-
     };
     reader.readAsBinaryString(this.currentFileUpload);
   }
 
   checkfile() {
-    const validExts = new Array('.xlsx', '.xls', '.csv');
+    const validExts = new Array('.xlsx', '.csv');
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
-      this.uploadContainerClass = 'uploadContainerErrorClass';
-      this.error = 'Invalid file selected, valid files are of ' +
-        validExts.toString() + ' types.';
+      this.showError('Invalid file selected, valid files are of ' +
+      validExts.toString() + ' types.');
       return false;
     } else {
       this.uploadContainerClass = 'uploadfilecontainer';
@@ -222,6 +228,13 @@ export class ClaimfileuploadComponent implements OnInit {
 
   onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
+  }
+
+  showError(error: string) {
+    this.currentFileUpload = null;
+    this.uploadContainerClass = 'uploadContainerErrorClass';
+    this.error = error;
+    this.common.loadingChanged.next(false);
   }
 
 

@@ -1,15 +1,14 @@
-
-table{
+table {
   width: 100%;
   align-items: center;
   text-align: center;
 }
 
-.payerContiner{
+.payerContiner {
   margin: 0px 15px 10px 5px;
 }
 
-.progressContiner{
+.progressContiner {
   height: 100%;
   width: 20%;
   margin: 0px 10px 0px 5px;
@@ -17,7 +16,8 @@ table{
   display: flex;
   background: white;
 }
-.stepperProgressBar{
+
+.stepperProgressBar {
   height: 100%;
   width: 100%;
   transform: translateX(-30px);
@@ -26,18 +26,17 @@ table{
   /* position: absolute; */
 }
 
-.dragAndDropContainer{
+.dragAndDropContainer {
   background-color: #FAFAFA;
   padding: 15px;
   width: 100%;
   height: 100%;
 }
 
-.center{
+.center {
   width: 50%;
   padding: 10%;
   margin: auto;
-
 }
 
 .uploadfilecontainer {
@@ -53,31 +52,30 @@ table{
   color: #707070;
   align-content: center;
   /* border-radius: 10px; */
-  
 }
-.containerFileIcon{
+
+.containerFileIcon {
   margin-top: 50px;
 }
 
-
-.uploadContainerErrorClass{
+.uploadContainerErrorClass {
   background-repeat: no-repeat;
   background-size: 100px;
   background-position: center;
   height: 100%;
   width: 100%;
   /* margin: auto; */
-  border: 2px dashed #be363641 ;
+  border: 2px dashed #be363641;
   background-color: #e7313141 !important;
   color: #be3636;
   /* border-radius: 10px; */
 }
+
 .uploadContainerErrorClass:hover {
   cursor: pointer;
   background-color: #db8282 !important;
   opacity: 0.8;
 }
-
 
 .uploadfilecontainer:hover {
   cursor: pointer;
@@ -88,7 +86,9 @@ table{
 .containerText {
   font-size: 20px;
   text-align: center;
-  margin: 15% 0px;;
+  margin: 15% 0px;
+  overflow-wrap: anywhere;
+  padding: 10px;
 }
 
 .header {
