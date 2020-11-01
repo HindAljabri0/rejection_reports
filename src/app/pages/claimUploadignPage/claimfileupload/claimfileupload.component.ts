@@ -89,7 +89,7 @@ export class ClaimfileuploadComponent implements OnInit {
           this.showError(`Invalid file selected. It doesn't have 'PAYERID' column`);
         }
       } else {
-        this.showError(`Invalid file selected. ${validationResult}`);
+        this.showError(`Invalid file selected.\n${validationResult}\n\n`);
       }
     };
     reader.readAsBinaryString(this.currentFileUpload);
@@ -101,7 +101,7 @@ export class ClaimfileuploadComponent implements OnInit {
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
       this.showError('Invalid file selected, valid files are of ' +
-      validExts.toString() + ' types.');
+        validExts.toString() + ' types.');
       return false;
     } else {
       this.uploadContainerClass = 'uploadfilecontainer';

@@ -89,6 +89,7 @@ table {
   margin: 15% 0px;
   overflow-wrap: anywhere;
   padding: 10px;
+  color: inherit;
 }
 
 .header {
