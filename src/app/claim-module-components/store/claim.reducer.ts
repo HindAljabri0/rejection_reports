@@ -173,10 +173,10 @@ const _claimReducer = createReducer(
             gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
             net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
             netVATamount: { value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            netVATrate: { value: invoices.map(invoice => invoice.invoiceGDPN.netVATrate.value).reduce((pre, cur) => pre + cur), type: 'PERCENT' },
+            netVATrate: null,
             patientShare: { value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
             patientShareVATamount: { value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            patientShareVATrate: { value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATrate.value).reduce((pre, cur) => pre + cur), type: 'PERCENT' },
+            patientShareVATrate: null,
         };
         return ({ ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN } });
     }),
