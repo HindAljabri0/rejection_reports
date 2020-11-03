@@ -83,6 +83,23 @@ footer {
     padding: 15px;
 }
 
+.moveToLeftButton{
+    grid-column: 155;
+    grid-row: 1;
+    margin-bottom: 25px;
+    background-color: #7EEA8B;
+    color: white;
+    box-shadow: 0 0 0 3pt white;
+}
+
+.moveToRightButton{
+    grid-column: 155;
+    grid-row: 2;
+    background-color: #C24040;
+    color: white;
+    box-shadow: 0 0 0 3pt white;
+}
+
 button:focus {
     outline: unset;
 }

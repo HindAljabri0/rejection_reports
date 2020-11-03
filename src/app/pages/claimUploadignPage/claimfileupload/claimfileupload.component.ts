@@ -9,8 +9,6 @@ import * as XLSX from 'xlsx';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimFilesValidationService } from 'src/app/services/claimFilesValidation/claim-files-validation.service';
-import { Store } from '@ngrx/store';
-import { showUploadAttachmentsDialog, toggleAttachmentUpload } from '../store/uploading.actions';
 
 type AOA = any[][];
 
@@ -23,8 +21,7 @@ export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
   constructor(public uploadService: UploadService, public common: SharedServices,
     private dialogService: DialogService, private adminService: AdminService,
-    private fileValidationService: ClaimFilesValidationService,
-    private store: Store) { }
+    private fileValidationService: ClaimFilesValidationService) { }
 
   ngOnInit(): void {
   }
@@ -158,7 +155,6 @@ export class ClaimfileuploadComponent implements OnInit {
           count--;
           if (count <= 0) {
             this.common.loadingChanged.next(false);
-            this.store.dispatch(showUploadAttachmentsDialog());
           }
         }
       }, errorEvent => {
@@ -167,7 +163,6 @@ export class ClaimfileuploadComponent implements OnInit {
           this.priceListDoesNotExistMessages.push(payerId);
           if (count <= 0) {
             this.common.loadingChanged.next(false);
-            this.store.dispatch(showUploadAttachmentsDialog());
           }
         }
       });
@@ -229,7 +224,6 @@ export class ClaimfileuploadComponent implements OnInit {
     this.currentFileUpload = null;
     this.selectedFiles = null;
     this.priceListDoesNotExistMessages = [];
-    this.store.dispatch(toggleAttachmentUpload({ isUploadingAttachments: false }));
   }
 
   async delay(ms: number) {

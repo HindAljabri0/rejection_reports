@@ -1,9 +1,10 @@
-app-abstractcard{
+app-abstractcard {
     width: 280px;
     display: inline-block;
     margin: 0px 5px;
 }
-.dashboardNumbers{
+
+.dashboardNumbers {
     font-size: 15px;
     font-weight: 700;
 }
@@ -12,59 +13,65 @@ table {
     margin: 0px;
     width: 100%;
 }
-table th{
+
+table th {
     font-weight: 400;
 }
-table td{
+
+table td {
     width: 10%;
 }
-table td:nth-child(1){
+
+table td:nth-child(1) {
     width: 4%;
 }
-app-abstractcard table td{
+
+app-abstractcard table td {
     width: fit-content;
 }
-.currency{
+
+.currency {
     font: Bold 10px Roboto;
     letter-spacing: 0;
     color: #3060AA;
     opacity: 0.25;
 }
 
-.cardsSummary{
+.cardsSummary {
     width: max-content;
     display: flex;
 }
 
-.viewPort{
+.viewPort {
     max-width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     margin-bottom: 30px;
 }
 
-.downloadIcon:hover{
+.downloadIcon:hover {
     cursor: pointer;
 }
 
-mat-paginator{
+mat-paginator {
     margin-bottom: 10px;
     margin-left: auto;
 }
-mat-expansion-panel{
-    box-shadow: 0 2px 1px -1px rgb(233, 233, 233), 
-                0 1px 1px 0 rgb(233, 233, 233), 
-                0 1px 3px 0 rgb(233, 233, 233) !important;
+
+mat-expansion-panel {
+    box-shadow: 0 2px 1px -1px rgb(233, 233, 233), 0 1px 1px 0 rgb(233, 233, 233), 0 1px 3px 0 rgb(233, 233, 233) !important;
 }
-mat-expansion-panel:nth-child(odd){
+
+mat-expansion-panel:nth-child(odd) {
     background-color: #EDF4FF;
 }
-mat-expansion-panel:hover{
+
+mat-expansion-panel:hover {
     cursor: pointer;
     background-color: #c7ddff;
 }
 
-.paginatorContainer{
+.paginatorContainer {
     display: flex;
     align-items: center;
     background-color: white;
@@ -77,17 +84,17 @@ mat-expansion-panel:hover{
     margin-left: 30px;
     width: 50%;
 }
-  
+
 .label {
     margin: 0 4px;
 }
 
-.errorCard{
+.errorCard {
     background-color: #E988AD;
-    color:white;
+    color: white;
 }
 
-.errorText{
+.errorText {
     border: 1px solid #8f0000;
     border-radius: 6px;
     padding: 10px;
@@ -97,7 +104,8 @@ mat-expansion-panel:hover{
     color: #8f0000;
     font-size: large;
 }
-.errorText::after{
+
+.errorText::after {
     content: '!';
     float: right;
     font-weight: 600;
@@ -112,12 +120,13 @@ mat-expansion-panel:hover{
     border-top-right-radius: 5px;
     padding: 10px;
     margin-top: 10px;
-    height: 40px;
 }
+
 .body {
     padding: 10px;
     background-color: #f0eeee;
 }
+
 .footer {
     display: flex;
     color: #3060AA;
@@ -128,38 +137,53 @@ mat-expansion-panel:hover{
     height: 60px;
     align-items: center;
 }
-.claimsHeader td, .claims td{
+
+.claimsHeader td, .claims td {
     padding: 10px;
 }
 
-.claimsHeader{
+.claimsHeader {
     color: #3060AA;
     background-color: #c8dcfc;
     font-size: 13px;
     font-weight: 500;
 }
 
-.claims{
- font-size: 11px;
+.claims {
+    font-size: 11px;
 }
 
-.claims:nth-child(even){
-    background-color: white;
-}
-.claims:nth-child(odd){
-    background-color: #e0eafa;
-}
-
-.claims:nth-child(even) button:hover{
-    background-color: #e0eafa;
-}
-.claims:nth-child(odd) button:hover{
+.claims:nth-child(even) {
     background-color: white;
 }
 
-.statusDot::before{
+.claims:nth-child(odd) {
+    background-color: #e0eafa;
+}
+
+.claims:nth-child(even) button:hover {
+    background-color: #e0eafa;
+}
+
+.claims:nth-child(odd) button:hover {
+    background-color: white;
+}
+
+.statusDot::before {
     content: '.';
     font-size: 47px;
     font-weight: 700;
     line-height: 0px;
+}
+
+.switchControlButton {
+    color: #3061aa63;
+}
+
+.switchControlButton.active {
+    color: #3060AA;
+}
+
+button:focus {
+    outline: unset;
 }

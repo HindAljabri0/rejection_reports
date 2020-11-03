@@ -3,8 +3,6 @@ import { UploadService } from '../../services/claimfileuploadservice/upload.serv
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
-import { Store } from '@ngrx/store';
-import { getIsUploadingAttachments } from './store/uploading.reducer';
 
 @Component({
   selector: 'app-claimpage',
@@ -14,20 +12,16 @@ import { getIsUploadingAttachments } from './store/uploading.reducer';
 export class ClaimpageComponent implements OnInit {
 
   uploadingObs: boolean = false;
-  isUploadingAttachments: boolean = false;
   constructor(
     private uploadService: UploadService,
     public location: Location,
     private commen: SharedServices,
-    private store: Store
   ) {
     this.uploadService.uploadingObs.subscribe(value => this.uploadingObs = value);
   }
 
   ngOnInit() {
-    this.store.select(getIsUploadingAttachments).subscribe(isUploading => this.isUploadingAttachments = isUploading);
   }
-
 
 
   get summary(): UploadSummary {

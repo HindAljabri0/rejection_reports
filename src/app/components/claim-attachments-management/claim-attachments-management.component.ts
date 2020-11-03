@@ -7,7 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClaimAttachmentsManagementComponent implements OnInit {
 
-  confirmButtonText:string = "Upload";
+  confirmButtonText: string = "Upload";
+
+  currentPage: number = 0;
+  maxPages: number = 0;
+
+  claims: { id: number, referenceNumber: string, memberId: string }[] = [];
+
+  attachments: { file: File, type?: string, isSelected: boolean }[] = [];
+
+  selectedClaim: number;
+
+  selectedClaimAssignedAttachments: { attachment, type: string }[] = [];
 
   constructor() { }
 

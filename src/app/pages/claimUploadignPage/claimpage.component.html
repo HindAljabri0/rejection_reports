@@ -5,8 +5,7 @@
     </div>
     <div class="body">
         <app-claimsummary></app-claimsummary>
-        <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined && !isUploadingAttachments">
+        <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined">
         </app-claimfileupload>
-        <app-claim-attachments-management *ngIf="isUploadingAttachments"></app-claim-attachments-management>
     </div>
 </div>
