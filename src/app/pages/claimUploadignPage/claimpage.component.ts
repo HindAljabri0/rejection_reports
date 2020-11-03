@@ -3,7 +3,8 @@ import { UploadService } from '../../services/claimfileuploadservice/upload.serv
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { getIsUploadingAttachments } from './store/uploading.reducer';
 
 @Component({
   selector: 'app-claimpage',
@@ -12,18 +13,25 @@ import { Router } from '@angular/router';
 })
 export class ClaimpageComponent implements OnInit {
 
-  uploadingObs:boolean = false;
-  constructor(private uploadService:UploadService, public location: Location, private commen:SharedServices, private router: Router) {
+  uploadingObs: boolean = false;
+  isUploadingAttachments: boolean = false;
+  constructor(
+    private uploadService: UploadService,
+    public location: Location,
+    private commen: SharedServices,
+    private store: Store
+  ) {
     this.uploadService.uploadingObs.subscribe(value => this.uploadingObs = value);
   }
 
   ngOnInit() {
+    this.store.select(getIsUploadingAttachments).subscribe(isUploading => this.isUploadingAttachments = isUploading);
   }
 
-  
+
 
   get summary(): UploadSummary {
-    if(this.location.path().includes("summary"))
+    if (this.location.path().includes("summary"))
       return this.uploadService.summary;
     else
       return new UploadSummary();
@@ -34,14 +42,14 @@ export class ClaimpageComponent implements OnInit {
   }
 
   get summaryDate(): string {
-    if(this.summary.uploadSummaryID != undefined){
-      if(!(this.summary.uploadDate instanceof Date))
+    if (this.summary.uploadSummaryID != undefined) {
+      if (!(this.summary.uploadDate instanceof Date))
         this.summary.uploadDate = new Date(this.summary.uploadDate);
       return this.summary.uploadDate.toLocaleDateString();
     } else return '';
   }
 
-  get providerId(){
+  get providerId() {
     return this.commen.providerId;
   }
 }

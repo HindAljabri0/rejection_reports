@@ -1,0 +1,88 @@
+.parent {
+    position: relative;
+    top: 0px;
+    right: 0px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 15px;
+}
+
+header {
+    background-color: white;
+    color: #3D6AAF;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    display: flex;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 5px;
+    background-color: white;
+    max-height: 55vh;
+    height: 55vh;
+}
+
+section {
+    background-color: #F0EEEE;
+}
+
+.leftSection {
+    grid-column: 1 / span 4;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.pageControl {
+    display: grid;
+    place-items: center;
+    background-color: #D5E4FC;
+    color: #3D6AAF;
+    padding: 10px;
+}
+
+.middleSection {
+    grid-column: 5 / span 4;
+}
+
+.rightSection {
+    grid-column: 9 / span 4;
+}
+
+table {
+    width: 100%;
+}
+
+thead {
+    background-color: #D5E4FC;
+    color: #3D6AAF;
+}
+
+section th, section td {
+    padding: 10px;
+}
+
+footer {
+    display: grid;
+    background-color: white;
+    place-items: end;
+    padding: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.floatingButtons {
+    position: relative;
+    bottom: 40vh;
+    right: 0px;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(230, 1fr);
+    padding: 15px;
+}
+
+button:focus {
+    outline: unset;
+}

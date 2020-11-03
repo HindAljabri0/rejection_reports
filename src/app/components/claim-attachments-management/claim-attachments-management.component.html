@@ -1,0 +1,76 @@
+<div class="wrapper" style="height: 72vh;">
+    <div class="parent">
+        <header>
+            <mat-icon style="margin-right: 10px;">settings</mat-icon>
+            <h5>Attachments Management</h5>
+        </header>
+        <main>
+            <section class="leftSection">
+                <div></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Claim Ref. No.</th>
+                            <th colspan="2">Member ID</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="pageControl">
+                    <div style="display: flex;">
+                        <button mat-icon-button>
+                            <mat-icon>skip_previous</mat-icon>
+                        </button>
+                        <button mat-icon-button>
+                            <mat-icon>keyboard_arrow_left</mat-icon>
+                        </button>
+
+                        <button mat-icon-button>
+                            <mat-icon>keyboard_arrow_right</mat-icon>
+                        </button>
+                        <button mat-icon-button>
+                            <mat-icon>skip_next</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section class="middleSection">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colspan="3">Assigned Attachments</th>
+                        </tr>
+                    </thead>
+                </table>
+            </section>
+            <section class="rightSection">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colspan="3">Unassigned Attachments</th>
+                        </tr>
+                    </thead>
+                </table>
+                <button mat-fab color="primary" style="position: absolute; bottom: 90px; right: 30px;">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </section>
+        </main>
+        <footer>
+            <div style="display: flex;">
+                <button mat-flat-button>Cancel</button>
+                <button mat-raised-button color="primary">{{confirmButtonText}}</button>
+            </div>
+        </footer>
+    </div>
+    <div class="floatingButtons">
+        <button mat-mini-fab
+            style="grid-column: 155; grid-row: 1; margin-bottom: 25px; background-color: #7EEA8B; color: white">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-mini-fab style="grid-column: 155; grid-row: 2; background-color: #C24040; color: white">
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+</div>

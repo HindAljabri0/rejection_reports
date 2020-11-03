@@ -61,6 +61,7 @@ import { mainReducer } from './store/mainStore.reducer';
 import { MainStoreEffects } from './store/mainStore.effects';
 import { uploadingReducer } from './pages/claimUploadignPage/store/uploading.reducer';
 import { UploadingEffects } from './pages/claimUploadignPage/store/uploading.effects';
+import { ClaimAttachmentsManagementComponent } from './components/claim-attachments-management/claim-attachments-management.component';
 
 
 @NgModule({
@@ -104,6 +105,7 @@ import { UploadingEffects } from './pages/claimUploadignPage/store/uploading.eff
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
     RejectionCardComponent,
+    ClaimAttachmentsManagementComponent,
   ],
   imports: [
     AppRoutingModule,

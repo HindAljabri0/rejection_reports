@@ -1,4 +1,4 @@
-import { createFeatureSelector, createReducer, on } from '@ngrx/store'
+import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store'
 import { toggleAttachmentUpload } from './uploading.actions';
 
 
@@ -22,3 +22,4 @@ export function uploadingReducer(state, action) {
 }
 
 export const uploadingStateSelector = createFeatureSelector<UploadingState>('uploadingState');
+export const getIsUploadingAttachments = createSelector(uploadingStateSelector, (state) => state.isUploadingAttachments);
