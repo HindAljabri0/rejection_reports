@@ -8,7 +8,8 @@
                 <table style="text-align: center; margin: 5px 0px 150px 0px;">
                     <tbody>
                         <tr>
-                            <td><img [src]="currentFileUpload.name.endsWith('.csv')? 'assets/csv.svg':'assets/xls.svg'" alt="{{currentFileUpload.name}}"></td>
+                            <td><img [src]="currentFileUpload.name.endsWith('.csv')? 'assets/csv.svg':'assets/xls.svg'"
+                                    alt="{{currentFileUpload.name}}"></td>
                         </tr>
                         <tr>
                             <td style="padding: 20px; font-size: large; font-weight: 600;">{{currentFileUpload.name}}
@@ -16,7 +17,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div *ngIf="!uploading" style="width: 100%; text-align: center; margin-top: 10px">
+                <div *ngIf="!uploading && !loading" style="width: 100%; text-align: center; margin-top: 10px">
                     <button mat-button (click)="cancel()"
                         style="font-size: large;  padding: 5px 20px;  margin-right: 10px;">Cancel</button>
                     <button mat-raised-button color="primary" (click)="upload()"
@@ -26,7 +27,8 @@
             </div>
             <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()"
                 appDragdrop (onFileDropped)="selectFile($event)">
-                <pre *ngIf="currentFileUpload == undefined" class="containerText">{{error}}<div style="text-align: center;">Click to choose a file or drag an excel or csv file here.</div></pre>
+                <pre *ngIf="currentFileUpload == undefined"
+                    class="containerText">{{error}}<div style="text-align: center;">Click to choose a file or drag an excel or csv file here.</div></pre>
                 <input hidden type="file" #fileInput id="file" onclick="this.value = null"
                     (change)="selectFile($event.target.files)"
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />

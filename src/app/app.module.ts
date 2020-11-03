@@ -59,6 +59,8 @@ import { RejectionCardComponent } from './pages/dashboard/components/rejection-c
 import { ChartsModule, ThemeService } from 'ng2-charts';
 import { mainReducer } from './store/mainStore.reducer';
 import { MainStoreEffects } from './store/mainStore.effects';
+import { uploadingReducer } from './pages/claimUploadignPage/store/uploading.reducer';
+import { UploadingEffects } from './pages/claimUploadignPage/store/uploading.effects';
 
 
 @NgModule({
@@ -105,8 +107,8 @@ import { MainStoreEffects } from './store/mainStore.effects';
   ],
   imports: [
     AppRoutingModule,
-    StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer }),
-    EffectsModule.forRoot([DashboardEffects, MainStoreEffects]),
+    StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer, uploadingState: uploadingReducer }),
+    EffectsModule.forRoot([DashboardEffects, MainStoreEffects, UploadingEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserModule,
     HttpClientModule,

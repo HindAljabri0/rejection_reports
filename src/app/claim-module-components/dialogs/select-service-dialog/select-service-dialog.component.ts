@@ -14,16 +14,16 @@ import { addRetrievedServices } from '../../store/claim.actions';
 })
 export class SelectServiceDialogComponent implements OnInit {
 
-  isSelectingOne:boolean;
+  isSelectingOne: boolean;
 
-  retrievedServices:{service:Service, decision:ServiceDecision, used:boolean}[] = [];
+  retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[] = [];
 
-  selectedServices: number [] = [];
+  selectedServices: number[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<SelectServiceDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:SelectServiceDialogData,
-    private store:Store
+    @Inject(MAT_DIALOG_DATA) public data: SelectServiceDialogData,
+    private store: Store
   ) { }
 
   ngOnInit() {
@@ -32,17 +32,17 @@ export class SelectServiceDialogComponent implements OnInit {
     this.store.select(getRetrievedServices).subscribe(services => this.retrievedServices = services);
   }
 
-  selectAll(checked:boolean){
-    if(checked){
+  selectAll(checked: boolean) {
+    if (checked) {
       this.selectedServices = this.retrievedServices.map((s, i) => i);
     } else {
       this.selectedServices = [];
     }
   }
 
-  onServiceCLicked(index:number){
-    if(!this.isSelectingOne){
-      if(this.selectedServices.includes(index)){
+  onServiceCLicked(index: number) {
+    if (!this.isSelectingOne) {
+      if (this.selectedServices.includes(index)) {
         this.selectedServices = this.selectedServices.filter(i => i != index);
       } else {
         this.selectedServices.push(index);
@@ -57,8 +57,8 @@ export class SelectServiceDialogComponent implements OnInit {
     }
   }
 
-  onAddClicked(){
-    if(this.selectedServices.length != 0){
+  onAddClicked() {
+    if (this.selectedServices.length != 0) {
       this.store.dispatch(addRetrievedServices({
         invoiceIndex: this.data.invoiceIndex,
         services: [...this.retrievedServices.filter((s, i) => this.selectedServices.includes(i))]
@@ -67,11 +67,11 @@ export class SelectServiceDialogComponent implements OnInit {
     }
   }
 
-  onCancelClicked(){
+  onCancelClicked() {
     this.dialogRef.close();
   }
 
-  isChecked(i:number){
+  isChecked(i: number) {
     return this.selectedServices.includes(i);
   }
 }

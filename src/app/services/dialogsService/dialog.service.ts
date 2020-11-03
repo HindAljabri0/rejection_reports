@@ -26,11 +26,11 @@ export class DialogService {
     private searchService: SearchService,
     private reportService: ReportsService) { }
 
-  openMessageDialog(dialogData: MessageDialogData): Observable<any> {
+  openMessageDialog(dialogData: MessageDialogData, width?:string, height?:string): Observable<any> {
     this.closeAll();
     const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: '35%',
-      height: '30%',
+      width: width || '35%',
+      height: height || '30%',
       panelClass: dialogData.isError ? 'dialogError' : (!dialogData.withButtons? 'dialogSuccess' : ''),
       data: dialogData,
     });
