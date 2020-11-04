@@ -61,6 +61,7 @@ import { mainReducer } from './store/mainStore.reducer';
 import { MainStoreEffects } from './store/mainStore.effects';
 import { ClaimAttachmentsManagementComponent } from './components/claim-attachments-management/claim-attachments-management.component';
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
+import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 
 
 @NgModule({
@@ -109,7 +110,7 @@ import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
   imports: [
     AppRoutingModule,
     StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer, searchState: searchReducer }),
-    EffectsModule.forRoot([DashboardEffects, MainStoreEffects]),
+    EffectsModule.forRoot([DashboardEffects, MainStoreEffects, SearchEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserModule,
     HttpClientModule,

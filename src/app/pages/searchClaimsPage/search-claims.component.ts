@@ -19,6 +19,8 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
+import { Store } from '@ngrx/store';
+import { setSearchCriteria, storeClaims } from './store/search.actions';
 
 @Component({
   selector: 'app-search-claims',
@@ -28,7 +30,7 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
   file: File;
 
-  isManagingAttachments:boolean = false;
+  isManagingAttachments: boolean = false;
 
   constructor(public location: Location, public submittionService: ClaimSubmittionService,
     public commen: SharedServices, public routeActive: ActivatedRoute,
@@ -36,7 +38,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private dialogService: DialogService,
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
-    private notificationService: NotificationsService) {
+    private notificationService: NotificationsService,
+    private store: Store) {
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -152,6 +155,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.claimRefNo = value.claimRefNo;
       this.memberId = value.memberId;
       this.editMode = value.editMode;
+      this.store.dispatch(setSearchCriteria({
+        batchId: this.batchId,
+        fromDate: this.from,
+        memberId: this.memberId,
+        payerId: this.payerId,
+        provClaimNum: this.claimRefNo,
+        toDate: this.to,
+        uploadId: this.uploadId,
+        statuses: ['All']
+      }));
     }).unsubscribe();
     if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '') && (this.uploadId == null || this.uploadId == '') && (this.claimRefNo == null || this.claimRefNo == '') && (this.memberId == null || this.memberId == '')) {
       this.commen.loadingChanged.next(false);
@@ -249,6 +262,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           this.claims = this.searchResult.content;
+          this.store.dispatch(setSearchCriteria({statuses: this.summaries[key].statuses}));
+          this.store.dispatch(storeClaims({ claims: this.claims, currentPage: this.searchResult.number, maxPages: this.searchResult.totalPages, pageSize: this.searchResult.size }));
           this.selectedClaimsCountOfPage = 0;
           for (let claim of this.claims) {
             if (this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCountOfPage++;
@@ -547,12 +562,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             '', 'Some of the selected claims are already checked or are not ready for submission.', true)
           );
         } else if ((errorEvent.status / 100).toFixed() == "5") {
-          if(errorEvent.error['errors'] != null)
-          {
+          if (errorEvent.error['errors'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
 
-          }else
-          this.dialogService.openMessageDialog(new MessageDialogData('', "Could not reach the server at the moment. Please try again leter.", true));
+          } else
+            this.dialogService.openMessageDialog(new MessageDialogData('', "Could not reach the server at the moment. Please try again leter.", true));
         }
       }
     })

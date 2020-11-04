@@ -30,7 +30,7 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  saveChangesToExistingClaim(claim: Claim, providerId: string, claimId: string){
+  saveChangesToExistingClaim(claim: Claim, providerId: string, claimId: string) {
     const requestUrl = `/providers/${providerId}/${claimId}`;
     let body: any = { ...claim };
     claim.caseInformation.caseType
@@ -44,7 +44,13 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  viewClaim(providerId: string, claimId: string){
+  getAttachmentsOfClaim(providerId: string, claimId: string) {
+    const requestUrl = `/providers/${providerId}/attach/${claimId}`;
+    const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);
+    return this.httpClient.request<Array<{ attachmentfile, filename: string, filetype: string }>>(request);
+  }
+
+  viewClaim(providerId: string, claimId: string) {
     const requestUrl = `/providers/${providerId}/${claimId}`;
     const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);
     return this.httpClient.request(request);

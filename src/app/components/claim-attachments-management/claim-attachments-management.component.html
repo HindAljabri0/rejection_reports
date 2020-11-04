@@ -10,10 +10,19 @@
                 <table>
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Claim Ref. No.</th>
                             <th colspan="2">Member ID</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr *ngFor="let claim of claims" (click)="onClaimClicked(claim.id)">
+                            <td><mat-radio-button color="primary" [checked]="selectedClaim == claim.id"></mat-radio-button></td>
+                            <td>{{claim.referenceNumber}}</td>
+                            <td>{{claim.memberId}}</td>
+                            <td><mat-icon *ngIf="claim.hasAttachments">attach_file</mat-icon></td>
+                        </tr>
+                    </tbody>
                 </table>
                 <div class="pageControl">
                     <div style="display: flex;">
@@ -41,6 +50,14 @@
                             <th colspan="3">Assigned Attachments</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr *ngFor="let attachment of selectedClaimAssignedAttachments">
+                            <td><mat-checkbox></mat-checkbox></td>
+                            <td>{{beautifyFileName(attachment.name)}}</td>
+                            <td>{{attachment.type}}</td>
+                            <td><mat-icon>visibility</mat-icon></td>
+                        </tr>
+                    </tbody>
                 </table>
             </section>
             <section class="rightSection">

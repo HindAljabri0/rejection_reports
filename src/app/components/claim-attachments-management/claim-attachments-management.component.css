@@ -60,6 +60,18 @@ thead {
     color: #3D6AAF;
 }
 
+section tbody tr {
+    cursor: pointer;
+}
+
+section tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+section tbody tr:nth-child(even) {
+    background-color: #e0eafa;
+}
+
 section th, section td {
     padding: 10px;
 }
@@ -83,7 +95,7 @@ footer {
     padding: 15px;
 }
 
-.moveToLeftButton{
+.moveToLeftButton {
     grid-column: 155;
     grid-row: 1;
     margin-bottom: 25px;
@@ -92,7 +104,7 @@ footer {
     box-shadow: 0 0 0 3pt white;
 }
 
-.moveToRightButton{
+.moveToRightButton {
     grid-column: 155;
     grid-row: 2;
     background-color: #C24040;
