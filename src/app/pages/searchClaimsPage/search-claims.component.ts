@@ -2,7 +2,7 @@ import { AttachmentService } from './../../services/attachmentService/attachment
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
 import { HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
@@ -20,7 +20,8 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { Store } from '@ngrx/store';
-import { setSearchCriteria, storeClaims } from './store/search.actions';
+import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClaims } from './store/search.actions';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-search-claims',
@@ -39,7 +40,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
     private notificationService: NotificationsService,
-    private store: Store) {
+    private store: Store,
+    private actions$: Actions) {
   }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -123,6 +125,24 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.resetURL();
     });
     this.submittionErrors = new Map();
+    this.actions$.pipe(
+      ofType(requestClaimsPage),
+    ).subscribe(data => {
+      switch (data.action) {
+        case SearchPaginationAction.firstPage:
+          this.goToFirstPage();
+          break;
+        case SearchPaginationAction.previousPage:
+          this.goToPrePage()
+          break;
+        case SearchPaginationAction.nextPage:
+          this.goToNextPage()
+          break;
+        case SearchPaginationAction.lastPage:
+          this.goToLastPage()
+          break;
+      }
+    });
   }
 
   ngAfterViewChecked() {
@@ -254,15 +274,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.detailActionText = null;
       this.detailSubActionText = null;
     }
-    this.searchResult = null;
     this.claims = new Array();
-
+    this.store.dispatch(storeClaims({ claims: this.claims, currentPage: page, maxPages: this.searchResult != null? this.searchResult.totalPages : 0, pageSize: pageSize }));
+    this.searchResult = null;
     this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           this.claims = this.searchResult.content;
-          this.store.dispatch(setSearchCriteria({statuses: this.summaries[key].statuses}));
+          this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
           this.store.dispatch(storeClaims({ claims: this.claims, currentPage: this.searchResult.number, maxPages: this.searchResult.totalPages, pageSize: this.searchResult.size }));
           this.selectedClaimsCountOfPage = 0;
           for (let claim of this.claims) {

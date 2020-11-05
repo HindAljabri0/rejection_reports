@@ -61,3 +61,4 @@ export const searchStateSelector = createFeatureSelector<SearchState>('searchSta
 export const getCurrentSearchResult = createSelector(searchStateSelector, (state) => state.claims);
 export const getAssignedAttachments = createSelector(searchStateSelector, (state) => state.attachmentManagementState.assignedAttachments);
 export const getSelectedClaimAttachments = (claimId: string) => createSelector(searchStateSelector, (state) => state.attachmentManagementState.assignedAttachments.filter(att => att.claimId == claimId));
+export const getPageInfo = createSelector(searchStateSelector, (state) => ({ currentPage: state.currentPage, maxPages: state.maxPages }));
