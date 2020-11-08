@@ -62,6 +62,7 @@ import { MainStoreEffects } from './store/mainStore.effects';
 import { ClaimAttachmentsManagementComponent } from './components/claim-attachments-management/claim-attachments-management.component';
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
+import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
 
 
 @NgModule({
@@ -106,6 +107,8 @@ import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
     TopFiveRejectionsComponent,
     RejectionCardComponent,
     ClaimAttachmentsManagementComponent,
+    ImageToolTipDirective,
+    ImageTooltipComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -157,6 +160,7 @@ import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
     NonSubmittedClaimsComponent,
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
+    ImageTooltipComponent
   ],
 })
 export class AppModule { }

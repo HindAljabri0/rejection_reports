@@ -5,7 +5,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { OverlayModule } from '@angular/cdk/overlay';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -51,7 +51,8 @@ export const MY_FORMATS = {
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatButtonToggleModule,
-    DragDropModule
+    DragDropModule,
+    OverlayModule
   ],
   providers: [
     {

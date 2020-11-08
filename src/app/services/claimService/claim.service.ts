@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
+import { AssignedAttachment } from 'src/app/pages/searchClaimsPage/store/search.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,21 @@ export class ClaimService {
     const requestUrl = `/providers/${providerId}/attach/${claimId}`;
     const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);
     return this.httpClient.request<Array<{ attachmentfile, filename: string, filetype: string }>>(request);
+  }
+
+  putAttachmentsOfClaim(providerId: string, claimId: string, attachments: AssignedAttachment[]) {
+    const requestUrl = `/providers/${providerId}/attach/${claimId}`;
+    const request = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, attachments.map(att =>
+      ({
+        attachmentid: att.attachmentId,
+        providerid: providerId,
+        filename: att.name,
+        attachmentfile: att.file,
+        filetype: att.type,
+        usercomment: null
+      }))
+    );
+    return this.httpClient.request(request);
   }
 
   viewClaim(providerId: string, claimId: string) {

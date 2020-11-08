@@ -6,8 +6,8 @@ import { of } from 'rxjs';
 import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { assignAttachmentsToClaim, requestClaimAttachments, showErrorMessage } from './search.actions';
-import { AssignedAttachment, getAssignedAttachments, getSelectedClaimAttachments } from './search.reducer';
+import { assignAttachmentsToClaim, requestClaimAttachments, saveAttachmentsChanges, sendSaveRequestForClaim, showErrorMessage, toggleAssignedAttachmentLoading } from './search.actions';
+import { AssignedAttachment, getAssignedAttachments, getClaimsWithChanges } from './search.reducer';
 
 
 
@@ -28,13 +28,38 @@ export class SearchEffects {
         ofType(requestClaimAttachments),
         withLatestFrom(this.store.select(getAssignedAttachments)),
         filter(values => values[1].every(att => att.claimId != values[0].claimId)),
-        map(values => values[0].claimId),
+        map(values => {
+            this.store.dispatch(toggleAssignedAttachmentLoading({ isLoading: true }));
+            return values[0].claimId;
+        }),
         switchMap(claimId => this.claimService.getAttachmentsOfClaim(this.sharedServices.providerId, claimId).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => assignAttachmentsToClaim({ attachments: this.mapAttachmentResponseToAssignedAttachments(response, claimId) })),
-            catchError(err => of({ type: showErrorMessage.type, error: { code: 'ATTACHMENT_REQUEST' } }))
+            catchError(err => {
+                this.store.dispatch(toggleAssignedAttachmentLoading({ isLoading: false }));
+                return of({ type: showErrorMessage.type, error: { code: 'ATTACHMENT_REQUEST' } });
+            })
         ))
     ));
+
+    onSaveClaimAttachment$ = createEffect(() => this.actions$.pipe(
+        ofType(saveAttachmentsChanges),
+        withLatestFrom(this.store.select(getClaimsWithChanges)),
+        withLatestFrom(this.store.select(getAssignedAttachments)),
+        map(data => ({ attachments: data[1].filter(att => data[0][1].includes(att.claimId)), ids: data[0][1] })),
+        map(data => data.ids.forEach(id =>
+            this.store.dispatch(sendSaveRequestForClaim({ claimId: id, attachments: data.attachments.filter(att => att.claimId == id) }))
+        ))
+    ), { dispatch: false })
+
+    sendSaveRequestForClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(sendSaveRequestForClaim),
+        switchMap(data => this.claimService.putAttachmentsOfClaim(this.sharedServices.providerId, data.claimId, data.attachments).pipe(
+            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+            map(response => {}),
+            catchError(err => of({}))
+        ))
+    ), { dispatch: false })
 
     mapAttachmentResponseToAssignedAttachments(response, claimId: string): AssignedAttachment[] {
         let results: AssignedAttachment[] = []

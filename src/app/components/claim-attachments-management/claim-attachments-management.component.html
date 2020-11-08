@@ -61,6 +61,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr *ngIf="assignedAttachmentsLoading" style="background-color: unset;">
+                            <td colspan="4">
+                                <mat-spinner diameter="30" style="margin: auto;"></mat-spinner>
+                            </td>
+                        </tr>
                         <tr *ngFor="let attachment of selectedClaimAssignedAttachments; let i = index;">
                             <td>
                                 <mat-checkbox [checked]="selectedAssignedAttachments.includes(i)"
@@ -72,12 +77,14 @@
                                     style="background-color: #FF6D6D; padding: 5px; border-radius: 3px; margin-right: 3px;">
                                     {{getFileExtension(attachment.name)}}</span>
                                 <span [matMenuTriggerFor]="attachmentTypeMenu"
-                                    (click)="attachmentBeingTypeEdited = attachment"
+                                    (click)="attachmentBeingTypeEdited = attachment; attachmentBeingTypeEditedIsAssigned = true"
                                     style="background-color: #9E6DFF; padding: 5px; border-radius: 3px; cursor: pointer;">
                                     {{getFileType(attachment.type)}}</span>
                             </td>
                             <td style="padding-left: 0px; padding-right: 20px;">
-                                <mat-icon>visibility</mat-icon>
+                                <mat-icon style="color: #C8C8C8; cursor: pointer;"
+                                    [imageToolTip]="attachment.attachment"
+                                    [imageExtension]="getFileExtension(attachment.name)">visibility</mat-icon>
                             </td>
                         </tr>
                     </tbody>
@@ -97,12 +104,18 @@
                 <div style="overflow: auto;">
                     <table>
                         <tbody>
+                            <tr *ngIf="attachmentsLoading" style="background-color: unset;">
+                                <td colspan="4">
+                                    <mat-spinner diameter="30" style="margin: auto;"></mat-spinner>
+                                </td>
+                            </tr>
                             <tr *ngFor="let attachment of attachments; let i = index;">
                                 <td style="padding-left: 20px; padding-right: 0px;">
                                     <mat-checkbox *ngIf="attachment.type == ''"
                                         [checked]="selectedAttachments.includes(i)"
                                         [matMenuTriggerFor]="attachmentTypeMenu"
-                                        (click)="attachmentBeingTypeEdited = attachment; selectAttachmentBeingEdited = i"></mat-checkbox>
+                                        (click)="attachmentBeingTypeEdited = attachment; selectAttachmentBeingEdited = i; attachmentBeingTypeEditedIsAssigned = false">
+                                    </mat-checkbox>
                                     <mat-checkbox *ngIf="attachment.type != ''"
                                         [checked]="selectedAttachments.includes(i)"
                                         (click)="toggleAttachmentSelection(i);"></mat-checkbox>
@@ -113,12 +126,14 @@
                                         style="background-color: #FF6D6D; padding: 5px; border-radius: 3px; margin-right: 3px;">
                                         {{getFileExtension(attachment.name)}}</span>
                                     <span [matMenuTriggerFor]="attachmentTypeMenu"
-                                        (click)="attachmentBeingTypeEdited = attachment"
+                                        (click)="attachmentBeingTypeEdited = attachment; attachmentBeingTypeEditedIsAssigned = false"
                                         style="background-color: #9E6DFF; padding: 5px; border-radius: 3px; cursor: pointer;">
                                         {{getFileType(attachment.type)}}</span>
                                 </td>
                                 <td>
-                                    <mat-icon>visibility</mat-icon>
+                                    <mat-icon style="color: #C8C8C8; cursor: pointer;"
+                                        [imageToolTip]="attachment.attachment"
+                                        [imageExtension]="getFileExtension(attachment.name)">visibility</mat-icon>
                                 </td>
                             </tr>
                         </tbody>
@@ -135,8 +150,9 @@
         </main>
         <footer>
             <div style="display: flex;">
-                <button mat-flat-button>Cancel</button>
-                <button mat-raised-button color="primary">{{confirmButtonText}}</button>
+                <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()"
+                    style="margin-right: 5px;">Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
             </div>
         </footer>
     </div>
@@ -154,13 +170,17 @@
     <div style="padding: 10px;" *ngIf="attachmentBeingTypeEdited != null">
         <label>What Type of Attachment?</label>
         <mat-radio-group aria-label="Select an option" style="display: grid;" [value]="attachmentBeingTypeEdited.type">
-            <mat-radio-button (click)="changeAttachmentType('MEDICAL_REPORT', true)" value="MEDICAL_REPORT">Medical
+            <mat-radio-button (click)="changeAttachmentType('MEDICAL_REPORT', attachmentBeingTypeEditedIsAssigned)"
+                value="MEDICAL_REPORT">Medical
                 Report</mat-radio-button>
-            <mat-radio-button (click)="changeAttachmentType('IQAMA_ID_COPY', true)" value="IQAMA_ID_COPY">Iqama/ID Copy
+            <mat-radio-button (click)="changeAttachmentType('IQAMA_ID_COPY', attachmentBeingTypeEditedIsAssigned)"
+                value="IQAMA_ID_COPY">Iqama/ID Copy
             </mat-radio-button>
-            <mat-radio-button (click)="changeAttachmentType('X_RAY_RESULT', true)" value="X_RAY_RESULT">X-Ray Result
+            <mat-radio-button (click)="changeAttachmentType('X_RAY_RESULT', attachmentBeingTypeEditedIsAssigned)"
+                value="X_RAY_RESULT">X-Ray Result
             </mat-radio-button>
-            <mat-radio-button (click)="changeAttachmentType('LAB_RESULT', true)" value="LAB_RESULT">Lab Result
+            <mat-radio-button (click)="changeAttachmentType('LAB_RESULT', attachmentBeingTypeEditedIsAssigned)"
+                value="LAB_RESULT">Lab Result
             </mat-radio-button>
         </mat-radio-group>
     </div>
