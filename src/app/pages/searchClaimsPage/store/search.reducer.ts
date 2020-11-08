@@ -1,6 +1,6 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store'
 import { SearchedClaim } from 'src/app/models/searchedClaim';
-import { assignAttachmentsToClaim, setSearchCriteria, storeClaims } from './search.actions';
+import { assignAttachmentsToClaim, setSearchCriteria, storeClaims, updateClaimAttachments } from './search.actions';
 
 
 export interface SearchState {
@@ -29,8 +29,8 @@ export interface AttachmentManagementState {
     assignedAttachments: AssignedAttachment[];
 }
 
-export type UnassignedAttachment = { file: File, type?: string };
-export type AssignedAttachment = { claimId: string, file, type: string, name: string };
+export type UnassignedAttachment = { file: File, type?: string, attachmentId?:string };
+export type AssignedAttachment = { claimId: string, file, type: string, name: string, attachmentId?:string };
 
 const initState: SearchState = {
     searchCriteria: null,
@@ -50,6 +50,11 @@ const _searchReducer = createReducer(
     on(setSearchCriteria, (state, { type, ...criteria }) => ({ ...state, searchCriteria: { ...state.searchCriteria, ...criteria } })),
     on(storeClaims, (state, { claims, currentPage, maxPages, pageSize }) => ({ ...state, claims: claims, currentPage: currentPage, maxPages: maxPages, pageSize: pageSize })),
     on(assignAttachmentsToClaim, (state, { attachments }) => ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachments: attachments } })),
+    on(updateClaimAttachments, (state, {claimId, attachments}) => {
+        let filteredAttachments = state.attachmentManagementState.assignedAttachments.filter(att => att.claimId != claimId);
+        let allAttachments = filteredAttachments.concat(attachments);
+        return ({...state, attachmentManagementState: {...state.attachmentManagementState, assignedAttachments: allAttachments}});
+    }),
 )
 
 export function searchReducer(state, action) {

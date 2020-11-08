@@ -277,6 +277,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.claims = new Array();
     this.store.dispatch(storeClaims({ claims: this.claims, currentPage: page, maxPages: this.searchResult != null? this.searchResult.totalPages : 0, pageSize: pageSize }));
     this.searchResult = null;
+    
     this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
@@ -302,8 +303,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         } else {
           console.log("000");
         }
+        this.commen.loadingChanged.next(false);
       }
-      this.commen.loadingChanged.next(false);
       if (this.claimId != null) {
         let index = this.claims.findIndex(claim => claim.claimId == this.claimId);
         if (index != -1) {

@@ -36,12 +36,12 @@ export class SearchEffects {
         ))
     ));
 
-    mapAttachmentResponseToAssignedAttachments(response, claimId:string): AssignedAttachment[] {
+    mapAttachmentResponseToAssignedAttachments(response, claimId: string): AssignedAttachment[] {
         let results: AssignedAttachment[] = []
-        if(response instanceof HttpResponse){
+        if (response instanceof HttpResponse) {
             const body = response.body;
-            if(body instanceof Array){
-                results = body.map(att => ({claimId: claimId, file: att['attachmentfile'], type: att['filetype'], name: att['filename']}));
+            if (body instanceof Array) {
+                results = body.map(att => ({ claimId: claimId, file: att['attachmentfile'], type: att['filetype'], name: att['filename'], attachmentId: att['attachmentid'] }));
             }
         }
         return results;

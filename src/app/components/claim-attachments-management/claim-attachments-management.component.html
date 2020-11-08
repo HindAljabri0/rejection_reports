@@ -76,7 +76,7 @@
                                     style="background-color: #9E6DFF; padding: 5px; border-radius: 3px; cursor: pointer;">
                                     {{getFileType(attachment.type)}}</span>
                             </td>
-                            <td>
+                            <td style="padding-left: 0px; padding-right: 20px;">
                                 <mat-icon>visibility</mat-icon>
                             </td>
                         </tr>
@@ -84,16 +84,52 @@
                 </table>
             </section>
             <section class="rightSection">
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th colspan="3">Unassigned Attachments</th>
-                        </tr>
-                    </thead>
-                </table>
-                <button mat-fab color="primary" style="position: absolute; bottom: 90px; right: 30px;">
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th colspan="3">Unassigned Attachments</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div style="overflow: auto;">
+                    <table>
+                        <tbody>
+                            <tr *ngFor="let attachment of attachments; let i = index;">
+                                <td style="padding-left: 20px; padding-right: 0px;">
+                                    <mat-checkbox *ngIf="attachment.type == ''"
+                                        [checked]="selectedAttachments.includes(i)"
+                                        [matMenuTriggerFor]="attachmentTypeMenu"
+                                        (click)="attachmentBeingTypeEdited = attachment; selectAttachmentBeingEdited = i"></mat-checkbox>
+                                    <mat-checkbox *ngIf="attachment.type != ''"
+                                        [checked]="selectedAttachments.includes(i)"
+                                        (click)="toggleAttachmentSelection(i);"></mat-checkbox>
+                                </td>
+                                <td [matTooltip]="attachment.name">{{beautifyFileName(attachment.name)}}</td>
+                                <td style="color: white; font-size: 0.8rem;">
+                                    <span
+                                        style="background-color: #FF6D6D; padding: 5px; border-radius: 3px; margin-right: 3px;">
+                                        {{getFileExtension(attachment.name)}}</span>
+                                    <span [matMenuTriggerFor]="attachmentTypeMenu"
+                                        (click)="attachmentBeingTypeEdited = attachment"
+                                        style="background-color: #9E6DFF; padding: 5px; border-radius: 3px; cursor: pointer;">
+                                        {{getFileType(attachment.type)}}</span>
+                                </td>
+                                <td>
+                                    <mat-icon>visibility</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button mat-fab color="primary" (click)="fileInput.click()"
+                    style="position: absolute; bottom: 90px; right: 30px;">
                     <mat-icon>add</mat-icon>
+                    <input hidden type="file" #fileInput onclick="this.value = null" multiple
+                        (change)="addFiles($event.target.files)"
+                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
                 </button>
             </section>
         </main>
@@ -105,10 +141,10 @@
         </footer>
     </div>
     <div class="floatingButtons">
-        <button mat-mini-fab class="moveToLeftButton">
+        <button mat-mini-fab class="moveToLeftButton" (click)="moveSelectionToAssigned()">
             <mat-icon>arrow_back</mat-icon>
         </button>
-        <button mat-mini-fab class="moveToRightButton">
+        <button mat-mini-fab class="moveToRightButton" (click)="moveSelectionToUnassigned()">
             <mat-icon>arrow_forward</mat-icon>
         </button>
     </div>
@@ -118,10 +154,14 @@
     <div style="padding: 10px;" *ngIf="attachmentBeingTypeEdited != null">
         <label>What Type of Attachment?</label>
         <mat-radio-group aria-label="Select an option" style="display: grid;" [value]="attachmentBeingTypeEdited.type">
-            <mat-radio-button (click)="attachmentBeingTypeEdited.type = 'MEDICAL_REPORT'" value="MEDICAL_REPORT">Medical Report</mat-radio-button>
-            <mat-radio-button (click)="attachmentBeingTypeEdited.type = 'IQAMA_ID_COPY'" value="IQAMA_ID_COPY">Iqama/ID Copy</mat-radio-button>
-            <mat-radio-button (click)="attachmentBeingTypeEdited.type = 'X_RAY_RESULT'" value="X_RAY_RESULT">X-Ray Result</mat-radio-button>
-            <mat-radio-button (click)="attachmentBeingTypeEdited.type = 'LAB_RESULT'" value="LAB_RESULT">Lab Result</mat-radio-button>
+            <mat-radio-button (click)="changeAttachmentType('MEDICAL_REPORT', true)" value="MEDICAL_REPORT">Medical
+                Report</mat-radio-button>
+            <mat-radio-button (click)="changeAttachmentType('IQAMA_ID_COPY', true)" value="IQAMA_ID_COPY">Iqama/ID Copy
+            </mat-radio-button>
+            <mat-radio-button (click)="changeAttachmentType('X_RAY_RESULT', true)" value="X_RAY_RESULT">X-Ray Result
+            </mat-radio-button>
+            <mat-radio-button (click)="changeAttachmentType('LAB_RESULT', true)" value="LAB_RESULT">Lab Result
+            </mat-radio-button>
         </mat-radio-group>
     </div>
 </mat-menu>

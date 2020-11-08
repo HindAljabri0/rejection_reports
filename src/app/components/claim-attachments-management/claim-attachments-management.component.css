@@ -51,6 +51,8 @@ section {
 
 .rightSection {
     grid-column: 9 / span 4;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
 table {

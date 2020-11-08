@@ -82,7 +82,6 @@ export class AttachmentsComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
       let data:string = reader.result as string;
-      console.log(data.indexOf(','));
       data = data.substring(data.indexOf(',')+1);
       this.attachments.push({ attachmentFile: data, fileName: file.name, fileType: this.fileType, userComment: null });
       this.fileType = null;
