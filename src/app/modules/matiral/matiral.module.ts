@@ -6,6 +6,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 //https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
@@ -52,7 +53,8 @@ export const MY_FORMATS = {
     MatSlideToggleModule,
     MatButtonToggleModule,
     DragDropModule,
-    OverlayModule
+    OverlayModule,
+    MatSnackBarModule
   ],
   providers: [
     {

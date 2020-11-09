@@ -28,7 +28,13 @@
                                 <td>{{claim.referenceNumber}}</td>
                                 <td>{{claim.memberId}}</td>
                                 <td>
-                                    <mat-icon *ngIf="claim.hasAttachments">attach_file</mat-icon>
+                                    <mat-icon
+                                        *ngIf="claim.hasAttachments && !changesToClaimSuccess(claim.id) && !changesToClaimFailed(claim.id)">
+                                        attach_file</mat-icon>
+                                    <mat-icon *ngIf="changesToClaimSuccess(claim.id)" style="color: #7AE988;">
+                                        check_circle</mat-icon>
+                                    <mat-icon *ngIf="changesToClaimFailed(claim.id)" style="color:#C24040;">error
+                                    </mat-icon>
                                 </td>
                             </tr>
                         </tbody>
@@ -149,10 +155,13 @@
             </section>
         </main>
         <footer>
-            <div style="display: flex;">
+            <div style="display: flex;" *ngIf="!saving">
                 <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()"
                     style="margin-right: 5px;">Cancel</button>
                 <button mat-raised-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
+            </div>
+            <div *ngIf="saving">
+                <mat-spinner diameter="30" style="margin: auto;"></mat-spinner>
             </div>
         </footer>
     </div>

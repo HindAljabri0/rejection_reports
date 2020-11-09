@@ -1,12 +1,13 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from "@angular/core";
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef, SimpleSnackBar } from '@angular/material';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { forkJoin, of, Subject } from 'rxjs';
+import { catchError, delay, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { assignAttachmentsToClaim, requestClaimAttachments, saveAttachmentsChanges, sendSaveRequestForClaim, showErrorMessage, toggleAssignedAttachmentLoading } from './search.actions';
+import { assignAttachmentsToClaim, requestClaimAttachments, saveAttachmentsChanges, showErrorMessage, storeAttachmentsChangesResponse, toggleAssignedAttachmentLoading } from './search.actions';
 import { AssignedAttachment, getAssignedAttachments, getClaimsWithChanges } from './search.reducer';
 
 
@@ -20,7 +21,8 @@ export class SearchEffects {
         private actions$: Actions,
         private store: Store,
         private claimService: ClaimService,
-        private sharedServices: SharedServices
+        private sharedServices: SharedServices,
+        private _snackBar: MatSnackBar
     ) { }
 
 
@@ -47,19 +49,36 @@ export class SearchEffects {
         withLatestFrom(this.store.select(getClaimsWithChanges)),
         withLatestFrom(this.store.select(getAssignedAttachments)),
         map(data => ({ attachments: data[1].filter(att => data[0][1].includes(att.claimId)), ids: data[0][1] })),
-        map(data => data.ids.forEach(id =>
-            this.store.dispatch(sendSaveRequestForClaim({ claimId: id, attachments: data.attachments.filter(att => att.claimId == id) }))
-        ))
-    ), { dispatch: false })
+        map(data => forkJoin(
+            data.ids.map(id =>
+                this.claimService.putAttachmentsOfClaim(this.sharedServices.providerId, id, data.attachments.filter(att => att.claimId == id))
+                    .pipe(
+                        filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+                        map(response => ({ id: id, status: 'done' })),
+                        catchError(err => of({ id: id, status: 'error', error: err }))
+                    )
+            )
+        )),
+        map(requests => requests.subscribe(res => this.store.dispatch(storeAttachmentsChangesResponse({ responses: res }))))
+    ), { dispatch: false });
 
-    sendSaveRequestForClaim$ = createEffect(() => this.actions$.pipe(
-        ofType(sendSaveRequestForClaim),
-        switchMap(data => this.claimService.putAttachmentsOfClaim(this.sharedServices.providerId, data.claimId, data.attachments).pipe(
-            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
-            map(response => {}),
-            catchError(err => of({}))
-        ))
-    ), { dispatch: false })
+    onShowErrorMessage$ = createEffect(() => this.actions$.pipe(
+        ofType(showErrorMessage),
+        map(data => data.error),
+        tap(error => {
+            const config = { duration: 3000 };
+            switch (error.code) {
+                case 'ATTACHMENT_REQUEST':
+                    this._snackBar.open('Could not load attachment. Please try again later.', null, config)
+                    break;
+                default:
+                    if (error.message != null) {
+                        this._snackBar.open(error.message, null, config);
+                    }
+                    break;
+            }
+        })
+    ), { dispatch: false });
 
     mapAttachmentResponseToAssignedAttachments(response, claimId: string): AssignedAttachment[] {
         let results: AssignedAttachment[] = []

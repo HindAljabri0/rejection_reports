@@ -1,6 +1,6 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store'
 import { SearchedClaim } from 'src/app/models/searchedClaim';
-import { assignAttachmentsToClaim, cancelAttachmentEdit, requestClaimAttachments, setSearchCriteria, storeClaims, toggleAssignedAttachmentLoading, updateClaimAttachments } from './search.actions';
+import { assignAttachmentsToClaim, cancelAttachmentEdit, requestClaimAttachments, saveAttachmentsChanges, setSearchCriteria, storeAttachmentsChangesResponse, storeClaims, toggleAssignedAttachmentLoading, updateClaimAttachments } from './search.actions';
 
 
 export interface SearchState {
@@ -25,9 +25,11 @@ export interface SearchCriteria {
 
 
 export interface AttachmentManagementState {
+    saveChangesLoading: boolean;
     assignedAttachmentsLoading: boolean;
     claimsWithChanges: string[];
     assignedAttachments: AssignedAttachment[];
+    responses: { id: string, status: string, error?}[];
 }
 
 export type UnassignedAttachment = { file: File, type?: string, attachmentId?: string };
@@ -40,9 +42,11 @@ const initState: SearchState = {
     maxPages: 0,
     pageSize: 10,
     attachmentManagementState: {
+        saveChangesLoading: false,
         assignedAttachmentsLoading: false,
         claimsWithChanges: [],
         assignedAttachments: [],
+        responses: [],
     }
 }
 
@@ -52,15 +56,17 @@ const _searchReducer = createReducer(
     on(setSearchCriteria, (state, { type, ...criteria }) => ({ ...state, searchCriteria: { ...state.searchCriteria, ...criteria } })),
     on(storeClaims, (state, { claims, currentPage, maxPages, pageSize }) => ({ ...state, claims: claims, currentPage: currentPage, maxPages: maxPages, pageSize: pageSize })),
     on(toggleAssignedAttachmentLoading, (state, { isLoading }) => ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachmentsLoading: isLoading } })),
-    on(assignAttachmentsToClaim, (state, { attachments }) => ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachments: attachments, assignedAttachmentsLoading: false } })),
+    on(assignAttachmentsToClaim, (state, { attachments }) => ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachments: attachments.concat(state.attachmentManagementState.assignedAttachments), assignedAttachmentsLoading: false } })),
     on(updateClaimAttachments, (state, { claimId, attachments }) => {
         let filteredAttachments = state.attachmentManagementState.assignedAttachments.filter(att => att.claimId != claimId);
         let allAttachments = filteredAttachments.concat(attachments);
         let claimsWithChanges = [...state.attachmentManagementState.claimsWithChanges];
-        if(!claimsWithChanges.includes(claimId)) claimsWithChanges.push(claimId)
-        return ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachments: allAttachments, claimsWithChanges: claimsWithChanges} });
+        if (!claimsWithChanges.includes(claimId)) claimsWithChanges.push(claimId)
+        return ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachments: allAttachments, claimsWithChanges: claimsWithChanges } });
     }),
-    on(cancelAttachmentEdit, (state) => ({...state, attachmentManagementState: initState.attachmentManagementState})),
+    on(cancelAttachmentEdit, (state) => ({ ...state, attachmentManagementState: initState.attachmentManagementState })),
+    on(saveAttachmentsChanges, (state) => ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, saveChangesLoading: true } })),
+    on(storeAttachmentsChangesResponse, (state, { responses }) => ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, saveChangesLoading: false, responses: responses, claimsWithChanges: state.attachmentManagementState.claimsWithChanges.filter(id => responses.findIndex(res => res.id == id && res.status == 'error') != -1) } })),
 )
 
 export function searchReducer(state, action) {
@@ -75,3 +81,5 @@ export const getSelectedClaimAttachments = (claimId: string) => createSelector(s
 export const getPageInfo = createSelector(searchStateSelector, (state) => ({ currentPage: state.currentPage, maxPages: state.maxPages }));
 export const getIsAssignedAttachmentsLoading = createSelector(searchStateSelector, (state) => state.attachmentManagementState.assignedAttachmentsLoading);
 export const getClaimsWithChanges = createSelector(searchStateSelector, (state) => state.attachmentManagementState.claimsWithChanges);
+export const getIsSavingChanges = createSelector(searchStateSelector, (state) => state.attachmentManagementState.saveChangesLoading);
+export const getSavingResponses = createSelector(searchStateSelector, (state) => state.attachmentManagementState.responses);

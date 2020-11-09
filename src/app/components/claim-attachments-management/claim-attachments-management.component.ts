@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { cancelAttachmentEdit, requestClaimAttachments, requestClaimsPage, saveAttachmentsChanges, SearchPaginationAction, updateClaimAttachments } from 'src/app/pages/searchClaimsPage/store/search.actions';
-import { getCurrentSearchResult, getClaimsWithChanges, getIsAssignedAttachmentsLoading, getPageInfo, getSelectedClaimAttachments } from 'src/app/pages/searchClaimsPage/store/search.reducer';
+import { cancelAttachmentEdit, requestClaimAttachments, requestClaimsPage, saveAttachmentsChanges, SearchPaginationAction, showErrorMessage, updateClaimAttachments } from 'src/app/pages/searchClaimsPage/store/search.actions';
+import { getCurrentSearchResult, getClaimsWithChanges, getIsAssignedAttachmentsLoading, getPageInfo, getSelectedClaimAttachments, getIsSavingChanges, getSavingResponses } from 'src/app/pages/searchClaimsPage/store/search.reducer';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-claim-attachments-management',
@@ -35,10 +36,13 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
 
   attachmentsLoading: boolean = false;
   assignedAttachmentsLoading: boolean = false;
+  saving: boolean = false;
 
   hasChanges: boolean = false;
 
-  constructor(private store: Store) { }
+  afterSavingResponses: { id: string, status: string, error?}[] = [];
+
+  constructor(private store: Store, private dialogService: DialogService) { }
 
   ngOnInit() {
     this.store.select(getCurrentSearchResult).subscribe(
@@ -60,7 +64,21 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
       this.maxPages = info.maxPages;
     });
     this.store.select(getIsAssignedAttachmentsLoading).subscribe(isLoading => this.assignedAttachmentsLoading = isLoading);
+    this.store.select(getIsSavingChanges).subscribe(isLoading => this.saving = isLoading);
     this.store.select(getClaimsWithChanges).subscribe(claimsWithChanges => this.hasChanges = claimsWithChanges.length > 0);
+    this.store.select(getSavingResponses).subscribe(responses => {
+      if (responses.length > 0) {
+        const errorResponses = responses.filter(res => res.status == 'error');
+        if (errorResponses.length > 0) {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `${errorResponses.length} out of ${responses.length} attachment operations have failed! Please try performing those attachment operations again.`,
+            isError: true
+          });
+        }
+      }
+      this.afterSavingResponses = responses
+    });
   }
 
   addFiles(event: FileList) {
@@ -68,16 +86,26 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
     const numOfFiles = event.length;
     for (let i = 0; i < numOfFiles; i++) {
       let file = event.item(i);
-      if (file.size == 0)
+      let error = { code: 'SELECT_ATTACHMENT', message: null }
+      if (file.size == 0) {
+        error.message = `[${file.name}] file is empty`;
+        this.store.dispatch(showErrorMessage({ error: error }));
         continue;
+      }
       let mimeType = file.type;
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
+        error.message = `[${file.name}] is not an image or a PDF file`;
+        this.store.dispatch(showErrorMessage({ error: error }));
         continue;
       }
       if (this.attachments.find(attachment => attachment.name == file.name) != undefined) {
+        error.message = `[${file.name}] attachment with same file name already exist.`;
+        this.store.dispatch(showErrorMessage({ error: error }));
         continue;
       }
       if (file.size / 1024 / 1024 > 2) {
+        error.message = `[${file.name}] file size is higher than 2MB`;
+        this.store.dispatch(showErrorMessage({ error: error }));
         continue;
       }
       this.preview(file);
@@ -137,6 +165,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
   toggleAttachmentSelection(i: number) {
     this.toggleSelectionInList(this.selectedAttachments, i);
     if ((this.selectedAttachments.length + this.selectedClaimAssignedAttachments.length) > 7) {
+      this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `You can't assign more than 7 attachments to a claim.` } }));
       this.toggleSelectionInList(this.selectedAttachments, i);
     }
   }
@@ -164,6 +193,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
 
   moveSelectionToAssigned() {
     if (this.selectedClaim == null) {
+      this.store.dispatch(showErrorMessage({ error: { code: 'ASSIGNING_ERROR', message: 'Please select a claim first!' } }));
       return;
     }
     this.selectedClaimAssignedAttachments = this.selectedClaimAssignedAttachments.concat(
@@ -203,7 +233,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
     this.selectedAssignedAttachments = [];
     this.selectedAttachments = [];
     this.selectedClaimAssignedAttachments = [];
-    if(this.assignedAttachmentsSubscription$ != null){
+    if (this.assignedAttachmentsSubscription$ != null) {
       this.assignedAttachmentsSubscription$.unsubscribe();
       this.assignedAttachmentsSubscription$ = null;
     }
@@ -214,4 +244,13 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
     this.store.dispatch(saveAttachmentsChanges());
   }
 
+  changesToClaimSuccess(claimId: string) {
+    const index = this.afterSavingResponses.findIndex(res => res.id == claimId && res.status == 'done');
+    return index != -1;
+  }
+
+  changesToClaimFailed(claimId: string) {
+    const index = this.afterSavingResponses.findIndex(res => res.id == claimId && res.status == 'error');
+    return index != -1;
+  }
 }
