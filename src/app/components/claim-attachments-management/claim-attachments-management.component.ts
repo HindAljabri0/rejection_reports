@@ -68,6 +68,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
     this.store.select(getClaimsWithChanges).subscribe(claimsWithChanges => this.hasChanges = claimsWithChanges.length > 0);
     this.store.select(getSavingResponses).subscribe(responses => {
       if (responses.length > 0) {
+        this.attachments = this.attachments.filter(att => att.attachmentId == null);
         const errorResponses = responses.filter(res => res.status == 'error');
         if (errorResponses.length > 0) {
           this.dialogService.openMessageDialog({
@@ -241,7 +242,22 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
   }
 
   save() {
-    this.store.dispatch(saveAttachmentsChanges());
+    if (this.attachments.length == 0) {
+      this.store.dispatch(saveAttachmentsChanges());
+    } else {
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: 'Unassigned attachments will be deleted',
+        isError: false,
+        withButtons: true,
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'cancel'
+      }).subscribe(confirmed => {
+        if (confirmed) {
+          this.store.dispatch(saveAttachmentsChanges());
+        }
+      })
+    }
   }
 
   changesToClaimSuccess(claimId: string) {
