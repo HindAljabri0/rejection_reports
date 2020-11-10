@@ -55,6 +55,33 @@ section {
     grid-template-rows: auto 1fr auto;
 }
 
+.sectionHeader {
+    background-color: #D5E4FC;
+    color: #3D6AAF;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    padding: 9px;
+}
+
+.sectionItem {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sectionItem p {
+    margin: 0px;
+}
+
+.sectionItem:nth-child(odd) {
+    background-color: white;
+}
+
+.sectionItem:nth-child(even) {
+    background-color: #e0eafa;
+}
+
 table {
     width: 100%;
 }

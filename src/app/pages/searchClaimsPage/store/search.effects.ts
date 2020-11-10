@@ -1,12 +1,12 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef, SimpleSnackBar } from '@angular/material';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { forkJoin, of, Subject } from 'rxjs';
-import { catchError, delay, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { assignAttachmentsToClaim, requestClaimAttachments, saveAttachmentsChanges, showErrorMessage, storeAttachmentsChangesResponse, toggleAssignedAttachmentLoading } from './search.actions';
 import { AssignedAttachment, getAssignedAttachments, getClaimsWithChanges } from './search.reducer';
 
@@ -21,8 +21,7 @@ export class SearchEffects {
         private actions$: Actions,
         private store: Store,
         private claimService: ClaimService,
-        private sharedServices: SharedServices,
-        private _snackBar: MatSnackBar
+        private sharedServices: SharedServices
     ) { }
 
 
@@ -66,14 +65,13 @@ export class SearchEffects {
         ofType(showErrorMessage),
         map(data => data.error),
         tap(error => {
-            const config = { duration: 3000 };
             switch (error.code) {
                 case 'ATTACHMENT_REQUEST':
-                    this._snackBar.open('Could not load attachment. Please try again later.', null, config)
+                    this.store.dispatch(showSnackBarMessage({ message: 'Could not load attachment. Please try again later.' }));
                     break;
                 default:
                     if (error.message != null) {
-                        this._snackBar.open(error.message, null, config);
+                        this.store.dispatch(showSnackBarMessage({ message: error.message }));
                     }
                     break;
             }

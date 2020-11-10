@@ -164,6 +164,16 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
   }
 
   toggleAttachmentSelection(i: number) {
+    if (!this.selectedAttachments.includes(i)) {
+      if (this.attachments[i] != null && this.selectedClaimAssignedAttachments.some(att => att.name == this.attachments[i].name)) {
+        this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `Attachment with the same name already assigned to selected claim.` } }));
+        return;
+      }
+      if (this.attachments[i] != null && this.selectedAttachments.some(index => this.attachments[index].name == this.attachments[i].name)) {
+        this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `Attachment with the same name already selected .` } }));
+        return;
+      }
+    }
     this.toggleSelectionInList(this.selectedAttachments, i);
     if ((this.selectedAttachments.length + this.selectedClaimAssignedAttachments.length) > 7) {
       this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `You can't assign more than 7 attachments to a claim.` } }));

@@ -6,39 +6,24 @@
         </header>
         <main>
             <section class="leftSection">
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Claim Ref. No.</th>
-                                <th colspan="2">Member ID</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="sectionHeader">
+                    <h6 style="font-weight: 700; grid-column: 3 / span 4;">Claim Ref. No.</h6>
+                    <h6 style="font-weight: 700; grid-column: 7 / span 6;">Member ID</h6>
                 </div>
                 <div style="overflow: auto;">
-                    <table>
-                        <tbody>
-                            <tr *ngFor="let claim of claims" (click)="onClaimClicked(claim.id)">
-                                <td>
-                                    <mat-radio-button color="primary" [checked]="selectedClaim == claim.id">
-                                    </mat-radio-button>
-                                </td>
-                                <td>{{claim.referenceNumber}}</td>
-                                <td>{{claim.memberId}}</td>
-                                <td>
-                                    <mat-icon
-                                        *ngIf="claim.hasAttachments && !changesToClaimSuccess(claim.id) && !changesToClaimFailed(claim.id)">
-                                        attach_file</mat-icon>
-                                    <mat-icon *ngIf="changesToClaimSuccess(claim.id)" style="color: #7AE988;">
-                                        check_circle</mat-icon>
-                                    <mat-icon *ngIf="changesToClaimFailed(claim.id)" style="color:#C24040;">error
-                                    </mat-icon>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="sectionItem" *ngFor="let claim of claims" (click)="onClaimClicked(claim.id)">
+                        <mat-radio-button style="grid-column: 1 / span 2;" color="primary" [checked]="selectedClaim == claim.id">
+                        </mat-radio-button>
+                        <p style="grid-column: 3 / span 4;">{{claim.referenceNumber}}</p>
+                        <p style="grid-column: 7 / span 5;">{{claim.memberId}}</p>
+                        <mat-icon style="grid-column: 12"
+                            *ngIf="claim.hasAttachments && !changesToClaimSuccess(claim.id) && !changesToClaimFailed(claim.id)">
+                            attach_file</mat-icon>
+                        <mat-icon style="grid-column: 12;" *ngIf="changesToClaimSuccess(claim.id)" style="color: #7AE988;">
+                            check_circle</mat-icon>
+                        <mat-icon style="grid-column: 12;" *ngIf="changesToClaimFailed(claim.id)" style="color:#C24040;">error
+                        </mat-icon>
+                    </div>
                 </div>
                 <div class="pageControl">
                     <div>
