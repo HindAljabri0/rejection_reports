@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
   styleUrls: ['./claim-attachments-management.component.css'],
   providers: [{ provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop' }]
 })
-export class ClaimAttachmentsManagementComponent implements OnInit {
+export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
 
   currentPage: number = 0;
   maxPages: number = 0;
@@ -80,6 +80,10 @@ export class ClaimAttachmentsManagementComponent implements OnInit {
       }
       this.afterSavingResponses = responses
     });
+  }
+
+  ngOnDestroy() {
+    this.cancel();
   }
 
   addFiles(event: FileList) {
