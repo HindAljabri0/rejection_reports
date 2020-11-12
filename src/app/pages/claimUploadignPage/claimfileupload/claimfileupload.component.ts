@@ -183,7 +183,9 @@ export class ClaimfileuploadComponent implements OnInit {
           + (isPriseListDoesntExist ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
           + 'Do you wish to continue?',
         isError: false,
-        withButtons: true
+        withButtons: true,
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel'
       }).subscribe(value => {
         if (value) {
           this.startUpload();
