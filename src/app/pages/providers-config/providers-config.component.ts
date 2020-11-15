@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY,ICD10_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,16 +20,18 @@ export class ProvidersConfigComponent implements OnInit {
   providerController: FormControl = new FormControl();
 
   errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string } = {};
-  sucess: { serviceCodeSaveSuccess?: string, portalUserSaveSucess?: string, ICD10SaveSucess?: string } = {};
-  componentLoading = { serviceCode: true, portalUser: true,ICD10Validation: true };
+  success: { serviceCodeSaveSuccess?: string, portalUserSaveSuccess?: string, ICD10SaveSuccess?: string } = {};
+  componentLoading = { serviceCode: true, portalUser: true, ICD10Validation: true };
 
   selectedProvider: string;
   associatedPayers: any[] = [];
   serviceCodeValidationSettings: any[] = [];
   serviceCodeRestrictionSettings: any[] = [];
+  priceUnitSettings: any[] = [];
   ICD10ValidationSettings: any[] = [];
   newServiceCodeValidationSettings: { [key: string]: boolean } = {};
   newServiceRestrictionSettings: { [key: string]: boolean } = {};
+  newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
@@ -46,7 +48,6 @@ export class ProvidersConfigComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.superAdmin.getProviders().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
@@ -92,9 +93,10 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.associatedPayers = event.body;
-          this.associatedPayers.forEach(payer=>{
+          this.associatedPayers.forEach(payer => {
             this.newServiceCodeValidationSettings[payer.switchAccountId] = true;
             this.newServiceRestrictionSettings[payer.switchAccountId] = false;
+            this.newPriceUnitSettings[payer.switchAccountId] = false;
             this.newICD10ValidationSettings[payer.switchAccountId] = true;
           })
         }
@@ -122,18 +124,20 @@ export class ProvidersConfigComponent implements OnInit {
     this.getServiceCodeValidationSettings();
     this.getPortalUserSettings();
     this.getServiceCodeRestrictionSettings();
+    this.getUnitPriceSettings();
     this.getICD10ValidationSettings();
   }
 
   save() {
-    if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser) {
+    if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser || this.componentLoading.ICD10Validation) {
       return;
     }
     let flag1 = this.saveServiceCodeValidationSettings();
     let flag2 = this.savePortalUserSettings();
     let flag3 = this.saveServiceRestrictionSettings();
     let flag4 = this.saveICD10ValidationSettings();
-    if (flag1 && flag2 && flag3 && flag4) {
+    let flag5 = this.savePriceUnitSettings();
+    if (flag1 && flag2 && flag3 && flag4 && flag5) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -155,7 +159,7 @@ export class ProvidersConfigComponent implements OnInit {
       if (newSettingsKeys.length > 0) {
         this.componentLoading.serviceCode = true;
         this.errors.serviceCodeSaveError = null;
-        this.sucess.serviceCodeSaveSuccess = null;
+        this.success.serviceCodeSaveSuccess = null;
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId: payerId,
           key: SERVICE_CODE_VALIDATION_KEY,
@@ -176,8 +180,8 @@ export class ProvidersConfigComponent implements OnInit {
                 });
               }
             });
-            
-            this.sucess.serviceCodeSaveSuccess = "Settings were saved successfully";
+
+            this.success.serviceCodeSaveSuccess = "Settings were saved successfully";
             this.componentLoading.serviceCode = false;
           }
         }, error => {
@@ -201,7 +205,7 @@ export class ProvidersConfigComponent implements OnInit {
       if (newSettingsKeys.length > 0) {
         this.componentLoading.serviceCode = true;
         this.errors.serviceCodeSaveError = null;
-        this.sucess.serviceCodeSaveSuccess = null;
+        this.success.serviceCodeSaveSuccess = null;
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId: payerId,
           key: SERVICE_CODE_RESTRICTION_KEY,
@@ -222,13 +226,59 @@ export class ProvidersConfigComponent implements OnInit {
                 });
               }
             });
-            
-            this.sucess.serviceCodeSaveSuccess = "Settings were saved successfully";
+
+            this.success.serviceCodeSaveSuccess = "Settings were saved successfully";
             this.componentLoading.serviceCode = false;
           }
         }, error => {
           this.errors.serviceCodeSaveError = 'Could not save settings, please try again later.';
           this.resetServiceRestrictionSettings();
+          this.componentLoading.serviceCode = false;
+        });
+        return false;
+      } return true;
+    } return true;
+  }
+
+  savePriceUnitSettings() {
+    let payers = Object.keys(this.newPriceUnitSettings);
+    if (payers.length > 0) {
+      let newSettingsKeys = payers.filter(payerId => {
+        let setting = this.priceUnitSettings.find(setting => setting.payerId == payerId);
+        return (setting != null && (setting.value == '1') != this.newPriceUnitSettings[payerId])
+          || setting == null;
+      });
+      if (newSettingsKeys.length > 0) {
+        this.componentLoading.serviceCode = true;
+        this.errors.serviceCodeSaveError = null;
+        this.success.serviceCodeSaveSuccess = null;
+        this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
+          payerId: payerId,
+          key: VALIDATE_RESTRICT_PRICE_UNIT,
+          value: (this.newPriceUnitSettings[payerId] && !this.isPriceUnitDisabled(payerId)) ? '1' : '0'
+        })
+        )).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            newSettingsKeys.map(payerId => {
+              let index = this.priceUnitSettings.findIndex(setting => setting.payerId == payerId);
+              if (index != -1) {
+                this.priceUnitSettings[index].value = (this.newPriceUnitSettings[payerId]) ? '1' : '0';
+              } else {
+                this.priceUnitSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId: payerId,
+                  key: VALIDATE_RESTRICT_PRICE_UNIT,
+                  value: (this.newPriceUnitSettings[payerId]) ? '1' : '0'
+                });
+              }
+            });
+
+            this.success.serviceCodeSaveSuccess = "Settings were saved successfully";
+            this.componentLoading.serviceCode = false;
+          }
+        }, error => {
+          this.errors.serviceCodeSaveError = 'Could not save settings, please try again later.';
+          this.resetPriceUnitSettings();
           this.componentLoading.serviceCode = false;
         });
         return false;
@@ -245,12 +295,12 @@ export class ProvidersConfigComponent implements OnInit {
         || match[0] != match['input']) {
         this.componentLoading.portalUser = true;
         this.errors.portalUserSaveError = null;
-        this.sucess.portalUserSaveSucess = null;
+        this.success.portalUserSaveSuccess = null;
         this.superAdmin.savePortalUserSettings(this.selectedProvider, this.portalUsernameController.value, password).subscribe(event => {
           if (event instanceof HttpResponse) {
             this.portalUserSettings = { username: this.portalUsernameController.value };
             this.portalPasswordController.setValue('************************');
-            this.sucess.portalUserSaveSucess = "Settings were saved successfully";
+            this.success.portalUserSaveSuccess = "Settings were saved successfully";
             this.componentLoading.portalUser = false;
           }
         }, error => {
@@ -285,7 +335,7 @@ export class ProvidersConfigComponent implements OnInit {
       if (newSettingsKeys.length > 0) {
         this.componentLoading.ICD10Validation = true;
         this.errors.ICD10SaveError = null;
-        this.sucess.ICD10SaveSucess = null;
+        this.success.ICD10SaveSuccess = null;
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId: payerId,
           key: ICD10_RESTRICTION_KEY,
@@ -306,7 +356,7 @@ export class ProvidersConfigComponent implements OnInit {
                 });
               }
             });
-            this.sucess.ICD10SaveSucess = "Settings were saved successfully";
+            this.success.ICD10SaveSuccess = "Settings were saved successfully";
             this.componentLoading.ICD10Validation = false;
           }
         }, error => {
@@ -342,6 +392,13 @@ export class ProvidersConfigComponent implements OnInit {
       this.newServiceRestrictionSettings = {};
     }
   }
+  resetPriceUnitSettings() {
+    if (Object.keys(this.newPriceUnitSettings).length > 0) {
+      this.componentLoading.serviceCode = true;
+      setTimeout(() => this.componentLoading.serviceCode = false, 100);
+      this.newPriceUnitSettings = {};
+    }
+  }
   resetPortalUserSettings() {
     if (this.portalUserSettings != null) {
       this.portalUsernameController.setValue(this.portalUserSettings.username);
@@ -366,9 +423,9 @@ export class ProvidersConfigComponent implements OnInit {
 
           let payers = Object.keys(this.newServiceCodeValidationSettings);
           if (payers.length > 0) {
-            payers.forEach(payer=>{
+            payers.forEach(payer => {
               let setting = this.serviceCodeValidationSettings.find(setting => setting.payerId == payer);
-              this.newServiceCodeValidationSettings[payer] = (setting==null ||setting.value == '1');
+              this.newServiceCodeValidationSettings[payer] = (setting == null || setting.value == '1');
             });
           }
 
@@ -394,9 +451,37 @@ export class ProvidersConfigComponent implements OnInit {
 
           let payers = Object.keys(this.newServiceRestrictionSettings);
           if (payers.length > 0) {
-            payers.forEach(payer=>{
+            payers.forEach(payer => {
               let setting = this.serviceCodeRestrictionSettings.find(setting => setting.payerId == payer);
-              this.newServiceRestrictionSettings[payer] = (setting!=null && setting.value == '1');
+              this.newServiceRestrictionSettings[payer] = (setting != null && setting.value == '1');
+            });
+          }
+
+          this.componentLoading.serviceCode = false;
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.serviceCodeError = 'Could not load service code settings, please try again later.';
+        }
+      }
+      this.componentLoading.serviceCode = false;
+    });
+  }
+
+  getUnitPriceSettings() {
+    this.componentLoading.serviceCode = true;
+    this.superAdmin.getProviderPayerSettings(this.selectedProvider, VALIDATE_RESTRICT_PRICE_UNIT).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.priceUnitSettings = event.body;
+
+          let payers = Object.keys(this.newServiceRestrictionSettings);
+          if (payers.length > 0) {
+            payers.forEach(payer => {
+              let setting = this.priceUnitSettings.find(setting => setting.payerId == payer);
+              this.newPriceUnitSettings[payer] = (setting != null && setting.value == '1');
             });
           }
 
@@ -415,6 +500,9 @@ export class ProvidersConfigComponent implements OnInit {
 
   getPortalUserSettings() {
     this.componentLoading.portalUser = true;
+    this.portalUserSettings = null;
+    this.portalUsernameController.setValue('');
+    this.portalPasswordController.setValue('');
     this.superAdmin.getPortalUserSettings(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.portalUserSettings = event.body;
@@ -440,9 +528,9 @@ export class ProvidersConfigComponent implements OnInit {
           this.ICD10ValidationSettings = event.body;
           let payers = Object.keys(this.newICD10ValidationSettings);
           if (payers.length > 0) {
-            payers.forEach(payer=>{
+            payers.forEach(payer => {
               let setting = this.ICD10ValidationSettings.find(setting => setting.payerId == payer);
-              this.newICD10ValidationSettings[payer] = (setting==null ||setting.value == '1');
+              this.newICD10ValidationSettings[payer] = (setting == null || setting.value == '1');
             });
           }
           this.componentLoading.ICD10Validation = false;
@@ -461,6 +549,15 @@ export class ProvidersConfigComponent implements OnInit {
   get isLoading() {
     return this.sharedServices.loading;
   }
+  getPriceUnitCheckBoxLabel(payerId) {
+    if (!this.newServiceRestrictionSettings[payerId] && !this.newServiceCodeValidationSettings[payerId]) {
+      return '';
+    } else if (this.newServiceRestrictionSettings[payerId]) {
+      return 'Restriction';
+    } else {
+      return 'Warning';
+    }
+  }
 
   onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
     if (event.checked) {
@@ -471,5 +568,8 @@ export class ProvidersConfigComponent implements OnInit {
     if (event.checked) {
       this.newServiceCodeValidationSettings[payerid] = !event.checked;
     }
+  }
+  isPriceUnitDisabled(payerId: string) {
+    return !this.newServiceCodeValidationSettings[payerId] && !this.newServiceRestrictionSettings[payerId];
   }
 }

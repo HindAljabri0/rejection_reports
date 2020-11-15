@@ -33,16 +33,17 @@
                     <mat-panel-description *ngIf="errors.serviceCodeSaveError != null">
                         <span style="color: #ac4040;">{{errors.serviceCodeSaveError}}</span>
                     </mat-panel-description>
-                    <mat-panel-description *ngIf="sucess.serviceCodeSaveSuccess != null">
-                        <span style="color: #40ac60;">{{sucess.serviceCodeSaveSuccess}}</span>
+                    <mat-panel-description *ngIf="success.serviceCodeSaveSuccess != null">
+                        <span style="color: #40ac60;">{{success.serviceCodeSaveSuccess}}</span>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
                     <table style="width: 100%; margin: 10px">
                         <thead>
                             <th>Payer</th>
-                            <th style="text-align: center">service Code Warning</th>
-                            <th style="text-align: center">service Code Restriction</th>
+                            <th style="text-align: center">Service Code Warning</th>
+                            <th style="text-align: center">Service Code Restriction</th>
+                            <th style="text-align: center">Price Unit</th>
                         </thead>
                         <tr *ngFor="let payer of associatedPayers" style="width: 100%">
                             <td style="widows: 42%">
@@ -52,16 +53,24 @@
                             <td>
                                 <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
                                         width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
-                                        [(ngModel)]="newServiceCodeValidationSettings[payer.switchAccountId]"
+                                    [(ngModel)]="newServiceCodeValidationSettings[payer.switchAccountId]"
                                     (change)="onServiceCodeSettingChange(payer.switchAccountId, $event)">
                                 </mat-slide-toggle>
                             </td>
                             <td>
                                 <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
                                         width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
-                                        [(ngModel)]="newServiceRestrictionSettings[payer.switchAccountId]"
+                                    [(ngModel)]="newServiceRestrictionSettings[payer.switchAccountId]"
                                     (change)="onServiceRestrictionSettingChange(payer.switchAccountId, $event)">
                                 </mat-slide-toggle>
+                            </td>
+                            <td style="width: 20%;">
+                                <mat-checkbox
+                                    style="z-index: 0; display: block; margin-left: auto; margin-right: auto; width: fit-content"
+                                    [disabled]="!payer.hasAssociatedPriceList || isPriceUnitDisabled(payer.switchAccountId)" color="primary"
+                                    [(ngModel)]="newPriceUnitSettings[payer.switchAccountId]">
+                                    {{getPriceUnitCheckBoxLabel(payer.switchAccountId)}}
+                                </mat-checkbox>
                             </td>
                         </tr>
                     </table>
@@ -82,14 +91,14 @@
                     <mat-panel-title style="color: #3060AA;">
                         ICD10 Validation
                     </mat-panel-title>
-                    <mat-panel-description *ngIf="errors.serviceCodeSaveError != null">
-                        <span style="color: #ac4040;">{{errors.serviceCodeSaveError}}</span>
+                    <mat-panel-description *ngIf="errors.ICD10SaveError != null">
+                        <span style="color: #ac4040;">{{errors.ICD10SaveError}}</span>
                     </mat-panel-description>
-                    <mat-panel-description *ngIf="sucess.serviceCodeSaveSuccess != null">
-                        <span style="color: #40ac60;">{{sucess.serviceCodeSaveSuccess}}</span>
+                    <mat-panel-description *ngIf="success.ICD10SaveSuccess != null">
+                        <span style="color: #40ac60;">{{success.ICD10SaveSuccess}}</span>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.serviceCode">
+                <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.ICD10Validation">
                     <table style="width: 100%; margin: 10px">
                         <thead>
                             <th>Payer</th>
@@ -103,7 +112,7 @@
                             <td>
                                 <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
                                         width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
-                                        [(ngModel)]="newICD10ValidationSettings[payer.switchAccountId]">
+                                    [(ngModel)]="newICD10ValidationSettings[payer.switchAccountId]">
                                 </mat-slide-toggle>
                             </td>
                         </tr>
@@ -128,17 +137,17 @@
                     <mat-panel-description *ngIf="errors.portalUserSaveError != null">
                         <span style="color: #ac4040;">{{errors.portalUserSaveError}}</span>
                     </mat-panel-description>
-                    <mat-panel-description *ngIf="sucess.portalUserSaveSucess != null">
-                        <span style="color: #40ac60;">{{sucess.portalUserSaveSucess}}</span>
+                    <mat-panel-description *ngIf="success.portalUserSaveSuccess != null">
+                        <span style="color: #40ac60;">{{success.portalUserSaveSuccess}}</span>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser"
                     style="margin-top: 20px;">
-                    <mat-form-field appearance="fill" style="width: 49%; margin-right: 2%;">
+                    <mat-form-field appearance="outline" style="width: 49%; margin-right: 2%;">
                         <input matInput placeholder="Portal Username" [formControl]="portalUsernameController" st>
                         <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
                     </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 49%;">
+                    <mat-form-field appearance="outline" style="width: 49%;">
                         <input type="password" matInput placeholder="Passowrd" [formControl]="portalPasswordController">
                         <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
                     </mat-form-field>

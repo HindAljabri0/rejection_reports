@@ -51,4 +51,5 @@ export class SuperAdminService {
 
 export const SERVICE_CODE_VALIDATION_KEY = 'serviceCodeValidation';
 export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';
+export const VALIDATE_RESTRICT_PRICE_UNIT = 'validateOrRestrictUnitPrice';
 export const ICD10_RESTRICTION_KEY = 'ICD10Validation';
