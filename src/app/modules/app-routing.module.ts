@@ -9,7 +9,7 @@ import { LoginComponent } from '../pages/loginpage/login.component';
 import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.component';
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
-import { ConfigurationsComponent } from '../pages/configurations/configurations.component';
+import { ConfigurationsComponent } from '../pages/configurationsPage/configurations.component';
 
 
 
