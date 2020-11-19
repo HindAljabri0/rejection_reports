@@ -63,6 +63,7 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
+import { ConfigurationsComponent } from './pages/configurationsPage/configurations.component';
 
 
 @NgModule({
@@ -109,6 +110,7 @@ import { ImageTooltipComponent, ImageToolTipDirective } from './directives/image
     ClaimAttachmentsManagementComponent,
     ImageToolTipDirective,
     ImageTooltipComponent,
+    ConfigurationsComponent,
   ],
   imports: [
     AppRoutingModule,
