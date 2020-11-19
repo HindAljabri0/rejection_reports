@@ -1,0 +1,59 @@
+<div class="parent">
+    <mat-accordion>
+        <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="color: #3F6DB3;">
+                    Code Value Management
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="bodyOfCodeValueManagement">
+                <div class="cardInCodeValueManagement">
+                    <header>
+                        Categories
+                    </header>
+                    <div style="height: 85%; overflow-y: auto;">
+                        <div class="item" *ngFor="let category of codeValueDictionary.keys()"
+                            [class.selected]="selectedCategory == category" (click)="selectCategory(category);">
+                            {{category}}
+                        </div>
+                    </div>
+                </div>
+                <div class="cardInCodeValueManagement">
+                    <header>
+                        WLE Codes
+                    </header>
+                    <div style="height: 85%; overflow-y: auto;"
+                        *ngIf="selectedCategory != null && codeValueDictionary.has(selectedCategory)">
+                        <div class="item" *ngFor="let code of codeValueDictionary.get(selectedCategory).keys()"
+                            [class.selected]="selectedCode == code" (click)="selectCode(code)">
+                            {{code}}
+                        </div>
+                    </div>
+                </div>
+                <div class="cardInCodeValueManagement purple">
+                    <header class="">
+                        Mapped Values
+                    </header>
+                    <ng-container
+                        *ngIf="selectedCategory != null && codeValueDictionary.has(selectedCategory) && selectedCode != null && codeValueDictionary.get(selectedCategory).has(selectedCode)">
+                        <div class="mappedValueInput">
+                            <input [formControl]="mappedValueInputControl">
+                            <button mat-flat-button [disabled]="mappedValueInputControl.value == ''"
+                                (click)="addMappedValueToSelections()">Add</button>
+                        </div>
+                        <div style="height: 64%; overflow-y: auto;">
+                            <div class="editableItem"
+                                *ngFor="let value of codeValueDictionary.get(selectedCategory).get(selectedCode); let i = index;">
+                                {{value}}
+                                <button mat-flat-button style="color: #EC6B6B;"
+                                    (click)="removeMappedValueFromSelections(i)">Remove</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
