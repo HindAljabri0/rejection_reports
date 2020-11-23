@@ -8,13 +8,11 @@
         <div class="overlay" style=" position: absolute;
         z-index: 1002;
         background-color: rgba(255, 255, 255, 0.5);
-        width: 100%;
-        height: 100%;" *ngIf="isLoading">
-            <div class="spinner-wrapper" style="display: flex;
-          justify-content: center;
-          justify-items: center;">
-                <mat-spinner diameter="40"></mat-spinner>
-            </div>
+        width: 81%;
+        height: 100%;
+        display: grid;
+        place-items: center;" *ngIf="isLoading">
+            <mat-spinner diameter="40"></mat-spinner>
         </div>
 
         <div class="loaded-content" [class.blurred]="isLoading">
@@ -136,13 +134,15 @@
                     <td style="width: 5%;">Vat</td>
                     <td style="width: 5%; text-align: center;">Status</td>
                     <td style="width: 15%; text-align: center;">
-                        <ng-container *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
+                        <ng-container
+                            *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
                             <button style="color: #adadad; width:unset; padding-left: 38%;" mat-icon-button
                                 (click)="checkAllClaims()" matTooltip="Verify All Ready Claims' Eligibility">
                                 <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
+                        <ng-container
+                            *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
                             <button style="color: #adadad; width:unset;" mat-icon-button (click)="checkSelectedClaims()"
                                 matTooltip="Verify All Selected Claims' Eligibility">
                                 <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
