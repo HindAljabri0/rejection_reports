@@ -9,7 +9,6 @@ import { LoginComponent } from '../pages/loginpage/login.component';
 import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.component';
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
-import { ConfigurationsComponent } from '../pages/configurationsPage/configurations.component';
 
 
 
@@ -25,7 +24,11 @@ import { ConfigurationsComponent } from '../pages/configurationsPage/configurati
       { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
       { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
-      { path: 'configurations', component: ConfigurationsComponent, canActivate: [RouteCanActiveService] },
+      {
+        path: 'configurations',
+        loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
+        canLoad: [RouteCanActiveService]
+      },
       {
         path: 'administration',
         loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),

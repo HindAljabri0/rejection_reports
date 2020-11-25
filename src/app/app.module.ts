@@ -40,7 +40,7 @@ import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
-import { MatiralModule } from './modules/matiral/matiral.module';
+import { MaterialModule } from './modules/material/material.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
 import { StoreModule } from '@ngrx/store';
@@ -63,7 +63,6 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
-import { ConfigurationsComponent } from './pages/configurationsPage/configurations.component';
 
 
 @NgModule({
@@ -110,7 +109,6 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
     ClaimAttachmentsManagementComponent,
     ImageToolTipDirective,
     ImageTooltipComponent,
-    ConfigurationsComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -124,7 +122,7 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
     FormsModule,
     ScrollingModule,
     InfiniteScrollModule,
-    MatiralModule,
+    MaterialModule,
     SharedModule,
     ChartsModule,
   ],

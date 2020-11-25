@@ -5,7 +5,8 @@
                 <mat-panel-title style="color: #3F6DB3;">
                     Code Value Management
                 </mat-panel-title>
-                <mat-panel-description>
+                <mat-panel-description style="display: grid; place-items: end;">
+                    <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div class="bodyOfCodeValueManagement">
@@ -14,9 +15,9 @@
                         Categories
                     </header>
                     <div style="height: 85%; overflow-y: auto;">
-                        <div class="item" *ngFor="let category of codeValueDictionary.keys()"
-                            [class.selected]="selectedCategory == category" (click)="selectCategory(category);">
-                            {{category}}
+                        <div class="item" *ngFor="let category of categories"
+                            [class.selected]="selectedCategory == category.key" (click)="selectCategory(category.key);">
+                            {{category.label}}
                         </div>
                     </div>
                 </div>
@@ -24,11 +25,10 @@
                     <header>
                         WLE Codes
                     </header>
-                    <div style="height: 85%; overflow-y: auto;"
-                        *ngIf="selectedCategory != null && codeValueDictionary.has(selectedCategory)">
-                        <div class="item" *ngFor="let code of codeValueDictionary.get(selectedCategory).keys()"
-                            [class.selected]="selectedCode == code" (click)="selectCode(code)">
-                            {{code}}
+                    <div style="height: 85%; overflow-y: auto;">
+                        <div class="item" *ngFor="let code of codes"
+                            [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)">
+                            {{code.label}}
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         Mapped Values
                     </header>
                     <ng-container
-                        *ngIf="selectedCategory != null && codeValueDictionary.has(selectedCategory) && selectedCode != null && codeValueDictionary.get(selectedCategory).has(selectedCode)">
+                        *ngIf="values.length > 0">
                         <div class="mappedValueInput">
                             <input [formControl]="mappedValueInputControl">
                             <button mat-flat-button [disabled]="mappedValueInputControl.value == ''"
@@ -45,13 +45,17 @@
                         </div>
                         <div style="height: 64%; overflow-y: auto;">
                             <div class="editableItem"
-                                *ngFor="let value of codeValueDictionary.get(selectedCategory).get(selectedCode); let i = index;">
+                                *ngFor="let value of values; let i = index;">
                                 {{value}}
                                 <button mat-flat-button style="color: #EC6B6B;"
                                     (click)="removeMappedValueFromSelections(i)">Remove</button>
                             </div>
                         </div>
                     </ng-container>
+                </div>
+                <div class="codeValueManagementActions">
+                    <button mat-flat-button [disabled]="isLoading" (click)="cancel()">Cancel</button>
+                    <button mat-raised-button color="primary" [disabled]="isLoading" (click)="save()">Save</button>
                 </div>
             </div>
         </mat-expansion-panel>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { addNewMappingValue, cancelChangesOfCodeValueManagement, deleteMappingValue, loadProviderMappingValues, saveChangesOfCodeValueManagement, setCodeValueManagementLoading } from './store/configurations.actions';
+import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
 
 @Component({
   selector: 'app-configurations',
@@ -8,48 +11,76 @@ import { FormControl } from '@angular/forms';
 })
 export class ConfigurationsComponent implements OnInit {
 
-  codeValueDictionary: Map<string, Map<string, string[]>> = new Map();
+  codeValueDictionary: CategorizedCodeValue = new Map();
+  categories: { label: string, key: string }[] = [];
+  codes: { label: string, key: string }[] = [];
+  values: string[] = [];
 
-  selectedCategory:string;
-  selectedCode:string;
+  isLoading: boolean = false;
 
-  mappedValueInputControl:FormControl = new FormControl('');
+  selectedCategory: string;
+  selectedCode: string;
 
-  constructor() { }
+  mappedValueInputControl: FormControl = new FormControl('');
+
+  constructor(private store: Store) { }
 
   ngOnInit() {
+    this.store.dispatch(setCodeValueManagementLoading({isLoading: true}));
+    this.store.dispatch(loadProviderMappingValues());
+    this.store.select(codeValueManagementSelectors.getCurrentValues).subscribe(values => {
+      this.codeValueDictionary = values
+      values.forEach((value, key) => {
+        if (!key.startsWith('departmentName'))
+          this.categories.push({ label: value.label, key: key });
+      })
+    });
+    this.store.select(codeValueManagementSelectors.getIsLoading).subscribe(isLoading => this.isLoading = isLoading);
   }
 
-  selectCategory(category:string){
+  selectCategory(category: string) {
     this.selectedCategory = category;
+    this.codes = [];
+    this.codeValueDictionary.get(category).codes.forEach((value, key) => {
+      this.codes.push({ label: value.label, key: key });
+    });
     this.selectCode('');
   }
 
-  selectCode(code:string){
+  selectCode(code: string) {
     this.selectedCode = code;
+    this.values = [];
+    if (code != '') {
+      this.values = this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values;
+    }
     this.mappedValueInputControl.setValue('');
   }
 
-  addMappedValueToSelections(){
+  addMappedValueToSelections() {
     this.addMappedValueToCodeOfCategory(this.selectedCategory, this.selectedCode, this.mappedValueInputControl.value);
     this.mappedValueInputControl.setValue('');
   }
 
-  removeMappedValueFromSelections(index:number){
-    this.codeValueDictionary.get(this.selectedCategory).get(this.selectedCode).splice(index, 1);
+  removeMappedValueFromSelections(index: number) {
+    this.store.dispatch(deleteMappingValue({
+      value: {
+        category: this.selectedCategory, code: this.selectedCode, value:
+          this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values[index]
+      }
+    }));
+    this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values.splice(index, 1);
+    this.selectCode(this.selectedCode);
   }
 
-  addMappedValueToCodeOfCategory(category:string, code:string, value:string){
-    if(!this.codeValueDictionary.has(category)){
-      this.codeValueDictionary.set(category, new Map());
-    }
-    if(!this.codeValueDictionary.get(category).has(code)){
-      this.codeValueDictionary.get(category).set(code, []);
-    }
-    if(this.codeValueDictionary.get(category).get(code).includes(value)){
-      return;
-    }
-    this.codeValueDictionary.get(category).get(code).push(value);
+  addMappedValueToCodeOfCategory(category: string, code: string, value: string) {
+    this.codeValueDictionary.get(category).codes.get(code).values.push(value);
+    this.selectCode(code);
+    this.store.dispatch(addNewMappingValue({ value: { category: category, code: code, value: value } }));
   }
-
+  cancel() {
+    this.store.dispatch(cancelChangesOfCodeValueManagement());
+  }
+  save() {
+    this.store.dispatch(saveChangesOfCodeValueManagement());
+  }
 }

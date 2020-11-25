@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { MatiralModule } from '../matiral/matiral.module';
+import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -55,7 +55,7 @@ import { LabResultsComponent } from 'src/app/claim-module-components/lab-results
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),
     CommonModule,
-    MatiralModule,
+    MaterialModule,
     ReactiveFormsModule,
     SharedModule,
     HttpClientModule,
