@@ -7,6 +7,7 @@ export const storeProviderMappingValues = createAction('[ Configurations ] [ Cod
 export const setCodeValueManagementLoading = createAction('[ Configurations ] [ Code Value Management ] set component is loading', props<{ isLoading: boolean }>());
 export const setCodeValueManagementError = createAction('[ Configurations ] [ Code Value Management ] set component error', props<any>());
 export const saveChangesOfCodeValueManagement = createAction('[ Configurations ] [ Code Value Management ] save changes');
+export const storeSaveChangesResponsesOfCodeValueManagement = createAction('[ Configurations ] [ Code Value Management ] store responses after saving changes', props<{ responses: { request: string, status: string, error?}[] }>());
 export const cancelChangesOfCodeValueManagement = createAction('[ Configurations ] [ Code Value Management ] cancel changes');
 export const addNewMappingValue = createAction('[ Configurations ] [ Code Value Management ] add new mapping value', props<{ value: ModifyingCodeValueRequest }>());
 export const deleteMappingValue = createAction('[ Configurations ] [ Code Value Management ] delete mapping value ', props<{ value: ModifyingCodeValueRequest }>());

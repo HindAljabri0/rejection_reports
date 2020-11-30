@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { SharedServices } from 'src/app/services/shared.services';
+import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { addNewMappingValue, cancelChangesOfCodeValueManagement, deleteMappingValue, loadProviderMappingValues, saveChangesOfCodeValueManagement, setCodeValueManagementLoading } from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
 
@@ -17,8 +19,10 @@ export class ConfigurationsComponent implements OnInit {
   payers: { id: number, name: string }[] = [];
   codes: { label: string, key: string }[] = [];
   values: string[] = [];
+  error: string;
 
   isLoading: boolean = false;
+  hasChanges: boolean = false;
 
   selectedCategory: string;
   selectedCode: string;
@@ -26,21 +30,33 @@ export class ConfigurationsComponent implements OnInit {
 
   mappedValueInputControl: FormControl = new FormControl('');
 
+  categoriesStoreSubscription:Subscription;
+
   constructor(private store: Store, private sharedServices: SharedServices) { }
 
   ngOnInit() {
     this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
     this.store.dispatch(loadProviderMappingValues());
-    this.store.select(codeValueManagementSelectors.getCurrentValues).subscribe(values => {
+    this.getCategoriesFromStore();
+    this.store.select(codeValueManagementSelectors.getIsLoading).subscribe(isLoading => this.isLoading = isLoading);
+    this.store.select(codeValueManagementSelectors.hasNewChanges).subscribe(hasChanges => this.hasChanges = hasChanges);
+
+  }
+
+  getCategoriesFromStore(){
+    this.categoriesStoreSubscription = this.store.select(codeValueManagementSelectors.getCurrentValues).subscribe(values => {
+      let payersCodes = [];
       values.forEach((value, key) => {
-        this.codeValueDictionary.set(key, {label: value.label, codes: new Map()});
-        value.codes.forEach((cValue, cKey) => this.codeValueDictionary.get(key).codes.set(cKey, {label: cValue.label, values: [...cValue.values]}));
+        this.codeValueDictionary.set(key, { label: value.label, codes: new Map() });
+        value.codes.forEach((cValue, cKey) => this.codeValueDictionary.get(key).codes.set(cKey, { label: cValue.label, values: [...cValue.values] }));
         if (!key.startsWith('departmentName'))
           this.categories.push({ label: value.label, key: key });
+        else {
+          payersCodes.push(key.split('_')[1])
+        }
       })
+      this.payers = this.sharedServices.payers.filter(payer => payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
     });
-    this.store.select(codeValueManagementSelectors.getIsLoading).subscribe(isLoading => this.isLoading = isLoading);
-    this.payers = this.sharedServices.payers.filter(payer => ['AXA', 'NCCI', 'MedGulf'].includes(this.sharedServices.getPayerCode(`${payer.id}`)));
   }
 
   selectCategory(category: string) {
@@ -79,7 +95,7 @@ export class ConfigurationsComponent implements OnInit {
   removeMappedValueFromSelections(index: number) {
     this.store.dispatch(deleteMappingValue({
       value: {
-        category: this.selectedCategory, code: this.selectedCode, value:
+        categoryId: this.selectedCategory, codeId: this.selectedCode, value:
           this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values[index]
       }
     }));
@@ -88,14 +104,41 @@ export class ConfigurationsComponent implements OnInit {
   }
 
   addMappedValueToCodeOfCategory(category: string, code: string, value: string) {
+    let codeThatAlreadyHasTheValue: string;
+    this.codeValueDictionary.get(category).codes.forEach((code, key) => {
+      if (code.values.includes(value)) {
+        codeThatAlreadyHasTheValue = code.label;
+        return;
+      }
+    });
+    if (codeThatAlreadyHasTheValue != null) {
+      this.error = `Value [${value}] already exists in ${codeThatAlreadyHasTheValue}`;
+      setTimeout(() => this.error = null, 8000);
+      return;
+    }
     this.codeValueDictionary.get(category).codes.get(code).values.push(value);
     this.selectCode(code);
-    this.store.dispatch(addNewMappingValue({ value: { category: category, code: code, value: value } }));
+    this.store.dispatch(addNewMappingValue({ value: { categoryId: category, codeId: code, value: value } }));
   }
   cancel() {
+    this.values = [];
+    this.codes = [];
+    this.categories = [];
+    this.selectedCode = '';
+    this.selectedPayer = '';
+    this.selectedCategory = '';
+    this.categoriesStoreSubscription.unsubscribe();
     this.store.dispatch(cancelChangesOfCodeValueManagement());
+    this.getCategoriesFromStore();
   }
   save() {
+    this.values = [];
+    this.codes = [];
+    this.categories = [];
+    this.selectedCode = '';
+    this.selectedPayer = '';
+    this.selectedCategory = '';
+    this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
     this.store.dispatch(saveChangesOfCodeValueManagement());
   }
 }
