@@ -20,6 +20,7 @@ export class ConfigurationsComponent implements OnInit {
   codes: { label: string, key: string }[] = [];
   values: string[] = [];
   error: string;
+  success: string;
 
   isLoading: boolean = false;
   hasChanges: boolean = false;
@@ -30,7 +31,7 @@ export class ConfigurationsComponent implements OnInit {
 
   mappedValueInputControl: FormControl = new FormControl('');
 
-  categoriesStoreSubscription:Subscription;
+  categoriesStoreSubscription: Subscription;
 
   constructor(private store: Store, private sharedServices: SharedServices) { }
 
@@ -40,10 +41,20 @@ export class ConfigurationsComponent implements OnInit {
     this.getCategoriesFromStore();
     this.store.select(codeValueManagementSelectors.getIsLoading).subscribe(isLoading => this.isLoading = isLoading);
     this.store.select(codeValueManagementSelectors.hasNewChanges).subscribe(hasChanges => this.hasChanges = hasChanges);
-
+    this.store.select(codeValueManagementSelectors.getResponses).subscribe(responses => {
+      if(responses.length > 0){
+        this.success = null;
+        this.error = null;
+        if(responses.filter(response => response.status == 'error').length > 0){
+          this.error = 'Some changes were not saved. Please try again later.';
+        } else {
+          this.success = 'All changes were saved successfully.';
+        }
+      }
+    })
   }
 
-  getCategoriesFromStore(){
+  getCategoriesFromStore() {
     this.categoriesStoreSubscription = this.store.select(codeValueManagementSelectors.getCurrentValues).subscribe(values => {
       let payersCodes = [];
       values.forEach((value, key) => {
@@ -112,6 +123,7 @@ export class ConfigurationsComponent implements OnInit {
       }
     });
     if (codeThatAlreadyHasTheValue != null) {
+      this.success = null;
       this.error = `Value [${value}] already exists in ${codeThatAlreadyHasTheValue}`;
       setTimeout(() => this.error = null, 8000);
       return;

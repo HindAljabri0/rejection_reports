@@ -60,8 +60,10 @@
                     </ng-container>
                 </div>
                 <div class="codeValueManagementActions">
-                    <p *ngIf="error != null"
-                        style="color: #EC6B6B; font-size: large; font-weight: 400; display: inline;">{{error}}</p>
+                    <p *ngIf="success != null && !isLoading"
+                        style="font-size: large; font-weight: 400; display: inline; color: #3ab73a; margin-right: 30%;">{{success}}</p>
+                    <p *ngIf="error != null  && !isLoading"
+                        style="color: #EC6B6B; font-size: large; font-weight: 400; display: inline; margin-right: 30%;">{{error}}</p>
                     <button mat-flat-button [disabled]="isLoading || !hasChanges" (click)="cancel()">Cancel</button>
                     <button mat-raised-button color="primary" [disabled]="isLoading || !hasChanges"
                         (click)="save()">Save</button>
