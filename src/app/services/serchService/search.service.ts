@@ -14,57 +14,61 @@ export class SearchService {
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + fromDate
         + '&toDate=' + toDate + '&payerId=' + payerId + '&status=' + statuses.toString();
-      if (casetype != null) requestURL += '&casetype='+casetype;
+      if (casetype != null) requestURL += '&casetype=' + casetype;
     }
     if (batchId != null) {
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString();
     }
-    if(uploadId != null){
+    if (uploadId != null) {
       requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString();
     }
-    if(claimRefNo != null){
+    if (claimRefNo != null) {
       requestURL += `claimRefNo=${claimRefNo}` + '&status=' + statuses.toString();
     }
-    if(memberId != null){
+    if (memberId != null) {
       requestURL += `memberId=${memberId}` + '&status=' + statuses.toString();
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
 
-  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string,  uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {
+  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     let requestURL: string = `/providers/${providerId}/claims/details?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + fromDate
         + '&toDate=' + toDate + '&payerId=' + payerId + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
-      if (casetype != null) requestURL +=  '&casetype='+casetype;
+      if (casetype != null) requestURL += '&casetype=' + casetype;
     }
     if (batchId != null) {
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
     }
-    if(uploadId != null){
-      requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
+    if (uploadId != null) {
+      requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
     }
-    if(claimRefNo != null){
-      requestURL += `claimRefNo=${claimRefNo}` + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
+    if (claimRefNo != null) {
+      requestURL += `claimRefNo=${claimRefNo}` + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
     }
-    if(memberId != null){
-      requestURL += `memberId=${memberId}` + '&status=' + statuses.toString()+ '&page=' + page + '&size=' + pageSize;
+    if (memberId != null) {
+      requestURL += `memberId=${memberId}` + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
 
-  downloadSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string) {
+  downloadSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, claimRefNo?: string, memberId?: string) {
     let requestURL: string = `/providers/${providerId}/claims/download?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += `&fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
-    } else if(batchId != null) {
+    } else if (batchId != null) {
       requestURL += `&batchId=${batchId}`;
-    } else if(uploadId != null){
+    } else if (uploadId != null) {
       requestURL += `&uploadId=${uploadId}`;
+    } else if (claimRefNo != null) {
+      requestURL += `claimRefNo=${claimRefNo}`;
+    } else if (memberId != null) {
+      requestURL += `memberId=${memberId}`;
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);
@@ -76,7 +80,7 @@ export class SearchService {
     return this.http.request(request);
   }
 
-  getTopFiveRejections(rejectionBy:string, providerId:string, payerId:string, fromDate:string, toDate:string){
+  getTopFiveRejections(rejectionBy: string, providerId: string, payerId: string, fromDate: string, toDate: string) {
     const requestURL = `/providers/${providerId}/top/${rejectionBy.toUpperCase()}?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);

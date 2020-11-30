@@ -15,6 +15,18 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
+.codeValueManagementActions {
+    grid-column: 1 / span 3;
+    text-align: end;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.codeValueManagementActions * {
+    margin-right: 5px;
+}
+
 .cardInCodeValueManagement {
     height: 50vh;
     background-color: #f9f9f9;
@@ -77,7 +89,8 @@
 }
 
 .mappedValueInput input:focus {
-    outline: 1px solid #3060aa4a;;
+    outline: 1px solid #3060aa4a;
+    ;
 }
 
 .mappedValueInput button {

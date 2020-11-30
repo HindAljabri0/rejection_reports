@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanLoad, UrlSegment } from '@angular/router';
-import { Observable, TimeoutError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../authService/authService.service';
 import { ClaimpageComponent } from 'src/app/pages/claimUploadignPage/claimpage.component';
 import { SearchClaimsComponent } from 'src/app/pages/searchClaimsPage/search-claims.component';
 import { NotificationsPageComponent } from 'src/app/pages/notifications-page/notifications-page.component';
 import { Route } from '@angular/compiler/src/core';
-import { environment } from 'src/environments/environment';
 import { DashboardComponent } from 'src/app/pages/dashboard/dashboard.component';
-import { filter, map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -30,7 +28,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       case ClaimpageComponent:
         return true;
       case DashboardComponent:
-        if(this._isAdmin()){
+        if (this._isAdmin()) {
           return this.router.createUrlTree(['administration'])
         } else {
           return true;
@@ -42,9 +40,9 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         let uploadId = route.queryParamMap.get('uploadId');
         if (uploadId != null && uploadId != '') return true;
         let claimRefNo = route.queryParamMap.get('claimRefNo');
-        if(claimRefNo != null && claimRefNo != '') return true;
+        if (claimRefNo != null && claimRefNo != '') return true;
         let memberId = route.queryParamMap.get('memberId');
-        if(memberId != null && memberId != '') return true;
+        if (memberId != null && memberId != '') return true;
         payerId = route.queryParamMap.get("payer");
         authority = localStorage.getItem(providerId + payerId);
         if (providerId == null || providerId == "" || payerId == null || payerId == "" || authority == null) {
@@ -70,6 +68,15 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       return this._isAdmin();
     } else if (segments[0].path == 'claims') {
       return true;
+    } else if (segments[0].path == 'configurations') {
+      try {
+        const providerId = localStorage.getItem('provider_id');
+        const userPrivileges = localStorage.getItem(`${providerId}101`);
+        return userPrivileges.split('|').includes('3.0');
+      } catch(error){
+        console.log(error);
+        return false;
+      }
     }
 
   }
