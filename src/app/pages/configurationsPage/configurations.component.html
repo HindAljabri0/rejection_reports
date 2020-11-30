@@ -15,6 +15,14 @@
                         Categories
                     </header>
                     <div style="height: 85%; overflow-y: auto;">
+                        <div *ngIf="!isLoading" class="item"
+                            [class.selected]="selectedPayer != null && selectedCategory.includes('departmentName_')"
+                            (click)="selectCategory('departmentName_')">
+                            Department Code
+                            <select [value]="selectedPayer" (change)="selectedPayer = $event.target.value;" required>
+                                <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
+                            </select>
+                        </div>
                         <div class="item" *ngFor="let category of categories"
                             [class.selected]="selectedCategory == category.key" (click)="selectCategory(category.key);">
                             {{category.label}}
@@ -26,8 +34,8 @@
                         WLE Codes
                     </header>
                     <div style="height: 85%; overflow-y: auto;">
-                        <div class="item" *ngFor="let code of codes"
-                            [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)">
+                        <div class="item" *ngFor="let code of codes" [class.selected]="selectedCode == code.key"
+                            (click)="selectCode(code.key)">
                             {{code.label}}
                         </div>
                     </div>
@@ -36,16 +44,14 @@
                     <header class="">
                         Mapped Values
                     </header>
-                    <ng-container
-                        *ngIf="values.length > 0">
+                    <ng-container *ngIf="selectedCode != null && selectedCode != ''">
                         <div class="mappedValueInput">
                             <input [formControl]="mappedValueInputControl">
                             <button mat-flat-button [disabled]="mappedValueInputControl.value == ''"
                                 (click)="addMappedValueToSelections()">Add</button>
                         </div>
                         <div style="height: 64%; overflow-y: auto;">
-                            <div class="editableItem"
-                                *ngFor="let value of values; let i = index;">
+                            <div class="editableItem" *ngFor="let value of values; let i = index;">
                                 {{value}}
                                 <button mat-flat-button style="color: #EC6B6B;"
                                     (click)="removeMappedValueFromSelections(i)">Remove</button>

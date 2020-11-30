@@ -29,7 +29,8 @@ const _configurationReducer = createReducer(
     on(storeProviderMappingValues, (state, { values }) => ({ ...state, codeValueManagement: { ...state.codeValueManagement, currentValues: values, loading: false } })),
     on(addNewMappingValue, (state, { value }) => ({ ...state, codeValueManagement: { ...state.codeValueManagement, newValues: state.codeValueManagement.newValues.concat([value]) } })),
     on(deleteMappingValue, (state, { value }) => {
-        if (state.codeValueManagement.currentValues.get(value.category).codes.get(value.code).values.findIndex(v => v == value.value) != -1) {
+        let index = state.codeValueManagement.currentValues.get(value.category).codes.get(value.code).values.findIndex(v => v == value.value);
+        if (index != -1) {
             return { ...state, codeValueManagement: { ...state.codeValueManagement, toDeleteValues: state.codeValueManagement.toDeleteValues.concat([value]) } };
         } else {
             let index = state.codeValueManagement.newValues.findIndex(item => item.category == value.category && item.code == value.code && item.value == value.value);
