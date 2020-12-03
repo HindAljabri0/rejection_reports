@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT, SFDA_VALIDATION_KEY, SFDA_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { MatSlideToggleChange } from '@angular/material';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-providers-config',
@@ -19,9 +20,9 @@ export class ProvidersConfigComponent implements OnInit {
   filteredProviders: any[] = [];
   providerController: FormControl = new FormControl();
 
-  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string } = {};
-  success: { serviceCodeSaveSuccess?: string, portalUserSaveSuccess?: string, ICD10SaveSuccess?: string } = {};
-  componentLoading = { serviceCode: true, portalUser: true, ICD10Validation: true };
+  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string, sfdaError?: string, sfdaSaveError?: string } = {};
+  success: { serviceCodeSaveSuccess?: string, portalUserSaveSuccess?: string, ICD10SaveSuccess?: string, sfdaSaveSuccess?: string } = {};
+  componentLoading = { serviceCode: true, portalUser: true, ICD10Validation: true, sfda: true };
 
   selectedProvider: string;
   associatedPayers: any[] = [];
@@ -29,10 +30,14 @@ export class ProvidersConfigComponent implements OnInit {
   serviceCodeRestrictionSettings: any[] = [];
   priceUnitSettings: any[] = [];
   ICD10ValidationSettings: any[] = [];
+  sfdaValidationSettings: any[] = [];
+  sfdaRestrictionSettings: any[] = [];
   newServiceCodeValidationSettings: { [key: string]: boolean } = {};
   newServiceRestrictionSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
+  newSFDAValidationSettings: { [key: string]: boolean } = {};
+  newSFDARestrictionSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
@@ -93,11 +98,14 @@ export class ProvidersConfigComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
           this.associatedPayers = event.body;
+          
           this.associatedPayers.forEach(payer => {
             this.newServiceCodeValidationSettings[payer.switchAccountId] = true;
             this.newServiceRestrictionSettings[payer.switchAccountId] = false;
             this.newPriceUnitSettings[payer.switchAccountId] = false;
             this.newICD10ValidationSettings[payer.switchAccountId] = true;
+            this.newSFDARestrictionSettings[payer.switchAccountId] = true;
+            this.newSFDAValidationSettings[payer.switchAccountId] = false;
           })
         }
         if (this.associatedPayers.length == 0) {
@@ -126,10 +134,12 @@ export class ProvidersConfigComponent implements OnInit {
     this.getServiceCodeRestrictionSettings();
     this.getUnitPriceSettings();
     this.getICD10ValidationSettings();
+    this.getSFDAValidationSettings();
+    this.getSFDARestrictionSettings();
   }
 
   save() {
-    if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser || this.componentLoading.ICD10Validation) {
+    if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser || this.componentLoading.ICD10Validation || this.componentLoading.sfda) {
       return;
     }
     let flag1 = this.saveServiceCodeValidationSettings();
@@ -137,7 +147,9 @@ export class ProvidersConfigComponent implements OnInit {
     let flag3 = this.saveServiceRestrictionSettings();
     let flag4 = this.saveICD10ValidationSettings();
     let flag5 = this.savePriceUnitSettings();
-    if (flag1 && flag2 && flag3 && flag4 && flag5) {
+    let flag6 = this.saveSFDAValidationSettings();
+    let flag7 = this.saveSFDARestrictionSettings();
+    if (flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag7) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -324,6 +336,99 @@ export class ProvidersConfigComponent implements OnInit {
     } return true;
   }
 
+
+  saveSFDAValidationSettings() {
+    let payers = Object.keys(this.newSFDAValidationSettings);
+    if (payers.length > 0) {
+      let newSettingsKeys = payers.filter(payerId => {
+        let setting = this.sfdaValidationSettings.find(setting => setting.payerId == payerId);
+        return (setting != null && (setting.value == '1') != this.newSFDAValidationSettings[payerId])
+          || setting == null;
+      });
+      if (newSettingsKeys.length > 0) {
+        this.componentLoading.sfda = true;
+        this.errors.sfdaSaveError = null;
+        this.success.sfdaSaveSuccess = null;
+        this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
+          payerId: payerId,
+          key: SFDA_VALIDATION_KEY,
+          value: (this.newSFDAValidationSettings[payerId]) ? '1' : '0'
+        })
+        )).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            newSettingsKeys.map(payerId => {
+              let index = this.sfdaValidationSettings.findIndex(setting => setting.payerId == payerId);
+              if (index != -1) {
+                this.sfdaValidationSettings[index].value = (this.newSFDAValidationSettings[payerId]) ? '1' : '0';
+              } else {
+                this.sfdaValidationSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId: payerId,
+                  key: SFDA_VALIDATION_KEY,
+                  value: (this.newSFDAValidationSettings[payerId]) ? '1' : '0'
+                });
+              }
+            });
+
+            this.success.sfdaSaveSuccess = "Settings were saved successfully";
+            this.componentLoading.sfda = false;
+          }
+        }, error => {
+          this.errors.sfdaSaveError = 'Could not save settings, please try again later.';
+          this.resetSFDAValidationSettings();
+          this.componentLoading.sfda = false;
+        });
+        return false;
+      } return true;
+    } return true;
+  }
+
+  saveSFDARestrictionSettings() {
+    let payers = Object.keys(this.newSFDARestrictionSettings);
+    if (payers.length > 0) {
+      let newSettingsKeys = payers.filter(payerId => {
+        let setting = this.sfdaRestrictionSettings.find(setting => setting.payerId == payerId);
+        return (setting != null && (setting.value == '1') != this.newSFDARestrictionSettings[payerId])
+          || setting == null;
+      });
+      if (newSettingsKeys.length > 0) {
+        this.componentLoading.sfda = true;
+        this.errors.sfdaSaveError = null;
+        this.success.sfdaSaveSuccess = null;
+        this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
+          payerId: payerId,
+          key: SFDA_RESTRICTION_KEY,
+          value: (this.newSFDARestrictionSettings[payerId]) ? '1' : '0'
+        })
+        )).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            newSettingsKeys.map(payerId => {
+              let index = this.sfdaRestrictionSettings.findIndex(setting => setting.payerId == payerId);
+              if (index != -1) {
+                this.sfdaRestrictionSettings[index].value = (this.newSFDARestrictionSettings[payerId]) ? '1' : '0';
+              } else {
+                this.sfdaRestrictionSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId: payerId,
+                  key: SFDA_RESTRICTION_KEY,
+                  value: (this.newSFDARestrictionSettings[payerId]) ? '1' : '0'
+                });
+              }
+            });
+
+            this.success.sfdaSaveSuccess = "Settings were saved successfully";
+            this.componentLoading.sfda = false;
+          }
+        }, error => {
+          this.errors.sfdaSaveError = 'Could not save settings, please try again later.';
+          this.resetSFDARestrictionSettings();
+          this.componentLoading.sfda = false;
+        });
+        return false;
+      } return true;
+    } return true;
+  }
+
   saveICD10ValidationSettings() {
     let payers = Object.keys(this.newICD10ValidationSettings);
     if (payers.length > 0) {
@@ -376,6 +481,8 @@ export class ProvidersConfigComponent implements OnInit {
     this.resetServiceRestrictionSettings();
     this.resetPortalUserSettings();
     this.resetICD10ValidationSettings();
+    this.resetSFDAValidationSettings();
+    this.resetSFDARestrictionSettings();
   }
 
   resetServiceCodeValidationSettings() {
@@ -411,6 +518,21 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.ICD10Validation = true;
       setTimeout(() => this.componentLoading.ICD10Validation = false, 100);
       this.newICD10ValidationSettings = {};
+    }
+  }
+
+  resetSFDAValidationSettings() {
+    if (Object.keys(this.newSFDAValidationSettings).length > 0) {
+      this.componentLoading.sfda = true;
+      setTimeout(() => this.componentLoading.sfda = false, 100);
+      this.newSFDAValidationSettings = {};
+    }
+  }
+  resetSFDARestrictionSettings() {
+    if (Object.keys(this.newSFDARestrictionSettings).length > 0) {
+      this.componentLoading.sfda = true;
+      setTimeout(() => this.componentLoading.sfda = false, 100);
+      this.newSFDARestrictionSettings = {};
     }
   }
 
@@ -468,6 +590,67 @@ export class ProvidersConfigComponent implements OnInit {
       }
       this.componentLoading.serviceCode = false;
     });
+  }
+
+  getSFDAValidationSettings() {
+    
+    this.componentLoading.sfda = true;
+    this.superAdmin.getProviderPayerSettings(this.selectedProvider, SFDA_VALIDATION_KEY).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.sfdaValidationSettings = event.body;
+
+          let payers = Object.keys(this.newSFDAValidationSettings);
+          if (payers.length > 0) {
+            payers.forEach(payer => {
+              let setting = this.sfdaValidationSettings.find(setting => setting.payerId == payer);
+              this.newSFDAValidationSettings[payer] = (setting != null && setting.value == '1');
+            });
+          }
+
+          this.componentLoading.sfda = false;
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.sfdaError = 'Could not load SFDA settings, please try again later.';
+        }
+      }
+      this.componentLoading.sfda = false;
+    });
+
+  }
+
+  getSFDARestrictionSettings() {
+    
+    this.componentLoading.sfda = true;
+    this.superAdmin.getProviderPayerSettings(this.selectedProvider, SFDA_RESTRICTION_KEY).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
+          this.sfdaRestrictionSettings = event.body;
+
+          let payers = Object.keys(this.newSFDARestrictionSettings);
+          if (payers.length > 0) {
+            payers.forEach(payer => {
+              let setting = this.sfdaRestrictionSettings.find(setting => setting.payerId == payer);
+              this.newSFDARestrictionSettings[payer] = (setting != null && setting.value == '1');
+            });
+          }
+
+          this.componentLoading.sfda = false;
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.sfdaError = 'Could not load SFDA settings, please try again later.';
+        }
+      }
+      this.componentLoading.sfda = false;
+    });
+
+
   }
 
   getUnitPriceSettings() {
@@ -571,5 +754,16 @@ export class ProvidersConfigComponent implements OnInit {
   }
   isPriceUnitDisabled(payerId: string) {
     return !this.newServiceCodeValidationSettings[payerId] && !this.newServiceRestrictionSettings[payerId];
+  }
+
+  onSFDAWarningSettingChange(payerid: string, event: MatSlideToggleChange) {
+    if (event.checked) {
+      this.newSFDARestrictionSettings[payerid] = !event.checked;
+    }
+  }
+  onSFDARestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
+    if (event.checked) {
+      this.newSFDAValidationSettings[payerid] = !event.checked;
+    }
   }
 }
