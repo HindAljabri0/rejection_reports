@@ -26,8 +26,11 @@ export class ConfigurationsComponent implements OnInit {
   hasChanges: boolean = false;
 
   selectedCategory: string;
+  tempSelectedCategory: string;
   selectedCode: string;
+  tempSelectedCode: string;
   selectedPayer: string;
+  tempSelectedPayer: string;
 
   mappedValueInputControl: FormControl = new FormControl('');
 
@@ -45,6 +48,9 @@ export class ConfigurationsComponent implements OnInit {
       if(responses.length > 0){
         this.success = null;
         this.error = null;
+        this.selectedCategory = this.tempSelectedCategory;
+        this.selectedCode = this.tempSelectedCode;
+        this.selectedPayer = this.tempSelectedPayer;
         if(responses.filter(response => response.status == 'error').length > 0){
           this.error = 'Some changes were not saved. Please try again later.';
         } else {
@@ -147,6 +153,9 @@ export class ConfigurationsComponent implements OnInit {
     this.values = [];
     this.codes = [];
     this.categories = [];
+    this.tempSelectedCategory = this.selectedCategory;
+    this.tempSelectedCode = this.selectedCode;
+    this.tempSelectedPayer = this.selectedPayer;
     this.selectedCode = '';
     this.selectedPayer = '';
     this.selectedCategory = '';

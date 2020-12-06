@@ -160,6 +160,59 @@
                     <mat-spinner style="margin: 0px auto;"></mat-spinner>
                 </div>
             </mat-expansion-panel>
+
+            <mat-expansion-panel expanded="false">
+                <mat-expansion-panel-header style="background-color: #fbfbfb;">
+                    <mat-panel-title style="color: #3060AA;">
+                        SFDA Validation
+                    </mat-panel-title>
+                    <mat-panel-description *ngIf="errors.sfdaSaveError != null">
+                        <span style="color: #ac4040;">{{errors.sfdaSaveError}}</span>
+                    </mat-panel-description>
+                    <mat-panel-description *ngIf="success.sfdaSaveSuccess != null">
+                        <span style="color: #40ac60;">{{success.sfdaSaveSuccess}}</span>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div *ngIf="(errors.payersError == null || errors.payersError == '') && !componentLoading.sfda">
+                    <table style="width: 100%; margin: 10px">
+                        <thead>
+                            <th>Payer</th>
+                            <th style="text-align: center">SFDA Warning</th>
+                            <th style="text-align: center">SFDA Restriction</th>
+                        </thead>
+                        <tr *ngFor="let payer of associatedPayers" style="width: 100%">
+                            <td style="widows: 42%">
+                                <p>{{payer.name}}
+                                </p>
+                            </td>
+                            <td>
+                                <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
+                                        width: 15%" color="primary"
+                                    [(ngModel)]="newSFDAValidationSettings[payer.switchAccountId]"
+                                    (change)="onSFDAWarningSettingChange(payer.switchAccountId, $event)">
+                                </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
+                                        width: 15%" color="primary"
+                                    [(ngModel)]="newSFDARestrictionSettings[payer.switchAccountId]"
+                                    (change)="onSFDARestrictionSettingChange(payer.switchAccountId, $event)">
+                                </mat-slide-toggle>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.sfda"
+                    style="width: 100%; padding: 10px 30px; display: flex;">
+                    <p>{{errors.payersError}}</p>
+                </div>
+                <div *ngIf="componentLoading.sfda" style="width: 100%; padding: 10px;">
+                    <mat-spinner style="margin: 0px auto;"></mat-spinner>
+                </div>
+            </mat-expansion-panel>
+
+
         </mat-accordion>
     </app-detailscard>
 </div>
