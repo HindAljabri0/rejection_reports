@@ -513,7 +513,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.emptyOptions = false;
     let query: string = this.searchServicesController.value;
     if (query != null && query != '')
-      this.adminService.searchSeviceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId).subscribe(
+      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {

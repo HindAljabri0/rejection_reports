@@ -32,7 +32,6 @@ export class SidebarComponent implements OnInit {
       const userPrivileges = localStorage.getItem(`${providerId}101`);
       this.isProviderAdmin = userPrivileges.split('|').includes('3.0');
     } catch (error) {
-      console.log(error);
       this.isProviderAdmin = false;
     }
   }
