@@ -45,13 +45,10 @@ export class ConfigurationsComponent implements OnInit {
     this.store.select(codeValueManagementSelectors.getIsLoading).subscribe(isLoading => this.isLoading = isLoading);
     this.store.select(codeValueManagementSelectors.hasNewChanges).subscribe(hasChanges => this.hasChanges = hasChanges);
     this.store.select(codeValueManagementSelectors.getResponses).subscribe(responses => {
-      if(responses.length > 0){
+      if (responses.length > 0) {
         this.success = null;
         this.error = null;
-        this.selectedCategory = this.tempSelectedCategory;
-        this.selectedCode = this.tempSelectedCode;
-        this.selectedPayer = this.tempSelectedPayer;
-        if(responses.filter(response => response.status == 'error').length > 0){
+        if (responses.filter(response => response.status == 'error').length > 0) {
           this.error = 'Some changes were not saved. Please try again later.';
         } else {
           this.success = 'All changes were saved successfully.';
@@ -71,8 +68,11 @@ export class ConfigurationsComponent implements OnInit {
         else {
           payersCodes.push(key.split('_')[1])
         }
-      })
+      });
       this.payers = this.sharedServices.payers.filter(payer => payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
+      this.selectedPayer = this.tempSelectedPayer;
+      this.selectCategory(this.tempSelectedCategory);
+      this.selectCode(this.tempSelectedCode || '');
     });
   }
 
