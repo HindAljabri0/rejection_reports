@@ -44,7 +44,7 @@
                     <header class="">
                         Mapped Values
                     </header>
-                    <ng-container *ngIf="selectedCode != null && selectedCode != ''">
+                    <ng-container *ngIf="selectedCode != null && selectedCode != '' && !isLoading">
                         <div class="mappedValueInput">
                             <input [formControl]="mappedValueInputControl">
                             <button mat-flat-button [disabled]="mappedValueInputControl.value == ''"
