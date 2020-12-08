@@ -38,7 +38,8 @@
     background-color: #B9D3FC;
     color: #3F6DB3;
     display: grid;
-    font-size: x-large;
+    font-size: 15px;
+    font-weight: 600;
     padding: 15px;
 }
 
@@ -46,6 +47,7 @@
     color: #3F6DB3;
     font-size: large;
     padding: 15px;
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 500ms ease, color 500ms ease;
 }
@@ -88,9 +90,25 @@
     border-radius: 3px;
 }
 
-.mappedValueInput input:focus {
+.item input {
+    width: 100%;
+    background-color: white;
+    border: unset;
+    padding: 10px;
+    color: #3060AA;
+    border-radius: 5px;
+}
+
+.inputIcon {
+    position: relative;
+    bottom: 31px;
+    right: 5px;
+    float: right;
+    color: #d4cfcf;
+}
+
+.mappedValueInput input:focus, .item input:focus {
     outline: 1px solid #3060aa4a;
-    ;
 }
 
 .mappedValueInput button {
@@ -111,6 +129,7 @@
     color: #3F6DB3;
     padding: 10px 20px;
     border-radius: 5px;
+    font-size: 15px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

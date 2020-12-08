@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { SharedServices } from 'src/app/services/shared.services';
-import { showSnackBarMessage } from 'src/app/store/mainStore.actions';
 import { addNewMappingValue, cancelChangesOfCodeValueManagement, deleteMappingValue, loadProviderMappingValues, saveChangesOfCodeValueManagement, setCodeValueManagementLoading } from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
 
@@ -12,12 +11,13 @@ import { CategorizedCodeValue, codeValueManagementSelectors } from './store/conf
   templateUrl: './configurations.component.html',
   styleUrls: ['./configurations.component.css']
 })
-export class ConfigurationsComponent implements OnInit {
+export class ConfigurationsComponent implements OnInit, OnDestroy {
 
   codeValueDictionary: CategorizedCodeValue = new Map();
   categories: { label: string, key: string }[] = [];
   payers: { id: number, name: string }[] = [];
   codes: { label: string, key: string }[] = [];
+  filteredCodes: { label: string, key: string }[] = [];
   values: string[] = [];
   error: string;
   success: string;
@@ -29,10 +29,12 @@ export class ConfigurationsComponent implements OnInit {
   tempSelectedCategory: string;
   selectedCode: string;
   tempSelectedCode: string;
-  selectedPayer: string;
+  selectedPayer: string = '-1';
   tempSelectedPayer: string;
 
+  filterWLECodesControl: FormControl = new FormControl('');
   mappedValueInputControl: FormControl = new FormControl('');
+
 
   categoriesStoreSubscription: Subscription;
 
@@ -54,23 +56,29 @@ export class ConfigurationsComponent implements OnInit {
           this.success = 'All changes were saved successfully.';
         }
       }
-    })
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.cancel();
   }
 
   getCategoriesFromStore() {
     this.categoriesStoreSubscription = this.store.select(codeValueManagementSelectors.getCurrentValues).subscribe(values => {
       let payersCodes = [];
+      this.categories = [];
       values.forEach((value, key) => {
         this.codeValueDictionary.set(key, { label: value.label, codes: new Map() });
         value.codes.forEach((cValue, cKey) => this.codeValueDictionary.get(key).codes.set(cKey, { label: cValue.label, values: [...cValue.values] }));
-        if (!key.startsWith('departmentName'))
+        if (!key.startsWith('departmentName') && !key.endsWith('Unit'))
           this.categories.push({ label: value.label, key: key });
-        else {
+        else if (!key.endsWith('Unit')) {
           payersCodes.push(key.split('_')[1])
         }
       });
       this.payers = this.sharedServices.payers.filter(payer => payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
-      this.selectedPayer = this.tempSelectedPayer;
+      this.selectedPayer = this.tempSelectedPayer || '-1';
       this.selectCategory(this.tempSelectedCategory);
       this.selectCode(this.tempSelectedCode || '');
     });
@@ -85,6 +93,7 @@ export class ConfigurationsComponent implements OnInit {
     if (this.codeValueDictionary.has(category)) {
       this.codeValueDictionary.get(category).codes.forEach((value, key) => {
         this.codes.push({ label: value.label, key: key });
+        this.codes.sort((c1, c2) => c1.label.localeCompare(c2.label));
       });
     }
     this.selectCode('');
@@ -97,6 +106,20 @@ export class ConfigurationsComponent implements OnInit {
       this.values = this.codeValueDictionary.get(this.selectedCategory).codes.get(this.selectedCode).values;
     }
     this.mappedValueInputControl.setValue('');
+  }
+
+  filterCodes() {
+    if (this.filterWLECodesControl.value != null) {
+      this.filteredCodes = this.codes.filter(
+        code => code.label.toLowerCase().includes(this.filterWLECodesControl.value.toLowerCase())
+          || code.key.toLowerCase().includes(this.filterWLECodesControl.value.toLowerCase())
+      );
+      this.filteredCodes.sort((c1, c2) =>
+        (this.filterWLECodesControl.value.localeCompare(c1.key) == 0? -1:1)
+        -
+        (this.filterWLECodesControl.value.localeCompare(c2.key) == 0? -1:1)
+      )
+    }
   }
 
   getPayerCode() {
@@ -143,7 +166,7 @@ export class ConfigurationsComponent implements OnInit {
     this.codes = [];
     this.categories = [];
     this.selectedCode = '';
-    this.selectedPayer = '';
+    this.selectedPayer = '-1';
     this.selectedCategory = '';
     this.categoriesStoreSubscription.unsubscribe();
     this.store.dispatch(cancelChangesOfCodeValueManagement());
@@ -157,7 +180,7 @@ export class ConfigurationsComponent implements OnInit {
     this.tempSelectedCode = this.selectedCode;
     this.tempSelectedPayer = this.selectedPayer;
     this.selectedCode = '';
-    this.selectedPayer = '';
+    this.selectedPayer = '-1';
     this.selectedCategory = '';
     this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
     this.store.dispatch(saveChangesOfCodeValueManagement());

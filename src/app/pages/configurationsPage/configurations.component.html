@@ -14,12 +14,13 @@
                     <header>
                         Categories
                     </header>
-                    <div style="height: 85%; overflow-y: auto;">
-                        <div *ngIf="!isLoading && payers.length > 0" class="item"
-                            [class.selected]="selectedPayer != null && selectedCategory.includes('departmentName_')"
+                    <div style="height: 85%; overflow-y: auto;" *ngIf="!isLoading">
+                        <div *ngIf="payers.length > 0" class="item"
+                            [class.selected]="selectedPayer != null && selectedPayer != '-1' && selectedCategory.includes('departmentName_')"
                             (click)="selectCategory('departmentName_')">
                             Department Code
                             <select [value]="selectedPayer" (change)="selectedPayer = $event.target.value;" required>
+                                <option value="-1">Select a Payer</option>
                                 <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
                             </select>
                         </div>
@@ -34,8 +35,13 @@
                         WLE Codes
                     </header>
                     <div style="height: 85%; overflow-y: auto;">
-                        <div class="item" *ngFor="let code of codes" [class.selected]="selectedCode == code.key"
-                            (click)="selectCode(code.key)">
+                        <div class="item" *ngIf="codes.length > 10" style="cursor: unset;">
+                            <input [formControl]="filterWLECodesControl" (keyup)="filterCodes()">
+                            <mat-icon class="inputIcon">search</mat-icon>
+                        </div>
+                        <div class="item"
+                            *ngFor="let code of (filterWLECodesControl.value == ''? codes : filteredCodes)"
+                            [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)">
                             {{code.label}}
                         </div>
                     </div>
@@ -61,9 +67,11 @@
                 </div>
                 <div class="codeValueManagementActions">
                     <p *ngIf="success != null && !isLoading"
-                        style="font-size: large; font-weight: 400; display: inline; color: #3ab73a; margin-right: 30%;">{{success}}</p>
+                        style="font-size: large; font-weight: 400; display: inline; color: #3ab73a; margin-right: 30%;">
+                        {{success}}</p>
                     <p *ngIf="error != null  && !isLoading"
-                        style="color: #EC6B6B; font-size: large; font-weight: 400; display: inline; margin-right: 30%;">{{error}}</p>
+                        style="color: #EC6B6B; font-size: large; font-weight: 400; display: inline; margin-right: 30%;">
+                        {{error}}</p>
                     <button mat-flat-button [disabled]="isLoading || !hasChanges" (click)="cancel()">Cancel</button>
                     <button mat-raised-button color="primary" [disabled]="isLoading || !hasChanges"
                         (click)="save()">Save</button>
