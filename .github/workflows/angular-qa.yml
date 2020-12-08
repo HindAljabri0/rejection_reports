@@ -4,8 +4,10 @@
 name: QA - Angular Build
 
 on:
-  workflow_dispatch:
-
+  push:
+    branches:
+      - qa
+      
 jobs:
   build:
 
