@@ -201,7 +201,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   searchServices() {
     this.servicesOptions = [];
     if (this.searchServicesController.value != "")
-      this.adminService.searchSeviceCode(this.searchServicesController.value.toUpperCase(), this.data.claim.providerId, this.data.claim.payerid).subscribe(
+      this.adminService.searchServiceCode(this.searchServicesController.value.toUpperCase(), this.data.claim.providerId, this.data.claim.payerid).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object)

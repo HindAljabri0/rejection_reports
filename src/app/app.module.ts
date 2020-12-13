@@ -40,7 +40,7 @@ import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
-import { MatiralModule } from './modules/matiral/matiral.module';
+import { MaterialModule } from './modules/material/material.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
 import { StoreModule } from '@ngrx/store';
@@ -122,7 +122,7 @@ import { ImageTooltipComponent, ImageToolTipDirective } from './directives/image
     FormsModule,
     ScrollingModule,
     InfiniteScrollModule,
-    MatiralModule,
+    MaterialModule,
     SharedModule,
     ChartsModule,
   ],

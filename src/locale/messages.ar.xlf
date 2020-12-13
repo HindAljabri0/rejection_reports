@@ -102,27 +102,34 @@
           <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="configuration" datatype="html">
-        <source> Configuration </source><target>ترتيب</target>
+      <trans-unit id="configurations" datatype="html">
+        <source> Configurations </source><target>إعدادات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="configuration" datatype="html">
+        <source> Configuration </source><target>إعدادات</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="providerconfiguration" datatype="html">
         <source>
                     Provider Configuration
-                </source><target>تكوين الموفر</target>
+                </source><target>إعدادات موفري الخدمات الصحية</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">71</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="audit" datatype="html">
         <source> Audit </source><target>تدقيق</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="audittrail" datatype="html">
@@ -131,7 +138,7 @@
                 </source><target>سجل تدقيق</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="username" datatype="html">

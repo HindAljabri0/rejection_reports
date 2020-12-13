@@ -228,7 +228,7 @@ export class SharedServices {
         return '#FD76B5';
       case ClaimStatus.PAID.toLowerCase():
         return '#009633';
-      case ClaimStatus.PARTIALLY_PAID.toLowerCase():  case 'PARTIALLY_PAID'.toLowerCase():
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
         return '#00CED4';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return '#F3A264';
@@ -273,6 +273,49 @@ export class SharedServices {
     }
 
     return payers;
+  }
+
+  getPayerCode(payerId: string) {
+    switch (payerId) {
+      case '204':
+        return "AXA";
+      case '301':
+        return "ArabianSh";
+      case '205':
+        return "SAICO";
+      case '201':
+        return "Malath";
+      case '207':
+        return "Rajhi";
+      case '203':
+        return "GCI";
+      case '202':
+        return "SGI";
+      case '200':
+        return "CARS";
+      case '300':
+        return "MedGulf";
+      case '102':
+        return "NCCI";
+      case '206':
+        return "Weqaya";
+      case '303':
+        return "WeqayaSNC";
+      case '302':
+        return "ASF";
+      case '209':
+        return "Walaa";
+      case '208':
+        return "SAGR";
+      case '305':
+        return "SACB";
+      case '306':
+        return "ENAYA";
+      case '307':
+        return "EMIC";
+      default:
+        return "";
+    }
   }
 
 }
