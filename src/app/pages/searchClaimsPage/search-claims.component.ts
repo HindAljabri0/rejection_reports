@@ -275,9 +275,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.detailSubActionText = null;
     }
     this.claims = new Array();
-    this.store.dispatch(storeClaims({ claims: this.claims, currentPage: page, maxPages: this.searchResult != null? this.searchResult.totalPages : 0, pageSize: pageSize }));
+    this.store.dispatch(storeClaims({ claims: this.claims, currentPage: page, maxPages: this.searchResult != null ? this.searchResult.totalPages : 0, pageSize: pageSize }));
     this.searchResult = null;
-    
+
     this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if ((event.status / 100).toFixed() == "2") {
@@ -651,7 +651,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.detailTopActionText == "check_circle") return;
     this.commen.loadingChanged.next(true);
     let event;
-    event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).toPromise().catch(error => {
+    event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.claimRefNo, this.memberId).toPromise().catch(error => {
       if (error instanceof HttpErrorResponse) {
         this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
       }
@@ -672,8 +672,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
         } else if (this.batchId != null) {
           a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-        } else {
+        } else if(this.uploadId != null) {
           a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
+        } else if(this.claimRefNo != null){
+          a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
+        } else if(this.memberId != null){
+          a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
         }
 
         a.click();
@@ -738,5 +742,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isEligibleState(status: string) {
     if (status == null) return false;
     return status.toLowerCase() == 'eligible';
+  }
+
+  get showEligibilityButton() {
+    return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
+      this.summaries[this.selectedCardKey].statuses.includes('all');
   }
 }

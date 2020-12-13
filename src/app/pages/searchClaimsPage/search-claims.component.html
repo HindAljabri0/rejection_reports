@@ -8,13 +8,11 @@
         <div class="overlay" style=" position: absolute;
         z-index: 1002;
         background-color: rgba(255, 255, 255, 0.5);
-        width: 100%;
-        height: 100%;" *ngIf="isLoading">
-            <div class="spinner-wrapper" style="display: flex;
-          justify-content: center;
-          justify-items: center;">
-                <mat-spinner diameter="40"></mat-spinner>
-            </div>
+        width: 81%;
+        height: 100%;
+        display: grid;
+        place-items: center;" *ngIf="isLoading">
+            <mat-spinner diameter="40"></mat-spinner>
         </div>
 
         <div class="loaded-content" [class.blurred]="isLoading">
@@ -136,19 +134,21 @@
                     <td style="width: 5%;">Vat</td>
                     <td style="width: 5%; text-align: center;">Status</td>
                     <td style="width: 15%; text-align: center;">
-                        <ng-container *ngIf="selectedClaims.length == 0 && !isWaitingForEligibility">
+                        <ng-container
+                            *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
                             <button style="color: #adadad; width:unset; padding-left: 38%;" mat-icon-button
                                 (click)="checkAllClaims()" matTooltip="Verify All Ready Claims' Eligibility">
                                 <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="selectedClaims.length > 0 && !isWaitingForEligibility">
+                        <ng-container
+                            *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
                             <button style="color: #adadad; width:unset;" mat-icon-button (click)="checkSelectedClaims()"
                                 matTooltip="Verify All Selected Claims' Eligibility">
                                 <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="isWaitingForEligibility">
+                        <ng-container *ngIf="showEligibilityButton && isWaitingForEligibility">
                             <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
                         </ng-container>
                     </td>
@@ -206,6 +206,8 @@
                         </div>
                         <div style="display: inline-block;">
                             <button style="color: #3060AA; width:unset;" mat-icon-button
+                                [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
+                                [disabled]="!((claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
                                 (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)" matTooltip="Delete">
                                 <mat-icon style="font-size:20px">delete_outline</mat-icon>
                             </button>

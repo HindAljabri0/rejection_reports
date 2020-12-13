@@ -32,8 +32,8 @@ export class ClaimfileuploadComponent implements OnInit {
   currentFileUpload: File;
   selectedFiles: FileList;
   // data: AOA ;
-  payerIdsFromCurrentFIle: string[] = [];
-  serviceCodeVaildationDisabledMessages: string[] = [];
+  payerIdsFromCurrentFile: string[] = [];
+  serviceCodeValidationDisabledMessages: string[] = [];
   priceListDoesNotExistMessages: string[] = [];
   showFile = false;
   fileUploads: Observable<string[]>;
@@ -82,9 +82,9 @@ export class ClaimfileuploadComponent implements OnInit {
         /* save data */
         let data = <AOA>(XLSX.utils.sheet_to_json(ws));
         if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
-          data.map(row => this.payerIdsFromCurrentFIle.push(row['PAYERID']));
-          this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
-          this.checkServiceCode();
+          data.map(row => this.payerIdsFromCurrentFile.push(row['PAYERID']));
+          this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(this.onlyUnique);
+          this.checkServiceCodeValidation();
         } else {
           this.showError(`Invalid file selected! It doesn't have 'PAYERID' column\n`);
         }
@@ -110,17 +110,56 @@ export class ClaimfileuploadComponent implements OnInit {
     }
   }
 
-  checkServiceCode() {
-    this.serviceCodeVaildationDisabledMessages = [];
-    this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined);
-    let count = this.payerIdsFromCurrentFIle.length;
-    this.payerIdsFromCurrentFIle.forEach(payerId => {
+  checkServiceCodeValidation() {
+    this.serviceCodeValidationDisabledMessages = [];
+    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined);
+    let count = this.payerIdsFromCurrentFile.length;
+    this.payerIdsFromCurrentFile.forEach(payerId => {
       if (payerId != undefined) {
-        this.adminService.checkIfServiceCodeVaildationIsEnabled(this.common.providerId, payerId).subscribe(event => {
+        this.adminService.checkIfServiceCodeValidationIsEnabled(this.common.providerId, payerId).subscribe(event => {
           if (event instanceof HttpResponse) {
             let setting = JSON.parse(JSON.stringify(event.body));
             if (setting.hasOwnProperty('value') && setting['value'] == 0) {
-              this.serviceCodeVaildationDisabledMessages.push(payerId);
+              this.serviceCodeValidationDisabledMessages.push(payerId);
+            }
+            count--;
+            if (count <= 0) {
+              this.common.loadingChanged.next(false);
+              this.checkServiceCodeRestriction();
+            }
+          }
+        }, errorEvent => {
+          if (errorEvent instanceof HttpErrorResponse) {
+            if (errorEvent.status == 404) {
+              this.serviceCodeValidationDisabledMessages.push(payerId);
+            }
+            count--;
+            if (count <= 0) {
+              this.common.loadingChanged.next(false);
+              this.checkServiceCodeRestriction();
+            }
+          }
+        });
+      }
+    });
+  }
+
+  checkServiceCodeRestriction() {
+    let payersWithValidationOff = this.payerIdsFromCurrentFile.filter(id => this.serviceCodeValidationDisabledMessages.includes(id));
+    let count = payersWithValidationOff.length;
+    if (count == 0) {
+      this.common.loadingChanged.next(false);
+      this.checkPriceList();
+    }
+    payersWithValidationOff.forEach(payerId => {
+      this.common.loadingChanged.next(true);
+      if (payerId != undefined) {
+        this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.common.providerId, payerId).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            let setting = JSON.parse(JSON.stringify(event.body));
+            if (setting.hasOwnProperty('value') && setting['value'] == 1) {
+              let index = this.serviceCodeValidationDisabledMessages.findIndex(id => id == payerId);
+              if (index != -1) this.serviceCodeValidationDisabledMessages.splice(index, 1);
             }
             count--;
             if (count <= 0) {
@@ -131,7 +170,7 @@ export class ClaimfileuploadComponent implements OnInit {
         }, errorEvent => {
           if (errorEvent instanceof HttpErrorResponse) {
             if (errorEvent.status == 404) {
-              this.serviceCodeVaildationDisabledMessages.push(payerId);
+              this.serviceCodeValidationDisabledMessages.push(payerId);
             }
             count--;
             if (count <= 0) {
@@ -146,9 +185,9 @@ export class ClaimfileuploadComponent implements OnInit {
 
   checkPriceList() {
     this.priceListDoesNotExistMessages = [];
-    this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined && !this.serviceCodeVaildationDisabledMessages.includes(id));
-    let count = this.payerIdsFromCurrentFIle.length;
-    this.payerIdsFromCurrentFIle.forEach(payerId => {
+    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined && !this.serviceCodeValidationDisabledMessages.includes(id));
+    let count = this.payerIdsFromCurrentFile.length;
+    this.payerIdsFromCurrentFile.forEach(payerId => {
       this.common.loadingChanged.next(true);
       this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -174,12 +213,12 @@ export class ClaimfileuploadComponent implements OnInit {
       return;
     }
     let isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
-    let isServiceCodeVaildationDisabled = this.serviceCodeVaildationDisabledMessages.length > 0;
+    let isServiceCodeVaildationDisabled = this.serviceCodeValidationDisabledMessages.length > 0;
 
     if (isPriseListDoesntExist || isServiceCodeVaildationDisabled) {
       this.dialogService.openMessageDialog({
         title: 'Caution!',
-        message: (isServiceCodeVaildationDisabled ? `Service code vaildation is disabled in our system between you and the payer(s): ${this.serviceCodeVaildationDisabledMessages.toString()}. ` : '')
+        message: (isServiceCodeVaildationDisabled ? `Service code validation is disabled in our system between you and the payer(s): ${this.serviceCodeValidationDisabledMessages.toString()}. ` : '')
           + (isPriseListDoesntExist ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
           + 'Do you wish to continue?',
         isError: false,

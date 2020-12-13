@@ -13,31 +13,36 @@ import { ReportsComponent } from '../pages/reports/reports-page.component';
 
 
 @NgModule({
-    imports: [
-        RouterModule.forRoot([
-            { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
-            { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
-            { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
-            { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
-            { path: 'login', component: LoginComponent },
-            { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-            { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
-            { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-            { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
-            {
-              path: 'administration',
-              loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),
-              canLoad: [RouteCanActiveService]
-            },
-            {
-              path: 'claims',
-              loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
-              canLoad: [RouteCanActiveService]
-            }
-          ])
-    ],
-    exports: [
-        RouterModule
-    ]
+  imports: [
+    RouterModule.forRoot([
+      { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
+      { path: 'login', component: LoginComponent },
+      { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+      { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
+      { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
+      {
+        path: 'configurations',
+        loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
+        canLoad: [RouteCanActiveService]
+      },
+      {
+        path: 'administration',
+        loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),
+        canLoad: [RouteCanActiveService]
+      },
+      {
+        path: 'claims',
+        loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
+        canLoad: [RouteCanActiveService]
+      }
+    ])
+  ],
+  exports: [
+    RouterModule
+  ]
 })
 export class AppRoutingModule { }

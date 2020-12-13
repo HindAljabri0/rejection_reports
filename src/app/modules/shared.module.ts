@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { DetailscardComponent } from '../components/reusables/detailscard/detailscard.component';
-import { MatiralModule } from './matiral/matiral.module';
+import { MaterialModule } from './material/material.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
       DetailscardComponent
   ],
   imports: [
-    MatiralModule,
+    MaterialModule,
     CommonModule,
   ],
   exports: [

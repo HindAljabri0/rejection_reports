@@ -18,7 +18,7 @@ export class AdminService {
     return this.http.request(request);
   }
 
-  searchSeviceCode(serviceCode:string, providerId:string, payerId:string, page?:number, pageSize?:number) {
+  searchServiceCode(serviceCode:string, providerId:string, payerId:string, page?:number, pageSize?:number) {
     const requestURL: string = `/price-list/search`;
     const body = {
       serviceCode: serviceCode,
@@ -29,7 +29,7 @@ export class AdminService {
     return this.http.request(request);
   }
 
-  checkIfServiceCodeVaildationIsEnabled(providerId:string, payerId:string){
+  checkIfServiceCodeValidationIsEnabled(providerId:string, payerId:string){
     const requestURL: string = `/providers/${providerId}/config/${SERVICE_CODE_VALIDATION_KEY}/payers/${payerId}`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
