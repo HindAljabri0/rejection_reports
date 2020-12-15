@@ -24,5 +24,8 @@ export class UploadSummary {
 
     noOfNotUploadedClaims:number = 0;
 
+    noOfDownloadableClaims:number = 0;
+    netAmountOfDownloadableClaims: number = 0;
+    netVATAmountOfDownloadableClaims: number = 0;
 
   }
