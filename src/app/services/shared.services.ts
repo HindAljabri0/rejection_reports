@@ -221,7 +221,9 @@ export class SharedServices {
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return '#F3A264';
       case ClaimStatus.Batched.toLowerCase():
-        return '#F3D34B'
+        return '#F3D34B';
+      case ClaimStatus.Downloadable.toLowerCase():
+        return '#21B744';
       default:
         return '#E3A820';
     }
