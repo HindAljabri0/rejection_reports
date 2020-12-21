@@ -198,23 +198,23 @@
                         </div>
                         <div style="display: inline-block;">
                             <button style="color: #3060AA; width:unset;" mat-icon-button
-                                [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
-                                [disabled]="!((claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                                [ngStyle]="{'visibility': (claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
+                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
                                 (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
                                 <mat-icon style="font-size:20px">edit</mat-icon>
                             </button>
                         </div>
                         <div style="display: inline-block;">
                             <button style="color: #3060AA; width:unset;" mat-icon-button
-                                [ngStyle]="{'visibility': (claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
-                                [disabled]="!((claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                                [ngStyle]="{'visibility': (claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
+                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
                                 (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)" matTooltip="Delete">
                                 <mat-icon style="font-size:20px">delete_outline</mat-icon>
                             </button>
                         </div>
                         <div style="display: inline-block;">
                             <ng-container
-                                *ngIf="claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
+                                *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
                                 <button style="color: #adadad; width:unset;" mat-icon-button
                                     (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility">
                                     <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
