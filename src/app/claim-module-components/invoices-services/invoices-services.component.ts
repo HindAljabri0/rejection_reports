@@ -140,8 +140,9 @@ export class InvoicesServicesComponent implements OnInit {
     claim.invoice.forEach(invoice => {
       this.addInvoice(false);
       const index = this.controllers.length - 1;
+      console.log(invoice.invoiceDate);
       this.controllers[index].invoice = invoice;
-      this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
+      this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'dd/MM/yyyy'));
       this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
       invoice.service.forEach(service => {
         this.addService(index, false);

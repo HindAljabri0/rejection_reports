@@ -64,7 +64,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   dateToText(date: Moment) {
     if (date != null) {
-      return date.format('yyyy/MM/DD');
+      return date.format('DD/MM/yyyy');
     }
     return null;
   }
@@ -94,8 +94,8 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.router.navigate([this.commen.providerId, 'claims'], {
         queryParams: {
           payer: this.selectedPayer.id,
-          from: this.fromDateControl.value.format('yyyy-MM-DD'),
-          to: this.toDateControl.value.format('yyyy-MM-DD')
+          from: this.fromDateControl.value.format('DD-MM-yyyy'),
+          to: this.toDateControl.value.format('DD-MM-yyyy')
         }
       });
     } else {
