@@ -9,6 +9,7 @@ import { LoginComponent } from '../pages/loginpage/login.component';
 import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.component';
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
+import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 
 
 
@@ -24,6 +25,7 @@ import { ReportsComponent } from '../pages/reports/reports-page.component';
       { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
       { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
+      { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
       {
         path: 'configurations',
         loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),

@@ -1,0 +1,53 @@
+<div class="paginatorContainer">
+        <div class="page-select">
+            <div class="label">Go to page:</div>
+            <mat-form-field>
+                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="label" style="margin-left: auto; font-weight: 700;"></div>
+        </div>
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+            (page)="paginatorAction($event)">
+        </mat-paginator>
+    </div>
+    <mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
+        <mat-expansion-panel-header>
+            <mat-panel-title style="width: 100%;">
+                <table style="color: #3060AA !important;">
+                    <tr>
+                        <td>Payment Reference Number</td>
+                        <td>Number Of Claims</td>
+                        <td>Payer</td>
+                        <td>Payment Date</td>
+                        <td>Claim Amount</td>
+                    </tr>
+                </table>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+    </mat-expansion-panel>
+    
+    <div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
+            <mat-card>
+                <p>{{errorMessage}}</p>
+            </mat-card>
+        </div>
+    
+    
+    <mat-expansion-panel *ngFor="let payment of payments" style="margin-bottom: 6px; cursor: pointer;" hideToggle
+        [disabled]="0 == 0" (click)="onPaymentClick.emit(payment.paymentReference)">
+        <mat-expansion-panel-header>
+            <mat-panel-title style="width: 100%;">
+                <table style="color: black !important;">
+                    <tr>
+                        <td style="width: 20%;">{{payment.paymentReference}}</td>
+                        <td style="width: 20%;">{{payment.totalNumberOfClaims}}</td>
+                        <td style="width: 20%;">{{mapPayer(payment.payerId)}}</td>
+                        <td style="width: 20%;">{{payment.paymentDate}}</td>
+                        <td style="width: 20%;">{{payment.totalPaidAmount}}<span class="currency">SAR</span></td>
+                    </tr>
+                </table>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+    </mat-expansion-panel>
