@@ -10,3 +10,8 @@
 .mat-form-field-appearance-outline .mat-form-field-outline {
     color: black;
 }
+
+.radio-button-custom {
+    padding: 5px;
+    background-color: aqua;
+}

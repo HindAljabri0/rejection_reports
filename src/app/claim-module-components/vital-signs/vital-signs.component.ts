@@ -60,7 +60,7 @@ export class VitalSignsComponent implements OnInit {
     this.weightController.setValue(weight);
     this.heightController.setValue(height);
     if (lastMenstruationPeriod != null) {
-      this.lastMenstruationPeriodController.setValue(this.datePipe.transform(lastMenstruationPeriod, 'yyyy-MM-dd'));
+      this.lastMenstruationPeriodController.setValue(this.datePipe.transform(lastMenstruationPeriod, 'dd-MM-yyyy'));
     } else this.lastMenstruationPeriodController.setValue('');
   }
 

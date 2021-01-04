@@ -28,7 +28,7 @@
                         </td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">{{invoice.invoice.invoiceNumber}}</td>
                         <td style="width: 16%;" *ngIf="expandedInvoice == -1">
-                            {{formatDate(invoice.invoice.invoiceDate)}}
+                            {{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}
                         </td>
                         <td style="width: 22%;" *ngIf="expandedInvoice == -1">
                             <div style="width: 100%; display: flex;">
@@ -44,9 +44,9 @@
                                 <mat-icon style="color: #af4848;">cancel</mat-icon>
                             </button>
                         </td>
-                        <td *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && expandedInvoice != -1" colspan="5" style="text-align: end;"><button mat-button
-                                style="margin-left: auto;" *ngIf="i == expandedInvoice"
-                                (click)="onAddAnathorInvoiceClick($event, i)">+ Add Another
+                        <td *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && expandedInvoice != -1"
+                            colspan="5" style="text-align: end;"><button mat-button style="margin-left: auto;"
+                                *ngIf="i == expandedInvoice" (click)="onAddAnathorInvoiceClick($event, i)">+ Add Another
                                 Invoice</button></td>
                     </tr>
                 </table>
@@ -62,11 +62,12 @@
                             [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"
                             [formControl]="invoice.invoiceNumber"></td>
                     <td [matTooltip]="getFieldError('invoiceDate:'+i)"><input
-                            [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}" type="date"
+                            [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}"
                             [formControl]="invoice.invoiceDate"></td>
                     <td>
                         <select (change)="updateInvoiceDepartment(i, $event)"
-                            [value]="controllers[i].invoice.invoiceDepartment" [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
+                            [value]="controllers[i].invoice.invoiceDepartment"
+                            [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
                             <option *ngFor="let department of departments" [value]="department.departmentId">
                                 {{department.name}}</option>
                         </select>
@@ -137,9 +138,13 @@
                         </tr>
                         <tr>
                             <td><label>Service Date*</label></td>
-                            <td [matTooltip]="getFieldError('serviceDate:'+i+':'+j)"><input
-                                    [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}" type="date"
-                                    [formControl]="service.serviceDate"></td>
+                            <td [matTooltip]="getFieldError('serviceDate:'+i+':'+j)">
+                                <input matInput [matDatepicker]="picker"
+                                    [ngClass]="{'fieldError': fieldHasError('serviceDate:'+i+':'+j)}"
+                                    [formControl]="service.serviceDate" style="width: 80%;">
+                                <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </td>
                             <td><label>Unit Price*</label></td>
                             <td [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)"><input
                                     [ngClass]="{'fieldError': fieldHasError('serviceUnitPrice:'+i+':'+j)}" type="number"
@@ -180,11 +185,12 @@
                                     type="number" [formControl]="service.patientShareVatRate"><span
                                     class="amountType amountTypePerecent">%</span></td>
                             <td *ngIf="claimType == dentalDepartmentCode"><label>Tooth Number*</label></td>
-                            <td *ngIf="claimType == dentalDepartmentCode" [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
+                            <td *ngIf="claimType == dentalDepartmentCode"
+                                [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
                                 <input [ngClass]="{'fieldError': fieldHasError('serviceToothNumber:'+i+':'+j)}"
                                     type="number" [formControl]="service.toothNumber">
-                                <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="selectServiceButton"
-                                    [matMenuTriggerFor]="SelectToothMenu">Select</span>
+                                <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled"
+                                    class="selectServiceButton" [matMenuTriggerFor]="SelectToothMenu">Select</span>
                             </td>
                         </tr>
                     </table>
@@ -193,12 +199,13 @@
         </div>
         <div style="text-align: end;" *ngIf="pageMode != 'VIEW' && expandedService == -1 && expandedInvoice == i">
             <hr>
-            <button mat-raised-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" color="primary" (click)="onAddRetrievedServiceClick(i)"
-                style="margin-right: 10px;">Add a Retreived Service</button>
+            <button mat-raised-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" color="primary"
+                (click)="onAddRetrievedServiceClick(i)" style="margin-right: 10px;">Add a Retreived Service</button>
             <button mat-raised-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
         </div>
     </div>
-    <div style="text-align: end;" *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && expandedInvoice == -1">
+    <div style="text-align: end;"
+        *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && expandedInvoice == -1">
         <hr>
         <button mat-raised-button color="primary" (click)="onAddInvoiceClick()">Add Invoice</button>
     </div>
@@ -215,8 +222,10 @@
             <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option);">
                 {{option}}
             </mat-option>
-            <mat-option *ngIf="emptyOptions && serviceCodeSearchError == null">No results found, or price list does not exist.</mat-option>
-            <mat-option *ngIf="serviceCodeSearchError != null">Could not reach server at the moment. Please try again later.</mat-option>
+            <mat-option *ngIf="emptyOptions && serviceCodeSearchError == null">No results found, or price list does not
+                exist.</mat-option>
+            <mat-option *ngIf="serviceCodeSearchError != null">Could not reach server at the moment. Please try again
+                later.</mat-option>
         </mat-autocomplete>
     </mat-form-field>
     <p *ngIf="!priceListExist" style="width: 90%; margin: 20px 10px 20px 20px; color: #f59517;">Price list does not
