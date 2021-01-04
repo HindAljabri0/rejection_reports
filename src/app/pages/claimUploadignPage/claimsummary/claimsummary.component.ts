@@ -101,6 +101,17 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     this.getUploadedClaimsDetails(this.selectedCardKey);
   }
 
+  card4Title = this.commen.statusToName(ClaimStatus.Downloadable);
+  card4ActionText = 'details';
+  card4AccentColor = "#21B744";
+  card4Action() {
+    this.showClaims = true;
+    this.detailCardTitle = this.card4Title;
+    this.detailAccentColor = this.card4AccentColor;
+    this.selectedCardKey = 'Downloadable';
+    this.getUploadedClaimsDetails(this.selectedCardKey);
+  }
+
 
 
   constructor(public location: Location, public uploadService: UploadService, public commen: SharedServices, private router: Router,
@@ -156,6 +167,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
       this.card2Action();
     } else if (value.noOfNotUploadedClaims != 0) {
       this.card3Action();
+    } else if (value.noOfDownloadableClaims != 0) {
+      this.card4Action();
     }
   }
 

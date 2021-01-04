@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { MatDialog } from '@angular/material';
-import { MessageDialogComponent } from '../components/dialogs/message-dialog/message-dialog.component';
+import { Subject } from 'rxjs';
 import { ClaimStatus } from '../models/claimStatus';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -11,17 +9,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Notification } from '../models/notification';
 import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
-import { MessageDialogData } from '../models/dialogData/messageDialogData';
-import { ViewedClaim } from '../models/viewedClaim';
-import { SearchService } from './serchService/search.service';
-import { ClaimDialogComponent } from '../components/dialogs/claim-dialog/claim-dialog.component';
 import { AuthService } from './authService/authService.service';
-import { PaymentClaimDetail } from '../models/paymentClaimDetail';
-import { PaymentClaimDetailDailogComponent } from '../components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
-import { PaymentServiceDetails } from '../models/paymentServiceDetails';
-import { ReportsService } from './reportsService/reports.service';
-import { DialogService } from './dialogsService/dialog.service';
-import { RejectionReportClaimDialogData } from '../models/dialogData/rejectionReportClaimDialogData';
 import { UploadSummary } from '../models/uploadSummary';
 import { UploadService } from './claimfileuploadservice/upload.service';
 
@@ -233,7 +221,9 @@ export class SharedServices {
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return '#F3A264';
       case ClaimStatus.Batched.toLowerCase():
-        return '#F3D34B'
+        return '#F3D34B';
+      case ClaimStatus.Downloadable.toLowerCase():
+        return '#21B744';
       default:
         return '#E3A820';
     }
@@ -313,6 +303,8 @@ export class SharedServices {
         return "ENAYA";
       case '307':
         return "EMIC";
+      case '314':
+        return "GlobMed";
       default:
         return "";
     }

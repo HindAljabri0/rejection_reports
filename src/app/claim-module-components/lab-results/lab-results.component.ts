@@ -71,7 +71,7 @@ export class LabResultsComponent implements OnInit {
         investigation => {
           let controls = this.createEmptyResultControls();
           if (investigation.investigationDate != null) {
-            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'))
+            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'dd-MM-yyyy'))
           } else {
             controls.testDate.setValue('');
           }
