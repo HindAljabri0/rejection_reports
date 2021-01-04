@@ -55,12 +55,12 @@ export class AdmissionComponent implements OnInit {
     const roomNumber = admission.roomNumber;
     const bedNumber = admission.bedNumber;
     if (admissionDate != null) {
-      this.admissionDateController.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'));
+      this.admissionDateController.setValue(this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm:ss'));
     } else {
       this.admissionDateController.setValue('');
     }
     if (dischargeDate != null) {
-      this.dischargeDateController.setValue(this.datePipe.transform(dischargeDate, 'yyyy-MM-dd hh:mm:ss'));
+      this.dischargeDateController.setValue(this.datePipe.transform(dischargeDate, 'dd-MM-yyyy hh:mm:ss'));
     } else {
       this.dischargeDateController.setValue('');
     }

@@ -76,6 +76,27 @@
             </tr>
         </table>
     </app-abstractcard>
+    <app-abstractcard [clickable]="uploadService.summary.noOfDownloadableClaims != 0" [title]="card4Title"
+        [actionText]="card4ActionText" [accentColor]="card4AccentColor" (action)="card4Action()">
+        <table>
+            <tr>
+                <th>No. Of Claims</th>
+            </tr>
+            <tr>
+                <td><span class="dashboardNumbers">{{summary.noOfDownloadableClaims}}</span></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th>Total Vat</th>
+            </tr>
+            <tr>
+                <td><span class="dashboardNumbers">{{summary.netAmountOfDownloadableClaims}}</span><span
+                        class="currency"> SR</span></td>
+                <td><span class="dashboardNumbers">{{summary.netVATAmountOfDownloadableClaims}}</span><span
+                        class="currency"> SR</span></td>
+            </tr>
+        </table>
+    </app-abstractcard>
 </div>
 <div class="summary" *ngIf="location.path().includes('summary') && paginatedResult != null">
     <div class="header">

@@ -141,6 +141,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       case ClaimStatus.Accepted:
       case ClaimStatus.INVALID:
       case ClaimStatus.NotAccepted:
+      case ClaimStatus.Downloadable:
       case 'Failed':
         return true;
       default:

@@ -1,13 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT, SFDA_VALIDATION_KEY, SFDA_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { MatSlideToggleChange } from '@angular/material';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { debug } from 'util';
+import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
 @Component({
   selector: 'app-providers-config',
@@ -41,12 +42,15 @@ export class ProvidersConfigComponent implements OnInit {
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
+  addDbConfigForm: FormGroup;
 
   constructor(private superAdmin: SuperAdminService,
     private router: Router,
     private sharedServices: SharedServices,
     private location: Location,
-    private dialogService: DialogService) {
+    private dialogService: DialogService,
+    private formBuilder: FormBuilder,
+    private dbMapping: DbMappingService) {
     sharedServices.loadingChanged.next(true);
   }
 
@@ -76,6 +80,15 @@ export class ProvidersConfigComponent implements OnInit {
       this.errors.providersError = 'could not load providers, please try again later.'
       console.log(error);
     });
+    this.addDbConfigForm = this.formBuilder.group({
+      dbType: ['', [Validators.required]],
+      hostName: ['', [Validators.required, ProvidersConfigComponent.test]],
+      port: ['', [Validators.required]],
+      databaseName: ['', [Validators.required, ProvidersConfigComponent.test]],
+      dbUserName: ['', [Validators.required, ProvidersConfigComponent.test]],
+      dbPassword: ['', [Validators.required, ProvidersConfigComponent.test]]
+    });
+    // this.getDatabaseConfig();
   }
 
   updateFilter() {
@@ -522,4 +535,58 @@ export class ProvidersConfigComponent implements OnInit {
       this.newSFDAValidationSettings[payerid] = !event.checked;
     }
   }
+
+  
+  getDatabaseConfig() {
+    this.dbMapping.getDatabaseConfig().subscribe(event => {
+      console.log(event);
+      if (event instanceof HttpResponse) {
+        const data = event.body['dbObject'];
+        if(data != null) {
+          this.addDbConfigForm.patchValue({
+            dbType: data.dbType,
+            hostName: data.hostName,
+            port: data.port,
+            databaseName: data.databaseName,
+            dbUserName: data.dbUserName,
+            dbPassword: data.dbPassword
+          });
+        }
+      }
+    })
+  }
+
+  addDatabaseConfig() {
+    console.log(this.addDbConfigForm);
+    const body = {
+      dbType: this.addDbConfigForm.value.dbType.trim(),
+      hostName: this.addDbConfigForm.value.hostName.trim(),
+      port: this.addDbConfigForm.value.port,
+      databaseName: this.addDbConfigForm.value.databaseName.trim(),
+      dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
+      dbPassword: this.addDbConfigForm.value.dbPassword.trim()
+    };
+    console.log(body);    
+    this.dbMapping.setDatabaseConfig(body).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        console.log(event.status);
+      }
+    });
+  }
+  onToggleChange(event: MatSlideToggleChange) {
+    console.log(event.checked);
+    if(event.checked) {
+      document.getElementById('toggle-input').classList.remove('d-none');
+    } else {
+      document.getElementById('toggle-input').classList.add('d-none');
+    }
+  }
+
+  static test(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'required': true };
+  }
+  
+  get f() { return this.addDbConfigForm.controls; }
 }
