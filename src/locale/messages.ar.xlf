@@ -3,7 +3,7 @@
   <file source-language="ar" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="claims" datatype="html">
-        <source> Claims </source>
+        <source> Claims </source><target>المطالبات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">8</context>
@@ -12,7 +12,7 @@
       <trans-unit id="dashboard" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Dashboard
-                </source>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>لوحة القيادة</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">11</context>
@@ -21,7 +21,7 @@
       <trans-unit id="uploadclaims" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>Upload Claims
-                </source>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>رفع مطالبة</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">16</context>
@@ -30,7 +30,7 @@
       <trans-unit id="uploadsummary" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Upload Summary
-                </source>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>رفع ملخص</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">21</context>
@@ -43,7 +43,7 @@
       <trans-unit id="createclaim" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Create Claim
-                </source>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>إنشاء مطالبة</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">31</context>
@@ -52,7 +52,7 @@
       <trans-unit id="notifications" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Notifications
-                </source>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>إشعارات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">36</context>
@@ -61,14 +61,14 @@
       <trans-unit id="announcements" datatype="html">
         <source>
                     <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Announcements
-                </source>
+                </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>الإعلانات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reports" datatype="html">
-        <source> Reports </source>
+        <source> Reports </source><target>التقارير</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">47</context>
@@ -81,7 +81,7 @@
       <trans-unit id="paymentreport" datatype="html">
         <source>
                         <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Payment Report
-                    </source>
+                    </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تقرير الدفع</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">50</context>
@@ -90,7 +90,7 @@
       <trans-unit id="submissionreport" datatype="html">
         <source>
                         <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Submission Report
-                    </source>
+                    </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تقرير التقديم</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">55</context>
@@ -99,7 +99,7 @@
       <trans-unit id="rejectionreport" datatype="html">
         <source>
                         <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Rejection Report
-                    </source>
+                    </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تقرير الرفض</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -108,7 +108,7 @@
       <trans-unit id="gmsummaryreport" datatype="html">
         <source>
                         <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Summary Report
-                    </source>
+                    </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تقرير ملخص المطالبات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">68</context>
@@ -117,7 +117,7 @@
       <trans-unit id="gmebillingreport" datatype="html">
         <source>
                         <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> E-Billing Report
-                    </source>
+                    </source><target><x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/>تقرير الفواتير الالكترونيه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">73</context>
@@ -126,14 +126,14 @@
       <trans-unit id="configurations" datatype="html">
         <source>
                         Configurations
-                    </source>
+                    </source><target>إعدادات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configuration" datatype="html">
-        <source> Configuration </source>
+        <source> Configuration </source><target>إعدادات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">91</context>
@@ -142,14 +142,14 @@
       <trans-unit id="providerconfiguration" datatype="html">
         <source>
                     Provider Configuration
-                </source>
+                </source><target>اعدادات موفر الخدمه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="audit" datatype="html">
-        <source> Audit </source>
+        <source> Audit </source><target>سجل الحركات على النظام</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">100</context>
@@ -158,14 +158,14 @@
       <trans-unit id="audittrail" datatype="html">
         <source>
                     Audit Trail
-                </source>
+                </source><target>سجل تدقيق</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="username" datatype="html">
-        <source>Username</source>
+        <source>Username</source><target>اسم المستخدم</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/loginpage/login.component.html</context>
           <context context-type="linenumber">8</context>
@@ -176,7 +176,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="password" datatype="html">
-        <source>password</source>
+        <source>password</source><target>كلمة المرور</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/loginpage/login.component.html</context>
           <context context-type="linenumber">14</context>
@@ -187,7 +187,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="signin" datatype="html">
-        <source>Sign In</source>
+        <source>Sign In</source><target>تسجيل الدخول</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/loginpage/login.component.html</context>
           <context context-type="linenumber">23</context>
