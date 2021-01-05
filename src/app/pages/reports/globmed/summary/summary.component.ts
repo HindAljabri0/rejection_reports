@@ -1,14 +1,15 @@
 
-import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatPaginator } from '@angular/material';
-import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { PaymentRefernceDetail } from 'src/app/models/paymentRefernceDetail';
-import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { EventEmitter } from '@angular/core';
+import { SearchedClaim } from 'src/app/models/searchedClaim';
+import { PaginatedResult } from 'src/app/models/paginatedResult';
+import { GlobMedService } from 'src/app/services/globmedService/glob-med.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-summary',
@@ -17,60 +18,38 @@ import { EventEmitter } from '@angular/core';
 })
 export class SummaryComponent implements OnInit {
 
-  detailCardTitle = "Payment References";
-  detailTopActionText = "vertical_align_bottom";
-  detailAccentColor = "#3060AA";
-  detailActionText: string = null;
-  detailSubActionText: string = null;
-  detailCheckBoxIndeterminate: boolean;
-  detailCheckBoxChecked: boolean;
+
   @Input() from: string;
   @Input() to: string;
-  @Input() payerId: string[];
   @Input() queryPage: number;
   @Input() pageSize: number;
   @Input() providerId: string;
 
-  @Output() onPaymentClick = new EventEmitter();
   @Output() onPaginationChange = new EventEmitter();
 
-  paginatorPagesNumbers: number[];
-  @ViewChild('paginator', {static: false}) paginator: MatPaginator;
-  paginatorPageSizeOptions = [10, 20, 50, 100];
-  manualPage = null;
+  searchResult: PaginatedResult<SearchedClaim>;
+  claims: SearchedClaim[] = [];
 
   errorMessage: string;
 
-  paymentDetails: PaginatedResult<PaymentRefernceDetail>;
-  payments = Array();
+  downloadButtonText = "vertical_align_bottom";
 
-
-
-  constructor(public reportService: ReportsService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router) { }
+  constructor(private globMedService: GlobMedService, private dialogService:DialogService, public sharedServices: SharedServices, public routeActive: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
-    // this.fetchData();
+    this.fetchData();
   }
-  async fetchData() {
-    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null) return;
-    this.commen.loadingChanged.next(true);
+
+  fetchData() {
+    if (this.providerId == null || this.from == null || this.to == null) return;
+    this.sharedServices.loadingChanged.next(true);
     this.errorMessage = null;
-    let event;
-    event = await this.reportService.getPaymentSummary(this.providerId, this.from, this.to, this.payerId, this.queryPage, this.pageSize).subscribe((event) => {
+    this.globMedService.searchClaims(this.providerId, this.from, this.to, this.queryPage, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
-        this.paymentDetails = new PaginatedResult(event.body, PaymentRefernceDetail);
-        this.payments = this.paymentDetails.content;
-        const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
-        this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-        this.manualPage = this.paymentDetails.number;
-        this.paginator.pageIndex = this.paymentDetails.number;
-        this.paginator.pageSize = this.paymentDetails.size;
-        if(this.payments.length == 0)
-        {
-          this.errorMessage = "No Results Found";
-        }
+        this.searchResult = new PaginatedResult(event.body, SearchedClaim);
+        this.claims = this.searchResult.content;
+        this.sharedServices.loadingChanged.next(false);
       }
-      this.commen.loadingChanged.next(false);
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if ((error.status / 100).toFixed() == "4") {
@@ -78,35 +57,73 @@ export class SummaryComponent implements OnInit {
         } else if ((error.status / 100).toFixed() == "5") {
           this.errorMessage = 'Server could not handle the request. Please try again later.';
         } else {
-          this.errorMessage = 'Somthing went wrong.';
+          this.errorMessage = 'Something went wrong.';
         }
       }
-      this.commen.loadingChanged.next(false);
+      this.sharedServices.loadingChanged.next(false);
     });
   }
 
+  async download() {
+    if (this.downloadButtonText == "check_circle") return;
+    this.sharedServices.loadingChanged.next(true);
+    let event;
+    event = await this.globMedService.getDownloadableClaims(this.providerId, localStorage.getItem('provider_name'), this.from, this.to).toPromise().catch(error => {
+      if (error instanceof HttpErrorResponse) {
+        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
+
+    if (event instanceof HttpResponse) {
+      if (navigator.msSaveBlob) { // IE 10+
+        var exportedFilenmae =  'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
+        var blob = new Blob([event.body as BlobPart], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        navigator.msSaveBlob(blob, exportedFilenmae);
+      } else {
+        var a = document.createElement("a");
+        var excelData = event.body + "";
+        a.href = 'data:attachment/vnd.ms-excel;charset=ISO-8859-1,' + encodeURIComponent(excelData);
+        a.target = '_blank';
+        a.download = 'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
+
+        a.click();
+        this.downloadButtonText = "check_circle";
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }
+  }
+
+  showClaim(claimId: string) {
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}`);
+  }
+
+
+
+  accentColor(status) {
+    return this.sharedServices.getCardAccentColor(status);
+  }
+
+  goToFirstPage() {
+    this.paginatorAction({ pageIndex: 0, pageSize: 10 });
+  }
+  goToPrePage() {
+    if (this.searchResult.number != 0)
+      this.paginatorAction({ pageIndex: this.searchResult.number - 1, pageSize: 10 });
+  }
+  goToNextPage() {
+    if (this.searchResult.number + 1 < this.searchResult.totalPages)
+      this.paginatorAction({ pageIndex: this.searchResult.number + 1, pageSize: 10 });
+  }
+  goToLastPage() {
+    this.paginatorAction({ pageIndex: this.searchResult.totalPages - 1, pageSize: 10 });
+  }
+
   paginatorAction(event) {
-    this.manualPage = event['pageIndex'];
-    this.onPaginationChange.emit(event);
     this.queryPage = event.pageIndex;
     this.pageSize = event.pageSize;
+    this.onPaginationChange.emit(event);
     this.fetchData();
-  }
-  updateManualPage(index) {
-    this.manualPage = index;
-    this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
-  }
-
-  get paginatorLength() {
-    if (this.paymentDetails != null) {
-      return this.paymentDetails.totalElements;
-    }
-    else return 0;
-  }
-
-  mapPayer(payerId) {
-    return this.commen.getPayersList().find(value => `${value.id}` == payerId).name;
   }
 
 }

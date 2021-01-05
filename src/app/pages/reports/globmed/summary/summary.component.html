@@ -1,53 +1,50 @@
-<div class="paginatorContainer">
-        <div class="page-select">
-            <div class="label">Go to page:</div>
-            <mat-form-field>
-                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div class="label" style="margin-left: auto; font-weight: 700;"></div>
-        </div>
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-            (page)="paginatorAction($event)">
-        </mat-paginator>
+<div class="header">
+    <p>
+
+    </p>
+    <span class="spacer"></span>
+    <div *ngIf="searchResult != null && searchResult.totalPages > 0"
+        style="font-size: small; display: flex; align-items: end;">
+        <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>
+        &nbsp;&nbsp;&nbsp;
+        <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>
+        &nbsp;&nbsp;&nbsp;
+        <p style="font-weight: 600; font-size: larger;">{{(searchResult.number+1)}}</p>
+        <p style="font-size: larger;">/ {{searchResult.totalPages}}</p>
+        &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next
+        </mat-icon>
+        &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-icon (click)="download()" style="cursor: pointer;">{{downloadButtonText}}</mat-icon>
     </div>
-    <mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
-        <mat-expansion-panel-header>
-            <mat-panel-title style="width: 100%;">
-                <table style="color: #3060AA !important;">
-                    <tr>
-                        <td>Payment Reference Number</td>
-                        <td>Number Of Claims</td>
-                        <td>Payer</td>
-                        <td>Payment Date</td>
-                        <td>Claim Amount</td>
-                    </tr>
-                </table>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-    </mat-expansion-panel>
-    
-    <div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
-            <mat-card>
-                <p>{{errorMessage}}</p>
-            </mat-card>
-        </div>
-    
-    
-    <mat-expansion-panel *ngFor="let payment of payments" style="margin-bottom: 6px; cursor: pointer;" hideToggle
-        [disabled]="0 == 0" (click)="onPaymentClick.emit(payment.paymentReference)">
-        <mat-expansion-panel-header>
-            <mat-panel-title style="width: 100%;">
-                <table style="color: black !important;">
-                    <tr>
-                        <td style="width: 20%;">{{payment.paymentReference}}</td>
-                        <td style="width: 20%;">{{payment.totalNumberOfClaims}}</td>
-                        <td style="width: 20%;">{{mapPayer(payment.payerId)}}</td>
-                        <td style="width: 20%;">{{payment.paymentDate}}</td>
-                        <td style="width: 20%;">{{payment.totalPaidAmount}}<span class="currency">SAR</span></td>
-                    </tr>
-                </table>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-    </mat-expansion-panel>
+</div>
+<table>
+    <tr class="claimsHeader">
+        <td>Claim Ref. No.</td>
+        <td>Dr. Name</td>
+        <td>Member ID</td>
+        <td>National ID</td>
+        <td>Patient File No.</td>
+        <td>Claim Date</td>
+        <td>Net Amount</td>
+        <td style="width: 5%;">Vat</td>
+    </tr>
+    <tr class="claims" *ngFor="let claim of claims">
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
+            {{claim.providerClaimNumber}}</td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.drName}}</td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.memberId}}
+        </td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.nationalId}}
+        </td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
+            {{claim.patientFileNumber}}</td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.claimDate}}
+        </td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
+            {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
+        <td (click)="showClaim(claim.claimId)" style="width: 5%; cursor: pointer;">
+            {{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
+        </td>
+    </tr>
+</table>
