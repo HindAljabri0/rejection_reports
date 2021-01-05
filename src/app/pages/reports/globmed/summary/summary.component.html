@@ -1,0 +1,50 @@
+<div class="header">
+    <p>
+
+    </p>
+    <span class="spacer"></span>
+    <div *ngIf="searchResult != null && searchResult.totalPages > 0"
+        style="font-size: small; display: flex; align-items: end;">
+        <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>
+        &nbsp;&nbsp;&nbsp;
+        <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>
+        &nbsp;&nbsp;&nbsp;
+        <p style="font-weight: 600; font-size: larger;">{{(searchResult.number+1)}}</p>
+        <p style="font-size: larger;">/ {{searchResult.totalPages}}</p>
+        &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next
+        </mat-icon>
+        &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-icon (click)="download()" style="cursor: pointer;">{{downloadButtonText}}</mat-icon>
+    </div>
+</div>
+<table>
+    <tr class="claimsHeader">
+        <td>Claim Ref. No.</td>
+        <td>Dr. Name</td>
+        <td>Member ID</td>
+        <td>National ID</td>
+        <td>Patient File No.</td>
+        <td>Claim Date</td>
+        <td>Net Amount</td>
+        <td style="width: 5%;">Vat</td>
+    </tr>
+    <tr class="claims" *ngFor="let claim of claims">
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
+            {{claim.providerClaimNumber}}</td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.drName}}</td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.memberId}}
+        </td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.nationalId}}
+        </td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
+            {{claim.patientFileNumber}}</td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.claimDate}}
+        </td>
+        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
+            {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
+        <td (click)="showClaim(claim.claimId)" style="width: 5%; cursor: pointer;">
+            {{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
+        </td>
+    </tr>
+</table>

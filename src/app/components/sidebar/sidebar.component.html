@@ -62,6 +62,19 @@
                     </li>
                 </a>
             </ul>
+            <div i18n="@@reports" class="list-tittle"> GlobMed </div>
+            <ul id="zero">
+                <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                    <li i18n="@@gmsummaryreport" id="li-container">
+                        <img class="icon" src="assets/payment_report.svg" /> Summary Report
+                    </li>
+                </a>
+                <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                    <li i18n="@@gmebillingreport" id="li-container">
+                        <img class="icon" src="assets/payment_report.svg" /> E-Billing Report
+                    </li>
+                </a>
+                </ul>
         </div>
         <div *ngIf="isProviderAdmin">
             <div class="list-tittle"> <hr> </div>

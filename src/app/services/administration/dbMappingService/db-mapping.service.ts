@@ -7,15 +7,44 @@ import { environment } from 'src/environments/environment';
 })
 export class DbMappingService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  setDatabaseConfig(body) {
-    const requestURL: string = `/providers/601/dbConfig`;
+  setDatabaseConfig(providerId: string, body) {
+    const requestURL: string = `/providers/${providerId}/db-config`;
     const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
     return this.http.request(request);
   }
-  getDatabaseConfig() {
-    const requestURL: string = `/providers/601/dbConfig`;
+  getDatabaseConfig(providerId: string) {
+    const requestURL: string = `/providers/${providerId}/db-config`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  savePayerMapping(providerId: string, body) {
+    const requestURL: string = `/providers/${providerId}/payer-mapping`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
+    return this.http.request(request);
+  }
+  getPayerMapping(providerId: string) {
+    const requestURL: string = `/providers/${providerId}/payer-mapping`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  deletePayerMapping(providerId: string, body) {
+    const requestURL: string = `/providers/${providerId}/payer-mapping`;
+    console.log();
+
+    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
+    const requestWithBody = request.clone({ body: body });
+    return this.http.request(requestWithBody);
+  }
+  setProviderMapping(body, providerId) {
+    const requestURL: string = `/providers/` + providerId + `/provider-mapping`;
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
+    return this.http.request(request);
+  }
+  getProviderMapping(providedId) {
+    const requestURL: string = `/providers/` + providedId + `/provider-mapping`;
+    console.log(requestURL);
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
