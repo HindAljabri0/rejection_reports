@@ -34,7 +34,7 @@ export class SummaryComponent implements OnInit {
 
   downloadButtonText = "vertical_align_bottom";
 
-  constructor(private globMedService: GlobMedService, private dialogService:DialogService, public sharedServices: SharedServices, public routeActive: ActivatedRoute, public router: Router) { }
+  constructor(private globMedService: GlobMedService, private dialogService: DialogService, public sharedServices: SharedServices, public routeActive: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
     this.fetchData();
@@ -76,21 +76,16 @@ export class SummaryComponent implements OnInit {
     });
 
     if (event instanceof HttpResponse) {
-      if (navigator.msSaveBlob) { // IE 10+
-        var exportedFilenmae =  'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
-        var blob = new Blob([event.body as BlobPart], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-        navigator.msSaveBlob(blob, exportedFilenmae);
-      } else {
-        var a = document.createElement("a");
-        var excelData = event.body + "";
-        a.href = 'data:attachment/vnd.ms-excel;charset=ISO-8859-1,' + encodeURIComponent(excelData);
-        a.target = '_blank';
-        a.download = 'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
-
-        a.click();
-        this.downloadButtonText = "check_circle";
-        this.sharedServices.loadingChanged.next(false);
-      }
+      let exportedFilename = 'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
+      if(event.headers.has('content-disposition'))
+        exportedFilename =  event.headers.get('content-disposition').split(' ')[1].split("=")[1];
+      const blob = new Blob([event.body], { type: 'application/ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      let anchor = document.createElement("a");
+      anchor.download = exportedFilename;
+      anchor.href = url;
+      anchor.click();
+      this.sharedServices.loadingChanged.next(false);
     }
   }
 
