@@ -76,13 +76,13 @@ export class SummaryComponent implements OnInit {
     });
 
     if (event instanceof HttpResponse) {
-      console.log(event.headers.keys());
-      debugger;
-      const exportedFilenmae = 'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
+      let exportedFilename = 'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
+      if(event.headers.has('content-disposition'))
+        exportedFilename =  event.headers.get('content-disposition').split(' ')[1].split("=")[1];
       const blob = new Blob([event.body], { type: 'application/ms-excel' });
       const url = window.URL.createObjectURL(blob);
       let anchor = document.createElement("a");
-      anchor.download = exportedFilenmae;
+      anchor.download = exportedFilename;
       anchor.href = url;
       anchor.click();
       this.sharedServices.loadingChanged.next(false);
