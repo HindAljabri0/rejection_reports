@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  name: 'dev',
   production: false,
   uploaderHost: "http://localhost:8080",
   claimSearchHost: "http://localhost:8082",

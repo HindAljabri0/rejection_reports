@@ -1,5 +1,6 @@
 const host = 'https://api.stg-eclaims.waseel.com';
 export const environment = {
+  name: 'staging',
   production: true,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,

@@ -1,0 +1,60 @@
+.claimsHeader td, .claims td {
+    padding: 10px;
+}
+
+.claimsHeader {
+    color: #3060AA;
+    background-color: #c8dcfc;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+table {
+    margin: 0px;
+    width: 100%;
+}
+
+table th {
+    font-weight: 400;
+}
+
+table td {
+    height: 55px;
+}
+
+.claims {
+    font-size: 11px;
+}
+
+.claims:nth-child(even) {
+    background-color: white;
+}
+
+.claims:nth-child(odd) {
+    background-color: #e0eafa;
+}
+
+.claims:nth-child(even) button:hover {
+    background-color: #e0eafa;
+}
+
+.claims:nth-child(odd) button:hover {
+    background-color: white;
+}
+
+.statusDot::before {
+    content: '.';
+    font-size: 47px;
+    font-weight: 700;
+    line-height: 0px;
+}
+
+.header {
+    display: flex;
+    color: #3060AA;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
