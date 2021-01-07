@@ -19,7 +19,7 @@ export class GlobMedService {
 
   getDownloadableClaims(providerId:string, providerName:string, fromDate:string, toDate:string){
     const requestURL = `/providers/${providerId}/globmed/summary/download?fromDate=${fromDate}&toDate=${toDate}&providerName=${providerName}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "arraybuffer" });
     return this.http.request(request);
   }
 

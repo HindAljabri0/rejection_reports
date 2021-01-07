@@ -1,12 +1,10 @@
 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router,  ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MatMenuTrigger } from '@angular/material';
 import { SummaryComponent } from './summary/summary.component';
@@ -21,7 +19,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
 
   isValidFormSubmitted = false;
   reports: { id: number, name: string }[] = [
-    { id: 1, name: "Summary Report" }, 
+    { id: 1, name: "Summary Report" },
     { id: 2, name: "E-billing Report" },
   ];
 
@@ -43,9 +41,9 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
   claimId: string;
   criteria: string;
 
-  @ViewChild('summarySearchResult', {static: false}) summarySearchResult: SummaryComponent;
-  @ViewChild('ebillingSearchResult', {static: false}) ebillingSearchResult: EbillingComponent;
-  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
+  @ViewChild('summarySearchResult', { static: false }) summarySearchResult: SummaryComponent;
+  @ViewChild('ebillingSearchResult', { static: false }) ebillingSearchResult: EbillingComponent;
+  @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
   payerId: number[];
 
@@ -79,7 +77,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
         this.pageSize = 10;
       }
     });
-    
+
   }
 
   ngAfterViewInit() {
@@ -119,8 +117,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
     }
     this.isValidFormSubmitted = true;
   }
-  searchSelect(event)
-  {
+  searchSelect(event) {
     this.search();
   }
 
@@ -142,7 +139,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
   download() {
     if (this.downloadIcon == "check_circle") return;
 
-    
+
   }
 
   resetURL() {
