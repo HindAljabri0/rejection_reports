@@ -1,5 +1,6 @@
 const host = 'http://gateway.okd.waseel.com';
 export const environment = {
+  name: 'qa',
   production: true,
   uploaderHost: `${host}/claim-uploader`,
   claimSearchHost: `${host}/claim-search`,

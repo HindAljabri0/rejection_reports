@@ -62,8 +62,8 @@
                     </li>
                 </a>
             </ul>
-            <div i18n="@@reports" class="list-tittle"> GlobMed </div>
-            <ul id="zero">
+            <div i18n="@@reports" class="list-tittle" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
+            <ul id="zero" *ngIf="!doNotShowGlobMedIn.includes(envName)">
                 <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
                     <li i18n="@@gmsummaryreport" id="li-container">
                         <img class="icon" src="assets/payment_report.svg" /> Summary Report

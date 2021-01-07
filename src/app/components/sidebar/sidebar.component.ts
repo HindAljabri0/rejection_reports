@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +11,8 @@ import { UploadService } from 'src/app/services/claimfileuploadservice/upload.se
 export class SidebarComponent implements OnInit {
 
   providerId: string;
+  doNotShowGlobMedIn: string[] = ['oci_prod', 'oci_staging'];
+  envName = environment.name;
   isAdmin: boolean = false;
   isProviderAdmin: boolean = false;
 
