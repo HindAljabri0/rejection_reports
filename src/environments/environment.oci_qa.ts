@@ -1,5 +1,6 @@
 const host = 'https://api.qa-eclaims.waseel.com';
 export const environment = {
+  name: 'oci_qa',
   production: true,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
