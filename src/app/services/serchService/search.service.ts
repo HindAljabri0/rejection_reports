@@ -33,7 +33,7 @@ export class SearchService {
     return this.http.request(request);
   }
   formatDate(toDate: string) {
-    const format = 'yyyy/MM/dd';
+    const format = 'yyyy-MM-dd';
     var locale = 'en-US';
     var formattedDate = formatDate(toDate, format, locale);
     return formattedDate.toString();
