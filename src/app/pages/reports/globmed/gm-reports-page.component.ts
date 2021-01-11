@@ -65,6 +65,9 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
       if (value.type != undefined) {
         this.reportTypeControl.setValue(Number.parseInt(value.type));
       }
+      if(value.payer != undefined){
+        this.selectedPayerControl.setValue(Number.parseInt(value.payer));
+      }
       if (value.claimId != null) {
         this.claimId = value.claimId;
       }
@@ -103,6 +106,9 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
     queryParams.from = from;
     queryParams.to = to;
     queryParams.type = this.reportTypeControl.value;
+    if(queryParams.type == 2){
+      queryParams.payer = this.selectedPayerControl.value;
+    }
     if (this.page > 0) {
       queryParams.page = this.page;
     }
@@ -116,6 +122,9 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
   searchSelect(event) {
     this.summarySearchResult.claims = [];
     this.summarySearchResult.searchResult = null;
+    if(this.reportTypeControl.value == 2){
+      this.selectedPayerControl.setValue(null);
+    }
   }
 
   paginationChange(event) {

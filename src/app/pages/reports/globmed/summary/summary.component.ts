@@ -44,7 +44,7 @@ export class SummaryComponent implements OnInit {
     if (this.providerId == null || this.from == null || this.to == null || (this.type == 2 && this.payer == null)) return;
     this.sharedServices.loadingChanged.next(true);
     this.errorMessage = null;
-    this.globMedService.searchClaims(this.providerId, this.from, this.to, this.queryPage, this.pageSize).subscribe((event) => {
+    this.globMedService.search(this.providerId, this.payer, this.from, this.to, this.type, this.queryPage, this.pageSize).subscribe((event) => {
       if (event instanceof HttpResponse) {
         this.searchResult = new PaginatedResult(event.body, SearchedClaim);
         this.claims = this.searchResult.content;
@@ -76,7 +76,12 @@ export class SummaryComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       });
     } else if( this.type == 2) {
-
+      event = await this.globMedService.getDownloadableEBillingClaims(this.providerId, this.payer, localStorage.getItem('provider_name'), this.from, this.to).toPromise().catch(error => {
+        if (error instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        }
+        this.sharedServices.loadingChanged.next(false);
+      });
     }
     if (event instanceof HttpResponse) {
       let exportedFilename = 'GlobMed_Claims_' + this.from + '_' + this.to + '.xlsx';
