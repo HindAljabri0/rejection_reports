@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, getUploadId, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults, saveClaim, saveClaimChanges, finishValidation } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getClaimObjectErrors, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
-import { skipWhile, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { Location } from '@angular/common';
-import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-main-claim-page',
@@ -167,7 +165,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   get editable() {
-    return this.claimProps != null && ['accepted', 'notaccepted', 'failed', 'invalid'].includes(this.claimProps.statusCode.toLowerCase());
+    return this.claimProps != null && ['accepted', 'notaccepted', 'failed', 'invalid', 'downloadable'].includes(this.claimProps.statusCode.toLowerCase());
   }
 
 }
