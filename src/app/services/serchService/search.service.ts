@@ -32,11 +32,10 @@ export class SearchService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
-  formatDate(toDate: string) {
-    const format = 'yyyy-MM-dd';
-    var locale = 'en-US';
-    var formattedDate = formatDate(toDate, format, locale);
-    return formattedDate.toString();
+  formatDate(date: string) {
+    const splittedDate = date.split('-');
+    const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
+    return formattedDate;
   }
 
   getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {

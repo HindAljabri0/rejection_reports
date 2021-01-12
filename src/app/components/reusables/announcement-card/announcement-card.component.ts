@@ -21,7 +21,7 @@ export class AnnouncementCardComponent implements OnInit {
     payerids: number[];
 
     ngOnInit() {
-      this.payerids = this.commen.payers.map(item => item.id);
+      this.payerids = this.commen.getPayersList().map(item => item.id);
     }
     constructor(private router: Router, public announcementService: AnnouncementsService,
                 public dialogService: DialogService, private commen: SharedServices,

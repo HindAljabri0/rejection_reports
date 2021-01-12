@@ -17,6 +17,14 @@
                                 <mat-error *ngIf="reportTypeControl.hasError('required')">Please select a Report
                                 </mat-error>
                             </mat-form-field>
+                            <mat-form-field *ngIf="reportTypeControl.value == 2">
+                                <mat-label>Select Payer</mat-label>
+                                <mat-select [formControl]="selectedPayerControl" required>
+                                    <mat-option *ngFor="let payer of payers" [value]="payer.id">
+                                        {{payer.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" floatLabel="never"
                                 style="border: none; border-radius: 4px; ">
                                 <input matInput [matDatepicker]="fromPicker" placeholder="From Date"
@@ -43,7 +51,7 @@
                     </div>
                 </div>
                 <div class="card-body ">
-                    <app-summary #summarySearchResult *ngIf="reportTypeControl.value == 1" [providerId]="providerId"
+                    <app-summary #summarySearchResult [type]="reportTypeControl.value" [payer]="selectedPayerControl.value" [providerId]="providerId"
                         [from]="fromDate" [to]="toDate" [queryPage]="page" [pageSize]="pageSize"
                         (onPaginationChange)="paginationChange($event)">
                     </app-summary>
