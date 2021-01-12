@@ -57,7 +57,7 @@ export class SummaryComponent implements OnInit {
         } else if ((error.status / 100).toFixed() == "5") {
           this.errorMessage = 'Server could not handle the request. Please try again later.';
         } else {
-          this.errorMessage = 'Something went wrong.';
+          this.errorMessage = 'Cloud not reach the server at the moment. Please try again later.';
         }
       }
       this.sharedServices.loadingChanged.next(false);

@@ -82,7 +82,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
         this.pageSize = 10;
       }
     });
-    this.payers = this.commen.getPayersList();
+    this.payers = this.commen.getPayersList(true);
   }
 
   ngAfterViewInit() {
