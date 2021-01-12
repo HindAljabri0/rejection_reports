@@ -8,7 +8,6 @@ import { ReportsService } from 'src/app/services/reportsService/reports.service'
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MatMenuTrigger } from '@angular/material';
 import { SummaryComponent } from './summary/summary.component';
-import { EbillingComponent } from './ebilling/ebilling.component';
 
 @Component({
   selector: 'app-gm-reports-page',
@@ -17,16 +16,22 @@ import { EbillingComponent } from './ebilling/ebilling.component';
 })
 export class GmReportsPageComponent implements OnInit, AfterViewInit {
 
-  isValidFormSubmitted = false;
+  
   reports: { id: number, name: string }[] = [
     { id: 1, name: "Summary Report" },
     { id: 2, name: "E-billing Report" },
   ];
+  payers: {
+    id: number;
+    name: string;
+    arName: string;
+  }[] = [];
 
   downloadIcon = "vertical_align_bottom";
 
 
   reportTypeControl: FormControl = new FormControl();
+  selectedPayerControl: FormControl = new FormControl();
   fromDateControl: FormControl = new FormControl();
   fromDateHasError: boolean = false;
 
@@ -42,10 +47,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
   criteria: string;
 
   @ViewChild('summarySearchResult', { static: false }) summarySearchResult: SummaryComponent;
-  @ViewChild('ebillingSearchResult', { static: false }) ebillingSearchResult: EbillingComponent;
   @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
-
-  payerId: number[];
 
 
   constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: SharedServices, private reportsService: ReportsService, private dialogService: DialogService) { }
@@ -63,6 +65,9 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
       if (value.type != undefined) {
         this.reportTypeControl.setValue(Number.parseInt(value.type));
       }
+      if(value.payer != undefined){
+        this.selectedPayerControl.setValue(Number.parseInt(value.payer));
+      }
       if (value.claimId != null) {
         this.claimId = value.claimId;
       }
@@ -77,7 +82,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
         this.pageSize = 10;
       }
     });
-
+    this.payers = this.commen.getPayersList(true);
   }
 
   ngAfterViewInit() {
@@ -85,14 +90,13 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-    //debugger;
     this.fromDateHasError = false;
     this.toDateHasError = false;
-
-    this.isValidFormSubmitted = false;
-    if (this.reportTypeControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null) {
+    
+    if (this.reportTypeControl.invalid || this.fromDateControl.invalid || Number.isNaN(this.fromDateControl.value) || this.toDateControl.invalid || Number.isNaN(this.toDateControl.value) || this.fromDateControl.value == null || this.toDateControl.value == null) {
       this.toDateHasError = true;
       this.fromDateHasError = true;
+      return;
     }
     let queryParams: Params = {};
     const fromDate: Date = new Date(this.fromDateControl.value);
@@ -102,6 +106,9 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
     queryParams.from = from;
     queryParams.to = to;
     queryParams.type = this.reportTypeControl.value;
+    if(queryParams.type == 2){
+      queryParams.payer = this.selectedPayerControl.value;
+    }
     if (this.page > 0) {
       queryParams.page = this.page;
     }
@@ -109,16 +116,15 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
       queryParams.pageSize = this.pageSize;
     }
     this.router.navigate([this.providerId, 'globmed', 'reports'], { queryParams: queryParams });
-    if (this.reportTypeControl.value == 1) {
-      this.summarySearchResult.fetchData();
-    }
-    if (this.reportTypeControl.value == 2) {
-      this.ebillingSearchResult.fetchData();
-    }
-    this.isValidFormSubmitted = true;
+    this.summarySearchResult.fetchData();
+    
   }
   searchSelect(event) {
-    this.search();
+    this.summarySearchResult.claims = [];
+    this.summarySearchResult.searchResult = null;
+    if(this.reportTypeControl.value == 2){
+      this.selectedPayerControl.setValue(null);
+    }
   }
 
   paginationChange(event) {
@@ -131,7 +137,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
     this.page = this.tempPage;
     this.pageSize = this.tempPageSize;
     this.summarySearchResult.queryPage = this.page;
-    this.ebillingSearchResult.pageSize = this.pageSize;
+    this.summarySearchResult.pageSize = this.pageSize;
     // if (this.summarySearchResult.payments.length == 0) this.summarySearchResult.fetchData();
     this.resetURL();
   }
