@@ -77,7 +77,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
           payersCodes.push(key.split('_')[1])
         }
       });
-      this.payers = this.sharedServices.payers.filter(payer => payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
+      this.payers = this.sharedServices.getPayersList().filter(payer => payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
       this.selectedPayer = this.tempSelectedPayer || '-1';
       this.selectCategory(this.tempSelectedCategory);
       this.selectCode(this.tempSelectedCode || '');

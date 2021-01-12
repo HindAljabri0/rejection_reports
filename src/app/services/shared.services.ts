@@ -17,7 +17,7 @@ import { UploadService } from './claimfileuploadservice/upload.service';
   providedIn: 'root'
 })
 export class SharedServices {
-  payers: { id: number, name: string }[];
+  private payers: { id: number, name: string }[];
   payerids: number[];
   loading: boolean = false;
   loadingChanged: Subject<boolean> = new Subject<boolean>();
@@ -250,16 +250,21 @@ export class SharedServices {
     }
   }
 
-  getPayersList(): { id: number, name: string, arName: string }[] {
+  getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
+    if (globMed == null) globMed = false;
     let payers: { id: number, name: string, arName: string }[] = [];
     const payersStr = localStorage.getItem('payers');
     if (payersStr != null) {
       const payersStrSplitted = payersStr.split('|');
-      payersStrSplitted.map(value => payers.push({
-        id: Number.parseInt(value.split(':')[0]),
-        name: value.split(':')[1].split(',')[0],
-        arName: value.split(':')[1].split(',')[1]
-      }));
+      payersStrSplitted
+        .filter(value =>
+          (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
+          || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
+        .map(value => payers.push({
+          id: Number.parseInt(value.split(':')[0]),
+          name: value.split(':')[1].split(',')[0],
+          arName: value.split(':')[1].split(',')[1]
+        }));
     }
 
     return payers;

@@ -65,7 +65,6 @@ import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
 import { SummaryComponent } from './pages/reports/globmed/summary/summary.component'
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
-import { EbillingComponent } from './pages/reports/globmed/ebilling/ebilling.component';
 
 
 @NgModule({
@@ -114,7 +113,6 @@ import { EbillingComponent } from './pages/reports/globmed/ebilling/ebilling.com
     ImageTooltipComponent,
     SummaryComponent,
     GmReportsPageComponent,
-    EbillingComponent,
   ],
   imports: [
     AppRoutingModule,
