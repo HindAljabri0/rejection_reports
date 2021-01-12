@@ -29,6 +29,11 @@
         <td>Net Amount</td>
         <td style="width: 5%;">Vat</td>
     </tr>
+    <tr *ngIf="errorMessage != null" style="margin-bottom: 10px;">
+        <td colspan="8">
+            {{errorMessage}}
+        </td>
+    </tr>
     <tr class="claims" *ngFor="let claim of claims">
         <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
             {{claim.providerClaimNumber}}</td>
