@@ -22,10 +22,10 @@
         </ng-template>
     </div>
     <div class="body" [ngStyle]="{'height': claim == null? '40vw': 'unset'}">
-        <div class="error" *ngIf="errors != null && !isLoading" style="grid-column: 1 / span 12;">
+        <div class="error" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')" style="grid-column: 1 / span 12;">
             {{getError()}}
         </div>
-        <ng-container *ngIf="claim != null && errors == null">
+        <ng-container *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">
             <claim-patient-info style="grid-column: 1 / span 8; margin: 5px;"></claim-patient-info>
             <claim-physician-header style="grid-column: 9 / span 4; margin: 5px;"></claim-physician-header>
             <claim-data style="grid-column: 1 / span 8; margin: 5px; height: 26vw;"
