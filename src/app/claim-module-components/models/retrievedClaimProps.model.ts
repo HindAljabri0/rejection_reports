@@ -15,6 +15,7 @@ export class RetrievedClaimProps {
     servicesDecision: {
         invoiceNumber: string;
         serviceNumber: number;
+        serviceStatusCode: string;
         gdpn: GDPN;
         approvedQuantity: number;
         serviceDenialCode: string;
