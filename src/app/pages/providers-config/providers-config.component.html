@@ -44,9 +44,10 @@
                     <div class="row">
                         <mat-radio-group style="margin: 10px 0 10px 0;" name="dbtype" class="col-sm-12"
                         formControlName="dbType">
-                            <mat-radio-button class="col-sm-4" value="ORACLE"> Oracle </mat-radio-button>
-                            <mat-radio-button class="col-sm-4" value="MYSQL"> MySql </mat-radio-button>
-                            <mat-radio-button class="col-sm-4" value="SQLSERVER"> SqlServer </mat-radio-button>
+                            <mat-radio-button class="col-sm-3" value="ORACLE"> Oracle </mat-radio-button>
+                            <mat-radio-button class="col-sm-3" value="MYSQL"> MySql </mat-radio-button>
+                            <mat-radio-button class="col-sm-3" value="SQLSERVER"> SqlServer </mat-radio-button>
+                            <mat-radio-button class="col-sm-3" value="SQLSERVERLEGACY"> SqlServer Legacy </mat-radio-button>
                         </mat-radio-group>
                         <mat-hint *ngIf="f.dbType.errors && (f.dbType.dirty || f.dbType.touched)">
                             <mat-error *ngIf="f.dbType.errors.required">* DataBase type is required</mat-error>
