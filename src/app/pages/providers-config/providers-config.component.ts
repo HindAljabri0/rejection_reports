@@ -615,7 +615,7 @@ export class ProvidersConfigComponent implements OnInit {
           this.errors.midtableError = "Could not save mid table configuration !";
         }
         this.componentLoading.midtable = false;
-        return true;
+        //return true;
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -625,7 +625,7 @@ export class ProvidersConfigComponent implements OnInit {
       }
       this.componentLoading.midtable = false;
     })
-    return true;
+    return false;
   }
 
   static test(control: FormControl) {
@@ -718,7 +718,7 @@ export class ProvidersConfigComponent implements OnInit {
           this.componentLoading.payerMapping = false;
         })     
       }
-      return true;
+      return false;
   }
   getPayerMapping(){
     this.componentLoading.payerMapping = true;
@@ -782,7 +782,7 @@ export class ProvidersConfigComponent implements OnInit {
       }
       this.componentLoading.providerMapping = false;
     });
-    return true;
+    return false;
   }
     
   getProviderMapping() {
