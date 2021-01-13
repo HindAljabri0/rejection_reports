@@ -1,7 +1,7 @@
 <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate" style="position: fixed;"></mat-progress-bar>
 <div class="parent" [ngClass]="{'mainPage': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'}">
     <div class="header" [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '#3060AA':getClaimStatusColor(claimProps?.statusCode),
-        'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? 'white':getClaimStatusColor(claimProps?.statusCode)+'40'}">
+        'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? 'white':getClaimStatusColor(claimProps?.statusCode)+'10'}">
         <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
             <p>Create Claim</p><span class="spacer"></span>
             <p *ngIf="claim != null && errors == null && claim.visitInformation != null" class="hiddenByDefault"
@@ -14,6 +14,8 @@
                 <p><strong>Provider Reference No.:</strong> {{claim.claimIdentities.providerClaimNumber}}</p>
                 <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Batch ID:</strong>
                     {{claim.claimIdentities.providerBatchID}}</p>
+                    <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Submission Date:</strong>
+                    {{claimProps.lastSubmissionDate}}</p>
                 <p><strong>Status:</strong> {{getClaimStatusLabel(claimProps.statusCode)}}</p>
                 <p *ngIf="claimProps.statusDetail != null"><strong>Status Description:</strong>
                     {{claimProps.statusDetail}}</p>
