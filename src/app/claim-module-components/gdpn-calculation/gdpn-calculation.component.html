@@ -46,6 +46,10 @@
                 <td><label>Actual Deducted Amount</label></td>
                 <td><label>{{getClaimActualDeductedAmount()}}</label></td>
             </tr>
+            <tr *ngIf="getClaimActualDeductedAmount() != -1" [style.color]="getStatusColorOfClaim()">
+                <td><label>Actual Paid Amount</label></td>
+                <td><label>{{claim.claimGDPN.net.value - getClaimActualDeductedAmount()}}</label></td>
+            </tr>
         </tbody>
     </table>
     <div *ngIf="selectedInvoice != -1">
@@ -77,9 +81,16 @@
                     <td><label>Patient Share VAT Amount</label></td>
                     <td><label>{{claim.invoice[selectedInvoice].invoiceGDPN.patientShareVATamount.value}}</label></td>
                 </tr>
-                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1" [style.color]="getStatusColorOfSelectedInvoice()">
+                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1"
+                    [style.color]="getStatusColorOfSelectedInvoice()">
                     <td><label>Actual Deducted Amount</label></td>
                     <td><label>{{getSelectedInvoiceActualDeductedAmount()}}</label></td>
+                </tr>
+                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1"
+                    [style.color]="getStatusColorOfSelectedInvoice()">
+                    <td><label>Actual Paid Amount</label></td>
+                    <td><label>{{claim.invoice[selectedInvoice].invoiceGDPN.net.value -
+                            getSelectedInvoiceActualDeductedAmount()}}</label></td>
                 </tr>
             </tbody>
         </table>

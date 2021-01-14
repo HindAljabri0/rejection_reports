@@ -1,12 +1,12 @@
 <mat-tab-group class="mainCardBody" (selectedTabChange)="changeTab($event)">
-    <mat-tab>
+    <mat-tab [label]="'General Information'">
         <ng-template mat-tab-label>
             <mat-icon *ngIf="genInfoTabHasErrors()" style="color: #bb3131;">error</mat-icon>
             General Information
         </ng-template>
         <gen-info></gen-info>
     </mat-tab>
-    <mat-tab>
+    <mat-tab [label]="'Diagnosis'">
         <ng-template mat-tab-label>
             <mat-icon *ngIf="diagnosisTabHasErrors()" style="color: #bb3131;">error</mat-icon>
             Diagnosis
@@ -19,7 +19,7 @@
     <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
         <claim-vital-signs></claim-vital-signs>
     </mat-tab>
-    <mat-tab *ngIf="isInpatientClaim">
+    <mat-tab *ngIf="isInpatientClaim" [label]="'Admission'">
         <ng-template mat-tab-label>
             <mat-icon *ngIf="admissionTabHasErrors()" style="color: #bb3131;">error</mat-icon>
             Admission
@@ -29,14 +29,14 @@
     <mat-tab [label]="'Attachments'">
         <claim-attachments></claim-attachments>
     </mat-tab>
-    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'">
+    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'LAB Results'">
         <ng-template mat-tab-label>
             <mat-icon *ngIf="labResultsTabHasErrors()" style="color: #bb3131;">error</mat-icon>
             LAB Results
         </ng-template>
         <claim-lab-results></claim-lab-results>
     </mat-tab>
-    <mat-tab>
+    <mat-tab [label]="'Invoices & Services'">
         <ng-template mat-tab-label>
             <mat-icon *ngIf="invoiceServicesTabHasErrors()" style="color: #bb3131;">error</mat-icon>
             Invoices & Services
