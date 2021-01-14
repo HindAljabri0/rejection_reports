@@ -107,8 +107,8 @@ export class InvoicesServicesComponent implements OnInit {
       this.expandedService = 0;
     }
 
-    this.store.select(getSelectedTab).subscribe(index => {
-      if (index == 3) {
+    this.store.select(getSelectedTab).subscribe(tab => {
+      if (tab == 'INVOICES_SERVICES') {
         this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
       } else {
         this.store.dispatch(selectGDPN({}));

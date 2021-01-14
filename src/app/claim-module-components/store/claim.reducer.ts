@@ -22,7 +22,7 @@ export interface ClaimState {
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
     error: any;
     loading: boolean;
-    selectedTab: number;
+    selectedTab: string;
     selectedGDPN: { invoiceIndex?: number };
     approvalFormLoading: boolean;
     mode: ClaimPageMode;
@@ -41,7 +41,7 @@ const initState: ClaimState = {
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
     error: null,
     loading: true,
-    selectedTab: 0,
+    selectedTab: 'GENERAL_INFORMATION',
     selectedGDPN: {},
     approvalFormLoading: false,
     mode: 'CREATE',
