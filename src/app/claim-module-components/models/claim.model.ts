@@ -141,7 +141,11 @@ export class Claim {
         claim = {
             ...claim,
             attachment: attachments,
-            caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } }
+            caseInformation: { 
+                ...claim.caseInformation,
+                physician: { ...claim.caseInformation.physician, physicianCategory: claim.caseInformation.physician.physicianCategory.replace(' ', '_') },
+                patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } 
+            }
         };
         return claim;
     }

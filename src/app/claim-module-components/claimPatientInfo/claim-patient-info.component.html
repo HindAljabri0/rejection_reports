@@ -20,6 +20,8 @@
     <label class="leftLabel">Visit Type*</label>
     <select class="leftComponent" [value]="selectedVisitType" [disabled]="!editableFields.visitType"
         (change)="selectedVisitType = $event.target.value; updateClaim('visitType');" required>
+        <option *ngIf="!visitTypes.includes(selectedVisitType) && pageMode == 'VIEW'" [value]="selectedVisitType">
+            {{beautifyVisitType(selectedVisitType)}}</option>
         <option *ngFor="let visitType of visitTypes" [value]="visitType">
             {{beautifyVisitType(visitType)}}</option>
     </select>
