@@ -28,6 +28,7 @@ export class PhysicianComponent implements OnInit {
 
 
   pageType: ClaimPageType;
+  pageMode: ClaimPageMode;
 
   constructor(private store: Store) { }
 
@@ -48,6 +49,7 @@ export class PhysicianComponent implements OnInit {
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
       if (mode == 'VIEW') {
         this.setData(claim);
         this.toggleEdit(false);
@@ -141,4 +143,7 @@ export class PhysicianComponent implements OnInit {
     return '';
   }
 
+  departmentsHasCode(code){
+    return this.departments.findIndex(dep => dep.departmentId == code) > -1;
+  }
 }
