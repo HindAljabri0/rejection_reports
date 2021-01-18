@@ -21,11 +21,20 @@ export class ClaimSubmittionService {
     if (uploadId != null) {
       requestURL = `/providers/${providerId}/submit/criteria?uploadID=${uploadId}`;
     } else {
-      requestURL = `/providers/${providerId}/submit/criteria?payerID=${payerId}&fromDate=` + fromDate
-        + '&toDate=' + toDate;
+      requestURL = `/providers/${providerId}/submit/criteria?payerID=${payerId}&fromDate=` + this.formatDate(fromDate)
+        + '&toDate=' + this.formatDate(toDate);
     }
+    
 
     const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {});
     return this.http.request(request);
+  }
+
+  formatDate(date: string) {
+    const splittedDate = date.split('-');
+    if(splittedDate[2].length == 4){
+      const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
+      return formattedDate;
+    } else return date;
   }
 }

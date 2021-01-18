@@ -217,7 +217,7 @@ export class SharedServices {
       case ClaimStatus.PAID.toLowerCase():
         return '#009633';
       case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
-        return '#00CED4';
+        return '#04abb0';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return '#F3A264';
       case ClaimStatus.Batched.toLowerCase():
@@ -258,8 +258,8 @@ export class SharedServices {
       const payersStrSplitted = payersStr.split('|');
       payersStrSplitted
         .filter(value =>
-          (!globMed && value.split(':')[1].split(',')[2] != '2.0')
-          || (globMed && value.split(':')[1].split(',')[2] == '2.0'))
+          (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
+          || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
         .map(value => payers.push({
           id: Number.parseInt(value.split(':')[0]),
           name: value.split(':')[1].split(',')[0],

@@ -4,7 +4,7 @@ import { VisitInfo } from './visitInfo.model';
 import { GDPN } from './GDPN.model';
 import { Invoice } from './invoice.model';
 import { Admission } from './admission.model';
-import { AttachmentRequest } from './attachmentRequest.model';
+import { AttachmentRequest, FileType } from './attachmentRequest.model';
 import { CaseInfo } from './caseInfo.model';
 import { HttpResponse } from '@angular/common/http';
 import { Period } from './period.type';
@@ -69,16 +69,14 @@ export class Claim {
 
                 const patient = caseInformation['patient'];
                 claim.caseInformation.patient.fullName = patient['patientName'];
-                if(patient['patientName'] == null || patient['patientName'] == "")
-                {
+                if (patient['patientName'] == null || patient['patientName'] == "") {
                     claim.caseInformation.patient.fullName = memberInfo['fullName'];
 
                 }
                 if (patient['age'] != null)
                     claim.caseInformation.patient.age = this.getPeriod(patient['age']['value']);
                 claim.caseInformation.patient.gender = patient['gender'];
-                if(patient['gender']==null || patient['gender']=="")
-                {
+                if (patient['gender'] == null || patient['gender'] == "") {
                     claim.caseInformation.patient.gender = memberInfo['gender'];
                 }
                 claim.caseInformation.patient.nationality = patient['nationality'];
@@ -137,10 +135,32 @@ export class Claim {
                 fullName = firstName;
                 if (middleName != null) fullName += ` ${middleName}`;
                 if (lastName != null) fullName += ` ${lastName}`;
-            }    
+            }
         }
-        claim = { ...claim, caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } } }
+        const attachments = claim.attachment.map(att => ({ ...att, fileType: Claim.convertFileType(att.fileType) }));
+        claim = {
+            ...claim,
+            attachment: attachments,
+            caseInformation: { 
+                ...claim.caseInformation,
+                physician: { ...claim.caseInformation.physician, physicianCategory: claim.caseInformation.physician.physicianCategory.replace(' ', '_') },
+                patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } 
+            }
+        };
         return claim;
+    }
+
+    private static convertFileType(incomingFileType: string): FileType {
+        switch (incomingFileType) {
+            case 'MEDICAL_REPORT':
+                return 'Medical Report'
+            case 'IQAMA_ID_COPY':
+                return 'Iqama/ID copy'
+            case 'X_RAY_RESULT':
+                return 'X-Ray result'
+            case 'LAB_RESULT':
+                return 'Lab Result'
+        }
     }
 
     private static getPeriod(duration: string): Period {

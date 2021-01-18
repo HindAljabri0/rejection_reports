@@ -54,6 +54,7 @@ export class ClaimPatientInfo implements OnInit {
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
       if (mode == 'VIEW') {
         this.setData(claim);
         this.toggleEdit(false);

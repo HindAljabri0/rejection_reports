@@ -34,8 +34,10 @@ export class SearchService {
   }
   formatDate(date: string) {
     const splittedDate = date.split('-');
-    const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
-    return formattedDate;
+    if(splittedDate[2].length == 4){
+      const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
+      return formattedDate;
+    } else return date;
   }
 
   getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {

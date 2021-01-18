@@ -157,7 +157,7 @@ export class MainClaimPageComponent implements OnInit {
     if (this.errors.hasOwnProperty('code')) {
       switch (this.errors['code']) {
         case 'LOV_ERROR': case 'PAYERS_LIST':
-          return 'Could not load required data to create new claim. Please try again later.';
+          return 'Could not load required data to create/edit claim. Please try again later.';
         case 'CLAIM_RETRIEVE_ERROR':
           return 'Could not load claim at the moment. Please try again later.'
       }
