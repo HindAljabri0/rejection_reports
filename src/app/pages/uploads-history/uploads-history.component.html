@@ -1,26 +1,19 @@
-<div class="mainPage" style="margin: 80px 20px 0px 20px;">
-    <app-detailscard title="Upload History" [accentColor]="'#3060AA'">
-        <div inHeader style="position: absolute; top: 10%; right: 20px;">
-            <reusable-search-bar 
-            searchBy="Upload Name"
-            [queries]="queries"
-            (onSearch)="search($event)"
-            (onQueryRemoved)="onQueryRemoved($event)"
-            ></reusable-search-bar>
-        </div>
-        <div id="infinitScroll" scrollable (scrollPosition)="scrollHandler($event)">
-            <div *ngFor="let key of uploadsMapKeys">
-                <h2 style="width: 100%; text-align: start; padding: 20px 90px;">{{key}}</h2>
-                <div class="notifications">
-                    <div class="notification" *ngFor="let uploadCardDate of uploadsMap.get(key)">
-                        <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="inCenter">
-                        </app-upload-history-card>
-                    </div>
+<app-detailscard title="Upload History" [accentColor]="'#3060AA'">
+    <div inHeader style="position: absolute; top: 10%; right: 20px;">
+        <reusable-search-bar searchBy="Upload Name" [queries]="queries" (onSearch)="search($event)" (onQueryRemoved)="onQueryRemoved($event)"></reusable-search-bar>
+    </div>
+    <div id="infinitScroll" scrollable (scrollPosition)="scrollHandler($event)">
+        <div *ngFor="let key of uploadsMapKeys">
+            <h2 style="width: 100%; text-align: start; padding: 20px 90px;">{{key}}</h2>
+            <div class="notifications">
+                <div class="notification" *ngFor="let uploadCardDate of uploadsMap.get(key)">
+                    <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="inCenter">
+                    </app-upload-history-card>
                 </div>
             </div>
-            <mat-spinner *ngIf="loading" style="margin: 0px auto;" [diameter]="50"></mat-spinner>
-            <p *ngIf="!loading && currentPage == 0">There is no data to show</p>
-            <p *ngIf="currentPage >= maxPages">There is no more data</p>
         </div>
-    </app-detailscard>
-</div>
+        <mat-spinner *ngIf="loading" style="margin: 0px auto;" [diameter]="50"></mat-spinner>
+        <p *ngIf="!loading && currentPage == 0">There is no data to show</p>
+        <p *ngIf="currentPage >= maxPages">There is no more data</p>
+    </div>
+</app-detailscard>

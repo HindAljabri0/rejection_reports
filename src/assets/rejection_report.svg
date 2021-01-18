@@ -1,24 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
-  <g id="Group_1399" data-name="Group 1399" transform="translate(-33 -646)">
-    <rect id="Rectangle_3103" data-name="Rectangle 3103" width="25" height="25" transform="translate(33 646)" fill="#fff" opacity="0"/>
-    <g id="Rectangle_3104" data-name="Rectangle 3104" transform="translate(37 648)" fill="#f5f6f7" stroke="#707070" stroke-width="1">
-      <rect width="18" height="22" rx="3" stroke="none"/>
-      <rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="none"/>
-    </g>
-    <line id="Line_268" data-name="Line 268" x2="11.824" transform="translate(40 652.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <line id="Line_269" data-name="Line 269" x2="11.824" transform="translate(40 655.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <path id="Path_521" data-name="Path 521" d="M0,0H11.824" transform="translate(40 658.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <line id="Line_270" data-name="Line 270" x2="6.947" transform="translate(40 662.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <g id="Rectangle_3105" data-name="Rectangle 3105" transform="translate(35 646)" fill="#f5f6f7" stroke="#707070" stroke-width="1">
-      <rect width="18" height="22" rx="3" stroke="none"/>
-      <rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="none"/>
-    </g>
-    <line id="Line_277" data-name="Line 277" x2="11.824" transform="translate(38 653.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <line id="Line_278" data-name="Line 278" x2="11.824" transform="translate(38 650.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <line id="Line_279" data-name="Line 279" x2="2.5" transform="translate(38 656.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <g id="Icon_ionic-md-close-circle-outline" data-name="Icon ionic-md-close-circle-outline" transform="translate(41.223 655.811)">
-      <path id="Path_525" data-name="Path 525" d="M5.149,2.835a2.312,2.312,0,1,1-1.636.677,2.3,2.3,0,0,1,1.636-.677m0-.585a2.9,2.9,0,1,0,2.9,2.9,2.9,2.9,0,0,0-2.9-2.9Z" fill="#707070"/>
-      <path id="Path_526" data-name="Path 526" d="M10.024,9.618l-.406.406L8.574,8.98,7.531,10.024l-.406-.406L8.169,8.574,7.125,7.531l.406-.406L8.574,8.169,9.618,7.125l.406.406L8.98,8.574Z" transform="translate(-3.426 -3.426)" fill="#707070"/>
-    </g>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 26 26" style="enable-background:new 0 0 26 26;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;fill-opacity:0;}
+	.st1{fill:#F5F6F7;}
+	.st2{fill:none;stroke:#707070;}
+	.st3{fill:none;stroke:#707070;stroke-linecap:round;}
+	.st4{fill:#707070;}
+</style>
+<g id="Group_1399" transform="translate(-33 -646)">
+	<rect id="Rectangle_3103" x="33.5" y="646.5" class="st0" width="25" height="25"/>
+	<g id="Rectangle_3104" transform="translate(37 648)">
+		<path class="st1" d="M3.5,0.5h12c1.7,0,3,1.3,3,3v16c0,1.7-1.3,3-3,3h-12c-1.7,0-3-1.3-3-3v-16C0.5,1.8,1.8,0.5,3.5,0.5z"/>
+		<path class="st2" d="M3.5,1h12C16.9,1,18,2.1,18,3.5v16c0,1.4-1.1,2.5-2.5,2.5h-12C2.1,22,1,20.9,1,19.5v-16C1,2.1,2.1,1,3.5,1z"
+			/>
+	</g>
+	<line id="Line_268" class="st3" x1="40.5" y1="653" x2="52.3" y2="653"/>
+	<line id="Line_269" class="st3" x1="40.5" y1="656" x2="52.3" y2="656"/>
+	<path id="Path_521" class="st3" d="M40.5,659h11.8"/>
+	<line id="Line_270" class="st3" x1="40.5" y1="663" x2="47.4" y2="663"/>
+	<g id="Rectangle_3105" transform="translate(35 646)">
+		<path class="st1" d="M3.5,0.5h12c1.7,0,3,1.3,3,3v16c0,1.7-1.3,3-3,3h-12c-1.7,0-3-1.3-3-3v-16C0.5,1.8,1.8,0.5,3.5,0.5z"/>
+		<path class="st2" d="M3.5,1h12C16.9,1,18,2.1,18,3.5v16c0,1.4-1.1,2.5-2.5,2.5h-12C2.1,22,1,20.9,1,19.5v-16C1,2.1,2.1,1,3.5,1z"
+			/>
+	</g>
+	<line id="Line_277" class="st3" x1="38.5" y1="654" x2="50.3" y2="654"/>
+	<line id="Line_278" class="st3" x1="38.5" y1="651" x2="50.3" y2="651"/>
+	<line id="Line_279" class="st3" x1="38.5" y1="657" x2="41" y2="657"/>
+	<g id="Icon_ionic-md-close-circle-outline" transform="translate(41.223 655.811)">
+		<path id="Path_525" class="st4" d="M5.6,3.3c1.3,0,2.3,1,2.3,2.3C8,6.9,6.9,8,5.6,8c-1.3,0-2.3-1-2.3-2.3C3.3,5,3.6,4.4,4,4
+			C4.4,3.6,5,3.3,5.6,3.3 M5.6,2.8C4,2.8,2.7,4,2.7,5.7S4,8.6,5.6,8.6s2.9-1.3,2.9-2.9l0,0C8.5,4,7.3,2.8,5.6,2.8z"/>
+		<path id="Path_526" class="st4" d="M7.1,6.7L6.7,7.1l-1-1l-1,1L4.2,6.7l1-1l-1-1l0.4-0.4l1,1l1-1l0.4,0.4l-1,1L7.1,6.7z"/>
+	</g>
+</g>
 </svg>

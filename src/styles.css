@@ -41,7 +41,6 @@ h3 { }
 h4 { }
 h5 { }
 h6 { }
-p { padding: 0 0 20px; }
 input[type=text], input[type=email], input[type=password], textarea { -webkit-appearance: none; appearance: none; }
 ::-webkit-input-placeholder { color: #000; }
 ::-moz-placeholder { color: #000; }
@@ -52,24 +51,36 @@ select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }
 option:not(:checked) { color: black; }
 input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus textarea:-webkit-autofill,textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,select:-webkit-autofill,select:-webkit-autofill:hover,select:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0px 1000px #F5F6F7 inset !important;}
 
-/* header 
+/* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
-.header{background-color: #3060aa;color: #fff;position: fixed;top: 0;left: 0;right: 0;display: flex;box-shadow: 0 3px 6px rgba(0,0,0,0.16);z-index: 10;}
-.header .logo-wrapper{min-width: 240px;align-self: center;-ms-flex-item-align: center;}
-.header .logo{padding: 8px 16px;display: inline-block;vertical-align: top;}
-.header .logo>img{display: block;max-height: 52px;}
-.header .right-block{margin-left: auto;display: flex;align-items: center;padding-right: 16px;}
-.header .right-block>div,.header .right-block>button,.header .right-block>.language-switch{margin-right: 4px;}
-.header .right-block>div:last-child,.header .right-block>button:last-child,.header .right-block>.language-switch:last-child{margin-right: 0;}
-.header .iconButton.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 24px;left: 16px;}
-.header .iconButton .innerIcon {position: absolute;top: 9px;left: 7.5px;font-size: 16px;color: #3060AA;font-weight: bold;}
-.header .user-info {font-size: 12px;line-height: 18px; background-color: #254f90;border-radius: 6px;padding: 4px 4px 4px 10px;display: flex;margin-left: 8px;align-items: center;}
-.header .logout{background-color: #22477f;margin-left: 8px;}
-.header .inner-user-info{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: 150px;}
-.header .logout .mat-icon{font-size: 22px;font-weight: 400;}
-.header .tablet-search{display: none;}
-.header .mat-toolbar-row, .header .mat-toolbar-single-row {z-index: 9999;position: fixed;display: flex;box-sizing: border-box;padding: 0 16px;width: 100%;flex-direction: row;float: right;top: 0px;}
-.header .mat-progress-bar {position: absolute;left: 0;right: 0;display: flex;z-index: 2;bottom:0;}
+*::-webkit-scrollbar{height:8px;width:8px;}
+*::-webkit-scrollbar-thumb{background-color: transparent;}
+*:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4;}
+body::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
+body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
+
+/* misc
+--------------------------------------------------------------------------------------------------------*/
+.spacer {flex: 1 1 auto;}
+
+/* brand header 
+--------------------------------------------------------------------------------------------------------*/
+.brand-header{background-color: #3060aa;color: #fff;position: fixed;top: 0;left: 0;right: 0;display: flex;box-shadow: 0 3px 6px rgba(0,0,0,0.16);z-index: 10;}
+.brand-header .logo-wrapper{width: 240px;align-self: center;-ms-flex-item-align: center;text-align: center;;}
+.brand-header .logo{padding: 8px 16px;display: inline-block;vertical-align: top;}
+.brand-header .logo>img{display: block;max-height: 52px;}
+.brand-header .right-block{margin-left: auto;display: flex;align-items: center;padding-right: 16px;}
+.brand-header .right-block>div,.brand-header .right-block>button,.brand-header .right-block>.language-switch{margin-right: 4px;}
+.brand-header .right-block>div:last-child,.brand-header .right-block>button:last-child,.brand-header .right-block>.language-switch:last-child{margin-right: 0;}
+.brand-header .iconButton.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 24px;left: 16px;}
+.brand-header .iconButton .innerIcon {position: absolute;top: 9px;left: 7.5px;font-size: 16px;color: #3060AA;font-weight: bold;}
+.brand-header .user-info {font-size: 12px;line-height: 18px; background-color: #254f90;border-radius: 6px;padding: 4px 4px 4px 10px;display: flex;margin-left: 8px;align-items: center;}
+.brand-header .logout{background-color: #22477f;margin-left: 8px;}
+.brand-header .inner-user-info{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: 150px;}
+.brand-header .logout .mat-icon{font-size: 22px;font-weight: 400;}
+.brand-header .tablet-search{display: none;}
+.brand-header .mat-toolbar-row, .brand-header .mat-toolbar-single-row {z-index: 9999;position: fixed;display: flex;box-sizing: border-box;padding: 0 16px;width: 100%;flex-direction: row;float: right;top: 0px;}
+.brand-header .mat-progress-bar {position: absolute;left: 0;right: 0;display: flex;z-index: 2;bottom:0;}
 
 /* language-picker
 --------------------------------------------------------------------------------------------------------*/
@@ -81,10 +92,18 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
 /* sidebar
 --------------------------------------------------------------------------------------------------------*/
 .w3-sidebar {width: 240px;z-index: 1;overflow: auto;position: fixed;top: 68px;bottom: 0;left: 0;height:auto;}
+.w3-sidebar hr{margin: 0;}
+.w3-sidebar .list-container{padding: 10px 0;}
+.w3-sidebar .list-title {color: #878B96;list-style: none;margin: 10px 0;text-decoration: none;padding-left: 10px;}
+.w3-sidebar .nav-list>li>a{display: flex;align-items: center;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.w3-sidebar .nav-list>li>a:hover,.w3-sidebar .nav-list>li>a:focus,.w3-sidebar .nav-list>li>a:active{background-color: #ecebeb;}
+.w3-sidebar .nav-list>.new>a::after{content: ".";color: #EB2A75;font-size: 70px;position: absolute;left: 83%;top: 85px;}
+.w3-sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 500;}
+.w3-sidebar .nav-list>li>a>img {margin-right: 14px;display: block;height: 26px;width: 26px;}
 
 /* main content
 --------------------------------------------------------------------------------------------------------*/
-.main-content {margin-left: 240px;display: block;}
+.main-content {display: block;padding: 88px 20px 20px 260px;}
 
 /* advance search
 --------------------------------------------------------------------------------------------------------*/
@@ -104,18 +123,14 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
     .advance-search >select{width: 160px;}
 }
 @media (max-width:1199px) { 
-    .header .logo-wrapper{min-width: auto;}
     .advance-search{padding-left: 10px;width: 430px;}
-    .header .tablet-search,.advance-search .close-btn{display: block;}
+    .brand-header .tablet-search,.advance-search .close-btn{display: block;}
     .advance-search{position: absolute;left: 0;right: 0;background: #3060aa;margin: 0;padding: 13px 16px;height: 68px;width: auto;z-index: 1;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom: 100%;}
     .search-visible .advance-search{bottom: 0;opacity: 1;visibility: visible;}
     .advance-search >select{width:auto;}
 }
-@media (max-width:991px) { }
-
-.mainPage{
-    width: 95%;
-    margin: 80px 20px;
+@media (max-width:991px) { 
+    .brand-header .logo-wrapper{width: auto;text-align: left;}
 }
 
 .mat-grid-tile .mat-figure {
@@ -137,23 +152,6 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
     height: 100%;
 }
 
-*::-webkit-scrollbar{
-    height:8px;
-    width:8px;
-}
-*::-webkit-scrollbar-thumb{
-    background-color: transparent;
-}
-*:hover::-webkit-scrollbar-thumb{
-    background-color: #b6b4b4;
-}
-body::-webkit-scrollbar-thumb{
-    background-color: #b6b4b4b6;
-}
-body:hover::-webkit-scrollbar-thumb{
-    background-color: #b6b4b4b6;
-}
-
 .errorText{
     color: red;
 }
@@ -172,10 +170,4 @@ body:hover::-webkit-scrollbar-thumb{
     padding: 0px;
     position: relative;
     overflow: hidden;
-}
-
-
-
-.spacer {
-    flex: 1 1 auto;
 }
