@@ -28,9 +28,9 @@ export class ClaimValidationService {
     this.store.select(getPageType).subscribe(type => this.pageType = type);
   }
 
-  private regax = /^[A-Za-z0-9- ]+$/i;
-  private regaxWithOutSpace = /^[A-Za-z0-9-]+$/i;
-  private regaxWithSym = /^[A-Za-z0-9 $-/:-?{-~!"^_`\[\]]+$/i;
+  private regex = /^[A-Za-z0-9- ]+$/i;
+  private regexWithOutSpace = /^[A-Za-z0-9-]+$/i;
+  private regexWithSym = /^[A-Za-z0-9 $-/:-?{-~!"^_`\[\]]+$/i;
 
   startValidation() {
     this.validatePatientInfo();
@@ -65,7 +65,7 @@ export class ClaimValidationService {
     }
     if (memberId == null || memberId.trim().length == 0) {
       fieldErrors.push({ fieldName: 'memberId' });
-    } else if (!this.regaxWithOutSpace.test(memberId)) {
+    } else if (!this.regexWithOutSpace.test(memberId)) {
       fieldErrors.push({ fieldName: 'memberId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
     if (nationalId != null && nationalId.trim().length != 10) {
@@ -77,7 +77,7 @@ export class ClaimValidationService {
     if(this.pageType == 'DENTAL_OPTICAL'){
       if (approvalNum == null || approvalNum.trim().length == 0) {
         fieldErrors.push({ fieldName: 'approvalNum' });
-      } else if (!this.regaxWithSym.test(approvalNum)) {
+      } else if (!this.regexWithSym.test(approvalNum)) {
         fieldErrors.push({ fieldName: 'approvalNum', error: 'Characters allowed: (0-9), (a-z), (A-Z), and special characters' });
       }
     }
@@ -93,13 +93,13 @@ export class ClaimValidationService {
     let fieldErrors: FieldError[] = [];
 
     if (this.pageType == 'DENTAL_OPTICAL') {
-      if (physicianId != null && physicianId.trim().length > 0 && !this.regaxWithOutSpace.test(physicianId)) {
+      if (physicianId != null && physicianId.trim().length > 0 && !this.regexWithOutSpace.test(physicianId)) {
         fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
     } else if (this.pageType = 'INPATIENT_OUTPATIENT') {
       if (physicianId == null || physicianId.trim().length == 0) {
         fieldErrors.push({ fieldName: 'physicianId' });
-      } else if (!this.regaxWithOutSpace.test(physicianId)) {
+      } else if (!this.regexWithOutSpace.test(physicianId)) {
         fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
 
@@ -140,7 +140,7 @@ export class ClaimValidationService {
     }
     if (fileNumber == null || fileNumber.trim().length == 0) {
       fieldErrors.push({ fieldName: 'fileNumber' });
-    } else if (!this.regaxWithOutSpace.test(fileNumber)) {
+    } else if (!this.regexWithOutSpace.test(fileNumber)) {
       fieldErrors.push({ fieldName: 'fileNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
     }
     if (this._isInvalidDate(memberDob) && this._isInvalidPeriod(age)) {
@@ -184,11 +184,11 @@ export class ClaimValidationService {
     let fieldErrors: FieldError[] = [];
     invoices.forEach((invoice, index) => {
       if (this._isInvalidDate(invoice.invoiceDate)) {
-        fieldErrors.push({ fieldName: `invoiceDate:${index}` })
+        fieldErrors.push({ fieldName: `invoiceDate:${index}` });
       }
       if (invoice.invoiceNumber == null || invoice.invoiceNumber.trim().length == 0) {
-        fieldErrors.push({ fieldName: `invoiceNumber:${index}` })
-      } else if (!this.regaxWithOutSpace.test(invoice.invoiceNumber)) {
+        fieldErrors.push({ fieldName: `invoiceNumber:${index}` });
+      } else if (!this.regexWithOutSpace.test(invoice.invoiceNumber)) {
         fieldErrors.push({ fieldName: `invoiceNumber:${index}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
       invoice.service.forEach((service, serviceIndex) => {
@@ -217,8 +217,8 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: `serviceDescription:${invoiceIndex}:${serviceIndex}` })
     }
 
-    if (service.unitPrice == null || service.unitPrice.value == null || service.unitPrice.value <= 0) {
-      fieldErrors.push({ fieldName: `serviceUnitPrice:${invoiceIndex}:${serviceIndex}`, error: 'must be bigger than zero' });
+    if (service.unitPrice == null || service.unitPrice.value == null || service.unitPrice.value < 0) {
+      fieldErrors.push({ fieldName: `serviceUnitPrice:${invoiceIndex}:${serviceIndex}`, error: 'must be positive' });
     }
 
     if (service.requestedQuantity == null || service.requestedQuantity <= 0) {
@@ -295,12 +295,12 @@ export class ClaimValidationService {
       }
       if (roomNumber == null || roomNumber.trim().length == 0) {
         fieldErrors.push({ fieldName: 'roomNumber' });
-      } else if (!this.regax.test(roomNumber)) {
+      } else if (!this.regex.test(roomNumber)) {
         fieldErrors.push({ fieldName: 'roomNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
       }
       if (bedNumber == null || bedNumber.trim().length == 0) {
         fieldErrors.push({ fieldName: 'bedNumber' });
-      } else if (!this.regax.test(bedNumber)) {
+      } else if (!this.regex.test(bedNumber)) {
         fieldErrors.push({ fieldName: 'bedNumber', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
       }
     }

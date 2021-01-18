@@ -21,8 +21,8 @@ export class ProvidersConfigComponent implements OnInit {
   filteredProviders: any[] = [];
   providerController: FormControl = new FormControl();
 
-  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string, sfdaError?: string, sfdaSaveError?: string, midtableError?:string, payerMappingError?: string, providerMappingError?: string } = {};
-  success: { serviceCodeSaveSuccess?: string, portalUserSaveSuccess?: string, ICD10SaveSuccess?: string, sfdaSaveSuccess?: string, midtableSuccess?:string, payerMappingSuccess?: string, providerMappingSuccess?: string } = {};
+  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string, sfdaError?: string, sfdaSaveError?: string, midtableError?:string, midtableSaveError?:string, payerMappingError?: string, payerMappingSaveError?: string, providerMappingError?: string ,providerMappingSaveError?: string } = {};
+  success: { serviceCodeSaveSuccess?: string, portalUserSaveSuccess?: string, ICD10SaveSuccess?: string, sfdaSaveSuccess?: string, midtableSaveSuccess?:string, payerMappingSaveSuccess?: string, providerMappingSaveSuccess?: string } = {};
   componentLoading = { serviceCode: true, portalUser: true, ICD10Validation: true, sfda: true, midtable: true, payerMapping: true, providerMapping: true };
 
   selectedProvider: string;
@@ -50,6 +50,8 @@ export class ProvidersConfigComponent implements OnInit {
   addPayerMappingList: any[] = [];
   existingPayers : any[];
   providerMappingController: FormControl = new FormControl('');
+  providerMappingValue : string;
+  payerMappingValue: {[key:number]: string} = {};
 
   constructor(private superAdmin: SuperAdminService,
     private router: Router,
@@ -128,6 +130,7 @@ export class ProvidersConfigComponent implements OnInit {
             //new changes for payer mapping
             this.newPayerMappingEnable[payer.switchAccountId] = false;
             this.newPayerMappingValue[payer.switchAccountId] = "";
+            this.payerMappingValue[payer.switchAccountId] = "";
             this.newPayerName[payer.switchAccountId] = "";
             this.addPayerMappingList = [];
             this.addDbConfigForm.reset();
@@ -567,7 +570,8 @@ export class ProvidersConfigComponent implements OnInit {
   getDatabaseConfig() {
     this.componentLoading.midtable = true;
     this.errors.midtableError = null;
-    this.success.midtableSuccess = null;
+    this.errors.midtableSaveError = null;
+    this.success.midtableSaveSuccess = null;
     this.dbMapping.getDatabaseConfig(this.selectedProvider).subscribe(event => {
       
       if (event instanceof HttpResponse) {
@@ -595,37 +599,42 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   addDatabaseConfig() {
-    const body = {
-      dbType: this.addDbConfigForm.value.dbType.trim(),
-      hostName: this.addDbConfigForm.value.hostName.trim(),
-      port: this.addDbConfigForm.value.port,
-      databaseName: this.addDbConfigForm.value.databaseName.trim(),
-      dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
-      dbPassword: this.addDbConfigForm.value.dbPassword.trim(),
-      providerId: this.selectedProvider
-    };
-    this.componentLoading.midtable = true;
-    this.dbMapping.setDatabaseConfig(this.selectedProvider,body).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        console.log(event.status);
-        const data = event.body['message'];
-        if(data != null){
-          this.success.midtableSuccess = "Data save successfully";
-        }else{
-          this.errors.midtableError = "Could not save mid table configuration !";
+    this.errors.midtableSaveError = null;
+    this.success.midtableSaveSuccess = null;
+    if(this.addDbConfigForm.valid){
+      const body = {
+        dbType: this.addDbConfigForm.value.dbType.trim(),
+        hostName: this.addDbConfigForm.value.hostName.trim(),
+        port: this.addDbConfigForm.value.port,
+        databaseName: this.addDbConfigForm.value.databaseName.trim(),
+        dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
+        dbPassword: this.addDbConfigForm.value.dbPassword.trim(),
+        providerId: this.selectedProvider
+      };
+      this.componentLoading.midtable = true;
+      this.dbMapping.setDatabaseConfig(this.selectedProvider,body).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          console.log(event.status);
+          const data = event.body['message'];
+          if(data != null){
+            this.success.midtableSaveSuccess = "Data save successfully";
+          }else{
+            this.errors.midtableSaveError = "Could not save mid table configuration !";
+          }
+          this.componentLoading.midtable = false;
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status != 404) {
+            this.errors.midtableSaveError = 'Could not add db config, please try again later.';
+          }
         }
         this.componentLoading.midtable = false;
-        //return true;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status != 404) {
-          this.errors.midtableError = 'Could not add db config, please try again later.';
-        }
-      }
-      this.componentLoading.midtable = false;
-    })
-    return false;
+      })
+      return false;
+    } 
+    this.errors.midtableSaveError = 'Invalid data !!';
+    return true;
   }
 
   static test(control: FormControl) {
@@ -638,7 +647,7 @@ export class ProvidersConfigComponent implements OnInit {
 
   onPayerMapSetting(payerData,event,index){
     this.newPayerName[payerData.switchAccountId] = payerData.name;
-    if(event.checked){
+    if(event.checked && !this.addPayerMappingList.includes(payerData.switchAccountId)){
       this.addPayerMappingList.push(payerData.switchAccountId);
     }else{
       var temp = this.addPayerMappingList.findIndex(x => x === payerData.switchAccountId);
@@ -648,13 +657,35 @@ export class ProvidersConfigComponent implements OnInit {
   }
   
   savePayerMapping(){
+    this.errors.payerMappingSaveError = null;
+    this.success.payerMappingSaveSuccess = null;
+    let isChanged: boolean = false;
     if(this.existingPayers != undefined && this.existingPayers.length > 0){
       this.existingPayers.forEach(payer=>{
         if(!this.addPayerMappingList.includes(payer.payerId)){
           this.deletePayerMappingList.push(payer.payerId);
+          isChanged = true;
         }
       })
-    }  
+      this.addPayerMappingList.forEach(payerId => {
+        if(this.existingPayers.find(payer => payer.payerId === payerId) == undefined) {
+          isChanged = true;
+        }
+      })
+      this.addPayerMappingList.forEach(payerId => {
+        if(this.newPayerMappingValue[payerId] != this.payerMappingValue[payerId]) {
+          isChanged = true;
+        }
+      })
+      this.addPayerMappingList.forEach(payerId => {
+        if(isChanged && this.newPayerMappingValue[payerId] == '') {
+          isChanged = false;
+          this.errors.payerMappingSaveError = 'Please fill mapped value for payer.';
+          return true;
+        }
+      })
+    }
+    if(isChanged){
       var selectedPayer = [];
       if(this.addPayerMappingList.length > 0){
         this.addPayerMappingList.forEach(id=>{
@@ -671,16 +702,17 @@ export class ProvidersConfigComponent implements OnInit {
           if (event instanceof HttpResponse) {
             const data = event.body['response'];
             if(data){
-              this.success.payerMappingSuccess = "Settings were saved successfully.";
+              this.getPayerMapping();
+              this.success.payerMappingSaveSuccess = "Settings were saved successfully.";
             }else{
-              this.errors.payerMappingError = "Could not save payer mapping details !";
+              this.errors.payerMappingSaveError = "Could not save payer mapping details !";
             }
             this.componentLoading.payerMapping = false;
           }
         }, error => {
           if (error instanceof HttpErrorResponse) {
             if (error.status != 404) {
-              this.errors.payerMappingError = 'Could not change payer mapping, please try again later.';
+              this.errors.payerMappingSaveError = 'Could not change payer mapping, please try again later.';
             }
           }
           this.componentLoading.payerMapping = false;
@@ -703,27 +735,30 @@ export class ProvidersConfigComponent implements OnInit {
           if (event instanceof HttpResponse) {
             const data = event.body['response'];
             if(data){
-              this.success.payerMappingSuccess = "Settings were saved successfully.";
+              this.getPayerMapping();
+              this.success.payerMappingSaveSuccess = "Settings were saved successfully.";
             }else{
-              this.errors.payerMappingError = "Could not save payer mapping details !";
+              this.errors.payerMappingSaveError = "Could not save payer mapping details !";
             }
             this.componentLoading.payerMapping = false;
           }
         }, error => {
           if (error instanceof HttpErrorResponse) {
             if (error.status != 404) {
-              this.errors.payerMappingError = 'Could not change payer mapping, please try again later.';
+              this.errors.payerMappingSaveError = 'Could not change payer mapping, please try again later.';
             }
           }
           this.componentLoading.payerMapping = false;
         })     
       }
       return false;
+    } return true;
   }
   getPayerMapping(){
     this.componentLoading.payerMapping = true;
     this.errors.payerMappingError = null;
-    this.success.payerMappingSuccess = null;
+    this.errors.payerMappingSaveError = null;
+    this.success.payerMappingSaveSuccess = null;
     this.dbMapping.getPayerMapping(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         const response = event.body['response'];
@@ -734,6 +769,7 @@ export class ProvidersConfigComponent implements OnInit {
             this.existingPayers.forEach(payer=>{
               this.newPayerMappingEnable[payer.payerId] = true;
               this.newPayerMappingValue[payer.payerId] = payer.mappingName;
+              this.payerMappingValue[payer.payerId] = payer.mappingName;
               this.newPayerName[payer.payerId] = payer.payerName;
               this.addPayerMappingList.push(payer.payerId);
             })
@@ -758,42 +794,53 @@ export class ProvidersConfigComponent implements OnInit {
   }
     
   addProviderMapping() {
-    const body = {
-      providerCode: this.selectedProviderCode,
-      mappingProviderCode: this.providerMappingController.value
-    }
-    this.componentLoading.providerMapping = true;
-    this.dbMapping.setProviderMapping(body, this.selectedProvider).subscribe(event => {
-      console.log(event);
-      if (event instanceof HttpResponse) {
-        const data = event.body['message'];
-        if(data != null){
-          this.success.providerMappingSuccess = "Settings were saved successfully.";
-        }else{
-          this.errors.providerMappingError = "Could not save provider mapping details !";
+    this.errors.providerMappingSaveError = null;
+    this.success.providerMappingSaveSuccess = null;
+    if(this.providerMappingController.value != '') { 
+      if (this.providerMappingController.value != this.providerMappingValue) {
+      const body = {
+        providerCode: this.selectedProviderCode,
+        mappingProviderCode: this.providerMappingController.value
+      }
+      this.componentLoading.providerMapping = true;
+      this.dbMapping.setProviderMapping(body, this.selectedProvider).subscribe(event => {
+        console.log(event);
+        if (event instanceof HttpResponse) {
+          this.providerMappingValue = body.mappingProviderCode;
+          const data = event.body['message'];
+          if(data != null){
+            this.success.providerMappingSaveSuccess = "Settings were saved successfully.";
+          }else{
+            this.errors.providerMappingSaveError = "Could not save provider mapping details !";
+          }
+          this.componentLoading.providerMapping = false;
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status != 404) {
+            this.errors.providerMappingSaveError = 'Could not save provider mapping, please try again later.';
+          }
         }
         this.componentLoading.providerMapping = false;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status != 404) {
-          this.errors.providerMappingError = 'Could not save provider mapping, please try again later.';
-        }
-      }
-      this.componentLoading.providerMapping = false;
-    });
-    return false;
+      });
+      return false;
+    } return true;
+    } 
+    this.errors.providerMappingSaveError = "Please fill mapped value for provider.";
+    return true;
   }
     
   getProviderMapping() {
     this.componentLoading.providerMapping = true;
     this.errors.providerMappingError = null;
-    this.success.providerMappingSuccess = null;  
+    this.errors.providerMappingSaveError = null;
+    this.success.providerMappingSaveSuccess = null;  
     this.dbMapping.getProviderMapping(this.selectedProvider).subscribe(event => {
         if (event instanceof HttpResponse) {
           const data = event.body['providerMapping'];
           if(data != null) {
             this.providerMappingController.setValue(data.mappingProviderCode);
+            this.providerMappingValue = data.mappingProviderCode;
           }
           else{
             this.providerMappingController.setValue("");
@@ -813,6 +860,7 @@ export class ProvidersConfigComponent implements OnInit {
      
      this.newPayerMappingEnable= {};
      this.newPayerMappingValue = {};
+     this.payerMappingValue = {};
      this.newPayerName = {};
      this.addPayerMappingList = [];
      this.addDbConfigForm.reset();

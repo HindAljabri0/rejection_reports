@@ -61,7 +61,7 @@
                     <td [matTooltip]="getFieldError('invoiceNumber:'+i)"><input
                             [ngClass]="{'fieldError': fieldHasError('invoiceNumber:'+i)}" type="text"
                             [formControl]="invoice.invoiceNumber"></td>
-                    <td [matTooltip]="getFieldError('invoiceDate:'+i)"><input
+                    <td [matTooltip]="getFieldError('invoiceDate:'+i)"><input type="date"
                             [ngClass]="{'fieldError': fieldHasError('invoiceDate:'+i)}"
                             [formControl]="invoice.invoiceDate"></td>
                     <td>

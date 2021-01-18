@@ -27,11 +27,11 @@
                 <mat-panel-title style="color: #3060AA;">
                     MidTables Configuration
                 </mat-panel-title>
-                <mat-panel-description *ngIf="errors.midtableError != null">
-                    <span style="color: #ac4040;">{{errors.midtableError}}</span>
+                <mat-panel-description *ngIf="errors.midtableSaveError != null">
+                    <span style="color: #ac4040;">{{errors.midtableSaveError}}</span>
                 </mat-panel-description>
-                <mat-panel-description *ngIf="success.midtableSuccess != null">
-                    <span style="color: #40ac60;">{{success.midtableSuccess}}</span>
+                <mat-panel-description *ngIf="success.midtableSaveSuccess != null">
+                    <span style="color: #40ac60;">{{success.midtableSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div *ngIf="(errors.midtableError == null || errors.midtableError == '') && !componentLoading.midtable" style="margin-top: 20px;">
@@ -40,7 +40,7 @@
                         <mat-radio-group style="margin: 10px 0 10px 0;" name="dbtype" class="col-sm-12" formControlName="dbType">
                             <mat-radio-button class="col-sm-3" value="ORACLE"> Oracle </mat-radio-button>
                             <mat-radio-button class="col-sm-3" value="MYSQL"> MySql </mat-radio-button>
-                            <mat-radio-button class="col-sm-3" value="SQLSERVER"> SqlServer </mat-radio-button>
+                            <mat-radio-button class="col-sm-3" value="SQLSERVER"> SqlServer 2016 onwards </mat-radio-button>
                             <mat-radio-button class="col-sm-3" value="SQLSERVERLEGACY"> SqlServer Legacy </mat-radio-button>
                         </mat-radio-group>
                         <mat-hint *ngIf="f.dbType.errors && (f.dbType.dirty || f.dbType.touched)">
@@ -103,11 +103,11 @@
                 <mat-panel-title style="color: #3060AA;">
                     Payer Selection and Mapping
                 </mat-panel-title>
-                <mat-panel-description *ngIf="errors.payerMappingError != null">
-                    <span style="color: #ac4040;">{{errors.payerMappingError}}</span>
+                <mat-panel-description *ngIf="errors.payerMappingSaveError != null">
+                    <span style="color: #ac4040;">{{errors.payerMappingSaveError}}</span>
                 </mat-panel-description>
-                <mat-panel-description *ngIf="success.payerMappingSuccess != null">
-                    <span style="color: #40ac60;">{{success.payerMappingSuccess}}</span>
+                <mat-panel-description *ngIf="success.payerMappingSaveSuccess != null">
+                    <span style="color: #40ac60;">{{success.payerMappingSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div *ngIf="(errors.payerMappingError == null || errors.payerMappingError == '') && !componentLoading.payerMapping" style="margin-top: 20px;">
@@ -150,11 +150,11 @@
                 <mat-panel-title style="color: #3060AA;">
                     Provider Code Mapping
                 </mat-panel-title>
-                <mat-panel-description *ngIf="errors.providerMappingError != null">
-                    <span style="color: #ac4040;">{{errors.providerMappingError}}</span>
+                <mat-panel-description *ngIf="errors.providerMappingSaveError != null">
+                    <span style="color: #ac4040;">{{errors.providerMappingSaveError}}</span>
                 </mat-panel-description>
-                <mat-panel-description *ngIf="success.providerMappingSuccess != null">
-                    <span style="color: #40ac60;">{{success.providerMappingSuccess}}</span>
+                <mat-panel-description *ngIf="success.providerMappingSaveSuccess != null">
+                    <span style="color: #40ac60;">{{success.providerMappingSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div *ngIf="(errors.providerMappingError == null || errors.providerMappingError == '') && !componentLoading.providerMapping" style="margin-top: 20px;">
