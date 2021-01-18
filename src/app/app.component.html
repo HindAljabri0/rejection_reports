@@ -5,7 +5,7 @@
 
 <div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async)}">
 
-    <router-outlet style="display: block;" [ngStyle]="{'margin-top': !(isHeaderAndSideMenuHidden$ | async)? '70px': 'unset'}">
+    <router-outlet>
     </router-outlet>
 
 

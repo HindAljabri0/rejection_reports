@@ -1,256 +1,226 @@
-<div class="mainPage">
-    <div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
-        <mat-card class="errorCard">
-            <p>{{errorMessage}}</p>
-        </mat-card>
-    </div>
-    <div class="wrapper" style="width: 100%; height: 100%;">
-        <div class="overlay" style=" position: absolute;
+<div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
+    <mat-card class="errorCard">
+        <p>{{errorMessage}}</p>
+    </mat-card>
+</div>
+<div class="wrapper" style="width: 100%; height: 100%;">
+    <div class="overlay" style=" position: absolute;
         z-index: 1002;
         background-color: rgba(255, 255, 255, 0.5);
         width: 81%;
         height: 100%;
         display: grid;
         place-items: center;" *ngIf="isLoading">
-            <mat-spinner diameter="40"></mat-spinner>
-        </div>
-
-        <div class="loaded-content" [class.blurred]="isLoading">
-            <ng-content></ng-content>
-        </div>
+        <mat-spinner diameter="40"></mat-spinner>
     </div>
 
-    <div class="header" *ngIf="errorMessage == null">
-        <p style="margin: unset; padding: 7px;" *ngIf="uploadNameExist">Upload Name: {{summaries[0].uploadName}}</p>
-        <span class="spacer"></span>
-        <button mat-flat-button class="switchControlButton" [ngClass]="{'active': !isManagingAttachments}"
-            (click)="isManagingAttachments = false">Claims</button>
-        <button mat-flat-button class="switchControlButton" [ngClass]="{'active': isManagingAttachments}"
-            (click)="isManagingAttachments = true">Attachments
-            Management</button>
+    <div class="loaded-content" [class.blurred]="isLoading">
+        <ng-content></ng-content>
     </div>
-    <div class="body" *ngIf="errorMessage == null">
-        <div class="cardsSummary">
-            <app-abstractcard [clickable]="cardsClickAble" *ngIf="summaries != null && summaries[0] != null"
-                [title]="commen.statusToName(summaries[0].statuses[0])"
-                [accentColor]="commen.getCardAccentColor(summaries[0].statuses[0])" (action)="getResultsofStatus(0)">
-                <table>
-                    <tr>
-                        <th>No. Of Claims:</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td><span class="dashboardNumbers">{{summaries[0].totalClaims }}</span></td>
-                        <td></td>
-                    </tr>
-                    <tr style="background-color: #f9f9f9;">
-                        <th>Total:</th>
-                        <th>Total Vat:</th>
-                    </tr>
-                    <tr style="background-color: #f9f9f9;">
-                        <td><span class="dashboardNumbers">{{summaries[0].totalNetAmount}}</span><span class="currency">
-                                SR</span></td>
-                        <td><span class="dashboardNumbers">{{summaries[0].totalVatNetAmount}}</span><span
-                                class="currency"> SR</span></td>
-                    </tr>
-                </table>
-            </app-abstractcard>
-            <button mat-icon-button [disabled]="currentSummariesPage==1" (click)="previousSummary()"
-                style="margin-top: 50px;">
-                <mat-icon>navigate_before</mat-icon>
-            </button>
-            <app-abstractcard
-                *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage+3"
-                [clickable]="cardsClickAble" [title]="commen.statusToName(summary.value.statuses[0])"
-                [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
-                (action)="getResultsofStatus(summary.key)" style="margin: 0px 1%; width: 260px;">
-                <table>
-                    <tr>
-                        <th>No. Of Claims:</th>
-                        <th></th>
+</div>
 
-                    </tr>
-                    <tr>
-                        <td><span class="dashboardNumbers">{{summary.value.totalClaims }}</span></td>
-                        <td></td>
-                    </tr>
-                    <tr style="background-color: #f9f9f9;">
-                        <th>Total:</th>
-                        <th>Total Vat:</th>
-                    </tr>
-                    <tr style="background-color: #f9f9f9;">
-                        <td><span class="dashboardNumbers">{{summary.value.totalNetAmount}}</span><span
-                                class="currency"> SR</span></td>
-                        <td><span class="dashboardNumbers">{{summary.value.totalVatNetAmount}}</span><span
-                                class="currency"> SR</span></td>
-                    </tr>
-                </table>
-            </app-abstractcard>
-            <button mat-icon-button (click)="nextSummary()" [disabled]="currentSummariesPage>=summaries.length-3"
-                style="margin-top: 50px;">
-                <mat-icon>navigate_next</mat-icon>
-            </button>
-        </div>
-        <app-claim-attachments-management *ngIf="isManagingAttachments"></app-claim-attachments-management>
-        <ng-container *ngIf="!isManagingAttachments">
-            <div class="header">
-                <p *ngIf="summaries != null && summaries[selectedCardKey] != null"
-                    [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
-                    {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
-                </p>
-                <span class="spacer"></span>
-                <div *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null"
-                    style="font-size: small; display: flex; align-items: end;"
-                    [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
-                    <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>
-                    &nbsp;&nbsp;&nbsp;
-                    <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>
-                    &nbsp;&nbsp;&nbsp;
-                    <p style="font-weight: 600; font-size: larger;">{{(searchResult.number+1)}}</p>
-                    <p style="font-size: larger;">/ {{searchResult.totalPages}}</p>
-                    &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next
-                    </mat-icon>
-                    &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-icon (click)="download()" style="cursor: pointer;">{{detailTopActionText}}</mat-icon>
-                </div>
-            </div>
+<div class="header" *ngIf="errorMessage == null">
+    <p style="margin: unset; padding: 7px;" *ngIf="uploadNameExist">Upload Name: {{summaries[0].uploadName}}</p>
+    <span class="spacer"></span>
+    <button mat-flat-button class="switchControlButton" [ngClass]="{'active': !isManagingAttachments}" (click)="isManagingAttachments = false">Claims</button>
+    <button mat-flat-button class="switchControlButton" [ngClass]="{'active': isManagingAttachments}" (click)="isManagingAttachments = true">Attachments
+        Management</button>
+</div>
+<div class="body" *ngIf="errorMessage == null">
+    <div class="cardsSummary">
+        <app-abstractcard [clickable]="cardsClickAble" *ngIf="summaries != null && summaries[0] != null" [title]="commen.statusToName(summaries[0].statuses[0])"
+            [accentColor]="commen.getCardAccentColor(summaries[0].statuses[0])" (action)="getResultsofStatus(0)">
             <table>
-                <tr class="claimsHeader" *ngIf="summaries != null && summaries[selectedCardKey] != null"
-                    [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
-                    [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'22'">
-                    <td>
-                        <mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked"
-                            [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
-                        </mat-checkbox>
-                    </td>
-                    <td>Claim Ref. No.</td>
-                    <td>Dr. Name</td>
-                    <td>Member ID</td>
-                    <td>National ID</td>
-                    <td>Patient File No.</td>
-                    <td>Claim Date</td>
-                    <td>Net Amount</td>
-                    <td style="width: 5%;">Vat</td>
-                    <td style="width: 5%; text-align: center;">Status</td>
-                    <td style="width: 15%; text-align: center;">
-                        <ng-container
-                            *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
-                            <button style="color: #adadad; width:unset; padding-left: 38%;" mat-icon-button
-                                (click)="checkAllClaims()" matTooltip="Verify All Ready Claims' Eligibility">
-                                <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
-                            </button>
-                        </ng-container>
-                        <ng-container
-                            *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
-                            <button style="color: #adadad; width:unset;" mat-icon-button (click)="checkSelectedClaims()"
-                                matTooltip="Verify All Selected Claims' Eligibility">
-                                <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
-                            </button>
-                        </ng-container>
-                        <ng-container *ngIf="showEligibilityButton && isWaitingForEligibility">
-                            <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
-                        </ng-container>
-                    </td>
+                <tr>
+                    <th>No. Of Claims:</th>
+                    <th></th>
                 </tr>
-                <tr class="claims" *ngFor="let claim of claims">
-                    <td>
-                        <mat-checkbox class="detailSummaryCheckbox" [checked]="selectedClaims.includes(claim.claimId)"
-                            (change)="selectClaim(claim.claimId)">
-                        </mat-checkbox>
-                    </td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
-                        {{claim.providerClaimNumber}}</td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.drName}}</td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.memberId}}
-                    </td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.nationalId}}
-                    </td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
-                        {{claim.patientFileNumber}}</td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.claimDate}}
-                    </td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
-                        {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" style="width: 5%; cursor: pointer;">
-                        {{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
-                    </td>
-                    <td (click)="showClaim(claim.status, claim.claimId)" class="statusDot"
-                        style="width: 5%; text-align: center; cursor: pointer;"
-                        [style.color]="accentColor(claim.status)">
-                    </td>
-                    <td style="width: 15%; ">
-                        <div style="display: inline-block;">
-                            <button [disabled]="!(claim.numOfPriceListErrors > 0)"
-                                [ngStyle]="{'visibility': (claim.numOfPriceListErrors > 0)? 'visible':'hidden'}"
-                                style="color: #f59517; width:unset;" mat-icon-button
-                                [matTooltip]="claim.numOfPriceListErrors + ' service(s) out of price list'">
-                                <mat-icon style="font-size:20px">error</mat-icon>
-                            </button>
-                        </div>
-                        <div style="display: inline-block;">
-                            <button [disabled]="!(claim.numOfAttachments > 0)"
-                                [ngStyle]="{'visibility': (claim.numOfAttachments > 0)? 'visible':'hidden'}"
-                                style="color: #3060AA; width:unset;" mat-icon-button
-                                [matTooltip]="claim.numOfAttachments + ' attachments'">
-                                <mat-icon style="font-size:20px">attach_file</mat-icon>
-                            </button>
-                        </div>
-                        <div style="display: inline-block;">
-                            <button style="color: #3060AA; width:unset;" mat-icon-button
-                                [ngStyle]="{'visibility': (claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
-                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
-                                <mat-icon style="font-size:20px">edit</mat-icon>
-                            </button>
-                        </div>
-                        <div style="display: inline-block;">
-                            <button style="color: #3060AA; width:unset;" mat-icon-button
-                                [ngStyle]="{'visibility': (claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
-                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)" matTooltip="Delete">
-                                <mat-icon style="font-size:20px">delete_outline</mat-icon>
-                            </button>
-                        </div>
-                        <div style="display: inline-block;">
-                            <ng-container
-                                *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
-                                <button style="color: #adadad; width:unset;" mat-icon-button
-                                    (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility">
-                                    <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
-                                </button>
-                            </ng-container>
-                            <ng-container
-                                *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                                <button style="color: #21B744; width:unset;" mat-icon-button matTooltip="Eligible">
-                                    <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
-                                </button>
-                            </ng-container>
-                            <ng-container
-                                *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                                <button style="color: #E988AD; width:unset;" mat-icon-button
-                                    [matTooltip]="claim.eligibilitycheck">
-                                    <mat-icon style="font-size:20px">error_outline</mat-icon>
-                                </button>
-                            </ng-container>
-                        </div>
-                        <div style="display: inline-block;">
-                            <ng-container *ngIf="claimIsWaitingEligibility(claim.claimId)">
-                                <button mat-icon-button>
-                                    <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
-                                </button>
-                            </ng-container>
-                        </div>
-                    </td>
+                <tr>
+                    <td><span class="dashboard-numbers">{{summaries[0].totalClaims }}</span></td>
+                    <td></td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <th>Total:</th>
+                    <th>Total Vat:</th>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <td><span class="dashboard-numbers">{{summaries[0].totalNetAmount}}</span><span class="currency">
+                            SR</span></td>
+                    <td><span class="dashboard-numbers">{{summaries[0].totalVatNetAmount}}</span><span class="currency"> SR</span></td>
                 </tr>
             </table>
-            <div class="footer">
-                <span class="spacer"></span>
-                <button *ngIf="detailSubActionText != null" (click)="doSubAction()"
-                    mat-button>{{detailSubActionText}}</button>
-                <button *ngIf="detailActionText != null" (click)="doAction()" mat-raised-button
-                    color="primary">{{detailActionText}}</button>
-            </div>
-        </ng-container>
+        </app-abstractcard>
+        <button mat-icon-button [disabled]="currentSummariesPage==1" (click)="previousSummary()" style="margin-top: 50px;">
+            <mat-icon>navigate_before</mat-icon>
+        </button>
+        <app-abstractcard *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage+3" [clickable]="cardsClickAble"
+            [title]="commen.statusToName(summary.value.statuses[0])" [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])" (action)="getResultsofStatus(summary.key)"
+            style="margin: 0px 1%; width: 260px;">
+            <table>
+                <tr>
+                    <th>No. Of Claims:</th>
+                    <th></th>
+
+                </tr>
+                <tr>
+                    <td><span class="dashboard-numbers">{{summary.value.totalClaims }}</span></td>
+                    <td></td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <th>Total:</th>
+                    <th>Total Vat:</th>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <td><span class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span class="currency"> SR</span></td>
+                    <td><span class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span class="currency"> SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+        <button mat-icon-button (click)="nextSummary()" [disabled]="currentSummariesPage>=summaries.length-3" style="margin-top: 50px;">
+            <mat-icon>navigate_next</mat-icon>
+        </button>
     </div>
+    <app-claim-attachments-management *ngIf="isManagingAttachments"></app-claim-attachments-management>
+    <ng-container *ngIf="!isManagingAttachments">
+        <div class="header">
+            <p *ngIf="summaries != null && summaries[selectedCardKey] != null" [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
+                {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
+            </p>
+            <span class="spacer"></span>
+            <div *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null" style="font-size: small; display: flex; align-items: end;"
+                [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
+                <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>
+                &nbsp;&nbsp;&nbsp;
+                <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>
+                &nbsp;&nbsp;&nbsp;
+                <p style="font-weight: 600; font-size: larger;">{{(searchResult.number+1)}}</p>
+                <p style="font-size: larger;">/ {{searchResult.totalPages}}</p>
+                &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next
+                </mat-icon>
+                &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-icon (click)="download()" style="cursor: pointer;">{{detailTopActionText}}</mat-icon>
+            </div>
+        </div>
+        <table>
+            <tr class="claimsHeader" *ngIf="summaries != null && summaries[selectedCardKey] != null"
+                [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
+                [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'22'">
+                <td>
+                    <mat-checkbox class="detailSummaryCheckbox" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
+                    </mat-checkbox>
+                </td>
+                <td>Claim Ref. No.</td>
+                <td>Dr. Name</td>
+                <td>Member ID</td>
+                <td>National ID</td>
+                <td>Patient File No.</td>
+                <td>Claim Date</td>
+                <td>Net Amount</td>
+                <td style="width: 5%;">Vat</td>
+                <td style="width: 5%; text-align: center;">Status</td>
+                <td style="width: 15%; text-align: center;">
+                    <ng-container *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
+                        <button style="color: #adadad; width:unset; padding-left: 38%;" mat-icon-button (click)="checkAllClaims()"
+                            matTooltip="Verify All Ready Claims' Eligibility">
+                            <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
+                        <button style="color: #adadad; width:unset;" mat-icon-button (click)="checkSelectedClaims()" matTooltip="Verify All Selected Claims' Eligibility">
+                            <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="showEligibilityButton && isWaitingForEligibility">
+                        <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
+                    </ng-container>
+                </td>
+            </tr>
+            <tr class="claims" *ngFor="let claim of claims">
+                <td>
+                    <mat-checkbox class="detailSummaryCheckbox" [checked]="selectedClaims.includes(claim.claimId)" (change)="selectClaim(claim.claimId)">
+                    </mat-checkbox>
+                </td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
+                    {{claim.providerClaimNumber}}</td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.drName}}</td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.memberId}}
+                </td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.nationalId}}
+                </td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
+                    {{claim.patientFileNumber}}</td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">{{claim.claimDate}}
+                </td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="cursor: pointer;">
+                    {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
+                <td (click)="showClaim(claim.status, claim.claimId)" style="width: 5%; cursor: pointer;">
+                    {{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
+                </td>
+                <td (click)="showClaim(claim.status, claim.claimId)" class="statusDot" style="width: 5%; text-align: center; cursor: pointer;"
+                    [style.color]="accentColor(claim.status)">
+                </td>
+                <td style="width: 15%; ">
+                    <div style="display: inline-block;">
+                        <button [disabled]="!(claim.numOfPriceListErrors > 0)" [ngStyle]="{'visibility': (claim.numOfPriceListErrors > 0)? 'visible':'hidden'}"
+                            style="color: #f59517; width:unset;" mat-icon-button [matTooltip]="claim.numOfPriceListErrors + ' service(s) out of price list'">
+                            <mat-icon style="font-size:20px">error</mat-icon>
+                        </button>
+                    </div>
+                    <div style="display: inline-block;">
+                        <button [disabled]="!(claim.numOfAttachments > 0)" [ngStyle]="{'visibility': (claim.numOfAttachments > 0)? 'visible':'hidden'}"
+                            style="color: #3060AA; width:unset;" mat-icon-button [matTooltip]="claim.numOfAttachments + ' attachments'">
+                            <mat-icon style="font-size:20px">attach_file</mat-icon>
+                        </button>
+                    </div>
+                    <div style="display: inline-block;">
+                        <button style="color: #3060AA; width:unset;" mat-icon-button
+                            [ngStyle]="{'visibility': (claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
+                            [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                            (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit">
+                            <mat-icon style="font-size:20px">edit</mat-icon>
+                        </button>
+                    </div>
+                    <div style="display: inline-block;">
+                        <button style="color: #3060AA; width:unset;" mat-icon-button
+                            [ngStyle]="{'visibility': (claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID')? 'visible':'hidden'}"
+                            [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                            (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)" matTooltip="Delete">
+                            <mat-icon style="font-size:20px">delete_outline</mat-icon>
+                        </button>
+                    </div>
+                    <div style="display: inline-block;">
+                        <ng-container
+                            *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #adadad; width:unset;" mat-icon-button (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility">
+                                <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #21B744; width:unset;" mat-icon-button matTooltip="Eligible">
+                                <mat-icon style="font-size:20px">check_circle_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
+                            <button style="color: #E988AD; width:unset;" mat-icon-button [matTooltip]="claim.eligibilitycheck">
+                                <mat-icon style="font-size:20px">error_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                    </div>
+                    <div style="display: inline-block;">
+                        <ng-container *ngIf="claimIsWaitingEligibility(claim.claimId)">
+                            <button mat-icon-button>
+                                <mat-spinner diameter="20" style="margin: 0px auto;"></mat-spinner>
+                            </button>
+                        </ng-container>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="footer">
+            <span class="spacer"></span>
+            <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}</button>
+            <button *ngIf="detailActionText != null" (click)="doAction()" mat-raised-button color="primary">{{detailActionText}}</button>
+        </div>
+    </ng-container>
 </div>
