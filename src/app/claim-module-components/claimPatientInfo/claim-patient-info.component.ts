@@ -199,4 +199,8 @@ export class ClaimPatientInfo implements OnInit {
   isControlNull(control: FormControl) {
     return control.value == null || control.value == '';
   }
+
+  payersListHasId(id){
+    return this.payersList.findIndex(payer => payer.id == id) > -1;
+  }
 }

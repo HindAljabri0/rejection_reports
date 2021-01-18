@@ -346,7 +346,6 @@ export class InvoicesServicesComponent implements OnInit {
   createInvoiceFromControl(i: number) {
     let invoice: Invoice = new Invoice();
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
-    debugger;
     invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
 
