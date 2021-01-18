@@ -18,34 +18,38 @@ import { Moment } from 'moment';
 export class SearchWithAdvanceComponent implements OnInit {
 
   searchModes: { key: string, label: string }[] = [
-    { key: "claimRefNo", label: "Provider Claim Ref. No." },
-    { key: "memberId", label: "Member ID" },
-    { key: "payer&date", label: "Payer" },
-    { key: "batchId", label: "Batch ID" }
-  ]
+    { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
+    { key: 'memberId', label: 'Member ID' },
+    { key: 'payer&date', label: 'Payer' },
+    { key: 'batchId', label: 'Batch ID' }
+  ];
 
-  selectedSearchMode: string = "claimRefNo";
+  selectedSearchMode = 'claimRefNo';
 
 
 
   payers: { id: number, name: string }[];
   casetypes: { value: string, name: string }[] = [
-    { value: "OUTPATIENT,INPATIENT", name: "Any" },
-    { value: "OUTPATIENT", name: "Outpatient" },
-    { value: "INPATIENT", name: "Inpatient" },
+    { value: 'OUTPATIENT,INPATIENT', name: 'Any' },
+    { value: 'OUTPATIENT', name: 'Outpatient' },
+    { value: 'INPATIENT', name: 'Inpatient' },
   ];
 
   searchControl: FormControl = new FormControl();
 
   selectedPayer: { id: number, name: string };
-  payerHasError: boolean = false;
+  payerHasError = false;
   fromDateControl: FormControl = new FormControl();
-  fromDateHasError: boolean = false;
+  fromDateHasError = false;
   toDateControl: FormControl = new FormControl();
-  toDateHasError: boolean = false;
+  toDateHasError = false;
 
 
-  constructor(private router: Router, private routeActive: ActivatedRoute, private commen: SharedServices, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private routeActive: ActivatedRoute,
+    private commen: SharedServices,
+    private authService: AuthService) {
     this.authService.isUserNameUpdated.subscribe((isUpdated) => {
       if (isUpdated) {
         this.payers = this.commen.getPayersList();
@@ -113,9 +117,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     }
   }
 
+  toggleSearch() {
+    document.body.classList.toggle('search-visible');
+  }
 
 }
-
-
-
-
