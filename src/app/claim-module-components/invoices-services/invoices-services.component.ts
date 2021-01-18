@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
-import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, ClaimPageMode, getPageMode, getClaim } from '../store/claim.reducer';
+import { FieldError, getInvoicesErrors, getSelectedPayer, getDepartmentCode, getVisitDate, getSelectedTab, getDepartments, ClaimPageMode, getPageMode, getClaim, getRetrievedClaimProps } from '../store/claim.reducer';
 import { Store } from '@ngrx/store';
 import { updateInvoices_Services, selectGDPN, saveInvoices_Services, openSelectServiceDialog, addRetrievedServices, makeRetrievedServiceUnused } from '../store/claim.actions';
 import { FormControl } from '@angular/forms';
@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
+import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -29,6 +30,8 @@ export class InvoicesServicesComponent implements OnInit {
     invoiceDate: FormControl,
     services: {
       retrieved: boolean,
+      statusCode?: string,
+      acutalDeductedAmount?: number,
       serviceNumber: number,
       serviceDate: FormControl,
       serviceCode: FormControl,
@@ -71,14 +74,15 @@ export class InvoicesServicesComponent implements OnInit {
   ngOnInit() {
     this.store.select(getPageMode).pipe(
       withLatestFrom(this.store.select(getClaim)),
-      map(values => ({ mode: values[0], claim: values[1] }))
-    ).subscribe(({ mode, claim }) => {
+      withLatestFrom(this.store.select(getRetrievedClaimProps)),
+      map(values => ({ mode: values[0][0], claim: values[0][1], claimProps: values[1] }))
+    ).subscribe(({ mode, claim, claimProps }) => {
       this.pageMode = mode;
       if (mode == 'VIEW') {
-        this.setData(claim);
+        this.setData(claim, claimProps);
         this.toggleEdit(false);
       } else if (mode == 'EDIT') {
-        this.setData(claim);
+        this.setData(claim, claimProps);
         this.toggleEdit(true);
       }
     });
@@ -103,8 +107,8 @@ export class InvoicesServicesComponent implements OnInit {
       this.expandedService = 0;
     }
 
-    this.store.select(getSelectedTab).subscribe(index => {
-      if (index == 3) {
+    this.store.select(getSelectedTab).subscribe(tab => {
+      if (tab == 'INVOICES_SERVICES') {
         this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
       } else {
         this.store.dispatch(selectGDPN({}));
@@ -135,17 +139,25 @@ export class InvoicesServicesComponent implements OnInit {
     });
   }
 
-  setData(claim: Claim) {
+  setData(claim: Claim, claimProps: RetrievedClaimProps) {
     this.controllers = [];
     claim.invoice.forEach(invoice => {
       this.addInvoice(false);
       const index = this.controllers.length - 1;
       this.controllers[index].invoice = invoice;
-      this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'dd/MM/yyyy'));
+      this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
       this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
       invoice.service.forEach(service => {
         this.addService(index, false);
         const serviceIndex = this.controllers[index].services.length - 1;
+        if (claimProps.servicesDecision != null) {
+          const deIndex = claimProps.servicesDecision.findIndex(dec => dec.invoiceNumber == invoice.invoiceNumber && dec.serviceNumber == service.serviceNumber);
+          if (deIndex != -1) {
+            const decision = claimProps.servicesDecision[deIndex];
+            this.controllers[index].services[serviceIndex].statusCode = decision.serviceStatusCode;
+            this.controllers[index].services[serviceIndex].acutalDeductedAmount = (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
+          }
+        }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
@@ -334,6 +346,7 @@ export class InvoicesServicesComponent implements OnInit {
   createInvoiceFromControl(i: number) {
     let invoice: Invoice = new Invoice();
     invoice.invoiceNumber = this.controllers[i].invoiceNumber.value;
+    debugger;
     invoice.invoiceDate = this.controllers[i].invoiceDate.value == null ? null : new Date(this.controllers[i].invoiceDate.value);
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
 
@@ -569,7 +582,14 @@ export class InvoicesServicesComponent implements OnInit {
     return control.value == null || control.value == '';
   }
 
-  toTwoDecimalPoints(num:number){
+  toTwoDecimalPoints(num: number) {
     return Number.parseFloat(num.toPrecision(num.toFixed().length + 2));
+  }
+
+  getStatusColor(status: string) {
+    return this.sharedServices.getCardAccentColor(status);
+  }
+  getStatusText(status: string) {
+    return this.sharedServices.statusToName(status);
   }
 }

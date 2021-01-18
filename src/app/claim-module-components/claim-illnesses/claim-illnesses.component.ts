@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getIllnessCode, getClaim, getPageMode } from '../store/claim.reducer';
+import { getIllnessCode, getClaim, getPageMode, ClaimPageMode } from '../store/claim.reducer';
 import { MatButtonToggleChange } from '@angular/material';
 import { updateIllnesses } from '../store/claim.actions';
 import { map, withLatestFrom } from 'rxjs/operators';
@@ -21,6 +21,8 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   selectedIllnesses: string[] = ['NA'];
 
   subscriptions: Subscription[] = [];
+  
+  pageMode: ClaimPageMode;
 
   constructor(private store: Store) { }
 
@@ -29,6 +31,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
       if (mode == 'VIEW') {
         this.setData(claim);
         this.toggleEdit(false);
@@ -61,6 +64,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   }
 
   beautifyCode(code: string) {
+    if(code == 'NA') return 'N/A';
     let str = code.substr(0, 1) + code.substr(1).toLowerCase();
     if (str.includes('_')) {
       let split = str.split('_');
