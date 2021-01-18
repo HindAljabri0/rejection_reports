@@ -1,8 +1,8 @@
-<div class="header">
+<div class="block-header">
     <p>Upload Name: {{summary.uploadName}}</p><span class="spacer"></span>
     <p>{{summaryDate}}</p>
 </div>
-<div class="body">
+<div class="block-body">
     <app-claimsummary></app-claimsummary>
     <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined">
     </app-claimfileupload>

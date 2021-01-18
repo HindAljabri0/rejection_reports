@@ -4,8 +4,7 @@ app-abstractcard {
     margin: 0px 5px;
 }
 
-.dashboardNumbers {
-    font-size: 15px;
+.dashboard-numbers {
     font-weight: 700;
 }
 
@@ -31,7 +30,8 @@ app-abstractcard table td {
 }
 
 .currency {
-    font: Bold 10px;
+    font-weight: 700;
+    font-size: 10px;
     letter-spacing: 0;
     color: #3060AA;
     opacity: 0.25;
