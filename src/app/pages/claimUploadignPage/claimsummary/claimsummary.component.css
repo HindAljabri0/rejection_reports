@@ -57,7 +57,7 @@ table {
 }
 
 .currency {
-    font: Bold 8px Roboto;
+    font: Bold 8px;
     letter-spacing: 0;
     color: #3060AA;
     opacity: 0.25;

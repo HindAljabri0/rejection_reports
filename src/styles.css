@@ -1,7 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
+@charset "utf-8";
 
-html, body { height: fit-content; background-color: #E8E8E8; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+/*
+------------------------------------------------------------
+Project Name : Sample Project;
+------------------------------------------------------------
+*/
+
+/* Reset 
+--------------------------------------------------------------------------------------------------------*/
+
+/* 
+http://meyerweb.com/eric/tools/css/reset/
+v2.0 | 20110126
+License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+body { line-height: 1; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+input, .mat-badge-content, .mat-h1, .mat-headline, .mat-typography h1, .mat-h2, .mat-title, .mat-typography h2, .mat-h3, .mat-subheading-2, .mat-typography h3, .mat-h4, .mat-subheading-1, .mat-typography h4, .mat-h5, .mat-typography h5, .mat-h6, .mat-typography h6, .mat-body-2, .mat-body-strong, .mat-body, .mat-body-1, .mat-typography, .mat-caption, .mat-small, .mat-display-4, .mat-typography .mat-display-4, .mat-display-3, .mat-typography .mat-display-3, .mat-display-2, .mat-typography .mat-display-2, .mat-display-1, .mat-typography .mat-display-1, .mat-bottom-sheet-container, .mat-button, .mat-fab, .mat-flat-button, .mat-icon-button, .mat-mini-fab, .mat-raised-button, .mat-stroked-button, .mat-button-toggle, .mat-card, .mat-checkbox, .mat-table, .mat-calendar, .mat-dialog-title, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-form-field, .mat-menu-item, .mat-paginator, .mat-paginator-page-size .mat-select-trigger, .mat-radio-button, .mat-select, .mat-slide-toggle-content, .mat-slider-thumb-label-text, .mat-stepper-horizontal, .mat-stepper-vertical, .mat-tab-group, .mat-tab-label, .mat-tab-link, .mat-toolbar, .mat-toolbar h1, .mat-toolbar h2, .mat-toolbar h3, .mat-toolbar h4, .mat-toolbar h5, .mat-toolbar h6, .mat-tooltip, .mat-list-item, .mat-list-option, .mat-list-base .mat-subheader, .mat-list-base[dense] .mat-subheader, .mat-option, .mat-optgroup-label, .mat-simple-snackbar, .mat-tree { font-family: inherit !important; }
+
+/* General 
+--------------------------------------------------------------------------------------------------------*/
+* { outline: none !important; }
+a{transition: all 0.3s;}
+html, body { min-width: 320px; min-height: 100vh; }
+body { font-size: 14px; line-height: 20px; font-family: 'Poppins', sans-serif; -ms-overflow-style: scrollbar; -webkit-font-smoothing: subpixel-antialiased;background-color: #E8E8E8; }
+.wrapper { min-height: 100vh; }
+a { color: #000; text-decoration: none; }
+a:hover { color: #999; text-decoration: none; }
+h1, h2, h3, h4, h5, h6 { line-height: 1.2em; padding: 0 0 20px; }
+h1 span, h2 span, h3 span, h4 span, h5 span, h6 span { display: block; }
+h1 { }
+h2 { }
+h3 { }
+h4 { }
+h5 { }
+h6 { }
+p { padding: 0 0 20px; }
+input[type=text], input[type=email], input[type=password], textarea { -webkit-appearance: none; appearance: none; }
+::-webkit-input-placeholder { color: #000; }
+::-moz-placeholder { color: #000; }
+:-ms-input-placeholder { color: #000; }
+:-moz-placeholder { color: #000; }
+::-moz-focus-inner { border: 0; }
+select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }
+option:not(:checked) { color: black; }
+
+/* Responsive Media Queries
+--------------------------------------------------------------------------------------------------------*/
+@media (max-width:1199px) { }
+@media (max-width:991px) { }
+@media (max-width:767px) { }
+@media (max-width:575px) { }
 
 .mainPage{
     width: 95%;
