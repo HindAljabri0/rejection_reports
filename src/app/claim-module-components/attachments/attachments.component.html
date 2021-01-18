@@ -8,7 +8,31 @@
                 <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)"
                     src="assets/pdfIcon.png" [alt]="attachment.fileName">
             </div>
-            <p style="margin: auto 5px">{{attachment.fileName}}</p>
+            <div style="margin: auto 5px;">
+                <p style="margin: 0px;">{{attachment.fileName}}</p>
+                <p style="margin: 0px; padding: 0px 5px; font-size: small;" *ngIf="pageMode == 'VIEW'">
+                    {{attachment.fileType}}</p>
+                <p style="margin: 0px; padding: 0px 5px; font-size: small; cursor: pointer; border: 1px solid #3076C3; background-color: #EFF5FF;"
+                    *ngIf="pageMode != 'VIEW'" [matMenuTriggerFor]="editAttachmentTypeMenu">
+                    {{attachment.fileType}}<mat-icon style="font-size: smaller; height: 5px; width: 5px;">
+                        keyboard_arrow_down</mat-icon>
+                </p>
+                <mat-menu #editAttachmentTypeMenu>
+                    <div style="padding: 10px;">
+                        <label>Edit Attachment Type?</label>
+                        <mat-radio-group aria-label="Select an option" [value]="attachment.fileType">
+                            <mat-radio-button class="block" (click)="editAttachment('Medical Report', i);"
+                                id="MEDICAL_REPORT" value="Medical Report">Medical Report</mat-radio-button>
+                            <mat-radio-button class="block" (click)="editAttachment('Iqama/ID copy', i);"
+                                id="IQAMA_ID_COPY" value="Iqama/ID copy">Iqama/ID Copy</mat-radio-button>
+                            <mat-radio-button class="block" (click)="editAttachment('X-Ray result', i);"
+                                id="X_RAY_RESULT" value="X-Ray result">X-Ray Result</mat-radio-button>
+                            <mat-radio-button class="block" (click)="editAttachment('Lab Result', i);" id="LAB_RESULT"
+                                value="Lab Result">Lab Result</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </mat-menu>
+            </div>
             <span class="spacer"></span>
             <a [href]="getImageOfBlob(attachment)" [download]="attachment.fileName" mat-icon-button color="primary"
                 style="margin: auto;">

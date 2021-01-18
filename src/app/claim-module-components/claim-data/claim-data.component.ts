@@ -38,7 +38,7 @@ export class ClaimDataComponent implements OnInit {
   }
 
   changeTab(event: MatTabChangeEvent) {
-    this.store.dispatch(changeSelectedTab({ tab: event.index }));
+    this.store.dispatch(changeSelectedTab({ tab: event.tab.textLabel.replace('&', '').split(' ').filter(str => str.length > 0).join('_').toUpperCase() }));
   }
 
   genInfoTabHasErrors() {

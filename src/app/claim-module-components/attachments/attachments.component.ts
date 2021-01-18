@@ -34,7 +34,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   setData(attachments: AttachmentRequest[]) {
-    if(attachments != null)
+    if (attachments != null)
       this.attachments = [...attachments];
     else this.attachments = [];
     this.selectFilesError = null;
@@ -81,8 +81,8 @@ export class AttachmentsComponent implements OnInit {
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
-      let data:string = reader.result as string;
-      data = data.substring(data.indexOf(',')+1);
+      let data: string = reader.result as string;
+      data = data.substring(data.indexOf(',') + 1);
       this.attachments.push({ attachmentFile: data, fileName: file.name, fileType: this.fileType, userComment: null });
       this.fileType = null;
       this.updateCurrentAttachments();
@@ -102,6 +102,11 @@ export class AttachmentsComponent implements OnInit {
   isPdf(attachment: AttachmentRequest) {
     let fileExt = attachment.fileName.split(".").pop();
     return fileExt.toLowerCase() == 'pdf';
+  }
+
+  editAttachment(type: FileType, index: number) {
+    this.attachments[index] = { ...this.attachments[index], fileType: type };
+    this.updateCurrentAttachments();
   }
 
 }

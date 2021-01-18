@@ -31,7 +31,7 @@ export const cancelClaim = createAction('[ Claim ] cancel');
 export const startValidatingClaim = createAction('[ Claim ] start claim validation');
 export const finishValidation = createAction('[ Claim ] finishValidation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
-export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: number }>());
+export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: string }>());
 export const toEditMode = createAction('[ Claim ] change page mode to edit');
 export const cancelEdit = createAction('[ Claim ] cancel editing');
 //Patient
