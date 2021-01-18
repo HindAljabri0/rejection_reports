@@ -1,13 +1,11 @@
 <app-sidebar *ngIf="isLoggedIn && !(isHeaderAndSideMenuHidden$ | async)"></app-sidebar>
-<app-header *ngIf="isLoggedIn  && !(isHeaderAndSideMenuHidden$ | async)" [languageList]="languageList"
-    [activeLanguageLabel]="activeLanguageLabel"></app-header>
+<app-header *ngIf="isLoggedIn  && !(isHeaderAndSideMenuHidden$ | async)" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
 <app-language-switcher *ngIf="!isLoggedIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
 </app-language-switcher>
 
-<div [ngClass]="{'res': !(isHeaderAndSideMenuHidden$ | async)}">
+<div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async)}">
 
-    <router-outlet style="display: block;"
-        [ngStyle]="{'margin-top': !(isHeaderAndSideMenuHidden$ | async)? '70px': 'unset'}">
+    <router-outlet style="display: block;" [ngStyle]="{'margin-top': !(isHeaderAndSideMenuHidden$ | async)? '70px': 'unset'}">
     </router-outlet>
 
 

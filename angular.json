@@ -34,6 +34,7 @@
                             }
                         ],
                         "styles": [
+                            "src/w3.css",
                             "src/custom-theme.scss",
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "src/styles.css"
@@ -298,7 +299,6 @@
                                 }
                             ]
                         },
-
                         "oci_prod-en": {
                             "fileReplacements": [
                                 {
@@ -554,6 +554,9 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "src/w3.css",
+                            "src/custom-theme.scss",
+                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "src/styles.css"
                         ],
                         "scripts": []

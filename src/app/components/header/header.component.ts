@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styles: []
 })
 export class HeaderComponent implements OnInit {
   collapsed = true;
@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   @Input() languageList;
 
-  notificationIconClasses = "mat-icon-button mat-button-base ";
+  notificationIconClasses = 'mat-icon-button mat-button-base ';
 
   constructor(private commen: SharedServices, public router: Router, public authService: AuthService) {
     this.commen.unReadNotificationsCountChange.subscribe(count => {
@@ -52,9 +52,9 @@ export class HeaderComponent implements OnInit {
 
   setNewNotificationIndecater(show: boolean) {
     if (show) {
-      this.notificationIconClasses = "mat-icon-button mat-button-base hasNotifications";
+      this.notificationIconClasses = 'mat-icon-button mat-button-base hasNotifications';
     } else {
-      this.notificationIconClasses = "mat-icon-button mat-button-base ";
+      this.notificationIconClasses = 'mat-icon-button mat-button-base ';
     }
   }
 
@@ -66,12 +66,16 @@ export class HeaderComponent implements OnInit {
     this.commen.showNotificationCenterChange.next(!this.commen.showNotificationCenter);
   }
 
-  toggleUploadHistoryCenter(){
+  toggleUploadHistoryCenter() {
     this.commen.showUploadHistoryCenterChange.next(!this.commen.showUploadHistoryCenter);
   }
 
   logout() {
     this.authService.logout();
+  }
+
+  toggleSearch() {
+    document.body.classList.toggle('search-visible');
   }
 
 }
