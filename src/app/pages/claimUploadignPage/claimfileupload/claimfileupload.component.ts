@@ -15,7 +15,7 @@ type AOA = any[][];
 @Component({
   selector: 'app-claimfileupload',
   templateUrl: './claimfileupload.component.html',
-  styleUrls: ['./claimfileupload.component.css']
+  styles: []
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
@@ -40,7 +40,7 @@ export class ClaimfileuploadComponent implements OnInit {
 
 
 
-  uploadContainerClass = 'uploadfilecontainer';
+  uploadContainerClass = '';
   error = '';
 
   isVertical = true;
@@ -104,7 +104,7 @@ export class ClaimfileuploadComponent implements OnInit {
         validExts.toString() + ' types.');
       return false;
     } else {
-      this.uploadContainerClass = 'uploadfilecontainer';
+      this.uploadContainerClass = '';
       this.error = '';
       return true;
     }
@@ -277,7 +277,7 @@ export class ClaimfileuploadComponent implements OnInit {
 
   showError(error: string) {
     this.currentFileUpload = null;
-    this.uploadContainerClass = 'uploadContainerErrorClass';
+    this.uploadContainerClass = 'has-error';
     this.error = error;
     this.common.loadingChanged.next(false);
   }

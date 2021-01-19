@@ -78,4 +78,9 @@ export class HeaderComponent implements OnInit {
     document.body.classList.toggle('search-visible');
   }
 
+  toggleNav() {
+    document.body.classList.toggle('nav-open');
+    document.getElementsByTagName('html')[0].classList.toggle('nav-open');
+  }
+
 }
