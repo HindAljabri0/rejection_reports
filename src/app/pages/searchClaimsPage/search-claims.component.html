@@ -29,7 +29,7 @@
 <div class="body" *ngIf="errorMessage == null">
     <div class="cardsSummary">
         <app-abstractcard [clickable]="cardsClickAble" *ngIf="summaries != null && summaries[0] != null" [title]="commen.statusToName(summaries[0].statuses[0])"
-            [accentColor]="commen.getCardAccentColor(summaries[0].statuses[0])" (action)="getResultsofStatus(0)">
+            [accentColor]="commen.getCardAccentColor(summaries[0].statuses[0])" (action)="getResultsofStatus(0)" class="primary-card">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
@@ -55,7 +55,7 @@
         </button>
         <app-abstractcard *ngFor="let summary of summaries | keyvalue | slice:currentSummariesPage:currentSummariesPage+3" [clickable]="cardsClickAble"
             [title]="commen.statusToName(summary.value.statuses[0])" [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])" (action)="getResultsofStatus(summary.key)"
-            style="margin: 0px 1%; width: 260px;">
+            class="primary-card" style="margin: 0px 1%; width: 260px;">
             <table>
                 <tr>
                     <th>No. Of Claims:</th>
