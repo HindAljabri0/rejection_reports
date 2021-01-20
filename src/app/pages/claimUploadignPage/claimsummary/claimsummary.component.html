@@ -7,16 +7,16 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td colspan="2" class="pb-1"><span class="dashboard-numbers" [style.color]="card0AccentColor">{{summary.noOfUploadedClaims}}</span></td>
+                    <td [style.color]="card0AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfUploadedClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
                     <th>Total Vat</th>
                 </tr>
                 <tr>
-                    <td><span class="dashboard-numbers" [style.color]="card0AccentColor">{{summary.netAmountOfUploadedClaims}}</span><span class="currency">
+                    <td [style.color]="card0AccentColor"><span class="dashboard-numbers">{{summary.netAmountOfUploadedClaims}}</span><span class="currency">
                             SR</span></td>
-                    <td><span class="dashboard-numbers" [style.color]="card0AccentColor">{{summary.netVATAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
+                    <td [style.color]="card0AccentColor"><span class="dashboard-numbers">{{summary.netVATAmountOfUploadedClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
             </table>
         </app-abstractcard>
@@ -29,16 +29,16 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td colspan="2" class="pb-1"><span class="dashboard-numbers" [style.color]="card1AccentColor">{{summary.noOfAcceptedClaims}}</span></td>
+                    <td [style.color]="card1AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfAcceptedClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
                     <th>Total Vat</th>
                 </tr>
                 <tr>
-                    <td><span class="dashboard-numbers" [style.color]="card1AccentColor">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency">
+                    <td [style.color]="card1AccentColor"><span class="dashboard-numbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency">
                             SR</span></td>
-                    <td><span class="dashboard-numbers" [style.color]="card1AccentColor">{{summary.netVATAmountOfAcceptedClaims}}</span><span class="currency"> SR</span></td>
+                    <td [style.color]="card1AccentColor"><span class="dashboard-numbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
             </table>
         </app-abstractcard>
@@ -51,15 +51,15 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td colspan="2" class="pb-1"><span class="dashboard-numbers" [style.color]="card2AccentColor">{{summary.noOfNotAcceptedClaims}}</span></td>
+                    <td [style.color]="card2AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfNotAcceptedClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
                     <th>Total Vat</th>
                 </tr>
                 <tr>
-                    <td><span class="dashboard-numbers" [style.color]="card2AccentColor">{{summary.netAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
-                    <td><span class="dashboard-numbers" [style.color]="card2AccentColor">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
+                    <td [style.color]="card2AccentColor"><span class="dashboard-numbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
+                    <td [style.color]="card2AccentColor"><span class="dashboard-numbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
             </table>
         </app-abstractcard>
@@ -72,7 +72,7 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td colspan="2" class="pb-1"><span class="dashboard-numbers" [style.color]="card3AccentColor">{{summary.noOfNotUploadedClaims}}</span></td>
+                    <td [style.color]="card3AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfNotUploadedClaims}}</span></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -91,57 +91,70 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td colspan="2" class="pb-1"><span class="dashboard-numbers" [style.color]="card4AccentColor">{{summary.noOfDownloadableClaims}}</span></td>
+                    <td [style.color]="card4AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfDownloadableClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
                     <th>Total Vat</th>
                 </tr>
                 <tr>
-                    <td><span class="dashboard-numbers" [style.color]="card4AccentColor">{{summary.netAmountOfDownloadableClaims}}</span><span class="currency"> SR</span></td>
-                    <td><span class="dashboard-numbers" [style.color]="card4AccentColor">{{summary.netVATAmountOfDownloadableClaims}}</span><span class="currency"> SR</span></td>
+                    <td [style.color]="card4AccentColor"><span class="dashboard-numbers">{{summary.netAmountOfDownloadableClaims}}</span><span class="currency"> SR</span></td>
+                    <td [style.color]="card4AccentColor"><span class="dashboard-numbers">{{summary.netVATAmountOfDownloadableClaims}}</span><span class="currency"> SR</span></td>
                 </tr>
             </table>
         </app-abstractcard>
     </div>
 </div>
 
-<div class="summary" *ngIf="location.path().includes('summary') && paginatedResult != null">
+<div *ngIf="location.path().includes('summary') && paginatedResult != null">
     <div class="block-header">
         <p>Summary</p>
         <span class="spacer"></span>
-        <div *ngIf="paginatedResult.totalPages > 0" style="font-size: larger; display: flex; align-items: end;">
-            <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>&nbsp;&nbsp;&nbsp;
-            <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>&nbsp;&nbsp;&nbsp;
-            <p style="font-weight: 600; font-size: small;">{{(paginatedResult.number+1)}}</p>
-            <p style="font-size: small;">/ {{paginatedResult.totalPages}}</p>
-            &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next</mat-icon>
-            &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
+        <div class="custom-paginator" *ngIf="paginatedResult.totalPages > 0">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">{{(paginatedResult.number+1)}}<small>/{{paginatedResult.totalPages}}</small></p>
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
         </div>
     </div>
-    <table>
-        <thead style="background-color: #c7dfff; color: #3060AA; font-size: 13px;">
-            <th style="width: 15%;">Provider Claim Number</th>
-            <th style="width: 15%;">File Row Number</th>
-            <th style="width: 10%;">Field Name</th>
-            <th style="width: 50%;">Error Description</th>
-            <th style="width: 10%; text-align: center;">Status</th>
-        </thead>
-        <tbody style="font-size: 11px; font-weight: 500;">
-            <tr *ngFor="let result of results">
-                <td style="width: 15%;">{{result.provclaimno}}</td>
-                <td style="width: 15%;">{{result.fileRowNumber}}</td>
-                <td style="width: 10%;" [style.color]="accentColor(result.uploadSubStatus)">{{result.fieldName}}</td>
-                <td style="width: 50%;" [style.color]="accentColor(result.uploadSubStatus)">{{result.description}}</td>
-                <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(result.uploadSubStatus)"></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="footer">
-        <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
-        <span class="spacer"></span>
-
-        <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button>
-        <button *ngIf="summary.uploadSummaryID != undefined" (click)="viewClaims()" mat-raised-button color="primary">View Claims</button>
+    <div class="table-responsive">
+        <table class="primary-grid">
+            <thead>
+                <tr>
+                    <th>Provider Claim Number</th>
+                    <th>File Row Number</th>
+                    <th>Field Name</th>
+                    <th>Error Description</th>
+                    <th width="10" class="text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of results">
+                    <td>{{result.provclaimno}}</td>
+                    <td>{{result.fileRowNumber}}</td>
+                    <td [style.color]="accentColor(result.uploadSubStatus)">{{result.fieldName}}</td>
+                    <td [style.color]="accentColor(result.uploadSubStatus)">{{result.description}}</td>
+                    <td class="text-center align-middle"><span class="status-dot" [style.background-color]="accentColor(result.uploadSubStatus)"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="grid-claim-footer">
+        <div class="left-block" *ngIf="uploading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div class="right-block btn-list">
+            <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button>
+            <button *ngIf="summary.uploadSummaryID != undefined" (click)="viewClaims()" mat-flat-button color="primary">View Claims</button>
+        </div>
     </div>
 </div>

@@ -61,7 +61,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 
 /* button
 --------------------------------------------------------------------------------------------------------*/
-.btn-list>button,.btn-list>a{margin-right: 12px;}
+.btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
 
 /* misc
@@ -74,6 +74,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .abstract-card-list{display: flex;margin-left: -7px;margin-right: -7px;flex-wrap: wrap;}
 .abstract-card-list>div{padding-left: 7px;padding-right: 7px;flex-grow: 0;flex-shrink: 0;flex-basis: 20%;max-width: 20%;}
 .error-text{color: #CC2F2F;}
+.status-dot{height: 10px;width: 10px;border-radius: 50%;display: inline-block;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
@@ -133,7 +134,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 
 /* block
 --------------------------------------------------------------------------------------------------------*/
-.block-header{display: flex;color: #3060AA;background-color: #fff;border-top-left-radius: 6px;border-top-right-radius: 6px;padding: 10px 12px;font-size: 16px;line-height: 22px;font-weight: 500;}
+.block-header{display: flex;color: #3060AA;background-color: #fff;border-top-left-radius: 6px;border-top-right-radius: 6px;padding: 12px;font-size: 16px;line-height: 22px;font-weight: 500;}
 .block-body {padding: 14px;background-color: #f0eeee;}
 
 /* primary card
@@ -149,7 +150,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 /* file upload drag drop
 --------------------------------------------------------------------------------------------------------*/
 .file-upload-drag-drop{background-color: #EAEAEA;color:#707070;padding: 15px;}
-.file-upload-drag-drop .inner-block{border:2px dashed rgba(112, 112, 112,0.65);padding: 80px 16px;}
+.file-upload-drag-drop .inner-block{border:2px dashed rgba(112, 112, 112,0.4);padding: 80px 16px;}
 .file-upload-drag-drop .icon-wrapper{background-color: #F4F4F4;border-radius: 6px;width: 320px;max-width: 100%;margin: 0 auto;padding: 20px;}
 .file-upload-drag-drop .icon-wrapper>img{display: block;margin: 0 auto;max-width: 100%;height: 128px;width: 128px;}
 .file-upload-drag-drop .file-name{text-align: center;word-break: break-all;padding-top: 16px;color: #3060AA;font-weight: 500;}
@@ -158,6 +159,29 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .file-upload-drag-drop .error-text{text-align: center;padding-top: 16px;}
 .file-upload-drag-drop .btn-list{text-align: center;}
 .file-upload-progress-wrapper{padding: 20px 15px;background: #fff;}
+
+/* custom paginator
+--------------------------------------------------------------------------------------------------------*/
+.block-header .custom-paginator{margin: -7px 0;}
+.custom-paginator{display: flex;align-items: center;}
+.custom-paginator>button{display: block;padding: 3px;background: none;border:0;}
+.custom-paginator>button>img{display: block;height: 24px;width: 24px;}
+.custom-paginator .page-info{padding: 0 8px;}
+.custom-paginator .page-info>small{font-size: 12px;}
+.custom-paginator .download-btn{margin: 0 20px;}
+
+/* grid
+--------------------------------------------------------------------------------------------------------*/
+.primary-grid{width: 100%;color:#535252;background-color: #fff;}
+.primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td{vertical-align: top;padding:11px 8px;}
+.primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle{vertical-align: middle;}
+.primary-grid>thead>tr>th,.primary-grid>thead>tr>td{background-color: #D5E4FC;color:#3060AA;font-weight: 500;}
+.primary-grid>thead>tr>th:first-child,.primary-grid>thead>tr>td:first-child,.primary-grid>tbody>tr>th:first-child,.primary-grid>tbody>tr>td:first-child{padding-left: 12px;}
+.primary-grid>thead>tr>th:last-child,.primary-grid>thead>tr>td:last-child,.primary-grid>tbody>tr>th:last-child,.primary-grid>tbody>tr>td:last-child{padding-right: 12px;}
+.primary-grid>tbody>tr:nth-child(even){background-color: #EDF4FF;}
+.grid-claim-footer{display: flex;align-items: center;color: #3060AA;background-color: white;border-radius: 0 0 6px 6px;padding: 12px;}
+.grid-claim-footer>.right-block{margin-left: auto;display: flex;}
+.grid-claim-footer>.left-block{padding-right: 12px;flex-grow:1;}
 
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/

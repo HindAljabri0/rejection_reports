@@ -22,7 +22,7 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 @Component({
   selector: 'app-claimsummary',
   templateUrl: './claimsummary.component.html',
-  styleUrls: ['./claimsummary.component.css']
+  styles: []
 })
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
