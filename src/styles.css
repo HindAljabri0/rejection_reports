@@ -31,9 +31,8 @@ input, .mat-badge-content, .mat-h1, .mat-headline, .mat-typography h1, .mat-h2, 
 a{transition: all 0.3s;}
 html, body { min-width: 320px; min-height: 100vh; }
 body { font-size: 14px; line-height: 20px; font-family: 'Poppins', sans-serif; -ms-overflow-style: scrollbar; -webkit-font-smoothing: subpixel-antialiased;background-color: #E8E8E8; }
-.wrapper { min-height: 100vh; }
 a,a:hover { color: #000; text-decoration: none; }
-h1, h2, h3, h4, h5, h6 { line-height: 1.2em; padding: 0 0 20px; }
+h1, h2, h3, h4, h5, h6 { line-height: 1.2em; }
 h1 span, h2 span, h3 span, h4 span, h5 span, h6 span { display: block; }
 h1 { }
 h2 { }
@@ -50,6 +49,7 @@ input[type=text], input[type=email], input[type=password], textarea { -webkit-ap
 select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }
 option:not(:checked) { color: black; }
 input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus textarea:-webkit-autofill,textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,select:-webkit-autofill,select:-webkit-autofill:hover,select:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0px 1000px #F5F6F7 inset !important;}
+strong{font-weight: 700;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
@@ -116,10 +116,10 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .advance-search {width: 800px;display: flex;height: 42px;margin: 13px 0;}
 .advance-search .input-wrapper{flex-grow:1;position: relative;}
 .advance-search .input-wrapper>input{height: 100%;padding: 4px 48px 4px 12px;background: #fff;border-top-right-radius: 6px;border-bottom-right-radius: 6px;width: 100%;border:0;margin:0;}
-.advance-search .search-btn{position: absolute;right: 0;top: 50%;transform:translate(0,-50%);color: #000;}
+.advance-search .search-btn{position: absolute;right: 0;top: 50%;transform:translate(0,-50%);color: #000;z-index: 1;}
 .advance-search >select {padding: 4px 10px;background-color: #E6ECFC;color: #315FAA;border-top-left-radius: 6px;border-bottom-left-radius: 6px;border: 0;}
 .advance-search .hidden-input{width: 0;opacity: 0;visibility: hidden;position: absolute;}
-.advance-search .mat-chip-list{position: relative; left: 12px; bottom: 37px;}
+.advance-search .mat-chip-list{position: relative; left: 0; bottom: 37px;display: block;padding-left: 12px;width: calc(100% - 40px);}
 .advance-search .close-btn{margin-left: 8px;display: none;}
 
 /* block
