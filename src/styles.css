@@ -129,7 +129,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .advance-search .search-btn{position: absolute;right: 0;top: 50%;transform:translate(0,-50%);color: #000;z-index: 1;}
 .advance-search >select {padding: 4px 10px;background-color: #E6ECFC;color: #315FAA;border-top-left-radius: 6px;border-bottom-left-radius: 6px;border: 0;}
 .advance-search .hidden-input{width: 0;opacity: 0;visibility: hidden;position: absolute;}
-.advance-search .mat-chip-list{position: relative; left: 12px; bottom: 37px;}
+.advance-search .mat-chip-list{position: relative; left: 0; bottom: 37px;display: block;padding-left: 12px;width: calc(100% - 40px);}
 .advance-search .close-btn{margin-left: 8px;display: none;}
 
 /* block
