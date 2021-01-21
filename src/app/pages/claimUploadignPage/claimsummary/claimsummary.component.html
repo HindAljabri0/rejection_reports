@@ -127,7 +127,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="primary-grid">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
             <thead>
                 <tr>
                     <th>Provider Claim Number</th>
@@ -143,7 +143,7 @@
                     <td>{{result.fileRowNumber}}</td>
                     <td [style.color]="accentColor(result.uploadSubStatus)">{{result.fieldName}}</td>
                     <td [style.color]="accentColor(result.uploadSubStatus)">{{result.description}}</td>
-                    <td class="text-center align-middle"><span class="status-dot" [style.background-color]="accentColor(result.uploadSubStatus)"></span></td>
+                    <td class="text-center"><span class="status-dot" [style.background-color]="accentColor(result.uploadSubStatus)"></span></td>
                 </tr>
             </tbody>
         </table>
