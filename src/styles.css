@@ -230,7 +230,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .abstract-card-carousel .owl-carousel:hover .owl-nav .owl-next,.abstract-card-carousel .owl-carousel:focus .owl-nav .owl-next,.abstract-card-carousel .owl-carousel:active .owl-nav .owl-next,.abstract-card-carousel .owl-carousel:hover .owl-nav .owl-prev,.abstract-card-carousel .owl-carousel:focus .owl-nav .owl-prev,.abstract-card-carousel .owl-carousel:active .owl-nav .owl-prev{opacity: 1;}
 .abstract-card-carousel .owl-carousel .owl-nav .owl-next.disabled, .abstract-card-carousel .owl-carousel .owl-nav .owl-prev.disabled,.abstract-card-carousel .owl-carousel .owl-nav .owl-next[disabled], .abstract-card-carousel .owl-carousel .owl-nav .owl-prev[disabled]{opacity: 0;visibility: hidden;}
 .abstract-card-carousel .owl-carousel .owl-stage{display: flex;}
-.abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: 20%!important;}
+.abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(20% - 14px)!important;}
 
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
@@ -238,7 +238,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
     .advance-search {width: 630px;display: flex;height: 42px;margin: 13px 0;}
     .advance-search >select{width: 160px;}
     .abstract-card-list>div{flex-basis: 25%;max-width: 25%;}
-    .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: 25%!important;}
+    .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(25% - 14px)!important;}
 }
 @media (max-width:1199px) { 
     .advance-search{padding-left: 10px;width: 430px;}
@@ -247,7 +247,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
     .search-visible .advance-search{bottom: 0;opacity: 1;visibility: visible;}
     .advance-search >select{width:auto;}
     .abstract-card-list>div{flex-basis: 33.333333%;max-width: 33.333333%;}
-    .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: 33.333333%!important;}
+    .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(33.333333% - 14px)!important;}
 }
 @media (max-width:991px) { 
     .brand-header .logo-wrapper{width: auto;text-align: left;}
