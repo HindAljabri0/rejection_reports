@@ -13,8 +13,8 @@ export class SidebarComponent implements OnInit {
   providerId: string;
   doNotShowGlobMedIn: string[] = ['oci_prod', 'oci_staging'];
   envName = environment.name;
-  isAdmin: boolean = false;
-  isProviderAdmin: boolean = false;
+  isAdmin = false;
+  isProviderAdmin = false;
 
   constructor(private auth: AuthService, private uploadService: UploadService) {
     this.auth.isUserNameUpdated.subscribe(updated => {
@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
 
   init() {
     this.providerId = this.auth.getProviderId();
-    let privilege = localStorage.getItem('101101');
+    const privilege = localStorage.getItem('101101');
     this.isAdmin = privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
     try {
       const providerId = localStorage.getItem('provider_id');
@@ -45,6 +45,11 @@ export class SidebarComponent implements OnInit {
 
   get uploadSummaryIsNotNull(): boolean {
     return this.uploadService.summary.uploadSummaryID != null;
+  }
+
+  toggleNav() {
+    document.body.classList.remove('nav-open');
+    document.getElementsByTagName('html')[0].classList.remove('nav-open');
   }
 
 }

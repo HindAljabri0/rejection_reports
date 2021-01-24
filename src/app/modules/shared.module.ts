@@ -5,14 +5,14 @@ import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-      DetailscardComponent
+    DetailscardComponent
   ],
   imports: [
     MaterialModule,
     CommonModule,
   ],
   exports: [
-      DetailscardComponent
+    DetailscardComponent
   ]
 })
 export class SharedModule { }

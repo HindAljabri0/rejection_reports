@@ -1,7 +1,7 @@
 <div class="mainCardBody">
     <div class="leftComponent">
         <label>Claim Date*</label>
-        <input [ngClass]="{'fieldError': fieldHasError('claimDate')}" id="claimDateInput" type="text"
+        <input [ngClass]="{'fieldError': fieldHasError('claimDate')}" id="claimDateInput" type="date"
             [formControl]="claimDateController" (change)="updateClaim('claimDate')">
     </div>
     <div class="rightComponent" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
@@ -24,11 +24,9 @@
     <div class="leftComponent">
         <label>Member DOB<span *ngIf="isControlNull(ageController)">*</span></label>
         <br />
-        <input matInput [matDatepicker]="picker" [ngClass]="{'fieldError': fieldHasError('memberDob')}"
-            id="memberDobInput" [formControl]="memberDobController" (change)="updateClaim('memberDob')"
-            [matTooltip]="getFieldError('memberDob')" style="width: 90%;">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <input type="date" [ngClass]="{'fieldError': fieldHasError('memberDob')}" id="memberDobInput"
+            [formControl]="memberDobController" (change)="updateClaim('memberDob')"
+            [matTooltip]="getFieldError('memberDob')">
     </div>
     <div style="grid-column: 7 / span 2;">
         <label>Age<span *ngIf="isControlNull(memberDobController)">*</span></label>

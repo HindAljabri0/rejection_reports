@@ -65,7 +65,7 @@ import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
 import { SummaryComponent } from './pages/reports/globmed/summary/summary.component'
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
-
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [
@@ -129,6 +129,7 @@ import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.
     MaterialModule,
     SharedModule,
     ChartsModule,
+    CarouselModule
   ],
   providers: [
     ThemeService,

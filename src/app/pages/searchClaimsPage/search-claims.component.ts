@@ -22,13 +22,38 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { Store } from '@ngrx/store';
 import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClaims } from './store/search.actions';
 import { Actions, ofType } from '@ngrx/effects';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-search-claims',
   templateUrl: './search-claims.component.html',
-  styleUrls: ['./search-claims.component.css']
+  styles: []
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  owlCarouselOptions: OwlOptions = {
+    mouseDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 300,
+    navText: ['', ''],
+    margin: 14,
+    responsive: {
+      0: {
+        items: 3,
+        slideBy: 3
+      },
+      992: {
+        items: 4,
+        slideBy: 4
+      },
+      1200: {
+        items: 5,
+        slideBy: 5
+      }
+    },
+    nav: true
+  };
+
   file: File;
 
   isManagingAttachments: boolean = false;
@@ -59,7 +84,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   extraNumbers: number[];
 
   detailCardTitle: string;
-  detailTopActionText = "vertical_align_bottom";
+  detailTopActionIcon = "ic-download.svg";
   detailAccentColor: string;
   detailActionText: string = null;
   detailSubActionText: string = null;
@@ -252,7 +277,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.summaries[key] == null) return;
     if (this.summaries.length == 0) return;
     this.commen.loadingChanged.next(true);
-    this.detailTopActionText = "vertical_align_bottom";
+    this.detailTopActionIcon = "ic-download.svg";
 
     if (this.selectedCardKey != null && key != this.selectedCardKey) {
       this.selectedClaims = new Array();
@@ -648,7 +673,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   async download() {
-    if (this.detailTopActionText == "check_circle") return;
+    if (this.detailTopActionIcon == "ic-check-circle.svg") return;
     this.commen.loadingChanged.next(true);
     let event;
     event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.claimRefNo, this.memberId).toPromise().catch(error => {
@@ -672,16 +697,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
         } else if (this.batchId != null) {
           a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-        } else if(this.uploadId != null) {
+        } else if (this.uploadId != null) {
           a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
-        } else if(this.claimRefNo != null){
+        } else if (this.claimRefNo != null) {
           a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
-        } else if(this.memberId != null){
+        } else if (this.memberId != null) {
           a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
         }
 
         a.click();
-        this.detailTopActionText = "check_circle";
+        this.detailTopActionIcon = "ic-check-circle.svg";
         this.commen.loadingChanged.next(false);
       }
     }
