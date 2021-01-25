@@ -302,7 +302,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
-          this.uploadService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
+          this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
 

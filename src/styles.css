@@ -154,7 +154,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 --------------------------------------------------------------------------------------------------------*/
 .advance-search {width: 800px;display: flex;height: 42px;margin: 13px 0;}
 .advance-search .input-wrapper{flex-grow:1;position: relative;}
-.advance-search .input-wrapper>input{height: 100%;padding: 4px 48px 4px 12px;background: #fff;border-top-right-radius: 6px;border-bottom-right-radius: 6px;width: 100%;border:0;margin:0;}
+.advance-search .input-wrapper>input{height: 100%;padding: 4px 48px 4px 12px;background: #fff;border-top-right-radius: 6px;border-bottom-right-radius: 6px;width: 100%;border:0;margin:0;color:black;}
 .advance-search .search-btn{position: absolute;right: 0;top: 50%;transform:translate(0,-50%);color: #505050;z-index: 1;}
 .advance-search >select {padding: 4px 28px 4px 10px;background-color: #E6ECFC;color: #315FAA;border-top-left-radius: 6px;border-bottom-left-radius: 6px;border: 0;}
 .advance-search .hidden-input{width: 0;opacity: 0;visibility: hidden;position: absolute;}
