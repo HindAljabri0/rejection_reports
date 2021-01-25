@@ -3,13 +3,37 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { Store } from '@ngrx/store';
 import { getSubmittedClaims, getPaidClaims, getPartiallyPaidClaims, getUnderProcessingClaims, getRejectedClaims, DashboardCardData } from '../../store/dashboard.reducer';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-submitted-claims',
   templateUrl: './submitted-claims.component.html',
-  styleUrls: ['./submitted-claims.component.css']
+  styles: []
 })
 export class SubmittedClaimsComponent implements OnInit {
+  owlCarouselOptions: OwlOptions = {
+    mouseDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 300,
+    navText: ['', ''],
+    margin: 14,
+    responsive: {
+      0: {
+        items: 2,
+        slideBy: 2
+      },
+      992: {
+        items: 3,
+        slideBy: 3
+      },
+      1440: {
+        items: 4,
+        slideBy: 4
+      }
+    },
+    nav: true
+  };
 
   summaries: DashboardCardData[] = [];
 

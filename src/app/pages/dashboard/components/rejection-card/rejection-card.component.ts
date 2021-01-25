@@ -9,7 +9,7 @@ import { RejectionCardData } from './rejectionCardData';
 @Component({
   selector: 'dashboard-rejection-card',
   templateUrl: './rejection-card.component.html',
-  styleUrls: ['./rejection-card.component.css']
+  styles: []
 })
 export class RejectionCardComponent implements OnInit {
 
@@ -64,7 +64,7 @@ export class RejectionCardComponent implements OnInit {
   updateValues() {
     if (this.data == null) return;
     this.doughnutChartData = [];
-    this.doughnutChartLabels = this.data.topFive.map(item =>this.getDepartmentName(item.label));
+    this.doughnutChartLabels = this.data.topFive.map(item => this.getDepartmentName(item.label));
     this.doughnutChartData.push(this.data.topFive.map(item => item.total));
     if (this.data.total != null && this.data.total > 0) {
       const othersValue = this.data.total - this.data.topFive.map(item => item.total).reduce((item1, item2) => item1 + item2);
@@ -107,14 +107,14 @@ export class RejectionCardComponent implements OnInit {
   randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  getDepartmentName(code:string){
-  if (this.departments != null){
-    const index = this.departments.findIndex(department => department.departmentId  + '' == code);
-    if (index != -1) {
-      return this.departments[index].name;
+  getDepartmentName(code: string) {
+    if (this.departments != null) {
+      const index = this.departments.findIndex(department => department.departmentId + '' == code);
+      if (index != -1) {
+        return this.departments[index].name;
+      }
     }
-  }
-  return code;
+    return code;
   }
 
 }

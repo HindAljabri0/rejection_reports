@@ -1,33 +1,25 @@
-<div class="cardBody">
-    <header>
-        <h4>By {{data.rejectionBy}}</h4>
-        <hr>
-    </header>
-
-    <main>
-        <section style="display: flex;">
-            <div>
-                <h5>Rejected {{unit}}</h5>
-                <h6>{{rejectionByPayerTotalClaims || data.total}} <span style="font-size: medium; font-weight: 300;">{{unit}}</span></h6>
-                <div class="error" *ngIf="error != null && !error.startsWith('Payer')">Could not get data from the server.</div>
-                <div class="error" *ngIf="error != null && error.startsWith('Payer')">{{error}}</div>
+<div class="primary-card">
+    <div class="primary-card-title">By {{data.rejectionBy}}</div>
+    <div class="primary-card-content">
+        <div class="row no-gutters align-items-center mb-2">
+            <div class="col-5 pr-2">
+                <h4 class="pb-1">Rejected {{unit}}</h4>
+                <h6>{{rejectionByPayerTotalClaims || data.total}} {{unit}}</h6>
             </div>
-            <span class="spacer"></span>
-            <div style="width: 240px;">
-                <canvas *ngIf="!loading" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
-                    [chartType]="doughnutChartType" [options]="options" [colors]="colors">
+            <div class="col-7">
+                <canvas *ngIf="!loading" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="options" [colors]="colors">
                 </canvas>
-                <mat-spinner diameter="80" *ngIf="loading" style="margin: 15px auto;"></mat-spinner>
+                <mat-spinner diameter="48" *ngIf="loading" class="my-2 mx-auto"></mat-spinner>
             </div>
-        </section>
-        <section>
-            <div *ngFor="let item of data.topFive; let i = index" class="item">
-                <mat-icon [style.color]="colors[0].backgroundColor[i]" style="grid-column: 1 / 2;">fiber_manual_record
-                </mat-icon>
-                <div style="grid-column: 2 / 3;">{{getDepartmentName(item.label)}}</div> 
-                <div style="grid-column: 3 / 4;">{{item.total}} <span
-                        style="font-size: small; font-weight: 300;">{{unit}}</span></div>
-            </div>
-        </section>
-    </main>
+        </div>
+        <div class="error-text pb-2" *ngIf="error != null && !error.startsWith('Payer')">Could not get data from the server.</div>
+        <div class="error-text pb-2" *ngIf="error != null && error.startsWith('Payer')">{{error}}</div>
+        <ul class="item-list">
+            <li *ngFor="let item of data.topFive; let i = index">
+                <div class="status-dot size-lg" [style.background-color]="colors[0].backgroundColor[i]"></div>
+                <div>{{getDepartmentName(item.label)}}</div>
+                <div class="ml-auto pl-2 text-right">{{item.total}} <small>{{unit}}</small></div>
+            </li>
+        </ul>
+    </div>
 </div>

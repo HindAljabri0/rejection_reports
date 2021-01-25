@@ -7,7 +7,7 @@ import { TopFiveRejectionsComponent } from './components/top-five-rejections/top
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styles: []
 })
 export class DashboardComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
             newOrderedDashboard[j] = this.dashboardSections[i];
           }
         });
-        if (newOrderedDashboard.map(section => Number.parseInt(section.index)).reduce((i, j) => i+j) == this.dashboardSections.map(section => Number.parseInt(section.index)).reduce((i, j) => i+j) && newOrderedDashboard.length == this.dashboardSections.length)
+        if (newOrderedDashboard.map(section => Number.parseInt(section.index)).reduce((i, j) => i + j) == this.dashboardSections.map(section => Number.parseInt(section.index)).reduce((i, j) => i + j) && newOrderedDashboard.length == this.dashboardSections.length)
           this.dashboardSections = newOrderedDashboard;
       }
     }
