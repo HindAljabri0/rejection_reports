@@ -56,8 +56,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
             data: data,
             closeOnNavigation: true,
-            height: '200px',
-            width: '600px',
+            panelClass: ['primary-dialog']
         }))
     ), { dispatch: false });
 
@@ -113,7 +112,7 @@ export class ClaimEffects {
         ofType(finishValidation),
         withLatestFrom(this.store.select(getClaimObjectErrors)),
         withLatestFrom(this.store.select(getPageMode)),
-        map(values => ({errors: values[0][1], pageMode: values[1]})),
+        map(values => ({ errors: values[0][1], pageMode: values[1] })),
         map(values => {
             if (values.errors.diagnosisErrors.length == 0
                 && values.errors.genInfoErrors.length == 0
@@ -124,13 +123,13 @@ export class ClaimEffects {
                 && values.errors.admissionErrors.length == 0
                 && values.errors.vitalSignError.length == 0
                 && values.errors.labResultsErrors.length == 0
-              ) {
+            ) {
                 if (values.pageMode == 'CREATE') {
-                  return getUploadId({ providerId: this.sharedServices.providerId });
+                    return getUploadId({ providerId: this.sharedServices.providerId });
                 } else {
-                  return saveClaimChanges();
+                    return saveClaimChanges();
                 }
-              } else if (values.errors.claimGDPN.length > 0
+            } else if (values.errors.claimGDPN.length > 0
                 && values.errors.diagnosisErrors.length == 0
                 && values.errors.genInfoErrors.length == 0
                 && values.errors.patientInfoErrors.length == 0
@@ -140,12 +139,12 @@ export class ClaimEffects {
                 && values.errors.vitalSignError.length == 0
                 && values.errors.labResultsErrors.length == 0) {
                 this.dialogService.openMessageDialog({
-                  title: '',
-                  message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
-                  isError: true
+                    title: '',
+                    message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
+                    isError: true
                 });
-              }
-              return setLoading({loading: false});
+            }
+            return setLoading({ loading: false });
         })
     ));
 

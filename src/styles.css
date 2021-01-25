@@ -33,6 +33,7 @@ html, body { min-width: 320px; min-height: 100vh; }
 body { font-size: 14px; line-height: 20px; font-family: 'Poppins', sans-serif; -ms-overflow-style: scrollbar; -webkit-font-smoothing: subpixel-antialiased;background-color: #E8E8E8; }
 a,a:hover { color: #000; text-decoration: none; }
 h1, h2, h3, h4, h5, h6 { line-height: 1.2em; }
+h3{font-size: 20px;line-height: 26px;}
 input[type=text], input[type=email], input[type=password], textarea { -webkit-appearance: none; appearance: none; }
 ::-webkit-input-placeholder { color: #000; }
 ::-moz-placeholder { color: #000; }
@@ -169,6 +170,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 /* form
 --------------------------------------------------------------------------------------------------------*/
 .form-group{margin-bottom: 14px;}
+.form-group.form-group-lg{margin-bottom: 24px;}
 .form-control,.form-control[readonly],.form-control:disabled{border:1px solid #EFF5FF;height:40px;background-color: #EFF5FF;padding: 4px 12px;color: #3060AA;border-radius: 6px;font-size: inherit;line-height: inherit;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: none;caret-color: #3060AA;}
 select.form-control{cursor: pointer;}
 .form-control:focus,.form-control[readonly]:focus{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
@@ -190,6 +192,10 @@ select.form-control{cursor: pointer;}
 .form-group.has-error .form-control:focus{border-color: #CC2F2F;}
 .form-group.has-error .gender-select.form-control{background-color: rgba(204, 47, 47,0.16);border-color: rgba(204, 47, 47,0.18);}
 .form-group.has-error .control-label,.form-group.has-error .gender-select.form-control:focus,.form-group.has-error .gender-select.form-control option:not(:checked){color:#CC2F2F;}
+.form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control:-ms-input-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control:-moz-placeholder { color: rgba(204, 47, 47,0.64); }
 .custom-select-control{background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;-webkit-appearance:none;-moz-appearance:none;-o-appearance: none;-ms-appearance: none;appearance: none;padding-right: 28px;}
 .form-group.has-error .custom-select-control{background-image: url('./assets/ic-unfold-danger.svg');}
 .mat-select-panel-wrap .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple){background-color: rgba(48, 96, 170, 0.1);}
@@ -297,6 +303,13 @@ select.form-control{cursor: pointer;}
 .claim-status-header p{padding-right: 24px;}
 .claim-status-header .title{padding-right: 48px;font-size: 16px;line-height: 22px;font-weight: 600;}
 .claim-status-header strong{font-weight: 600;}
+
+/* primary dialog
+--------------------------------------------------------------------------------------------------------*/
+.primary-dialog{width: 600px;max-width: calc(100% - 30px)!important;}
+.primary-dialog .mat-dialog-container{padding: 0;max-height: calc(100vh - 64px);}
+.primary-dialog .dialog-body{padding: 30px;}
+.primary-dialog .dialog-title{color: #3060AA;font-weight: 500;padding-bottom: 24px;}
 
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
