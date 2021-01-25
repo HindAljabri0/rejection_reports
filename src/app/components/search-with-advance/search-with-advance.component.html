@@ -68,9 +68,13 @@
 </mat-form-field> -->
 
 <div class="advance-search">
-    <select [value]="selectedSearchMode" class="custom-select-control" (change)="selectedSearchMode = $event.target.value; onSearchModeChange();">
-        <option *ngFor="let type of searchModes" [value]="type.key">{{type.label}}</option>
-    </select>
+    <mat-form-field class="search-mode-select">
+        <mat-select [value]="selectedSearchMode" (selectionChange)="onSearchModeChange($event);">
+            <mat-option *ngFor="let type of searchModes" [value]="type.key">
+                {{type.label}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
     <div class="input-wrapper">
         <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [readonly]="selectedSearchMode == 'payer&date'" (keyup.enter)="search()">
         <button mat-icon-button (click)="search()" class="search-btn">

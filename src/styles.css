@@ -156,10 +156,15 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .advance-search .input-wrapper{flex-grow:1;position: relative;}
 .advance-search .input-wrapper>input{height: 100%;padding: 4px 48px 4px 12px;background: #fff;border-top-right-radius: 6px;border-bottom-right-radius: 6px;width: 100%;border:0;margin:0;color:black;}
 .advance-search .search-btn{position: absolute;right: 0;top: 50%;transform:translate(0,-50%);color: #505050;z-index: 1;}
-.advance-search >select {padding: 4px 28px 4px 10px;background-color: #E6ECFC;color: #315FAA;border-top-left-radius: 6px;border-bottom-left-radius: 6px;border: 0;}
 .advance-search .hidden-input{width: 0;opacity: 0;visibility: hidden;position: absolute;}
 .advance-search .mat-chip-list{position: relative; left: 0; bottom: 37px;display: block;padding-left: 12px;width: calc(100% - 40px);}
 .advance-search .close-btn{margin-left: 8px;display: none;}
+.advance-search .search-mode-select .mat-form-field-infix{border:0;padding:0;width:auto;max-width: 200px;display: flex;min-width: 120px;}
+.advance-search .search-mode-select .mat-form-field-wrapper{padding: 0;}
+.advance-search .search-mode-select .mat-form-field-label-wrapper,.advance-search .search-mode-select .mat-select-arrow-wrapper,.advance-search .search-mode-select .mat-form-field-underline,.advance-search .search-mode-select .mat-form-field-subscript-wrapper{display: none;}
+.advance-search .search-mode-select.mat-form-field{line-height: inherit;background-color: #E6ECFC;border-top-left-radius: 6px;border-bottom-left-radius: 6px;}
+.advance-search .search-mode-select .mat-select-trigger{display: block;max-width: none;height:auto;}
+.advance-search .search-mode-select .mat-select-value{display: flex;align-items: center;padding: 11px 28px 11px 10px;color: #315FAA;max-width: none;height:auto;background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;}
 
 /* form
 --------------------------------------------------------------------------------------------------------*/
@@ -187,6 +192,7 @@ select.form-control{cursor: pointer;}
 .form-group.has-error .control-label,.form-group.has-error .gender-select.form-control:focus,.form-group.has-error .gender-select.form-control option:not(:checked){color:#CC2F2F;}
 .custom-select-control{background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;-webkit-appearance:none;-moz-appearance:none;-o-appearance: none;-ms-appearance: none;appearance: none;padding-right: 28px;}
 .form-group.has-error .custom-select-control{background-image: url('./assets/ic-unfold-danger.svg');}
+.mat-select-panel-wrap .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple){background-color: rgba(48, 96, 170, 0.1);}
 
 /* block
 --------------------------------------------------------------------------------------------------------*/
@@ -296,7 +302,6 @@ select.form-control{cursor: pointer;}
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width:1599px) { 
     .advance-search {width: 630px;display: flex;height: 42px;margin: 13px 0;}
-    .advance-search >select{width: 160px;}
     .abstract-card-list>div{flex-basis: 25%;max-width: 25%;}
     .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(25% - 14px)!important;}
 }
@@ -305,7 +310,6 @@ select.form-control{cursor: pointer;}
     .brand-header .tablet-search,.advance-search .close-btn{display: block;}
     .advance-search{position: absolute;left: 0;right: 0;background: #3060aa;margin: 0;padding: 13px 16px;height: 68px;width: auto;z-index: 1;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom: 100%;}
     .search-visible .advance-search{bottom: 0;opacity: 1;visibility: visible;}
-    .advance-search >select{width:auto;}
     .abstract-card-list>div{flex-basis: 33.333333%;max-width: 33.333333%;}
     .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(33.333333% - 14px)!important;}
     .form-group.style-horizontal>.left-block{flex-basis: 110px;max-width: 110px;}

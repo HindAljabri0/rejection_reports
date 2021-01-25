@@ -73,7 +73,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     return null;
   }
 
-  onSearchModeChange() {
+  onSearchModeChange(e) {
+    this.selectedSearchMode = e.value;
     this.searchControl.setValue('');
   }
 
