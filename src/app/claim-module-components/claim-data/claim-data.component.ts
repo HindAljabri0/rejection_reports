@@ -7,7 +7,7 @@ import { getClaimObjectErrors, FieldError, ClaimPageType, getPageType, ClaimPage
 @Component({
   selector: 'claim-data',
   templateUrl: './claim-data.component.html',
-  styleUrls: ['./claim-data.component.css']
+  styles: []
 })
 export class ClaimDataComponent implements OnInit {
 

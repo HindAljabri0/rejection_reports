@@ -11,7 +11,7 @@ import { Claim } from '../models/claim.model';
 @Component({
   selector: 'claim-patient-info',
   templateUrl: './claim-patient-info.component.html',
-  styleUrls: ['./claim-patient-info.component.css']
+  styles: []
 })
 export class ClaimPatientInfo implements OnInit {
 
@@ -200,7 +200,7 @@ export class ClaimPatientInfo implements OnInit {
     return control.value == null || control.value == '';
   }
 
-  payersListHasId(id){
+  payersListHasId(id) {
     return this.payersList.findIndex(payer => payer.id == id) > -1;
   }
 }

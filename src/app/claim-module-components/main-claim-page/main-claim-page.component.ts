@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-main-claim-page',
   templateUrl: './main-claim-page.component.html',
-  styleUrls: ['./main-claim-page.component.css']
+  styles: []
 })
 export class MainClaimPageComponent implements OnInit {
 
@@ -115,7 +115,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   save() {
-    if(this.isLoading) return;
+    if (this.isLoading) return;
     this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));

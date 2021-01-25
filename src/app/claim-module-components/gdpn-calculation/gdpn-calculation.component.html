@@ -1,21 +1,75 @@
-<div class="mainCardBody">
+<div class="block-card full-height">
+    <div class="row">
+        <div class="col-xl-12 col-md-6">
+            <ul class="claim-totals">
+                <li class="title">Total Invoice 1</li>
+                <li>
+                    Gross Amount
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Invoice Discount
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Patient Share
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Patient Share VAT
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Invoice Net Amount
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Invoice Net VAT Amount
+                    <span class="value">0</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xl-12 col-md-6">
+            <ul class="claim-totals">
+                <li class="separator d-xl-block d-none"></li>
+                <li class="title">Total Service 1</li>
+                <li>
+                    Gross Amount
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Net Amount
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Net VAT Amount
+                    <span class="value">0</span>
+                </li>
+                <li>
+                    Patient Share VAT Amount
+                    <span class="value">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ul class="claim-totals">
+        <li class="separator"></li>
+        <li class="text-light-pink">
+            *VAT Rate
+            <span class="value">15%</span>
+        </li>
+        <li class="separator"></li>
+        <li class="total">
+            Claim Amount
+            <span class="value">{{claim.claimGDPN.net.value}}</span>
+        </li>
+        <li class="total">
+            VAT
+            <span class="value">{{claim.claimGDPN.netVATamount.value}}</span>
+        </li>
+    </ul>
 
-    <table>
-        <tbody>
-            <tr>
-                <td><label>Claim Amount</label></td>
-                <td><label>VAT</label></td>
-            </tr>
-            <tr>
-                <td><label style="font-weight:bold;">{{claim.claimGDPN.net.value}}</label></td>
-                <td><label style="font-weight:bold;">{{claim.claimGDPN.netVATamount.value}}</label></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <hr />
-
-    <table *ngIf="selectedInvoice == -1">
+    <!-- <table *ngIf="selectedInvoice == -1">
         <tbody>
             <tr>
                 <td><label>Gross Amount</label></td>
@@ -81,18 +135,16 @@
                     <td><label>Patient Share VAT Amount</label></td>
                     <td><label>{{claim.invoice[selectedInvoice].invoiceGDPN.patientShareVATamount.value}}</label></td>
                 </tr>
-                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1"
-                    [style.color]="getStatusColorOfSelectedInvoice()">
+                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1" [style.color]="getStatusColorOfSelectedInvoice()">
                     <td><label>Actual Deducted Amount</label></td>
                     <td><label>{{getSelectedInvoiceActualDeductedAmount()}}</label></td>
                 </tr>
-                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1"
-                    [style.color]="getStatusColorOfSelectedInvoice()">
+                <tr *ngIf="getSelectedInvoiceActualDeductedAmount() != -1" [style.color]="getStatusColorOfSelectedInvoice()">
                     <td><label>Actual Paid Amount</label></td>
                     <td><label>{{claim.invoice[selectedInvoice].invoiceGDPN.net.value -
                             getSelectedInvoiceActualDeductedAmount()}}</label></td>
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div> -->
 </div>

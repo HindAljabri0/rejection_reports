@@ -68,7 +68,7 @@
 </mat-form-field> -->
 
 <div class="advance-search">
-    <select [value]="selectedSearchMode" (change)="selectedSearchMode = $event.target.value; onSearchModeChange();">
+    <select [value]="selectedSearchMode" class="custom-select-control" (change)="selectedSearchMode = $event.target.value; onSearchModeChange();">
         <option *ngFor="let type of searchModes" [value]="type.key">{{type.label}}</option>
     </select>
     <div class="input-wrapper">

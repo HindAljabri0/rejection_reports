@@ -126,8 +126,8 @@
             </button>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <div class="table-responsive claim-summary-grid">
+        <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
             <thead>
                 <tr>
                     <th>Provider Claim Number</th>
@@ -148,7 +148,7 @@
             </tbody>
         </table>
     </div>
-    <div class="grid-claim-footer">
+    <div class="block-footer">
         <div class="left-block" *ngIf="uploading">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
