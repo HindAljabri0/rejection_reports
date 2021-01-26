@@ -16,16 +16,39 @@ import { ClaimfileuploadComponent } from '../claimfileupload/claimfileupload.com
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 
 
 @Component({
   selector: 'app-claimsummary',
   templateUrl: './claimsummary.component.html',
-  styleUrls: ['./claimsummary.component.css']
+  styles: []
 })
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
-
+  owlCarouselOptions: OwlOptions = {
+    mouseDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 300,
+    navText: ['', ''],
+    margin: 14,
+    responsive: {
+      0: {
+        items: 3,
+        slideBy: 3
+      },
+      992: {
+        items: 4,
+        slideBy: 4
+      },
+      1200: {
+        items: 5,
+        slideBy: 5
+      }
+    },
+    nav: true
+  };
 
 
   constructor(public location: Location, public uploadService: UploadService, public commen: SharedServices, private router: Router,
@@ -279,7 +302,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
-          this.uploadService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
+          this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
 

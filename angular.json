@@ -37,6 +37,7 @@
                             "src/w3.css",
                             "src/custom-theme.scss",
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
                             "src/styles.css"
                         ],
                         "scripts": []
@@ -557,6 +558,7 @@
                             "src/w3.css",
                             "src/custom-theme.scss",
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
                             "src/styles.css"
                         ],
                         "scripts": []

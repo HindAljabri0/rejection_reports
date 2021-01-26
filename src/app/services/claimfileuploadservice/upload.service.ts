@@ -112,10 +112,10 @@ export class UploadService {
     });
   }
 
-  deleteClaimByUploadid(providerId: string, uploadId){
-    const requestUrl = `/providers/${providerId}/history/uploads/${uploadId}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
-    const httpRequest = new HttpRequest('DELETE', environment.uploaderHost+requestUrl, {}, {headers: headers});
-    return this.http.request(httpRequest);
-  }
+  // deleteClaimByUploadid(providerId: string, uploadId){
+  //   const requestUrl = `/providers/${providerId}/history/uploads/${uploadId}`;
+  //   const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
+  //   const httpRequest = new HttpRequest('DELETE', environment.uploaderHost+requestUrl, {}, {headers: headers});
+  //   return this.http.request(httpRequest);
+  // }
 }

@@ -35,7 +35,7 @@ export class GdpnCalculationComponent implements OnInit {
   }
 
   getClaimActualDeductedAmount() {
-    if (this.claimProp.servicesDecision != null) {
+    if (this.claimProp!= null && this.claimProp.servicesDecision != null) {
       return this.claimProp.servicesDecision
         .map(dec => dec.gdpn.rejection != null ? dec.gdpn.rejection.value : 0)
         .reduce((amount1, amount2) => amount1 + amount2);

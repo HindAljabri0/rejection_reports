@@ -1,5 +1,31 @@
 <div class="block-header">File Uploading</div>
-<div style="display: flex; height: 70%px;">
+<div class="file-upload-drag-drop">
+    <div class="inner-block" *ngIf="currentFileUpload != undefined">
+        <div class="icon-wrapper">
+            <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'" alt="{{currentFileUpload.name}}">
+            <p class="file-name">{{currentFileUpload.name}}</p>
+        </div>
+        <div *ngIf="!uploading && !loading" class="btn-list pt-5">
+            <button mat-button (click)="cancel()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="upload()">Upload</button>
+        </div>
+    </div>
+    <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
+        <div class="icon-wrapper">
+            <img src="./assets/csv.svg" alt="CSV File" />
+        </div>
+        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel or CSV file here , or use</span> <button mat-flat-button color="primary"
+                (click)="fileInput.click()">Upload</button>
+        </p>
+        <p class="error-text" *ngIf="error">{{error}}</p>
+        <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
+    </div>
+</div>
+<div class="file-upload-progress-wrapper" *ngIf="uploading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<!-- <div style="display: flex; height: 70%px;">
     <div class="dragAndDropContainer">
         <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
             <table style="text-align: center; margin: 5px 0px 150px 0px;">
@@ -26,7 +52,4 @@
                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
         </div>
     </div>
-</div>
-<div class="footer" *ngIf="uploading">
-    <mat-progress-bar mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
-</div>
+</div> -->

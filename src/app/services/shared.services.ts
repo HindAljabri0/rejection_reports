@@ -205,27 +205,27 @@ export class SharedServices {
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
-        return '#21B744';
+        return '#67CD23';
       case ClaimStatus.NotAccepted.toLowerCase():
-        return '#EB2A75';
+        return '#FF144D';
       case ClaimStatus.ALL.toLowerCase():
         return '#3060AA';
       case '-':
         return '#bebebe';
       case ClaimStatus.REJECTED.toLowerCase():
-        return '#FD76B5';
+        return '#FF53A3';
       case ClaimStatus.PAID.toLowerCase():
-        return '#009633';
+        return '#1C7C26';
       case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
-        return '#04abb0';
+        return '#479CC5';
       case ClaimStatus.OUTSTANDING.toLowerCase():
-        return '#F3A264';
+        return '#7D0202';
       case ClaimStatus.Batched.toLowerCase():
         return '#F3D34B';
       case ClaimStatus.Downloadable.toLowerCase():
-        return '#21B744';
+        return '#67CD23';
       default:
-        return '#E3A820';
+        return '#E6AE24';
     }
   }
 

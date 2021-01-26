@@ -54,14 +54,14 @@ export class ClaimService {
   putAttachmentsOfClaim(providerId: string, claimId: string, attachments: AssignedAttachment[]) {
     const requestUrl = `/providers/${providerId}/attach/${claimId}`;
     const request = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, attachments.map(att =>
-      ({
-        attachmentid: att.attachmentId,
-        providerid: providerId,
-        filename: att.name,
-        attachmentfile: att.file,
-        filetype: att.type,
-        usercomment: null
-      }))
+    ({
+      attachmentid: att.attachmentId,
+      providerid: providerId,
+      filename: att.name,
+      attachmentfile: att.file,
+      filetype: att.type,
+      usercomment: null
+    }))
     );
     return this.httpClient.request(request);
   }
@@ -85,10 +85,9 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  /* deleteClaimByUploadid(providerId: string, uploadId){
-     const requestUrl = `/providers/${providerId}/uploads/${uploadId}`;
-     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
-     const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost+requestUrl, {}, {headers: headers});
-     return this.httpClient.request(httpRequest);
-   }*/
+  deleteClaimByUploadid(providerId: string, uploadId) {
+    const requestUrl = `/providers/${providerId}/uploads/${uploadId}`;
+    const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost + requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
 }
