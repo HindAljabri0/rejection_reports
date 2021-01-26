@@ -411,10 +411,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status >= 500 || errorEvent.status == 0)
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
-        if (errorEvent.error['message'] != null) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
-        }
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        if (errorEvent.error['errors'] != null)
+          for (let error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
       }
     });
   }
