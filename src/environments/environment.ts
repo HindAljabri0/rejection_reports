@@ -2,40 +2,19 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// export const environment = {
-//   name: 'dev',
-//   production: false,
-//   uploaderHost: "http://localhost:8080",
-//   claimSearchHost: "http://localhost:8082",
-//   claimServiceHost: "http://localhost:8081",
-//   NotificationServiceHost: "http://localhost:8222/notification-service",
-//   authenticationHost: "http://localhost:8086",
-//   adminServiceHost: "http://localhost:8087",
-//   auditTrailServiceHost: "http://localhost:8089",
-//   settingsServiceHost:"http://localhost:8111",
-//   claimInquireServiceHost:"http://localhost:8580"
-// };
-// export const environment = {
-//   auditTrailServiceHost: 'http://192.168.1.177:8089',
-//   claimInquireServiceHost: 'http://192.168.1.177:8580',
-//   authenticationHost: 'http://192.168.1.177:8086',
-//   settingsServiceHost: 'http://192.168.1.177:8111',
-//   claimServiceHost: 'http://192.168.1.177:8081',
-// };
 export const environment = {
   name: 'dev',
   production: false,
-  uploaderHost: 'http://192.168.1.177:8080',
-  claimSearchHost: 'http://192.168.1.177:8082',
-  claimServiceHost: 'https://api.qa-eclaims.waseel.com/claims',
-  NotificationServiceHost: 'http://192.168.1.177:8222/notification-service',
-  authenticationHost: 'https://api.qa-eclaims.waseel.com/oauth',
-  adminServiceHost: 'http://192.168.1.177:8087',
-  auditTrailServiceHost: 'https://api.qa-eclaims.waseel.com/audit',
-  settingsServiceHost: 'https://api.qa-eclaims.waseel.com/settings',
-  claimInquireServiceHost: 'https://api.qa-eclaims.waseel.com/claim-inquiry'
+  uploaderHost: "http://localhost:8080",
+  claimSearchHost: "http://localhost:8082",
+  claimServiceHost: "http://localhost:8081",
+  NotificationServiceHost: "http://localhost:8222/notification-service",
+  authenticationHost: "http://localhost:8086",
+  adminServiceHost: "http://localhost:8087",
+  auditTrailServiceHost: "http://localhost:8089",
+  settingsServiceHost: "http://localhost:8111",
+  claimInquireServiceHost: "http://localhost:8580"
 };
-
 
 /*
  * For easier debugging in development mode, you can import the following file

@@ -87,7 +87,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 --------------------------------------------------------------------------------------------------------*/
 .text-all-claim,.text-primary{color: #3060AA!important;}
 .text-ready-submission,.text-parrot{color: #67CD23!important;}
-.text-rejected,.text-magenta{color: #FF144D!important;}
+.text-rejected-waseel,.text-magenta{color: #FF144D!important;}
 .text-not-saved,.text-orange{color: #E6AE24!important;}
 .text-under-submission,.text-cyan{color: #00D8E7!important;}
 .text-rejected,.text-light-pink{color: #FF53A3!important;}
