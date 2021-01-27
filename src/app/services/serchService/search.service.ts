@@ -18,6 +18,9 @@ export class SearchService {
       if (casetype != null) requestURL += '&casetype=' + casetype;
     }
     if (batchId != null) {
+      if(batchId.includes('-')){
+        batchId = batchId.split('-')[1];
+      }
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString();
     }
     if (uploadId != null) {
@@ -50,6 +53,9 @@ export class SearchService {
       if (casetype != null) requestURL += '&casetype=' + casetype;
     }
     if (batchId != null) {
+      if(batchId.includes('-')){
+        batchId = batchId.split('-')[1];
+      }
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
     }
     if (uploadId != null) {
@@ -70,6 +76,9 @@ export class SearchService {
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
     } else if (batchId != null) {
+      if(batchId.includes('-')){
+        batchId = batchId.split('-')[1];
+      }
       requestURL += `&batchId=${batchId}`;
     } else if (uploadId != null) {
       requestURL += `&uploadId=${uploadId}`;
