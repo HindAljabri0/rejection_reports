@@ -1,5 +1,5 @@
 <div class="block-card full-height p-0">
-    <mat-tab-group (selectedTabChange)="changeTab($event)" [dynamicHeight]="true" class="primary-tab">
+    <mat-tab-group (selectedTabChange)="changeTab($event)" [dynamicHeight]="true" class="primary-tab claim-view-tabs">
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon *ngIf="genInfoTabHasErrors()" style="color: #bb3131;">error</mat-icon>
@@ -37,15 +37,15 @@
             </ng-template>
             <claim-lab-results></claim-lab-results>
         </mat-tab>
+        <mat-tab *ngIf="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" [label]="'Errors'">
+            <claim-errors></claim-errors>
+        </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon *ngIf="invoiceServicesTabHasErrors()" style="color: #bb3131;">error</mat-icon>
                 Invoices & Services
             </ng-template>
             <claim-invoices-services></claim-invoices-services>
-        </mat-tab>
-        <mat-tab *ngIf="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" [label]="'Errors'">
-            <claim-errors></claim-errors>
         </mat-tab>
     </mat-tab-group>
 </div>

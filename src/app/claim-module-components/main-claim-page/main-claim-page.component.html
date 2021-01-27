@@ -1,73 +1,73 @@
 <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate" class="page-top-loader"></mat-progress-bar>
-<ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
-    <div class="block-header">
-        <p>Create Claim</p><span class="spacer"></span>
-        <p *ngIf="claim != null && errors == null && claim.visitInformation != null" [class.d-none]="!(claim != null && errors == null)">
-            {{(claim.visitInformation.departmentCode==dentalDepartmentCode)?'Dental':'Optical'}}</p>
-    </div>
-</ng-container>
-<ng-template #statusHeader>
-    <ng-container *ngIf="claim != null && claimProps != null">
-        <!-- <div class="claim-status-header" [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode),
+<div [class.view-claim]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'">
+    <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
+        <div class="block-header">
+            <p>Create Claim</p><span class="spacer"></span>
+            <p *ngIf="claim != null && errors == null && claim.visitInformation != null" [class.d-none]="!(claim != null && errors == null)">
+                {{(claim.visitInformation.departmentCode==dentalDepartmentCode)?'Dental':'Optical'}}</p>
+        </div>
+    </ng-container>
+    <ng-template #statusHeader>
+        <ng-container *ngIf="claim != null && claimProps != null">
+            <!-- <div class="claim-status-header" [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode),
                 'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode)+'1a'}"> -->
-        <div class="claim-status-header"
-            [ngStyle]="{'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode)}">
-            <p class="title">View Claim</p>
-            <p><strong>Provider Reference No.:</strong> {{claim.claimIdentities.providerClaimNumber}}</p>
-            <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Batch ID:</strong>
-                {{claim.claimIdentities.providerBatchID}}</p>
-            <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Submission Date:</strong>
-                {{claimProps.lastSubmissionDate}}</p>
-            <p><strong>Status:</strong> {{getClaimStatusLabel(claimProps.statusCode)}}</p>
-            <p *ngIf="claimProps.statusDetail != null"><strong>Status Description:</strong>
-                {{claimProps.statusDetail}}</p>
-        </div>
-    </ng-container>
-</ng-template>
-
-<div class="block-body create-claim-body">
-    <div class="error-block mb-3" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">{{getError()}}</div>
-    <ng-container *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">
-        <div class="row small-gutter">
-            <div class="col-xl-8">
-                <claim-patient-info></claim-patient-info>
+            <div class="claim-status-header"
+                [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode),'border-left-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode)}">
+                <p class="title">View Claim</p>
+                <p><strong>Provider Reference No.:</strong> {{claim.claimIdentities.providerClaimNumber}}</p>
+                <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Batch ID:</strong>
+                    {{claim.claimIdentities.providerBatchID}}</p>
+                <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Submission Date:</strong>
+                    {{claimProps.lastSubmissionDate}}</p>
+                <p><strong>Status:</strong> {{getClaimStatusLabel(claimProps.statusCode)}}</p>
+                <p *ngIf="claimProps.statusDetail != null"><strong>Status Description:</strong>
+                    {{claimProps.statusDetail}}</p>
             </div>
-            <div class="col-xl-4">
-                <claim-physician-header></claim-physician-header>
-            </div>
-            <div class="col-xl-8">
-                <claim-data [ngStyle]="{'height': pageMode != 'CREATE'  && pageMode != 'CREATE_FROM_RETRIEVED' ? '34vw': '26vw'}"></claim-data>
-            </div>
-            <div class="col-xl-4">
-                <gdpn-calculation></gdpn-calculation>
-            </div>
-        </div>
-    </ng-container>
-</div>
-
-<div class="block-footer sticky-bottom">
-    <div class="right-block btn-list" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
-        <button *ngIf="claim != null" mat-flat-button (click)="cancel()">Cancel</button>
-        <button *ngIf="claim != null" mat-flat-button color="primary" (click)="save()">Save</button>
-    </div>
-    <div class="right-block btn-list" *ngIf="pageMode == 'VIEW'">
-        <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
-        <button *ngIf="claim != null && editable" mat-flat-button color="primary" (click)="edit()">Edit</button>
-    </div>
-    <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
-        <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
-        <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary" (click)="save()">Save</button>
-    </div>
-</div>
-
-<button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimTypeMenu" *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
-    <mat-icon>add</mat-icon>
-</button>
-
-<mat-menu #claimTypeMenu yPosition="above" xPosition="before">
-    <ng-template matMenuContent>
-        <label class="menu-label">Claim Type</label>
-        <button mat-menu-item (click)="startCreatingClaim(dentalDepartmentCode)">Dental</button>
-        <button mat-menu-item (click)="startCreatingClaim(opticalDepartmentCode)">Optical</button>
+        </ng-container>
     </ng-template>
-</mat-menu>
+
+    <div class="block-body create-claim-body">
+        <div class="error-block mb-3" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">{{getError()}}</div>
+        <ng-container *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">
+            <div class="row small-gutter">
+                <div class="col-xl-8">
+                    <claim-patient-info></claim-patient-info>
+                </div>
+                <div class="col-xl-4">
+                    <claim-physician-header></claim-physician-header>
+                </div>
+            </div>
+            <claim-data [ngStyle]="{'height': pageMode != 'CREATE'  && pageMode != 'CREATE_FROM_RETRIEVED' ? '34vw': '26vw'}"></claim-data>
+            <!-- <div class="col-xl-4">
+            <gdpn-calculation></gdpn-calculation>
+        </div> -->
+        </ng-container>
+    </div>
+
+    <div class="block-footer sticky-bottom">
+        <div class="right-block btn-list" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
+            <button *ngIf="claim != null" mat-flat-button (click)="cancel()">Cancel</button>
+            <button *ngIf="claim != null" mat-flat-button color="primary" (click)="save()">Save</button>
+        </div>
+        <div class="right-block btn-list" *ngIf="pageMode == 'VIEW'">
+            <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
+            <button *ngIf="claim != null && editable" mat-flat-button color="primary" (click)="edit()">Edit</button>
+        </div>
+        <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
+            <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
+            <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary" (click)="save()">Save</button>
+        </div>
+    </div>
+
+    <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimTypeMenu" *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
+        <mat-icon>add</mat-icon>
+    </button>
+
+    <mat-menu #claimTypeMenu yPosition="above" xPosition="before">
+        <ng-template matMenuContent>
+            <label class="menu-label">Claim Type</label>
+            <button mat-menu-item (click)="startCreatingClaim(dentalDepartmentCode)">Dental</button>
+            <button mat-menu-item (click)="startCreatingClaim(opticalDepartmentCode)">Optical</button>
+        </ng-template>
+    </mat-menu>
+</div>
