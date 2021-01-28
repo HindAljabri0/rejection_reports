@@ -1,106 +1,88 @@
-<div class="body">
-    <table *ngIf="expandedResult == -1" class="headerTable">
-        <tr style="font-size: small;">
-            <th style="width: 16%;"></th>
-            <th style="width: 16%;">Test Date</th>
-            <th style="width: 16%;">Test Code</th>
-            <th style="width: 16%;">No. of Components</th>
-        </tr>
-    </table>
-    <div *ngFor="let result of resultsControls; let i = index" class="results">
-        <mat-expansion-panel *ngIf="expandedResult == -1 || expandedResult == i" hideToggle
-            [expanded]="i == expandedResult" (afterExpand)="afterResultExpanded(i)"
-            (afterCollapse)="afterResultCollapse(i)">
-            <mat-expansion-panel-header>
-                <table class="headerTable child">
-                    <tr style="font-size: small;">
-                        <td style="width: 16%;">
-                            <mat-icon *ngIf="resultHasErrors(i)" style="color: #bb3131;">error</mat-icon>
-                            Result {{(i+1)}}
-                        </td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">{{formatDate(result.testDate.value)}}</td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">{{result.testCode.value}}</td>
-                        <td *ngIf="expandedResult == -1" style="width: 16%;">{{result.componentsControls.length}}</td>
-                        <td style="width: 10%;" *ngIf="expandedResult == -1">
-                            <button mat-icon-button (click)="onDeleteResultClick($event, i)" *ngIf="pageMode == 'EDIT'">
-                                <mat-icon style="color: #af4848;">cancel</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </mat-expansion-panel-header>
-            <table>
-                <tr>
-                    <td><label>Test Date</label></td>
-                    <td><label>Test Code*</label></td>
-                </tr>
-                <tr>
-                    <td [matTooltip]="getFieldError('testDate:'+i)"><input [formControl]="result.testDate"
-                            [ngClass]="{'fieldError': fieldHasError('testDate:'+i)}" type="date"></td>
-                    <td [matTooltip]="getFieldError('testCode:'+i)"><input [formControl]="result.testCode"
-                            [ngClass]="{'fieldError': fieldHasError('testCode:'+i)}"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" [matTooltip]="getFieldError('resultDescription:'+i)">
-                        <textarea rows="4" placeholder="Description" [formControl]="result.resultDescription"
-                            [ngClass]="{'fieldError': fieldHasError('resultDescription:'+i)}"></textarea>
-                    </td>
-                </tr>
-            </table>
-        </mat-expansion-panel>
-        <div *ngIf="i == expandedResult">
-            <div *ngFor="let component of result.componentsControls; let j = index" class="components">
-                <mat-expansion-panel class="componentExpansionPanel"
-                    *ngIf="expandedComponent == -1 || expandedComponent == j" hideToggle
-                    [expanded]="j == expandedComponent" (afterExpand)="afterComponentExpanded(j)"
-                    (afterCollapse)="afterComponentCollapse(i, j)">
+<div class="item-group-panel">
+    <div class="parent-panel">
+        <ul>
+            <li class="title">Results</li>
+            <li *ngFor="let result of resultsControls; let i = index" [class.active]="expandedResult == i">
+                <button type="button" title="Result {{(i+1)}}" class="list-btn" [class.text-danger]="resultHasErrors(i)" (click)="toggleResult(i)">
+                    <p>
+                        Result {{(i+1)}}
+                        <mat-icon *ngIf="resultHasErrors(i)">error</mat-icon>
+                    </p>
+                    <span class="right-block">
+                        <p>{{formatDate(result.testDate.value)}}</p>
+                    </span>
+                </button>
+                <button type="button" class="delete-btn text-danger" (click)="onDeleteResultClick(i)" *ngIf="pageMode == 'EDIT'">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </li>
+        </ul>
+        <button mat-flat-button class="mt-2" *ngIf="pageMode != 'VIEW'" color="primary" (click)="onAddResultClick()">Add Result</button>
+    </div>
+    <ng-container *ngFor="let result of resultsControls; let i = index">
+        <div class="child-panel" *ngIf="expandedResult != -1 && expandedResult == i">
+            <p class="block-title mb-2">Result {{(i+1)}}</p>
+            <div class="row small-gutter">
+                <div class="col-md-6">
+                    <div class="form-group" [matTooltip]="getFieldError('testDate:'+i)" [class.has-error]="fieldHasError('testDate:'+i)">
+                        <label class="control-label">Test Date</label>
+                        <input [formControl]="result.testDate" class="form-control" type="date">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [class.has-error]="fieldHasError('testCode:'+i)" [matTooltip]="getFieldError('testCode:'+i)">
+                        <label class="control-label">Test Code<span class="asterisk">*</span></label>
+                        <input [formControl]="result.testCode" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [class.has-error]="fieldHasError('resultDescription:'+i)" [matTooltip]="getFieldError('resultDescription:'+i)">
+                <label class="control-label">Description</label>
+                <textarea rows="4" placeholder="Description" [formControl]="result.resultDescription" class="form-control"></textarea>
+            </div>
+            <p class="block-title">Components</p>
+            <div class="list-expansion-panel">
+                <mat-expansion-panel *ngFor="let component of result.componentsControls; let j = index" [expanded]="component.isOpen" hideToggle>
                     <mat-expansion-panel-header>
-                        <mat-panel-title style="color: #3060AA;">
-                            <mat-icon *ngIf="componentHasErrors(i, j)" style="color: #bb3131;">error</mat-icon>
-                            Component {{(j+1)}}
-                        </mat-panel-title>
-                        <mat-panel-description>
-                            <button mat-icon-button (click)="onDeleteComponentClick($event, i, j)"
-                                style="margin-left: auto;" *ngIf="expandedComponent == -1">
-                                <mat-icon style="color: #af4848;">cancel</mat-icon>
+                        <mat-panel-title>
+                            <button (click)="toggleComponentExpansion($event,i,j)" [class.text-danger]="componentHasErrors(i, j)" class="toggle-btn">
+                                Component {{(j+1)}}
+                                <mat-icon *ngIf="componentHasErrors(i, j)">error</mat-icon>
                             </button>
-                        </mat-panel-description>
+                            <button (click)="onDeleteComponentClick($event, i, j)" class="text-danger delete-btn" *ngIf="pageMode == 'EDIT'">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <table class="componentDetailsForm">
-                        <tr>
-                            <td><label>Component Code*</label></td>
-                            <td [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
-                                <input [formControl]="component.componentCode"
-                                    [ngClass]="{'fieldError': fieldHasError('componentCode:'+i+':'+j)}" type="text">
-                            </td>
-                            <td><label>LAB Result</label></td>
-                            <td [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)"><input
-                                    [formControl]="component.componentLabResult"
-                                    [ngClass]="{'fieldError': fieldHasError('componentLabResult:'+i+':'+j)}"></td>
-                            <td><label>Result Unit</label></td>
-                            <td [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)">
-                                <input [formControl]="component.componentResultUnit"
-                                    [ngClass]="{'fieldError': fieldHasError('componentResultUnit:'+i+':'+j)}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style="padding: 0px;" [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
-                                <textarea [ngClass]="{'fieldError': fieldHasError('componentDescription:'+i+':'+j)}"
-                                    placeholder="Description" [formControl]="component.componentDescription"></textarea>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="row small-gutter">
+                        <div class="col-md-4">
+                            <div class="form-group" [class.has-error]="fieldHasError('componentCode:'+i+':'+j)" [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
+                                <label class="control-label">Component Code<span class="asterisk">*</span></label>
+                                <input [formControl]="component.componentCode" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" [class.has-error]="fieldHasError('componentLabResult:'+i+':'+j)" [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)">
+                                <label class="control-label">LAB Result</label>
+                                <input [formControl]="component.componentLabResult" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" [class.has-error]="fieldHasError('componentResultUnit:'+i+':'+j)" [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)">
+                                <label class="control-label">Result Unit</label>
+                                <input [formControl]="component.componentResultUnit" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" [class.has-error]="fieldHasError('componentDescription:'+i+':'+j)" [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
+                        <label class="control-label">Description</label>
+                        <textarea placeholder="Description" [formControl]="component.componentDescription" class="form-control"></textarea>
+                    </div>
                 </mat-expansion-panel>
             </div>
+            <div class="text-right mt-2" *ngIf="pageMode != 'VIEW'">
+                <button mat-flat-button color="primary" (click)="onAddComponentClick(i)">Add Component</button>
+            </div>
         </div>
-        <div style="text-align: end;" *ngIf="pageMode != 'VIEW' && expandedComponent == -1 && expandedResult == i">
-            <hr>
-            <button mat-raised-button color="primary" (click)="onAddComponentClick(i)">Add Component</button>
-        </div>
-    </div>
-    <div style="text-align: end;" *ngIf="expandedResult == -1">
-        <hr>
-        <button mat-raised-button *ngIf="pageMode != 'VIEW'" color="primary" (click)="onAddResultClick()">Add
-            Result</button>
-    </div>
+    </ng-container>
 </div>

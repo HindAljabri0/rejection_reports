@@ -26,7 +26,7 @@
         </ng-container>
     </ng-template>
 
-    <div class="block-body create-claim-body">
+    <div class="block-body create-claim-body" *ngIf="!isLoading">
         <div class="error-block mb-3" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">{{getError()}}</div>
         <ng-container *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">
             <div class="row small-gutter">
@@ -44,7 +44,7 @@
         </ng-container>
     </div>
 
-    <div class="block-footer sticky-bottom">
+    <div class="block-footer sticky-bottom" *ngIf="!isLoading">
         <div class="right-block btn-list" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
             <button *ngIf="claim != null" mat-flat-button (click)="cancel()">Cancel</button>
             <button *ngIf="claim != null" mat-flat-button color="primary" (click)="save()">Save</button>
