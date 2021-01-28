@@ -27,7 +27,7 @@
                         [required]="pageType == 'INPATIENT_OUTPATIENT'"
                         (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
                         <option value=""></option>
-                        <option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'"
+                        <option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW' && selectedCategory != null && selectedCategory != '-1'"
                             [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}</option>
                         <option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
                         </option>

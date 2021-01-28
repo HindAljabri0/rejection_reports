@@ -103,6 +103,12 @@
                             </button>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
+                    <div class="statusDescription" [style.color]="getStatusColor(service.statusCode)"
+                        [style.background-color]="getStatusColor(service.statusCode)+'10'"
+                        [style.border-color]="getStatusColor(service.statusCode)"
+                        *ngIf=" service.statusCode != null && service.statusDescription != null">
+                        {{service.statusDescription}}
+                    </div>
                     <div class="serviceAutoCalc">
                         <div class="left autoCalcElement">
                             <label>Gross Amount</label>
