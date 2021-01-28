@@ -22,13 +22,13 @@
         <label style="display: block;">Unit of Stay</label>
         <mat-button-toggle-group (change)="updateClaimUnit('stayUnit',$event)" [disabled]="lengthOfStayController.disabled"
             [ngClass]="{'fieldError': fieldHasError('stayUnit')}">
-            <mat-button-toggle value="Day" checked="true">
+            <mat-button-toggle value="Day" [checked]="lengthOfStayUnit == 'Day'">
                 Day
             </mat-button-toggle>
-            <mat-button-toggle value="Month">
+            <mat-button-toggle value="Month" [checked]="lengthOfStayUnit == 'Month'">
                 Month
             </mat-button-toggle>
-            <mat-button-toggle value="Year">
+            <mat-button-toggle value="Year" [checked]="lengthOfStayUnit == 'Year'">
                 Year
             </mat-button-toggle>
         </mat-button-toggle-group>

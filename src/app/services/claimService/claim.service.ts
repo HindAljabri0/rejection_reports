@@ -27,6 +27,9 @@ export class ClaimService {
     if (claim.caseInformation.patient.age != null) {
       body = { ...body, caseInformation: { ...body.caseInformation, patient: { ...body.caseInformation.patient, age: body.caseInformation.patient.age.toPeriodFormat() } } };
     }
+    if (claim.admission != null && claim.admission.discharge != null && claim.admission.discharge.actualLengthOfStay != null) {
+      body = { ...body, admission: { ...body.admission, discharge: { ...body.admission.discharge, actualLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat() } } };
+    }
     const httpRequest = new HttpRequest('POST', environment.claimServiceHost + requestUrl, body);
     return this.httpClient.request(httpRequest);
   }
@@ -40,6 +43,9 @@ export class ClaimService {
     }
     if (claim.caseInformation.patient.age != null) {
       body = { ...body, caseInformation: { ...body.caseInformation, patient: { ...body.caseInformation.patient, age: body.caseInformation.patient.age.toPeriodFormat() } } };
+    }
+    if (claim.admission != null && claim.admission.discharge != null && claim.admission.discharge.actualLengthOfStay != null) {
+      body = { ...body, admission: { ...body.admission, estimatedLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat(),discharge: { ...body.admission.discharge, actualLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat() } } };
     }
     const httpRequest = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, body);
     return this.httpClient.request(httpRequest);
