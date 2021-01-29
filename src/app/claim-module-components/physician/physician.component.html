@@ -1,35 +1,35 @@
 <div class="block-card full-height pb-0">
     <div class="row">
         <div class="col-xl-12 col-md-6">
-            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianId')">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianId')" [matTooltip]="getFieldError('physicianId')">
                 <div class="left-block">
                     <label class="control-label">Phy ID<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
                 </div>
                 <div class="right-block">
                     <input class="form-control" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
-                        (change)="updateClaim('physicianId')" [matTooltip]="getFieldError('physicianId')">
+                        (change)="updateClaim('physicianId')">
                 </div>
             </div>
         </div>
         <div class="col-xl-12 col-md-6">
-            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianName')">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianName')" [matTooltip]="getFieldError('physicianName')">
                 <div class="left-block">
                     <label class="control-label">Phy Name<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
                 </div>
                 <div class="right-block">
                     <input class="form-control" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianNameController"
-                        (change)="updateClaim('physicianName')" [matTooltip]="getFieldError('physicianName')">
+                        (change)="updateClaim('physicianName')">
                 </div>
             </div>
         </div>
         <div class="col-xl-12 col-md-6">
-            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianCategory')">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianCategory')" [matTooltip]="getFieldError('physicianCategory')">
                 <div class="left-block">
                     <label class="control-label">Category<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
                 </div>
                 <div class="right-block">
                     <select class="form-control custom-select-control" [value]="selectedCategory" [disabled]="!categoryEditable" [required]="pageType == 'INPATIENT_OUTPATIENT'"
-                        [matTooltip]="getFieldError('physicianCategory')" (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
+                        (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
                         <option value="">Select Category</option>
                         <option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'" [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}</option>
                         <option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
