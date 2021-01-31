@@ -189,7 +189,6 @@ export class ProvidersConfigComponent implements OnInit {
     let dbFlag = this.addDatabaseConfig();
     let payerFlag = this.savePayerMapping();
     let providerFlag = this.addProviderMapping();
-    console.log(dbFlag + " "+  payerFlag + " " + providerFlag)
     //change on 02-01-2021 end
     if (flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag7 && dbFlag && payerFlag && providerFlag) {
       this.dialogService.openMessageDialog({
@@ -614,7 +613,6 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.midtable = true;
       this.dbMapping.setDatabaseConfig(this.selectedProvider,body).subscribe(event => {
         if (event instanceof HttpResponse) {
-          console.log(event.status);
           const data = event.body['message'];
           if(data != null){
             this.success.midtableSaveSuccess = "Data save successfully";
@@ -653,7 +651,6 @@ export class ProvidersConfigComponent implements OnInit {
       var temp = this.addPayerMappingList.findIndex(x => x === payerData.switchAccountId);
       this.addPayerMappingList.splice(temp,1);
     }
-    console.log(this.addPayerMappingList);
   }
   
   savePayerMapping(){
@@ -698,7 +695,6 @@ export class ProvidersConfigComponent implements OnInit {
         })
         this.componentLoading.payerMapping = true;
         this.dbMapping.savePayerMapping(this.selectedProvider, selectedPayer).subscribe(event=>{
-          console.log(event);
           if (event instanceof HttpResponse) {
             const data = event.body['response'];
             if(data){
@@ -730,7 +726,6 @@ export class ProvidersConfigComponent implements OnInit {
         this.componentLoading.payerMapping = true;
         //call delete function
         this.dbMapping.deletePayerMapping(this.selectedProvider, deletePayers).subscribe(event=>{
-          console.log(event);
           this.deletePayerMappingList = [];
           if (event instanceof HttpResponse) {
             const data = event.body['response'];
@@ -804,7 +799,6 @@ export class ProvidersConfigComponent implements OnInit {
       }
       this.componentLoading.providerMapping = true;
       this.dbMapping.setProviderMapping(body, this.selectedProvider).subscribe(event => {
-        console.log(event);
         if (event instanceof HttpResponse) {
           this.providerMappingValue = body.mappingProviderCode;
           const data = event.body['message'];

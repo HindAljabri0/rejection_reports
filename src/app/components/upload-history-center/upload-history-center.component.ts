@@ -22,7 +22,6 @@ export class UploadHistoryCenterComponent implements OnInit {
   }
 
   get dataList() {
-    console.log(this.commen.uploadHistoryList);
     return this.commen.uploadHistoryList;
   }
 

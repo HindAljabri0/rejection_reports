@@ -193,7 +193,6 @@ export class SharedServices {
   markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
       if (event instanceof HttpResponse) {
-        console.log(event);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {

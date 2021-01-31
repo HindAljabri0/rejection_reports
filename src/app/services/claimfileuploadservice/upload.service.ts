@@ -102,12 +102,10 @@ export class UploadService {
   }
 
   handleUploadResponse(request:Observable<HttpEvent<{}>>){
-    console.log('start from upload service');
     request.subscribe(event => {
       if(event instanceof HttpResponse){
         const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
         this.summaryChange.next(summary);
-        console.log('done from upload service');
       }
     });
   }
