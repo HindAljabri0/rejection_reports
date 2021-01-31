@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT, SFDA_VALIDATION_KEY, SFDA_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { SuperAdminService, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT, SFDA_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -28,17 +28,13 @@ export class ProvidersConfigComponent implements OnInit {
   selectedProvider: string;
   associatedPayers: any[] = [];
   serviceCodeValidationSettings: any[] = [];
-  serviceCodeRestrictionSettings: any[] = [];
   priceUnitSettings: any[] = [];
   ICD10ValidationSettings: any[] = [];
   sfdaValidationSettings: any[] = [];
-  sfdaRestrictionSettings: any[] = [];
-  newServiceCodeValidationSettings: { [key: string]: boolean } = {};
-  newServiceRestrictionSettings: { [key: string]: boolean } = {};
+  newServiceValidationSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
   newSFDAValidationSettings: { [key: string]: boolean } = {};
-  newSFDARestrictionSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
@@ -121,11 +117,9 @@ export class ProvidersConfigComponent implements OnInit {
          if (event.body instanceof Array) {
           this.associatedPayers = event.body;
           this.associatedPayers.forEach(payer => {
-            this.newServiceCodeValidationSettings[payer.switchAccountId] = true;
-            this.newServiceRestrictionSettings[payer.switchAccountId] = false;
+            this.newServiceValidationSettings[payer.switchAccountId] = false;
             this.newPriceUnitSettings[payer.switchAccountId] = false;
-            this.newICD10ValidationSettings[payer.switchAccountId] = true;
-            this.newSFDARestrictionSettings[payer.switchAccountId] = true;
+            this.newICD10ValidationSettings[payer.switchAccountId] = false;
             this.newSFDAValidationSettings[payer.switchAccountId] = false;
             //new changes for payer mapping
             this.newPayerMappingEnable[payer.switchAccountId] = false;
@@ -159,12 +153,10 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   fetchSettings() {
-    this.getSetting(SERVICE_CODE_VALIDATION_KEY, this.serviceCodeValidationSettings, this.newServiceCodeValidationSettings);
-    this.getSetting(SERVICE_CODE_RESTRICTION_KEY, this.serviceCodeRestrictionSettings, this.newServiceRestrictionSettings);
+    this.getSetting(SERVICE_CODE_RESTRICTION_KEY, this.serviceCodeValidationSettings, this.newServiceValidationSettings);
     this.getSetting(VALIDATE_RESTRICT_PRICE_UNIT, this.priceUnitSettings, this.newPriceUnitSettings);
     this.getSetting(ICD10_RESTRICTION_KEY, this.ICD10ValidationSettings, this.newICD10ValidationSettings);
-    this.getSetting(SFDA_VALIDATION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings);
-    this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaRestrictionSettings, this.newSFDARestrictionSettings);
+    this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings);
     this.getPortalUserSettings();
     // ####### Chages on 02-01-2021 start
     this.getDatabaseConfig();
@@ -178,19 +170,17 @@ export class ProvidersConfigComponent implements OnInit {
       || this.componentLoading.sfda || this.componentLoading.midtable || this.componentLoading.payerMapping || this.componentLoading.providerMapping) {
       return;
     }
-    let flag1 = this.saveSettings(SERVICE_CODE_VALIDATION_KEY,this.newServiceCodeValidationSettings,this.serviceCodeValidationSettings);
     let flag2 = this.savePortalUserSettings();
-    let flag3 = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY,this.newServiceRestrictionSettings,this.serviceCodeRestrictionSettings);
+    let flag3 = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY,this.newServiceValidationSettings,this.serviceCodeValidationSettings);
     let flag4 = this.saveSettings(ICD10_RESTRICTION_KEY,this.newICD10ValidationSettings,this.ICD10ValidationSettings);
     let flag5 = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT,this.newPriceUnitSettings,this.priceUnitSettings);
-    let flag6 = this.saveSettings(SFDA_VALIDATION_KEY,this.newSFDAValidationSettings,this.sfdaValidationSettings);
-    let flag7 = this.saveSettings(SFDA_RESTRICTION_KEY,this.newSFDARestrictionSettings,this.sfdaRestrictionSettings);
+    let flag7 = this.saveSettings(SFDA_RESTRICTION_KEY,this.newSFDAValidationSettings,this.sfdaValidationSettings);
     //change on 02-01-2021 start
     let dbFlag = this.addDatabaseConfig();
     let payerFlag = this.savePayerMapping();
     let providerFlag = this.addProviderMapping();
     //change on 02-01-2021 end
-    if (flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag7 && dbFlag && payerFlag && providerFlag) {
+    if (flag2 && flag3 && flag4 && flag5 && flag7 && dbFlag && payerFlag && providerFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -244,16 +234,8 @@ export class ProvidersConfigComponent implements OnInit {
   addValueToSetting(URLKey: string, payerId: string, newSettingValues: { [key: string]: boolean; }) {
 
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
-          this.serviceCodeValidationSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
-          break;
       case SERVICE_CODE_RESTRICTION_KEY:
-          this.serviceCodeRestrictionSettings.push({
+          this.serviceCodeValidationSettings.push({
             providerId: this.selectedProvider,
             payerId: payerId,
             key: URLKey,
@@ -276,16 +258,8 @@ export class ProvidersConfigComponent implements OnInit {
             value: (newSettingValues[payerId]) ? '1' : '0'
           });
         break;
-      case SFDA_VALIDATION_KEY:
-          this.sfdaValidationSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
-          break;
       case SFDA_RESTRICTION_KEY:
-          this.sfdaRestrictionSettings.push({
+          this.sfdaValidationSettings.push({
             providerId: this.selectedProvider,
             payerId: payerId,
             key: URLKey,
@@ -296,11 +270,8 @@ export class ProvidersConfigComponent implements OnInit {
   }
   setSettingIndexed(URLKey: string, index: number, value: string) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
-          this.serviceCodeValidationSettings[index].value = value;
-          break;
       case SERVICE_CODE_RESTRICTION_KEY:
-          this.serviceCodeRestrictionSettings[index].value = value;
+          this.serviceCodeValidationSettings[index].value = value;
           break;
       case VALIDATE_RESTRICT_PRICE_UNIT:
           this.priceUnitSettings[index].value = value;
@@ -308,11 +279,8 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
           this.ICD10ValidationSettings[index].value = value;
         break;
-      case SFDA_VALIDATION_KEY:
-          this.sfdaValidationSettings[index].value = value;
-          break;
       case SFDA_RESTRICTION_KEY:
-          this.sfdaRestrictionSettings[index].value = value;
+          this.sfdaValidationSettings[index].value = value;
         break;
     }
   }
@@ -356,12 +324,10 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   reset() {
-    this.resetSection(SERVICE_CODE_VALIDATION_KEY, this.newServiceCodeValidationSettings);
-    this.resetSection(SERVICE_CODE_RESTRICTION_KEY,this.newServiceRestrictionSettings);
+    this.resetSection(SERVICE_CODE_RESTRICTION_KEY,this.newServiceValidationSettings);
     this.resetSection(VALIDATE_RESTRICT_PRICE_UNIT,this.newPriceUnitSettings);
     this.resetSection(ICD10_RESTRICTION_KEY,this.newICD10ValidationSettings);
-    this.resetSection(SFDA_VALIDATION_KEY,this.newSFDAValidationSettings);
-    this.resetSection(SFDA_RESTRICTION_KEY,this.newSFDARestrictionSettings);
+    this.resetSection(SFDA_RESTRICTION_KEY,this.newSFDAValidationSettings);
     this.resetDbAndMapping();
   }
   resetSection(URLKey: string, newSettingArray: { [key: string]: boolean; }) {
@@ -369,13 +335,9 @@ export class ProvidersConfigComponent implements OnInit {
       this.setComponentLoading(URLKey, true);
 
       switch (URLKey) {
-        case SERVICE_CODE_VALIDATION_KEY:
-            setTimeout(() => this.componentLoading.serviceCode = false, 100);
-            this.newServiceCodeValidationSettings = {};
-            break;
         case SERVICE_CODE_RESTRICTION_KEY:
             setTimeout(() => this.componentLoading.serviceCode = false, 100);
-            this.newServiceRestrictionSettings = {};
+            this.newServiceValidationSettings = {};
             break;
         case VALIDATE_RESTRICT_PRICE_UNIT:
           setTimeout(() => this.componentLoading.serviceCode = false, 100);
@@ -385,13 +347,9 @@ export class ProvidersConfigComponent implements OnInit {
           setTimeout(() => this.componentLoading.ICD10Validation = false, 100);
           this.newICD10ValidationSettings = {};
           break;
-        case SFDA_VALIDATION_KEY:
-            setTimeout(() => this.componentLoading.sfda = false, 100);
-            this.newSFDAValidationSettings = {};
-            break;
         case SFDA_RESTRICTION_KEY:
           setTimeout(() => this.componentLoading.sfda = false, 100);
-          this.newSFDARestrictionSettings = {};
+          this.newSFDAValidationSettings = {};
           break;
       }
     }
@@ -405,16 +363,16 @@ export class ProvidersConfigComponent implements OnInit {
     }
   }
 
-  getSetting(URLKey: string, seetingValues: any[], newSettingValues: { [key: string]: boolean }) {
+  getSetting(URLKey: string, settingValues: any[], newSettingValues: { [key: string]: boolean }) {
     this.setComponentLoading(URLKey, true);
     this.superAdmin.getProviderPayerSettings(this.selectedProvider, URLKey).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
-          seetingValues = event.body;
+          settingValues = event.body;
           let payers = Object.keys(newSettingValues);
           if (payers.length > 0) {
             payers.forEach(payer => {
-              let setting = seetingValues.find(setting => setting.payerId == payer);
+              let setting = settingValues.find(setting => setting.payerId == payer);
               newSettingValues[payer] = (setting != null && setting.value == '1');
             });
           }
@@ -433,7 +391,6 @@ export class ProvidersConfigComponent implements OnInit {
   }
   setErrorMessage(message: string, URLKey: string) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
         this.errors.serviceCodeError = message;
@@ -441,7 +398,6 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
         this.errors.ICD10SaveError = message;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
         this.errors.sfdaError = message;
         break;
@@ -450,7 +406,6 @@ export class ProvidersConfigComponent implements OnInit {
 
   setComponentLoading(URLKey: string, componentLoading: boolean) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
         this.componentLoading.serviceCode = componentLoading;
@@ -458,7 +413,6 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
         this.componentLoading.ICD10Validation = componentLoading;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
         this.componentLoading.sfda = componentLoading;
         break;
@@ -468,7 +422,6 @@ export class ProvidersConfigComponent implements OnInit {
   setSaveError(URLKey: string, value: any)
   {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
           this.errors.serviceCodeSaveError = value;
@@ -476,7 +429,6 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
           this.errors.ICD10SaveError = value;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
           this.errors.sfdaSaveError = value;
         break;
@@ -487,7 +439,6 @@ export class ProvidersConfigComponent implements OnInit {
   setSaveSuccess(URLKey: string, value: any)
   {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
           this.success.serviceCodeSaveSuccess = value;
@@ -495,7 +446,6 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
           this.success.ICD10SaveSuccess = value;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
           this.success.sfdaSaveSuccess = value;
         break;
@@ -530,39 +480,10 @@ export class ProvidersConfigComponent implements OnInit {
   get isLoading() {
     return this.sharedServices.loading;
   }
-  getPriceUnitCheckBoxLabel(payerId) {
-    if (!this.newServiceRestrictionSettings[payerId] && !this.newServiceCodeValidationSettings[payerId]) {
-      return '';
-    } else if (this.newServiceRestrictionSettings[payerId]) {
-      return 'Restriction';
-    } else {
-      return 'Warning';
-    }
-  }
 
-  onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newServiceRestrictionSettings[payerid] = !event.checked;
-    }
-  }
-  onServiceRestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newServiceCodeValidationSettings[payerid] = !event.checked;
-    }
-  }
+
   isPriceUnitDisabled(payerId: string) {
-    return !this.newServiceCodeValidationSettings[payerId] && !this.newServiceRestrictionSettings[payerId];
-  }
-
-  onSFDAWarningSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newSFDARestrictionSettings[payerid] = !event.checked;
-    }
-  }
-  onSFDARestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newSFDAValidationSettings[payerid] = !event.checked;
-    }
+    return !this.newServiceValidationSettings[payerId];
   }
 
   
