@@ -14,6 +14,7 @@ import { ServiceDecision } from '../models/serviceDecision.model';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
+import { ServiceView } from '../models/serviceView.model';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -31,6 +32,7 @@ export class InvoicesServicesComponent implements OnInit {
     services: {
       retrieved: boolean,
       statusCode?: string,
+      statusDescription?: string,
       acutalDeductedAmount?: number,
       serviceNumber: number,
       serviceDate: FormControl,
@@ -150,13 +152,11 @@ export class InvoicesServicesComponent implements OnInit {
       invoice.service.forEach(service => {
         this.addService(index, false);
         const serviceIndex = this.controllers[index].services.length - 1;
-        if (claimProps.servicesDecision != null) {
-          const deIndex = claimProps.servicesDecision.findIndex(dec => dec.invoiceNumber == invoice.invoiceNumber && dec.serviceNumber == service.serviceNumber);
-          if (deIndex != -1) {
-            const decision = claimProps.servicesDecision[deIndex];
-            this.controllers[index].services[serviceIndex].statusCode = decision.serviceStatusCode;
-            this.controllers[index].services[serviceIndex].acutalDeductedAmount = (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
-          }
+        if (service.hasOwnProperty('serviceDecision') && service['serviceDecision'] != null) {
+          const decision = service['serviceDecision'];
+          this.controllers[index].services[serviceIndex].statusCode = decision.serviceStatusCode;
+          this.controllers[index].services[serviceIndex].statusDescription = decision.decisioncomment;
+          this.controllers[index].services[serviceIndex].acutalDeductedAmount = (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
         }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));

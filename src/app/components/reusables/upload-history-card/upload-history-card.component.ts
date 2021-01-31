@@ -12,17 +12,21 @@ export class UploadHistoryCardComponent implements OnInit {
   @Input() data: UploadSummary;
   @Input() isUploadHistroyCenter: boolean;
 
-  constructor(private commen:SharedServices) {
-    
+
+  constructor(private commen: SharedServices) {
+
   }
 
   ngOnInit() {
   }
 
-  
+  get providerId() {
+    return this.commen.providerId;
+  }
 
-  hideCenter(){
+  hideCenter() {
     this.commen.showUploadHistoryCenterChange.next(false);
+    this.commen.showValidationDetailsTabChange.next(true);
   }
 
 

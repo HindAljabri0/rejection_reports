@@ -59,7 +59,7 @@ const _claimReducer = createReducer(
         const departmentCode = body['claim']['visitInformation']['departmentCode'];
         const caseType = body['claim']['caseInformation']['caseType'];
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId || departmentCode == pharmacyId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
-        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
+        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
         const editable = state.mode == 'EDIT' && ['Downloadable','Accepted', 'NotAccepted', 'Failed', 'INVALID'].includes(props.statusCode);
         return ({ ...state, claim: Claim.fromViewResponse(body['claim']), type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
     }),

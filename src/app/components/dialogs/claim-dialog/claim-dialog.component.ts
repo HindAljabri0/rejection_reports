@@ -389,12 +389,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           this.loadingResponse += `${file.name} uploaded`;
-          console.log(`${file.name} uploaded`);
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
           this.loadingResponse += `${file.name} error uploading`;
-          console.log(`${file.name} error uploading: ${errorEvent.error}`);
         }
       }
       );
@@ -440,7 +438,6 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       if (this.fileType != null && this.fileType != "")
         this.toAddFileTypeAttachments.push(new UploadAttachmentType(file.name, this.fileType));
       this.preview(file, this.files.length - 1);
-      console.log(this.fileType);
     }
   }
 

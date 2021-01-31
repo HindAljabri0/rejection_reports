@@ -87,7 +87,6 @@ export class MainClaimPageComponent implements OnInit {
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
     if (claimId != 'add') {
       this.store.dispatch(hideHeaderAndSideMenu());
-      console.log(this.router.routerState.snapshot.url.endsWith('#edit'));
       this.store.dispatch(retrieveClaim({ claimId: claimId, edit: this.router.routerState.snapshot.url.endsWith('#edit') }));
     }
     this.store.dispatch(loadLOVs());

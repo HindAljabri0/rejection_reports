@@ -11,9 +11,9 @@
       <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
     </button>
     <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
-    <button (click)="toggleUploadHistoryCenter()" class="iconButton" mat-icon-button matTooltip="Upload History">
+    <button (click)="toggleUploadHistoryCenter()" class="iconButton" mat-icon-button matTooltip="Uploads">
       <mat-icon aria-hidden="false">cloud</mat-icon>
-      <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon>
+      <!-- <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon> -->
     </button>
     <button (click)="toggleNotificationCenter()" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Notifications">
       <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
