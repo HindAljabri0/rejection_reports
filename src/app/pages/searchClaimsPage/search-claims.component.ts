@@ -23,6 +23,8 @@ import { Store } from '@ngrx/store';
 import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClaims } from './store/search.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
+import { ClaimInfo } from 'src/app/models/claimInfo';
 
 @Component({
   selector: 'app-search-claims',
@@ -56,18 +58,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   file: File;
 
-  isManagingAttachments: boolean = false;
+  isManagingAttachments = false;
+  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService: DialogService, private claimService: ClaimService, private eligibilityService: EligibilityService, private notificationService: NotificationsService, private store: Store, private actions$: Actions, public uploadService: UploadService) { }
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService,
-    public commen: SharedServices, public routeActive: ActivatedRoute,
-    public router: Router, public searchService: SearchService,
-    private dialogService: DialogService,
-    private claimService: ClaimService,
-    private eligibilityService: EligibilityService,
-    private notificationService: NotificationsService,
-    private store: Store,
-    private actions$: Actions) {
-  }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
     this.routerSubscription.unsubscribe();
@@ -133,6 +126,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   waitingEligibilityCheck: boolean = false;
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility: boolean = false;
+  validationTabSelected = 0;
+  paginatedResult: PaginatedResult<ClaimInfo>;
+  summaryStatus: string;
+  results: any[];
+  showValidationTab = false;
+
+  get summary(): UploadSummary {
+    return this.uploadService.summary;
+  }
 
   ngOnInit() {
     this.fetchData();
@@ -215,6 +217,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+    this.showValidationTab = false;
     for (status in ClaimStatus) {
       if (status == ClaimStatus.INVALID) continue;
       let statusCode;
@@ -263,9 +266,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == "2") {
-        const summary = new SearchStatusSummary(event.body);
+        const summary: any = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
           this.summaries.push(summary);
+          if (summary.statuses[0] === ClaimStatus.NotAccepted.toLowerCase()) {
+            this.showValidationTab = true;
+            this.validationTabSelected = this.commen.showValidationDetailsTab ? 1 : 0;
+            this.getUploadSummary(+this.uploadId);
+          }
         }
       }
     }
@@ -562,7 +570,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName
         }
-        window.setTimeout(() => this.summaries = summaries, 1000);
+        window.setTimeout(() => {
+          this.summaries = summaries;
+        }, 1000);
       } else {
         flag = true;
         this.fetchData();
@@ -777,5 +787,94 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get showEligibilityButton() {
     return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all');
+  }
+
+  getValidationDetails() {
+    const value = this.summary;
+    if (value.noOfNotAcceptedClaims != 0) {
+      this.summaryStatus = 'NotAccepted';
+      this.getUploadedClaimsDetails(this.summaryStatus);
+    }
+  }
+
+  getUploadedClaimsDetails(status?: string, page?: number, pageSize?: number) {
+    if (this.commen.loading) { return; }
+    this.commen.loadingChanged.next(true);
+    if (this.paginatedResult != null) {
+      this.paginatedResult.content = [];
+    }
+    this.uploadService.getUploadedClaimsDetails(this.commen.providerId, this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.commen.loadingChanged.next(false);
+        this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
+        this.results = [];
+        this.paginatedResult.content.forEach(result => {
+          if (result.claimErrors != null && result.claimErrors.length == 0) {
+            const col: any = {};
+            col.description = '-';
+            col.fieldName = '-';
+            col.fileRowNumber = result.fileRowNumber || '';
+            col.provclaimno = result.provclaimno || '';
+            col.uploadStatus = result.uploadStatus || '';
+            col.uploadSubStatus = result.uploadSubStatus || '';
+            this.results.push(col);
+          } else {
+            result.claimErrors.forEach(error => {
+              const col: any = {};
+              col.code = error.code || '';
+              col.description = error.errorDescription || '';
+              col.fieldName = error.fieldName || '';
+              col.fileRowNumber = result.fileRowNumber || '';
+              col.provclaimno = result.provclaimno || '';
+              col.uploadStatus = result.uploadStatus || '';
+              col.uploadSubStatus = result.uploadSubStatus || '';
+              this.results.push(col);
+            });
+          }
+        });
+        this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x, i) => i);
+        this.manualPage = this.paginatedResult.number;
+      }
+    }, eventError => {
+      this.commen.loadingChanged.next(false);
+    });
+  }
+
+  getUploadSummary(uploadId) {
+    this.uploadService.getUploadedSummary(this.commen.providerId, uploadId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.commen.loadingChanged.next(false);
+        const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
+        this.uploadService.summaryChange.next(summary);
+        this.getValidationDetails();
+      }
+    }, eventError => {
+      this.commen.loadingChanged.next(false);
+    });
+  }
+
+  summaryPaginatorAction(event) {
+    this.manualPage = event.pageIndex;
+    this.getUploadedClaimsDetails(this.summaryStatus, event.pageIndex, event.pageSize);
+  }
+
+  goToSummaryFirstPage() {
+    this.summaryPaginatorAction({ pageIndex: 0, pageSize: 10 });
+  }
+
+  goToSummaryPrePage() {
+    if (this.paginatedResult.number != 0) {
+      this.summaryPaginatorAction({ pageIndex: this.paginatedResult.number - 1, pageSize: 10 });
+    }
+  }
+
+  goToSummaryNextPage() {
+    if (this.paginatedResult.number + 1 < this.paginatedResult.totalPages) {
+      this.summaryPaginatorAction({ pageIndex: this.paginatedResult.number + 1, pageSize: 10 });
+    }
+  }
+
+  goToSummaryLastPage() {
+    this.summaryPaginatorAction({ pageIndex: this.paginatedResult.totalPages - 1, pageSize: 10 });
   }
 }

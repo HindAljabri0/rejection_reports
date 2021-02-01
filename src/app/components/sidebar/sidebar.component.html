@@ -19,18 +19,18 @@
                     <span class="text">Upload Claims</span>
                 </a>
             </li>
-            <li i18n="@@uploadsummary" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
+            <!-- <li i18n="@@uploadsummary" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
                 <a routerLink="summary" routerLinkActive="is-active">
                     <img src="assets/summary.svg" />
                     <span class="text">Upload Summary</span>
                 </a>
-            </li>
-            <li i18n="@@uploadsummary" class="new" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
+            </li> -->
+            <!-- <li i18n="@@uploadsummary" class="new" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
                 <a routerLink="summary" routerLinkActive="is-active">
                     <img src="assets/summary.svg" />
                     <span class="text">Upload Summary</span>
                 </a>
-            </li>
+            </li> -->
             <li i18n="@@createclaim">
                 <a routerLink="claims/add" routerLinkActive="is-active">
                     <img src="assets/addclaim.svg" />
@@ -75,13 +75,15 @@
             <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
             <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
                 <li i18n="@@gmsummaryreport">
-                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}"
+                        routerLinkActive="is-active">
                         <img src="assets/payment_report.svg" />
                         <span class="text">Summary Report</span>
                     </a>
                 </li>
                 <li i18n="@@gmebillingreport">
-                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}"
+                        routerLinkActive="is-active">
                         <img src="assets/payment_report.svg" />
                         <span class="text">E-Billing Report</span>
                     </a>

@@ -44,7 +44,6 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
     this.paymentReference = paymentReference;
     this.reportService.getPaymentClaimSummary(this.providerId, paymentReference, this.page, this.pageSize).subscribe(event => {
       if(event instanceof HttpResponse){
-        console.log(event)
         this.claimsSummaryResult = new PaginatedResult(event.body, PaymentClaimSummary);
         const pages = Math.ceil((this.claimsSummaryResult.totalElements / this.paginator.pageSize));
         this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);

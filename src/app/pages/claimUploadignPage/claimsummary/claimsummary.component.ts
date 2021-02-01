@@ -53,6 +53,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   constructor(public location: Location, public uploadService: UploadService, public commen: SharedServices, private router: Router,
     private routeActive: ActivatedRoute, private dialogService: DialogService, private claimService: ClaimService) {
+
     this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -293,6 +294,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     return this.commen.getCardAccentColor(status);
   }
   viewClaims() {
+    this.commen.showValidationDetailsTabChange.next(false);
     this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } });
   }
 

@@ -18,7 +18,7 @@ export class SearchService {
       if (casetype != null) requestURL += '&casetype=' + casetype;
     }
     if (batchId != null) {
-      if(batchId.includes('-')){
+      if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString();
@@ -37,7 +37,7 @@ export class SearchService {
   }
   formatDate(date: string) {
     const splittedDate = date.split('-');
-    if(splittedDate[2].length == 4){
+    if (splittedDate[2].length == 4) {
       const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
       return formattedDate;
     } else return date;
@@ -53,7 +53,7 @@ export class SearchService {
       if (casetype != null) requestURL += '&casetype=' + casetype;
     }
     if (batchId != null) {
-      if(batchId.includes('-')){
+      if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
       requestURL += 'batchId=' + batchId + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
@@ -76,7 +76,7 @@ export class SearchService {
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
     } else if (batchId != null) {
-      if(batchId.includes('-')){
+      if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
       requestURL += `&batchId=${batchId}`;
@@ -100,6 +100,15 @@ export class SearchService {
   getTopFiveRejections(rejectionBy: string, providerId: string, payerId: string, fromDate: string, toDate: string) {
     const requestURL = `/providers/${providerId}/top/${rejectionBy.toUpperCase()}?payerId=${payerId}&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+
+  getUploadSummaries(providerId: string, page?: number, size?: number) {
+    if (page == null) page = 0;
+    if (size == null) size = 10;
+    const requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
     return this.http.request(request);
   }
 }
