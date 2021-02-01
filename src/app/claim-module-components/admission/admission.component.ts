@@ -12,7 +12,7 @@ import { Admission } from '../models/admission.model';
 @Component({
   selector: 'claim-admission',
   templateUrl: './admission.component.html',
-  styleUrls: ['./admission.component.css']
+  styles: []
 })
 export class AdmissionComponent implements OnInit {
 
