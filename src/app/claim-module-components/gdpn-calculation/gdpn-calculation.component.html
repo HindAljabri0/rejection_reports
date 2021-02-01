@@ -1,75 +1,75 @@
-<div class="block-card full-height">
-    <div class="row">
-        <div class="col-xl-12 col-md-6">
-            <ul class="claim-totals">
-                <li class="title">Total Invoice 1</li>
-                <li>
-                    Gross Amount
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Invoice Discount
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Patient Share
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Patient Share VAT
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Invoice Net Amount
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Invoice Net VAT Amount
-                    <span class="value">0</span>
-                </li>
-            </ul>
-        </div>
-        <div class="col-xl-12 col-md-6">
-            <ul class="claim-totals">
-                <li class="separator d-xl-block d-none"></li>
-                <li class="title">Total Service 1</li>
-                <li>
-                    Gross Amount
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Net Amount
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Net VAT Amount
-                    <span class="value">0</span>
-                </li>
-                <li>
-                    Patient Share VAT Amount
-                    <span class="value">0</span>
-                </li>
-            </ul>
-        </div>
+<ul class="claim-totals-header">
+    <li>
+        Claim Amount
+        <span class="value">{{claim.claimGDPN.net.value}}</span>
+    </li>
+    <li class="right">
+        VAT
+        <span class="value">{{claim.claimGDPN.netVATamount.value}}</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-lg-12 col-md-6">
+        <ul class="claim-totals">
+            <li class="title">Total Invoice 1</li>
+            <li>
+                Gross Amount
+                <span class="value">0</span>
+            </li>
+            <li>
+                Invoice Discount
+                <span class="value">0</span>
+            </li>
+            <li>
+                Patient Share
+                <span class="value">0</span>
+            </li>
+            <li>
+                Patient Share VAT
+                <span class="value">0</span>
+            </li>
+            <li>
+                Invoice Net Amount
+                <span class="value">0</span>
+            </li>
+            <li>
+                Invoice Net VAT Amount
+                <span class="value">0</span>
+            </li>
+        </ul>
     </div>
-    <ul class="claim-totals">
-        <li class="separator"></li>
-        <li class="text-light-pink">
-            *VAT Rate
-            <span class="value">15%</span>
-        </li>
-        <li class="separator"></li>
-        <li class="total">
-            Claim Amount
-            <span class="value">{{claim.claimGDPN.net.value}}</span>
-        </li>
-        <li class="total">
-            VAT
-            <span class="value">{{claim.claimGDPN.netVATamount.value}}</span>
-        </li>
-    </ul>
+    <div class="col-lg-12 col-md-6">
+        <ul class="claim-totals">
+            <li class="separator d-xl-block d-none"></li>
+            <li class="title">Total Service 1</li>
+            <li>
+                Gross Amount
+                <span class="value">0</span>
+            </li>
+            <li>
+                Net Amount
+                <span class="value">0</span>
+            </li>
+            <li>
+                Net VAT Amount
+                <span class="value">0</span>
+            </li>
+            <li>
+                Patient Share VAT Amount
+                <span class="value">0</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<ul class="claim-totals">
+    <li class="separator"></li>
+    <li class="text-light-pink">
+        *VAT Rate
+        <span class="value text-light-pink">15%</span>
+    </li>
+</ul>
 
-    <!-- <table *ngIf="selectedInvoice == -1">
+<!-- <table *ngIf="selectedInvoice == -1">
         <tbody>
             <tr>
                 <td><label>Gross Amount</label></td>
@@ -147,4 +147,3 @@
             </tbody>
         </table>
     </div> -->
-</div>

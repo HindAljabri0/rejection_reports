@@ -46,7 +46,7 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <button (click)="toggleComponentExpansion($event,i,j)" [class.text-danger]="componentHasErrors(i, j)" class="toggle-btn">
-                                Component {{(j+1)}}
+                                <span>Component {{(j+1)}}</span>
                                 <mat-icon *ngIf="componentHasErrors(i, j)">error</mat-icon>
                             </button>
                             <button (click)="onDeleteComponentClick($event, i, j)" class="text-danger delete-btn" *ngIf="pageMode == 'EDIT'">
@@ -55,19 +55,19 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="row small-gutter">
-                        <div class="col-md-4">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group" [class.has-error]="fieldHasError('componentCode:'+i+':'+j)" [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
                                 <label class="control-label">Component Code<span class="asterisk">*</span></label>
                                 <input [formControl]="component.componentCode" class="form-control" type="text">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group" [class.has-error]="fieldHasError('componentLabResult:'+i+':'+j)" [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)">
                                 <label class="control-label">LAB Result</label>
                                 <input [formControl]="component.componentLabResult" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                             <div class="form-group" [class.has-error]="fieldHasError('componentResultUnit:'+i+':'+j)" [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)">
                                 <label class="control-label">Result Unit</label>
                                 <input [formControl]="component.componentResultUnit" class="form-control">
