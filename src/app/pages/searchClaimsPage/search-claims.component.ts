@@ -61,6 +61,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
+    localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
     this.routerSubscription.unsubscribe();
   }
 
@@ -305,6 +306,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           this.claims = this.searchResult.content;
+          this.storeSearchResultsForClaimViewPagination();
           this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
           this.store.dispatch(storeClaims({ claims: this.claims, currentPage: this.searchResult.number, maxPages: this.searchResult.totalPages, pageSize: this.searchResult.size }));
           this.selectedClaimsCountOfPage = 0;
@@ -363,6 +365,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }
       this.commen.loadingChanged.next(false);
     });
+  }
+  storeSearchResultsForClaimViewPagination() {
+    if (this.claims != null && this.claims.length > 0) {
+      const claimsIds = this.claims.map(claim => claim.claimId);
+      localStorage.setItem(SEARCH_TAB_RESULTS_KEY, claimsIds.join(','));
+    } else {
+      localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
+    }
   }
 
   submitSelectedClaims() {
@@ -796,3 +806,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
 }
+
+
+export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
