@@ -8,7 +8,7 @@
             </thead>
         </table>
     </div>
-    <div class="batchContent" [ngClass]="{'cardInCenter':isUploadHistroyCenter}">
+    <div class="batchContent" [ngClass]="{'cardInCenter':isUploadHistroyCenter}" *ngIf='!fromRightSideBar'>
         <table style="text-align: start;">
             <tr>
                 <th style="padding: 20px 15px; font-size: medium;">
