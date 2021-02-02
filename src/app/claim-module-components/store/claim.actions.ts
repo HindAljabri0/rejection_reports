@@ -34,10 +34,7 @@ export const addClaimErrors = createAction('[ Claim ] add errors', props<{ modul
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: string }>());
 export const toEditMode = createAction('[ Claim ] change page mode to edit');
 export const cancelEdit = createAction('[ Claim ] cancel editing');
-export const goToLastClaim = createAction('[ CLaim ] go to last claim');
-export const goToNextClaim = createAction('[ Claim ] go to next claim');
-export const goToPreviousClaim = createAction('[ Claim ] go to previous claim');
-export const goToFirstClaim = createAction('[ CLaim ] go to first claim');
+export const goToClaim = createAction('[ CLaim ] go to claim', props<{ claimId: string }>());
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: string }>());
@@ -54,7 +51,7 @@ export const updatePhysicianId = createAction('[ Claim Physician Info ] update P
 export const updatePhysicianName = createAction('[ Claim Physician Info ] update Physician name', props<{ physicianName: string }>());
 export const updatePhysicianCategory = createAction('[ Claim Physician Info ] update physician category', props<{ physicianCategory: string }>());
 export const updateDepartment = createAction('[ Claim Physician Info ] update department', props<{ department: string }>());
-export const updatePageType = createAction('[ Claim Physician Info ] update page type', props<{pageType:ClaimPageType}>());
+export const updatePageType = createAction('[ Claim Physician Info ] update page type', props<{ pageType: ClaimPageType }>());
 
 export const updateDiagnosisList = createAction('[ Claim Diagnosis List] update list', props<{ list: Diagnosis[] }>());
 

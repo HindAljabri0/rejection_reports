@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation, goToNextClaim, goToPreviousClaim, goToLastClaim, goToFirstClaim } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation, goToClaim } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -237,47 +237,10 @@ export class ClaimEffects {
         ))
     ));
 
-    goToLastClaim$ = createEffect(() => this.actions$.pipe(
-        ofType(goToLastClaim),
-        withLatestFrom(getPaginationControl),
-        tap(paginationControl => {
-            if (paginationControl.currentIndex != paginationControl.size - 1 && paginationControl.size > 0) {
-                this.store.dispatch(cancelClaim());
-                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[paginationControl.size - 1]}`, edit: false }));
-            }
-        })
-    ), { dispatch: false });
-
-    goToNextClaim$ = createEffect(() => this.actions$.pipe(
-        ofType(goToNextClaim),
-        withLatestFrom(getPaginationControl),
-        tap(paginationControl => {
-            if (paginationControl.currentIndex >= 0 && paginationControl.currentIndex < paginationControl.size - 1) {
-                this.store.dispatch(cancelClaim());
-                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[paginationControl.currentIndex + 1]}`, edit: false }));
-            }
-        })
-    ), { dispatch: false });
-
-    goToPreviousClaim$ = createEffect(() => this.actions$.pipe(
-        ofType(goToPreviousClaim),
-        withLatestFrom(getPaginationControl),
-        tap(paginationControl => {
-            if (paginationControl.currentIndex > 0 && paginationControl.currentIndex < paginationControl.size) {
-                this.store.dispatch(cancelClaim());
-                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[paginationControl.currentIndex - 1]}`, edit: false }));
-            }
-        })
-    ), { dispatch: false });
-
-    goToFirstClaim$ = createEffect(() => this.actions$.pipe(
-        ofType(goToFirstClaim),
-        withLatestFrom(getPaginationControl),
-        tap(paginationControl => {
-            if (paginationControl.currentIndex != 0 && paginationControl.size > 0) {
-                this.store.dispatch(cancelClaim());
-                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[0]}`, edit: false }));
-            }
+    goToClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(goToClaim),
+        tap(value => {
+            this.router.navigate(['/claims', value.claimId]).then(() => location.reload());
         })
     ), { dispatch: false });
 
