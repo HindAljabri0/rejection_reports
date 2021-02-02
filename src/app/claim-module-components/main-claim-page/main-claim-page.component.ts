@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults } from '../store/claim.actions';
+import { loadLOVs, cancelClaim, startValidatingClaim, setLoading, saveInvoices_Services, openCreateByApprovalDialog, retrieveClaim, toEditMode, cancelEdit, saveLabResults, goToClaim } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
-import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps } from '../store/claim.reducer';
+import { getClaim, getClaimModuleError, getClaimModuleIsLoading, getDepartments, getPageMode, getPageType, ClaimPageMode, ClaimPageType, getRetrievedClaimProps, getPaginationControl } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
@@ -27,6 +27,12 @@ export class MainClaimPageComponent implements OnInit {
 
   pageMode: ClaimPageMode;
   pageType: ClaimPageType;
+
+  paginationControl: {
+    currentIndex: number;
+    size: number;
+    searchTabCurrentResults: number[];
+  };
 
   constructor(private router: Router, private store: Store, private sharedService: SharedServices, private dialogService: DialogService, private location: Location) {
     store.select(getPageMode).subscribe(claimPageMode => {
@@ -82,6 +88,10 @@ export class MainClaimPageComponent implements OnInit {
     this.store.select(getClaimModuleIsLoading).subscribe(loading => {
       this.isLoading = loading;
       this.sharedService.loadingChanged.next(loading);
+    });
+
+    this.store.select(getPaginationControl).subscribe(control => {
+      this.paginationControl = control;
     });
 
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
@@ -161,6 +171,24 @@ export class MainClaimPageComponent implements OnInit {
           return 'Could not load claim at the moment. Please try again later.'
       }
     }
+  }
+
+  goToFirstPage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex != 0)
+
+      this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[0]}` }));
+  }
+  goToPrePage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex != 0)
+      this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex-1]}` }));
+  }
+  goToNextPage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size)
+      this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex+1]}` }));
+  }
+  goToLastPage() {
+    if (this.paginationControl != null && this.paginationControl.currentIndex != this.paginationControl.size - 1)
+      this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1]}` }));
   }
 
   get editable() {

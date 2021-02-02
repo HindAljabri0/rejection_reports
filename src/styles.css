@@ -225,6 +225,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .block-footer{display: flex;align-items: center;color: #3060AA;background-color: white;border-radius: 0 0 6px 6px;padding: 12px;min-height: 60px;}
 .block-footer.sticky-bottom{position:sticky;bottom:0;z-index: 7;border-top:1px solid #bebebe;}
 .block-footer>.right-block{margin-left: auto;display: flex;}
+.block-footer>.middle-block{margin-left: auto;}
 .block-footer>.left-block{padding-right: 12px;flex-grow:1;}
 .block-card{background: #fff;border-radius: 6px;padding: 14px;}
 .block-card.full-height{margin-bottom: 14px;height: calc(100% - 14px);}

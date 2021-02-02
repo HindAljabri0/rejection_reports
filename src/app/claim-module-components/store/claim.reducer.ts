@@ -210,7 +210,7 @@ export function claimReducer(state, action) {
 }
 
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
-export const getPaginationControl = createSelector(claimSelector, (state) => state.paginationControl);
+export const getPaginationControl = createSelector(claimSelector, (state) => state != null ? state.paginationControl : null);
 export const getIsApprovalFormLoading = createSelector(claimSelector, (state) => state.approvalFormLoading);
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
 export const getCaseType = createSelector(claimSelector, (state) => state.claim != null && state.claim.caseInformation != null ? state.claim.caseInformation.caseType : null)
