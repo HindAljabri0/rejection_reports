@@ -1,8 +1,7 @@
-import { AttachmentService } from './../../services/attachmentService/attachment.service';
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
 import { HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
@@ -23,8 +22,7 @@ import { Store } from '@ngrx/store';
 import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClaims } from './store/search.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
-import { ClaimInfo } from 'src/app/models/claimInfo';
+import { ClaimError } from 'src/app/models/claimError';
 
 @Component({
   selector: 'app-search-claims',
@@ -59,7 +57,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   file: File;
 
   isManagingAttachments = false;
-  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService: DialogService, private claimService: ClaimService, private eligibilityService: EligibilityService, private notificationService: NotificationsService, private store: Store, private actions$: Actions, public uploadService: UploadService) { }
+  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService: DialogService, private claimService: ClaimService, private eligibilityService: EligibilityService, private notificationService: NotificationsService, private store: Store, private actions$: Actions) { }
 
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
@@ -127,14 +125,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility: boolean = false;
   validationTabSelected = 0;
-  paginatedResult: PaginatedResult<ClaimInfo>;
-  summaryStatus: string;
+  validationDetails: ClaimError[];
   results: any[];
   showValidationTab = false;
-
-  get summary(): UploadSummary {
-    return this.uploadService.summary;
-  }
 
   ngOnInit() {
     this.fetchData();
@@ -269,11 +262,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         const summary: any = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
           this.summaries.push(summary);
-          if (summary.statuses[0] === ClaimStatus.NotAccepted.toLowerCase()) {
-            this.showValidationTab = true;
             this.validationTabSelected = this.commen.showValidationDetailsTab ? 1 : 0;
-            this.getUploadSummary(+this.uploadId);
-          }
         }
       }
     }
@@ -329,6 +318,24 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.searchResult.number;
+          // Validation Details
+          const content = event.body['content'];
+          this.validationDetails = [];
+          content.forEach((element) => {
+            if (element.claimErrors && element.claimErrors.length > 0) {
+              const claimErrors = element.claimErrors;
+              claimErrors.forEach((error) => {
+                const claimError = new ClaimError();
+                claimError.providerClaimeNo = element.providerClaimNumber;
+                claimError.status = element.status;
+                claimError.fieldName = error.fieldName;
+                claimError.description = error.description;
+                claimError.code = error.code;
+                this.validationDetails.push(claimError);
+              });
+            }
+          });
+
         } else if ((event.status / 100).toFixed() == "4") {
           console.log("400");
         } else if ((event.status / 100).toFixed() == "5") {
@@ -787,94 +794,5 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get showEligibilityButton() {
     return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all');
-  }
-
-  getValidationDetails() {
-    const value = this.summary;
-    if (value.noOfNotAcceptedClaims != 0) {
-      this.summaryStatus = 'NotAccepted';
-      this.getUploadedClaimsDetails(this.summaryStatus);
-    }
-  }
-
-  getUploadedClaimsDetails(status?: string, page?: number, pageSize?: number) {
-    if (this.commen.loading) { return; }
-    this.commen.loadingChanged.next(true);
-    if (this.paginatedResult != null) {
-      this.paginatedResult.content = [];
-    }
-    this.uploadService.getUploadedClaimsDetails(this.commen.providerId, this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.commen.loadingChanged.next(false);
-        this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
-        this.results = [];
-        this.paginatedResult.content.forEach(result => {
-          if (result.claimErrors != null && result.claimErrors.length == 0) {
-            const col: any = {};
-            col.description = '-';
-            col.fieldName = '-';
-            col.fileRowNumber = result.fileRowNumber || '';
-            col.provclaimno = result.provclaimno || '';
-            col.uploadStatus = result.uploadStatus || '';
-            col.uploadSubStatus = result.uploadSubStatus || '';
-            this.results.push(col);
-          } else {
-            result.claimErrors.forEach(error => {
-              const col: any = {};
-              col.code = error.code || '';
-              col.description = error.errorDescription || '';
-              col.fieldName = error.fieldName || '';
-              col.fileRowNumber = result.fileRowNumber || '';
-              col.provclaimno = result.provclaimno || '';
-              col.uploadStatus = result.uploadStatus || '';
-              col.uploadSubStatus = result.uploadSubStatus || '';
-              this.results.push(col);
-            });
-          }
-        });
-        this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x, i) => i);
-        this.manualPage = this.paginatedResult.number;
-      }
-    }, eventError => {
-      this.commen.loadingChanged.next(false);
-    });
-  }
-
-  getUploadSummary(uploadId) {
-    this.uploadService.getUploadedSummary(this.commen.providerId, uploadId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.commen.loadingChanged.next(false);
-        const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
-        this.uploadService.summaryChange.next(summary);
-        this.getValidationDetails();
-      }
-    }, eventError => {
-      this.commen.loadingChanged.next(false);
-    });
-  }
-
-  summaryPaginatorAction(event) {
-    this.manualPage = event.pageIndex;
-    this.getUploadedClaimsDetails(this.summaryStatus, event.pageIndex, event.pageSize);
-  }
-
-  goToSummaryFirstPage() {
-    this.summaryPaginatorAction({ pageIndex: 0, pageSize: 10 });
-  }
-
-  goToSummaryPrePage() {
-    if (this.paginatedResult.number != 0) {
-      this.summaryPaginatorAction({ pageIndex: this.paginatedResult.number - 1, pageSize: 10 });
-    }
-  }
-
-  goToSummaryNextPage() {
-    if (this.paginatedResult.number + 1 < this.paginatedResult.totalPages) {
-      this.summaryPaginatorAction({ pageIndex: this.paginatedResult.number + 1, pageSize: 10 });
-    }
-  }
-
-  goToSummaryLastPage() {
-    this.summaryPaginatorAction({ pageIndex: this.paginatedResult.totalPages - 1, pageSize: 10 });
   }
 }
