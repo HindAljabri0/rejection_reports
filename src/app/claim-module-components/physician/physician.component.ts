@@ -10,7 +10,7 @@ import { Claim } from '../models/claim.model';
 @Component({
   selector: 'claim-physician-header',
   templateUrl: './physician.component.html',
-  styleUrls: ['./physician.component.css']
+  styles: []
 })
 export class PhysicianComponent implements OnInit {
 
@@ -143,7 +143,7 @@ export class PhysicianComponent implements OnInit {
     return '';
   }
 
-  departmentsHasCode(code){
+  departmentsHasCode(code) {
     return this.departments.findIndex(dep => dep.departmentId == code) > -1;
   }
 }

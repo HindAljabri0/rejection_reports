@@ -1,42 +1,44 @@
-<div class="mainCardBody">
-    <div class="leftComponent">
-        <label>Temperature</label>
-        <input [ngClass]="{'fieldError': fieldHasError('temperature')}" type="number"
-            [formControl]="temperatureController" (change)="updateClaim('temperature')"
-            [matTooltip]="getFieldError('temperature')">
+<div class="row">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('temperature')" [matTooltip]="getFieldError('temperature')">
+            <label class="control-label">Temperature</label>
+            <input type="number" class="form-control" [formControl]="temperatureController" (change)="updateClaim('temperature')">
+        </div>
     </div>
-    <div class="rightComponent">
-        <label>Blood Pressure</label>
-        <input [ngClass]="{'fieldError': fieldHasError('bloodPressure')}" [formControl]="bloodPressureController"
-            (change)="updateClaim('bloodPressure')" [matTooltip]="getFieldError('bloodPressure')">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('bloodPressure')" [matTooltip]="getFieldError('bloodPressure')">
+            <label class="control-label">Blood Pressure</label>
+            <input [formControl]="bloodPressureController" (change)="updateClaim('bloodPressure')" class="form-control">
+        </div>
     </div>
-
-    <div class="leftComponent">
-        <label>Respiratory Rate</label>
-        <input [ngClass]="{'fieldError': fieldHasError('respiratoryRate')}" type="number"
-            [formControl]="respiratoryRateController" (change)="updateClaim('respiratoryRate')"
-            [matTooltip]="getFieldError('respiratoryRate')">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('respiratoryRate')" [matTooltip]="getFieldError('respiratoryRate')">
+            <label class="control-label">Respiratory Rate</label>
+            <input type="number" [formControl]="respiratoryRateController" (change)="updateClaim('respiratoryRate')" class="form-control">
+        </div>
     </div>
-    <div class="rightComponent">
-        <label>Pulse</label>
-        <input [ngClass]="{'fieldError': fieldHasError('pulse')}" type="number" [formControl]="pulseController"
-            (change)="updateClaim('pulse')" [matTooltip]="getFieldError('pulse')">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('pulse')" [matTooltip]="getFieldError('pulse')">
+            <label class="control-label">Pulse</label>
+            <input type="number" [formControl]="pulseController" (change)="updateClaim('pulse')" class="form-control">
+        </div>
     </div>
-
-    <div class="leftComponent">
-        <label>Weight</label>
-        <input [ngClass]="{'fieldError': fieldHasError('weight')}" type="number" [formControl]="weightController"
-            (change)="updateClaim('weight')" [matTooltip]="getFieldError('weight')">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('weight')" [matTooltip]="getFieldError('weight')">
+            <label class="control-label">Weight</label>
+            <input type="number" [formControl]="weightController" (change)="updateClaim('weight')" class="form-control">
+        </div>
     </div>
-    <div class="rightComponent">
-        <label>Height</label>
-        <input [ngClass]="{'fieldError': fieldHasError('height')}" type="number" [formControl]="heightController"
-            (change)="updateClaim('height')" [matTooltip]="getFieldError('height')">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('height')" [matTooltip]="getFieldError('height')">
+            <label class="control-label">Height</label>
+            <input type="number" [formControl]="heightController" (change)="updateClaim('height')" class="form-control">
+        </div>
     </div>
-    <div class="leftComponent">
-        <label>Last Menstruation Period</label>
-        <input [ngClass]="{'fieldError': fieldHasError('lastMenstruationPeriod')}" type="date"
-            [formControl]="lastMenstruationPeriodController" (change)="updateClaim('lastMenstruationPeriod')"
-            [matTooltip]="getFieldError('lastMenstruationPeriod')">
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="form-group" [class.has-error]="fieldHasError('lastMenstruationPeriod')" [matTooltip]="getFieldError('lastMenstruationPeriod')">
+            <label class="control-label">Last Menstruation Period</label>
+            <input type="date" [formControl]="lastMenstruationPeriodController" (change)="updateClaim('lastMenstruationPeriod')" class="form-control">
+        </div>
     </div>
 </div>

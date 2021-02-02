@@ -19,7 +19,7 @@ import { ServiceView } from '../models/serviceView.model';
 @Component({
   selector: 'claim-invoices-services',
   templateUrl: './invoices-services.component.html',
-  styleUrls: ['./invoices-services.component.css']
+  styles: []
 })
 export class InvoicesServicesComponent implements OnInit {
 
@@ -47,7 +47,8 @@ export class InvoicesServicesComponent implements OnInit {
       netVatRate: FormControl,
       patientShareVatRate: FormControl,
       priceCorrection: number,
-      rejection: number
+      rejection: number,
+      isOpen: boolean
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -276,7 +277,8 @@ export class InvoicesServicesComponent implements OnInit {
       netVatRate: new FormControl(0),
       patientShareVatRate: new FormControl(0),
       priceCorrection: 0,
-      rejection: 0
+      rejection: 0,
+      isOpen: false
     });
     if (updateClaim == null || updateClaim)
       this.updateClaim();
@@ -308,25 +310,34 @@ export class InvoicesServicesComponent implements OnInit {
     this.createInvoiceFromControl(i);
   }
 
-  afterInvoiceExpanded(i: number) {
-    this.expandedInvoice = i;
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
+  toggleInvoice(i: number) {
+    if (this.expandedInvoice == -1) {
+      this.expandedInvoice = i;
+      this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
+    } else if (this.expandedInvoice == i) {
+      this.expandedInvoice = -1;
+      this.expandedService = -1;
+      this.createInvoiceFromControl(i);
+      this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
+    } else {
+      this.expandedInvoice = i;
+      this.createInvoiceFromControl(i);
+      this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
+    }
   }
 
-  afterServiceExpanded(j: number) {
-    this.expandedService = j;
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
-  }
-
-  afterInvoiceCollapse(i: number) {
-    this.expandedInvoice = -1;
-    this.expandedService = -1;
-    this.createInvoiceFromControl(i);
-    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
-  }
-
-  afterServiceCollapse(invoiceIndex, serviceIndex) {
-    this.expandedService = -1
+  toggleServiceExpansion(event, i, j) {
+    event.stopPropagation();
+    if (this.controllers[i].services[j].isOpen) {
+      this.expandedService = -1;
+      this.controllers[i].services[j].isOpen = false;
+    } else {
+      this.controllers[i].services.forEach(element => {
+        element.isOpen = false;
+      });
+      this.controllers[i].services[j].isOpen = true;
+      this.expandedService = j;
+    }
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
@@ -448,15 +459,9 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice) }));
   }
 
-
-  onAddAnathorInvoiceClick(event, index) {
-    event.stopPropagation();
-    this.afterInvoiceCollapse(index);
-    this.onAddInvoiceClick();
-  }
-
   onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex) {
     event.stopPropagation();
+    event.preventDefault();
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
       invoiceIndex: invoiceIndex,
@@ -464,12 +469,6 @@ export class InvoicesServicesComponent implements OnInit {
       invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ? new Date(this.controllers[invoiceIndex].invoiceDate.value) : null,
       serviceIndex: serviceIndex,
     }));
-  }
-
-  onAddAnathorServiceClick(event, invoiceIndex, serviceIndex) {
-    event.stopPropagation();
-    this.afterServiceCollapse(invoiceIndex, serviceIndex);
-    this.onAddServiceClick(invoiceIndex);
   }
 
   onAddInvoiceClick() {
@@ -516,6 +515,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services.splice(j, 1);
     this.createInvoiceFromControl(i);
     this.emptyOptions = false;
+    this.expandedService = -1;
     this.serviceCodeSearchError = null;
   }
 

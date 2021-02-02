@@ -56,8 +56,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
             data: data,
             closeOnNavigation: true,
-            height: '200px',
-            width: '600px',
+            panelClass: ['primary-dialog']
         }))
     ), { dispatch: false });
 

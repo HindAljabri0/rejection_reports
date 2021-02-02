@@ -1,49 +1,51 @@
-<mat-tab-group class="mainCardBody" (selectedTabChange)="changeTab($event)">
-    <mat-tab [label]="'General Information'">
-        <ng-template mat-tab-label>
-            <mat-icon *ngIf="genInfoTabHasErrors()" style="color: #bb3131;">error</mat-icon>
-            General Information
-        </ng-template>
-        <gen-info></gen-info>
-    </mat-tab>
-    <mat-tab [label]="'Diagnosis'">
-        <ng-template mat-tab-label>
-            <mat-icon *ngIf="diagnosisTabHasErrors()" style="color: #bb3131;">error</mat-icon>
-            Diagnosis
-        </ng-template>
-        <claim-diagnosis></claim-diagnosis>
-    </mat-tab>
-    <mat-tab [label]="'Illness'">
-        <claim-illnesses></claim-illnesses>
-    </mat-tab>
-    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
-        <claim-vital-signs></claim-vital-signs>
-    </mat-tab>
-    <mat-tab *ngIf="isInpatientClaim" [label]="'Admission'">
-        <ng-template mat-tab-label>
-            <mat-icon *ngIf="admissionTabHasErrors()" style="color: #bb3131;">error</mat-icon>
-            Admission
-        </ng-template>
-        <claim-admission></claim-admission>
-    </mat-tab>
-    <mat-tab [label]="'Attachments'">
-        <claim-attachments></claim-attachments>
-    </mat-tab>
-    <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'LAB Results'">
-        <ng-template mat-tab-label>
-            <mat-icon *ngIf="labResultsTabHasErrors()" style="color: #bb3131;">error</mat-icon>
-            LAB Results
-        </ng-template>
-        <claim-lab-results></claim-lab-results>
-    </mat-tab>
-    <mat-tab [label]="'Invoices & Services'">
-        <ng-template mat-tab-label>
-            <mat-icon *ngIf="invoiceServicesTabHasErrors()" style="color: #bb3131;">error</mat-icon>
-            Invoices & Services
-        </ng-template>
-        <claim-invoices-services></claim-invoices-services>
-    </mat-tab>
-    <mat-tab *ngIf="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" [label]="'Errors'">
-        <claim-errors></claim-errors>
-    </mat-tab>
-</mat-tab-group>
+<div class="block-card full-height p-0">
+    <mat-tab-group (selectedTabChange)="changeTab($event)" [dynamicHeight]="true" class="primary-tab claim-view-tabs">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon *ngIf="genInfoTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+                General Information
+            </ng-template>
+            <gen-info></gen-info>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon *ngIf="diagnosisTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+                Diagnosis
+            </ng-template>
+            <claim-diagnosis></claim-diagnosis>
+        </mat-tab>
+        <mat-tab [label]="'Illness'">
+            <claim-illnesses></claim-illnesses>
+        </mat-tab>
+        <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
+            <claim-vital-signs></claim-vital-signs>
+        </mat-tab>
+        <mat-tab *ngIf="isInpatientClaim">
+            <ng-template mat-tab-label>
+                <mat-icon *ngIf="admissionTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+                Admission
+            </ng-template>
+            <claim-admission></claim-admission>
+        </mat-tab>
+        <mat-tab [label]="'Attachments'">
+            <claim-attachments></claim-attachments>
+        </mat-tab>
+        <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'">
+            <ng-template mat-tab-label>
+                <mat-icon *ngIf="labResultsTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+                LAB Results
+            </ng-template>
+            <claim-lab-results></claim-lab-results>
+        </mat-tab>
+        <mat-tab *ngIf="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" [label]="'Errors'">
+            <claim-errors></claim-errors>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon *ngIf="invoiceServicesTabHasErrors()" style="color: #bb3131;">error</mat-icon>
+                Invoices & Services
+            </ng-template>
+            <claim-invoices-services></claim-invoices-services>
+        </mat-tab>
+    </mat-tab-group>
+</div>
