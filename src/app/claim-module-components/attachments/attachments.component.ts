@@ -9,7 +9,7 @@ import { ClaimPageMode, getClaim, getPageMode } from '../store/claim.reducer';
 @Component({
   selector: 'claim-attachments',
   templateUrl: './attachments.component.html',
-  styleUrls: ['./attachments.component.css']
+  styles: []
 })
 export class AttachmentsComponent implements OnInit {
 
