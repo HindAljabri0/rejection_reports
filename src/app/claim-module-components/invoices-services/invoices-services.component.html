@@ -4,13 +4,25 @@
             <ul>
                 <li class="title">Invoices</li>
                 <li *ngFor="let invoice of controllers; let i = index" [class.active]="expandedInvoice == i">
-                    <button type="button" title="Invoice {{(i+1)}}" class="list-btn" [class.text-danger]="invoiceHasErrors(i)" (click)="toggleInvoice(i)">
-                        <p>
-                            Invoice {{(i+1)}}
-                            <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
-                        </p>
-                        <span class="right-block">
-                            <p>{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}</p>
+                    <button type="button" title="Invoice {{(i+1)}}" class="list-btn invoice-btn" [class.text-danger]="invoiceHasErrors(i)" (click)="toggleInvoice(i)">
+                        <span>
+                            <span>
+                                <span class="value title">Invoice {{(i+1)}}</span>
+                                <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
+                            </span>
+                            <span class="right value">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}</span>
+                        </span>
+                        <span>
+                            <span>Invoice No.</span>
+                            <span class="right value">{{invoice.invoice.invoiceNumber}}</span>
+                        </span>
+                        <span>
+                            <span>Net - <span class="value">{{invoice.invoice.invoiceGDPN.net.value}}</span></span>
+                            <span class="right">VAT - <span class="value">{{invoice.invoice.invoiceGDPN.netVATamount.value}}</span></span>
+                        </span>
+                        <span>
+                            <span>No. of Services</span>
+                            <span class="right value">{{invoice.services.length}}</span>
                         </span>
                     </button>
                     <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick($event, i)"
