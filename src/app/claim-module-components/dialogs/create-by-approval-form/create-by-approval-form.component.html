@@ -1,15 +1,25 @@
-<h1 mat-dialog-title style="color: #3060AA;">{{title}}</h1>
-<div mat-dialog-content>
-    <div class="formBody" *ngIf="!loading">
-        <input class="input formElement" [ngClass]="{'fieldError': approvalNumberController.invalid && approvalNumberController.touched}" type="text" [formControl]="approvalNumberController" required cdkFocusInitial placeholder="Approval Number">
-        <select class="input formElement" [ngClass]="{'fieldError': payersHasError}" (change)="selectedPayer = $event.target.value; payersHasError = false;" required>
-            <option value="-1">Select Payer</option>
-            <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
-        </select>
+<div class="dialog-body">
+    <h3 class="dialog-title">{{title}}</h3>
+    <div class="row small-gutter" *ngIf="!loading">
+        <div class="col-md-7">
+            <div class="form-group form-group-lg" [class.has-error]="approvalNumberController.invalid && approvalNumberController.touched">
+                <input class="form-control" type="text" [formControl]="approvalNumberController" required cdkFocusInitial placeholder="Approval Number">
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group form-group-lg" [class.has-error]="payersHasError">
+                <select class="form-control custom-select-control" (change)="selectedPayer = $event.target.value; payersHasError = false;" required>
+                    <option value="-1">Select Payer</option>
+                    <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
+                </select>
+            </div>
+        </div>
     </div>
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-</div>
-<div mat-dialog-actions style="text-align: end; margin-top: 20px;">
-    <button class="formElement" mat-button color="primary" style="margin-left: auto;" (click)="createWithOutApproval()" [disabled]="loading">No, I Don't</button>
-    <button class="formElement" mat-raised-button color="primary" (click)="createWithpproval()" [disabled]="loading">Retrieve</button>
+    <div class="form-group form-group-lg" *ngIf="loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="btn-list text-right">
+        <button mat-button (click)="createWithOutApproval()" [disabled]="loading">No, I Don't</button>
+        <button mat-flat-button color="primary" (click)="createWithpproval()" [disabled]="loading">Retrieve</button>
+    </div>
 </div>

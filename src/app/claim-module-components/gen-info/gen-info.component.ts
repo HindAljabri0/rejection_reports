@@ -11,7 +11,7 @@ import { Claim } from '../models/claim.model';
 @Component({
   selector: 'gen-info',
   templateUrl: './gen-info.component.html',
-  styleUrls: ['./gen-info.component.css']
+  styles: []
 })
 export class GenInfoComponent implements OnInit {
 

@@ -34,6 +34,10 @@ export const addClaimErrors = createAction('[ Claim ] add errors', props<{ modul
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: string }>());
 export const toEditMode = createAction('[ Claim ] change page mode to edit');
 export const cancelEdit = createAction('[ Claim ] cancel editing');
+export const goToLastClaim = createAction('[ CLaim ] go to last claim');
+export const goToNextClaim = createAction('[ Claim ] go to next claim');
+export const goToPreviousClaim = createAction('[ Claim ] go to previous claim');
+export const goToFirstClaim = createAction('[ CLaim ] go to first claim');
 //Patient
 export const updatePatientName = createAction('[ Claim Patient Info ] update full name', props<{ name: string }>());
 export const updatePatientGender = createAction('[ Claim Patient Info ] update gender', props<{ gender: string }>());

@@ -5,7 +5,7 @@ import { getRetrievedClaimProps } from '../store/claim.reducer';
 @Component({
   selector: 'claim-errors',
   templateUrl: './claim-errors.component.html',
-  styleUrls: ['./claim-errors.component.css']
+  styles: []
 })
 export class ClaimErrorsComponent implements OnInit {
 

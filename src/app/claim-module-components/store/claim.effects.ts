@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation, goToNextClaim, goToPreviousClaim, goToLastClaim, goToFirstClaim } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -8,7 +8,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimValidationService } from '../services/claimValidationService/claim-validation.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
-import { getClaim, getClaimModuleError, getClaimObjectErrors, getDepartments, getPageMode, getRetrievedClaimId, getRetrievedClaimProps } from './claim.reducer';
+import { getClaim, getClaimObjectErrors, getDepartments, getPageMode, getPaginationControl, getRetrievedClaimId } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -56,8 +56,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
             data: data,
             closeOnNavigation: true,
-            height: '200px',
-            width: '600px',
+            panelClass: ['primary-dialog']
         }))
     ), { dispatch: false });
 
@@ -237,5 +236,49 @@ export class ClaimEffects {
             catchError(err => of({ type: setError.type, error: { code: 'CLAIM_RETRIEVE_ERROR' } }))
         ))
     ));
+
+    goToLastClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(goToLastClaim),
+        withLatestFrom(getPaginationControl),
+        tap(paginationControl => {
+            if (paginationControl.currentIndex != paginationControl.size - 1 && paginationControl.size > 0) {
+                this.store.dispatch(cancelClaim());
+                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[paginationControl.size - 1]}`, edit: false }));
+            }
+        })
+    ), { dispatch: false });
+
+    goToNextClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(goToNextClaim),
+        withLatestFrom(getPaginationControl),
+        tap(paginationControl => {
+            if (paginationControl.currentIndex >= 0 && paginationControl.currentIndex < paginationControl.size - 1) {
+                this.store.dispatch(cancelClaim());
+                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[paginationControl.currentIndex + 1]}`, edit: false }));
+            }
+        })
+    ), { dispatch: false });
+
+    goToPreviousClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(goToPreviousClaim),
+        withLatestFrom(getPaginationControl),
+        tap(paginationControl => {
+            if (paginationControl.currentIndex > 0 && paginationControl.currentIndex < paginationControl.size) {
+                this.store.dispatch(cancelClaim());
+                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[paginationControl.currentIndex - 1]}`, edit: false }));
+            }
+        })
+    ), { dispatch: false });
+
+    goToFirstClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(goToFirstClaim),
+        withLatestFrom(getPaginationControl),
+        tap(paginationControl => {
+            if (paginationControl.currentIndex != 0 && paginationControl.size > 0) {
+                this.store.dispatch(cancelClaim());
+                this.store.dispatch(retrieveClaim({ claimId: `${paginationControl.searchTabCurrentResults[0]}`, edit: false }));
+            }
+        })
+    ), { dispatch: false });
 
 }
