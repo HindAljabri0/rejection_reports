@@ -66,6 +66,7 @@ import { ImageTooltipComponent, ImageToolTipDirective } from './directives/image
 import { SummaryComponent } from './pages/reports/globmed/summary/summary.component'
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,9 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     MaterialModule,
     SharedModule,
     ChartsModule,
-    CarouselModule
+    CarouselModule,
+    NgScrollbarModule,
+    SmoothScrollModule
   ],
   providers: [
     ThemeService,

@@ -90,6 +90,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
 .primary-link{color:#3060AA;text-decoration: none;cursor: pointer;}
 .primary-link:hover,.primary-link:focus,.primary-link:active{color:#3060AA;text-decoration: underline;}
+.hide-tab-header.mat-tab-group .mat-tab-header{display: none;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -220,6 +221,10 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 /* block
 --------------------------------------------------------------------------------------------------------*/
 .block-header{display: flex;color: #3060AA;background-color: #fff;border-top-left-radius: 6px;border-top-right-radius: 6px;padding: 14px;font-size: 16px;line-height: 22px;font-weight: 600;}
+.block-header>.title-btn.mat-button{font-size:inherit;font-weight:inherit;margin: -14px 0;padding: 0 14px;line-height:50px;border-radius:0;position: relative;}
+.block-header>.title-btn.mat-button:after{background-color: currentColor;content:'';display: block;height: 2px;left: 0;right: 0;bottom: 0;position: absolute;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: scaleX(0.4);opacity: 0;}
+.block-header>.title-btn.mat-button.active:after{opacity: 1;transform:scaleX(1);}
+.block-header>.title-btn.mat-button:first-child{margin-left: -14px;}
 .block-body {padding: 14px;background-color: #f0eeee;}
 .block-body.create-claim-body{min-height: calc(100vh - 218px);padding-bottom: 0;}
 .block-footer{display: flex;align-items: center;color: #3060AA;background-color: white;border-radius: 0 0 6px 6px;padding: 12px;min-height: 60px;}

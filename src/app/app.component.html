@@ -4,11 +4,8 @@
 </app-language-switcher>
 
 <div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async)}">
-
     <router-outlet>
     </router-outlet>
-
-
 </div>
 
 <app-notification-center *ngIf="isLoggedIn"></app-notification-center>

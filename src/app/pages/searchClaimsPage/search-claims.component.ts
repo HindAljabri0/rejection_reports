@@ -125,7 +125,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   waitingEligibilityCheck: boolean = false;
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility: boolean = false;
-  validationTabSelected = 0;
+  currentSelectedTab = 0;
   validationDetails: ClaimError[];
   results: any[];
   showValidationTab = false;
@@ -263,7 +263,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         const summary: any = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
           this.summaries.push(summary);
-            this.validationTabSelected = this.commen.showValidationDetailsTab ? 1 : 0;
+          this.currentSelectedTab = this.commen.showValidationDetailsTab ? 1 : 0;
         }
       }
     }
