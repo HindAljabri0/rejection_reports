@@ -9,8 +9,6 @@
     </ng-container>
     <ng-template #statusHeader>
         <ng-container *ngIf="claim != null && claimProps != null">
-            <!-- <div class="claim-status-header" [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode),
-                'background-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode)+'1a'}"> -->
             <div class="claim-status-header"
                 [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode),'border-left-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode)}">
                 <p class="title">View Claim</p>

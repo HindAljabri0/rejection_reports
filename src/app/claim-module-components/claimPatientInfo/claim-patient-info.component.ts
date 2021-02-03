@@ -24,10 +24,10 @@ export class ClaimPatientInfo implements OnInit {
   };
 
   fullNameController: FormControl = new FormControl();
-  selectedGender: string = '';
+  selectedGender = '';
   selectedPayer: number;
   selectedVisitType: string;
-  selectedNationality: string;
+  selectedNationality = '';
   memberIdController: FormControl = new FormControl();
   policyNumController: FormControl = new FormControl();
   nationalIdController: FormControl = new FormControl();
