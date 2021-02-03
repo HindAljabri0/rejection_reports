@@ -10,9 +10,9 @@ export class UploadHistoryCenterComponent implements OnInit {
 
   inCenter = true;
 
-  showCenter:boolean = false;
+  showCenter: boolean = false;
 
-  constructor(private commen:SharedServices) {
+  constructor(private commen: SharedServices) {
     this.commen.showUploadHistoryCenterChange.subscribe(value => {
       this.showCenter = value;
     });
@@ -21,11 +21,11 @@ export class UploadHistoryCenterComponent implements OnInit {
   ngOnInit() {
   }
 
-  get dataList(){
+  get dataList() {
     return this.commen.uploadHistoryList;
   }
 
-  hideCenter(){
+  hideCenter() {
     this.commen.showUploadHistoryCenterChange.next(false);
   }
 

@@ -1,6 +1,6 @@
 <div class="parent">
     <app-abstractcard *ngFor="let item of summaries" [title]="item.title || getCardName(item.data.statuses[0])"
-        [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])" [clickable]="false">
+        [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])" [clickable]="false" class="primary-card">
         <ng-container *ngIf="item.data != null && !item.loading && item.error == null">
             <label>No. of Claims</label>
             <h6>{{item.data.totalClaims}}</h6>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation } from './claim.actions';
+import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation, goToClaim } from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -8,7 +8,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimValidationService } from '../services/claimValidationService/claim-validation.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
-import { getClaim, getClaimModuleError, getClaimObjectErrors, getDepartments, getPageMode, getRetrievedClaimId, getRetrievedClaimProps } from './claim.reducer';
+import { getClaim, getClaimObjectErrors, getDepartments, getPageMode, getPaginationControl, getRetrievedClaimId } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -56,8 +56,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
             data: data,
             closeOnNavigation: true,
-            height: '200px',
-            width: '600px',
+            panelClass: ['primary-dialog']
         }))
     ), { dispatch: false });
 
@@ -113,7 +112,7 @@ export class ClaimEffects {
         ofType(finishValidation),
         withLatestFrom(this.store.select(getClaimObjectErrors)),
         withLatestFrom(this.store.select(getPageMode)),
-        map(values => ({errors: values[0][1], pageMode: values[1]})),
+        map(values => ({ errors: values[0][1], pageMode: values[1] })),
         map(values => {
             if (values.errors.diagnosisErrors.length == 0
                 && values.errors.genInfoErrors.length == 0
@@ -124,13 +123,13 @@ export class ClaimEffects {
                 && values.errors.admissionErrors.length == 0
                 && values.errors.vitalSignError.length == 0
                 && values.errors.labResultsErrors.length == 0
-              ) {
+            ) {
                 if (values.pageMode == 'CREATE') {
-                  return getUploadId({ providerId: this.sharedServices.providerId });
+                    return getUploadId({ providerId: this.sharedServices.providerId });
                 } else {
-                  return saveClaimChanges();
+                    return saveClaimChanges();
                 }
-              } else if (values.errors.claimGDPN.length > 0
+            } else if (values.errors.claimGDPN.length > 0
                 && values.errors.diagnosisErrors.length == 0
                 && values.errors.genInfoErrors.length == 0
                 && values.errors.patientInfoErrors.length == 0
@@ -140,12 +139,12 @@ export class ClaimEffects {
                 && values.errors.vitalSignError.length == 0
                 && values.errors.labResultsErrors.length == 0) {
                 this.dialogService.openMessageDialog({
-                  title: '',
-                  message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
-                  isError: true
+                    title: '',
+                    message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
+                    isError: true
                 });
-              }
-              return setLoading({loading: false});
+            }
+            return setLoading({ loading: false });
         })
     ));
 
@@ -237,5 +236,12 @@ export class ClaimEffects {
             catchError(err => of({ type: setError.type, error: { code: 'CLAIM_RETRIEVE_ERROR' } }))
         ))
     ));
+
+    goToClaim$ = createEffect(() => this.actions$.pipe(
+        ofType(goToClaim),
+        tap(value => {
+            this.router.navigate(['/claims', value.claimId]).then(() => location.reload());
+        })
+    ), { dispatch: false });
 
 }

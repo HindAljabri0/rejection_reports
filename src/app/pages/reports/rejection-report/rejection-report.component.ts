@@ -67,7 +67,6 @@ export class RejectionReportComponent implements OnInit {
         this.manualPage = this.rejectionReportSummary.number;
         this.paginator.pageIndex = this.rejectionReportSummary.number;
         this.paginator.pageSize = this.rejectionReportSummary.numberOfElements;
-        console.log(this.rejectionReportSummary);
 
         if(this.rejectedClaims.length == 0)
         {

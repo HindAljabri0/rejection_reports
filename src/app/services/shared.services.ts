@@ -12,6 +12,7 @@ import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { UploadSummary } from '../models/uploadSummary';
 import { UploadService } from './claimfileuploadservice/upload.service';
+import { SearchService } from './serchService/search.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,9 @@ export class SharedServices {
   showUploadHistoryCenter: boolean;
   showUploadHistoryCenterChange: Subject<boolean> = new Subject();
 
+  showValidationDetailsTab = false;
+  showValidationDetailsTabChange: Subject<boolean> = new Subject();
+
   unReadNotificationsCount: number = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList: Notification[];
@@ -54,7 +58,8 @@ export class SharedServices {
     private router: Router,
     private notifications: NotificationsService,
     private announcements: AnnouncementsService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private searchService: SearchService
   ) {
 
 
@@ -100,8 +105,8 @@ export class SharedServices {
     });
     this.uploadHistoryListChange.subscribe(value => {
       this.uploadHistoryList = value.map(upload => {
-        upload.uploadDate = new Date(upload.uploadDate);
-        return upload;
+        // upload.uploaddate = new Date(upload.uploaddate);
+        return new UploadSummary(upload);
       });
     });
     this.router.events.pipe(
@@ -110,6 +115,10 @@ export class SharedServices {
       this.getNotifications();
       this.getUploadHistory();
       this.getAnnouncements();
+    });
+
+    this.showValidationDetailsTabChange.subscribe((value) => {
+      this.showValidationDetailsTab = value;
     });
   }
 
@@ -170,7 +179,7 @@ export class SharedServices {
   getUploadHistory() {
     if (this.providerId == null) return;
 
-    this.uploadService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
+    this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.uploadHistoryListChange.next(event.body["content"]);
       }
@@ -184,7 +193,6 @@ export class SharedServices {
   markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
       if (event instanceof HttpResponse) {
-        console.log(event);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -205,27 +213,27 @@ export class SharedServices {
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
-        return '#21B744';
+        return '#67CD23';
       case ClaimStatus.NotAccepted.toLowerCase():
-        return '#EB2A75';
+        return '#FF144D';
       case ClaimStatus.ALL.toLowerCase():
         return '#3060AA';
       case '-':
         return '#bebebe';
       case ClaimStatus.REJECTED.toLowerCase():
-        return '#FD76B5';
+        return '#FF53A3';
       case ClaimStatus.PAID.toLowerCase():
-        return '#009633';
+        return '#1C7C26';
       case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
-        return '#04abb0';
+        return '#479CC5';
       case ClaimStatus.OUTSTANDING.toLowerCase():
-        return '#F3A264';
+        return '#7D0202';
       case ClaimStatus.Batched.toLowerCase():
         return '#F3D34B';
       case ClaimStatus.Downloadable.toLowerCase():
-        return '#21B744';
+        return '#67CD23';
       default:
-        return '#E3A820';
+        return '#E6AE24';
     }
   }
 

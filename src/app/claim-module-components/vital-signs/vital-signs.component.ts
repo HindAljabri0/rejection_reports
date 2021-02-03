@@ -10,7 +10,7 @@ import { FieldError, getClaim, getPageMode } from '../store/claim.reducer';
 @Component({
   selector: 'claim-vital-signs',
   templateUrl: './vital-signs.component.html',
-  styleUrls: ['./vital-signs.component.css']
+  styles: []
 })
 export class VitalSignsComponent implements OnInit {
 
