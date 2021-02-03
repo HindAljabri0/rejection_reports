@@ -14,9 +14,7 @@ export class UploadHistoryCardComponent implements OnInit {
   @Input() isUploadHistroyCenter: boolean;
   @Input() fromRightSideBar = false;
 
-  constructor(private commen: SharedServices,private router : Router) {
-
-  }
+  constructor(private commen: SharedServices, private router: Router) { }
 
   ngOnInit() {
   }
@@ -31,7 +29,7 @@ export class UploadHistoryCardComponent implements OnInit {
     if (this.fromRightSideBar) {
       this.router.navigateByUrl(this.providerId + '/claims?uploadId=' + this.data.uploadSummaryID);
     } else {
-      this.router.navigateByUrl('summary?id='+this.data.uploadSummaryID);
+      this.router.navigateByUrl('summary?id=' + this.data.uploadSummaryID);
     }
   }
 }
