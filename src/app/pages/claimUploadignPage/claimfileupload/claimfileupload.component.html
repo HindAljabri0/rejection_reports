@@ -1,41 +1,55 @@
-<div style="margin: 0 10px;">
-    <div class="header">
-        File Uploading
-    </div>
-    <div style="display: flex; height: 70%px;">
-        <div class="dragAndDropContainer">
-            <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
-                <table style="text-align: center; margin: 5px 0px 150px 0px;">
-                    <tbody>
-                        <tr>
-                            <td><img [src]="currentFileUpload.name.endsWith('.csv')? 'assets/csv.svg':'assets/xls.svg'"
-                                    alt="{{currentFileUpload.name}}"></td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 20px; font-size: large; font-weight: 600;">{{currentFileUpload.name}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div *ngIf="!uploading && !loading" style="width: 100%; text-align: center; margin-top: 10px">
-                    <button mat-button (click)="cancel()"
-                        style="font-size: large;  padding: 5px 20px;  margin-right: 10px;">Cancel</button>
-                    <button mat-raised-button color="primary" (click)="upload()"
-                        style="font-size: large;  padding: 5px 20px; margin-bottom: 5px;">Upload</button>
-                </div>
-
-            </div>
-            <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()"
-                appDragdrop (onFileDropped)="selectFile($event)">
-                <pre *ngIf="currentFileUpload == undefined"
-                    class="containerText">{{error}}<div style="text-align: center;">Click to choose a file or drag an excel or csv file here.</div></pre>
-                <input hidden type="file" #fileInput id="file" onclick="this.value = null"
-                    (change)="selectFile($event.target.files)"
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
-            </div>
+<div class="block-header">File Uploading</div>
+<div class="file-upload-drag-drop">
+    <div class="inner-block" *ngIf="currentFileUpload != undefined">
+        <div class="icon-wrapper">
+            <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'" alt="{{currentFileUpload.name}}">
+            <p class="file-name">{{currentFileUpload.name}}</p>
+        </div>
+        <div *ngIf="!uploading && !loading" class="btn-list pt-5">
+            <button mat-button (click)="cancel()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="upload()">Upload</button>
         </div>
     </div>
-    <div class="footer">
-        <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
+    <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
+        <div class="icon-wrapper">
+            <img src="./assets/csv.svg" alt="CSV File" />
+        </div>
+        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel or CSV file here , or use</span> <button mat-flat-button color="primary"
+                (click)="fileInput.click()">Upload</button>
+        </p>
+        <p class="error-text" *ngIf="error">{{error}}</p>
+        <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
     </div>
 </div>
+<div class="file-upload-progress-wrapper" *ngIf="uploading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<!-- <div style="display: flex; height: 70%px;">
+    <div class="dragAndDropContainer">
+        <div class="containerFileIcon" *ngIf="currentFileUpload != undefined">
+            <table style="text-align: center; margin: 5px 0px 150px 0px;">
+                <tbody>
+                    <tr>
+                        <td><img [src]="currentFileUpload.name.endsWith('.csv')? 'assets/csv.svg':'assets/xls.svg'" alt="{{currentFileUpload.name}}"></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; font-size: large; font-weight: 600;">{{currentFileUpload.name}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="!uploading && !loading" style="width: 100%; text-align: center; margin-top: 10px">
+                <button mat-button (click)="cancel()" style="font-size: large;  padding: 5px 20px;  margin-right: 10px;">Cancel</button>
+                <button mat-raised-button color="primary" (click)="upload()" style="font-size: large;  padding: 5px 20px; margin-bottom: 5px;">Upload</button>
+            </div>
+
+        </div>
+        <div class=" {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" (click)="fileInput.click()" appDragdrop (onFileDropped)="selectFile($event)">
+            <pre *ngIf="currentFileUpload == undefined"
+                class="containerText">{{error}}<div style="text-align: center;">Click to choose a file or drag an excel or csv file here.</div></pre>
+            <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv" />
+        </div>
+    </div>
+</div> -->

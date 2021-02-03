@@ -124,6 +124,7 @@ export class Claim {
         const firstName = incomingClaim.caseInformation.patient.firstName;
         const middleName = incomingClaim.caseInformation.patient.middleName;
         const lastName = incomingClaim.caseInformation.patient.lastName;
+
         if (age != null) {
             claim = { ...claim, caseInformation: { ...claim.caseInformation, patient: { ...claim.caseInformation.patient, age: this.getPeriod(age) } } };
         }
@@ -138,15 +139,25 @@ export class Claim {
             }
         }
         const attachments = claim.attachment.map(att => ({ ...att, fileType: Claim.convertFileType(att.fileType) }));
+        let physicianCategory = claim.caseInformation.physician.physicianCategory;
+        if (physicianCategory != null) physicianCategory = physicianCategory.replace(' ', '_');
         claim = {
             ...claim,
             attachment: attachments,
-            caseInformation: { 
+            caseInformation: {
                 ...claim.caseInformation,
-                physician: { ...claim.caseInformation.physician, physicianCategory: claim.caseInformation.physician.physicianCategory.replace(' ', '_') },
-                patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null } 
+                physician: { ...claim.caseInformation.physician, physicianCategory: physicianCategory },
+                patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null }
             }
         };
+        const admission = incomingClaim.admission;
+        if (admission != null) {
+            if (admission.estimatedLengthOfStay != null) {
+                claim = { ...claim, admission: { ...claim.admission, discharge: { ...claim.admission.discharge, actualLengthOfStay: this.getPeriod(admission.estimatedLengthOfStay) } } };
+            } else if (admission.discharge != null && admission.discharge.actualLengthOfStay != null) {
+                claim = { ...claim, admission: { ...claim.admission, discharge: { ...claim.admission.discharge, actualLengthOfStay: this.getPeriod(admission.discharge.actualLengthOfStay) } } };
+            }
+        }
         return claim;
     }
 

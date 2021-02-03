@@ -15,7 +15,7 @@ type AOA = any[][];
 @Component({
   selector: 'app-claimfileupload',
   templateUrl: './claimfileupload.component.html',
-  styleUrls: ['./claimfileupload.component.css']
+  styles: []
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
@@ -40,7 +40,7 @@ export class ClaimfileuploadComponent implements OnInit {
 
 
 
-  uploadContainerClass = 'uploadfilecontainer';
+  uploadContainerClass = '';
   error = '';
 
   isVertical = true;
@@ -84,7 +84,7 @@ export class ClaimfileuploadComponent implements OnInit {
         if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
           data.map(row => this.payerIdsFromCurrentFile.push(row['PAYERID']));
           this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(this.onlyUnique);
-          this.checkServiceCodeValidation();
+          this.checkServiceCodeRestriction();
         } else {
           this.showError(`Invalid file selected! It doesn't have 'PAYERID' column\n`);
         }
@@ -104,44 +104,10 @@ export class ClaimfileuploadComponent implements OnInit {
         validExts.toString() + ' types.');
       return false;
     } else {
-      this.uploadContainerClass = 'uploadfilecontainer';
+      this.uploadContainerClass = '';
       this.error = '';
       return true;
     }
-  }
-
-  checkServiceCodeValidation() {
-    this.serviceCodeValidationDisabledMessages = [];
-    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined);
-    let count = this.payerIdsFromCurrentFile.length;
-    this.payerIdsFromCurrentFile.forEach(payerId => {
-      if (payerId != undefined) {
-        this.adminService.checkIfServiceCodeValidationIsEnabled(this.common.providerId, payerId).subscribe(event => {
-          if (event instanceof HttpResponse) {
-            let setting = JSON.parse(JSON.stringify(event.body));
-            if (setting.hasOwnProperty('value') && setting['value'] == 0) {
-              this.serviceCodeValidationDisabledMessages.push(payerId);
-            }
-            count--;
-            if (count <= 0) {
-              this.common.loadingChanged.next(false);
-              this.checkServiceCodeRestriction();
-            }
-          }
-        }, errorEvent => {
-          if (errorEvent instanceof HttpErrorResponse) {
-            if (errorEvent.status == 404) {
-              this.serviceCodeValidationDisabledMessages.push(payerId);
-            }
-            count--;
-            if (count <= 0) {
-              this.common.loadingChanged.next(false);
-              this.checkServiceCodeRestriction();
-            }
-          }
-        });
-      }
-    });
   }
 
   checkServiceCodeRestriction() {
@@ -277,7 +243,7 @@ export class ClaimfileuploadComponent implements OnInit {
 
   showError(error: string) {
     this.currentFileUpload = null;
-    this.uploadContainerClass = 'uploadContainerErrorClass';
+    this.uploadContainerClass = 'has-error';
     this.error = error;
     this.common.loadingChanged.next(false);
   }

@@ -7,6 +7,7 @@ import { Service } from '../models/service.model';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { FileType } from '../models/attachmentRequest.model';
+import { SEARCH_TAB_RESULTS_KEY } from 'src/app/pages/searchClaimsPage/search-claims.component';
 
 export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT';
 export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
@@ -27,6 +28,7 @@ export interface ClaimState {
     approvalFormLoading: boolean;
     mode: ClaimPageMode;
     type: ClaimPageType;
+    paginationControl: { currentIndex: number, size: number, searchTabCurrentResults: number[]; };
 }
 
 const initState: ClaimState = {
@@ -45,7 +47,8 @@ const initState: ClaimState = {
     selectedGDPN: {},
     approvalFormLoading: false,
     mode: 'CREATE',
-    type: 'DENTAL_OPTICAL'
+    type: 'DENTAL_OPTICAL',
+    paginationControl: { searchTabCurrentResults: [], currentIndex: -1, size: 0 },
 }
 
 const _claimReducer = createReducer(
@@ -59,9 +62,26 @@ const _claimReducer = createReducer(
         const departmentCode = body['claim']['visitInformation']['departmentCode'];
         const caseType = body['claim']['caseInformation']['caseType'];
         const type: ClaimPageType = caseType == 'OUTPATIENT' && (departmentCode == dentalId || departmentCode == opticalId || departmentCode == pharmacyId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
-        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], servicesDecision: body['servicesDecision'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
-        const editable = state.mode == 'EDIT' && ['Downloadable','Accepted', 'NotAccepted', 'Failed', 'INVALID'].includes(props.statusCode);
-        return ({ ...state, claim: Claim.fromViewResponse(body['claim']), type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW') });
+        const props: RetrievedClaimProps = { errors: body['errors'], claimDecisionGDPN: body[''], eligibilityCheck: body['eligibilityCheck'], lastSubmissionDate: body['lastSubmissionDate'], lastUpdateDate: body['lastUpdateDate'], paymentDate: body['paymentDate'], paymentReference: body['paymentReference'], statusCode: body['statusCode'], statusDetail: body['statusDetail'] };
+        const editable = state.mode == 'EDIT' && ['Downloadable', 'Accepted', 'NotAccepted', 'Failed', 'INVALID'].includes(props.statusCode);
+        const storedSearchTabResults = localStorage.getItem(SEARCH_TAB_RESULTS_KEY);
+        let searchTabResults: number[] = [...state.paginationControl.searchTabCurrentResults];
+        let currentIndex = state.paginationControl.currentIndex;
+        if (storedSearchTabResults != null) {
+            const storedSplitted = storedSearchTabResults.split(',');
+            try {
+                storedSplitted.forEach(id => searchTabResults.push(Number.parseInt(id)));
+                if (state.paginationControl.searchTabCurrentResults.length > 0) {
+                    searchTabResults = [...state.paginationControl.searchTabCurrentResults];
+                }
+                currentIndex = searchTabResults.findIndex(id => state.retrievedClaimId == `${id}`);
+                if (currentIndex == -1) {
+                    searchTabResults.unshift(Number.parseInt(state.retrievedClaimId));
+                    currentIndex = 0;
+                }
+            } catch (e) { console.log(e); }
+        }
+        return ({ ...state, claim: Claim.fromViewResponse(body['claim']), type: type, retrievedClaimProps: props, loading: false, claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null), claimPropsBeforeEdit: (editable ? props : null), mode: (editable ? 'EDIT' : 'VIEW'), paginationControl: { searchTabCurrentResults: searchTabResults, currentIndex: currentIndex, size: searchTabResults.length } });
     }),
     on(actions.toEditMode, (state) => ({ ...state, mode: 'EDIT', claimBeforeEdit: state.claim, claimPropsBeforeEdit: state.retrievedClaimProps })),
     on(actions.cancelEdit, (state) => ({ ...state, newAttachments: [], claim: state.claimBeforeEdit, retrievedClaimProps: state.claimPropsBeforeEdit, claimBeforeEdit: null, claimPropsBeforeEdit: null, mode: 'VIEW' })),
@@ -79,7 +99,7 @@ const _claimReducer = createReducer(
     on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
     on(actions.setUploadId, (state, { id }) => ({ ...state, claim: { ...state.claim, claimIdentities: { ...state.claim.claimIdentities, uploadID: extractFromHttpResponse(id) } } })),
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
-    on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs })),
+    on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs, paginationControl: state.paginationControl })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
         let claimErrors = initState.claimErrors;
@@ -130,7 +150,7 @@ const _claimReducer = createReducer(
     on(actions.updatePhysicianName, (state, { physicianName }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianName: physicianName } } } })),
     on(actions.updatePhysicianCategory, (state, { physicianCategory }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, physician: { ...state.claim.caseInformation.physician, physicianCategory: physicianCategory } } } })),
     on(actions.updateDepartment, (state, { department }) => ({ ...state, claim: { ...state.claim, visitInformation: { ...state.claim.visitInformation, departmentCode: department } } })),
-    on(actions.updatePageType, (state, {pageType}) => ({...state, type: pageType})),
+    on(actions.updatePageType, (state, { pageType }) => ({ ...state, type: pageType })),
 
     on(actions.updateDiagnosisList, (state, { list }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, diagnosis: list } } } })),
 
@@ -164,7 +184,7 @@ const _claimReducer = createReducer(
     on(actions.updateBedNumber, (state, { number }) => ({ ...state, claim: { ...state.claim, admission: { ...state.claim.admission, bedNumber: number } } })),
 
     on(actions.updateCurrentAttachments, (state, { attachments }) => ({ ...state, claim: { ...state.claim, attachment: attachments } })),
-    
+
     on(actions.updateLabResults, (state, { investigations }) => ({ ...state, claim: { ...state.claim, caseInformation: { ...state.claim.caseInformation, caseDescription: { ...state.claim.caseInformation.caseDescription, investigation: investigations } } } })),
 
     on(actions.updateInvoices_Services, (state, { invoices }) => {
@@ -190,6 +210,7 @@ export function claimReducer(state, action) {
 }
 
 export const claimSelector = createFeatureSelector<ClaimState>('claimState');
+export const getPaginationControl = createSelector(claimSelector, (state) => state != null ? state.paginationControl : null);
 export const getIsApprovalFormLoading = createSelector(claimSelector, (state) => state.approvalFormLoading);
 export const getClaim = createSelector(claimSelector, (state) => state.claim);
 export const getCaseType = createSelector(claimSelector, (state) => state.claim != null && state.claim.caseInformation != null ? state.claim.caseInformation.caseType : null)

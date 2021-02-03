@@ -1,140 +1,190 @@
-<div class="viewPort">
-    <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title"
-        [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()">
-        <table>
-            <tr>
-                <th>No. Of Claims</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.noOfUploadedClaims}}</span></td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <th>Total Vat</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.netAmountOfUploadedClaims}}</span><span class="currency">
-                        SR</span></td>
-                <td><span class="dashboardNumbers">{{summary.netVATAmountOfUploadedClaims}}</span><span
-                        class="currency"> SR</span></td>
-            </tr>
-        </table>
-    </app-abstractcard>
-    <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title"
-        [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()">
-        <table>
-            <tr>
-                <th>No. Of Claims</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.noOfAcceptedClaims}}</span></td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <th>Total Vat</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.netAmountOfAcceptedClaims}}</span><span class="currency">
-                        SR</span></td>
-                <td><span class="dashboardNumbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span
-                        class="currency"> SR</span></td>
-            </tr>
-        </table>
-    </app-abstractcard>
-    <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title"
-        [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()">
-        <table>
-            <tr>
-                <th>No. Of Claims</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.noOfNotAcceptedClaims}}</span></td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <th>Total Vat</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span
-                        class="currency"> SR</span></td>
-                <td><span class="dashboardNumbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span
-                        class="currency"> SR</span></td>
-            </tr>
-        </table>
-    </app-abstractcard>
-    <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title"
-        [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()">
-        <table>
-            <tr>
-                <th>No. Of Claims</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.noOfNotUploadedClaims}}</span></td>
-            </tr>
-            <tr>
-                <td colspan="2">Non readable claims will not be saved<br>in the system</td>
-            </tr>
-        </table>
-    </app-abstractcard>
-    <app-abstractcard [clickable]="uploadService.summary.noOfDownloadableClaims != 0" [title]="card4Title"
-        [actionText]="card4ActionText" [accentColor]="card4AccentColor" (action)="card4Action()">
-        <table>
-            <tr>
-                <th>No. Of Claims</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.noOfDownloadableClaims}}</span></td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <th>Total Vat</th>
-            </tr>
-            <tr>
-                <td><span class="dashboardNumbers">{{summary.netAmountOfDownloadableClaims}}</span><span
-                        class="currency"> SR</span></td>
-                <td><span class="dashboardNumbers">{{summary.netVATAmountOfDownloadableClaims}}</span><span
-                        class="currency"> SR</span></td>
-            </tr>
-        </table>
-    </app-abstractcard>
-</div>
-<div class="summary" *ngIf="location.path().includes('summary') && paginatedResult != null">
-    <div class="header">
+<owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel">
+    <ng-template [id]="'1'" carouselSlide>
+        <app-abstractcard [clickable]="uploadService.summary.noOfUploadedClaims != 0" [title]="card0Title"
+            [actionText]="card0ActionText" [accentColor]="card0AccentColor" (action)="card0Action()"
+            class="primary-card">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card0AccentColor" colspan="2" class="pb-1"><span
+                            class="dashboard-numbers">{{summary.noOfUploadedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <th>Total Vat</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card0AccentColor"><span
+                            class="dashboard-numbers">{{summary.netAmountOfUploadedClaims}}</span><span
+                            class="currency">
+                            SR</span></td>
+                    <td [style.color]="card0AccentColor"><span
+                            class="dashboard-numbers">{{summary.netVATAmountOfUploadedClaims}}</span><span
+                            class="currency"> SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'2'" carouselSlide>
+        <app-abstractcard [clickable]="uploadService.summary.noOfAcceptedClaims != 0" [title]="card1Title"
+            [actionText]="card1ActionText" [accentColor]="card1AccentColor" (action)="card1Action()"
+            class="primary-card">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card1AccentColor" colspan="2" class="pb-1"><span
+                            class="dashboard-numbers">{{summary.noOfAcceptedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <th>Total Vat</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card1AccentColor"><span
+                            class="dashboard-numbers">{{summary.netAmountOfAcceptedClaims}}</span><span
+                            class="currency">
+                            SR</span></td>
+                    <td [style.color]="card1AccentColor"><span
+                            class="dashboard-numbers">{{summary.netVATAmountOfAcceptedClaims}}</span><span
+                            class="currency"> SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'3'" carouselSlide>
+        <app-abstractcard [clickable]="uploadService.summary.noOfNotAcceptedClaims != 0" [title]="card2Title"
+            [actionText]="card2ActionText" [accentColor]="card2AccentColor" (action)="card2Action()"
+            class="primary-card">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card2AccentColor" colspan="2" class="pb-1"><span
+                            class="dashboard-numbers">{{summary.noOfNotAcceptedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <th>Total Vat</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card2AccentColor"><span
+                            class="dashboard-numbers">{{summary.netAmountOfNotAcceptedClaims}}</span><span
+                            class="currency"> SR</span></td>
+                    <td [style.color]="card2AccentColor"><span
+                            class="dashboard-numbers">{{summary.netVATAmountOfNotAcceptedClaims}}</span><span
+                            class="currency"> SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'4'" carouselSlide>
+        <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title"
+            [actionText]="card3ActionText" [accentColor]="card3AccentColor" (action)="card3Action()"
+            class="primary-card">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card3AccentColor" colspan="2" class="pb-1"><span
+                            class="dashboard-numbers">{{summary.noOfNotUploadedClaims}}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span [style.color]="card3AccentColor" [style.background-color]="card3AccentLightColor"
+                            class="card-message">Non readable claims will not be saved in the
+                            system</span>
+                    </td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+    <ng-template [id]="'5'" carouselSlide>
+        <app-abstractcard [clickable]="uploadService.summary.noOfDownloadableClaims != 0" [title]="card4Title"
+            [actionText]="card4ActionText" [accentColor]="card4AccentColor" (action)="card4Action()"
+            class="primary-card">
+            <table>
+                <tr>
+                    <th colspan="2">No. of Claims</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card4AccentColor" colspan="2" class="pb-1"><span
+                            class="dashboard-numbers">{{summary.noOfDownloadableClaims}}</span></td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <th>Total Vat</th>
+                </tr>
+                <tr>
+                    <td [style.color]="card4AccentColor"><span
+                            class="dashboard-numbers">{{summary.netAmountOfDownloadableClaims}}</span><span
+                            class="currency"> SR</span></td>
+                    <td [style.color]="card4AccentColor"><span
+                            class="dashboard-numbers">{{summary.netVATAmountOfDownloadableClaims}}</span><span
+                            class="currency"> SR</span></td>
+                </tr>
+            </table>
+        </app-abstractcard>
+    </ng-template>
+</owl-carousel-o>
+
+<div *ngIf="location.path().includes('summary') && paginatedResult != null">
+    <div class="block-header">
         <p>Summary</p>
         <span class="spacer"></span>
-        <div *ngIf="paginatedResult.totalPages > 0" style="font-size: larger; display: flex; align-items: end;">
-            <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>&nbsp;&nbsp;&nbsp;
-            <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>&nbsp;&nbsp;&nbsp;
-            <p style="font-weight: 600; font-size: small;">{{(paginatedResult.number+1)}}</p>
-            <p style="font-size: small;">/ {{paginatedResult.totalPages}}</p>
-            &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next</mat-icon>
-            &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
+        <div class="custom-paginator" *ngIf="paginatedResult.totalPages > 0">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">{{(paginatedResult.number+1)}}<small>/{{paginatedResult.totalPages}}</small></p>
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
         </div>
     </div>
-    <table>
-        <thead style="background-color: #c7dfff; color: #3060AA; font-size: 13px;">
-            <th style="width: 15%;">Provider Claim Number</th>
-            <th style="width: 15%;">File Row Number</th>
-            <th style="width: 10%;">Field Name</th>
-            <th style="width: 50%;">Error Description</th>
-            <th style="width: 10%; text-align: center;">Status</th>
-        </thead>
-        <tbody style="font-size: 11px; font-weight: 500;">
-            <tr *ngFor="let result of results">
-                <td style="width: 15%;">{{result.provclaimno}}</td>
-                <td style="width: 15%;">{{result.fileRowNumber}}</td>
-                <td style="width: 10%;" [style.color]="accentColor(result.uploadSubStatus)">{{result.fieldName}}</td>
-                <td style="width: 50%;" [style.color]="accentColor(result.uploadSubStatus)">{{result.description}}</td>
-                <td class="statusDot" style="width: 10%; text-align: center;" [style.color]="accentColor(result.uploadSubStatus)"></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="footer">
-        <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-right: 20px;"></mat-progress-bar>
-        <span class="spacer"></span>
-
-        <button *ngIf="summary.uploadSummaryID != undefined" mat-button (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button>
-        <button *ngIf="summary.uploadSummaryID != undefined" (click)="viewClaims()"
-            mat-raised-button color="primary">View Claims</button>
+    <div class="table-responsive claim-summary-grid">
+        <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Provider Claim Number</th>
+                    <th>File Row Number</th>
+                    <th>Field Name</th>
+                    <th>Error Description</th>
+                    <th width="10" class="text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of results">
+                    <td>{{result.provclaimno}}</td>
+                    <td>{{result.fileRowNumber}}</td>
+                    <td [style.color]="accentColor(result.uploadSubStatus)">{{result.fieldName}}</td>
+                    <td [style.color]="accentColor(result.uploadSubStatus)">{{result.description}}</td>
+                    <td class="text-center"><span class="status-dot"
+                            [style.background-color]="accentColor(result.uploadSubStatus)"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block" *ngIf="uploading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div class="right-block btn-list">
+            <button *ngIf="summary.uploadSummaryID != undefined" mat-button
+                (click)="deleteClaimByUploadid(summary.uploadSummaryID, summary.uploadName)">Delete Claims</button>
+            <button *ngIf="summary.uploadSummaryID != undefined" (click)="viewClaims()" mat-flat-button
+                color="primary">View Claims</button>
+        </div>
     </div>
 </div>

@@ -1,8 +1,7 @@
-import { AttachmentService } from './../../services/attachmentService/attachment.service';
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
 import { HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
@@ -22,29 +21,47 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { Store } from '@ngrx/store';
 import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClaims } from './store/search.actions';
 import { Actions, ofType } from '@ngrx/effects';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { ClaimError } from 'src/app/models/claimError';
 
 @Component({
   selector: 'app-search-claims',
   templateUrl: './search-claims.component.html',
-  styleUrls: ['./search-claims.component.css']
+  styles: []
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  owlCarouselOptions: OwlOptions = {
+    mouseDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 300,
+    navText: ['', ''],
+    margin: 14,
+    responsive: {
+      0: {
+        items: 3,
+        slideBy: 3
+      },
+      992: {
+        items: 4,
+        slideBy: 4
+      },
+      1200: {
+        items: 5,
+        slideBy: 5
+      }
+    },
+    nav: true
+  };
+
   file: File;
 
-  isManagingAttachments: boolean = false;
+  isManagingAttachments = false;
+  constructor(public location: Location, public submittionService: ClaimSubmittionService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, public searchService: SearchService, private dialogService: DialogService, private claimService: ClaimService, private eligibilityService: EligibilityService, private notificationService: NotificationsService, private store: Store, private actions$: Actions) { }
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService,
-    public commen: SharedServices, public routeActive: ActivatedRoute,
-    public router: Router, public searchService: SearchService,
-    private dialogService: DialogService,
-    private claimService: ClaimService,
-    private eligibilityService: EligibilityService,
-    private notificationService: NotificationsService,
-    private store: Store,
-    private actions$: Actions) {
-  }
   ngOnDestroy(): void {
     this.notificationService.stopWatchingMessages('eligibility');
+    localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
     this.routerSubscription.unsubscribe();
   }
 
@@ -59,7 +76,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   extraNumbers: number[];
 
   detailCardTitle: string;
-  detailTopActionText = "vertical_align_bottom";
+  detailTopActionIcon = "ic-download.svg";
   detailAccentColor: string;
   detailActionText: string = null;
   detailSubActionText: string = null;
@@ -108,6 +125,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   waitingEligibilityCheck: boolean = false;
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility: boolean = false;
+  validationTabSelected = 0;
+  validationDetails: ClaimError[];
+  results: any[];
+  showValidationTab = false;
 
   ngOnInit() {
     this.fetchData();
@@ -190,6 +211,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+    this.showValidationTab = false;
     for (status in ClaimStatus) {
       if (status == ClaimStatus.INVALID) continue;
       let statusCode;
@@ -238,9 +260,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == "2") {
-        const summary = new SearchStatusSummary(event.body);
+        const summary: any = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
           this.summaries.push(summary);
+            this.validationTabSelected = this.commen.showValidationDetailsTab ? 1 : 0;
         }
       }
     }
@@ -252,7 +275,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.summaries[key] == null) return;
     if (this.summaries.length == 0) return;
     this.commen.loadingChanged.next(true);
-    this.detailTopActionText = "vertical_align_bottom";
+    this.detailTopActionIcon = "ic-download.svg";
 
     if (this.selectedCardKey != null && key != this.selectedCardKey) {
       this.selectedClaims = new Array();
@@ -283,6 +306,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         if ((event.status / 100).toFixed() == "2") {
           this.searchResult = new PaginatedResult(event.body, SearchedClaim);
           this.claims = this.searchResult.content;
+          this.storeSearchResultsForClaimViewPagination();
           this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
           this.store.dispatch(storeClaims({ claims: this.claims, currentPage: this.searchResult.number, maxPages: this.searchResult.totalPages, pageSize: this.searchResult.size }));
           this.selectedClaimsCountOfPage = 0;
@@ -296,6 +320,24 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.searchResult.number;
+          // Validation Details
+          const content = event.body['content'];
+          this.validationDetails = [];
+          content.forEach((element) => {
+            if (element.claimErrors && element.claimErrors.length > 0) {
+              const claimErrors = element.claimErrors;
+              claimErrors.forEach((error) => {
+                const claimError = new ClaimError();
+                claimError.providerClaimeNo = element.providerClaimNumber;
+                claimError.status = element.status;
+                claimError.fieldName = error.fieldName;
+                claimError.description = error.description;
+                claimError.code = error.code;
+                this.validationDetails.push(claimError);
+              });
+            }
+          });
+
         } else if ((event.status / 100).toFixed() == "4") {
           console.log("400");
         } else if ((event.status / 100).toFixed() == "5") {
@@ -323,6 +365,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }
       this.commen.loadingChanged.next(false);
     });
+  }
+  storeSearchResultsForClaimViewPagination() {
+    if (this.claims != null && this.claims.length > 0) {
+      const claimsIds = this.claims.map(claim => claim.claimId);
+      localStorage.setItem(SEARCH_TAB_RESULTS_KEY, claimsIds.join(','));
+    } else {
+      localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
+    }
   }
 
   submitSelectedClaims() {
@@ -386,10 +436,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status >= 500 || errorEvent.status == 0)
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
-        if (errorEvent.error['message'] != null) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
-        }
+          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+          }
+        if (errorEvent.error['errors'] != null)
+          for (let error of errorEvent.error['errors']) {
+            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+          }
       }
     });
   }
@@ -532,7 +587,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName
         }
-        window.setTimeout(() => this.summaries = summaries, 1000);
+        window.setTimeout(() => {
+          this.summaries = summaries;
+        }, 1000);
       } else {
         flag = true;
         this.fetchData();
@@ -648,7 +705,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   async download() {
-    if (this.detailTopActionText == "check_circle") return;
+    if (this.detailTopActionIcon == "ic-check-circle.svg") return;
     this.commen.loadingChanged.next(true);
     let event;
     event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.claimRefNo, this.memberId).toPromise().catch(error => {
@@ -672,16 +729,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
         } else if (this.batchId != null) {
           a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-        } else if(this.uploadId != null) {
+        } else if (this.uploadId != null) {
           a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
-        } else if(this.claimRefNo != null){
+        } else if (this.claimRefNo != null) {
           a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
-        } else if(this.memberId != null){
+        } else if (this.memberId != null) {
           a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
         }
 
         a.click();
-        this.detailTopActionText = "check_circle";
+        this.detailTopActionIcon = "ic-check-circle.svg";
         this.commen.loadingChanged.next(false);
       }
     }
@@ -749,3 +806,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
 }
+
+
+export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';

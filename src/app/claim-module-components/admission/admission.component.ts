@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldError, getAdmissionErrors, getClaim, getPageMode } from '../store/claim.reducer';
+import { ClaimPageMode, FieldError, getAdmissionErrors, getClaim, getPageMode } from '../store/claim.reducer';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -12,7 +12,7 @@ import { Admission } from '../models/admission.model';
 @Component({
   selector: 'claim-admission',
   templateUrl: './admission.component.html',
-  styleUrls: ['./admission.component.css']
+  styles: []
 })
 export class AdmissionComponent implements OnInit {
 
@@ -35,13 +35,13 @@ export class AdmissionComponent implements OnInit {
     ).subscribe(({ mode, claim }) => {
       if (mode == 'VIEW') {
         this.setData(claim);
-        this.toggleEdit(false);
+        this.toggleEdit(false, mode,);
       } else if (mode == 'EDIT') {
         this.setData(claim);
-        this.toggleEdit(true);
+        this.toggleEdit(true, mode,);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
         this.setData(claim)
-        this.toggleEdit(false, true);
+        this.toggleEdit(false, mode, true);
       }
     });
     this.store.select(getAdmissionErrors).subscribe(errors => this.errors = errors);
@@ -55,23 +55,39 @@ export class AdmissionComponent implements OnInit {
     const roomNumber = admission.roomNumber;
     const bedNumber = admission.bedNumber;
     if (admissionDate != null) {
-      this.admissionDateController.setValue(this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm:ss'));
+      this.admissionDateController.setValue(this.datePipe.transform(admissionDate, 'yyyy-MM-ddThh:mm'));
     } else {
       this.admissionDateController.setValue('');
     }
     if (dischargeDate != null) {
-      this.dischargeDateController.setValue(this.datePipe.transform(dischargeDate, 'dd-MM-yyyy hh:mm:ss'));
+      this.dischargeDateController.setValue(this.datePipe.transform(dischargeDate, 'yyyy-MM-ddThh:mm'));
     } else {
       this.dischargeDateController.setValue('');
     }
-    this.lengthOfStayController.setValue(lengthOfStay);
+
+    if (lengthOfStay != null) {
+      if (lengthOfStay.years != null) {
+        this.lengthOfStayController.setValue(lengthOfStay.years);
+        this.lengthOfStayUnit = 'Year';
+      } else if (lengthOfStay.months != null) {
+        this.lengthOfStayController.setValue(lengthOfStay.months);
+        this.lengthOfStayUnit = 'Month';
+      } else if (lengthOfStay.days != null) {
+        this.lengthOfStayController.setValue(lengthOfStay.days);
+        this.lengthOfStayUnit = 'Day';
+      } else this.lengthOfStayController.setValue('');
+    } else this.lengthOfStayController.setValue('');
+
     this.roomNumberController.setValue(roomNumber);
     this.bedNumberController.setValue(bedNumber);
   }
 
-  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+  toggleEdit(allowEdit: boolean, mode: ClaimPageMode, enableForNulls?: boolean) {
     if (allowEdit) {
-      this.admissionDateController.enable();
+      if (mode != 'EDIT')
+        this.admissionDateController.enable();
+      else
+        this.admissionDateController.disable();
       this.dischargeDateController.enable();
       this.lengthOfStayController.enable();
       this.roomNumberController.enable();
@@ -103,7 +119,7 @@ export class AdmissionComponent implements OnInit {
       case 'admissionDate':
         let date1: string;
         if (!this.isControlNull(this.admissionDateController))
-          date1 = this.admissionDateController.value
+          date1 = this.admissionDateController.value;
         if (date1 != null)
           this.store.dispatch(updateAdmissionDate({ date: new Date(date1) }));
         else

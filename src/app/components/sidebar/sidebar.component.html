@@ -1,109 +1,128 @@
-<div class="w3-sidebar w3-light-grey w3-bar-block ">
+<div class="w3-sidebar w3-light-grey w3-bar-block">
     <!-- <h3 class="w3-bar-item">Menu</h3> -->
     <!-- <ul class="nav navbar-nav" routerLinkActive="active">
             <li><a class="nav-link" routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
             <li><a class="nav-link" routerLink="upload" routerLinkActive="is-active">Upload</a></li>
         </ul> -->
     <div class="list-container" *ngIf="!isAdmin">
-        <div i18n="@@claims" class="list-tittle"> Claims </div>
-        <ul id="zero">
-            <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                <li i18n="@@dashboard" id="li-container">
-                    <img class="icon" src="assets/dashboard.svg" /> Dashboard
-                </li>
-            </a>
-            <a routerLink="upload" routerLinkActive="is-active">
-                <li i18n="@@uploadclaims" id="li-container">
-                    <img class="icon" src="assets/uploadclaim.svg" />Upload Claims
-                </li>
-            </a>
-            <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
-                <li i18n="@@uploadsummary" id="li-container">
-                    <img class="icon" src="assets/summary.svg" /> Upload Summary
-                </li>
-            </a>
-            <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
-                <li i18n="@@uploadsummary" id="li-container" class="new">
-                    <img class="icon" src="assets/summary.svg" /> Upload Summary
-                </li>
-            </a>
-            <a routerLink="claims/add" routerLinkActive="is-active">
-                <li i18n="@@createclaim" id="li-container">
-                    <img class="icon" src="assets/addclaim.svg" /> Create Claim
-                </li>
-            </a>
-            <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
-                <li i18n="@@notifications" id="li-container">
-                    <img class="icon" src="assets/notification.svg" /> Notifications
-                </li>
-            </a>
-            <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
-                <li i18n="@@announcements" id="li-container">
-                    <img class="icon" src="assets/Announcements.svg" /> Announcements
-                </li>
-            </a>
+        <div i18n="@@claims" class="list-title"> Claims </div>
+        <ul class="nav-list">
+            <li i18n="@@dashboard">
+                <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                    <img src="assets/dashboard.svg" />
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li i18n="@@uploadclaims">
+                <a routerLink="upload" routerLinkActive="is-active">
+                    <img src="assets/uploadclaim.svg" />
+                    <span class="text">Upload Claims</span>
+                </a>
+            </li>
+            <!-- <li i18n="@@uploadsummary" class="new" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
+                <a routerLink="summary" routerLinkActive="is-active">
+                    <img src="assets/summary.svg" />
+                    <span class="text">Upload Summary</span>
+                </a>
+            </li> -->
+            <li i18n="@@createclaim">
+                <a routerLink="claims/add" routerLinkActive="is-active">
+                    <img src="assets/addclaim.svg" />
+                    <span class="text">Create Claim</span>
+                </a>
+            </li>
+            <li i18n="@@claimhistory">
+                <a routerLink="upload/history" routerLinkActive="is-active">
+                    <img src="assets/summary.svg" />
+                    <span class="text">Claims History</span>
+                </a>
+            </li>
+            <li i18n="@@notifications">
+                <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
+                    <img src="assets/notification.svg" />
+                    <span class="text">Notifications</span>
+                </a>
+            </li>
+            <li i18n="@@announcements">
+                <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
+                    <img src="assets/Announcements.svg" />
+                    <span class="text">Announcements</span>
+                </a>
+            </li>
         </ul>
         <div>
-            <div i18n="@@reports" class="list-tittle"> Reports </div>
-            <ul id="zero">
-                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
-                    <li i18n="@@paymentreport" id="li-container">
-                        <img class="icon" src="assets/payment_report.svg" /> Payment Report
-                    </li>
-                </a>
-                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
-                    <li i18n="@@submissionreport" id="li-container">
-                        <img class="icon" src="assets/submission_report.svg" /> Submission Report
-                    </li>
-                </a>
-                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
-                    <li i18n="@@rejectionreport" id="li-container">
-                        <img class="icon" src="assets/rejection_report.svg" /> Rejection Report
-                    </li>
-                </a>
+            <div i18n="@@reports" class="list-title"> Reports </div>
+            <ul class="nav-list">
+                <li i18n="@@paymentreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">Payment Report</span>
+                    </a>
+                </li>
+                <li i18n="@@submissionreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                        <img src="assets/submission_report.svg" />
+                        <span class="text">Submission Report</span>
+                    </a>
+                </li>
+                <li i18n="@@rejectionreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
+                        <img src="assets/rejection_report.svg" />
+                        <span class="text">Rejection Report</span>
+                    </a>
+                </li>
             </ul>
-            <div i18n="@@reports" class="list-tittle" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
-            <ul id="zero" *ngIf="!doNotShowGlobMedIn.includes(envName)">
-                <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
-                    <li i18n="@@gmsummaryreport" id="li-container">
-                        <img class="icon" src="assets/payment_report.svg" /> Summary Report
-                    </li>
-                </a>
-                <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
-                    <li i18n="@@gmebillingreport" id="li-container">
-                        <img class="icon" src="assets/payment_report.svg" /> E-Billing Report
-                    </li>
-                </a>
-                </ul>
+            <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
+            <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
+                <li i18n="@@gmsummaryreport">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}"
+                        routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">Summary Report</span>
+                    </a>
+                </li>
+                <li i18n="@@gmebillingreport">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}"
+                        routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">E-Billing Report</span>
+                    </a>
+                </li>
+            </ul>
         </div>
         <div *ngIf="isProviderAdmin">
-            <div class="list-tittle"> <hr> </div>
-            <ul id="zero">
-                <a routerLink="configurations" routerLinkActive="is-active">
-                    <li i18n="@@configurations" id="li-container">
-                        Configurations
-                    </li>
-                </a>
+            <div class="list-title">
+                <hr>
+            </div>
+            <ul class="nav-list">
+                <li i18n="@@configurations">
+                    <a routerLink="configurations" routerLinkActive="is-active">
+                        <span class="text">Configurations</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
     <div class="list-container" *ngIf="isAdmin">
-        <div i18n="@@configuration" class="list-tittle"> Configuration </div>
-        <ul id="zero">
-            <a routerLink="administration/config/providers" routerLinkActive="is-active">
-                <li i18n="@@providerconfiguration" id="li-container">
-                    Provider Configuration
-                </li>
-            </a>
+        <div i18n="@@configuration" class="list-title"> Configuration </div>
+        <ul class="nav-list">
+            <li i18n="@@providerconfiguration">
+                <a routerLink="administration/config/providers" routerLinkActive="is-active">
+                    <span class="text">Provider Configuration</span>
+                </a>
+            </li>
         </ul>
 
-        <div i18n="@@audit" class="list-tittle"> Audit </div>
-        <ul id="zero">
-            <a routerLink="administration/auditLogs" routerLinkActive="is-active">
-                <li i18n="@@audittrail" id="li-container">
-                    Audit Trail
-                </li>
-            </a>
+        <div i18n="@@audit" class="list-title"> Audit </div>
+        <ul class="nav-list">
+            <li i18n="@@audittrail">
+                <a routerLink="administration/auditLogs" routerLinkActive="is-active">
+                    <span class="text">Audit Trail</span>
+                </a>
+            </li>
         </ul>
     </div>
+</div>
+<div class="nav-backdrop">
+    <button type="button" (click)="toggleNav()"></button>
 </div>

@@ -1,51 +1,57 @@
-<div class="mainCardBody">
-    <table>
-        <tbody>
-            <tr>
-                <td><label>Physician ID<span *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label></td>
-                <td [matTooltip]="getFieldError('physicianId')">
-                    <input type="text" [ngClass]="{'fieldError': fieldHasError('physicianId')}"
-                        [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
+<div class="block-card full-height pb-0">
+    <div class="row">
+        <div class="col-xl-12 col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianId')" [matTooltip]="getFieldError('physicianId')">
+                <div class="left-block">
+                    <label class="control-label">Phy ID<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
                         (change)="updateClaim('physicianId')">
-                </td>
-
-            </tr>
-            <tr>
-
-                <td><label>Physician Name<span *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label></td>
-                <td [matTooltip]="getFieldError('physicianName')"><input type="text"
-                        [required]="pageType == 'INPATIENT_OUTPATIENT'"
-                        [ngClass]="{'fieldError': fieldHasError('physicianName')}"
-                        [formControl]="physicianNameController" (change)="updateClaim('physicianName')"></td>
-
-            </tr>
-            <tr>
-                <td><label>Physician Category<span *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label></td>
-                <td [matTooltip]="getFieldError('physicianCategory')">
-                    <select [value]="selectedCategory" [disabled]="!categoryEditable"
-                        [ngClass]="{'fieldError': fieldHasError('physicianCategory')}"
-                        [required]="pageType == 'INPATIENT_OUTPATIENT'"
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianName')" [matTooltip]="getFieldError('physicianName')">
+                <div class="left-block">
+                    <label class="control-label">Phy Name<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianNameController"
+                        (change)="updateClaim('physicianName')">
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('physicianCategory')" [matTooltip]="getFieldError('physicianCategory')">
+                <div class="left-block">
+                    <label class="control-label">Category<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+                </div>
+                <div class="right-block">
+                    <select class="form-control custom-select-control" [value]="selectedCategory" [disabled]="!categoryEditable" [required]="pageType == 'INPATIENT_OUTPATIENT'"
                         (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
-                        <option value=""></option>
-                        <option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'"
-                            [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}</option>
+                        <option value="">Select Category</option>
+                        <option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'" [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}</option>
                         <option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
                         </option>
                     </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label>Department*</label></td>
-                <td>
-                    <select [value]="selectedDepartment" [disabled]="!departmentEditable"
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-md-6">
+            <div class="form-group style-horizontal">
+                <div class="left-block">
+                    <label class="control-label">Department<span class="asterisk">*</span></label>
+                </div>
+                <div class="right-block">
+                    <select class="form-control custom-select-control" [value]="selectedDepartment" [disabled]="!departmentEditable"
                         (change)="selectedDepartment = $event.target.value; updateClaim('department');" required>
-                        <option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'"
-                            [value]="selectedDepartment">{{selectedDepartment}}</option>
+                        <option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'" [value]="selectedDepartment">{{selectedDepartment}}</option>
                         <option *ngFor="let department of departments" [value]="department.departmentId">
                             {{department.name}}</option>
                     </select>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

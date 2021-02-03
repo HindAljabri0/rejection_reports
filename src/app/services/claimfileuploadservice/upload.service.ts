@@ -102,20 +102,18 @@ export class UploadService {
   }
 
   handleUploadResponse(request:Observable<HttpEvent<{}>>){
-    console.log('start from upload service');
     request.subscribe(event => {
       if(event instanceof HttpResponse){
         const summary:UploadSummary = JSON.parse(JSON.stringify(event.body));
         this.summaryChange.next(summary);
-        console.log('done from upload service');
       }
     });
   }
 
-  deleteClaimByUploadid(providerId: string, uploadId){
-    const requestUrl = `/providers/${providerId}/history/uploads/${uploadId}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
-    const httpRequest = new HttpRequest('DELETE', environment.uploaderHost+requestUrl, {}, {headers: headers});
-    return this.http.request(httpRequest);
-  }
+  // deleteClaimByUploadid(providerId: string, uploadId){
+  //   const requestUrl = `/providers/${providerId}/history/uploads/${uploadId}`;
+  //   const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
+  //   const httpRequest = new HttpRequest('DELETE', environment.uploaderHost+requestUrl, {}, {headers: headers});
+  //   return this.http.request(httpRequest);
+  // }
 }
