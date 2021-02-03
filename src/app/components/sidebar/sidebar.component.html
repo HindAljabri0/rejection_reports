@@ -35,6 +35,33 @@
                 <li i18n="@@claimhistory">
                     <a routerLink="upload/history" routerLinkActive="is-active">
                         <img src="assets/summary.svg" />
+                        <span class="text">Claims History</span>
+                    </a>
+                </li>
+                <li i18n="@@notifications">
+                    <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
+                        <img src="assets/notification.svg" />
+                        <span class="text">Notifications</span>
+                    </a>
+                </li>
+                <li i18n="@@announcements">
+                    <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
+                        <img src="assets/Announcements.svg" />
+                        <span class="text">Announcements</span>
+                    </a>
+                </li>
+            </ul>
+            <div i18n="@@reports" class="list-title"> Reports </div>
+            <ul class="nav-list">
+                <li i18n="@@paymentreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">Payment Report</span>
+                    </a>
+                </li>
+                <li i18n="@@claimhistory">
+                    <a routerLink="upload/history" routerLinkActive="is-active">
+                        <img src="assets/summary.svg" />
                         <span class="text">Claim History</span>
                     </a>
                 </li>
@@ -51,44 +78,42 @@
                     </a>
                 </li>
             </ul>
-            <div>
-                <div i18n="@@reports" class="list-title"> Reports </div>
-                <ul class="nav-list">
-                    <li i18n="@@paymentreport">
-                        <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
-                            <img src="assets/payment_report.svg" />
-                            <span class="text">Payment Report</span>
-                        </a>
-                    </li>
-                    <li i18n="@@submissionreport">
-                        <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
-                            <img src="assets/submission_report.svg" />
-                            <span class="text">Submission Report</span>
-                        </a>
-                    </li>
-                    <li i18n="@@rejectionreport">
-                        <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
-                            <img src="assets/rejection_report.svg" />
-                            <span class="text">Rejection Report</span>
-                        </a>
-                    </li>
-                </ul>
-                <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
-                <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
-                    <li i18n="@@gmsummaryreport">
-                        <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
-                            <img src="assets/payment_report.svg" />
-                            <span class="text">Summary Report</span>
-                        </a>
-                    </li>
-                    <li i18n="@@gmebillingreport">
-                        <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
-                            <img src="assets/payment_report.svg" />
-                            <span class="text">E-Billing Report</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <div i18n="@@reports" class="list-title"> Reports </div>
+            <ul class="nav-list">
+                <li i18n="@@paymentreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">Payment Report</span>
+                    </a>
+                </li>
+                <li i18n="@@submissionreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                        <img src="assets/submission_report.svg" />
+                        <span class="text">Submission Report</span>
+                    </a>
+                </li>
+                <li i18n="@@rejectionreport">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
+                        <img src="assets/rejection_report.svg" />
+                        <span class="text">Rejection Report</span>
+                    </a>
+                </li>
+            </ul>
+            <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
+            <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
+                <li i18n="@@gmsummaryreport">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">Summary Report</span>
+                    </a>
+                </li>
+                <li i18n="@@gmebillingreport">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                        <img src="assets/payment_report.svg" />
+                        <span class="text">E-Billing Report</span>
+                    </a>
+                </li>
+            </ul>
             <div *ngIf="isProviderAdmin">
                 <div class="list-title">
                     <hr>
