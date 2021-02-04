@@ -68,7 +68,7 @@
                 Validation Details
             </button>
             <span class="spacer"></span>
-            <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null && currentSelectedTab==0">
+            <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
                 <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
                     <img src="./assets/ic-page-first.svg" alt="First" />
                 </button>
@@ -205,15 +205,17 @@
             <mat-tab>
                 <div class="table-responsive" *ngIf="validationDetails != null">
                     <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                            <tr [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
-                                [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'29'">
-                                <th>Provider Claim Number</th>
-                                <th>Field Name</th>
-                                <th>Error Description</th>
-                                <th class="text-center">Status</th>
-                            </tr>
-                        </thead>
+                        <ng-container *ngIf='validationDetails.length > 0'>
+                            <thead>
+                                <tr [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
+                                    [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'29'">
+                                    <th>Provider Claim Number</th>
+                                    <th>Field Name</th>
+                                    <th>Error Description</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                        </ng-container>
                         <tbody>
                             <ng-container *ngIf='validationDetails.length > 0'>
                                 <tr *ngFor="let detail of validationDetails">
@@ -229,7 +231,12 @@
                             </ng-container>
                             <ng-container *ngIf='validationDetails.length === 0'>
                                 <tr>
-                                    <td class="text-center" [colSpan]='4'>No Errors Found !</td>
+                                    <td [colSpan]='4'>
+                                        <div class="empty-state">
+                                            <img src="./assets/ic-empty-state.svg" alt="Empty Page" />
+                                            <span>No errors found!</span>
+                                        </div>
+                                    </td>
                                 </tr>
                             </ng-container>
                         </tbody>

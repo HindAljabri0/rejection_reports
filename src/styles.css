@@ -82,7 +82,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .page-fab.mat-fab{position: fixed;right: 48px;bottom: 48px;z-index: 7;}
 .menu-label{font-size: 12px;padding: 4px 16px;color: #3060AA;font-weight: 600;display: block;}
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
-.claim-summary-grid{max-height: 482px;}
+.fixed-height{max-height: 482px;}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
 .service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;}
 .primary-menu .mat-menu-content,.primary-menu .mat-menu-content:not(:empty){padding: 14px;}
@@ -413,6 +413,12 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .attachment .thumbnail{height: 60px;flex-basis: 60px;flex-grow: 0;flex-shrink: 0;max-width:60px;border-radius: 6px;overflow: hidden;}
 .attachment .thumbnail>img{height: 100%;width: 100%;}
 .attachment .content{flex-basis: calc(100% - 60px);flex-grow: 0;flex-shrink: 0;max-width:calc(100% - 60px);padding-left: 12px;}
+
+/* empty state
+--------------------------------------------------------------------------------------------------------*/
+.empty-state{padding: 32px 15px;text-align:center;}
+.empty-state>img{height: 112px;width: 112px;display: block;margin: 0 auto 8px;}
+.empty-state>span{font-size: 18px;line-height: 22px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
