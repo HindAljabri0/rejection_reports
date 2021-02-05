@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li i18n="@@uploadclaims">
-                    <a routerLink="upload" routerLinkActive="is-active">
+                    <a routerLink="upload" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/uploadclaim.svg" />
                         <span class="text">Upload Claims</span>
                     </a>
@@ -27,25 +27,25 @@
                 </a>
             </li> -->
                 <li i18n="@@createclaim">
-                    <a routerLink="claims/add" routerLinkActive="is-active">
+                    <a routerLink="claims/add" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/addclaim.svg" />
                         <span class="text">Create Claim</span>
                     </a>
                 </li>
                 <li i18n="@@claimhistory">
-                    <a routerLink="upload/history" routerLinkActive="is-active">
+                    <a routerLink="upload/history" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/summary.svg" />
                         <span class="text">Claims History</span>
                     </a>
                 </li>
                 <li i18n="@@notifications">
-                    <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/notification.svg" />
                         <span class="text">Notifications</span>
                     </a>
                 </li>
                 <li i18n="@@announcements">
-                    <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/Announcements.svg" />
                         <span class="text">Announcements</span>
                     </a>
@@ -54,25 +54,25 @@
             <div i18n="@@reports" class="list-title"> Reports </div>
             <ul class="nav-list">
                 <li i18n="@@paymentreport">
-                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/payment_report.svg" />
                         <span class="text">Payment Report</span>
                     </a>
                 </li>
                 <li i18n="@@claimhistory">
-                    <a routerLink="upload/history" routerLinkActive="is-active">
+                    <a routerLink="upload/history" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/summary.svg" />
                         <span class="text">Claim History</span>
                     </a>
                 </li>
                 <li i18n="@@notifications">
-                    <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/notification.svg" />
                         <span class="text">Notifications</span>
                     </a>
                 </li>
                 <li i18n="@@announcements">
-                    <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/Announcements.svg" />
                         <span class="text">Announcements</span>
                     </a>
@@ -81,19 +81,19 @@
             <div i18n="@@reports" class="list-title"> Reports </div>
             <ul class="nav-list">
                 <li i18n="@@paymentreport">
-                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/payment_report.svg" />
                         <span class="text">Payment Report</span>
                     </a>
                 </li>
                 <li i18n="@@submissionreport">
-                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/submission_report.svg" />
                         <span class="text">Submission Report</span>
                     </a>
                 </li>
                 <li i18n="@@rejectionreport">
-                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/rejection_report.svg" />
                         <span class="text">Rejection Report</span>
                     </a>
@@ -102,13 +102,13 @@
             <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
             <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
                 <li i18n="@@gmsummaryreport">
-                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/payment_report.svg" />
                         <span class="text">Summary Report</span>
                     </a>
                 </li>
                 <li i18n="@@gmebillingreport">
-                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
+                    <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/payment_report.svg" />
                         <span class="text">E-Billing Report</span>
                     </a>
@@ -131,7 +131,7 @@
             <div i18n="@@configuration" class="list-title"> Configuration </div>
             <ul class="nav-list">
                 <li i18n="@@providerconfiguration">
-                    <a routerLink="administration/config/providers" routerLinkActive="is-active">
+                    <a routerLink="administration/config/providers" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <span class="text">Provider Configuration</span>
                     </a>
                 </li>
@@ -140,7 +140,7 @@
             <div i18n="@@audit" class="list-title"> Audit </div>
             <ul class="nav-list">
                 <li i18n="@@audittrail">
-                    <a routerLink="administration/auditLogs" routerLinkActive="is-active">
+                    <a routerLink="administration/auditLogs" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <span class="text">Audit Trail</span>
                     </a>
                 </li>
