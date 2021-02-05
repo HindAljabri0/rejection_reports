@@ -69,6 +69,7 @@ import { SummaryComponent } from './pages/reports/globmed/summary/summary.compon
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
+import { UploadSummaryDialogComponent } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
     SidebarComponent,
     HeaderComponent,
     ClaimsummaryComponent,
+    UploadSummaryDialogComponent,
     ClaimpageComponent,
     AbstractcardComponent,
     DragdropDirective,
@@ -170,7 +172,8 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
     NonSubmittedClaimsComponent,
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
-    ImageTooltipComponent
+    ImageTooltipComponent,
+    UploadSummaryDialogComponent
   ],
 })
 export class AppModule { }

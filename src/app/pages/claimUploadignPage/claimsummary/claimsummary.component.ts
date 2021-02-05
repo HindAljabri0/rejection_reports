@@ -7,7 +7,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { ClaimInfo } from 'src/app/models/claimInfo';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator } from '@angular/material';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
@@ -17,6 +17,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { UploadSummaryDialogComponent } from './upload-summary-dialog/upload-summary-dialog.component';
 
 
 
@@ -26,6 +27,8 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styles: []
 })
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
+  cardCount = 0;
+
   owlCarouselOptions: OwlOptions = {
     mouseDrag: false,
     pullDrag: false,
@@ -51,8 +54,15 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(public location: Location, public uploadService: UploadService, public commen: SharedServices, private router: Router,
-    private routeActive: ActivatedRoute, private dialogService: DialogService, private claimService: ClaimService) {
+  constructor(
+    public location: Location,
+    public uploadService: UploadService,
+    public commen: SharedServices,
+    private router: Router,
+    private routeActive: ActivatedRoute,
+    private dialogService: DialogService,
+    private claimService: ClaimService,
+    private dialog: MatDialog) {
 
     this.routingObservable = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
@@ -65,6 +75,11 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
               this.commen.loadingChanged.next(false);
               const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
               this.uploadService.summaryChange.next(summary);
+              this.cardCount = (uploadService.summary.noOfUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfNotAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfNotUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfDownloadableClaims != 0) ? this.cardCount + 1 : this.cardCount;
             }
           }, eventError => {
             this.commen.loadingChanged.next(false);
@@ -76,6 +91,14 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
           this.router.navigate(['/upload']);
         }
       });
+    });
+
+  }
+
+  openUploadSummaryDialog() {
+    const dialogRef = this.dialog.open(UploadSummaryDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-lg'],
+      data: { themeColor: this.commen.getCardAccentColor(this.selectedCardKey) }
     });
   }
 
@@ -115,7 +138,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   showClaims = false;
   detailCardTitle: string;
   detailAccentColor: string;
-  selectedCardKey: string;
+  selectedCardKey = 'All';
 
   // currentFileUpload: File;
 
@@ -157,7 +180,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     this.detailCardTitle = this.card0Title;
     this.detailAccentColor = this.card0AccentColor;
     this.getUploadedClaimsDetails();
-    this.selectedCardKey = null;
+    this.selectedCardKey = 'All';
   }
   card1Action() {
     this.showClaims = true;
