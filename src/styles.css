@@ -276,6 +276,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .custom-paginator{display: flex;align-items: center;}
 .custom-paginator>button{display: block;padding: 3px;background: none;border:0;}
 .custom-paginator>button>img{display: block;height: 24px;width: 24px;}
+.custom-paginator>button[disabled]{opacity: 0.5;cursor:not-allowed;}
 .custom-paginator .page-info{padding: 0 8px;}
 .custom-paginator .page-info>small{font-size: 12px;}
 .custom-paginator .action-btn{margin: 0 20px;}

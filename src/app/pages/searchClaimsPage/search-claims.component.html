@@ -69,19 +69,19 @@
             </button>
             <span class="spacer"></span>
             <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
-                <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
+                <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="searchResult.number==0">
                     <img src="./assets/ic-page-first.svg" alt="First" />
                 </button>
-                <button matRipple (click)="goToPrePage()" type="button" title="Previous Page">
+                <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="searchResult.number==0">
                     <img src="./assets/ic-page-prev.svg" alt="Previous" />
                 </button>
                 <p class="page-info">
                     {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
                 </p>
-                <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
+                <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
                     <img src="./assets/ic-page-next.svg" alt="Next" />
                 </button>
-                <button matRipple (click)="goToLastPage()" type="button" title="Last Page">
+                <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
                     <img src="./assets/ic-page-last.svg" alt="Last" />
                 </button>
                 <button matRipple (click)="download()" type="button" class="action-btn">

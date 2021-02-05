@@ -43,19 +43,19 @@
 
     <div class="block-footer sticky-bottom" *ngIf="!isLoading">
         <div class="left-block custom-paginator" *ngIf="paginationControl != null && paginationControl.size > 0">
-            <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="paginationControl.currentIndex==0">
                 <img src="./assets/ic-page-first.svg" alt="First" />
             </button>
-            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page">
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="paginationControl.currentIndex==0">
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
                 {{(paginationControl.currentIndex+1)}}<small>/{{paginationControl.size}}</small>
             </p>
-            <button matRipple (click)="goToNextPage()" type="button" title="Next Page">
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
             </button>
-            <button matRipple (click)="goToLastPage()" type="button" title="Last Page">
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>
