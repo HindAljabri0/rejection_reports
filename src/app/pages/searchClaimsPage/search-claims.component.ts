@@ -290,7 +290,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         const summary: any = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
           this.summaries.push(summary);
-          this.currentSelectedTab = this.commen.showValidationDetailsTab ? 1 : 0;
         }
       }
     }
@@ -333,7 +332,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       pageSize: pageSize
     }));
     this.searchResult = null;
-
+    this.currentSelectedTab = 0;
+    this.validationDetails = [];
     this.searchService.getResults(this.providerId,
       this.from,
       this.to,

@@ -317,7 +317,6 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     return this.commen.getCardAccentColor(status);
   }
   viewClaims() {
-    this.commen.showValidationDetailsTabChange.next(false);
     this.router.navigate([this.providerId, 'claims'], { queryParams: { uploadId: this.summary.uploadSummaryID } });
   }
 
