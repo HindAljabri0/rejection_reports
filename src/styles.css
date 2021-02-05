@@ -43,7 +43,7 @@ input[type=text], input[type=email], input[type=password], textarea { -webkit-ap
 ::-moz-focus-inner { border: 0; }
 select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }
 option:not(:checked) { color: black; }
-input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus textarea:-webkit-autofill,textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,select:-webkit-autofill,select:-webkit-autofill:hover,select:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0px 1000px #F5F6F7 inset !important;}
+input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus, textarea:-webkit-autofill,textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus,select:-webkit-autofill,select:-webkit-autofill:hover,select:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0px 1000px #F5F6F7 inset !important;}
 strong,.bold{font-weight: 700;}
 .semibold{font-weight: 600;}
 .medium{font-weight: 500;}
@@ -220,6 +220,10 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .date-picker{position: relative;}
 .date-picker .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
 .date-picker .form-control{padding-right: 52px;}
+.mat-form-field.mat-form-field-appearance-outline .mat-form-field-infix{padding: 11px 0;}
+.mat-form-field.mat-form-field-appearance-outline input.mat-input-element{height:21px;}
+.mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick{color:#bbbbbb;}
+.mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
 
 /* block
 --------------------------------------------------------------------------------------------------------*/
@@ -432,6 +436,20 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .empty-state{padding: 32px 15px;text-align:center;}
 .empty-state>img{height: 112px;width: 112px;display: block;margin: 0 auto 8px;}
 .empty-state>span{font-size: 18px;line-height: 22px;}
+
+/* login
+--------------------------------------------------------------------------------------------------------*/
+.login-outer{display:table;height:100vh;width:100%;table-layout: fixed;}
+.login-inner{display:table-cell;vertical-align: middle;padding: 80px 15px;}
+.login-card{max-width: 400px;margin: 0 auto;background: #fff;border-radius: 6px;padding:32px;box-shadow: 0 5px 10px rgba(0,0,0,0.16);position: relative;}
+.login-card .loader-block{background-color: rgba(255,255,255,0.48);display: flex;align-items: center;justify-content: center;position: absolute;top: 0;left: 0;right: 0;bottom: 0;border-radius: 6px;}
+.login-card .brand{display: block;margin: 0 auto 32px;max-width: 100%;max-height: 80px;}
+.login-card input:-webkit-autofill, .login-card input:-webkit-autofill:hover, .login-card input:-webkit-autofill:focus, .login-card input:-webkit-autofill:active { -moz-box-shadow: 0 0 0 30px #fff inset !important; -webkit-box-shadow: 0 0 0 30px #fff inset !important; box-shadow: 0 0 0 30px #fff inset !important; }
+.login-card .mat-form-field{display:block;}
+.login-card .mat-form-field .mat-icon{color:#909090;}
+.login-card .submit-btn{display:block;width:calc(100% + 64px);margin:16px -32px -32px -32px;border-radius: 0 0 6px 6px;height: 56px;}
+.login-card .error-block{background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;border-radius: 6px;padding: 10px 16px;text-align: left;margin-bottom: 24px;}
+.login-language-switch{position: absolute;top: 8px;right: 8px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

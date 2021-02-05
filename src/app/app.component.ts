@@ -1,7 +1,6 @@
 import { AuthService } from './services/authService/authService.service';
 import { Component, LOCALE_ID, Inject, OnInit, HostBinding } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { A } from '@angular/cdk/keycodes';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { isHeaderAndSideMenuHidden } from './store/mainStore.reducer';
@@ -26,16 +25,19 @@ export class AppComponent implements OnInit {
 
   isHeaderAndSideMenuHidden$: Observable<boolean>;
 
-  constructor(public authService: AuthService, @Inject(DOCUMENT) private document: Document,
-    @Inject(LOCALE_ID) protected locale: string, private store: Store) {
-      this.isHeaderAndSideMenuHidden$ = this.store.select(isHeaderAndSideMenuHidden);
+  constructor(
+    public authService: AuthService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(LOCALE_ID) protected locale: string,
+    private store: Store) {
+    this.isHeaderAndSideMenuHidden$ = this.store.select(isHeaderAndSideMenuHidden);
   }
 
   ngOnInit() {
 
     if (this.locale.startsWith('ar')) {
       this.activeLanguageLabel = 'عربى';
-      //this.dir = 'rtl';
+      // this.dir = 'rtl';
     }
 
     this.document.documentElement.lang = this.locale;
