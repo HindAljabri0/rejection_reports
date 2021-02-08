@@ -42,9 +42,6 @@ export class SharedServices {
   showUploadHistoryCenter: boolean;
   showUploadHistoryCenterChange: Subject<boolean> = new Subject();
 
-  showValidationDetailsTab = false;
-  showValidationDetailsTabChange: Subject<boolean> = new Subject();
-
   unReadNotificationsCount = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList: Notification[];
@@ -116,10 +113,6 @@ export class SharedServices {
       this.getNotifications();
       this.getUploadHistory();
       this.getAnnouncements();
-    });
-
-    this.showValidationDetailsTabChange.subscribe((value) => {
-      this.showValidationDetailsTab = value;
     });
   }
 
