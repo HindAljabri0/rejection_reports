@@ -1,14 +1,9 @@
 <app-sidebar *ngIf="isLoggedIn && !(isHeaderAndSideMenuHidden$ | async)"></app-sidebar>
 <app-header *ngIf="isLoggedIn  && !(isHeaderAndSideMenuHidden$ | async)" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
-<app-language-switcher *ngIf="!isLoggedIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
-</app-language-switcher>
 
-<div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async)}">
-
+<div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async) && isLoggedIn}">
     <router-outlet>
     </router-outlet>
-
-
 </div>
 
 <app-notification-center *ngIf="isLoggedIn"></app-notification-center>

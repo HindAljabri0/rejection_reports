@@ -1,52 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SharedServices } from 'src/app/services/shared.services';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { filter } from 'rxjs/operators';
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styles: []
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-  expired: boolean;
-  constructor(public authService: AuthService, public router: Router, public routeActive: ActivatedRoute, public commen: SharedServices) {
-    this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.routeActive.queryParams.subscribe(value => {
-        if (value.expired != null && value.expired) {
-          this.errors = "Your session have been expired. Please sign in again."
-        }
-      });
-    });
-  }
-  ngOnInit() { }
+  languageList = [ // <--- add this
+    { code: 'en', label: 'English', dir: 'ltr' },
+    { code: 'ar', label: 'عربى', dir: 'rtl' }
+  ];
+
+  activeLanguageLabel = 'English';
 
   username = new FormControl();
   password = new FormControl();
 
   isLoading = false;
 
-  errors: String;
+  errors: string;
 
-  progressSpinnerDiameter = 35;
+  expired: boolean;
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+    public routeActive: ActivatedRoute,
+    public commen: SharedServices,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(LOCALE_ID) protected locale: string) {
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.routeActive.queryParams.subscribe(value => {
+        if (value.expired != null && value.expired) {
+          this.errors = 'Your session have been expired. Please sign in again.';
+        }
+      });
+    });
+  }
+  ngOnInit() {
+    if (this.locale.startsWith('ar')) {
+      this.activeLanguageLabel = 'عربى';
+      // this.dir = 'rtl';
+    }
+
+    this.document.documentElement.lang = this.locale;
+  }
 
   login() {
-    if (this.isLoading) return;
+    if (this.isLoading) {
+      return;
+    }
+
     this.isLoading = true;
-    if (this.username.value == undefined || this.username.value == "") {
-      this.errors = "Please provide a vaild username!";
+    if (this.username.value == undefined || this.username.value == '') {
+      this.errors = 'Please provide a vaild username!';
       this.isLoading = false;
       return;
-    } else if (this.password.value == undefined || this.password.value == "") {
-      this.errors = "Please provide a password!";
+    } else if (this.password.value == undefined || this.password.value == '') {
+      this.errors = 'Please provide a password!';
       this.isLoading = false;
       return;
     }
@@ -63,9 +85,10 @@ export class LoginComponent {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status < 500 && errorEvent.status >= 400) {
-          this.errors = "username/password is invaild!";
-        } else
-          this.errors = "Could not reach server at the moment. Please try again later.";
+          this.errors = 'Username or Password is invaild!';
+        } else {
+          this.errors = 'Could not reach server at the moment. Please try again later.';
+        }
         this.isLoading = false;
       }
     });

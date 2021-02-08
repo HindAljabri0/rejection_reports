@@ -6,7 +6,7 @@
                     <label class="control-label">Full Name</label>
                 </div>
                 <div class="right-block name-gender-box">
-                    <input class="form-control" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
+                    <input class="form-control" placeholder="Enter full name" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                     <select class="form-control gender-select custom-select-control" [ngClass]="{'female': selectedGender == 'F', 'male': selectedGender == 'M'}"
                         [value]="selectedGender" [disabled]="!editableFields.gender" (change)="selectedGender = $event.target.value; updateClaim('gender');"
                         matTooltip="Select Gender">
@@ -23,12 +23,13 @@
                     <label class="control-label">Payer<span class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
-                    <select class="form-control custom-select-control" [disabled]="!editableFields.payer" [value]="selectedPayer"
-                        (change)="selectedPayer = $event.target.value; updateClaim('payer');" required>
-                        <option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
-                            {{selectedPayer}}</option>
-                        <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
-                    </select>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [disabled]="!editableFields.payer" [value]="selectedPayer" (selectionChange)="selectedPayer = $event.value; updateClaim('payer');" required>
+                            <mat-option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
+                                {{selectedPayer}}</mat-option>
+                            <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
@@ -38,13 +39,15 @@
                     <label class="control-label">Visit Type<span class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
-                    <select class="form-control custom-select-control" [value]="selectedVisitType" [disabled]="!editableFields.visitType"
-                        (change)="selectedVisitType = $event.target.value; updateClaim('visitType');" required>
-                        <option *ngIf="!visitTypes.includes(selectedVisitType) && pageMode == 'VIEW'" [value]="selectedVisitType">
-                            {{beautifyVisitType(selectedVisitType)}}</option>
-                        <option *ngFor="let visitType of visitTypes" [value]="visitType">
-                            {{beautifyVisitType(visitType)}}</option>
-                    </select>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType"
+                            (selectionChange)="selectedVisitType = $event.value; updateClaim('visitType');" required>
+                            <mat-option *ngIf="!visitTypes.includes(selectedVisitType) && pageMode == 'VIEW'" [value]="selectedVisitType">
+                                {{beautifyVisitType(selectedVisitType)}}</mat-option>
+                            <mat-option *ngFor="let visitType of visitTypes" [value]="visitType">
+                                {{beautifyVisitType(visitType)}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
@@ -54,8 +57,8 @@
                     <label class="control-label">Policy No.<span *ngIf="selectedPayer != 102" class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="text" [formControl]="policyNumController" (change)="updateClaim('policyNum')" [required]="selectedPayer != 102"
-                        [matTooltip]="getFieldError('policyNum')">
+                    <input class="form-control" type="text" placeholder="Enter policy number" [formControl]="policyNumController" (change)="updateClaim('policyNum')"
+                        [required]="selectedPayer != 102" [matTooltip]="getFieldError('policyNum')">
                 </div>
             </div>
         </div>
@@ -65,12 +68,17 @@
                     <label class="control-label">Nationality</label>
                 </div>
                 <div class="right-block">
-                    <select class="form-control custom-select-control" [value]="selectedNationality" [disabled]="!editableFields.nationality"
-                        (change)="selectedNationality = $event.target.value; updateClaim('nationality');" required>
-                        <option value="">Select Nationality</option>
-                        <option *ngFor="let nationality of nationalities" [value]="nationality.Code">
-                            {{nationality.Name}}</option>
-                    </select>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="selectedNationality" [disabled]="!editableFields.nationality"
+                            (selectionChange)="selectedNationality = $event.value; updateClaim('nationality');" required>
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option value="">Select Nationality</mat-option>
+                            <mat-option *ngFor="let nationality of nationalities" [value]="nationality.Code">
+                                {{nationality.Name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
@@ -80,7 +88,8 @@
                     <label class="control-label">Member ID<span class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="text" [formControl]="memberIdController" (change)="updateClaim('memberId')" [matTooltip]="getFieldError('memberId')" required>
+                    <input class="form-control" placeholder="Enter member ID" type="text" [formControl]="memberIdController" (change)="updateClaim('memberId')"
+                        [matTooltip]="getFieldError('memberId')" required>
                 </div>
             </div>
         </div>
@@ -90,7 +99,8 @@
                     <label class="control-label">Plan Type</label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="text" [formControl]="planTypeController" (change)="updateClaim('planType')" [matTooltip]="getFieldError('planType')">
+                    <input class="form-control" placeholder="Enter plan type" type="text" [formControl]="planTypeController" (change)="updateClaim('planType')"
+                        [matTooltip]="getFieldError('planType')">
                 </div>
             </div>
         </div>
@@ -100,7 +110,8 @@
                     <label class="control-label">National ID</label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="number" [matTooltip]="getFieldError('nationalId')" [formControl]="nationalIdController" (change)="updateClaim('nationalId')">
+                    <input class="form-control" placeholder="Enter national ID" type="number" [matTooltip]="getFieldError('nationalId')" [formControl]="nationalIdController"
+                        (change)="updateClaim('nationalId')">
                 </div>
             </div>
         </div>
@@ -110,7 +121,8 @@
                     <label class="control-label">Approval No.<span *ngIf="claimPageType == 'DENTAL_OPTICAL'" class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="text" [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required>
+                    <input class="form-control" placeholder="Enter approval number" type="text" [formControl]="approvalNumController" (change)="updateClaim('approvalNum')"
+                        required>
                 </div>
             </div>
         </div>
