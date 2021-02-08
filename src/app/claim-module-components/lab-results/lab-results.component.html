@@ -26,7 +26,11 @@
                 <div class="col-md-6">
                     <div class="form-group" [matTooltip]="getFieldError('testDate:'+i)" [class.has-error]="fieldHasError('testDate:'+i)">
                         <label class="control-label">Test Date</label>
-                        <input [formControl]="result.testDate" class="form-control" type="date">
+                        <div class="date-picker">
+                            <input [matDatepicker]="testDatePicker" class="form-control" [formControl]="result.testDate">
+                            <mat-datepicker-toggle [for]="testDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #testDatePicker></mat-datepicker>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">

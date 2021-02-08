@@ -2,7 +2,11 @@
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('claimDate')">
             <label class="control-label">Claim Date<span class="asterisk">*</span></label>
-            <input id="claimDateInput" type="date" [formControl]="claimDateController" (change)="updateClaim('claimDate')" class="form-control">
+            <div class="date-picker">
+                <input id="claimDateInput" [matDatepicker]="claimDatePicker" class="form-control" [formControl]="claimDateController" (change)="updateClaim('claimDate')">
+                <mat-datepicker-toggle [for]="claimDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #claimDatePicker></mat-datepicker>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
@@ -26,7 +30,11 @@
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('memberDob')" [matTooltip]="getFieldError('memberDob')">
             <label class="control-label">Member DOB<span *ngIf="isControlNull(ageController)" class="asterisk">*</span></label>
-            <input type="date" class="form-control" id="memberDobInput" [formControl]="memberDobController" (change)="updateClaim('memberDob')">
+            <div class="date-picker">
+                <input id="memberDobInput" [matDatepicker]="memberDobDatePicker" class="form-control" [formControl]="memberDobController" (change)="updateClaim('memberDob')">
+                <mat-datepicker-toggle [for]="memberDobDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #memberDobDatePicker></mat-datepicker>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">

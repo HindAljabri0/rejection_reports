@@ -94,6 +94,8 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .hide-tab-header.mat-tab-group .mat-tab-header{display: none;}
 .spinner-progress.mat-progress-spinner circle, .spinner-progress.mat-spinner circle{stroke:currentColor;stroke-width:3px !important;}
 .spinner-progress:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;border-radius:500px;border:3px solid #dedede;content:'';display: block;}
+.cdk-overlay-pane.mat-datepicker-popup{max-height: none;}
+.mat-datepicker-popup .mat-datepicker-content .mat-calendar{height:auto;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
