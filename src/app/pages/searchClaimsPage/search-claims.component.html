@@ -56,7 +56,7 @@
         <app-claim-attachments-management *ngIf="isManagingAttachments"></app-claim-attachments-management>
     </div>
 
-    <ng-container *ngIf="!isManagingAttachments">
+    <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
         <div class="block-header">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
                 *ngIf="summaries != null && summaries[selectedCardKey] != null" [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
