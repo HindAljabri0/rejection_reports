@@ -42,7 +42,7 @@
                         [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
                         <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
                             <label class="control-label">Invoice Number<span class="asterisk">*</span></label>
-                            <input class="form-control" type="text" [formControl]="invoice.invoiceNumber">
+                            <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
                         </div>
                     </div>
                     <div
@@ -50,7 +50,7 @@
                         <div class="form-group" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
                             <label class="control-label">Invoice Date<span class="asterisk">*</span></label>
                             <div class="date-picker">
-                                <input [matDatepicker]="invoiceDatePicker" class="form-control" [formControl]="invoice.invoiceDate">
+                                <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
                                 <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #invoiceDatePicker></mat-datepicker>
                             </div>
@@ -142,7 +142,7 @@
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceCode:'+i+':'+j)" [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
                                     <label class="control-label">Service Code<span class="asterisk">*</span></label>
                                     <div class="input-group">
-                                        <input class="form-control" type="text" [formControl]="service.serviceCode">
+                                        <input class="form-control" type="text" placeholder="Enter service code or select service" [formControl]="service.serviceCode">
                                         <span *ngIf="pageMode != 'VIEW' && !service.retrieved" class="input-group-append">
                                             <span class="input-group-text clickable medium" [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                                         </span>
@@ -154,7 +154,7 @@
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceDescription:'+i+':'+j)"
                                     [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)">
                                     <label class="control-label">Service Description<span class="asterisk">*</span></label>
-                                    <input class="form-control" [formControl]="service.serviceDescription" type="text">
+                                    <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription" type="text">
                                 </div>
                             </div>
                             <div
@@ -162,7 +162,7 @@
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceDate:'+i+':'+j)" [matTooltip]="getFieldError('serviceDate:'+i+':'+j)">
                                     <label class="control-label">Service Date<span class="asterisk">*</span></label>
                                     <div class="date-picker">
-                                        <input [matDatepicker]="picker" class="form-control" [formControl]="service.serviceDate">
+                                        <input [matDatepicker]="picker" class="form-control" placeholder="Select service date" [formControl]="service.serviceDate">
                                         <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </div>
@@ -173,7 +173,7 @@
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice:'+i+':'+j)" [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)">
                                     <label class="control-label">Unit Price<span class="asterisk">*</span></label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" [formControl]="service.unitPrice">
+                                        <input class="form-control" placeholder="Enter unit price" type="number" [formControl]="service.unitPrice">
                                         <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@
                                 [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity:'+i+':'+j)" [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)">
                                     <label class="control-label">Quantity<span class="asterisk">*</span></label>
-                                    <input class="form-control" type="text" [formControl]="service.quantity">
+                                    <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
                                 </div>
                             </div>
                             <div
@@ -191,7 +191,7 @@
                                     [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
                                     <label class="control-label">Patient Share</label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" [formControl]="service.patientShare">
+                                        <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare">
                                         <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceDiscount:'+i+':'+j)" [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
                                     <label class="control-label">Service Discount</label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" [formControl]="service.serviceDiscount">
+                                        <input class="form-control" placeholder="Enter service discount" type="number" [formControl]="service.serviceDiscount">
                                         <span class="input-group-append">
                                             <span class="input-group-text clickable medium"
                                                 (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit
@@ -215,7 +215,7 @@
                                 <div class="form-group" [class.has-error]="fieldHasError('serviceNetVatRate:'+i+':'+j)" [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)">
                                     <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" [formControl]="service.netVatRate">
+                                        <input class="form-control" placeholder="Enter net vat rate" type="number" [formControl]="service.netVatRate">
                                         <span class="input-group-append"><span class="input-group-text medium">%</span></span>
                                     </div>
                                 </div>
@@ -226,7 +226,7 @@
                                     [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)">
                                     <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" [formControl]="service.patientShareVatRate">
+                                        <input class="form-control" placeholder="Enter patient share vat rate" type="number" [formControl]="service.patientShareVatRate">
                                         <span class="input-group-append"><span class="input-group-text medium">%</span></span>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@
                                     [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
                                     <label class="control-label">Tooth Number<span class="asterisk">*</span></label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" [formControl]="service.toothNumber">
+                                        <input class="form-control" placeholder="Select tooth number" type="number" [formControl]="service.toothNumber">
                                         <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="input-group-append">
                                             <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
                                         </span>
@@ -265,7 +265,7 @@
     <div class="form-group mb-0" *ngIf="priceListExist">
         <label class="control-label">Search Service Code</label>
         <input type="text" [formControl]="searchServicesController" [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()" (click)="$event.stopPropagation()"
-            class="form-control">
+            class="form-control" placeholder="Enter service code here...">
         <mat-autocomplete #servicesOptionsAutoComplete class="edit-service-code-autocomplete">
             <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option);">
                 {{option}}

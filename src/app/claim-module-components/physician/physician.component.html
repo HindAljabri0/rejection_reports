@@ -6,7 +6,7 @@
                     <label class="control-label">Phy ID<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
+                    <input class="form-control" placeholder="Enter physician ID" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
                         (change)="updateClaim('physicianId')">
                 </div>
             </div>
@@ -17,8 +17,8 @@
                     <label class="control-label">Phy Name<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
                 </div>
                 <div class="right-block">
-                    <input class="form-control" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianNameController"
-                        (change)="updateClaim('physicianName')">
+                    <input class="form-control" placeholder="Enter physician name" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'"
+                        [formControl]="physicianNameController" (change)="updateClaim('physicianName')">
                 </div>
             </div>
         </div>
