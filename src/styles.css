@@ -194,6 +194,10 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .form-control:focus,.form-control[readonly]:focus,.form-control.custom-select-control.mat-form-field.mat-focused{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
 .form-control::-webkit-outer-spin-button, .form-control::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
 .form-control[type=number] {-moz-appearance: textfield;}
+.form-control::-webkit-input-placeholder { color: rgba(48, 96, 170,0.6); }
+.form-control::-moz-placeholder { color: rgba(48, 96, 170,0.6); }
+.form-control:-ms-input-placeholder { color: rgba(48, 96, 170,0.6); }
+.form-control:-moz-placeholder { color: rgba(48, 96, 170,0.6); }
 .input-group-text{padding: 4px 12px;border-radius: 6px;color: #3060AA;background-color: #EFF5FF;border: 1px solid #EFF5FF;font-size: inherit;line-height: inherit;}
 .form-group.style-horizontal{display: flex;align-items: center;}
 .form-group.style-horizontal .control-label{padding-bottom: 0;}
@@ -203,6 +207,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .mat-form-field.mat-form-field-appearance-outline input.mat-input-element{height:21px;}
 .mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick{color:#bbbbbb;}
 .mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
+.form-group .control-hint{padding-top: 4px;color: #909090;font-weight: 600;}
 
 /* name gender
 --------------------------------------------------------------------------------------------------------*/
@@ -226,6 +231,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
 .form-group.has-error .form-control:-ms-input-placeholder { color: rgba(204, 47, 47,0.64); }
 .form-group.has-error .form-control:-moz-placeholder { color: rgba(204, 47, 47,0.64); }
+.control-error{padding-top: 4px;}
 
 /* select control
 --------------------------------------------------------------------------------------------------------*/
@@ -306,13 +312,14 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 
 /* grid
 --------------------------------------------------------------------------------------------------------*/
-.primary-grid{width: 100%;color:#535252;background-color: #fff;}
+.primary-grid{width: 100%;color:#333;background-color: #fff;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td{vertical-align: top;padding:11px 8px;}
 .primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle{vertical-align: middle;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td{font-weight: 500;}
 .primary-grid>thead>tr>th .mat-icon-button,.primary-grid>thead>tr>td .mat-icon-button{margin: -11px 0;}
 .primary-grid>thead>tr>th .mat-icon-button .mat-icon,.primary-grid>thead>tr>td .mat-icon-button .mat-icon{font-size: 22px;line-height: 22px;}
 .primary-grid:not(.contextful)>thead>tr>th,.primary-grid:not(.contextful)>thead>tr>td{background-color: #D5E4FC;color:#3060AA;}
+.primary-grid:not(.contextful)>.header-primary>tr>th,.primary-grid:not(.contextful)>.header-primary>tr>td{color:#fff;background-color: #3060AA;}
 .primary-grid>thead>tr>th:first-child,.primary-grid>thead>tr>td:first-child,.primary-grid>tbody>tr>th:first-child,.primary-grid>tbody>tr>td:first-child{padding-left: 12px;}
 .primary-grid>thead>tr>th:last-child,.primary-grid>thead>tr>td:last-child,.primary-grid>tbody>tr>th:last-child,.primary-grid>tbody>tr>td:last-child{padding-right: 12px;}
 .primary-grid>tbody>tr:nth-child(even){background-color: #EDF4FF;}
@@ -322,6 +329,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .primary-grid .actions .mat-icon-button .mat-icon{font-size: 20px;line-height: 20px;height: 20px;width: 20px;}
 .primary-grid .actions .mat-spinner-wrapper{display: inline-flex;vertical-align: middle;align-items: center;justify-content: center;height: 32px;width: 32px;}
 .primary-grid.sticky-header>thead>tr>th,.primary-grid.sticky-header>thead>tr>td{position: sticky;top: 0;z-index: 7;}
+.primary-grid .delete-btn{flex-grow: 0;flex-shrink: 0;max-width: 24px;border:0;background:none;flex-basis:24px;min-width: 24px;display:block;padding:0;}
+.primary-grid .delete-btn .mat-icon{display:block;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
