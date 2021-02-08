@@ -252,7 +252,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(OnSavingDoneComponent, {
             data: data,
             closeOnNavigation: true,
-            width: '40%',
+            panelClass: ['primary-dialog']
         }))
     ), { dispatch: false });
 

@@ -27,6 +27,61 @@ import { UploadSummaryDialogComponent } from './upload-summary-dialog/upload-sum
   styles: []
 })
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
+  paginatedResult: PaginatedResult<ClaimInfo>;
+  results: any[];
+  filename: ClaimfileuploadComponent;
+  // providerId: string;
+  // uploadId: any;
+
+
+  paginatorPagesNumbers: number[];
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
+  paginatorPageSizeOptions = [10, 20, 50, 100];
+  manualPage = null;
+
+  routingObservable: Subscription;
+  summaryObservable: Subscription;
+
+  showClaims = false;
+  detailCardTitle: string;
+  detailAccentColor: string;
+  selectedCardKey = 'All';
+
+  // currentFileUpload: File;
+
+
+  card0Title = this.commen.statusToName(ClaimStatus.ALL);
+  card0ActionText = 'details';
+  card0AccentColor = '#3060AA';
+  card0AccentLightColor = 'rgba(48, 96, 170, 0.16)';
+  private searchClaimsComponent: SearchClaimsComponent;
+
+  /* checkfile() {
+    const validExts = new Array('.xlsx', '.xls');
+    let fileExt = this.currentFileUpload.name;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+  }*/
+
+  card1Title = this.commen.statusToName(ClaimStatus.Accepted);
+  card1ActionText = 'details';
+  card1AccentColor = '#67CD23';
+  card1AccentLightColor = 'rgba(103, 205, 35, 0.16)';
+
+  card2Title = this.commen.statusToName(ClaimStatus.NotAccepted);
+  card2ActionText = 'details';
+  card2AccentColor = '#FF144D';
+  card2AccentLightColor = 'rgba(255, 20, 77, 0.16)';
+
+  card3Title = this.commen.statusToName(ClaimStatus.Not_Saved);
+  card3ActionText = 'details';
+  card3AccentColor = '#E6AE24';
+  card3AccentLightColor = 'rgba(230, 174, 36, 0.16)';
+
+  card4Title = this.commen.statusToName(ClaimStatus.Downloadable);
+  card4ActionText = 'details';
+  card4AccentColor = '#67CD23';
+  card4AccentLightColor = 'rgba(103, 205, 35, 0.16)';
+
   cardCount = 0;
 
   owlCarouselOptions: OwlOptions = {
@@ -120,61 +175,6 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     return this.uploadService.uploading;
   }
 
-  paginatedResult: PaginatedResult<ClaimInfo>;
-  results: any[];
-  filename: ClaimfileuploadComponent;
-  // providerId: string;
-  // uploadId: any;
-
-
-  paginatorPagesNumbers: number[];
-  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  paginatorPageSizeOptions = [10, 20, 50, 100];
-  manualPage = null;
-
-  routingObservable: Subscription;
-  summaryObservable: Subscription;
-
-  showClaims = false;
-  detailCardTitle: string;
-  detailAccentColor: string;
-  selectedCardKey = 'All';
-
-  // currentFileUpload: File;
-
-
-  card0Title = this.commen.statusToName(ClaimStatus.ALL);
-  card0ActionText = 'details';
-  card0AccentColor = '#3060AA';
-  card0AccentLightColor = 'rgba(48, 96, 170, 0.16)';
-  private searchClaimsComponent: SearchClaimsComponent;
-
-  /* checkfile() {
-    const validExts = new Array('.xlsx', '.xls');
-    let fileExt = this.currentFileUpload.name;
-    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-  }*/
-
-  card1Title = this.commen.statusToName(ClaimStatus.Accepted);
-  card1ActionText = 'details';
-  card1AccentColor = '#67CD23';
-  card1AccentLightColor = 'rgba(103, 205, 35, 0.16)';
-
-  card2Title = this.commen.statusToName(ClaimStatus.NotAccepted);
-  card2ActionText = 'details';
-  card2AccentColor = '#FF144D';
-  card2AccentLightColor = 'rgba(255, 20, 77, 0.16)';
-
-  card3Title = this.commen.statusToName(ClaimStatus.Not_Saved);
-  card3ActionText = 'details';
-  card3AccentColor = '#E6AE24';
-  card3AccentLightColor = 'rgba(230, 174, 36, 0.16)';
-
-  card4Title = this.commen.statusToName(ClaimStatus.Downloadable);
-  card4ActionText = 'details';
-  card4AccentColor = '#67CD23';
-  card4AccentLightColor = 'rgba(103, 205, 35, 0.16)';
-
   card0Action() {
     this.showClaims = true;
     this.detailCardTitle = this.card0Title;
@@ -249,7 +249,13 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     if (this.paginatedResult != null) {
       this.paginatedResult.content = [];
     }
-    this.uploadService.getUploadedClaimsDetails(this.commen.providerId, this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
+    this.uploadService.getUploadedClaimsDetails(
+      this.commen.providerId,
+      this.uploadService.summary.uploadSummaryID,
+      status,
+      page,
+      pageSize
+    ).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
         this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
@@ -289,7 +295,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length });
+    this.paginatorAction({
+      previousPageIndex: this.paginator.pageIndex,
+      pageIndex: index,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length
+    });
   }
   paginatorAction(event) {
     this.manualPage = event.pageIndex;

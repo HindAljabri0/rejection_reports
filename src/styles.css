@@ -226,6 +226,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .form-group.has-error .form-control,.form-group.has-error .form-control.custom-select-control.mat-form-field{color:#CC2F2F;caret-color: #CC2F2F;background-color: #faeaea;border-color: #faeaea;}
 .form-group.has-error .form-control:focus,.form-group.has-error .form-control.custom-select-control.mat-form-field.mat-focused{border-color: #CC2F2F;}
 .form-group.has-error .gender-select.form-control{background-color: #e7d0d0;border-color: #e7d0d0;}
+.form-group.has-error .input-group-text{background-color: #e7d0d0;color:#CC2F2F;}
 .form-group.has-error .control-label,.form-group.has-error .gender-select.form-control:focus,.form-group.has-error .gender-select.form-control option:not(:checked){color:#CC2F2F;}
 .form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(204, 47, 47,0.64); }
 .form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
@@ -389,6 +390,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .primary-dialog-header .dialog-close{height: 40px;width: 40px;background: url("./assets/ic-close.svg") center no-repeat;background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px auto;border:0;}
 .primary-dialog-header .dialog-close:hover,.primary-dialog-header .dialog-close:focus,.primary-dialog-header .dialog-close:active{opacity: 1;}
 .primary-dialog-footer{padding: 16px;}
+.success-dialog .mat-dialog-container{background-color: rgba(28, 124, 38,0.1);}
+.error-dialog .mat-dialog-container{background-color: rgba(204, 47, 47,0.1);}
 
 /* primary button toggle
 --------------------------------------------------------------------------------------------------------*/
@@ -416,12 +419,16 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .item-group-panel .parent-panel ul>li>.delete-btn,.list-expansion-panel .mat-expansion-panel .delete-btn{flex-grow: 0;flex-shrink: 0;max-width: 24px;border:0;background:none;flex-basis:24px;min-width: 24px;display:block;margin-left:6px;padding:0;}
 .item-group-panel .parent-panel ul>li>.delete-btn .mat-icon,.list-expansion-panel .mat-expansion-panel .delete-btn .mat-icon{display:block;}
 .item-group-panel .parent-panel ul .title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:24px;}
+.item-group-panel .parent-panel ul .invoice-title{display: flex; padding-bottom: 10px;}
+.item-group-panel .parent-panel ul .invoice-title .mat-icon{margin:-2px 0 -2px 8px;}
+.item-group-panel .parent-panel ul .invoice-title .title{padding-bottom: 0;}
 .item-group-panel .child-panel{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 300px);max-width: calc(100% - 300px);padding-left: 14px;}
 .item-group-panel .parent-panel ul>li>.invoice-btn{display: block;color:inherit;}
 .item-group-panel .parent-panel ul>li>.invoice-btn .title{font-size:16px;line-height: 22px;}
 .item-group-panel .parent-panel ul>li>.invoice-btn>span{display: flex;}
 .item-group-panel .parent-panel ul>li>.invoice-btn>span .right{margin-left: auto;text-align: right;}
 .item-group-panel .parent-panel ul>li>.invoice-btn .value{color:#3060AA;}
+.item-group-panel .parent-panel ul>li>.invoice-btn.text-danger .value{color:#CC2F2F;}
 
 /* list expansion panel
 --------------------------------------------------------------------------------------------------------*/
@@ -587,16 +594,6 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
     margin: 0px 10px;
     width: 100%;
     height: 100%;
-}
-
-.dialogSuccess .mat-dialog-container{
-    background-color: #F0FFF4;
-    margin-left: 13.5%;
-}
-
-.dialogError .mat-dialog-container{
-    background-color: #E988AD;
-    margin-left: 13.5%;
 }
 
 .claimDialog mat-dialog-container{
