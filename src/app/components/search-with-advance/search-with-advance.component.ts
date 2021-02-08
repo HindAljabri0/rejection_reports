@@ -18,13 +18,14 @@ import { Moment } from 'moment';
 export class SearchWithAdvanceComponent implements OnInit {
 
   searchModes: { key: string, label: string }[] = [
-    { key: "claimRefNo", label: "Provider Claim Ref. No." },
-    { key: "memberId", label: "Member ID" },
-    { key: "payer&date", label: "Payer" },
-    { key: "invoiceNo", label: "Invoice No." },
-    { key: "patientFileNo", label: "Patient File No" },
-    { key: "policyNo", label: "Policy No." }
-  ]
+    { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
+    { key: 'memberId', label: 'Member ID' },
+    { key: 'payer&date', label: 'Payer' },
+    { key: 'batchId', label: 'Batch ID' },
+    { key: 'invoiceNo', label: 'Invoice No.' },
+    { key: 'patientFileNo', label: 'Patient File No' },
+    { key: 'policyNo', label: 'Policy No.' }
+  ];
   selectedSearchMode = 'claimRefNo';
 
 
@@ -112,7 +113,10 @@ export class SearchWithAdvanceComponent implements OnInit {
         queryParams: {
           claimRefNo: this.selectedSearchMode == 'claimRefNo' ? this.searchControl.value : null,
           memberId: this.selectedSearchMode == 'memberId' ? this.searchControl.value : null,
-          batchId: this.selectedSearchMode == 'batchId' ? this.searchControl.value : null
+          batchId: this.selectedSearchMode == 'batchId' ? this.searchControl.value : null,
+          invoiceNo: this.selectedSearchMode == 'invoiceNo' ? this.searchControl.value : null,
+          patientFileNo: this.selectedSearchMode == 'patientFileNo' ? this.searchControl.value : null,
+          policyNo: this.selectedSearchMode == 'policyNo' ? this.searchControl.value : null,
         }
       });
 

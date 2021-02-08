@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     MaterialModule,
-    CommonModule,
+    CommonModule
   ],
   exports: [
     DetailscardComponent

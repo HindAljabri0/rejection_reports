@@ -1,9 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment, updatePageType } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getClaim, getPageType, ClaimPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
+import {
+  getPhysicianCategory,
+  getDepartments,
+  FieldError,
+  getPhysicianErrors,
+  getDepartmentCode,
+  getClaim,
+  getPageType,
+  ClaimPageType,
+  getPageMode,
+  ClaimPageMode
+} from '../store/claim.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 
@@ -16,10 +26,10 @@ export class PhysicianComponent implements OnInit {
 
   physicianNameController: FormControl = new FormControl();
   physicianIdController: FormControl = new FormControl();
-  selectedCategory: string;
-  categoryEditable: boolean = true;
+  selectedCategory = '';
+  categoryEditable = true;
   selectedDepartment: string;
-  departmentEditable: boolean = true;
+  departmentEditable = true;
 
   categories: any[] = [];
   departments: any[];
@@ -40,7 +50,7 @@ export class PhysicianComponent implements OnInit {
       map(values => ({ departments: values[0], mode: values[1] }))
     ).subscribe(values => {
       if (values.mode.startsWith('CREATE')) {
-        this.departments = values.departments.filter(department => department.name == "Dental" || department.name == "Optical")
+        this.departments = values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical');
       } else {
         this.departments = values.departments;
       }
@@ -57,7 +67,7 @@ export class PhysicianComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
@@ -82,10 +92,11 @@ export class PhysicianComponent implements OnInit {
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
     this.departmentEditable = allowEdit;
-    if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == '')))
+    if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == ''))) {
       this.physicianNameController.enable();
-    else
+    } else {
       this.physicianNameController.disable();
+    }
     if (enableForNulls) {
       if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
         this.physicianIdController.disable();
@@ -109,13 +120,15 @@ export class PhysicianComponent implements OnInit {
         this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.selectedCategory }));
         break;
       case 'department':
-        const dental = this.departments.find(department => department.name == "Dental");
-        const optical = this.departments.find(department => department.name == "Optical");
-        const pharmacy = this.departments.find(department => department.name == "Pharmacy");
-        if ((dental != null && this.selectedDepartment == dental.departmentId) || (optical != null && this.selectedDepartment == optical.departmentId) || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
+        const dental = this.departments.find(department => department.name == 'Dental');
+        const optical = this.departments.find(department => department.name == 'Optical');
+        const pharmacy = this.departments.find(department => department.name == 'Pharmacy');
+        if ((dental != null && this.selectedDepartment == dental.departmentId)
+          || (optical != null && this.selectedDepartment == optical.departmentId)
+          || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
           this.store.dispatch(updatePageType({ pageType: 'DENTAL_OPTICAL' }));
         } else {
-          this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }))
+          this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }));
         }
         this.store.dispatch(updateDepartment({ department: this.selectedDepartment }));
         break;
@@ -125,7 +138,7 @@ export class PhysicianComponent implements OnInit {
   beautifyCategory(category: string) {
     let str = category.substr(0, 1) + category.substr(1).toLowerCase();
     if (str.includes('_')) {
-      let split = str.split('_');
+      const split = str.split('_');
       str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
     }
     return str;
