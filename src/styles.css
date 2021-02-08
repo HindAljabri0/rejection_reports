@@ -383,13 +383,15 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 
 /* primary button toggle
 --------------------------------------------------------------------------------------------------------*/
-.primary-button-toggle.mat-button-toggle-group{display: flex;border-radius: 0;border:0;margin: 0 -6px;}
-.primary-button-toggle.mat-button-toggle-group .mat-button-toggle{flex-grow: 1;flex-shrink: 1;flex-basis: auto;border:0;border: 1px solid #dedede;color: inherit;border-radius: 6px;margin: 0 6px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.primary-button-toggle.mat-button-toggle-group,.primary-button-toggle{display: flex;border-radius: 0;border:0;margin: 0 -6px;}
+.primary-button-toggle.mat-button-toggle-group .mat-button-toggle,.primary-button-toggle .mat-button-toggle{flex-grow: 1;flex-shrink: 1;flex-basis: auto;border:0;border: 1px solid #dedede;color: inherit;border-radius: 6px;margin: 0 6px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
 .primary-button-toggle .mat-button-toggle-appearance-standard .mat-button-toggle-label-content{line-height: 38px;}
-.primary-button-toggle.mat-button-toggle-group .mat-button-toggle.mat-button-toggle-checked{background: #3060AA;color:#fff;border-color:#3060AA;}
-.primary-button-toggle.mat-button-toggle-group .mat-button-toggle-focus-overlay{border-radius:6px;}
-.primary-button-toggle.mat-button-toggle-group .mat-button-toggle-checked .mat-button-toggle-focus-overlay{border:0;}
-.form-group.has-error .primary-button-toggle.mat-button-toggle-group .mat-button-toggle{color:#CC2F2F;background-color: #faeaea;border-color:#faeaea;}
+.primary-button-toggle.mat-button-toggle-group .mat-button-toggle.mat-button-toggle-checked,.primary-button-toggle .mat-button-toggle.mat-button-toggle-checked{background: #3060AA;color:#fff;border-color:#3060AA;}
+.primary-button-toggle.mat-button-toggle-group .mat-button-toggle-focus-overlay,.primary-button-toggle .mat-button-toggle-focus-overlay{border-radius:6px;}
+.primary-button-toggle.mat-button-toggle-group .mat-button-toggle-checked .mat-button-toggle-focus-overlay,.primary-button-toggle .mat-button-toggle-checked .mat-button-toggle-focus-overlay{border:0;}
+.form-group.has-error .primary-button-toggle.mat-button-toggle-group .mat-button-toggle,.form-group.has-error .primary-button-toggle .mat-button-toggle{color:#CC2F2F;background-color: #faeaea;border-color:#faeaea;}
+.primary-button-toggle.inline.mat-button-toggle-group,.primary-button-toggle.inline{flex-wrap:wrap;margin: 0;}
+.primary-button-toggle.inline.mat-button-toggle-group .mat-button-toggle, .primary-button-toggle.inline .mat-button-toggle{margin:0 12px 12px 0;flex-grow:0;flex-shrink:0;}
 
 /* item group panel
 --------------------------------------------------------------------------------------------------------*/
