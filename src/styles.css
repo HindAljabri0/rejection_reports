@@ -189,7 +189,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .form-control,.form-control[readonly],.form-control:disabled{border:1px solid #EFF5FF;height:40px;background-color: #EFF5FF;padding: 4px 12px;color: #3060AA;border-radius: 6px;font-size: inherit;line-height: inherit;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: none;caret-color: #3060AA;}
 select.form-control{cursor: pointer;}
 textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding-bottom: 8px;}
-.form-control:focus,.form-control[readonly]:focus{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
+.form-control:focus,.form-control[readonly]:focus,.form-control.custom-select-control.mat-form-field.mat-focused{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
 .form-control::-webkit-outer-spin-button, .form-control::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
 .form-control[type=number] {-moz-appearance: textfield;}
 .input-group-text{padding: 4px 12px;border-radius: 6px;color: #3060AA;background-color: #EFF5FF;border: 1px solid #EFF5FF;font-size: inherit;line-height: inherit;}
@@ -197,6 +197,13 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .form-group.style-horizontal .control-label{padding-bottom: 0;}
 .form-group.style-horizontal>.left-block{flex-grow: 0;flex-shrink: 0;flex-basis: 130px;max-width: 130px;}
 .form-group.style-horizontal>.right-block{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 130px);max-width: calc(100% - 130px);}
+.mat-form-field.mat-form-field-appearance-outline .mat-form-field-infix{padding: 11px 0;}
+.mat-form-field.mat-form-field-appearance-outline input.mat-input-element{height:21px;}
+.mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick{color:#bbbbbb;}
+.mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
+
+/* name gender
+--------------------------------------------------------------------------------------------------------*/
 .name-gender-box{display: flex;}
 .name-gender-box .form-control{border-radius: 0;}
 .name-gender-box .form-control:first-child{border-radius: 6px 0 0 6px;}
@@ -206,24 +213,38 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .gender-select.form-control.male {background-color: #42CDFF;border-color:#42CDFF;}
 .gender-select.form-control.female {background-color: #ff5ea9;border-color:#ff5ea9;}
 .gender-select.form-control option:not(:checked) { color: #fff; }
-.form-group.has-error .form-control{color:#CC2F2F;caret-color: #CC2F2F;background-color: #faeaea;border-color: #faeaea;}
-.form-group.has-error .form-control:focus{border-color: #CC2F2F;}
+
+/* form error
+--------------------------------------------------------------------------------------------------------*/
+.form-group.has-error .form-control,.form-group.has-error .form-control.custom-select-control.mat-form-field{color:#CC2F2F;caret-color: #CC2F2F;background-color: #faeaea;border-color: #faeaea;}
+.form-group.has-error .form-control:focus,.form-group.has-error .form-control.custom-select-control.mat-form-field.mat-focused{border-color: #CC2F2F;}
 .form-group.has-error .gender-select.form-control{background-color: #e7d0d0;border-color: #e7d0d0;}
 .form-group.has-error .control-label,.form-group.has-error .gender-select.form-control:focus,.form-group.has-error .gender-select.form-control option:not(:checked){color:#CC2F2F;}
 .form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(204, 47, 47,0.64); }
 .form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
 .form-group.has-error .form-control:-ms-input-placeholder { color: rgba(204, 47, 47,0.64); }
 .form-group.has-error .form-control:-moz-placeholder { color: rgba(204, 47, 47,0.64); }
+
+/* select control
+--------------------------------------------------------------------------------------------------------*/
 .custom-select-control{background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;-webkit-appearance:none;-moz-appearance:none;-o-appearance: none;-ms-appearance: none;appearance: none;padding-right: 28px;}
 .form-group.has-error .custom-select-control{background-image: url('./assets/ic-unfold-danger.svg');}
 .mat-select-panel-wrap .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple){background-color: rgba(48, 96, 170, 0.1);}
+.form-control.custom-select-control.mat-form-field{display: flex;align-items:center;padding: 0;}
+.form-control.custom-select-control.mat-form-field .mat-form-field-infix{padding: 0;border:0;height:100%;}
+.form-control.custom-select-control.mat-form-field .mat-form-field-wrapper{padding:0; flex-grow:0;flex-shrink:0;flex-basis:100%;max-width:100%;height: 100%;}
+.form-control.custom-select-control.mat-form-field .mat-form-field-underline,.form-control.custom-select-control.mat-form-field .mat-select-arrow-wrapper{display:none;}
+.form-control.custom-select-control.mat-form-field .mat-select-value,.form-control.custom-select-control.mat-form-field .mat-select-trigger{display:block;max-width: none;color:inherit;}
+.form-control.custom-select-control.mat-form-field .mat-select-trigger{padding: 4px 12px;padding-right: 28px;height:100%;display:flex;align-items:center;}
+.form-control.custom-select-control.mat-form-field .mat-form-field-flex{height:100%;}
+.form-control.custom-select-control.mat-form-field .mat-select{display:block;height:100%;}
+.mat-select-panel-wrap .mat-select-panel .mat-option{height:auto;line-height:inherit;white-space:normal;overflow:visible;padding:11px 16px;}
+
+/* date picker
+--------------------------------------------------------------------------------------------------------*/
 .date-picker{position: relative;}
 .date-picker .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
 .date-picker .form-control{padding-right: 52px;}
-.mat-form-field.mat-form-field-appearance-outline .mat-form-field-infix{padding: 11px 0;}
-.mat-form-field.mat-form-field-appearance-outline input.mat-input-element{height:21px;}
-.mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick{color:#bbbbbb;}
-.mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
 
 /* block
 --------------------------------------------------------------------------------------------------------*/

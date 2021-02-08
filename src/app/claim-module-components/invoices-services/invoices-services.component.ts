@@ -508,7 +508,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   updateInvoiceDepartment(i, event) {
-    this.controllers[i].invoice = { ...this.controllers[i].invoice, invoiceDepartment: event.target.value };
+    this.controllers[i].invoice = { ...this.controllers[i].invoice, invoiceDepartment: event.value };
   }
 
   updateServiceToothNumber(i, j, event) {

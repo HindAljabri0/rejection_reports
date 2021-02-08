@@ -28,13 +28,16 @@
                     <label class="control-label">Category<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
                 </div>
                 <div class="right-block">
-                    <select class="form-control custom-select-control" [value]="selectedCategory" [disabled]="!categoryEditable" [required]="pageType == 'INPATIENT_OUTPATIENT'"
-                        (change)="selectedCategory = $event.target.value; updateClaim('physicianCategory');">
-                        <option value="">Select Category</option>
-                        <option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'" [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}</option>
-                        <option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
-                        </option>
-                    </select>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="selectedCategory" [disabled]="!categoryEditable" [required]="pageType == 'INPATIENT_OUTPATIENT'"
+                            (selectionChange)="selectedCategory = $event.value; updateClaim('physicianCategory');">
+                            <mat-option value="">Select Category</mat-option>
+                            <mat-option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'" [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}
+                            </mat-option>
+                            <mat-option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
@@ -44,12 +47,13 @@
                     <label class="control-label">Department<span class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
-                    <select class="form-control custom-select-control" [value]="selectedDepartment" [disabled]="!departmentEditable"
-                        (change)="selectedDepartment = $event.target.value; updateClaim('department');" required>
-                        <option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'" [value]="selectedDepartment">{{selectedDepartment}}</option>
-                        <option *ngFor="let department of departments" [value]="department.departmentId">
-                            {{department.name}}</option>
-                    </select>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="selectedDepartment" [disabled]="!departmentEditable" (change)="selectedDepartment = $event.value; updateClaim('department');" required>
+                            <mat-option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'" [value]="selectedDepartment">{{selectedDepartment}}</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                {{department.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>

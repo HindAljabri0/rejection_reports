@@ -54,15 +54,16 @@
     <div class="col-md-6 col-lg-4 col-xxl-3" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
         <div class="form-group" [class.has-error]="fieldHasError('caseType')">
             <label class="control-label">Case Type</label>
-            <select class="form-control custom-select-control" [value]="selectedCaseType" (change)="selectedCaseType = $event.target.value; updateClaim('caseType');"
-                [disabled]="!isCaceTypeEnabled">
-                <option value="INPATIENT">Inpatient</option>
-                <option value="OUTPATIENT">Outpatient</option>
-                <option value="DENTAL">Dental</option>
-                <option value="DELIVERY">Delivery</option>
-                <option value="OPTICAL">Optical</option>
-                <option value="PHARMACY">Pharmacy</option>
-            </select>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select [value]="selectedCaseType" (selectionChange)="selectedCaseType = $event.value; updateClaim('caseType');" [disabled]="!isCaceTypeEnabled">
+                    <mat-option value="INPATIENT">Inpatient</mat-option>
+                    <mat-option value="OUTPATIENT">Outpatient</mat-option>
+                    <mat-option value="DENTAL">Dental</mat-option>
+                    <mat-option value="DELIVERY">Delivery</mat-option>
+                    <mat-option value="OPTICAL">Optical</mat-option>
+                    <mat-option value="PHARMACY">Pharmacy</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">

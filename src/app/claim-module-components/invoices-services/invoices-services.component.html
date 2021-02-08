@@ -56,11 +56,13 @@
                         [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4':'']">
                         <div class="form-group">
                             <label class="control-label">Invoice Department<span class="asterisk">*</span></label>
-                            <select (change)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment" class="form-control custom-select-control"
-                                [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
-                                <option *ngFor="let department of departments" [value]="department.departmentId">
-                                    {{department.name}}</option>
-                            </select>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
+                                    [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
+                                    <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                        {{department.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
