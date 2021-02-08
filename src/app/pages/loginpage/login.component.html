@@ -7,14 +7,14 @@
             <div class="form-group mb-0">
                 <mat-form-field appearance="outline">
                     <mat-label i19n="@@username">Username</mat-label>
-                    <input matInput autofocus i18n-placeholder="@@username" placeholder="username" [formControl]="username" (keyup.enter)="login()">
+                    <input matInput autofocus i18n-placeholder="@@username" placeholder="Enter username here..." [formControl]="username" (keyup.enter)="login()">
                     <mat-icon matSuffix>account_circle</mat-icon>
                 </mat-form-field>
             </div>
             <div class="form-group mb-0">
                 <mat-form-field appearance="outline">
                     <mat-label i18n="@@password">Password</mat-label>
-                    <input type="password" matInput i18n-placeholder="@@password" placeholder="password" [formControl]="password" (keyup.enter)="login()">
+                    <input type="password" matInput i18n-placeholder="@@password" placeholder="Enter password here..." [formControl]="password" (keyup.enter)="login()">
                     <mat-icon matSuffix>lock</mat-icon>
                 </mat-form-field>
             </div>
