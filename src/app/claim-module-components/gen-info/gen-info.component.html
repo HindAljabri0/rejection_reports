@@ -4,7 +4,7 @@
             <label class="control-label">Claim Date<span class="asterisk">*</span></label>
             <div class="date-picker">
                 <input id="claimDateInput" [matDatepicker]="claimDatePicker" class="form-control" placeholder="Select claim date" [formControl]="claimDateController"
-                    (change)="updateClaim('claimDate')">
+                    (dateChange)="updateClaim('claimDate')">
                 <mat-datepicker-toggle [for]="claimDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #claimDatePicker></mat-datepicker>
             </div>
@@ -34,7 +34,7 @@
             <label class="control-label">Member DOB<span *ngIf="isControlNull(ageController)" class="asterisk">*</span></label>
             <div class="date-picker">
                 <input id="memberDobInput" [matDatepicker]="memberDobDatePicker" placeholder="Select member date of birth" class="form-control" [formControl]="memberDobController"
-                    (change)="updateClaim('memberDob')">
+                    (dateChange)="updateClaim('memberDob')">
                 <mat-datepicker-toggle [for]="memberDobDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #memberDobDatePicker></mat-datepicker>
             </div>

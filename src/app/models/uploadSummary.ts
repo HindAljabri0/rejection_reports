@@ -22,7 +22,6 @@ export class UploadSummary {
       this.netVATAmountOfDownloadableClaims = json.netVATAmountOfDownloadableClaims ? json.netVATAmountOfDownloadableClaims : 0;
       this.ratioForAccepted = json.ratioForAccepted ? json.ratioForAccepted : 0;
       this.ratioForNotAccepted = json.ratioForNotAccepted ? json.ratioForNotAccepted : 0;
-      this.ratioForNotUploaded = json.ratioForNotUploaded ? json.ratioForNotUploaded : 0;
       this.ratioForDownloadable = json.ratioForDownloadable ? json.ratioForDownloadable : 0;
     }
   }
@@ -53,6 +52,5 @@ export class UploadSummary {
   netVATAmountOfDownloadableClaims: number = 0;
   ratioForAccepted: number = 0;
   ratioForNotAccepted: number = 0;
-  ratioForNotUploaded: number = 0;
   ratioForDownloadable: number = 0;
 }

@@ -264,6 +264,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 --------------------------------------------------------------------------------------------------------*/
 .date-picker{position: relative;}
 .date-picker .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
+.has-error .date-picker .mat-datepicker-toggle{color:#CC2F2F;}
 .date-picker .form-control{padding-right: 52px;}
 
 /* block
@@ -450,6 +451,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .item-group-panel .parent-panel ul>li>.invoice-btn>span .right{margin-left: auto;text-align: right;}
 .item-group-panel .parent-panel ul>li>.invoice-btn .value{color:#3060AA;}
 .item-group-panel .parent-panel ul>li>.invoice-btn.text-danger .value{color:#CC2F2F;}
+.item-group-panel .parent-panel.invoice-list ul>li{align-items: flex-start;}
+.item-group-panel .parent-panel.invoice-list ul>li>.delete-btn{margin-top: 8px;}
 
 /* list expansion panel
 --------------------------------------------------------------------------------------------------------*/
