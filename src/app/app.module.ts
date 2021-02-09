@@ -69,7 +69,10 @@ import { SummaryComponent } from './pages/reports/globmed/summary/summary.compon
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
-import { UploadSummaryDialogComponent } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
+import {
+  UploadSummaryDialogComponent
+} from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
+import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 
 @NgModule({
   declarations: [
@@ -117,7 +120,7 @@ import { UploadSummaryDialogComponent } from './pages/claimUploadignPage/claimsu
     ImageToolTipDirective,
     ImageTooltipComponent,
     SummaryComponent,
-    GmReportsPageComponent,
+    GmReportsPageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -136,7 +139,8 @@ import { UploadSummaryDialogComponent } from './pages/claimUploadignPage/claimsu
     ChartsModule,
     CarouselModule,
     NgScrollbarModule,
-    SmoothScrollModule
+    SmoothScrollModule,
+    GuidedTourModule
   ],
   providers: [
     ThemeService,
@@ -151,6 +155,7 @@ import { UploadSummaryDialogComponent } from './pages/claimUploadignPage/claimsu
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
     },
+    GuidedTourService
     // {
     //   provide: ErrorHandler,
     //   useClass: ApmErrorHandler

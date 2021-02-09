@@ -7,18 +7,18 @@
   </div>
   <app-search-with-advance></app-search-with-advance>
   <div class="right-block">
-    <button (click)="toggleSearch()" class="iconButton tablet-search" mat-icon-button matTooltip="Search">
+    <button (click)="toggleSearch()" class="icon-btn tablet-search" mat-icon-button matTooltip="Search">
       <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
     </button>
     <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
-    <button (click)="toggleUploadHistoryCenter()" class="iconButton" mat-icon-button matTooltip="Uploads">
+    <button (click)="toggleUploadHistoryCenter()" class="icon-btn uploads-btn" mat-icon-button matTooltip="Uploads">
       <mat-icon aria-hidden="false">cloud</mat-icon>
       <!-- <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon> -->
     </button>
-    <button (click)="toggleNotificationCenter()" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Notifications">
+    <button (click)="toggleNotificationCenter()" class="icon-btn {{notificationIconClasses}} notifications-btn" mat-icon-button matTooltip="Notifications">
       <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
     </button>
-    <button (click)="toggleAnnouncementCenter()" class="iconButton" mat-icon-button matTooltip="Announcements">
+    <button (click)="toggleAnnouncementCenter()" class="icon-btn announcements-btn" mat-icon-button matTooltip="Announcements">
       <mat-icon aria-hidden="false" aria-label="Announcements">announcements</mat-icon>
     </button>
     <div class="user-info">

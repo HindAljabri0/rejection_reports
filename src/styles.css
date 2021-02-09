@@ -96,6 +96,8 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .spinner-progress:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;border-radius:500px;border:3px solid #dedede;content:'';display: block;}
 .cdk-overlay-pane.mat-datepicker-popup{max-height: none;}
 .mat-datepicker-popup .mat-datepicker-content .mat-calendar{height:auto;}
+.guided-tour-active *{transition: none!important;}
+.cdk-overlay-container .cdk-overlay-dark-backdrop{background-color: rgba(0, 0, 0, 0.6);}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -131,8 +133,8 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .brand-header .right-block{margin-left: auto;display: flex;align-items: center;padding-right: 16px;}
 .brand-header .right-block>div,.brand-header .right-block>button,.brand-header .right-block>.language-switch{margin-right: 4px;}
 .brand-header .right-block>div:last-child,.brand-header .right-block>button:last-child,.brand-header .right-block>.language-switch:last-child{margin-right: 0;}
-.brand-header .iconButton.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 24px;left: 16px;}
-.brand-header .iconButton .innerIcon {position: absolute;top: 9px;left: 7.5px;font-size: 16px;color: #3060AA;font-weight: bold;}
+.brand-header .icon-btn.hasNotifications::after {content: ".";position: absolute;display: flex;color: #EB2A75;font-size: 70px;bottom: 24px;left: 16px;}
+.brand-header .icon-btn .innerIcon {position: absolute;top: 9px;left: 7.5px;font-size: 16px;color: #3060AA;font-weight: bold;}
 .brand-header .user-info {font-size: 12px;line-height: 18px; background-color: #254f90;border-radius: 6px;padding: 4px 4px 4px 10px;display: flex;margin-left: 8px;align-items: center;}
 .brand-header .logout{background-color: #22477f;margin-left: 8px;}
 .brand-header .inner-user-info{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: 150px;}
@@ -492,6 +494,19 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .login-card .submit-btn{display:block;width:calc(100% + 64px);margin:16px -32px -32px -32px;border-radius: 0 0 6px 6px;height: 56px;}
 .login-card .error-block{background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;border-radius: 6px;padding: 10px 16px;text-align: left;margin-bottom: 24px;}
 .login-language-switch{position: absolute;top: 8px;right: 8px;}
+
+/* tour
+--------------------------------------------------------------------------------------------------------*/
+.primary-tour .tour-step .tour-block{padding: 16px;color:inherit;border-radius:6px;box-shadow:0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);}
+.primary-tour .tour-step .tour-title{padding-bottom: 8px;font-weight:600!important;}
+.primary-tour .tour-step .tour-content{font-size:14px;min-height:auto;padding-bottom:18px;}
+.primary-tour .tour-step .tour-buttons .back-button{color: #3060AA;}
+.primary-tour .tour-step .tour-buttons button.link-button{font-size:14px;height:36px;border-radius:4px;}
+.primary-tour .tour-step .tour-buttons .next-button{border-radius:4px;height:36px;padding-left: 16px;padding-right: 16px;background-color: #3060AA;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.primary-tour .tour-step .tour-buttons .next-button:hover{background-color: #224d90;}
+.primary-tour .tour-step .tour-buttons button.skip-button{color:#606060;}
+.primary-tour .guided-tour-spotlight-overlay{box-shadow:0 0 0 9999px rgba(0,0,0,0.6);}
+.rounded-tour-spotlight .primary-tour .guided-tour-spotlight-overlay{border-radius: 500px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
