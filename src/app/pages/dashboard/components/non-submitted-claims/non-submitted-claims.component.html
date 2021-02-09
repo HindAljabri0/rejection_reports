@@ -1,43 +1,41 @@
-<owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel">
-    <ng-container *ngFor="let item of summaries">
-        <ng-template carouselSlide>
-            <app-abstractcard [title]="item.title || getCardName(item.data.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])"
-                [clickable]="false" class="primary-card">
-                <ng-container *ngIf="item.data != null && !item.loading && item.error == null">
-                    <label>No. of Claims</label>
-                    <h6 class="dashboard-numbers pb-2" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalClaims}}</h6>
-                    <div class="boxes">
-                        <div class="left-box">
-                            <label>Gross</label>
-                            <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.gross}}<span class="currency">
-                                    SR</span></h6>
+<div class="row small-gutter">
+    <div class="col-xxl-3 col-xl-4 col-md-6" *ngFor="let item of summaries">
+        <app-abstractcard [title]="item.title || getCardName(item.data.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])"
+            [clickable]="false" class="primary-card">
+            <ng-container *ngIf="item.data != null && !item.loading && item.error == null">
+                <label>No. of Claims</label>
+                <h6 class="dashboard-numbers pb-2" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalClaims}}</h6>
+                <div class="boxes">
+                    <div class="left-box">
+                        <label>Gross</label>
+                        <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.gross}}<span class="currency">
+                                SR</span></h6>
+                    </div>
+                    <div class="right-box d-flex">
+                        <div class="pr-1">
+                            <label>Net Amount</label>
+                            <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalNetAmount}}<span
+                                    class="currency"> SR</span></h6>
                         </div>
-                        <div class="right-box d-flex">
-                            <div class="pr-1">
-                                <label>Net Amount</label>
-                                <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalNetAmount}}<span
-                                        class="currency"> SR</span></h6>
-                            </div>
-                            <div class="ml-auto text-right">
-                                <label>Vat</label>
-                                <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalVatNetAmount}}<span
-                                        class="currency"> SR</span></h6>
-                            </div>
+                        <div class="ml-auto text-right">
+                            <label>Vat</label>
+                            <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalVatNetAmount}}<span
+                                    class="currency"> SR</span></h6>
                         </div>
                     </div>
-                </ng-container>
-                <ng-container *ngIf="item.loading">
-                    <div class="loader-wrapper">
-                        <mat-spinner diameter="40" [color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">
-                        </mat-spinner>
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="item.error != null && !item.loading">
-                    <div class="error">
-                        <p class="error-text">Could not get data from the server. Please try again later.</p>
-                    </div>
-                </ng-container>
-            </app-abstractcard>
-        </ng-template>
-    </ng-container>
-</owl-carousel-o>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="item.loading">
+                <div class="loader-wrapper">
+                    <mat-spinner diameter="40" [color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">
+                    </mat-spinner>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="item.error != null && !item.loading">
+                <div class="error">
+                    <p class="error-text">Could not get data from the server. Please try again later.</p>
+                </div>
+            </ng-container>
+        </app-abstractcard>
+    </div>
+</div>
