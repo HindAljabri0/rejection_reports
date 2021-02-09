@@ -40,7 +40,7 @@
             <label class="control-label">Last Menstruation Period</label>
             <div class="date-picker">
                 <input [matDatepicker]="lastMenstruationPeriodPicker" class="form-control" placeholder="Select last menstruation period"
-                    [formControl]="lastMenstruationPeriodController" (change)="updateClaim('lastMenstruationPeriod')">
+                    [formControl]="lastMenstruationPeriodController" (dateChange)="updateClaim('lastMenstruationPeriod')">
                 <mat-datepicker-toggle [for]="lastMenstruationPeriodPicker"></mat-datepicker-toggle>
                 <mat-datepicker #lastMenstruationPeriodPicker></mat-datepicker>
             </div>
