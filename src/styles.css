@@ -393,8 +393,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .primary-dialog-header .dialog-close{height: 40px;width: 40px;background: url("./assets/ic-close.svg") center no-repeat;background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px auto;border:0;}
 .primary-dialog-header .dialog-close:hover,.primary-dialog-header .dialog-close:focus,.primary-dialog-header .dialog-close:active{opacity: 1;}
 .primary-dialog-footer{padding: 16px;}
-.success-dialog .mat-dialog-container{background-color: rgba(28, 124, 38,0.1);}
-.error-dialog .mat-dialog-container{background-color: rgba(204, 47, 47,0.1);}
+.success-dialog .mat-dialog-container{background-color: #e7f2e9;}
+.error-dialog .mat-dialog-container{background-color: #fae9e9;}
 
 /* primary button toggle
 --------------------------------------------------------------------------------------------------------*/
