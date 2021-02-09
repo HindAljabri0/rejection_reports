@@ -10,7 +10,7 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
-  getSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {
+  getSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string, invoiceNo?: string, patientFileNo?: string, policyNo?: string) {
     let requestURL: string = `/providers/${providerId}/claims?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
@@ -32,6 +32,15 @@ export class SearchService {
     if (memberId != null) {
       requestURL += `memberId=${memberId}` + '&status=' + statuses.toString();
     }
+    if (invoiceNo != null) {
+      requestURL += `invoiceNo=${invoiceNo}&status=${statuses.toString()}`;
+    }
+    if (patientFileNo != null) {
+      requestURL += `patientFileNo=${patientFileNo}&status=${statuses.toString()}`;
+    }
+    if (policyNo != null) {
+      requestURL += `policyNo=${policyNo}&status=${statuses.toString()}`;
+    }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
@@ -43,7 +52,7 @@ export class SearchService {
     } else return date;
   }
 
-  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string) {
+  getResults(providerId: string, fromDate?: string, toDate?: string, payerId?: string, statuses?: string[], page?: number, pageSize?: number, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string, invoiceNo?: string, patientFileNo?: string, policyNo?: string) {
     if (page == null) page = 0;
     if (pageSize == null) pageSize = 10;
     let requestURL: string = `/providers/${providerId}/claims/details?`;
@@ -67,11 +76,20 @@ export class SearchService {
     if (memberId != null) {
       requestURL += `memberId=${memberId}` + '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
     }
+    if (invoiceNo != null) {
+      requestURL += `invoiceNo=${invoiceNo}&status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
+    }
+    if (patientFileNo != null) {
+      requestURL += `patientFileNo=${patientFileNo}&status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
+    }
+    if (policyNo != null) {
+      requestURL += `policyNo=${policyNo}&status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
+    }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
 
-  downloadSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, claimRefNo?: string, memberId?: string) {
+  downloadSummaries(providerId: string, statuses: string[], fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, claimRefNo?: string, memberId?: string, invoiceNo?: string, patientFileNo?: string, policyNo?: string) {
     let requestURL: string = `/providers/${providerId}/claims/download?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
@@ -83,10 +101,17 @@ export class SearchService {
     } else if (uploadId != null) {
       requestURL += `&uploadId=${uploadId}`;
     } else if (claimRefNo != null) {
-      requestURL += `claimRefNo=${claimRefNo}`;
+      requestURL += `&claimRefNo=${claimRefNo}`;
     } else if (memberId != null) {
-      requestURL += `memberId=${memberId}`;
+      requestURL += `&memberId=${memberId}`;
+    } else if (invoiceNo != null) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    } else if (patientFileNo != null) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    } else if (policyNo != null) {
+      requestURL += `&policyNo=${policyNo}`;
     }
+
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, "", { responseType: "text" });
     return this.http.request(request);
   }

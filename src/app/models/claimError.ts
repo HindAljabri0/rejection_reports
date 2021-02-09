@@ -5,4 +5,6 @@ export class ClaimError {
   fieldName: string;
   providerClaimeNo: string;
   status: string;
+  patientFileNumber: string;
+  visitDate: string;
 }

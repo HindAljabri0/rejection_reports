@@ -86,6 +86,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   claimId: string;
   claimRefNo: string;
   memberId: string;
+  invoiceNo: string;
+  patientFileNo: string;
+  policyNo: string;
   editMode: string;
   routerSubscription: Subscription;
 
@@ -208,11 +211,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.claimId = value.claimId;
       this.claimRefNo = value.claimRefNo;
       this.memberId = value.memberId;
+      this.invoiceNo = value.invoiceNo;
+      this.patientFileNo = value.patientFileNo;
+      this.policyNo = value.policyNo;
       this.editMode = value.editMode;
       this.store.dispatch(setSearchCriteria({
         batchId: this.batchId,
         fromDate: this.from,
         memberId: this.memberId,
+        invoiceNo: this.invoiceNo,
+        patientFileNo: this.patientFileNo,
+        policyNo: this.policyNo,
         payerId: this.payerId,
         provClaimNum: this.claimRefNo,
         toDate: this.to,
@@ -224,7 +233,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       (this.batchId == null || this.batchId == '') &&
       (this.uploadId == null || this.uploadId == '') &&
       (this.claimRefNo == null || this.claimRefNo == '') &&
-      (this.memberId == null || this.memberId == '')) {
+      (this.memberId == null || this.memberId == '') &&
+      (this.invoiceNo == null || this.invoiceNo == '') &&
+      (this.patientFileNo == null || this.patientFileNo == '') &&
+      (this.policyNo == null || this.policyNo == '')) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
@@ -272,7 +284,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.uploadId,
       this.casetype,
       this.claimRefNo,
-      this.memberId).toPromise().catch(error => {
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == '4') {
@@ -345,7 +360,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.uploadId,
       this.casetype,
       this.claimRefNo,
-      this.memberId).subscribe((event) => {
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -791,7 +809,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.batchId,
       this.uploadId,
       this.claimRefNo,
-      this.memberId).toPromise().catch(error => {
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo).toPromise().catch(error => {
         if (error instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog(new MessageDialogData('',
             'Could not reach the server at the moment. Please try again later.',
@@ -820,6 +841,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
         } else if (this.memberId != null) {
           a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
+        } else if (this.invoiceNo != null){
+          a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
+        } else if (this.patientFileNo != null){
+          a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
+        } else if (this.policyNo != null){
+          a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
         }
 
         a.click();
