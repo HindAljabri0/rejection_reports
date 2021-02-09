@@ -1,13 +1,35 @@
-<div class="parent">
-    <label>Claim Date</label>
-    <div class="toggleButton" [ngClass]="{'checked': searchByLastMonth}"
-        (click)="searchByLastMonth = true; resetDates();">Last Month - {{lastMonthName}}</div>
-    <label>Or</label>
-    <input type="date" [ngClass]="{'fieldError': fromDateInvalid}" placeholder="From Date" [formControl]="fromDateControl" (change)="searchByLastMonth = false">
-    <input type="date" [ngClass]="{'fieldError': toDateInvalid}" placeholder="To Date" [formControl]="toDateControl" (change)="searchByLastMonth = false">
-    <select [value]="selectedPayer"
-        (change)="updateSelectedPayer($event.target.value);" required>
-        <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
-    </select>
-    <button class="searchButton" mat-flat-button color="primary" (click)="search()"><mat-icon>search</mat-icon></button>
+<div (click)="$event.stopPropagation()">
+    <mat-button-toggle-group class="primary-button-toggle block" (change)="searchByLastMonth = true; resetDates();">
+        <mat-button-toggle [checked]="searchByLastMonth">Last Month - {{lastMonthName}}
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+    <div class="form-group text-center text-medium-grey">Or</div>
+    <div class="form-group" [class.has-error]="fromDateInvalid">
+        <label class="control-label">From date</label>
+        <div class="date-picker">
+            <input [matDatepicker]="dashboardFilterFromDate" class="form-control" placeholder="Select from date" [formControl]="fromDateControl"
+                (dateInput)="searchByLastMonth = false">
+            <mat-datepicker-toggle [for]="dashboardFilterFromDate"></mat-datepicker-toggle>
+            <mat-datepicker #dashboardFilterFromDate></mat-datepicker>
+        </div>
+    </div>
+    <div class="form-group" [class.has-error]="toDateInvalid">
+        <label class="control-label">To date</label>
+        <div class="date-picker">
+            <input [matDatepicker]="dashboardFilterToDate" class="form-control" placeholder="Select to date" [formControl]="toDateControl" (dateInput)="searchByLastMonth = false">
+            <mat-datepicker-toggle [for]="dashboardFilterToDate"></mat-datepicker-toggle>
+            <mat-datepicker #dashboardFilterToDate></mat-datepicker>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Payer</label>
+        <mat-form-field class="form-control custom-select-control">
+            <mat-select (selectionChange)="updateSelectedPayer($event.value);" required [value]="selectedPayer">
+                <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="text-right">
+    <button mat-flat-button color="primary" (click)="search()">Search</button>
 </div>

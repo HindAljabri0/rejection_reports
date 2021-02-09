@@ -1,15 +1,15 @@
 <div class="primary-card">
     <div class="primary-card-title">By {{data.rejectionBy}}</div>
     <div class="primary-card-content">
-        <div class="row no-gutters align-items-center mb-2">
-            <div class="col-5 pr-2">
+        <div class="rejection-card-head">
+            <div class="left-block">
                 <h4 class="pb-1">Rejected {{unit}}</h4>
                 <h6>{{rejectionByPayerTotalClaims || data.total}} {{unit}}</h6>
             </div>
-            <div class="col-7">
+            <div class="right-block">
                 <canvas *ngIf="!loading" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="options" [colors]="colors">
                 </canvas>
-                <mat-spinner diameter="48" *ngIf="loading" class="my-2 mx-auto"></mat-spinner>
+                <mat-spinner diameter="48" *ngIf="loading" class="ml-auto"></mat-spinner>
             </div>
         </div>
         <div class="error-text pb-2" *ngIf="error != null && !error.startsWith('Payer')">Could not get data from the server.</div>
