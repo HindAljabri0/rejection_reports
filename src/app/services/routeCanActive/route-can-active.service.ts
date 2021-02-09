@@ -43,6 +43,12 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         if (claimRefNo != null && claimRefNo != '') return true;
         let memberId = route.queryParamMap.get('memberId');
         if (memberId != null && memberId != '') return true;
+        let invoiceNo = route.queryParamMap.get('invoiceNo');
+        if (invoiceNo != null && invoiceNo != '') return true;
+        let patientFileNo = route.queryParamMap.get('patientFileNo');
+        if (patientFileNo != null && patientFileNo != '') return true;
+        let policyNo = route.queryParamMap.get('policyNo');
+        if (policyNo != null && policyNo != '') return true;
         payerId = route.queryParamMap.get("payer");
         authority = localStorage.getItem(providerId + payerId);
         if (providerId == null || providerId == "" || payerId == null || payerId == "" || authority == null) {

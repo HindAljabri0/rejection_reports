@@ -1,28 +1,28 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="login-main">
-    <mat-card class="mat-card">
-        <mat-card-header style="justify-content: center;">
-            <img src="assets/waseel_logo_Dark_Blue.png" alt="Waseel" width="30%">
-        </mat-card-header>
-        <mat-card-content fxLayout="column">
-            <mat-form-field appearance="outline" style="padding-left:10%; padding-top: 15%; width: 90%;">
-                <mat-label i18n="@@username">Username</mat-label>
-                <input matInput autofocus i18n-placeholder="@@username" placeholder="username" [formControl]="username" (keyup.enter)="login()">
-                <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="outline" style="padding-left:10%; width: 90%;">
-                <mat-label i18n="@@password">password</mat-label>
-                <input type="password" matInput i18n-placeholder="@@password" placeholder="password" [formControl]="password" (keyup.enter)="login()">
-                <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
-            </mat-form-field>
-            <div *ngIf="errors != null" class="errorArea">
-                <p>{{errors}}</p>
+<app-language-switcher class="login-language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
+</app-language-switcher>
+<div class="login-outer">
+    <div class="login-inner">
+        <div class="login-card">
+            <img src="assets/waseel_logo_Dark_Blue.png" class="brand" alt="Waseel">
+            <div class="form-group mb-0">
+                <mat-form-field appearance="outline">
+                    <mat-label i19n="@@username">Username</mat-label>
+                    <input matInput autofocus i18n-placeholder="@@username" placeholder="Enter username here..." [formControl]="username" (keyup.enter)="login()">
+                    <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
             </div>
-        </mat-card-content>
-        <mat-card-footer align="end" style="justify-content: center;">
-            <button *ngIf="!isLoading" mat-raised-button color="primary" class="loginButton" (click)="login()" i18n="@@signin">Sign In</button>
-            <mat-spinner *ngIf="isLoading" [diameter]="progressSpinnerDiameter" style="width: 100%; margin: 10px auto;"></mat-spinner>
-        </mat-card-footer>
-        <br>
-    </mat-card>
+            <div class="form-group mb-0">
+                <mat-form-field appearance="outline">
+                    <mat-label i18n="@@password">Password</mat-label>
+                    <input type="password" matInput i18n-placeholder="@@password" placeholder="Enter password here..." [formControl]="password" (keyup.enter)="login()">
+                    <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+            </div>
+            <p *ngIf="errors != null" class="error-block">{{errors}}</p>
+            <button class="submit-btn" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
+            <div class="loader-block" *ngIf="isLoading">
+                <mat-spinner [diameter]="48"></mat-spinner>
+            </div>
+        </div>
+    </div>
 </div>

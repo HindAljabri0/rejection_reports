@@ -12,11 +12,11 @@ import { Claim } from '../models/claim.model';
 @Component({
   selector: 'claim-diagnosis',
   templateUrl: './claim-diagnosis.component.html',
-  styleUrls: ['./claim-diagnosis.component.css']
+  styles: []
 })
 export class ClaimDiagnosisComponent implements OnInit {
 
-  isRetrievedClaim: boolean = false;
+  isRetrievedClaim = false;
 
   diagnosisController: FormControl = new FormControl();
   diagnosisList: ICDDiagnosis[] = [];
@@ -40,52 +40,62 @@ export class ClaimDiagnosisComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
     this.store.select(getDiagnosisErrors).subscribe(errors => this.errors = errors);
   }
 
-  setData(claim:Claim){
-    if(claim.caseInformation.caseDescription.diagnosis != null)
-      this.diagnosisList = claim.caseInformation.caseDescription.diagnosis.map(dia => new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription));
+  setData(claim: Claim) {
+    if (claim.caseInformation.caseDescription.diagnosis != null) {
+      this.diagnosisList = claim.caseInformation.caseDescription.diagnosis.map(dia =>
+        new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription)
+      );
+    }
   }
 
-  toggleEdit(allowEdit:boolean, enableForNulls?:boolean){
-    if(allowEdit){
+  toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+    if (allowEdit) {
       this.diagnosisController.enable();
     } else {
       this.diagnosisController.disable();
     }
-    if(enableForNulls && (this.diagnosisList == null || this.diagnosisList.length < 1)){
+    if (enableForNulls && (this.diagnosisList == null || this.diagnosisList.length < 1)) {
       this.diagnosisController.enable();
     }
   }
 
   searchICDCodes() {
     this.icedOptions = [];
-    if (this.diagnosisController.value != "")
+    if (this.diagnosisController.value != '') {
       this.adminService.searchICDCode(this.diagnosisController.value).subscribe(
         event => {
           if (event instanceof HttpResponse) {
-            if (event.body instanceof Object)
+            if (event.body instanceof Object) {
               Object.keys(event.body).forEach(key => {
-                if (this.diagnosisList.findIndex(diagnosis => diagnosis.diagnosisCode == event.body[key]["icddiagnosisCode"]) == -1)
+                if (this.diagnosisList.findIndex(diagnosis => diagnosis.diagnosisCode == event.body[key]['icddiagnosisCode']) == -1) {
                   this.icedOptions.push(new ICDDiagnosis(null,
-                    event.body[key]["icddiagnosisCode"],
-                    event.body[key]["description"]
+                    event.body[key]['icddiagnosisCode'],
+                    event.body[key]['description']
                   ));
+                }
               });
+            }
           }
         }
       );
+    }
   }
 
   addICDDiagnosis(diag: ICDDiagnosis) {
     if (this.diagnosisList.length < 14) {
       this.diagnosisList.push(diag);
-      this.store.dispatch(updateDiagnosisList({ list: this.diagnosisList.map(diag => ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })) }));
+      this.store.dispatch(updateDiagnosisList({
+        list: this.diagnosisList.map(diag =>
+          ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })
+        )
+      }));
       this.icedOptions = [];
     }
   }
@@ -94,7 +104,11 @@ export class ClaimDiagnosisComponent implements OnInit {
     const index = this.diagnosisList.findIndex(diagnosis => diag.diagnosisCode == diagnosis.diagnosisCode);
     if (index != -1) {
       this.diagnosisList.splice(index, 1);
-      this.store.dispatch(updateDiagnosisList({ list: this.diagnosisList.map(diag => ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })) }));
+      this.store.dispatch(updateDiagnosisList({
+        list: this.diagnosisList.map(diag =>
+          ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })
+        )
+      }));
     }
   }
 

@@ -5,7 +5,7 @@ import { getRetrievedClaimProps } from '../store/claim.reducer';
 @Component({
   selector: 'claim-errors',
   templateUrl: './claim-errors.component.html',
-  styleUrls: ['./claim-errors.component.css']
+  styles: []
 })
 export class ClaimErrorsComponent implements OnInit {
 
@@ -19,8 +19,10 @@ export class ClaimErrorsComponent implements OnInit {
 
   ngOnInit() {
     this.store.select(getRetrievedClaimProps).subscribe(props => {
-      if (props != null)
-        this.errors = props.errors
+      // tslint:disable-next-line: curly
+      if (props != null) {
+        this.errors = props.errors;
+      }
     });
   }
 

@@ -5,9 +5,8 @@ import { UploadSummary } from 'src/app/models/uploadSummary';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { SharedServices } from 'src/app/services/shared.services';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { ClaimInfo } from 'src/app/models/claimInfo';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator } from '@angular/material';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
@@ -17,8 +16,8 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-
-
+import { UploadSummaryDialogComponent } from './upload-summary-dialog/upload-summary-dialog.component';
+import { ClaimSummaryError } from 'src/app/models/claimSummaryError';
 
 @Component({
   selector: 'app-claimsummary',
@@ -26,78 +25,8 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styles: []
 })
 export class ClaimsummaryComponent implements OnInit, OnDestroy {
-  owlCarouselOptions: OwlOptions = {
-    mouseDrag: false,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 300,
-    navText: ['', ''],
-    margin: 14,
-    responsive: {
-      0: {
-        items: 3,
-        slideBy: 3
-      },
-      992: {
-        items: 4,
-        slideBy: 4
-      },
-      1200: {
-        items: 5,
-        slideBy: 5
-      }
-    },
-    nav: true
-  };
-
-
-  constructor(public location: Location, public uploadService: UploadService, public commen: SharedServices, private router: Router,
-    private routeActive: ActivatedRoute, private dialogService: DialogService, private claimService: ClaimService) {
-    this.routingObservable = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.routeActive.queryParams.subscribe(value => {
-        if (value.id != null && this.location.path().includes('summary')) {
-          this.commen.loadingChanged.next(true);
-          this.uploadService.getUploadedSummary(this.commen.providerId, value.id).subscribe(event => {
-            if (event instanceof HttpResponse) {
-              this.commen.loadingChanged.next(false);
-              const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
-              this.uploadService.summaryChange.next(summary);
-            }
-          }, eventError => {
-            this.commen.loadingChanged.next(false);
-          });
-        } else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
-          this.location.go('/summary?id=' + this.summary.uploadSummaryID);
-          this.getResults();
-        } else if (this.location.path().includes('summary')) {
-          this.router.navigate(['/upload']);
-        }
-      });
-    });
-  }
-
-  get summary(): UploadSummary {
-    if (this.location.path().includes('summary')) {
-      return this.uploadService.summary;
-    } else {
-      return new UploadSummary();
-    }
-  }
-  get providerId() {
-    return this.commen.providerId;
-  }
-  get uploadId() {
-    return this.commen.uploadId;
-  }
-
-  get uploading() {
-    return this.uploadService.uploading;
-  }
-
-  paginatedResult: PaginatedResult<ClaimInfo>;
-  results: any[];
+  paginatedResult: PaginatedResult<ClaimSummaryError>;
+  results: {};
   filename: ClaimfileuploadComponent;
   // providerId: string;
   // uploadId: any;
@@ -114,7 +43,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   showClaims = false;
   detailCardTitle: string;
   detailAccentColor: string;
-  selectedCardKey: string;
+  selectedCardKey = 'All';
 
   // currentFileUpload: File;
 
@@ -151,12 +80,99 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   card4AccentColor = '#67CD23';
   card4AccentLightColor = 'rgba(103, 205, 35, 0.16)';
 
+  cardCount = 0;
+
+  owlCarouselOptions: OwlOptions = {
+    mouseDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 300,
+    navText: ['', ''],
+    margin: 14,
+    responsive: {
+      0: {
+        items: 3,
+        slideBy: 3
+      },
+      992: {
+        items: 4,
+        slideBy: 4
+      },
+      1200: {
+        items: 5,
+        slideBy: 5
+      }
+    },
+    nav: true
+  };
+
+  constructor(
+    public location: Location,
+    public uploadService: UploadService,
+    public commen: SharedServices,
+    private router: Router,
+    private routeActive: ActivatedRoute,
+    private dialogService: DialogService,
+    private claimService: ClaimService,
+    private dialog: MatDialog) {
+
+    this.routingObservable = this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.routeActive.queryParams.subscribe(value => {
+        if (value.id != null && this.location.path().includes('summary')) {
+          this.commen.loadingChanged.next(true);
+          this.uploadService.getUploadedSummary(this.commen.providerId, value.id).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              const summary: UploadSummary = JSON.parse(JSON.stringify(event.body));
+              this.uploadService.summaryChange.next(summary);
+              this.cardCount = (uploadService.summary.noOfUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfNotAcceptedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfNotUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
+              this.cardCount = (uploadService.summary.noOfDownloadableClaims != 0) ? this.cardCount + 1 : this.cardCount;
+            }
+          }, eventError => {
+            this.commen.loadingChanged.next(false);
+          });
+        } else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
+          this.location.go('/summary?id=' + this.summary.uploadSummaryID);
+          this.getResults();
+        } else if (this.location.path().includes('summary')) {
+          this.router.navigate(['/upload']);
+        }
+      });
+    });
+
+  }
+
+  get summary(): UploadSummary {
+    if (this.location.path().includes('summary')) {
+      // this.uploadService.summary.ratioForAccepted = 20;
+      // this.uploadService.summary.ratioForNotAccepted = 50;
+      return this.uploadService.summary;
+    } else {
+      return new UploadSummary();
+    }
+  }
+  get providerId() {
+    return this.commen.providerId;
+  }
+  get uploadId() {
+    return this.commen.uploadId;
+  }
+
+  get uploading() {
+    return this.uploadService.uploading;
+  }
+
   card0Action() {
     this.showClaims = true;
     this.detailCardTitle = this.card0Title;
     this.detailAccentColor = this.card0AccentColor;
     this.getUploadedClaimsDetails();
-    this.selectedCardKey = null;
+    this.selectedCardKey = 'All';
   }
   card1Action() {
     this.showClaims = true;
@@ -225,35 +241,17 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     if (this.paginatedResult != null) {
       this.paginatedResult.content = [];
     }
-    this.uploadService.getUploadedClaimsDetails(this.commen.providerId, this.uploadService.summary.uploadSummaryID, status, page, pageSize).subscribe(event => {
+    this.uploadService.getUploadedClaimsDetails(
+      this.commen.providerId,
+      this.uploadService.summary.uploadSummaryID,
+      status,
+      page,
+      pageSize
+    ).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
-        this.paginatedResult = new PaginatedResult(event.body, ClaimInfo);
+        this.paginatedResult = new PaginatedResult(event.body, ClaimSummaryError);
         this.results = [];
-        this.paginatedResult.content.forEach(result => {
-          if (result.claimErrors != null && result.claimErrors.length == 0) {
-            const col: any = {};
-            col.description = '-';
-            col.fieldName = '-';
-            col.fileRowNumber = result.fileRowNumber || '';
-            col.provclaimno = result.provclaimno || '';
-            col.uploadStatus = result.uploadStatus || '';
-            col.uploadSubStatus = result.uploadSubStatus || '';
-            this.results.push(col);
-          } else {
-            result.claimErrors.forEach(error => {
-              const col: any = {};
-              col.code = error.code || '';
-              col.description = error.errorDescription || '';
-              col.fieldName = error.fieldName || '';
-              col.fileRowNumber = result.fileRowNumber || '';
-              col.provclaimno = result.provclaimno || '';
-              col.uploadStatus = result.uploadStatus || '';
-              col.uploadSubStatus = result.uploadSubStatus || '';
-              this.results.push(col);
-            });
-          }
-        });
         this.paginatorPagesNumbers = Array(this.paginatedResult.totalPages).fill(this.paginatedResult.totalPages).map((x, i) => i);
         this.manualPage = this.paginatedResult.number;
       }
@@ -265,7 +263,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length });
+    this.paginatorAction({
+      previousPageIndex: this.paginator.pageIndex,
+      pageIndex: index,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length
+    });
   }
   paginatorAction(event) {
     this.manualPage = event.pageIndex;
@@ -321,4 +324,29 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  openUploadSummaryDialog(data: any) {
+    this.commen.loadingChanged.next(true);
+    this.uploadService.getClaimsErrorByFieldName(this.commen.providerId,
+      this.uploadService.summary.uploadSummaryID,
+      data.fieldName).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.commen.loadingChanged.next(false);
+          this.results = event.body;
+          const dialogRef = this.dialog.open(UploadSummaryDialogComponent, {
+            panelClass: ['primary-dialog', 'dialog-xl'],
+            data: {
+              themeColor: this.commen.getCardAccentColor(this.selectedCardKey),
+              results: this.results,
+              status: this.commen.statusToName(this.selectedCardKey),
+              fieldName: data.fieldName
+            }
+          });
+        }
+      }), eventError => {
+        this.commen.loadingChanged.next(false);
+      };
+
+  }
+
 }

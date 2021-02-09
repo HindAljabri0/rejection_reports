@@ -15,11 +15,11 @@ export class CreateByApprovalFormComponent implements OnInit {
 
   approvalNumberController: FormControl = new FormControl('', { validators: Validators.required });
   payers;
-  selectedPayer: number = -1;
-  payersHasError: boolean = false;
+  selectedPayer = -1;
+  payersHasError = false;
 
   title: string;
-  loading: boolean = false;
+  loading = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreateByApprovalFormComponent>,
@@ -30,14 +30,21 @@ export class CreateByApprovalFormComponent implements OnInit {
   ngOnInit() {
     this.store.select(getIsApprovalFormLoading).subscribe(loading => {
       this.loading = loading;
-      if (loading) this.title = 'Retrieving claim data from approval...';
+      if (loading) {
+        this.title = 'Retrieving claim data from approval...';
+      }
     });
     this.payers = this.data.payers;
     this.title = 'Do you have an approval number?';
   }
 
   createWithOutApproval() {
-    this.store.dispatch(startCreatingNewClaim({ data: { claimType: this.data.claimType, providerClaimNumber: this.data.providerClaimNumber } }));
+    this.store.dispatch(startCreatingNewClaim({
+      data: {
+        claimType: this.data.claimType,
+        providerClaimNumber: this.data.providerClaimNumber
+      }
+    }));
     this.dialogRef.close();
   }
 
