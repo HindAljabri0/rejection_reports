@@ -116,4 +116,12 @@ export class UploadService {
   //   const httpRequest = new HttpRequest('DELETE', environment.uploaderHost+requestUrl, {}, {headers: headers});
   //   return this.http.request(httpRequest);
   // }
+
+  getClaimsErrorByFieldName(providerId: string, uploadId: number, status?: string, page?: number, pageSize?: number) {
+    const requestUrl = `/providers/${providerId}/history/${uploadId}/details/` + status
+      + (page != null ? `?page=${page}&` : '') + (pageSize != null ? `size=${pageSize}` : '');
+    const request = new HttpRequest('GET', environment.uploaderHost + requestUrl);
+    return this.http.request(request);
+  }
+
 }

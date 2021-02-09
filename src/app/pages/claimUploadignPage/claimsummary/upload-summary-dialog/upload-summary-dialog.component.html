@@ -1,5 +1,5 @@
 <div class="primary-dialog-header">
-    <h5 class="primary-dialog-title">Upload Summary - Add Status Name here</h5>
+    <h5 class="primary-dialog-title">Upload Summary - {{dialogData.status}}</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="table-responsive">
@@ -7,92 +7,41 @@
         <thead>
             <tr [style.color]="dialogData.themeColor" [style.background-color]="dialogData.themeColor+'29'">
                 <th>Provider Claim Number</th>
-                <th>Provider File Number</th>
+                <th>Patient File Number</th>
                 <th>Claim Date</th>
                 <th>Field Name</th>
                 <th>Error Description</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>2883579300</td>
-                <td>1012345829</td>
-                <td>9/19/2021</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
+            <ng-container *ngIf='dialogData.results.content.length > 0'>
+            <tr *ngFor='let result of dialogData.results.content'>
+                <td>{{result.providerClaimNo}}</td>
+                <td>{{result.patientFileNumber}}</td>
+                <td>{{result.visitDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{result.fieldName}}</td>
+                <td>{{result.errorDescription}}</td>
             </tr>
-            <tr>
-                <td>4085388942</td>
-                <td>2302411387</td>
-                <td>11/17/2052</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>45007269</td>
-                <td>2354579919</td>
-                <td>4/25/2086</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>1887170653</td>
-                <td>2242913266</td>
-                <td>2/22/2074</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>1460116839</td>
-                <td>1821706627</td>
-                <td>10/26/2070</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>4276841866</td>
-                <td>776171986</td>
-                <td>2/3/2119</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>2078166787</td>
-                <td>1594083764</td>
-                <td>3/18/2102</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>1899137256</td>
-                <td>599587995</td>
-                <td>1/1/2046</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
-            <tr>
-                <td>3743669478</td>
-                <td>3675003730</td>
-                <td>8/4/2078</td>
-                <td>Nationality</td>
-                <td>Nationality must be from list</td>
-            </tr>
+            </ng-container>
+            <ng-container *ngIf='dialogData.results.content.length === 0'>
+                <tr><td colspan="5">No records found !</td></tr>
+            </ng-container>
         </tbody>
     </table>
 </div>
 <div class="primary-dialog-footer">
     <div class="custom-paginator">
-        <button matRipple type="button" title="First Page">
+        <button matRipple type="button" title="First Page" [disabled]='(currentPage + 1) === 1'  (click)='getClaimSummaryByFieldName()'>
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Page">
+        <button matRipple type="button" title="Previous Page" [disabled]='(currentPage + 1)=== 1' (click)='getClaimSummaryByFieldName(currentPage - 1)'>
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
-        <p class="page-info text-primary">1<small>/5</small></p>
-        <button matRipple type="button" title="Next Page">
+        <p class="page-info text-primary">{{currentPage + 1}}<small>/{{dialogData.results.totalPages}}</small></p>
+        <button matRipple type="button" title="Next Page" [disabled]='(currentPage + 1) === dialogData.results.totalPages' (click)='getClaimSummaryByFieldName(currentPage + 1)'>
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Page">
+        <button matRipple type="button" title="Last Page" [disabled]='(currentPage + 1) === dialogData.results.totalPages' (click)='getClaimSummaryByFieldName(dialogData.results.totalPages - 1)'>
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>
