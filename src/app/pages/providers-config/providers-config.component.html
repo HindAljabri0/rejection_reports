@@ -50,52 +50,36 @@
                             <mat-radio-button class="col-sm-3" value="SQLSERVERLEGACY"> SqlServer Legacy
                             </mat-radio-button>
                         </mat-radio-group>
-                        <mat-hint *ngIf="f.dbType.errors && (f.dbType.dirty || f.dbType.touched)">
-                            <mat-error *ngIf="f.dbType.errors.required">* DataBase type is required</mat-error>
-                        </mat-hint>
                     </div>
                     <div class="row mt-2">
                         <mat-form-field appearance="outline" class="col-sm-4">
                             <mat-label>HostName</mat-label>
-                            <input matInput placeholder="HostName/IP" formControlName="hostName" required type="text">
-                            <mat-hint *ngIf="f.hostName.errors && (f.hostName.dirty || f.hostName.touched)">
-                                <mat-error *ngIf="f.hostName.errors.required">* Hostname is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="HostName/IP" formControlName="hostName" type="text"
+                                (change)="validateForm()" autocomplete="">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-sm-4">
                             <mat-label>Port</mat-label>
-                            <input matInput placeholder="Port" required type="number" formControlName="port">
-                            <mat-hint *ngIf="f.port.errors && (f.port.dirty || f.port.touched)">
-                                <mat-error *ngIf="f.port.errors.required">* Port is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="Port" type="number" formControlName="port"
+                            (change)="validateForm()" autocomplete="">
                             <!-- <mat-error *ngIf="port.hasError('required')">Port is required</mat-error> -->
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-sm-4">
                             <mat-label>DatabaseName</mat-label>
-                            <input matInput placeholder="DatabaseName/SID" required type="text"
-                                formControlName="databaseName">
-                            <mat-hint *ngIf="f.databaseName.errors && (f.databaseName.dirty || f.databaseName.touched)">
-                                <mat-error *ngIf="f.databaseName.errors.required">* DatabaseName is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="DatabaseName/SID" type="text" autocomplete=""
+                                formControlName="databaseName" (change)="validateForm()">
                             <!-- <mat-error *ngIf="databaseName.hasError('required')">DatabaseName is required</mat-error> -->
                         </mat-form-field>
                     </div>
                     <div class="row mt-2">
                         <mat-form-field appearance="outline" class="col-sm-6">
                             <mat-label>Username</mat-label>
-                            <input matInput placeholder="Database Username" required type="text"
-                                formControlName="dbUserName">
-                            <mat-hint *ngIf="f.dbUserName.errors && (f.dbUserName.dirty || f.dbUserName.touched)">
-                                <mat-error *ngIf="f.dbUserName.errors.required">* UserName is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="Database Username" type="text"
+                                formControlName="dbUserName" (change)="validateForm()" autocomplete="">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-sm-6">
                             <mat-label>Password</mat-label>
-                            <input matInput placeholder="Database Passowrd" required type="password"
-                                formControlName="dbPassword">
-                            <mat-hint *ngIf="f.dbPassword.errors && (f.dbPassword.dirty || f.dbPassword.touched)">
-                                <mat-error *ngIf="f.dbPassword.errors.required">* Password is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="Database Passowrd" type="password"
+                                formControlName="dbPassword" (change)="validateForm()" autocomplete="new-password">
                         </mat-form-field>
                     </div>
                 </form>
@@ -187,7 +171,7 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>value</mat-label>
                                 <input matInput [formControl]="providerMappingController" placeholder="mapped value"
-                                    required type="text">
+                                    type="text">
                             </mat-form-field>
                         </td>
                     </tr>
