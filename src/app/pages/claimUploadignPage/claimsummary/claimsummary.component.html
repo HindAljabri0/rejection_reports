@@ -77,11 +77,6 @@
     <ng-template [id]="'4'" carouselSlide *ngIf='uploadService.summary.noOfNotUploadedClaims != 0'>
         <app-abstractcard [clickable]="uploadService.summary.noOfNotUploadedClaims != 0" [title]="card3Title" [actionText]="card3ActionText" [accentColor]="card3AccentColor"
             (action)="card3Action()" class="primary-card">
-            <div class="card-progress">
-                <span class="value">{{summary.ratioForNotUploaded}}%</span>
-                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate" [value]="summary.ratioForNotUploaded" diameter="48">
-                </mat-progress-spinner>
-            </div>
             <table>
                 <tr>
                     <th colspan="2">No. of Claims</th>
