@@ -327,19 +327,26 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   openUploadSummaryDialog(data: any) {
     this.commen.loadingChanged.next(true);
-    this.uploadService.getClaimsErrorByFieldName(this.commen.providerId, this.uploadService.summary.uploadSummaryID, data.fieldName).subscribe(event => {
-      if (event instanceof HttpResponse) {
+    this.uploadService.getClaimsErrorByFieldName(this.commen.providerId,
+      this.uploadService.summary.uploadSummaryID,
+      data.fieldName).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.commen.loadingChanged.next(false);
+          this.results = event.body;
+          const dialogRef = this.dialog.open(UploadSummaryDialogComponent, {
+            panelClass: ['primary-dialog', 'dialog-xl'],
+            data: {
+              themeColor: this.commen.getCardAccentColor(this.selectedCardKey),
+              results: this.results,
+              status: this.commen.statusToName(this.selectedCardKey),
+              fieldName: data.fieldName
+            }
+          });
+        }
+      }), eventError => {
         this.commen.loadingChanged.next(false);
-        this.results = event.body;
-        const dialogRef = this.dialog.open(UploadSummaryDialogComponent, {
-          panelClass: ['primary-dialog', 'dialog-lg'],
-          data: { themeColor: this.commen.getCardAccentColor(this.selectedCardKey), results: this.results, status: this.commen.statusToName(this.selectedCardKey), fieldName: data.fieldName }
-        });
-      }
-    }), eventError => {
-        this.commen.loadingChanged.next(false);
-    };
-  
+      };
+
   }
 
 }

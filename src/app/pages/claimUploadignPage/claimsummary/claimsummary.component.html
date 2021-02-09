@@ -7,7 +7,7 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td [style.color]="card0AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfUploadedClaims}}</span></td>
+                    <td [style.color]="card0AccentColor" colspan="2" class="pb-2"><span class="dashboard-numbers">{{summary.noOfUploadedClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
@@ -26,7 +26,7 @@
             (action)="card1Action()" class="primary-card">
             <div class="card-progress">
                 <span class="value">{{summary.ratioForAccepted}}%</span>
-                <mat-progress-spinner class="spinner-progress" [style.color]="card1AccentColor" mode="determinate" [value]="summary.ratioForAccepted" diameter="40">
+                <mat-progress-spinner class="spinner-progress" [style.color]="card1AccentColor" mode="determinate" [value]="summary.ratioForAccepted" diameter="48">
                 </mat-progress-spinner>
             </div>
             <table>
@@ -34,7 +34,7 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td [style.color]="card1AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfAcceptedClaims}}</span></td>
+                    <td [style.color]="card1AccentColor" colspan="2" class="pb-2"><span class="dashboard-numbers">{{summary.noOfAcceptedClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
@@ -53,7 +53,7 @@
             (action)="card2Action()" class="primary-card">
             <div class="card-progress">
                 <span class="value">{{summary.ratioForNotAccepted}}%</span>
-                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate" [value]="summary.ratioForNotAccepted" diameter="40">
+                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate" [value]="summary.ratioForNotAccepted" diameter="48">
                 </mat-progress-spinner>
             </div>
             <table>
@@ -61,7 +61,7 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td [style.color]="card2AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfNotAcceptedClaims}}</span></td>
+                    <td [style.color]="card2AccentColor" colspan="2" class="pb-2"><span class="dashboard-numbers">{{summary.noOfNotAcceptedClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
@@ -79,8 +79,7 @@
             (action)="card3Action()" class="primary-card">
             <div class="card-progress">
                 <span class="value">{{summary.ratioForNotUploaded}}%</span>
-                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate"
-                    [value]="summary.ratioForNotUploaded" diameter="40">
+                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate" [value]="summary.ratioForNotUploaded" diameter="48">
                 </mat-progress-spinner>
             </div>
             <table>
@@ -88,7 +87,7 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td [style.color]="card3AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfNotUploadedClaims}}</span></td>
+                    <td [style.color]="card3AccentColor" colspan="2" class="pb-2"><span class="dashboard-numbers">{{summary.noOfNotUploadedClaims}}</span></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -104,8 +103,7 @@
             (action)="card4Action()" class="primary-card">
             <div class="card-progress">
                 <span class="value">{{summary.ratioForDownloadable}}%</span>
-                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate"
-                    [value]="summary.ratioForDownloadable" diameter="40">
+                <mat-progress-spinner class="spinner-progress" [style.color]="card2AccentColor" mode="determinate" [value]="summary.ratioForDownloadable" diameter="48">
                 </mat-progress-spinner>
             </div>
             <table>
@@ -113,7 +111,7 @@
                     <th colspan="2">No. of Claims</th>
                 </tr>
                 <tr>
-                    <td [style.color]="card4AccentColor" colspan="2" class="pb-1"><span class="dashboard-numbers">{{summary.noOfDownloadableClaims}}</span></td>
+                    <td [style.color]="card4AccentColor" colspan="2" class="pb-2"><span class="dashboard-numbers">{{summary.noOfDownloadableClaims}}</span></td>
                 </tr>
                 <tr>
                     <th>Total</th>
@@ -163,16 +161,19 @@
             </thead>
             <tbody>
                 <ng-container *ngIf='paginatedResult.content.length > 0'>
-                <tr *ngFor="let result of paginatedResult.content" (click)="(result.fieldName !== null && result.fieldName !== '' ) && openUploadSummaryDialog(result)"  [ngClass]="(result.fieldName !== null && result.fieldName !== '' ) ? 'row-click' : '' ">
-                    <td>{{result.fieldName}}</td>
-                    <td>{{result.frequency}}</td>
-                    <td>{{result.ratio}}%</td>
-                    <td class="text-center"><span class="status-dot" [style.background-color]="accentColor(result.subStatus)"></span>
-                    </td>
-                </tr>
+                    <tr *ngFor="let result of paginatedResult.content" (click)="(result.fieldName !== null && result.fieldName !== '' ) && openUploadSummaryDialog(result)"
+                        [ngClass]="(result.fieldName !== null && result.fieldName !== '' ) ? 'row-click' : '' ">
+                        <td>{{result.fieldName}}</td>
+                        <td>{{result.frequency}}</td>
+                        <td>{{result.ratio}}%</td>
+                        <td class="text-center"><span class="status-dot" [style.background-color]="accentColor(result.subStatus)"></span>
+                        </td>
+                    </tr>
                 </ng-container>
                 <ng-container *ngIf='paginatedResult.content.length === 0'>
-                    <tr><td class="text-center" colspan="4">No results found !</td></tr>
+                    <tr>
+                        <td class="text-center" colspan="4">No results found !</td>
+                    </tr>
                 </ng-container>
             </tbody>
         </table>

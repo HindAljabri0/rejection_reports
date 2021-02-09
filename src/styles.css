@@ -282,8 +282,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .primary-card .ribbon{height: 4px; width: 84px; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;display: block;right: 30px;top: 0;position: absolute;}
 .primary-card .primary-card-title{padding: 8px 12px;border-bottom: 1px solid rgba(62,62,62,0.05);font-weight: 500;}
 .primary-card .primary-card-content{padding: 8px 12px;font-size: 13px;position: relative;}
-.primary-card .card-progress{position: absolute;right: 12px;top: 10px;}
-.primary-card .card-progress .value{color:#1b1b1b;font-weight: 500;line-height: 40px;text-align: center;position: absolute;top: 0;left: 0;display: block;width: 100%;font-size: 12px;}
+.primary-card .card-progress{position: absolute;right: 12px;top: 5px;}
+.primary-card .card-progress .value{color:#1b1b1b;font-weight: 500;line-height: 48px;text-align: center;position: absolute;top: 0;left: 0;display: block;width: 100%;font-size: 10px;}
 .primary-card .card-message{padding: 6px 8px;border-radius: 6px;font-size: 12px;line-height: 16px;display: block;font-weight: 500;}
 .primary-card table{margin: 0;width: 100%;}
 
