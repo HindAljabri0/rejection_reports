@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
@@ -26,8 +26,10 @@ import {
   getPageMode,
   ClaimPageMode
 } from '../store/claim.reducer';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom, takeUntil, take } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
+import { ReplaySubject, Subject } from 'rxjs';
+import { MatSelect } from '@angular/material';
 
 @Component({
   selector: 'claim-patient-info',
@@ -64,10 +66,20 @@ export class ClaimPatientInfo implements OnInit {
   claimPageType: ClaimPageType;
 
   errors: FieldError[] = [];
-
+  nationalityFilterCtrl: FormControl = new FormControl();
+   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  _onDestroy = new Subject<void>();
+  @ViewChild('nationalitySelect', { static: true }) nationalitySelect: MatSelect;
+  
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
+    this.filteredNations.next(this.nationalities.slice());
+    this.nationalityFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterNationality();
+      });
     this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
 
@@ -106,6 +118,11 @@ export class ClaimPatientInfo implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
   setData(claim: Claim) {
     if (claim.claimIdentities.payerID != null) {
       this.selectedPayer = Number.parseInt(claim.claimIdentities.payerID, 10);
@@ -119,6 +136,7 @@ export class ClaimPatientInfo implements OnInit {
     this.policyNumController.setValue(claim.member.policyNumber);
     this.memberIdController.setValue(claim.member.memberID);
     this.planTypeController.setValue(claim.member.planType);
+    this.setInitialValueOfNationality();
   }
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
@@ -232,5 +250,31 @@ export class ClaimPatientInfo implements OnInit {
 
   payersListHasId(id) {
     return this.payersList.findIndex(payer => payer.id == id) > -1;
+  }
+
+  setInitialValueOfNationality() {
+    this.filteredNations
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.nationalitySelect.compareWith = (a: { Code: string, Name: string }, b: { Code: string, Name: string }) => a && b && a.Code === b.Code;
+      });
+  }
+
+  filterNationality() {
+    if (!this.nationalities) {
+      return;
+    }
+    // get the search keyword
+    let search = this.nationalityFilterCtrl.value;
+    if (!search) {
+      this.filteredNations.next(this.nationalities.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredNations.next(
+      this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
+    );
   }
 }

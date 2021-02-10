@@ -33,7 +33,7 @@
                     <claim-patient-info></claim-patient-info>
                 </div>
                 <div class="col-xl-4">
-                    <claim-physician-header></claim-physician-header>
+                    <claim-physician-header [claimType]='claimType'></claim-physician-header>
                 </div>
             </div>
             <claim-data [ngStyle]="{'height': pageMode != 'CREATE'  && pageMode != 'CREATE_FROM_RETRIEVED' ? '34vw': '26vw'}">

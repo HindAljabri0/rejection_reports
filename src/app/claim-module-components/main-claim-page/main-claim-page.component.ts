@@ -56,6 +56,7 @@ export class MainClaimPageComponent implements OnInit {
     size: number;
     searchTabCurrentResults: number[];
   };
+  claimType = '';
 
   constructor(
     private router: Router,
@@ -150,6 +151,7 @@ export class MainClaimPageComponent implements OnInit {
     const now = new Date(Date.now());
     const providerClaimNumber =
       `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+    this.claimType = type;
     const payers = this.sharedService.getPayersList();
     this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
   }

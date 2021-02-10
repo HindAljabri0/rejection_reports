@@ -70,12 +70,12 @@
                 <div class="right-block">
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select [value]="selectedNationality" [disabled]="!editableFields.nationality"
-                            (selectionChange)="selectedNationality = $event.value; updateClaim('nationality');" required>
+                            (selectionChange)="selectedNationality = $event.value; updateClaim('nationality');" required #nationalitySelect>
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found"></ngx-mat-select-search>
+                                <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl" name='searchedNationality'></ngx-mat-select-search>
                             </mat-option>
                             <mat-option value="">Select Nationality</mat-option>
-                            <mat-option *ngFor="let nationality of nationalities" [value]="nationality.Code">
+                            <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
                                 {{nationality.Name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
