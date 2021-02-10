@@ -153,15 +153,15 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 
 /* sidebar
 --------------------------------------------------------------------------------------------------------*/
-.w3-sidebar {width: 240px;z-index: 1;overflow: auto;position: fixed;top: 68px;bottom: 0;left: 0;height:auto;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
-.w3-sidebar hr{margin: 0;}
-.w3-sidebar .list-container{padding: 10px 0;}
-.w3-sidebar .list-title {color: #878B96;list-style: none;margin: 10px 0;text-decoration: none;padding-left: 10px;}
-.w3-sidebar .nav-list>li>a{display: flex;align-items: center;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
-.w3-sidebar .nav-list>li>a:hover,.w3-sidebar .nav-list>li>a:focus,.w3-sidebar .nav-list>li>a:active{background-color: #ecebeb;}
-.w3-sidebar .nav-list>.new>a::after{content: ".";color: #EB2A75;font-size: 70px;position: absolute;left: 83%;top: 85px;}
-.w3-sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
-.w3-sidebar .nav-list>li>a>img {margin-right: 14px;display: block;height: 26px;width: 26px;}
+.sidebar {width: 240px;z-index: 1;overflow: auto;position: fixed;top: 68px;bottom: 0;left: 0;height:auto;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position:fixed;background-color: #f2f2f2;}
+.sidebar hr{margin: 0;}
+.sidebar .list-container{padding: 10px 0;}
+.sidebar .list-title {color: #878B96;list-style: none;margin: 10px 0;text-decoration: none;padding-left: 10px;}
+.sidebar .nav-list>li>a{display: flex;align-items: center;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.sidebar .nav-list>li>a:hover,.sidebar .nav-list>li>a:focus,.sidebar .nav-list>li>a:active{background-color: #ecebeb;}
+.sidebar .nav-list>.new>a::after{content: ".";color: #EB2A75;font-size: 70px;position: absolute;left: 83%;top: 85px;}
+.sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
+.sidebar .nav-list>li>a>img {margin-right: 14px;display: block;height: 26px;width: 26px;}
 .nav-backdrop{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0,0,0,0.6);opacity: 0;visibility: hidden;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);display: none;z-index: 11;}
 .nav-backdrop>button{background: none;border:0;display: block;height: 100%;width: 100%;}
 
@@ -578,8 +578,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
     .brand-header .logo-wrapper{width: auto;text-align: left;}
     .brand-header .nav-toggle{display: block;}
     .brand-header .logo{padding-left: 4px;padding-right: 4px;}
-    .w3-sidebar{top: 0;z-index: 12;opacity: 0;visibility: visible;left: -240px;box-shadow: none;}
-    .nav-open .w3-sidebar{box-shadow: 0 5px 10px rgba(0,0,0,0.16);opacity: 1;visibility: visible;left: 0;}
+    .sidebar{top: 0;z-index: 12;opacity: 0;visibility: visible;left: -240px;box-shadow: none;}
+    .nav-open .sidebar{box-shadow: 0 5px 10px rgba(0,0,0,0.16);opacity: 1;visibility: visible;left: 0;}
     .nav-open .nav-backdrop{opacity: 1;visibility: visible;}
     .nav-backdrop{display: block;}
     .main-content{padding:84px 16px 16px;}

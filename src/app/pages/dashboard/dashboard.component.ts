@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
     },
     steps: [
       {
-        selector: '.w3-sidebar',
+        selector: '.sidebar',
         title: 'Sidebar',
         content: 'This is sidebar where you can navigate to other pages.',
         orientation: 'right',

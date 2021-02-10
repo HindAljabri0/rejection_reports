@@ -34,7 +34,6 @@
                             }
                         ],
                         "styles": [
-                            "src/w3.css",
                             "src/custom-theme.scss",
                             "node_modules/ngx-guided-tour/scss/guided-tour-base-theme.scss",
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -556,7 +555,6 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/w3.css",
                             "src/custom-theme.scss",
                             "node_modules/ngx-guided-tour/scss/guided-tour-base-theme.scss",
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
