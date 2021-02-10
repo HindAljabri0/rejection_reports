@@ -45,7 +45,7 @@ export class ClaimPatientInfo implements OnInit {
   };
 
   fullNameController: FormControl = new FormControl();
-  selectedGender = '';
+  selectedGender = 'M';
   selectedPayer: number;
   selectedVisitType: string;
   selectedNationality = '';
@@ -232,5 +232,10 @@ export class ClaimPatientInfo implements OnInit {
 
   payersListHasId(id) {
     return this.payersList.findIndex(payer => payer.id == id) > -1;
+  }
+
+  handleGenderChangeClick() {
+    this.selectedGender = (this.selectedGender == 'M') ? 'F' : 'M';
+    this.updateClaim('gender');
   }
 }

@@ -98,6 +98,13 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .mat-datepicker-popup .mat-datepicker-content .mat-calendar{height:auto;}
 .guided-tour-active *{transition: none!important;}
 .cdk-overlay-container .cdk-overlay-dark-backdrop{background-color: rgba(0, 0, 0, 0.6);}
+.mat-flat-button.input-group-append{border-radius: 0;}
+.mat-flat-button.input-group-append:last-child{border-radius: 0 6px 6px 0;}
+.gender-btn.mat-flat-button,.gender-btn.mat-flat-button[disabled]{min-width: auto;background-color: #3060AA;padding-left: 10px;padding-right: 10px;}
+.gender-btn .mat-button-wrapper>img{display: block;height: 24px;width: 24px;}
+.gender-btn.mat-flat-button.female,.gender-btn.mat-flat-button.female[disabled]{background-color: #ff5ea9;}
+.gender-btn.mat-flat-button.male,.gender-btn.mat-flat-button.male[disabled]{background-color: #42CDFF;}
+.has-error .gender-btn.mat-flat-button,.has-error .gender-btn.mat-flat-button[disabled]{background-color: #ffd5d5;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -211,38 +218,13 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
 .form-group .control-hint{padding-top: 4px;color: #909090;font-weight: 600;}
 
-/* name gender
---------------------------------------------------------------------------------------------------------*/
-.name-gender-box{display: flex;}
-.name-gender-box .form-control{border-radius: 0;}
-.name-gender-box .form-control:first-child{border-radius: 6px 0 0 6px;}
-.name-gender-box .form-control:last-child{border-radius: 0 6px 6px 0;}
-.name-gender-box .form-control:not(select){flex-grow: 1;}
-.gender-select.form-control {color: #fff;background-color: #3060AA;width:auto;padding-left: 8px;padding-right: 28px;border-color:#3060AA;background-image: url('./assets/ic-unfold-white.svg');}
-.gender-select.form-control.male {background-color: #42CDFF;border-color:#42CDFF;}
-.gender-select.form-control.female {background-color: #ff5ea9;border-color:#ff5ea9;}
-.gender-select.form-control option:not(:checked) { color: #fff; }
-
-/* form error
---------------------------------------------------------------------------------------------------------*/
-.form-group.has-error .form-control,.form-group.has-error .form-control.custom-select-control.mat-form-field{color:#CC2F2F;caret-color: #CC2F2F;background-color: #faeaea;border-color: #faeaea;}
-.form-group.has-error .form-control:focus,.form-group.has-error .form-control.custom-select-control.mat-form-field.mat-focused{border-color: #CC2F2F;}
-.form-group.has-error .gender-select.form-control{background-color: #e7d0d0;border-color: #e7d0d0;}
-.form-group.has-error .input-group-text{background-color: #e7d0d0;color:#CC2F2F;}
-.form-group.has-error .control-label,.form-group.has-error .gender-select.form-control:focus,.form-group.has-error .gender-select.form-control option:not(:checked){color:#CC2F2F;}
-.form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(204, 47, 47,0.64); }
-.form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
-.form-group.has-error .form-control:-ms-input-placeholder { color: rgba(204, 47, 47,0.64); }
-.form-group.has-error .form-control:-moz-placeholder { color: rgba(204, 47, 47,0.64); }
-.control-error{padding-top: 4px;}
-
 /* select control
 --------------------------------------------------------------------------------------------------------*/
 .custom-select-control{background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;-webkit-appearance:none;-moz-appearance:none;-o-appearance: none;-ms-appearance: none;appearance: none;padding-right: 28px;}
 .form-group.has-error .custom-select-control{background-image: url('./assets/ic-unfold-danger.svg');}
 .mat-select-panel-wrap .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple){background-color: rgba(48, 96, 170, 0.1);}
 .form-control.custom-select-control.mat-form-field{display: flex;align-items:center;padding: 0;}
-.form-control.custom-select-control.mat-form-field .mat-form-field-infix{padding: 0;border:0;height:100%;}
+.form-control.custom-select-control.mat-form-field .mat-form-field-infix{padding: 0;border:0;height:100%;width:100%;}
 .form-control.custom-select-control.mat-form-field .mat-form-field-wrapper{padding:0; flex-grow:0;flex-shrink:0;flex-basis:100%;max-width:100%;height: 100%;}
 .form-control.custom-select-control.mat-form-field .mat-form-field-underline,.form-control.custom-select-control.mat-form-field .mat-select-arrow-wrapper{display:none;}
 .form-control.custom-select-control.mat-form-field .mat-select-value,.form-control.custom-select-control.mat-form-field .mat-select-trigger{display:block;max-width: none;color:inherit;}
@@ -250,6 +232,18 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .form-control.custom-select-control.mat-form-field .mat-form-field-flex{height:100%;}
 .form-control.custom-select-control.mat-form-field .mat-select{display:block;height:100%;}
 .mat-select-panel-wrap .mat-select-panel .mat-option{height:auto;line-height:inherit;white-space:normal;overflow:visible;padding:11px 16px;}
+
+/* form error
+--------------------------------------------------------------------------------------------------------*/
+.form-group.has-error .form-control,.form-group.has-error .form-control.custom-select-control.mat-form-field{color:#CC2F2F;caret-color: #CC2F2F;background-color: #faeaea;border-color: #faeaea;}
+.form-group.has-error .form-control:focus,.form-group.has-error .form-control.custom-select-control.mat-form-field.mat-focused{border-color: #CC2F2F;}
+.form-group.has-error .input-group-text{background-color: #ffd5d5;color:#CC2F2F;}
+.form-group.has-error .control-label{color:#CC2F2F;}
+.form-group.has-error .form-control::-webkit-input-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control::-moz-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control:-ms-input-placeholder { color: rgba(204, 47, 47,0.64); }
+.form-group.has-error .form-control:-moz-placeholder { color: rgba(204, 47, 47,0.64); }
+.control-error{padding-top: 4px;}
 
 /* date picker
 --------------------------------------------------------------------------------------------------------*/
