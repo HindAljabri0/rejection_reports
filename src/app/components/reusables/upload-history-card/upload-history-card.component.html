@@ -4,7 +4,7 @@
         <table>
             <thead>
                 <th style="text-align: left;">Upload Name: {{data.uploadName}}</th>
-                <th><span class="spacer"></span>Upload Date: {{data.uploadDate.toDateString()}}</th>
+                <th><span class="spacer"></span>Upload Date: {{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</th>
             </thead>
         </table>
     </div>
