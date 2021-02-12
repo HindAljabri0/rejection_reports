@@ -4,7 +4,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-upload-history-center',
   templateUrl: './upload-history-center.component.html',
-  styleUrls: ['./upload-history-center.component.css']
+  styles: []
 })
 export class UploadHistoryCenterComponent implements OnInit {
 
