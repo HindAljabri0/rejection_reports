@@ -12,18 +12,15 @@
 </div>
 <hr *ngIf="diagnosisList.length>0" class="hr">
 
-<div class="table-responsive" *ngIf="pageMode === 'VIEW'">
+<div class="table-responsive" *ngIf="diagnosisList.length>0">
     <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
-        <ng-container *ngIf="diagnosisList.length>0">
         <thead class="header-primary">
             <tr>
                 <th>Diagnosis Code</th>
                 <th>Diagnosis Description</th>
             </tr>
         </thead>
-        </ng-container>
         <tbody>
-            <ng-container *ngIf="diagnosisList.length>0">
             <tr *ngFor="let diagnosis of diagnosisList">
                 <td>{{diagnosis.diagnosisCode}}</td>
                 <td>
@@ -35,14 +32,7 @@
                     </div>
                 </td>
             </tr>
-            </ng-container>
-            <ng-container *ngIf='diagnosisList.length === 0'>
-                <tr>
-                    <td colspan="2">
-                        <app-empty-state></app-empty-state>
-                    </td>
-                </tr>
-            </ng-container>
         </tbody>
     </table>
 </div>
+<app-empty-state message="No diagnosis data found!" *ngIf='diagnosisList.length === 0'></app-empty-state>

@@ -147,14 +147,14 @@
     <div class="table-responsive">
         <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
             <ng-container *ngIf='paginatedResult.content.length > 0'>
-            <thead>
-                <tr [style.color]="commen.getCardAccentColor(selectedCardKey)" [style.background-color]="commen.getCardAccentColor(selectedCardKey)+'29'">
-                    <th>Field Name</th>
-                    <th>Frequency</th>
-                    <th>Ratio</th>
-                    <th width="10" class="text-center">Status</th>
-                </tr>
-            </thead>
+                <thead>
+                    <tr [style.color]="commen.getCardAccentColor(selectedCardKey)" [style.background-color]="commen.getCardAccentColor(selectedCardKey)+'29'">
+                        <th>Field Name</th>
+                        <th>Frequency</th>
+                        <th>Ratio</th>
+                        <th width="10" class="text-center">Status</th>
+                    </tr>
+                </thead>
             </ng-container>
             <tbody>
                 <ng-container *ngIf='paginatedResult.content.length > 0'>
@@ -169,7 +169,7 @@
                 </ng-container>
                 <ng-container *ngIf='paginatedResult.content.length === 0'>
                     <tr>
-                        <td  colspan="4">
+                        <td colspan="4">
                             <app-empty-state></app-empty-state>
                         </td>
                     </tr>

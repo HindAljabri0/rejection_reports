@@ -1,44 +1,41 @@
+<app-empty-state *ngIf="attachments.length === 0 && pageMode == 'VIEW'" message='No attachments found!'></app-empty-state>
 <div class="row small-gutter">
     <ng-container *ngIf='attachments.length > 0'>
-    <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of attachments; let i = index">
-        <div class="attachment">
-            <div class="thumbnail">
-                <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
-                <img *ngIf="isPdf(attachment)" src="assets/ic-pdf-file.svg" [alt]="attachment.fileName" />
-            </div>
-            <div class="content">
-                <p class="title">{{attachment.fileName}}</p>
-                <p *ngIf="pageMode == 'VIEW'">{{attachment.fileType}}</p>
-                <a class="primary-link clickable" *ngIf="pageMode != 'VIEW'" [matMenuTriggerFor]="editAttachmentTypeMenu">{{attachment.fileType}}</a>
-                <mat-menu #editAttachmentTypeMenu class="primary-menu">
-                    <label class="d-block text-primary pb-2">Edit Attachment Type?</label>
-                    <mat-radio-group aria-label="Select an option" [value]="attachment.fileType">
-                        <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('Medical Report', i);" id="MEDICAL_REPORT" value="Medical Report">Medical
-                            Report
-                        </mat-radio-button>
-                        <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('Iqama/ID copy', i);" id="IQAMA_ID_COPY" value="Iqama/ID copy">Iqama/ID Copy
-                        </mat-radio-button>
-                        <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('X-Ray result', i);" id="X_RAY_RESULT" value="X-Ray result">X-Ray Result
-                        </mat-radio-button>
-                        <mat-radio-button color="primary" class="d-block" (click)="editAttachment('Lab Result', i);" id="LAB_RESULT" value="Lab Result">Lab Result
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </mat-menu>
-                <div class="btn-list">
-                    <a [href]="getImageOfBlob(attachment)" [download]="attachment.fileName" mat-icon-button class="text-primary mr-0">
-                        <mat-icon>save_alt</mat-icon>
-                    </a>
-                    <button mat-icon-button *ngIf="pageMode != 'VIEW'" (click)="deleteCurrentAttachment(i)" class="text-danger">
-                        <mat-icon>delete_outline</mat-icon>
-                    </button>
+        <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of attachments; let i = index">
+            <div class="attachment">
+                <div class="thumbnail">
+                    <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
+                    <img *ngIf="isPdf(attachment)" src="assets/ic-pdf-file.svg" [alt]="attachment.fileName" />
+                </div>
+                <div class="content">
+                    <p class="title">{{attachment.fileName}}</p>
+                    <p *ngIf="pageMode == 'VIEW'">{{attachment.fileType}}</p>
+                    <a class="primary-link clickable" *ngIf="pageMode != 'VIEW'" [matMenuTriggerFor]="editAttachmentTypeMenu">{{attachment.fileType}}</a>
+                    <mat-menu #editAttachmentTypeMenu class="primary-menu">
+                        <label class="d-block text-primary pb-2">Edit Attachment Type?</label>
+                        <mat-radio-group aria-label="Select an option" [value]="attachment.fileType">
+                            <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('Medical Report', i);" id="MEDICAL_REPORT" value="Medical Report">Medical
+                                Report
+                            </mat-radio-button>
+                            <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('Iqama/ID copy', i);" id="IQAMA_ID_COPY" value="Iqama/ID copy">Iqama/ID
+                                Copy
+                            </mat-radio-button>
+                            <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('X-Ray result', i);" id="X_RAY_RESULT" value="X-Ray result">X-Ray Result
+                            </mat-radio-button>
+                            <mat-radio-button color="primary" class="d-block" (click)="editAttachment('Lab Result', i);" id="LAB_RESULT" value="Lab Result">Lab Result
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </mat-menu>
+                    <div class="btn-list">
+                        <a [href]="getImageOfBlob(attachment)" [download]="attachment.fileName" mat-icon-button class="text-primary mr-0">
+                            <mat-icon>save_alt</mat-icon>
+                        </a>
+                        <button mat-icon-button *ngIf="pageMode != 'VIEW'" (click)="deleteCurrentAttachment(i)" class="text-danger">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    </ng-container>
-    <ng-container *ngIf="attachments.length === 0 && pageMode == 'VIEW'">
-        <div class="col-12">
-        <app-empty-state message='No attachments found !'></app-empty-state>
         </div>
     </ng-container>
     <div class="col-md-6 col-lg-4 col-xxl-3">
