@@ -1,4 +1,5 @@
 <div class="row small-gutter">
+    <ng-container *ngIf='attachments.length > 0'>
     <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of attachments; let i = index">
         <div class="attachment">
             <div class="thumbnail">
@@ -34,6 +35,12 @@
             </div>
         </div>
     </div>
+    </ng-container>
+    <ng-container *ngIf="attachments.length === 0 && pageMode == 'VIEW'">
+        <div class="col-12">
+        <app-empty-state message='No attachments found !'></app-empty-state>
+        </div>
+    </ng-container>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="attachment add-block" *ngIf="pageMode != 'VIEW'">
             <button type="button" [matMenuTriggerFor]="attachmentTypeMenu" matRipple>

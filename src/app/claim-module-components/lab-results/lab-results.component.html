@@ -1,5 +1,6 @@
 <div class="item-group-panel">
     <div class="parent-panel">
+        <ng-container *ngIf='resultsControls.length > 0'>
         <ul>
             <li class="title">Results</li>
             <li *ngFor="let result of resultsControls; let i = index" [class.active]="expandedResult == i">
@@ -17,6 +18,12 @@
                 </button>
             </li>
         </ul>
+        </ng-container>
+        <ng-container *ngIf="resultsControls.length === 0 && pageMode == 'VIEW'">
+            <div class="col-12">
+            <app-empty-state message='No results found !'></app-empty-state>
+            </div>
+        </ng-container>
         <button mat-flat-button class="mt-2" *ngIf="pageMode != 'VIEW'" color="primary" (click)="onAddResultClick()">Add Result</button>
     </div>
     <ng-container *ngFor="let result of resultsControls; let i = index">

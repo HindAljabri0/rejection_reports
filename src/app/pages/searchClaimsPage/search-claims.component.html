@@ -232,10 +232,7 @@
                             <ng-container *ngIf='validationDetails.length === 0'>
                                 <tr>
                                     <td [colSpan]='4'>
-                                        <div class="empty-state">
-                                            <img src="./assets/ic-empty-state.svg" alt="Empty Page" />
-                                            <span>No errors found!</span>
-                                        </div>
+                                        <app-empty-state message='No errors found !'></app-empty-state>
                                     </td>
                                 </tr>
                             </ng-container>

@@ -1,5 +1,6 @@
 <div class="table-responsive">
     <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
+        <ng-container *ngIf='errors.length > 0'>
         <thead class="header-primary">
             <tr>
                 <th>Field Name</th>
@@ -7,12 +8,20 @@
                 <th>Error Description</th>
             </tr>
         </thead>
+        </ng-container>
         <tbody>
+            <ng-container *ngIf='errors.length > 0'>
             <tr *ngFor="let error of errors" class="text-rejected-waseel">
                 <td>{{error.fieldName}}</td>
                 <td>{{error.code}}</td>
                 <td>{{error.description}}</td>
             </tr>
+            </ng-container>
+            <ng-container *ngIf='errors.length === 0'>
+                <td colspan="3">
+                    <app-empty-state message='No errors found !'></app-empty-state>
+                </td>
+            </ng-container>
         </tbody>
     </table>
 </div>
