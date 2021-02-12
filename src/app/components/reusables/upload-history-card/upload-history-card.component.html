@@ -1,6 +1,6 @@
 <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadSummaryID}" (click)="hideCenter()">
     <p class="medium text-primary">{{data.uploadName}}</p>
-    <span class="text-medium-grey">{{data.uploadDate.toDateString()}}</span>
+    <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</span>
     <ng-container *ngIf='!fromRightSideBar'>
         <hr class="hr separator">
         <p class="small-label">Total Number of Claims</p>
