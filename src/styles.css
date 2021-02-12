@@ -33,6 +33,7 @@ html, body { min-width: 320px; min-height: 100vh; }
 body { font-size: 14px; line-height: 20px; font-family: 'Poppins', sans-serif; -ms-overflow-style: scrollbar; -webkit-font-smoothing: subpixel-antialiased;background-color: #E8E8E8; }
 a,a:hover { color: #000; text-decoration: none; }
 h1, h2, h3, h4, h5, h6 { line-height: 1.2em; }
+h2{font-size: 24px;line-height: 30px;}
 h3{font-size: 20px;line-height: 26px;}
 h4{font-size: 18px;line-height: 24px;}
 h5{font-size: 16px;line-height: 22px;}
@@ -65,8 +66,10 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 /* misc
 --------------------------------------------------------------------------------------------------------*/
 .spacer {flex: 1 1 auto;}
-.hr{box-sizing: content-box;height: 0;overflow: visible;border: 0;border-top: 1px solid #e1e1e1;}
+.hr{box-sizing: content-box;height: 0;overflow: visible;border: 0;border-top: 1px solid #e1e1e1;margin:0;}
+.hr.dark{border-top-color: #bebebe;}
 .hr.separator{margin: 8px 0;}
+.hr.spaced{margin:16px 0;}
 .row.small-gutter{margin-left: -7px;margin-right: -7px;}
 .row.small-gutter>div{padding-left: 7px;padding-right: 7px;}
 .dashboard-numbers {font-size: 16px;line-height: 22px;font-weight: 600;}
@@ -266,7 +269,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .date-picker{position: relative;}
 .date-picker .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
 .has-error .date-picker .mat-datepicker-toggle{color:#CC2F2F;}
-.date-picker .form-control{padding-right: 52px;}
+.date-picker .form-control{padding-right: 40px;}
 
 /* block
 --------------------------------------------------------------------------------------------------------*/
@@ -566,6 +569,17 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .reusable-search .text-field .mat-form-field-prefix{padding-right: 6px;}
 .reusable-search .text-field .mat-form-field-suffix{padding-left: 6px;}
 
+/* dashboard header
+--------------------------------------------------------------------------------------------------------*/
+.dashboard-header{display:flex;align-items:flex-start;padding-bottom: 8px;border-bottom: 1px solid #bebebe;margin-bottom: 16px;}
+.dashboard-header .page-title{padding: 5px 16px 5px 0;}
+.dashboard-header .form-control{background-color: #fff;}
+.dashboard-header .dashboard-filters{display:flex;margin-left:auto;flex-wrap:wrap;}
+.dashboard-header .dashboard-filters .mat-flat-button{margin-bottom: 8px;}
+.dashboard-header .dashboard-filters .form-group{margin-bottom:8px;margin-right:8px;width: 160px;}
+.dashboard-header .dashboard-filters .primary-button-toggle.block.mat-button-toggle-group .mat-button-toggle, .dashboard-header .dashboard-filters .primary-button-toggle.block .mat-button-toggle{margin-bottom:0;margin-bottom: 8px;}
+.dashboard-header .dashboard-filters .or{color:#909090;align-self:center;-ms-flex-item-align:center;padding: 0 8px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl,
@@ -652,6 +666,9 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
     .invoice-wrapper>.totals,.invoice-wrapper>.item-group-panel{flex-basis: 100%;max-width: 100%;}
     .invoice-wrapper>.totals{padding-left: 0;margin-left: 0;padding-top: 14px;margin-top: 14px;border-top:1px solid rgba(112,112,112,0.14);border-left: 0;}
     .reusable-search{width: 380px;}
+    .dashboard-header{flex-direction:column;}
+    .dashboard-header .page-title{padding-top: 0;padding-bottom: 12px;}
+    .dashboard-header .dashboard-filters{margin-left: 0;}
 }
 
 .mat-grid-tile .mat-figure {

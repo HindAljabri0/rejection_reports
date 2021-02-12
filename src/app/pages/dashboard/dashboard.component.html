@@ -1,19 +1,12 @@
+<div class="dashboard-header">
+  <h2 class="page-title">Dashboard</h2>
+  <app-search-criteria class="dashboard-filters"></app-search-criteria>
+</div>
 <!-- <div class="dashboardElementList" cdkDropList (cdkDropListDropped)="drop($event)"> -->
 <section *ngFor="let section of dashboardSections; let i = index;">
   <!-- <section class="dashboardElement" *ngFor="let section of dashboardSections; let i = index;" cdkDrag> -->
-  <h3 class="page-title" [class.top-spaced]="i!=0">{{section.label}}</h3>
+  <h5 class="pb-3" [class.pt-3]="i!=0">{{section.label}}</h5>
   <!-- <h5 cdkDragHandle style="cursor: grab;">{{section.label}}</h5> -->
   <!-- <div class="custom-placeholder" *cdkDragPlaceholder></div> -->
   <ng-container *ngComponentOutlet="section.key"></ng-container>
 </section>
-
-<button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimDateFilterMenu">
-  <mat-icon>filter_list</mat-icon>
-</button>
-
-<mat-menu #claimDateFilterMenu yPosition="above" xPosition="before" class="filter-menu">
-  <div class="menu-body">
-    <h4 class="menu-title">Claim Date</h4>
-    <app-search-criteria></app-search-criteria>
-  </div>
-</mat-menu>
