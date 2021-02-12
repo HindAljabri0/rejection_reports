@@ -6,9 +6,9 @@ import { EventEmitter } from '@angular/core';
   templateUrl: './detailscard.component.html',
   styleUrls: ['./detailscard.component.css']
 })
-export class DetailscardComponent  {
+export class DetailscardComponent {
 
-  constructor() {}
+  constructor() { }
 
   @Input() title: string;
 
@@ -16,13 +16,11 @@ export class DetailscardComponent  {
   @Input() topRightActionText: string;
 
   @Input() bottomLeftActionText: string;
-  @Input() bottomLeftActionDisabled: boolean = false;
+  @Input() bottomLeftActionDisabled = false;
   @Input() bottomRightActionText: string;
-  @Input() bottomRightActionDisabled: boolean = false;
+  @Input() bottomRightActionDisabled = false;
 
   @Input() bottomDetails: string;
-
-  @Input() accentColor:string;
 
   @Output() topLeftAction = new EventEmitter();
   @Output() topRightAction = new EventEmitter();

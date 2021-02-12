@@ -3,7 +3,7 @@
 
 <div class="inner-loader-wrapper">
     <div class="inner-loader" *ngIf="isLoading">
-        <mat-spinner diameter="40"></mat-spinner>
+        <mat-spinner diameter="48"></mat-spinner>
     </div>
 
     <div class="block-header" *ngIf="errorMessage == null">
@@ -38,8 +38,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Total</th>
-                                <th>Total Vat</th>
+                                <th>Total Net</th>
+                               <th>Total Net Vat</th>
                             </tr>
                             <tr>
                                 <td [style.color]="commen.getCardAccentColor(summary.value.statuses[0])"><span
@@ -108,7 +108,7 @@
                                 <th>Patient File No.</th>
                                 <th>Claim Date</th>
                                 <th>Net Amount</th>
-                                <th>Vat</th>
+                                <th>Net Vat</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-right">
                                     <button mat-icon-button (click)="checkAllClaims()" matTooltip="Verify All Ready Claims' Eligibility"

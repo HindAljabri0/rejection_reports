@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-upload-history-card',
   templateUrl: './upload-history-card.component.html',
-  styleUrls: ['./upload-history-card.component.css']
+  styles: []
 })
 export class UploadHistoryCardComponent implements OnInit {
 
