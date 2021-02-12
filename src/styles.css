@@ -139,6 +139,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .bg-under-processing,.bg-deep-red{background-color: #7D0202!important;}
 .bg-light-grey{background-color: #adadad!important;}
 .bg-danger{background-color: #CC2F2F!important;}
+.bg-white{background-color: #fff!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
@@ -271,6 +272,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .block-header .block-description{font-size: 14px;line-height: 18px;font-weight: 500;color: #707070;}
 .block-body {padding: 14px;background-color: #f0eeee;}
 .block-body.create-claim-body{min-height: calc(100vh - 218px);padding-bottom: 0;}
+.block-body.has-border{border-top: 1px solid #bebebe;}
 .block-footer{display: flex;align-items: center;color: #3060AA;background-color: white;border-radius: 0 0 6px 6px;padding: 12px;min-height: 60px;}
 .block-footer.sticky-bottom{position:sticky;bottom:0;z-index: 7;border-top:1px solid #bebebe;}
 .block-footer>.right-block{margin-left: auto;display: flex;}
@@ -525,8 +527,6 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .uplaoded-card:hover,.uplaoded-card:focus,.uplaoded-card:active{background-color: #f4f4f4;}
 .upload-history-list .uplaoded-card{border-bottom: 1px solid #e1e1e1;}
 .uploaded-card-all .uplaoded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:6px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
-.uploaded-card-all .block-header{border-bottom: 1px solid #bebebe;}
-.uploaded-card-all .block-body{background-color: #fff;}
 .uploaded-card-all .scroll-block{height: calc(100vh - 214px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
 .uploaded-card-all .scroll-block + .info-block{margin-top: 28px;}
