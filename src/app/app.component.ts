@@ -29,7 +29,8 @@ export class AppComponent implements OnInit {
     public authService: AuthService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(LOCALE_ID) protected locale: string,
-    private store: Store) {
+    private store: Store
+  ) {
     this.isHeaderAndSideMenuHidden$ = this.store.select(isHeaderAndSideMenuHidden);
   }
 
@@ -42,7 +43,6 @@ export class AppComponent implements OnInit {
 
     this.document.documentElement.lang = this.locale;
   }
-
 
   get isLoggedIn() {
     return this.authService.loggedIn;

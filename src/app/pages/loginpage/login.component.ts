@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
     public routeActive: ActivatedRoute,
     public commen: SharedServices,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(LOCALE_ID) protected locale: string) {
+    @Inject(LOCALE_ID) protected locale: string
+  ) {
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit {
       });
     });
   }
+
   ngOnInit() {
     if (this.locale.startsWith('ar')) {
       this.activeLanguageLabel = 'عربى';

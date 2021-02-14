@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment, updatePageType } from '../store/claim.actions';
@@ -28,7 +28,7 @@ export class PhysicianComponent implements OnInit {
   physicianIdController: FormControl = new FormControl();
   selectedCategory = '';
   categoryEditable = true;
-  selectedDepartment: string;
+  selectedDepartment: number;
   departmentEditable = true;
 
   categories: any[] = [];
@@ -39,8 +39,10 @@ export class PhysicianComponent implements OnInit {
 
   pageType: ClaimPageType;
   pageMode: ClaimPageMode;
+  @Input() claimType = '';
 
-  constructor(private store: Store) { }
+  constructor(private store: Store) { 
+  }
 
   ngOnInit() {
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
@@ -73,11 +75,11 @@ export class PhysicianComponent implements OnInit {
     });
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
 
-    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
+    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = +type);
     setTimeout(() => {
       const category = this.selectedCategory;
       const department = this.selectedDepartment;
-      this.selectedDepartment = '1';
+      this.selectedDepartment = 1;
       this.selectedCategory = '-1';
       setTimeout(() => { this.selectedDepartment = department; this.selectedCategory = category; }, 500);
     }, 500);
@@ -87,7 +89,7 @@ export class PhysicianComponent implements OnInit {
     this.physicianIdController.setValue(claim.caseInformation.physician.physicianID);
     this.physicianNameController.setValue(claim.caseInformation.physician.physicianName);
     this.selectedCategory = claim.caseInformation.physician.physicianCategory;
-    this.selectedDepartment = `${claim.visitInformation.departmentCode}`;
+    this.selectedDepartment = +claim.visitInformation.departmentCode;
   }
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
@@ -130,7 +132,7 @@ export class PhysicianComponent implements OnInit {
         } else {
           this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }));
         }
-        this.store.dispatch(updateDepartment({ department: this.selectedDepartment }));
+        this.store.dispatch(updateDepartment({ department: this.selectedDepartment.toString() }));
         break;
     }
   }

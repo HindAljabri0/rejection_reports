@@ -1,21 +1,20 @@
-<mat-card class="mat-elevation-z0" style="width: inherit; height: fit-content; padding: 0px; background-color: #F8F7FF;">
-    <div style="height: 3px; width: 100%;" [style.background-color]="accentColor"></div>
-    <mat-card  style="padding: 16px;">
-        <mat-card-title style="font-size: 16px;">
-            {{title}}
-            <ng-content select="[inHeader]"></ng-content>
-            <button mat-icon-button (click)="topRightAction.emit()" *ngIf="title != null && topRightActionText!=null"  matTooltip="Download" style="position: absolute; top: 15%; right: 11px;">
-                <mat-icon aria-hidden="false" aria-label="Download" style="font-size: medium; font-weight: 700;">{{topRightActionText}}</mat-icon>
-            </button>
-        </mat-card-title>
-    </mat-card>
-    <mat-card-content style="height: inherit; padding: 16px;">
-        <ng-content></ng-content>
-    </mat-card-content>
-    <div class="sperator"></div>
-    <div class="footer">
-        <p>{{bottomDetails}}</p>
-        <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()" [disabled]="bottomLeftActionDisabled">{{bottomLeftActionText}}</button>
-        <button *ngIf="bottomRightActionText!=null" mat-raised-button color="primary" (click)="bottomRightAction.emit()" [disabled]="bottomRightActionDisabled">{{bottomRightActionText}}</button>
+<div class="block-header">
+    <p class="align-self-center">{{title}}</p>
+    <div class="ml-auto d-flex align-items-center">
+        <ng-content select="[inHeader]"></ng-content>
+        <button mat-icon-button (click)="topRightAction.emit()" *ngIf="title != null && topRightActionText!=null" matTooltip="Download" class="ml-1 my-n1">
+            <mat-icon aria-hidden="false" aria-label="Download">{{topRightActionText}}</mat-icon>
+        </button>
     </div>
-</mat-card>
+</div>
+<div class="block-body bg-white has-border">
+    <ng-content></ng-content>
+</div>
+<div class="block-footer sticky-bottom">
+    <p>{{bottomDetails}}</p>
+    <div class="right-block btn-list">
+        <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()" [disabled]="bottomLeftActionDisabled">{{bottomLeftActionText}}</button>
+        <button *ngIf="bottomRightActionText!=null" mat-flat-button color="primary" (click)="bottomRightAction.emit()"
+            [disabled]="bottomRightActionDisabled">{{bottomRightActionText}}</button>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-<div class="w3-sidebar w3-light-grey w3-bar-block">
+<div class="sidebar">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
         <!-- <h3 class="w3-bar-item">Menu</h3> -->
         <!-- <ul class="nav navbar-nav" routerLinkActive="active">
@@ -36,33 +36,6 @@
                     <a routerLink="upload/history" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/summary.svg" />
                         <span class="text">Claims History</span>
-                    </a>
-                </li>
-                <li i18n="@@notifications">
-                    <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/notification.svg" />
-                        <span class="text">Notifications</span>
-                    </a>
-                </li>
-                <li i18n="@@announcements">
-                    <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/Announcements.svg" />
-                        <span class="text">Announcements</span>
-                    </a>
-                </li>
-            </ul>
-            <div i18n="@@reports" class="list-title"> Reports </div>
-            <ul class="nav-list">
-                <li i18n="@@paymentreport">
-                    <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/payment_report.svg" />
-                        <span class="text">Payment Report</span>
-                    </a>
-                </li>
-                <li i18n="@@claimhistory">
-                    <a routerLink="upload/history" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/summary.svg" />
-                        <span class="text">Claim History</span>
                     </a>
                 </li>
                 <li i18n="@@notifications">

@@ -86,12 +86,12 @@ export class ProvidersConfigComponent implements OnInit {
       console.log(error);
     });
     this.addDbConfigForm = this.formBuilder.group({
-      dbType: ['', [Validators.required]],
-      hostName: ['', [Validators.required, ProvidersConfigComponent.test]],
-      port: ['', [Validators.required]],
-      databaseName: ['', [Validators.required, ProvidersConfigComponent.test]],
-      dbUserName: ['', [Validators.required, ProvidersConfigComponent.test]],
-      dbPassword: ['', [Validators.required, ProvidersConfigComponent.test]]
+      dbType: [''],
+      hostName: [''],
+      port: [''],
+      databaseName: [''],
+      dbUserName: [''],
+      dbPassword: ['']
     });
     // this.getDatabaseConfig();
   }
@@ -505,6 +505,8 @@ export class ProvidersConfigComponent implements OnInit {
             dbUserName: data.dbUserName,
             dbPassword: data.dbPassword
           });
+        } else {
+          this.addDbConfigForm.reset();
         }
         this.componentLoading.midtable = false;
       }
@@ -521,38 +523,83 @@ export class ProvidersConfigComponent implements OnInit {
   addDatabaseConfig() {
     this.errors.midtableSaveError = null;
     this.success.midtableSaveSuccess = null;
-    if(this.addDbConfigForm.valid){
-      const body = {
-        dbType: this.addDbConfigForm.value.dbType.trim(),
-        hostName: this.addDbConfigForm.value.hostName.trim(),
-        port: this.addDbConfigForm.value.port,
-        databaseName: this.addDbConfigForm.value.databaseName.trim(),
-        dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
-        dbPassword: this.addDbConfigForm.value.dbPassword.trim(),
-        providerId: this.selectedProvider
-      };
-      this.componentLoading.midtable = true;
-      this.dbMapping.setDatabaseConfig(this.selectedProvider,body).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          const data = event.body['message'];
-          if(data != null){
-            this.success.midtableSaveSuccess = "Data save successfully";
-          }else{
-            this.errors.midtableSaveError = "Could not save mid table configuration !";
+    if(this.addDbConfigForm.value.hostName == null && this.addDbConfigForm.value.port == null
+      && this.addDbConfigForm.value.databaseName == null && this.addDbConfigForm.value.dbUserName == null
+      && this.addDbConfigForm.value.dbPassword == null) {
+        return true;
+    }
+    if(this.addDbConfigForm.dirty) {
+      if(this.addDbConfigForm.valid){
+        if(this.addDbConfigForm.controls['dbType'].untouched || this.addDbConfigForm.controls['hostName'].untouched
+          || this.addDbConfigForm.controls['port'].untouched || this.addDbConfigForm.controls['databaseName'].untouched
+          || this.addDbConfigForm.controls['dbUserName'].untouched || this.addDbConfigForm.controls['dbPassword'].untouched){
+          return true;
+        }
+        const body = {
+          dbType: this.addDbConfigForm.value.dbType,
+          hostName: this.addDbConfigForm.value.hostName.trim(),
+          port: this.addDbConfigForm.value.port,
+          databaseName: this.addDbConfigForm.value.databaseName.trim(),
+          dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
+          dbPassword: this.addDbConfigForm.value.dbPassword.trim(),
+          providerId: this.selectedProvider
+        };
+        if(body.hostName == '' && body.port == null && body.databaseName == '' && body.dbUserName == ''
+          && body.dbPassword == '') {
+            this.dbMapping.deleteDatabaseConfig(this.selectedProvider).subscribe(event => {
+              if (event instanceof HttpResponse) {
+                const data = event.body['response'];
+                if(data){
+                  this.getDatabaseConfig();
+                  this.success.midtableSaveSuccess = "Data save successfully";
+                }else{
+                  this.errors.midtableSaveError = "Could not save mid table configuration !";
+                }
+                this.componentLoading.midtable = false;
+              }
+            }, error => {
+              if (error instanceof HttpErrorResponse) {
+                if (error.status != 404) {
+                  this.errors.midtableSaveError = 'Could not add db config, please try again later.';
+                }
+              }
+              this.componentLoading.midtable = false;
+            })
+            return false;
+        }
+        this.componentLoading.midtable = true;
+        this.dbMapping.setDatabaseConfig(this.selectedProvider,body).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            const data = event.body['message'];
+            if(data != null){
+              this.getDatabaseConfig();
+              this.success.midtableSaveSuccess = "Data save successfully";
+            }else{
+              this.errors.midtableSaveError = "Could not save mid table configuration !";
+            }
+            this.componentLoading.midtable = false;
+          }
+        }, error => {
+          if (error instanceof HttpErrorResponse) {
+            if (error.status != 404) {
+              this.errors.midtableSaveError = 'Could not add db config, please try again later.';
+            }
           }
           this.componentLoading.midtable = false;
-        }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status != 404) {
-            this.errors.midtableSaveError = 'Could not add db config, please try again later.';
-          }
-        }
-        this.componentLoading.midtable = false;
-      })
-      return false;
-    } 
-    this.errors.midtableSaveError = 'Invalid data !!';
+        });
+        return false;
+      }
+      if(this.addDbConfigForm.invalid && 
+        ((this.addDbConfigForm.value.hostName == null || this.addDbConfigForm.value.hostName.trim() == '')
+        || this.addDbConfigForm.value.dbType == null || this.addDbConfigForm.value.port == null
+        || (this.addDbConfigForm.value.databaseName == null || this.addDbConfigForm.value.databaseName.trim() == '')
+        || (this.addDbConfigForm.value.dbUserName == null || this.addDbConfigForm.value.dbUserName.trim() == '')
+        || (this.addDbConfigForm.value.dbPassword == null || this.addDbConfigForm.value.dbPassword.trim() == ''))){
+          this.errors.midtableSaveError = 'Please fill all fields.'
+          return true;
+      }
+      return true;
+    }
     return true;
   }
 
@@ -560,6 +607,34 @@ export class ProvidersConfigComponent implements OnInit {
     const isWhitespace = (control.value || '').trim().length === 0;
     const isValid = !isWhitespace;
     return isValid ? null : { 'required': true };
+  }
+  
+  validateForm() {
+    this.addDbConfigForm.controls['dbType'].clearValidators();
+    this.addDbConfigForm.controls['hostName'].clearValidators();
+    this.addDbConfigForm.controls['port'].clearValidators();
+    this.addDbConfigForm.controls['databaseName'].clearValidators();
+    this.addDbConfigForm.controls['dbUserName'].clearValidators();
+    this.addDbConfigForm.controls['dbPassword'].clearValidators();
+    if(!((this.addDbConfigForm.value.hostName == null || this.addDbConfigForm.value.hostName.trim() == '')
+      && this.addDbConfigForm.value.port == null
+      && (this.addDbConfigForm.value.databaseName == null || this.addDbConfigForm.value.databaseName.trim() == '')
+      && (this.addDbConfigForm.value.dbUserName == null || this.addDbConfigForm.value.dbUserName.trim() == '')
+      && (this.addDbConfigForm.value.dbPassword == null || this.addDbConfigForm.value.dbPassword.trim() == ''))){
+
+        this.addDbConfigForm.controls['dbType'].setValidators([Validators.required]);
+        this.addDbConfigForm.controls['hostName'].setValidators([Validators.required]);
+        this.addDbConfigForm.controls['port'].setValidators([Validators.required]);
+        this.addDbConfigForm.controls['databaseName'].setValidators([Validators.required]);
+        this.addDbConfigForm.controls['dbUserName'].setValidators([Validators.required]);
+        this.addDbConfigForm.controls['dbPassword'].setValidators([Validators.required]);
+    }
+    this.addDbConfigForm.controls['dbType'].updateValueAndValidity();
+    this.addDbConfigForm.controls['hostName'].updateValueAndValidity();
+    this.addDbConfigForm.controls['port'].updateValueAndValidity();
+    this.addDbConfigForm.controls['databaseName'].updateValueAndValidity();
+    this.addDbConfigForm.controls['dbUserName'].updateValueAndValidity();
+    this.addDbConfigForm.controls['dbPassword'].updateValueAndValidity();
   }
   
   get f() { return this.addDbConfigForm.controls; }
@@ -712,8 +787,31 @@ export class ProvidersConfigComponent implements OnInit {
   addProviderMapping() {
     this.errors.providerMappingSaveError = null;
     this.success.providerMappingSaveSuccess = null;
-    if(this.providerMappingController.value != '') { 
-      if (this.providerMappingController.value != this.providerMappingValue) {
+    if (this.providerMappingController.value != null &&
+      this.providerMappingController.value != this.providerMappingValue) {
+      if(this.providerMappingController.value.trim() == '') {
+        this.componentLoading.providerMapping = true;
+        this.dbMapping.deleteProviderMapping(this.selectedProvider).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            const data = event.body['response'];
+            if(data){
+              this.getProviderMapping();
+              this.success.providerMappingSaveSuccess = "Settings were saved successfully.";
+            }else{
+              this.errors.providerMappingSaveError = "Could not save provider mapping details !";
+            }
+            this.componentLoading.providerMapping = false;
+          }
+        }, error => {
+          if (error instanceof HttpErrorResponse) {
+            if (error.status != 404) {
+              this.errors.providerMappingSaveError = 'Could not save provider mapping, please try again later.';
+            }
+          }
+          this.componentLoading.providerMapping = false;
+        });
+        return false;
+      }
       const body = {
         providerCode: this.selectedProviderCode,
         mappingProviderCode: this.providerMappingController.value
@@ -724,6 +822,7 @@ export class ProvidersConfigComponent implements OnInit {
           this.providerMappingValue = body.mappingProviderCode;
           const data = event.body['message'];
           if(data != null){
+            this.getProviderMapping();
             this.success.providerMappingSaveSuccess = "Settings were saved successfully.";
           }else{
             this.errors.providerMappingSaveError = "Could not save provider mapping details !";
@@ -739,9 +838,7 @@ export class ProvidersConfigComponent implements OnInit {
         this.componentLoading.providerMapping = false;
       });
       return false;
-    } return true;
     } 
-    this.errors.providerMappingSaveError = "Please fill mapped value for provider.";
     return true;
   }
     
@@ -758,7 +855,7 @@ export class ProvidersConfigComponent implements OnInit {
             this.providerMappingValue = data.mappingProviderCode;
           }
           else{
-            this.providerMappingController.setValue("");
+            this.providerMappingController.setValue(null);
           }
         }
         this.componentLoading.providerMapping = false;
