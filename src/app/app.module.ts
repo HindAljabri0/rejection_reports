@@ -3,11 +3,11 @@ import { ReportsComponent } from './pages/reports/reports-page.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AppComponent } from './app.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
+import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component';
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -33,7 +33,9 @@ import { PaymentReferenceReportComponent } from './pages/reports/payment-referen
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
-import { RejectionReportClaimDialogComponent } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
+import {
+  RejectionReportClaimDialogComponent
+} from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadHistoryCenterComponent } from './components/upload-history-center/upload-history-center.component';
 import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
@@ -63,9 +65,14 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
-import { SummaryComponent } from './pages/reports/globmed/summary/summary.component'
+import { SummaryComponent } from './pages/reports/globmed/summary/summary.component';
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
+import {
+  UploadSummaryDialogComponent
+} from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
+import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 
 @NgModule({
   declarations: [
@@ -74,6 +81,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     SidebarComponent,
     HeaderComponent,
     ClaimsummaryComponent,
+    UploadSummaryDialogComponent,
     ClaimpageComponent,
     AbstractcardComponent,
     DragdropDirective,
@@ -112,7 +120,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     ImageToolTipDirective,
     ImageTooltipComponent,
     SummaryComponent,
-    GmReportsPageComponent,
+    GmReportsPageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -129,7 +137,10 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     MaterialModule,
     SharedModule,
     ChartsModule,
-    CarouselModule
+    CarouselModule,
+    NgScrollbarModule,
+    SmoothScrollModule,
+    GuidedTourModule
   ],
   providers: [
     ThemeService,
@@ -144,6 +155,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
     },
+    GuidedTourService
     // {
     //   provide: ErrorHandler,
     //   useClass: ApmErrorHandler
@@ -165,7 +177,8 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     NonSubmittedClaimsComponent,
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
-    ImageTooltipComponent
+    ImageTooltipComponent,
+    UploadSummaryDialogComponent
   ],
 })
 export class AppModule { }

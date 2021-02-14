@@ -19,6 +19,11 @@ export class DbMappingService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+  deleteDatabaseConfig(providerId: string) {
+    const requestURL: string = `/providers/${providerId}/db-config`;
+    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
   savePayerMapping(providerId: string, body) {
     const requestURL: string = `/providers/${providerId}/payer-mapping`;
     const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, body);
@@ -44,6 +49,11 @@ export class DbMappingService {
   getProviderMapping(providedId) {
     const requestURL: string = `/providers/` + providedId + `/provider-mapping`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  deleteProviderMapping(providedId) {
+    const requestURL: string = `/providers/` + providedId + `/provider-mapping`;
+    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
 }

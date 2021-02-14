@@ -16,6 +16,9 @@ export interface SearchCriteria {
     statuses?: string[];
     provClaimNum?: string;
     memberId?: string;
+    invoiceNo?: string;
+    patientFileNo?: string;
+    policyNo?: string;
     payerId?: string;
     fromDate?: string;
     toDate?: string;

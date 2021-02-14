@@ -20,6 +20,9 @@ export class UploadSummary {
       this.noOfDownloadableClaims = json.noOfDownloadableClaims ? json.noOfDownloadableClaims : 0;
       this.netAmountOfDownloadableClaims = json.netAmountOfDownloadableClaims ? json.netAmountOfDownloadableClaims : 0;
       this.netVATAmountOfDownloadableClaims = json.netVATAmountOfDownloadableClaims ? json.netVATAmountOfDownloadableClaims : 0;
+      this.ratioForAccepted = json.ratioForAccepted ? json.ratioForAccepted : 0;
+      this.ratioForNotAccepted = json.ratioForNotAccepted ? json.ratioForNotAccepted : 0;
+      this.ratioForDownloadable = json.ratioForDownloadable ? json.ratioForDownloadable : 0;
     }
   }
   uploadSummaryID: number;
@@ -47,5 +50,7 @@ export class UploadSummary {
   noOfDownloadableClaims: number = 0;
   netAmountOfDownloadableClaims: number = 0;
   netVATAmountOfDownloadableClaims: number = 0;
-
+  ratioForAccepted: number = 0;
+  ratioForNotAccepted: number = 0;
+  ratioForDownloadable: number = 0;
 }

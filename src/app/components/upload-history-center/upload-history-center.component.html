@@ -1,5 +1,9 @@
-<div class="blackBackground" [ngClass]="{'show':showCenter}" (click)="hideCenter()"></div>
-<div class="notificationCenter" [ngClass]="{'show':showCenter}">
-    <app-upload-history-card *ngFor="let data of dataList" [data]="data" [isUploadHistroyCenter]="inCenter" [fromRightSideBar]='true'></app-upload-history-card>
-    <!-- <div class="seeAll"><a routerLink="upload/history"  (click)="hideCenter()">See All</a></div> -->
+<div class="overlay-backdrop" [ngClass]="{'show':showCenter}">
+    <button type="button" (click)="hideCenter()"></button>
+</div>
+<div class="aside-panel upload-history-list" [ngClass]="{'show':showCenter}">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
+        <app-upload-history-card *ngFor="let data of dataList" [data]="data" [isUploadHistroyCenter]="inCenter" [fromRightSideBar]='true'></app-upload-history-card>
+        <!-- <div class="seeAll"><a routerLink="upload/history"  (click)="hideCenter()">See All</a></div> -->
+    </ng-scrollbar>
 </div>

@@ -2,43 +2,48 @@
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('temperature')" [matTooltip]="getFieldError('temperature')">
             <label class="control-label">Temperature</label>
-            <input type="number" class="form-control" [formControl]="temperatureController" (change)="updateClaim('temperature')">
+            <input type="number" class="form-control" placeholder="Enter temperature" [formControl]="temperatureController" (change)="updateClaim('temperature')">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('bloodPressure')" [matTooltip]="getFieldError('bloodPressure')">
             <label class="control-label">Blood Pressure</label>
-            <input [formControl]="bloodPressureController" (change)="updateClaim('bloodPressure')" class="form-control">
+            <input [formControl]="bloodPressureController" (change)="updateClaim('bloodPressure')" class="form-control" placeholder="Enter blood pressure">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('respiratoryRate')" [matTooltip]="getFieldError('respiratoryRate')">
             <label class="control-label">Respiratory Rate</label>
-            <input type="number" [formControl]="respiratoryRateController" (change)="updateClaim('respiratoryRate')" class="form-control">
+            <input type="number" [formControl]="respiratoryRateController" (change)="updateClaim('respiratoryRate')" class="form-control" placeholder="Enter respiratory rate">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('pulse')" [matTooltip]="getFieldError('pulse')">
             <label class="control-label">Pulse</label>
-            <input type="number" [formControl]="pulseController" (change)="updateClaim('pulse')" class="form-control">
+            <input type="number" [formControl]="pulseController" (change)="updateClaim('pulse')" class="form-control" placeholder="Enter pulse">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('weight')" [matTooltip]="getFieldError('weight')">
             <label class="control-label">Weight</label>
-            <input type="number" [formControl]="weightController" (change)="updateClaim('weight')" class="form-control">
+            <input type="number" [formControl]="weightController" (change)="updateClaim('weight')" class="form-control" placeholder="Enter weight">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('height')" [matTooltip]="getFieldError('height')">
             <label class="control-label">Height</label>
-            <input type="number" [formControl]="heightController" (change)="updateClaim('height')" class="form-control">
+            <input type="number" [formControl]="heightController" (change)="updateClaim('height')" class="form-control" placeholder="Enter height">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('lastMenstruationPeriod')" [matTooltip]="getFieldError('lastMenstruationPeriod')">
             <label class="control-label">Last Menstruation Period</label>
-            <input type="date" [formControl]="lastMenstruationPeriodController" (change)="updateClaim('lastMenstruationPeriod')" class="form-control">
+            <div class="date-picker">
+                <input [matDatepicker]="lastMenstruationPeriodPicker" class="form-control" placeholder="Select last menstruation period"
+                    [formControl]="lastMenstruationPeriodController" (dateChange)="updateClaim('lastMenstruationPeriod')">
+                <mat-datepicker-toggle [for]="lastMenstruationPeriodPicker"></mat-datepicker-toggle>
+                <mat-datepicker #lastMenstruationPeriodPicker></mat-datepicker>
+            </div>
         </div>
     </div>
 </div>

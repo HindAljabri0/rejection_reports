@@ -17,6 +17,7 @@
                 </button>
             </li>
         </ul>
+        <app-empty-state *ngIf="resultsControls.length === 0" message='No results found!'></app-empty-state>
         <button mat-flat-button class="mt-2" *ngIf="pageMode != 'VIEW'" color="primary" (click)="onAddResultClick()">Add Result</button>
     </div>
     <ng-container *ngFor="let result of resultsControls; let i = index">
@@ -26,19 +27,23 @@
                 <div class="col-md-6">
                     <div class="form-group" [matTooltip]="getFieldError('testDate:'+i)" [class.has-error]="fieldHasError('testDate:'+i)">
                         <label class="control-label">Test Date</label>
-                        <input [formControl]="result.testDate" class="form-control" type="date">
+                        <div class="date-picker">
+                            <input [matDatepicker]="testDatePicker" class="form-control" placeholder="Select test date" [formControl]="result.testDate">
+                            <mat-datepicker-toggle [for]="testDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #testDatePicker></mat-datepicker>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" [class.has-error]="fieldHasError('testCode:'+i)" [matTooltip]="getFieldError('testCode:'+i)">
                         <label class="control-label">Test Code<span class="asterisk">*</span></label>
-                        <input [formControl]="result.testCode" class="form-control">
+                        <input [formControl]="result.testCode" class="form-control" placeholder="Enter test code">
                     </div>
                 </div>
             </div>
             <div class="form-group" [class.has-error]="fieldHasError('resultDescription:'+i)" [matTooltip]="getFieldError('resultDescription:'+i)">
                 <label class="control-label">Description</label>
-                <textarea rows="4" placeholder="Description" [formControl]="result.resultDescription" class="form-control"></textarea>
+                <textarea rows="4" placeholder="Description" [formControl]="result.resultDescription" class="form-control" placeholder="Enter description"></textarea>
             </div>
             <p class="block-title">Components</p>
             <div class="list-expansion-panel">
@@ -58,28 +63,29 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="form-group" [class.has-error]="fieldHasError('componentCode:'+i+':'+j)" [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
                                 <label class="control-label">Component Code<span class="asterisk">*</span></label>
-                                <input [formControl]="component.componentCode" class="form-control" type="text">
+                                <input [formControl]="component.componentCode" class="form-control" placeholder="Enter component code" type="text">
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="form-group" [class.has-error]="fieldHasError('componentLabResult:'+i+':'+j)" [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)">
                                 <label class="control-label">LAB Result</label>
-                                <input [formControl]="component.componentLabResult" class="form-control">
+                                <input [formControl]="component.componentLabResult" class="form-control" placeholder="Enter lab result">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group" [class.has-error]="fieldHasError('componentResultUnit:'+i+':'+j)" [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)">
                                 <label class="control-label">Result Unit</label>
-                                <input [formControl]="component.componentResultUnit" class="form-control">
+                                <input [formControl]="component.componentResultUnit" class="form-control" placeholder="Enter result unit">
                             </div>
                         </div>
                     </div>
                     <div class="form-group" [class.has-error]="fieldHasError('componentDescription:'+i+':'+j)" [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
                         <label class="control-label">Description</label>
-                        <textarea placeholder="Description" [formControl]="component.componentDescription" class="form-control"></textarea>
+                        <textarea placeholder="Description" [formControl]="component.componentDescription" class="form-control" placeholder="Enter description"></textarea>
                     </div>
                 </mat-expansion-panel>
             </div>
+            <app-empty-state *ngIf="result.componentsControls.length === 0" message='No components found!'></app-empty-state>
             <div class="text-right mt-2" *ngIf="pageMode != 'VIEW'">
                 <button mat-flat-button color="primary" (click)="onAddComponentClick(i)">Add Component</button>
             </div>

@@ -19,8 +19,10 @@ export class ClaimErrorsComponent implements OnInit {
 
   ngOnInit() {
     this.store.select(getRetrievedClaimProps).subscribe(props => {
-      if (props != null)
-        this.errors = props.errors
+      // tslint:disable-next-line: curly
+      if (props != null) {
+        this.errors = props.errors;
+      }
     });
   }
 

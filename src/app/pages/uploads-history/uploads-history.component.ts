@@ -11,7 +11,7 @@ import { QueryType } from 'src/app/models/searchData/queryType';
 @Component({
   selector: 'app-uploads-history',
   templateUrl: './uploads-history.component.html',
-  styleUrls: ['./uploads-history.component.css']
+  styles: []
 })
 export class UploadsHistoryComponent implements OnInit {
 
@@ -36,7 +36,9 @@ export class UploadsHistoryComponent implements OnInit {
   }
 
   fetchDate() {
-    if (this.currentPage >= this.maxPages || this.loading) return;
+    if (this.currentPage >= this.maxPages || this.loading) {
+      return;
+    }
     this.commen.loadingChanged.next(true);
     this.uploadService.getUploadSummaries(this.commen.providerId, this.currentPage, 9)
       .subscribe(event => {
@@ -77,11 +79,13 @@ export class UploadsHistoryComponent implements OnInit {
       this.maxPages = Number.MAX_VALUE;
       this.queries = queries;
     }
-    if ((this.currentPage >= this.maxPages && queries == null) || this.loading) return;
+    if ((this.currentPage >= this.maxPages && queries == null) || this.loading) {
+      return;
+    }
     this.commen.loadingChanged.next(true);
-    let textQuery = this.queries.find(query => query.type == QueryType.TEXT);
-    let fromQuery = this.queries.find(query => query.type == QueryType.DATEFROM);
-    let toQuery = this.queries.find(query => query.type == QueryType.DATETO);
+    const textQuery = this.queries.find(query => query.type == QueryType.TEXT);
+    const fromQuery = this.queries.find(query => query.type == QueryType.DATEFROM);
+    const toQuery = this.queries.find(query => query.type == QueryType.DATETO);
     this.uploadService.searchUploadSummaries(this.commen.providerId,
       textQuery != null ? textQuery.content : null,
       fromQuery != null ? this.toServerDate(fromQuery.content) : null,
@@ -140,8 +144,8 @@ export class UploadsHistoryComponent implements OnInit {
   }
 
   toServerDate(date: string) {
-    let splittedDate = date.split('-');
-    return `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`
+    const splittedDate = date.split('-');
+    return `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
   }
 
 }
