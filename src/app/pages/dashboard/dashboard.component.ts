@@ -177,7 +177,7 @@ export class DashboardComponent implements OnInit {
     if (!window.localStorage.getItem('onboarding-demo-done')) {
       document.body.classList.add('guided-tour-active');
       document.getElementsByTagName('html')[0].classList.add('guided-tour-active');
-      if (environment.name == 'dev')
+      if (environment.name == 'dev' || environment.name == 'oci_qa')
         this.tourService.startTour(this.dashboardTour);
     }
   }
