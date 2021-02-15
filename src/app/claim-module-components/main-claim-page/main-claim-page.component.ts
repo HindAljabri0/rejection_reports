@@ -172,7 +172,7 @@ export class MainClaimPageComponent implements OnInit {
     if (status != null) {
       return this.sharedService.getCardAccentColor(status);
     }
-    return '#3060AA';
+    return 'all-claim';
   }
 
   edit() {

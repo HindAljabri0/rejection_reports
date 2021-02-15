@@ -1,6 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule, MatButtonModule, MatGridListModule, MatDividerModule, MatExpansionModule, MatCheckboxModule, MatRippleModule, MatToolbarModule, MatMenuModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatIconModule, MatSelectModule, MatRadioModule, MatChipsModule, MatProgressBarModule, MatPaginatorModule, MatDialogModule, MatProgressSpinnerModule, MatTooltipModule, MatAutocompleteModule, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatTab, MatTabsModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatButtonModule,
+  MatGridListModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatCheckboxModule,
+  MatRippleModule,
+  MatToolbarModule,
+  MatMenuModule,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatNativeDateModule,
+  MatInputModule,
+  MatIconModule,
+  MatSelectModule,
+  MatRadioModule,
+  MatChipsModule,
+  MatProgressBarModule,
+  MatPaginatorModule,
+  MatDialogModule,
+  MatProgressSpinnerModule,
+  MatTooltipModule,
+  MatAutocompleteModule,
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  MAT_DATE_FORMATS,
+  MatTabsModule
+} from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -9,7 +37,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-//https://momentjs.com/docs/#/displaying/format/
+// https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',

@@ -16,9 +16,8 @@ import { EventEmitter } from '@angular/core';
 })
 export class PaymentReferenceReportComponent implements OnInit {
 
-  detailCardTitle = "Payment References";
-  detailTopActionText = "vertical_align_bottom";
-  detailAccentColor = "#3060AA";
+  detailCardTitle = 'Payment References';
+  detailTopActionText = 'vertical_align_bottom';
   detailActionText: string = null;
   detailSubActionText: string = null;
   detailCheckBoxIndeterminate: boolean;
@@ -34,7 +33,7 @@ export class PaymentReferenceReportComponent implements OnInit {
   @Output() onPaginationChange = new EventEmitter();
 
   paginatorPagesNumbers: number[];
-  @ViewChild('paginator', {static: false}) paginator: MatPaginator;
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 
@@ -45,43 +44,53 @@ export class PaymentReferenceReportComponent implements OnInit {
 
 
 
-  constructor(public reportService: ReportsService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router) { }
+  constructor(
+    public reportService: ReportsService,
+    public commen: SharedServices,
+    public routeActive: ActivatedRoute,
+    public router: Router) { }
 
   ngOnInit() {
     // this.fetchData();
   }
   async fetchData() {
-    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null) return;
+    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null) {
+      return;
+    }
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
-    event = await this.reportService.getPaymentSummary(this.providerId, this.from, this.to, this.payerId, this.queryPage, this.pageSize).subscribe((event) => {
-      if (event instanceof HttpResponse) {
-        this.paymentDetails = new PaginatedResult(event.body, PaymentRefernceDetail);
-        this.payments = this.paymentDetails.content;
-        const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
-        this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-        this.manualPage = this.paymentDetails.number;
-        this.paginator.pageIndex = this.paymentDetails.number;
-        this.paginator.pageSize = this.paymentDetails.size;
-        if(this.payments.length == 0)
-        {
-          this.errorMessage = "No Results Found";
+    event = await this.reportService.getPaymentSummary(this.providerId,
+      this.from,
+      this.to,
+      this.payerId,
+      this.queryPage,
+      this.pageSize).subscribe((event) => {
+        if (event instanceof HttpResponse) {
+          this.paymentDetails = new PaginatedResult(event.body, PaymentRefernceDetail);
+          this.payments = this.paymentDetails.content;
+          const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
+          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+          this.manualPage = this.paymentDetails.number;
+          this.paginator.pageIndex = this.paymentDetails.number;
+          this.paginator.pageSize = this.paymentDetails.size;
+          if (this.payments.length == 0) {
+            this.errorMessage = 'No Results Found';
+          }
         }
-      }
-      this.commen.loadingChanged.next(false);
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if ((error.status / 100).toFixed() == "4") {
-          this.errorMessage = 'Access Denied.';
-        } else if ((error.status / 100).toFixed() == "5") {
-          this.errorMessage = 'Server could not handle the request. Please try again later.';
-        } else {
-          this.errorMessage = 'Somthing went wrong.';
+        this.commen.loadingChanged.next(false);
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == '4') {
+            this.errorMessage = 'Access Denied.';
+          } else if ((error.status / 100).toFixed() == '5') {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
         }
-      }
-      this.commen.loadingChanged.next(false);
-    });
+        this.commen.loadingChanged.next(false);
+      });
   }
 
   paginatorAction(event) {
@@ -94,14 +103,20 @@ export class PaymentReferenceReportComponent implements OnInit {
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
+    this.paginatorAction({
+      previousPageIndex: this.paginator.pageIndex,
+      pageIndex: index,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length
+    });
   }
 
   get paginatorLength() {
     if (this.paymentDetails != null) {
       return this.paymentDetails.totalElements;
+    } else {
+      return 0;
     }
-    else return 0;
   }
 
   mapPayer(payerId) {

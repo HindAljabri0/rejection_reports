@@ -33,7 +33,7 @@
                                 <th colspan="2">No. of Claims</th>
                             </tr>
                             <tr>
-                                <td [style.color]="commen.getCardAccentColor(summary.value.statuses[0])" class="pb-1" colspan="2"><span
+                                <td class="pb-1 text-{{commen.getCardAccentColor(summary.value.statuses[0])}}" colspan="2"><span
                                         class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                                 </td>
                             </tr>
@@ -42,9 +42,9 @@
                                 <th>Total Net Vat</th>
                             </tr>
                             <tr>
-                                <td [style.color]="commen.getCardAccentColor(summary.value.statuses[0])"><span
+                                <td class="text-{{commen.getCardAccentColor(summary.value.statuses[0])}}"><span
                                         class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span class="currency"> SR</span></td>
-                                <td [style.color]="commen.getCardAccentColor(summary.value.statuses[0])"><span
+                                <td class="text-{{commen.getCardAccentColor(summary.value.statuses[0])}}"><span
                                         class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span class="currency"> SR</span></td>
                             </tr>
                         </table>
@@ -57,14 +57,12 @@
     </div>
 
     <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
-        <div class="block-header">
+        <div class="block-header text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
-                *ngIf="summaries != null && summaries[selectedCardKey] != null" [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
-                (click)="currentSelectedTab=0">
+                *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
                 {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
             </button>
-            <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==1"
-                [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])">
+            <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==2">
                 Validation Details
             </button>
             <span class="spacer"></span>
@@ -94,8 +92,8 @@
                 <div class="table-responsive" *ngIf="searchResult != null">
                     <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
                         <thead>
-                            <tr *ngIf="summaries != null && summaries[selectedCardKey] != null" [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
-                                [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'29'">
+                            <tr *ngIf="summaries != null && summaries[selectedCardKey] != null"
+                                class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
                                 <th>
                                     <mat-checkbox class="grid-checkbox" color="primary" [(checked)]="allCheckBoxIsChecked" [(indeterminate)]="allCheckBoxIsIndeterminate"
                                         (change)="selectAllinPage()">
@@ -152,7 +150,7 @@
                                         {{claim.unitOfNetVatAmount}}</span>
                                 </td>
                                 <td (click)="showClaim(claim.status, claim.claimId)" class="text-center row-click">
-                                    <span class="status-dot" [style.background-color]="accentColor(claim.status)"></span>
+                                    <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
                                 </td>
                                 <td class="actions">
                                     <button [disabled]="!(claim.numOfPriceListErrors > 0)" class="text-orange" *ngIf="claim.numOfPriceListErrors > 0" mat-icon-button
@@ -207,8 +205,8 @@
                     <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
                         <ng-container *ngIf='validationDetails.length > 0'>
                             <thead>
-                                <tr [style.color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])"
-                                    [style.background-color]="commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])+'29'">
+                                <tr
+                                    class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
                                     <th>Provider Claim Number</th>
                                     <th>Field Name</th>
                                     <th>Error Description</th>
@@ -231,8 +229,8 @@
                             </ng-container>
                             <ng-container *ngIf='validationDetails.length === 0'>
                                 <tr>
-                                    <td [colSpan]='4'>
-                                        <app-empty-state message='No errors found!'></app-empty-state>
+                                    <td [colSpan]='4' class="p-0">
+                                        <app-empty-state class="claim-list-empty-state" message='No errors found!'></app-empty-state>
                                     </td>
                                 </tr>
                             </ng-container>
