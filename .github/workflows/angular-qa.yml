@@ -45,7 +45,7 @@ jobs:
       run: docker build . -t me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:latest -t me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:${{ github.sha }}
 
     - name: Docker Push
-      run: docker push me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui
+      run: docker push --all-tags me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui
 
     - name: Deploy to K8S
       uses: waseel-asp/kubectl@v1.17.9

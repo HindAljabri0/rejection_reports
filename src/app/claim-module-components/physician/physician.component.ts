@@ -41,7 +41,7 @@ export class PhysicianComponent implements OnInit {
   pageMode: ClaimPageMode;
   @Input() claimType = '';
 
-  constructor(private store: Store) { 
+  constructor(private store: Store) {
   }
 
   ngOnInit() {
@@ -137,13 +137,15 @@ export class PhysicianComponent implements OnInit {
     }
   }
 
-  beautifyCategory(category: string) {
-    let str = category.substr(0, 1) + category.substr(1).toLowerCase();
-    if (str.includes('_')) {
-      const split = str.split('_');
-      str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
-    }
-    return str;
+  beautifyCategory(category) {
+    if (category != null && category != "-1") {
+      let str = category.substr(0, 1) + category.substr(1).toLowerCase();
+      if (str.includes('_')) {
+        const split = str.split('_');
+        str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
+      }
+      return str;
+    } else return '';
   }
 
   fieldHasError(fieldName) {
