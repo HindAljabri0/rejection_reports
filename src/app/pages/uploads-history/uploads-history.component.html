@@ -5,7 +5,7 @@
     <app-detailscard title="Claims History" class="uploaded-card-all">
         <reusable-search-bar class="reusable-search" inHeader searchBy="Upload Name" [queries]="queries" (onSearch)="search($event)" (onQueryRemoved)="onQueryRemoved($event)">
         </reusable-search-bar>
-        <div class="scroll-block" *ngIf="uploadsMapKeys.legnth>0" scrollable (scrollPosition)="scrollHandler($event)">
+        <div class="scroll-block" *ngIf="uploadsMapKeys.length>0" scrollable (scrollPosition)="scrollHandler($event)">
             <ng-container *ngFor="let key of uploadsMapKeys">
                 <h4 class="month">{{key}}</h4>
                 <div class="row small-gutter">

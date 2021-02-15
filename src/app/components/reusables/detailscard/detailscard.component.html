@@ -10,7 +10,7 @@
 <div class="block-body bg-white has-border">
     <ng-content></ng-content>
 </div>
-<div class="block-footer">
+<div class="block-footer" *ngIf="bottomLeftActionText!=null || bottomRightActionText!=null || bottomDetails">
     <p>{{bottomDetails}}</p>
     <div class="right-block btn-list">
         <button *ngIf="bottomLeftActionText!=null" mat-button (click)="bottomLeftAction.emit()" [disabled]="bottomLeftActionDisabled">{{bottomLeftActionText}}</button>
