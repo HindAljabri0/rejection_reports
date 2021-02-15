@@ -492,8 +492,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.commen.loading) {
       return;
     }
+
+   
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.uploadId).subscribe((event) => {
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId,this.batchId,  this.uploadId ,  this.casetype, 
+      this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
+    
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
           this.dialogService.openMessageDialog(
