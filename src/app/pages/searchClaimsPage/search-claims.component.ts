@@ -492,8 +492,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.commen.loading) {
       return;
     }
+
+   
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.uploadId).subscribe((event) => {
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId,this.batchId,  this.uploadId ,  this.casetype, 
+      this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
+    
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
           this.dialogService.openMessageDialog(
@@ -706,11 +710,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
+    
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
       this.payerId,
       this.from,
       this.to,
-      this.uploadId));
+      this.batchId,
+      this.uploadId,
+      this.casetype,
+      this.claimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo, 
+      this.policyNo));
   }
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
@@ -841,11 +853,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
         } else if (this.memberId != null) {
           a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
-        } else if (this.invoiceNo != null){
+        } else if (this.invoiceNo != null) {
           a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
-        } else if (this.patientFileNo != null){
+        } else if (this.patientFileNo != null) {
           a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
-        } else if (this.policyNo != null){
+        } else if (this.policyNo != null) {
           a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
         }
 

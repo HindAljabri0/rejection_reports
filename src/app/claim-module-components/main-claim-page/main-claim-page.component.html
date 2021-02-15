@@ -9,8 +9,7 @@
     </ng-container>
     <ng-template #statusHeader>
         <ng-container *ngIf="claim != null && claimProps != null">
-            <div class="claim-status-header"
-                [ngStyle]="{'color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode),'border-left-color': pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'? '':getClaimStatusColor(claimProps?.statusCode)}">
+            <div class="claim-status-header {{(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') ? '' : 'text-' + getClaimStatusColor(claimProps?.statusCode)}}">
                 <p class="title">View Claim</p>
                 <p><strong>Provider Reference No.:</strong> {{claim.claimIdentities.providerClaimNumber}}</p>
                 <p *ngIf="claim.claimIdentities.providerBatchID != null"><strong>Batch ID:</strong>
