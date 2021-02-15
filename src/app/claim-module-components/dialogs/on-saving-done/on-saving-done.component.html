@@ -1,5 +1,5 @@
 <div class="dialog-body">
-    <h3 class="dialog-title pb-2 text-primary">Claim was Saved with status: <span [style.color]="getStatusColor()">{{getStatusText()}}</span><span *ngIf="isNotAccepted">
+    <h3 class="dialog-title pb-2 text-primary">Claim was Saved with status: <span class="text-{{getStatusColor()}}">{{getStatusText()}}</span><span *ngIf="isNotAccepted">
             because</span></h3>
     <ng-container *ngIf="isNotAccepted">
         <p *ngFor="let error of errors" class="error-text">{{error}}</p>

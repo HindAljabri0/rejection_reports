@@ -841,11 +841,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
         } else if (this.memberId != null) {
           a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
-        } else if (this.invoiceNo != null){
+        } else if (this.invoiceNo != null) {
           a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
-        } else if (this.patientFileNo != null){
+        } else if (this.patientFileNo != null) {
           a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
-        } else if (this.policyNo != null){
+        } else if (this.policyNo != null) {
           a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
         }
 

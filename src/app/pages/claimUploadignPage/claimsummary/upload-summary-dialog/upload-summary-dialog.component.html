@@ -5,7 +5,7 @@
 <div class="table-responsive">
     <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
         <thead>
-            <tr [style.color]="dialogData.themeColor" [style.background-color]="dialogData.themeColor+'29'">
+            <tr class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">
                 <th>Provider Claim Number</th>
                 <th>Patient File Number</th>
                 <th>Claim Date</th>
@@ -15,23 +15,25 @@
         </thead>
         <tbody>
             <ng-container *ngIf='dialogData.results.content.length > 0'>
-            <tr *ngFor='let result of dialogData.results.content'>
-                <td>{{result.providerClaimNo}}</td>
-                <td>{{result.patientFileNumber}}</td>
-                <td>{{result.visitDate | date: 'dd/MM/yyyy'}}</td>
-                <td>{{result.fieldName}}</td>
-                <td>{{result.errorDescription}}</td>
-            </tr>
+                <tr *ngFor='let result of dialogData.results.content'>
+                    <td>{{result.providerClaimNo}}</td>
+                    <td>{{result.patientFileNumber}}</td>
+                    <td>{{result.visitDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{result.fieldName}}</td>
+                    <td>{{result.errorDescription}}</td>
+                </tr>
             </ng-container>
             <ng-container *ngIf='dialogData.results.content.length === 0'>
-                <tr><td colspan="5">No records found !</td></tr>
+                <tr>
+                    <td colspan="5">No records found !</td>
+                </tr>
             </ng-container>
         </tbody>
     </table>
 </div>
 <div class="primary-dialog-footer">
     <div class="custom-paginator">
-        <button matRipple type="button" title="First Page" [disabled]='(currentPage + 1) === 1'  (click)='getClaimSummaryByFieldName()'>
+        <button matRipple type="button" title="First Page" [disabled]='(currentPage + 1) === 1' (click)='getClaimSummaryByFieldName()'>
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
         <button matRipple type="button" title="Previous Page" [disabled]='(currentPage + 1)=== 1' (click)='getClaimSummaryByFieldName(currentPage - 1)'>
@@ -41,7 +43,8 @@
         <button matRipple type="button" title="Next Page" [disabled]='(currentPage + 1) === dialogData.results.totalPages' (click)='getClaimSummaryByFieldName(currentPage + 1)'>
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Page" [disabled]='(currentPage + 1) === dialogData.results.totalPages' (click)='getClaimSummaryByFieldName(dialogData.results.totalPages - 1)'>
+        <button matRipple type="button" title="Last Page" [disabled]='(currentPage + 1) === dialogData.results.totalPages'
+            (click)='getClaimSummaryByFieldName(dialogData.results.totalPages - 1)'>
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>

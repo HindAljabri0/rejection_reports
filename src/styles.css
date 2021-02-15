@@ -89,7 +89,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
 .fixed-height{max-height: 482px;}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
-.service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;}
+.service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;border-color:currentColor;}
 .primary-menu .mat-menu-content,.primary-menu .mat-menu-content:not(:empty){padding: 14px;}
 .primary-menu.mat-menu-panel{min-height: auto;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
@@ -128,9 +128,10 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #707070!important;}
 .text-danger{color: #CC2F2F!important;}
+.text-middle-grey{color:#bebebe!important;}
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
 .bg-ready-submission,.bg-parrot{background-color: #67CD23!important;}
-.bg-rejected,.bg-magenta{background-color: #FF144D!important;}
+.bg-rejected-waseel,.bg-magenta{background-color: #FF144D!important;}
 .bg-not-saved,.bg-orange{background-color: #E6AE24!important;}
 .bg-under-submission,.bg-cyan{background-color: #00D8E7!important;}
 .bg-rejected,.bg-light-pink{background-color: #FF53A3!important;}
@@ -138,8 +139,19 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .bg-partially-paid,.bg-light-blue{background-color: #479CC5!important;}
 .bg-under-processing,.bg-deep-red{background-color: #7D0202!important;}
 .bg-light-grey{background-color: #adadad!important;}
+.bg-middle-grey{color:#bebebe!important;}
 .bg-danger{background-color: #CC2F2F!important;}
 .bg-white{background-color: #fff!important;}
+.light-bg-all-claim,.light-bg-primary{background-color: rgba(48, 96, 170,0.12)!important;}
+.light-bg-ready-submission,.light-bg-parrot{background-color: rgba(103, 205, 35,0.12)!important;}
+.light-bg-rejected-waseel,.light-bg-magenta{background-color: rgba(255, 20, 77,0.12)!important;}
+.light-bg-not-saved,.light-bg-orange{background-color: rgba(230, 174, 36,0.12)!important;}
+.light-bg-under-submission,.light-bg-cyan{background-color: rgba(0, 216, 231,0.12)!important;}
+.light-bg-rejected,.light-bg-light-pink{background-color: rgba(255, 83, 163,0.12)!important;}
+.light-bg-paid,.light-bg-green{background-color: rgba(28, 124, 38,0.12)!important;}
+.light-bg-partially-paid,.light-bg-light-blue{background-color: rgba(71, 156, 197,0.12)!important;}
+.light-bg-under-processing,.light-bg-deep-red{background-color: rgba(125, 2, 2,0.12)!important;}
+.light-bg-danger{background-color: rgba(204, 47, 47,0.12)!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
@@ -265,7 +277,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 /* block
 --------------------------------------------------------------------------------------------------------*/
 .block-header{display: flex;color: #3060AA;background-color: #fff;border-top-left-radius: 6px;border-top-right-radius: 6px;padding: 14px;font-size: 16px;line-height: 22px;font-weight: 600;}
-.block-header>.title-btn.mat-button{font-size:inherit;font-weight:inherit;margin: -14px 0;padding: 0 14px;line-height:50px;border-radius:0;position: relative;}
+.block-header>.title-btn.mat-button{font-size:inherit;font-weight:inherit;margin: -14px 0;padding: 0 14px;line-height:50px;border-radius:0;position: relative;color:currentColor;}
 .block-header>.title-btn.mat-button:after{background-color: currentColor;content:'';display: block;height: 2px;left: 0;right: 0;bottom: 0;position: absolute;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: scaleX(0.4);opacity: 0;}
 .block-header>.title-btn.mat-button.active:after{opacity: 1;transform:scaleX(1);}
 .block-header>.title-btn.mat-button:first-child{margin-left: -14px;}
@@ -311,7 +323,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 /* custom paginator
 --------------------------------------------------------------------------------------------------------*/
 .block-header .custom-paginator{margin: -7px 0;}
-.custom-paginator{display: flex;align-items: center;}
+.custom-paginator{display: flex;align-items: center;color:#3060AA;}
 .custom-paginator>button{display: block;padding: 3px;background: none;border:0;}
 .custom-paginator>button>img{display: block;height: 24px;width: 24px;}
 .custom-paginator>button[disabled]{opacity: 0.5;cursor:not-allowed;}
@@ -380,7 +392,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 
 /* Claim status header
 --------------------------------------------------------------------------------------------------------*/
-.claim-status-header{display: flex;padding: 16px 14px;background:#fff;border-left:14px solid;}
+.claim-status-header{display: flex;padding: 16px 14px;background:#fff;border-left:14px solid currentColor;}
 .claim-status-header p{padding-right: 24px;}
 .claim-status-header .title{padding-right: 48px;font-size: 16px;line-height: 22px;font-weight: 600;}
 .claim-status-header strong{font-weight: 600;}
@@ -427,7 +439,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .item-group-panel .parent-panel ul>li>.delete-btn,.list-expansion-panel .mat-expansion-panel .delete-btn{flex-grow: 0;flex-shrink: 0;max-width: 24px;border:0;background:none;flex-basis:24px;min-width: 24px;display:block;margin-left:6px;padding:0;}
 .item-group-panel .parent-panel ul>li>.delete-btn .mat-icon,.list-expansion-panel .mat-expansion-panel .delete-btn .mat-icon{display:block;}
 .item-group-panel .parent-panel ul .title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:24px;}
-.item-group-panel .parent-panel ul .invoice-title{display: flex; padding-bottom: 10px;}
+.item-group-panel .parent-panel ul .invoice-title{display: flex; padding-bottom: 8px;}
 .item-group-panel .parent-panel ul .invoice-title .mat-icon{margin:-2px 0 -2px 8px;}
 .item-group-panel .parent-panel ul .invoice-title .title{padding-bottom: 0;}
 .item-group-panel .child-panel{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 300px);max-width: calc(100% - 300px);padding-left: 14px;}
