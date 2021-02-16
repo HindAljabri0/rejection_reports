@@ -708,6 +708,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.selectedClaims.map(id => Number.parseInt(id, 10))));
   }
 
+
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
     
@@ -715,15 +716,23 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.payerId,
       this.from,
       this.to,
-      this.batchId,
       this.uploadId,
-      this.casetype,
-      this.claimRefNo,
+      this.batchId,
+      this.claimRefNo, 
       this.memberId,
-      this.invoiceNo,
+      this.invoiceNo, 
       this.patientFileNo, 
-      this.policyNo));
+      this.policyNo, 
+      this.casetype));
   }
+  /*checkAllClaims() {
+    this.waitingEligibilityCheck = true;
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
+      this.payerId,
+      this.from,
+      this.to,
+      this.uploadId));
+  }*/
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
     this.watchEligibilityChanges();

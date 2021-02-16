@@ -2,35 +2,37 @@
     <h5 class="primary-dialog-title">Upload Summary - {{dialogData.status}}</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="table-responsive">
-    <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-            <tr class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">
-                <th>Provider Claim Number</th>
-                <th>Patient File Number</th>
-                <th>Claim Date</th>
-                <th>Field Name</th>
-                <th>Error Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngIf='dialogData.results.content.length > 0'>
-                <tr *ngFor='let result of dialogData.results.content'>
-                    <td>{{result.providerClaimNo}}</td>
-                    <td>{{result.patientFileNumber}}</td>
-                    <td>{{result.visitDate | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{result.fieldName}}</td>
-                    <td>{{result.errorDescription}}</td>
-                </tr>
-            </ng-container>
-            <ng-container *ngIf='dialogData.results.content.length === 0'>
+<ng-scrollbar smoothScroll #customScrollbar [shown]="'hover'" [compact]="true" [trackX]="true">
+    <div class="fixed-height">
+        <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
                 <tr>
-                    <td colspan="5">No records found !</td>
+                    <th class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">Provider Claim Number</th>
+                    <th class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">Patient File Number</th>
+                    <th class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">Claim Date</th>
+                    <th class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">Field Name</th>
+                    <th class="text-{{dialogData.themeColor}} light-bg-{{dialogData.themeColor}}">Error Description</th>
                 </tr>
-            </ng-container>
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                <ng-container *ngIf='dialogData.results.content.length > 0'>
+                    <tr *ngFor='let result of dialogData.results.content'>
+                        <td>{{result.providerClaimNo}}</td>
+                        <td>{{result.patientFileNumber}}</td>
+                        <td>{{result.visitDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{result.fieldName}}</td>
+                        <td>{{result.errorDescription}}</td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf='dialogData.results.content.length === 0'>
+                    <tr>
+                        <td colspan="5">No records found !</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</ng-scrollbar>
 <div class="primary-dialog-footer">
     <div class="custom-paginator">
         <button matRipple type="button" title="First Page" [disabled]='(currentPage + 1) === 1' (click)='getClaimSummaryByFieldName()'>
