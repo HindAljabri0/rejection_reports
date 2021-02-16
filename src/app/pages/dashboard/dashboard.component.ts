@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styles: []
 })
 export class DashboardComponent implements OnInit {
 
@@ -177,8 +177,9 @@ export class DashboardComponent implements OnInit {
     if (!window.localStorage.getItem('onboarding-demo-done')) {
       document.body.classList.add('guided-tour-active');
       document.getElementsByTagName('html')[0].classList.add('guided-tour-active');
-      if (environment.name == 'dev' || environment.name == 'oci_qa')
+      if (environment.name == 'dev' || environment.name == 'oci_qa') {
         this.tourService.startTour(this.dashboardTour);
+      }
     }
   }
 
