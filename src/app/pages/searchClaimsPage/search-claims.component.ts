@@ -708,14 +708,30 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.selectedClaims.map(id => Number.parseInt(id, 10))));
   }
 
+
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
       this.payerId,
       this.from,
       this.to,
-      this.uploadId));
+      this.uploadId,
+      this.batchId,
+      this.claimRefNo, 
+      this.memberId,
+      this.invoiceNo, 
+      this.patientFileNo, 
+      this.policyNo, 
+      this.casetype));
   }
+  /*checkAllClaims() {
+    this.waitingEligibilityCheck = true;
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
+      this.payerId,
+      this.from,
+      this.to,
+      this.uploadId));
+  }*/
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
     this.watchEligibilityChanges();
