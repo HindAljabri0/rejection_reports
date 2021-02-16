@@ -14,7 +14,8 @@ import { RejectionCardData } from './rejectionCardData';
 export class RejectionCardComponent implements OnInit {
 
   @Input()
-  storeSelector: MemoizedSelector<object, { loading: boolean; data: RejectionCardData; error?: string; },
+  storeSelector: MemoizedSelector<object,
+    { loading: boolean; data: RejectionCardData; error?: string; },
     DefaultProjectorFn<{ loading: boolean; data: RejectionCardData; error?: string; }>>;
   @Input()
   unit = 'Claims';
@@ -44,7 +45,6 @@ export class RejectionCardComponent implements OnInit {
   colors: Color[] = [
     { backgroundColor: [] }
   ];
-
   hue: number;
   sat: number;
   light: number;

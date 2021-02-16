@@ -1,5 +1,5 @@
-import { Service } from "./service.model";
-import { GDPN } from "./GDPN.model";
+import { Service } from './service.model';
+import { GDPN } from './GDPN.model';
 
 
 export class ServiceView extends Service {
@@ -13,5 +13,5 @@ export class ServiceView extends Service {
         approvedQuantity: number;
         serviceDenialCode: string;
         decisionComment: string;
-    }
+    };
 }

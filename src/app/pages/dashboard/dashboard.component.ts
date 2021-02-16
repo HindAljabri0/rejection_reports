@@ -6,6 +6,7 @@ import { TopFiveRejectionsComponent } from './components/top-five-rejections/top
 import { GuidedTourService, GuidedTour } from 'ngx-guided-tour';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ViewportScroller } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -176,7 +177,9 @@ export class DashboardComponent implements OnInit {
     if (!window.localStorage.getItem('onboarding-demo-done')) {
       document.body.classList.add('guided-tour-active');
       document.getElementsByTagName('html')[0].classList.add('guided-tour-active');
-      this.tourService.startTour(this.dashboardTour);
+      if (environment.name == 'dev' || environment.name == 'oci_qa') {
+        this.tourService.startTour(this.dashboardTour);
+      }
     }
   }
 

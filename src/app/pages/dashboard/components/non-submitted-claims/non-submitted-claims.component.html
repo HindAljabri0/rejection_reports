@@ -18,7 +18,7 @@
                                     class="currency"> SR</span></h6>
                         </div>
                         <div class="ml-auto text-right">
-                            <label>Vat</label>
+                            <label>Net Vat</label>
                             <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalVatNetAmount}}<span
                                     class="currency"> SR</span></h6>
                         </div>
@@ -27,7 +27,7 @@
             </ng-container>
             <ng-container *ngIf="item.loading">
                 <div class="loader-wrapper">
-                    <mat-spinner diameter="40" [color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">
+                    <mat-spinner diameter="40" color="primary">
                     </mat-spinner>
                 </div>
             </ng-container>

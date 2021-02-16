@@ -7,7 +7,7 @@ export class ClaimSummaryError extends Paginateable {
     status: string;
     subStatus: string;
     constructor(json: any = null) {
-        if (json !== null) { 
+        if (json !== null) {
             super(json);
             this.fieldName = json.fieldName !== null ? json.fieldName : '';
             this.frequency = json.frequency !== null ? json.frequency : 0;

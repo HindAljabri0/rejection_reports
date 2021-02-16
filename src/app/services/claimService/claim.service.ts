@@ -20,15 +20,39 @@ export class ClaimService {
   saveManuallyCreatedClaim(claim: Claim, providerId: string) {
     const requestUrl = `/providers/${providerId}`;
     let body: any = { ...claim };
-    claim.caseInformation.caseType
+    claim.caseInformation.caseType;
     if (claim.caseInformation.caseDescription.illnessDuration != null) {
-      body = { ...body, caseInformation: { ...body.caseInformation, caseDescription: { ...body.caseInformation.caseDescription, illnessDuration: body.caseInformation.caseDescription.illnessDuration.toPeriodFormat() } } };
+      body = {
+        ...body, caseInformation: {
+          ...body.caseInformation,
+          caseDescription: {
+            ...body.caseInformation.caseDescription,
+            illnessDuration: body.caseInformation.caseDescription.illnessDuration.toPeriodFormat()
+          }
+        }
+      };
     }
     if (claim.caseInformation.patient.age != null) {
-      body = { ...body, caseInformation: { ...body.caseInformation, patient: { ...body.caseInformation.patient, age: body.caseInformation.patient.age.toPeriodFormat() } } };
+      body = {
+        ...body, caseInformation: {
+          ...body.caseInformation,
+          patient: {
+            ...body.caseInformation.patient,
+            age: body.caseInformation.patient.age.toPeriodFormat()
+          }
+        }
+      };
     }
     if (claim.admission != null && claim.admission.discharge != null && claim.admission.discharge.actualLengthOfStay != null) {
-      body = { ...body, admission: { ...body.admission, discharge: { ...body.admission.discharge, actualLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat() } } };
+      body = {
+        ...body, admission: {
+          ...body.admission,
+          discharge: {
+            ...body.admission.discharge,
+            actualLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat()
+          }
+        }
+      };
     }
     const httpRequest = new HttpRequest('POST', environment.claimServiceHost + requestUrl, body);
     return this.httpClient.request(httpRequest);
@@ -37,15 +61,37 @@ export class ClaimService {
   saveChangesToExistingClaim(claim: Claim, providerId: string, claimId: string) {
     const requestUrl = `/providers/${providerId}/${claimId}`;
     let body: any = { ...claim };
-    claim.caseInformation.caseType
+    claim.caseInformation.caseType;
     if (claim.caseInformation.caseDescription.illnessDuration != null) {
-      body = { ...body, caseInformation: { ...body.caseInformation, caseDescription: { ...body.caseInformation.caseDescription, illnessDuration: body.caseInformation.caseDescription.illnessDuration.toPeriodFormat() } } };
+      body = {
+        ...body, caseInformation: {
+          ...body.caseInformation,
+          caseDescription: {
+            ...body.caseInformation.caseDescription,
+            illnessDuration: body.caseInformation.caseDescription.illnessDuration.toPeriodFormat()
+          }
+        }
+      };
     }
     if (claim.caseInformation.patient.age != null) {
-      body = { ...body, caseInformation: { ...body.caseInformation, patient: { ...body.caseInformation.patient, age: body.caseInformation.patient.age.toPeriodFormat() } } };
+      body = {
+        ...body, caseInformation: {
+          ...body.caseInformation,
+          patient: {
+            ...body.caseInformation.patient,
+            age: body.caseInformation.patient.age.toPeriodFormat()
+          }
+        }
+      };
     }
     if (claim.admission != null && claim.admission.discharge != null && claim.admission.discharge.actualLengthOfStay != null) {
-      body = { ...body, admission: { ...body.admission, estimatedLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat(),discharge: { ...body.admission.discharge, actualLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat() } } };
+      body = {
+        ...body, admission: {
+          ...body.admission,
+          estimatedLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat(),
+          discharge: { ...body.admission.discharge, actualLengthOfStay: body.admission.discharge.actualLengthOfStay.toPeriodFormat() }
+        }
+      };
     }
     const httpRequest = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, body);
     return this.httpClient.request(httpRequest);
@@ -86,7 +132,7 @@ export class ClaimService {
 
   deleteClaim(providerId: string, claimId) {
     const requestUrl = `/providers/${providerId}/${claimId}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json')
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost + requestUrl, {}, { headers: headers });
     return this.httpClient.request(httpRequest);
   }

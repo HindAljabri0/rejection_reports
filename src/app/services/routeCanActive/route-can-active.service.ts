@@ -17,7 +17,9 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
 
   constructor(public authService: AuthService, public router: Router) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (!this.authService.loggedIn) {
       return this.router.createUrlTree(['/login']);
     }
@@ -29,29 +31,43 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         return true;
       case DashboardComponent:
         if (this._isAdmin()) {
-          return this.router.createUrlTree(['administration'])
+          return this.router.createUrlTree(['administration']);
         } else {
           return true;
         }
       case SearchClaimsComponent:
         providerId = route.url[0].path;
-        let batchId = route.queryParamMap.get("batchId");
-        if (batchId != null && batchId != '') return true;
-        let uploadId = route.queryParamMap.get('uploadId');
-        if (uploadId != null && uploadId != '') return true;
-        let claimRefNo = route.queryParamMap.get('claimRefNo');
-        if (claimRefNo != null && claimRefNo != '') return true;
-        let memberId = route.queryParamMap.get('memberId');
-        if (memberId != null && memberId != '') return true;
-        let invoiceNo = route.queryParamMap.get('invoiceNo');
-        if (invoiceNo != null && invoiceNo != '') return true;
-        let patientFileNo = route.queryParamMap.get('patientFileNo');
-        if (patientFileNo != null && patientFileNo != '') return true;
-        let policyNo = route.queryParamMap.get('policyNo');
-        if (policyNo != null && policyNo != '') return true;
-        payerId = route.queryParamMap.get("payer");
+        const batchId = route.queryParamMap.get('batchId');
+        if (batchId != null && batchId != '') {
+          return true;
+        }
+        const uploadId = route.queryParamMap.get('uploadId');
+        if (uploadId != null && uploadId != '') {
+          return true;
+        }
+        const claimRefNo = route.queryParamMap.get('claimRefNo');
+        if (claimRefNo != null && claimRefNo != '') {
+          return true;
+        }
+        const memberId = route.queryParamMap.get('memberId');
+        if (memberId != null && memberId != '') {
+          return true;
+        }
+        const invoiceNo = route.queryParamMap.get('invoiceNo');
+        if (invoiceNo != null && invoiceNo != '') {
+          return true;
+        }
+        const patientFileNo = route.queryParamMap.get('patientFileNo');
+        if (patientFileNo != null && patientFileNo != '') {
+          return true;
+        }
+        const policyNo = route.queryParamMap.get('policyNo');
+        if (policyNo != null && policyNo != '') {
+          return true;
+        }
+        payerId = route.queryParamMap.get('payer');
         authority = localStorage.getItem(providerId + payerId);
-        if (providerId == null || providerId == "" || payerId == null || payerId == "" || authority == null) {
+        if (providerId == null || providerId == '' || payerId == null || payerId == '' || authority == null) {
           return this.router.createUrlTree(['/']);
         }
         if (!authority.includes('3.0') && authority.includes('3.9') && authority.includes('3.91')) {
@@ -79,7 +95,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         const providerId = localStorage.getItem('provider_id');
         const userPrivileges = localStorage.getItem(`${providerId}101`);
         return userPrivileges.split('|').includes('3.0');
-      } catch(error){
+      } catch (error) {
         console.log(error);
         return false;
       }
@@ -88,7 +104,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
   }
 
   private _isAdmin(): boolean {
-    let item = localStorage.getItem('101101');
+    const item = localStorage.getItem('101101');
     return item != null && (item.includes('|22') || item.startsWith('22'));
   }
 

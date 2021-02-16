@@ -10,7 +10,7 @@ export class UploadHistoryCenterComponent implements OnInit {
 
   inCenter = true;
 
-  showCenter: boolean = false;
+  showCenter = false;
 
   constructor(private commen: SharedServices) {
     this.commen.showUploadHistoryCenterChange.subscribe(value => {

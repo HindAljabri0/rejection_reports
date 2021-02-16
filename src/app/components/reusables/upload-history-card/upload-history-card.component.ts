@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UploadSummary } from '../../../models/uploadSummary';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
