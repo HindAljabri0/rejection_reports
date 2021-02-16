@@ -710,11 +710,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
+    
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
       this.payerId,
       this.from,
       this.to,
-      this.uploadId));
+      this.batchId,
+      this.uploadId,
+      this.casetype,
+      this.claimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo, 
+      this.policyNo));
   }
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
