@@ -122,6 +122,11 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 .overlay-backdrop.show{opacity: 1;visibility: visible;}
 .overlay-backdrop>button{display: block;height: 100%;width: 100%;background: none;border:0;}
 .small-label{font-size:13px;color:#585858;}
+.unordered-list{padding-left: 20px;}
+.unordered-list>li{list-style:disc;}
+.unordered-list.change-log-list>li{font-size:16px;line-height:22px;padding-bottom: 8px;}
+.change-log-dialog{position: relative;}
+.change-log-dialog:before{background: url('assets/changelog-bg.svg') right bottom no-repeat;position: absolute;content:'';display: block;top: 0;right: 0;bottom: 0;left: 0;opacity: 0.72;border-radius: 4px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -353,6 +358,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .primary-grid{width: 100%;color:#333;background-color: #fff;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td{vertical-align: top;padding:11px 8px;}
 .primary-grid>tbody>tr>th>.mat-icon,.primary-grid>tbody>tr>td>.mat-icon{display: inline-block;vertical-align: top;margin: -2px 0;}
+.primary-grid>tbody>tr>th>.mat-icon.size-21,.primary-grid>tbody>tr>td>.mat-icon.size-21{font-size:21px;line-height:21px;height:21px;width:21px;margin:0;}
 .primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle{vertical-align: middle;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td{font-weight: 500;}
 .primary-grid>thead>tr>th .mat-icon-button,.primary-grid>thead>tr>td .mat-icon-button{margin: -11px 0;}

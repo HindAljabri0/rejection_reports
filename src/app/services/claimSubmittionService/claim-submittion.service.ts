@@ -32,7 +32,7 @@ export class ClaimSubmittionService {
     let requestURL: string;
     // debugger;
     if (uploadId != null) {
-      requestURL = `/providers/${providerId}/submit/criteria?uploadID=${uploadId}`;
+      requestURL = `/providers/${providerId}/submit/criteria?uploadId=${uploadId}`;
     } else if (payerId != null && fromDate != null && toDate != null) {
       requestURL = `/providers/${providerId}/submit/criteria?payerID=${payerId}&fromDate=` + this.formatDate(fromDate)
         + '&toDate=' + this.formatDate(toDate);

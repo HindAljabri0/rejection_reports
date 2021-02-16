@@ -62,7 +62,7 @@
                 *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
                 {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
             </button>
-            <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==2">
+            <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==1">
                 Validation Details
             </button>
             <span class="spacer"></span>
@@ -87,11 +87,10 @@
                 </button>
             </div>
         </div>
-        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header" dynamicHeight="true">
+        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
             <mat-tab>
-                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" *ngIf="searchResult != null" [trackX]="true">
-                    <div class="fixed-height">
-                        <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <div class="table-responsive" *ngIf="searchResult != null">
+                        <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
                             <thead>
                                 <tr *ngIf="summaries != null && summaries[selectedCardKey] != null">
                                     <th
@@ -214,7 +213,7 @@
                             </tbody>
                         </table>
                     </div>
-                </ng-scrollbar>
+                
                 <div class="block-footer">
                     <div class="right-block btn-list">
                         <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}</button>
