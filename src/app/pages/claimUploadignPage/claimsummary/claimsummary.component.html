@@ -96,7 +96,7 @@
     <ng-template [id]="'5'" carouselSlide *ngIf='uploadService.summary.noOfDownloadableClaims != 0'>
         <app-abstractcard [clickable]="uploadService.summary.noOfDownloadableClaims != 0" [title]="card4Title" [actionText]="card4ActionText" [accentColor]="card4AccentColor"
             (action)="card4Action()" class="primary-card">
-            <div class="card-progress text-{{card2AccentColor}}">
+            <div class="card-progress text-{{card4AccentColor}}">
                 <span class="value">{{summary.ratioForDownloadable}}%</span>
                 <mat-progress-spinner class="spinner-progress" mode="determinate" [value]="summary.ratioForDownloadable" diameter="48">
                 </mat-progress-spinner>

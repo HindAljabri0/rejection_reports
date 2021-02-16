@@ -4,22 +4,22 @@
             [clickable]="false" class="primary-card">
             <ng-container *ngIf="item.data != null && !item.loading && item.error == null">
                 <label>No. of Claims</label>
-                <h6 class="dashboard-numbers pb-2" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalClaims}}</h6>
+                <h6 class="dashboard-numbers pb-2 text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.totalClaims}}</h6>
                 <div class="boxes">
                     <div class="left-box">
                         <label>Gross</label>
-                        <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.gross}}<span class="currency">
+                        <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.gross}}<span class="currency">
                                 SR</span></h6>
                     </div>
                     <div class="right-box d-flex">
                         <div class="pr-1">
                             <label>Net Amount</label>
-                            <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalNetAmount}}<span
-                                    class="currency"> SR</span></h6>
+                            <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.totalNetAmount}}<span class="currency">
+                                    SR</span></h6>
                         </div>
                         <div class="ml-auto text-right">
                             <label>Net Vat</label>
-                            <h6 class="dashboard-numbers" [style.color]="getCardColor(item.title != null? 'all':item.data.statuses[0])">{{item.data.totalVatNetAmount}}<span
+                            <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.totalVatNetAmount}}<span
                                     class="currency"> SR</span></h6>
                         </div>
                     </div>
