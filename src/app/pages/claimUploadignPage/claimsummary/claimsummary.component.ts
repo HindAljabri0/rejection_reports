@@ -50,8 +50,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   card0Title = this.commen.statusToName(ClaimStatus.ALL);
   card0ActionText = 'details';
-  card0AccentColor = '#3060AA';
-  card0AccentLightColor = 'rgba(48, 96, 170, 0.16)';
+  card0AccentColor = 'all-claim';
   private searchClaimsComponent: SearchClaimsComponent;
 
   /* checkfile() {
@@ -62,23 +61,19 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   card1Title = this.commen.statusToName(ClaimStatus.Accepted);
   card1ActionText = 'details';
-  card1AccentColor = '#67CD23';
-  card1AccentLightColor = 'rgba(103, 205, 35, 0.16)';
+  card1AccentColor = 'ready-submission';
 
   card2Title = this.commen.statusToName(ClaimStatus.NotAccepted);
   card2ActionText = 'details';
-  card2AccentColor = '#FF144D';
-  card2AccentLightColor = 'rgba(255, 20, 77, 0.16)';
+  card2AccentColor = 'rejected-waseel';
 
   card3Title = this.commen.statusToName(ClaimStatus.Not_Saved);
   card3ActionText = 'details';
-  card3AccentColor = '#E6AE24';
-  card3AccentLightColor = 'rgba(230, 174, 36, 0.16)';
+  card3AccentColor = 'not-saved';
 
   card4Title = this.commen.statusToName(ClaimStatus.Downloadable);
   card4ActionText = 'details';
-  card4AccentColor = '#67CD23';
-  card4AccentLightColor = 'rgba(103, 205, 35, 0.16)';
+  card4AccentColor = 'ready-submission';
 
   cardCount = 0;
 
