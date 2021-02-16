@@ -51,11 +51,9 @@ strong,.bold{font-weight: 700;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
-*::-webkit-scrollbar{height:8px;width:8px;}
-*::-webkit-scrollbar-thumb{background-color: transparent;}
-*:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4;}
-body::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
-body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
+body::-webkit-scrollbar{height:8px;width:8px;}
+body::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
+body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 
 /* button
 --------------------------------------------------------------------------------------------------------*/
@@ -87,7 +85,8 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .page-fab.mat-fab{position: fixed;right: 48px;bottom: 48px;z-index: 7;}
 .menu-label{font-size: 12px;padding: 4px 16px;color: #3060AA;font-weight: 600;display: block;}
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
-.fixed-height{max-height: 482px;}
+.fixed-height{max-height: calc(100vh - 170px);min-height: 300px;}
+.primary-dialog .fixed-height{max-height: calc(100vh - 200px);}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
 .service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;border-color:currentColor;}
 .primary-menu .mat-menu-content,.primary-menu .mat-menu-content:not(:empty){padding: 14px;}
@@ -142,16 +141,16 @@ body:hover::-webkit-scrollbar-thumb{background-color: #b6b4b4b6;}
 .bg-middle-grey{color:#bebebe!important;}
 .bg-danger{background-color: #CC2F2F!important;}
 .bg-white{background-color: #fff!important;}
-.light-bg-all-claim,.light-bg-primary{background-color: rgba(48, 96, 170,0.12)!important;}
-.light-bg-ready-submission,.light-bg-parrot{background-color: rgba(103, 205, 35,0.12)!important;}
-.light-bg-rejected-waseel,.light-bg-magenta{background-color: rgba(255, 20, 77,0.12)!important;}
-.light-bg-not-saved,.light-bg-orange{background-color: rgba(230, 174, 36,0.12)!important;}
-.light-bg-under-submission,.light-bg-cyan{background-color: rgba(0, 216, 231,0.12)!important;}
-.light-bg-rejected,.light-bg-light-pink{background-color: rgba(255, 83, 163,0.12)!important;}
-.light-bg-paid,.light-bg-green{background-color: rgba(28, 124, 38,0.12)!important;}
-.light-bg-partially-paid,.light-bg-light-blue{background-color: rgba(71, 156, 197,0.12)!important;}
-.light-bg-under-processing,.light-bg-deep-red{background-color: rgba(125, 2, 2,0.12)!important;}
-.light-bg-danger{background-color: rgba(204, 47, 47,0.12)!important;}
+.light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
+.light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
+.light-bg-rejected-waseel,.light-bg-magenta{background-color: #ffe2e9!important;}
+.light-bg-not-saved,.light-bg-orange{background-color: #fcf5e4!important;}
+.light-bg-under-submission,.light-bg-cyan{background-color: #e0fafc!important;}
+.light-bg-rejected,.light-bg-light-pink{background-color: #ffeaf4!important;}
+.light-bg-paid,.light-bg-green{background-color: #e3efe5!important;}
+.light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
+.light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
+.light-bg-danger{background-color: #f9e6e6!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
