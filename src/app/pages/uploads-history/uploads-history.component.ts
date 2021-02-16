@@ -1,10 +1,9 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
-import { formatDate, getLocaleDateFormat, FormatWidth } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { HttpRequest, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { filter, map } from 'rxjs/operators';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Query } from 'src/app/models/searchData/query';
 import { QueryType } from 'src/app/models/searchData/queryType';
 

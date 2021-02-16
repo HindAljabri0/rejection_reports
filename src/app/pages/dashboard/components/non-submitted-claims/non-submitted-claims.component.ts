@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
-import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { Store } from '@ngrx/store';
-import { getNonSubmittedClaims, getAcceptedClaims, getNotAcceptedClaims, getUnderSubmissionClaims, DashboardCardData } from '../../store/dashboard.reducer';
-import { setCardIsLoading } from '../../store/dashboard.actions';
+import {
+  getNonSubmittedClaims,
+  getAcceptedClaims,
+  getNotAcceptedClaims,
+  getUnderSubmissionClaims,
+  DashboardCardData
+} from '../../store/dashboard.reducer';
 
 @Component({
   selector: 'app-non-submitted-claims',

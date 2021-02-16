@@ -493,39 +493,39 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return;
     }
 
-   
+
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId,this.batchId,  this.uploadId ,  this.casetype, 
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype,
       this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
-    
-      if (event instanceof HttpResponse) {
-        if (event.body['queuedStatus'] == 'QUEUED') {
-          this.dialogService.openMessageDialog(
-            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
-          ).subscribe(result => {
-            this.resetURL();
-            this.fetchData();
-          });
+
+        if (event instanceof HttpResponse) {
+          if (event.body['queuedStatus'] == 'QUEUED') {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+            ).subscribe(result => {
+              this.resetURL();
+              this.fetchData();
+            });
+          }
+          this.commen.loadingChanged.next(false);
         }
+      }, errorEvent => {
         this.commen.loadingChanged.next(false);
-      }
-    }, errorEvent => {
-      this.commen.loadingChanged.next(false);
-      if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status >= 500 || errorEvent.status == 0) {
-          if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
-            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
-          } else {
-            this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+        if (errorEvent instanceof HttpErrorResponse) {
+          if (errorEvent.status >= 500 || errorEvent.status == 0) {
+            if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+            } else {
+              this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+            }
+          }
+          if (errorEvent.error['errors'] != null) {
+            for (const error of errorEvent.error['errors']) {
+              this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+            }
           }
         }
-        if (errorEvent.error['errors'] != null) {
-          for (const error of errorEvent.error['errors']) {
-            this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
-          }
-        }
-      }
-    });
+      });
   }
 
 
@@ -710,7 +710,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
-    
+
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
       this.payerId,
       this.from,
@@ -721,7 +721,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.claimRefNo,
       this.memberId,
       this.invoiceNo,
-      this.patientFileNo, 
+      this.patientFileNo,
       this.policyNo));
   }
 
@@ -787,7 +787,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   deleteClaim(claimId: string, refNumber: string) {
-    this.dialogService.openMessageDialog(new MessageDialogData('Delete Claim?', `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Claim?',
+        `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);

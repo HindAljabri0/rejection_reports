@@ -31,26 +31,26 @@ export class UploadSummary {
 
   providerClaimNumber: string;
 
-  noOfUploadedClaims: number = 0;
-  netAmountOfUploadedClaims: number = 0;
-  netVATAmountOfUploadedClaims: number = 0;
+  noOfUploadedClaims = 0;
+  netAmountOfUploadedClaims = 0;
+  netVATAmountOfUploadedClaims = 0;
 
   // uploadedClaims: Array<ClaimInfo>;
 
-  noOfAcceptedClaims: number = 0;
-  netAmountOfAcceptedClaims: number = 0;
-  netVATAmountOfAcceptedClaims: number = 0;
+  noOfAcceptedClaims = 0;
+  netAmountOfAcceptedClaims = 0;
+  netVATAmountOfAcceptedClaims = 0;
 
-  noOfNotAcceptedClaims: number = 0;
-  netAmountOfNotAcceptedClaims: number = 0;
-  netVATAmountOfNotAcceptedClaims: number = 0;
+  noOfNotAcceptedClaims = 0;
+  netAmountOfNotAcceptedClaims = 0;
+  netVATAmountOfNotAcceptedClaims = 0;
 
-  noOfNotUploadedClaims: number = 0;
+  noOfNotUploadedClaims = 0;
 
-  noOfDownloadableClaims: number = 0;
-  netAmountOfDownloadableClaims: number = 0;
-  netVATAmountOfDownloadableClaims: number = 0;
-  ratioForAccepted: number = 0;
-  ratioForNotAccepted: number = 0;
-  ratioForDownloadable: number = 0;
+  noOfDownloadableClaims = 0;
+  netAmountOfDownloadableClaims = 0;
+  netVATAmountOfDownloadableClaims = 0;
+  ratioForAccepted = 0;
+  ratioForNotAccepted = 0;
+  ratioForDownloadable = 0;
 }

@@ -1,11 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Query } from 'src/app/models/searchData/query';
-import { QueryType } from 'src/app/models/searchData/queryType';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SharedServices } from 'src/app/services/shared.services';
-import { MatMenuTrigger } from '@angular/material';
 import { FormControl } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Moment } from 'moment';

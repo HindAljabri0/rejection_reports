@@ -15,8 +15,8 @@ import { filter } from 'rxjs/operators';
 })
 export class SearchCriteriaComponent implements OnInit {
 
-  monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
   lastMonthName: string;
@@ -40,7 +40,9 @@ export class SearchCriteriaComponent implements OnInit {
       ).subscribe(() => {
         this.init();
       }).unsubscribe;
-    } else this.init();
+    } else {
+      this.init();
+    }
   }
 
   init() {
@@ -50,7 +52,7 @@ export class SearchCriteriaComponent implements OnInit {
     } else {
       this.selectedPayer = this.payersList[0].id;
     }
-    let defaultPayer = Number.parseInt(localStorage.getItem('defaultDashboardPayer'));
+    const defaultPayer = Number.parseInt(localStorage.getItem('defaultDashboardPayer'), 10);
     if (Number.isInteger(defaultPayer) && this.payersList.findIndex(payer => payer.id == defaultPayer) != -1) {
       this.selectedPayer = defaultPayer;
     }
@@ -58,8 +60,8 @@ export class SearchCriteriaComponent implements OnInit {
   }
 
   setLastMonthName() {
-    let thisMonth = moment();
-    let lastMonth = thisMonth.subtract('month', 1);
+    const thisMonth = moment();
+    const lastMonth = thisMonth.subtract('month', 1);
     this.lastMonthName = this.monthNames[lastMonth.month()];
   }
 
@@ -78,11 +80,13 @@ export class SearchCriteriaComponent implements OnInit {
         payerId: this.selectedPayer
       }));
     } else {
-      let fromDate = new Date(this.fromDateControl.value);
-      let toDate = new Date(this.toDateControl.value);
+      const fromDate = new Date(this.fromDateControl.value);
+      const toDate = new Date(this.toDateControl.value);
       this.fromDateInvalid = this._isInvalidDate(fromDate) || this.fromDateControl.value == null;
       this.toDateInvalid = this._isInvalidDate(toDate) || this.toDateControl.value == null;
-      if (this.fromDateInvalid || this.toDateInvalid) return;
+      if (this.fromDateInvalid || this.toDateInvalid) {
+        return;
+      }
       this.store.dispatch(updateSearchCriteria({
         fromDate: `${fromDate.getFullYear()}-${fromDate.getMonth() + 1}-${fromDate.getDate()}`,
         toDate: `${toDate.getFullYear()}-${toDate.getMonth() + 1}-${toDate.getDate()}`,
@@ -97,6 +101,11 @@ export class SearchCriteriaComponent implements OnInit {
   }
 
   _isInvalidDate(date: Date) {
-    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
+    return date == null ||
+      Number.isNaN(date.getTime()) ||
+      Number.isNaN(date.getFullYear()) ||
+      Number.isNaN(date.getMonth()) ||
+      Number.isNaN(date.getDay()) ||
+      date.getTime() > Date.now();
   }
 }

@@ -11,14 +11,26 @@ export class ClaimSubmittionService {
 
 
   submitClaims(claims: string[], providerId: string, payerId: string) {
-    let requestURL: string = `/providers/${providerId}/submit?payerID=${payerId}`;
+    const requestURL = `/providers/${providerId}/submit?payerID=${payerId}`;
     const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, { claimIds: claims }, {});
     return this.http.request(request);
   }
 
-  submitAllClaims(providerId: string, fromDate?: string, toDate?: string, payerId?: string, batchId?: string, uploadId?: string, casetype?: string, claimRefNo?: string, memberId?: string, invoiceNo?: string, patientFileNo?: string, policyNo?: string) {
+  submitAllClaims(
+    providerId: string,
+    fromDate?: string,
+    toDate?: string,
+    payerId?: string,
+    batchId?: string,
+    uploadId?: string,
+    casetype?: string,
+    claimRefNo?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    policyNo?: string) {
     let requestURL: string;
-   // debugger;
+    // debugger;
     if (uploadId != null) {
       requestURL = `/providers/${providerId}/submit/criteria?uploadID=${uploadId}`;
     } else if (payerId != null && fromDate != null && toDate != null) {
@@ -28,17 +40,13 @@ export class ClaimSubmittionService {
       requestURL = `/providers/${providerId}/submit/criteria?claimRefNo=${claimRefNo}`;
     } else if (batchId != null) {
       requestURL = `/providers/${providerId}/submit/criteria?batchId=${batchId}`;
-    }
-    else if (invoiceNo != null) {
+    } else if (invoiceNo != null) {
       requestURL = `/providers/${providerId}/submit/criteria?invoiceNo=${invoiceNo}`;
-    }
-    else if (patientFileNo != null) {
+    } else if (patientFileNo != null) {
       requestURL = `/providers/${providerId}/submit/criteria?patientFileNo=${patientFileNo}`;
-    }
-    else if (policyNo != null) {
+    } else if (policyNo != null) {
       requestURL = `/providers/${providerId}/submit/criteria?policyNo=${policyNo}`;
-    }
-    else  if (memberId != null) {
+    } else if (memberId != null) {
       requestURL = `/providers/${providerId}/submit/criteria?memberId=${memberId}`;
     }
 
@@ -53,6 +61,8 @@ export class ClaimSubmittionService {
     if (splittedDate[2].length == 4) {
       const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
       return formattedDate;
-    } else return date;
+    } else {
+      return date;
+    }
   }
 }
