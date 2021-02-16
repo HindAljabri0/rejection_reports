@@ -73,6 +73,7 @@ import {
   UploadSummaryDialogComponent
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
+import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
     ImageToolTipDirective,
     ImageTooltipComponent,
     SummaryComponent,
-    GmReportsPageComponent
+    GmReportsPageComponent,
+    ChangeLogDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -178,7 +180,8 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
     ImageTooltipComponent,
-    UploadSummaryDialogComponent
+    UploadSummaryDialogComponent,
+    ChangeLogDialogComponent
   ],
 })
 export class AppModule { }

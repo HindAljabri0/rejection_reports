@@ -164,7 +164,7 @@
                         <tr *ngFor="let result of paginatedResult.content" (click)="(result.fieldName !== null && result.fieldName !== '' ) && openUploadSummaryDialog(result)"
                             [ngClass]="(result.fieldName !== null && result.fieldName !== '' ) ? 'row-click' : '' ">
                             <td class="text-primary text-center">
-                                <mat-icon>add_circle_outline</mat-icon>
+                                <mat-icon class="size-21">add_circle_outline</mat-icon>
                             </td>
                             <td>{{result.fieldName}}</td>
                             <td>{{result.frequency}}</td>
