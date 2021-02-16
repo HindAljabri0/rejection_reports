@@ -173,7 +173,10 @@ export class RejectionReportComponent implements OnInit {
           claim.netAmountUnit = event.body['wslGenInfo']['unitofnet'];
           claim.netvatAmountUnit = event.body['wslGenInfo']['unitofnetvatamount'];
           claim.patientFileNumber = event.body['wslGenInfo']['patientfilenumber'];
-          claim.patientName = `${(event.body['wslGenInfo']['firstname'] != null ? event.body['wslGenInfo']['firstname'] : '')} ${(event.body['wslGenInfo']['middlename'] != null ? event.body['wslGenInfo']['middlename'] : '')} ${(event.body['wslGenInfo']['lastname'] != null ? event.body['wslGenInfo']['lastname'] : '')}`;
+          claim.patientName = `${(event.body['wslGenInfo']['firstname'] != null ?
+            event.body['wslGenInfo']['firstname'] : '')}
+          ${(event.body['wslGenInfo']['middlename'] != null ? event.body['wslGenInfo']['middlename'] : '')}
+          ${(event.body['wslGenInfo']['lastname'] != null ? event.body['wslGenInfo']['lastname'] : '')}`;
           claim.policyNumber = event.body['wslGenInfo']['policynumber'];
           claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
           claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];

@@ -248,12 +248,12 @@
                                 <ng-container *ngIf='validationDetails.length > 0'>
                                     <tr *ngFor="let detail of validationDetails">
                                         <td>{{detail.providerClaimeNo}}</td>
-                                        <td [style.color]="accentColor(detail.status)">
+                                        <td class="text-{{accentColor(detail.status)}}">
                                             {{detail.fieldName}}</td>
-                                        <td [style.color]="accentColor(detail.status)">
+                                        <td class="text-{{accentColor(detail.status)}}">
                                             {{detail.description}}</td>
                                         <td class="text-center">
-                                            <span class="status-dot" [style.background-color]="accentColor(detail.status)"></span>
+                                            <span class="status-dot bg-{{accentColor(detail.status)}}"></span>
                                         </td>
                                     </tr>
                                 </ng-container>

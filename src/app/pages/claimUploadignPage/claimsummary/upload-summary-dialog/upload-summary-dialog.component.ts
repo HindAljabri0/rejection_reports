@@ -42,7 +42,7 @@ export class UploadSummaryDialogComponent implements OnInit {
           this.commen.loadingChanged.next(false);
           this.dialogData.results = event.body;
         }
-      }), eventError => {
+      }), (eventError) => {
         this.commen.loadingChanged.next(false);
       };
   }
