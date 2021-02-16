@@ -85,7 +85,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 .page-fab.mat-fab{position: fixed;right: 48px;bottom: 48px;z-index: 7;}
 .menu-label{font-size: 12px;padding: 4px 16px;color: #3060AA;font-weight: 600;display: block;}
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
-.fixed-height{max-height: calc(100vh - 170px);min-height: 300px;}
+.fixed-height{max-height: calc(100vh - 170px);}
 .primary-dialog .fixed-height{max-height: calc(100vh - 200px);}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
 .service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;border-color:currentColor;}
@@ -334,6 +334,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 --------------------------------------------------------------------------------------------------------*/
 .primary-grid{width: 100%;color:#333;background-color: #fff;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td{vertical-align: top;padding:11px 8px;}
+.primary-grid>tbody>tr>th>.mat-icon,.primary-grid>tbody>tr>td>.mat-icon{display: inline-block;vertical-align: top;margin: -2px 0;}
 .primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle{vertical-align: middle;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td{font-weight: 500;}
 .primary-grid>thead>tr>th .mat-icon-button,.primary-grid>thead>tr>td .mat-icon-button{margin: -11px 0;}

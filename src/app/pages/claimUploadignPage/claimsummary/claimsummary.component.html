@@ -150,6 +150,7 @@
                 <ng-container *ngIf='paginatedResult.content.length > 0'>
                     <thead>
                         <tr>
+                            <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}" width="10"></th>
                             <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">Field Name</th>
                             <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">Frequency</th>
                             <th class="text-{{commen.getCardAccentColor(selectedCardKey)}} light-bg-{{commen.getCardAccentColor(selectedCardKey)}}">Ratio</th>
@@ -162,6 +163,9 @@
                     <ng-container *ngIf='paginatedResult.content.length > 0'>
                         <tr *ngFor="let result of paginatedResult.content" (click)="(result.fieldName !== null && result.fieldName !== '' ) && openUploadSummaryDialog(result)"
                             [ngClass]="(result.fieldName !== null && result.fieldName !== '' ) ? 'row-click' : '' ">
+                            <td class="text-primary text-center">
+                                <mat-icon>add_circle_outline</mat-icon>
+                            </td>
                             <td>{{result.fieldName}}</td>
                             <td>{{result.frequency}}</td>
                             <td>{{result.ratio}}%</td>
