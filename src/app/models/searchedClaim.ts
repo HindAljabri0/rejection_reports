@@ -1,29 +1,29 @@
 import { Paginateable } from './paginateable';
 
-export class SearchedClaim extends Paginateable{
-  
-  claimId:string;
-  providerClaimNumber:string;
-  drName:string;
-  policyNumber:string;
-  memberId:string;
-  nationalId:string;
-  patientFileNumber:string;
-  claimDate:string;
-  netAmount:number;
-  netVatAmount:number;
-  unitOfNetAmount:string;
-  unitOfNetVatAmount:string;
-  status:string;
-  statusDetail:string;
-  payerId:string;
-  eligibilitycheck:string;
-  numOfAttachments:number;
-  numOfPriceListErrors:number;
+export class SearchedClaim extends Paginateable {
 
-  constructor (body: {}){
+  claimId: string;
+  providerClaimNumber: string;
+  drName: string;
+  policyNumber: string;
+  memberId: string;
+  nationalId: string;
+  patientFileNumber: string;
+  claimDate: string;
+  netAmount: number;
+  netVatAmount: number;
+  unitOfNetAmount: string;
+  unitOfNetVatAmount: string;
+  status: string;
+  statusDetail: string;
+  payerId: string;
+  eligibilitycheck: string;
+  numOfAttachments: number;
+  numOfPriceListErrors: number;
+
+  constructor(body: {}) {
     super(body);
-    if(body!= null){
+    if (body != null) {
       this.claimId = body['claimId'];
       this.claimDate = body['claimDate'];
       this.policyNumber = body['policyNumber'];

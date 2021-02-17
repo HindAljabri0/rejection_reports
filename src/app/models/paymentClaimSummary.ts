@@ -1,7 +1,6 @@
 import { Paginateable } from './paginateable';
 
 export class PaymentClaimSummary extends Paginateable {
-
     claimId: number;
     providerClaimNumber: string;
     payerClaimNumber: string;
@@ -9,7 +8,7 @@ export class PaymentClaimSummary extends Paginateable {
     requstedNetAmount: number;
     paidNetAmount: number;
 
-    constructor(body:{}){
+    constructor(body: {}) {
         super(body);
         this.claimId = body['claimId'];
         this.providerClaimNumber = body['providerClaimNumber'];

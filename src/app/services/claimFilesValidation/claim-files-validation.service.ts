@@ -16,12 +16,12 @@ export class ClaimFilesValidationService {
     let headers: string[] = [];
     this.missingHeaders = [];
     this.wrongFormattedHeaders = [];
-    if (file.Sheets.hasOwnProperty("GenInfo")
-      && file.Sheets.hasOwnProperty("Diagnosis")
-      && file.Sheets.hasOwnProperty("Invoices")
-      && file.Sheets.hasOwnProperty("ServiceDetails")
-      && file.Sheets.hasOwnProperty("LabResult")
-      && file.Sheets.hasOwnProperty("LabComponent")) {
+    if (file.Sheets.hasOwnProperty('GenInfo')
+      && file.Sheets.hasOwnProperty('Diagnosis')
+      && file.Sheets.hasOwnProperty('Invoices')
+      && file.Sheets.hasOwnProperty('ServiceDetails')
+      && file.Sheets.hasOwnProperty('LabResult')
+      && file.Sheets.hasOwnProperty('LabComponent')) {
       const genInfoSheet = file.Sheets['GenInfo'];
       const diagnosisSheet = file.Sheets['Diagnosis'];
       const invoicesSheet = file.Sheets['Invoices'];
@@ -70,10 +70,12 @@ export class ClaimFilesValidationService {
   private getHeadersFromSheet(ws: XLSX.WorkSheet) {
     const data = XLSX.utils.sheet_to_csv(ws);
     if (data.length == 0) {
-      throw 'File have empty sheets'
+      throw 'File have empty sheets';
     }
     let lastIndexInHeaderLine = data.indexOf('\n');
-    if (lastIndexInHeaderLine == -1) lastIndexInHeaderLine = data.length;
+    if (lastIndexInHeaderLine == -1) {
+      lastIndexInHeaderLine = data.length;
+    }
     const headersLine = data.substr(0, lastIndexInHeaderLine);
     return headersLine.split(',');
   }
@@ -99,5 +101,69 @@ export class ClaimFilesValidationService {
 
 }
 
-const AllowedHeaders: string[] = ['PROVIDERID', 'PAYERID', 'PROVCLAIMNO', 'MEMBERID', 'NATIONALID', 'POLICYNO', 'FULLNAME', 'PATFILENO', 'ACCCODE', 'MEMBERDOB', 'MEMBERAGE', 'UNITAGE', 'GENDER', 'NATIONALITY', 'PHYID', 'PHYNAME', 'PHYCATEGORY', 'DEPTCODE', 'VISITTYPE', 'CLAIMDATE', 'CLAIMTYPE', 'ELIGREFNO', 'APPREFNO', 'ADMISSIONDATE', 'DISCHARGEDATE', 'LENGTHOFSTAY', 'UNITOFSTAY', 'ROOMNO', 'BEDNO', 'MAINSYMPTOM', 'SIGNIFICANTSIGN', 'OTHERCOND', 'DURATIONOFILLNESS', 'UNITOFILLNESSDURATION', 'TEMPERATURE', 'BLOODPRESSURE', 'PULSE', 'RESPIRATORYRATE', 'WEIGH', 'HEIGHT', 'COMMREPORT', 'RADIOLOGYREPORT', 'DIAGNOSISCODE', 'DIAGNOSISDESC', 'INVOICENO', 'SERVICECODE', 'SERVICEDESC', 'SERVICEDATE', 'UNITSERVICEPRICE', 'UNITSERVICETYPE', 'QTY', 'TOOTHNO', 'TOTSERVICEDISC', 'TOTSERVICEPATSHARE', 'TOTSERVICENETVATRATE', 'TOTSERVICEPATSHAREVATRATE', 'LABTESTCODE', 'LABDESC', 'LABTESTDATE', 'LABCOMPCODE', 'LABCOMPDESC', 'LABRESULT', 'LABRESULTUNIT', 'LABRESULTCOMMENT'];
+const AllowedHeaders: string[] = [
+  'PROVIDERID',
+  'PAYERID',
+  'PROVCLAIMNO',
+  'MEMBERID',
+  'NATIONALID',
+  'POLICYNO',
+  'FULLNAME',
+  'PATFILENO',
+  'ACCCODE',
+  'MEMBERDOB',
+  'MEMBERAGE',
+  'UNITAGE',
+  'GENDER',
+  'NATIONALITY',
+  'PHYID',
+  'PHYNAME',
+  'PHYCATEGORY',
+  'DEPTCODE',
+  'VISITTYPE',
+  'CLAIMDATE',
+  'CLAIMTYPE',
+  'ELIGREFNO',
+  'APPREFNO',
+  'ADMISSIONDATE',
+  'DISCHARGEDATE',
+  'LENGTHOFSTAY',
+  'UNITOFSTAY',
+  'ROOMNO',
+  'BEDNO',
+  'MAINSYMPTOM',
+  'SIGNIFICANTSIGN',
+  'OTHERCOND',
+  'DURATIONOFILLNESS',
+  'UNITOFILLNESSDURATION',
+  'TEMPERATURE',
+  'BLOODPRESSURE',
+  'PULSE',
+  'RESPIRATORYRATE',
+  'WEIGH',
+  'HEIGHT',
+  'COMMREPORT',
+  'RADIOLOGYREPORT',
+  'DIAGNOSISCODE',
+  'DIAGNOSISDESC',
+  'INVOICENO',
+  'SERVICECODE',
+  'SERVICEDESC',
+  'SERVICEDATE',
+  'UNITSERVICEPRICE',
+  'UNITSERVICETYPE',
+  'QTY',
+  'TOOTHNO',
+  'TOTSERVICEDISC',
+  'TOTSERVICEPATSHARE',
+  'TOTSERVICENETVATRATE',
+  'TOTSERVICEPATSHAREVATRATE',
+  'LABTESTCODE',
+  'LABDESC',
+  'LABTESTDATE',
+  'LABCOMPCODE',
+  'LABCOMPDESC',
+  'LABRESULT',
+  'LABRESULTUNIT',
+  'LABRESULTCOMMENT'];
 export type HeadersMap = { sheet?: string, header: string };

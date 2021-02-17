@@ -3,7 +3,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
-import {EventSourcePolyfill} from 'ng-event-source';
+import { EventSourcePolyfill } from 'ng-event-source';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +22,12 @@ export class AuditTrailService {
 
   watchNewLogs(): Observable<AuditLog> {
     return new Observable((observer) => {
-      let url = environment.auditTrailServiceHost + "/audit-trail/logs/watch";
-      let eventSource = new EventSourcePolyfill(url, {headers: {Authorization: `Bearer ${localStorage.getItem('access_token')}`}});
+      const url = environment.auditTrailServiceHost + '/audit-trail/logs/watch';
+      const eventSource = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } });
       this.eventSource = eventSource;
       this.observer = observer;
       eventSource.onmessage = (event) => {
-        let json = JSON.parse(event.data);
+        const json = JSON.parse(event.data);
         if (json !== undefined && json !== '') {
           this.zone.run(() => observer.next(json));
         }
@@ -41,38 +41,51 @@ export class AuditTrailService {
         } else {
           observer.error('EventSource error: ' + error);
         }
-      }
+      };
     });
   }
 
-  startWatchingLogs(){
+  startWatchingLogs() {
     this.watchNewLogs().subscribe(data => {
       this.logWatchSource.next(new AuditLog().deserialize(data));
     }, error => console.log('Error: ' + error),
       () => console.log('done loading team stream'));
   }
 
-  stopWatchingLogs(){
+  stopWatchingLogs() {
     this.eventSource.close();
     this.observer.complete();
   }
 
-  getAllLogs(example?: AuditLog, size?: number, date?: Date, afterDate?:boolean) {
+  getAllLogs(example?: AuditLog, size?: number, date?: Date, afterDate?: boolean) {
     let params = ``;
-    if (size == null) size = 10;
-    if(afterDate == null) afterDate = false;
-    params = `?size=${size}`
+    if (size == null) {
+      size = 10;
+    }
+    if (afterDate == null) {
+      afterDate = false;
+    }
+    params = `?size=${size}`;
     if (example != null) {
-      if (example.objectId != null) params += `&objectId=${example.objectId}`;
-      if (example.providerId != null) params += `&providerId=${example.providerId}`;
-      if (example.userId != null) params += `&userId=${example.userId}`;
-      if (example.eventType != null) params += `&eventType=${example.eventType}`;
+      if (example.objectId != null) {
+        params += `&objectId=${example.objectId}`;
+      }
+      if (example.providerId != null) {
+        params += `&providerId=${example.providerId}`;
+      }
+      if (example.userId != null) {
+        params += `&userId=${example.userId}`;
+      }
+      if (example.eventType != null) {
+        params += `&eventType=${example.eventType}`;
+      }
     }
     if (date != null) {
-      if(!afterDate)
+      if (!afterDate) {
         params += `&beforeDate=${date.getTime()}`;
-      else
+      } else {
         params += `&afterDate=${date.getTime()}`;
+      }
     }
     return this.http.get(environment.auditTrailServiceHost + `/audit-trail/logs${params}`);
   }
