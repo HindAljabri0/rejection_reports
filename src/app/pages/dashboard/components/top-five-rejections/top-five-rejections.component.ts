@@ -4,15 +4,15 @@ import { getRejectionByDepartment, getRejectionByDoctor, getRejectionByService }
 @Component({
   selector: 'app-top-five-rejections',
   templateUrl: './top-five-rejections.component.html',
-  styleUrls: ['./top-five-rejections.component.css']
+  styles: []
 })
 export class TopFiveRejectionsComponent implements OnInit {
 
   constructor() { }
 
   departmentRejectionSelector = getRejectionByDepartment;
-  doctorRejectionSelector =  getRejectionByDoctor;
-  ServiceRejectionSelector =  getRejectionByService;
+  doctorRejectionSelector = getRejectionByDoctor;
+  ServiceRejectionSelector = getRejectionByService;
 
   ngOnInit() {
   }

@@ -18,9 +18,9 @@ import { ClaimStatus } from 'src/app/models/claimStatus';
   styleUrls: ['./rejection-report.component.css']
 })
 export class RejectionReportComponent implements OnInit {
-  detailCardTitle = "Submitted Invoices";
-  detailTopActionText = "vertical_align_bottom";
-  detailAccentColor = "#3060AA";
+  detailCardTitle = 'Submitted Invoices';
+  detailTopActionText = 'vertical_align_bottom';
+  detailAccentColor = 'primary';
   detailActionText: string = null;
   detailSubActionText: string = null;
   detailCheckBoxIndeterminate: boolean;
@@ -37,7 +37,7 @@ export class RejectionReportComponent implements OnInit {
   @Output() onPaginationChange = new EventEmitter();
 
   paginatorPagesNumbers: number[];
-  @ViewChild('paginator', {static: false}) paginator: MatPaginator;
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 
@@ -47,68 +47,84 @@ export class RejectionReportComponent implements OnInit {
   rejectedClaims = Array();
 
 
-  constructor(public reportService: ReportsService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, private dialogService: DialogService) { }
+  constructor(
+    public reportService: ReportsService,
+    public commen: SharedServices,
+    public routeActive: ActivatedRoute,
+    public router: Router,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
-    //this.fetchData();
+    // this.fetchData();
   }
 
   async fetchData() {
-    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null || this.criteriaType == null) return;
+    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null || this.criteriaType == null) {
+      return;
+    }
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
-    event = await this.reportService.getRejectionSummary(this.providerId, this.from, this.to, this.payerId, this.criteriaType, this.queryPage, this.pageSize).subscribe((event) => {
-      if (event instanceof HttpResponse) {
-        this.rejectionReportSummary = new PaginatedResult(event.body, RejectionSummary);
-        this.rejectedClaims = this.rejectionReportSummary.content;
-        const pages = Math.ceil((this.rejectionReportSummary.totalElements / this.paginator.pageSize));
-        this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-        this.manualPage = this.rejectionReportSummary.number;
-        this.paginator.pageIndex = this.rejectionReportSummary.number;
-        this.paginator.pageSize = this.rejectionReportSummary.numberOfElements;
+    event = await this.reportService.getRejectionSummary(this.providerId,
+      this.from,
+      this.to,
+      this.payerId,
+      this.criteriaType,
+      this.queryPage,
+      this.pageSize).subscribe((event) => {
+        if (event instanceof HttpResponse) {
+          this.rejectionReportSummary = new PaginatedResult(event.body, RejectionSummary);
+          this.rejectedClaims = this.rejectionReportSummary.content;
+          const pages = Math.ceil((this.rejectionReportSummary.totalElements / this.paginator.pageSize));
+          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+          this.manualPage = this.rejectionReportSummary.number;
+          this.paginator.pageIndex = this.rejectionReportSummary.number;
+          this.paginator.pageSize = this.rejectionReportSummary.numberOfElements;
 
-        if(this.rejectedClaims.length == 0)
-        {
-          this.errorMessage = "No Results Found";
+          if (this.rejectedClaims.length == 0) {
+            this.errorMessage = 'No Results Found';
+          }
         }
-      }
-      this.commen.loadingChanged.next(false);
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if ((error.status / 100).toFixed() == "4") {
-          this.errorMessage = 'Access Denied.';
-        } else if ((error.status / 100).toFixed() == "5") {
-          this.errorMessage = 'Server could not handle the request. Please try again later.';
-        } else {
-          this.errorMessage = 'Somthing went wrong.';
+        this.commen.loadingChanged.next(false);
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == '4') {
+            this.errorMessage = 'Access Denied.';
+          } else if ((error.status / 100).toFixed() == '5') {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
         }
-      }
-      this.commen.loadingChanged.next(false);
-    });
+        this.commen.loadingChanged.next(false);
+      });
   }
 
   download() {
-    if (this.detailTopActionText == "check_circle") return;
+    if (this.detailTopActionText == 'check_circle') {
+      return;
+    }
 
     this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
-          var exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          const exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
           navigator.msSaveBlob(blob, exportedFilename);
         } else {
-          var a = document.createElement("a");
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          const a = document.createElement('a');
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
           a.target = '_blank';
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
-          this.detailTopActionText = "check_circle";
+          this.detailTopActionText = 'check_circle';
         }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData('',
+          'Could not reach the server at the moment. Please try again later.',
+          true));
       }
     });
   }
@@ -124,14 +140,20 @@ export class RejectionReportComponent implements OnInit {
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
+    this.paginatorAction({
+      previousPageIndex: this.paginator.pageIndex,
+      pageIndex: index,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length
+    });
   }
 
   get paginatorLength() {
     if (this.rejectionReportSummary != null) {
       return this.rejectionReportSummary.totalElements;
+    } else {
+      return 0;
     }
-    else return 0;
   }
 
   mapPayer(payerId) {
@@ -142,7 +164,7 @@ export class RejectionReportComponent implements OnInit {
     this.reportService.getClaimRejection(this.providerId, this.payerId, id).subscribe(
       event => {
         if (event instanceof HttpResponse) {
-          let claim = new RejectionReportClaimDialogData();
+          const claim = new RejectionReportClaimDialogData();
           claim.claimDate = new Date(event.body['wslGenInfo']['claimuploadeddate']);
           claim.claimStatus = event.body['wslGenInfo']['claimprop']['statuscode'];
           claim.drName = event.body['wslGenInfo']['physicianname'];
@@ -151,14 +173,17 @@ export class RejectionReportComponent implements OnInit {
           claim.netAmountUnit = event.body['wslGenInfo']['unitofnet'];
           claim.netvatAmountUnit = event.body['wslGenInfo']['unitofnetvatamount'];
           claim.patientFileNumber = event.body['wslGenInfo']['patientfilenumber'];
-          claim.patientName = `${(event.body['wslGenInfo']['firstname']!=null?event.body["wslGenInfo"]["firstname"]:"")} ${(event.body['wslGenInfo']['middlename']!=null?event.body['wslGenInfo']['middlename']:"")} ${(event.body['wslGenInfo']['lastname']!=null?event.body["wslGenInfo"]["lastname"]:"")}`;
+          claim.patientName = `${(event.body['wslGenInfo']['firstname'] != null ?
+            event.body['wslGenInfo']['firstname'] : '')}
+          ${(event.body['wslGenInfo']['middlename'] != null ? event.body['wslGenInfo']['middlename'] : '')}
+          ${(event.body['wslGenInfo']['lastname'] != null ? event.body['wslGenInfo']['lastname'] : '')}`;
           claim.policyNumber = event.body['wslGenInfo']['policynumber'];
           claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
           claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];
 
           switch (claim.claimStatus) {
             case ClaimStatus.NotAccepted:
-              let errors = event.body['claimError'];
+              const errors = event.body['claimError'];
               if (errors instanceof Array) {
                 claim.claimErrors = errors.map(error => {
                   return {
@@ -166,18 +191,18 @@ export class RejectionReportComponent implements OnInit {
                     feildName: error['fieldcode'],
                     description: error['errormessage'],
                   };
-                })
+                });
               }
               break;
             case ClaimStatus.INVALID:
               break;
             default:
-              let invoices = event.body['wslGenInfo']['wslClaimInvoices'];
-              if(invoices instanceof Array){
+              const invoices = event.body['wslGenInfo']['wslClaimInvoices'];
+              if (invoices instanceof Array) {
                 claim.services = [];
                 invoices.forEach(invoice => {
-                  let services = invoice['wslServiceDetails'];
-                  if(services instanceof Array){
+                  const services = invoice['wslServiceDetails'];
+                  if (services instanceof Array) {
                     services.forEach(service => {
                       claim.services.push({
                         code: service['servicecode'],
@@ -190,7 +215,7 @@ export class RejectionReportComponent implements OnInit {
                         requestedNAUnit: service['unitofnet'],
                         requestedNAVat: service['netvatamount'],
                         requestedNAVatUnit: service['unitofnetvatamount'],
-                        status: "",
+                        status: '',
                         statusDetails: service['servicedecision']['decisioncomment']
                       });
                     });
@@ -206,7 +231,7 @@ export class RejectionReportComponent implements OnInit {
           console.log(error);
         }
       }
-    )
+    );
   }
 
 

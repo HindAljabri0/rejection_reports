@@ -79,8 +79,8 @@
                                     <span>Service {{(j+1)}}</span>
                                     <mat-icon *ngIf="serviceHasErrors(i, j)">error</mat-icon>
                                     <span class="ml-auto text-right pr-2">{{service.serviceDate.value| date:"dd/MM/yyyy"}}</span>
-                                    <span *ngIf="service.statusCode != null" class="ml-auto semibold text-right"
-                                        [style.color]="getStatusColor(service.statusCode)">{{getStatusText(service.statusCode)}}</span>
+                                    <span *ngIf="service.statusCode != null"
+                                        class="ml-auto semibold text-right text-{{getStatusColor(service.statusCode)}}">{{getStatusText(service.statusCode)}}</span>
                                 </button>
                                 <ng-container *ngIf="pageMode != 'VIEW'">
                                     <a href="#" class="primary-link mr-2" title="Select a retrieved service"
@@ -93,8 +93,7 @@
                                 </button>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <div class="service-status-description" [style.color]="getStatusColor(service.statusCode)"
-                            [style.background-color]="getStatusColor(service.statusCode)+'1a'" [style.border-color]="getStatusColor(service.statusCode)"
+                        <div class="service-status-description text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}"
                             *ngIf=" service.statusCode != null && service.statusDescription != null">
                             {{service.statusDescription}}
                         </div>
@@ -112,7 +111,7 @@
                                         <h3>{{calcNet(controllers[i].services[j])}}</h3>
                                     </div>
                                     <div class="text-right ml-auto pl-2">
-                                        <label>Vat</label>
+                                        <label>Net Vat</label>
                                         <h3>{{calcNetVat(controllers[i].services[j])}}</h3>
                                     </div>
                                 </div>
@@ -124,13 +123,13 @@
                                 </div>
                             </div>
                             <div class="col-auto" *ngIf="service.statusCode != null">
-                                <div class="statistic-box" [style.color]="getStatusColor(service.statusCode)" [style.background-color]="getStatusColor(service.statusCode)+'1a'">
+                                <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
                                     <label>Actual Deducted Amount</label>
                                     <h3>{{service.acutalDeductedAmount}}</h3>
                                 </div>
                             </div>
                             <div class="col-auto" *ngIf="service.statusCode != null">
-                                <div class="statistic-box" [style.color]="getStatusColor(service.statusCode)" [style.background-color]="getStatusColor(service.statusCode)+'1a'">
+                                <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
                                     <label>Actual Paid Amount</label>
                                     <h3>{{calcNet(controllers[i].services[j]) - service.acutalDeductedAmount}}</h3>
                                 </div>
