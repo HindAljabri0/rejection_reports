@@ -1,13 +1,17 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { SuperAdminService, SERVICE_CODE_VALIDATION_KEY, SERVICE_CODE_RESTRICTION_KEY, ICD10_RESTRICTION_KEY, VALIDATE_RESTRICT_PRICE_UNIT, SFDA_VALIDATION_KEY, SFDA_RESTRICTION_KEY } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { Component, OnInit } from '@angular/core';
+import {
+  SuperAdminService,
+  SERVICE_CODE_RESTRICTION_KEY,
+  ICD10_RESTRICTION_KEY,
+  VALIDATE_RESTRICT_PRICE_UNIT,
+  SFDA_RESTRICTION_KEY
+} from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
-import { MatSlideToggleChange } from '@angular/material';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { debug } from 'util';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
 
 @Component({
@@ -21,39 +25,68 @@ export class ProvidersConfigComponent implements OnInit {
   filteredProviders: any[] = [];
   providerController: FormControl = new FormControl();
 
-  errors: { providersError?: string, payersError?: string, serviceCodeError?: string, serviceCodeSaveError?: string, portalUserError?: string, portalUserSaveError?: string, ICD10SaveError?: string, sfdaError?: string, sfdaSaveError?: string, midtableError?:string, midtableSaveError?:string, payerMappingError?: string, payerMappingSaveError?: string, providerMappingError?: string ,providerMappingSaveError?: string } = {};
-  success: { serviceCodeSaveSuccess?: string, portalUserSaveSuccess?: string, ICD10SaveSuccess?: string, sfdaSaveSuccess?: string, midtableSaveSuccess?:string, payerMappingSaveSuccess?: string, providerMappingSaveSuccess?: string } = {};
-  componentLoading = { serviceCode: true, portalUser: true, ICD10Validation: true, sfda: true, midtable: true, payerMapping: true, providerMapping: true };
+  errors: {
+    providersError?: string,
+    payersError?: string,
+    serviceCodeError?: string,
+    serviceCodeSaveError?: string,
+    portalUserError?: string,
+    portalUserSaveError?: string,
+    ICD10SaveError?: string,
+    sfdaError?: string,
+    sfdaSaveError?: string,
+    midtableError?: string,
+    midtableSaveError?: string,
+    payerMappingError?: string,
+    payerMappingSaveError?: string,
+    providerMappingError?: string,
+    providerMappingSaveError?: string
+  } = {};
+  success: {
+    serviceCodeSaveSuccess?: string,
+    portalUserSaveSuccess?: string,
+    ICD10SaveSuccess?: string,
+    sfdaSaveSuccess?: string,
+    midtableSaveSuccess?: string,
+    payerMappingSaveSuccess?: string,
+    providerMappingSaveSuccess?: string
+  } = {};
+  componentLoading = {
+    serviceCode: true,
+    portalUser: true,
+    ICD10Validation: true,
+    sfda: true,
+    midtable: true,
+    payerMapping: true,
+    providerMapping: true
+  };
 
   selectedProvider: string;
   associatedPayers: any[] = [];
   serviceCodeValidationSettings: any[] = [];
-  serviceCodeRestrictionSettings: any[] = [];
   priceUnitSettings: any[] = [];
   ICD10ValidationSettings: any[] = [];
   sfdaValidationSettings: any[] = [];
-  sfdaRestrictionSettings: any[] = [];
-  newServiceCodeValidationSettings: { [key: string]: boolean } = {};
-  newServiceRestrictionSettings: { [key: string]: boolean } = {};
+  newServiceValidationSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
   newSFDAValidationSettings: { [key: string]: boolean } = {};
-  newSFDARestrictionSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
   addDbConfigForm: FormGroup;
-  newPayerMappingEnable: {[key:number]: boolean} = {};
-  newPayerMappingValue: {[key:number]: string} = {};
-  newPayerName:{[key:number]: string} = {};
+  newPayerMappingEnable: { [key: number]: boolean } = {};
+  newPayerMappingValue: { [key: number]: string } = {};
+  newPayerName: { [key: number]: string } = {};
   deletePayerMappingList: any[] = [];
   addPayerMappingList: any[] = [];
-  existingPayers : any[];
+  existingPayers: any[];
   providerMappingController: FormControl = new FormControl('');
-  providerMappingValue : string;
-  payerMappingValue: {[key:number]: string} = {};
+  providerMappingValue: string;
+  payerMappingValue: { [key: number]: string } = {};
 
-  constructor(private superAdmin: SuperAdminService,
+  constructor(
+    private superAdmin: SuperAdminService,
     private router: Router,
     private sharedServices: SharedServices,
     private location: Location,
@@ -66,36 +99,40 @@ export class ProvidersConfigComponent implements OnInit {
 
 
   ngOnInit() {
-     this.superAdmin.getProviders().subscribe(event => {
-       if (event instanceof HttpResponse) {
-         if (event.body instanceof Array) {
+    this.superAdmin.getProviders().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
           this.providers = event.body;
           this.filteredProviders = this.providers;
           if (!location.href.endsWith('providers')) {
-            let paths = location.href.split('/');
+            const paths = location.href.split('/');
             this.selectedProvider = paths[paths.length - 1];
 
-            let provider = this.providers.find(provider => provider.switchAccountId == this.selectedProvider);
+            const provider = this.providers.find(provider => provider.switchAccountId == this.selectedProvider);
             if (provider != undefined) {
               this.providerController.setValue(`${provider.switchAccountId} | ${provider.name}`);
               this.updateFilter();
               this.getAssociatedPayers();
-            } else this.sharedServices.loadingChanged.next(false);
-          } else this.sharedServices.loadingChanged.next(false);
+            } else {
+              this.sharedServices.loadingChanged.next(false);
+            }
+          } else {
+            this.sharedServices.loadingChanged.next(false);
+          }
         }
       }
     }, error => {
       this.sharedServices.loadingChanged.next(false);
-      this.errors.providersError = 'could not load providers, please try again later.'
+      this.errors.providersError = 'could not load providers, please try again later.';
       console.log(error);
     });
     this.addDbConfigForm = this.formBuilder.group({
-      dbType: ['', [Validators.required]],
-      hostName: ['', [Validators.required, ProvidersConfigComponent.test]],
-      port: ['', [Validators.required]],
-      databaseName: ['', [Validators.required, ProvidersConfigComponent.test]],
-      dbUserName: ['', [Validators.required, ProvidersConfigComponent.test]],
-      dbPassword: ['', [Validators.required, ProvidersConfigComponent.test]]
+      dbType: [''],
+      hostName: [''],
+      port: [''],
+      databaseName: [''],
+      dbUserName: [''],
+      dbPassword: ['']
     });
     // this.getDatabaseConfig();
   }
@@ -114,35 +151,32 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   getAssociatedPayers() {
-    if (this.selectedProvider == null || this.selectedProvider == '') return;
+    if (this.selectedProvider == null || this.selectedProvider == '') { return; }
     this.sharedServices.loadingChanged.next(true);
-     this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
-       if (event instanceof HttpResponse) {
-         if (event.body instanceof Array) {
+    this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body instanceof Array) {
           this.associatedPayers = event.body;
           this.associatedPayers.forEach(payer => {
-            this.newServiceCodeValidationSettings[payer.switchAccountId] = true;
-            this.newServiceRestrictionSettings[payer.switchAccountId] = false;
+            this.newServiceValidationSettings[payer.switchAccountId] = false;
             this.newPriceUnitSettings[payer.switchAccountId] = false;
-            this.newICD10ValidationSettings[payer.switchAccountId] = true;
-            this.newSFDARestrictionSettings[payer.switchAccountId] = true;
+            this.newICD10ValidationSettings[payer.switchAccountId] = false;
             this.newSFDAValidationSettings[payer.switchAccountId] = false;
-            //new changes for payer mapping
+            // new changes for payer mapping
             this.newPayerMappingEnable[payer.switchAccountId] = false;
-            this.newPayerMappingValue[payer.switchAccountId] = "";
-            this.payerMappingValue[payer.switchAccountId] = "";
-            this.newPayerName[payer.switchAccountId] = "";
+            this.newPayerMappingValue[payer.switchAccountId] = '';
+            this.payerMappingValue[payer.switchAccountId] = '';
+            this.newPayerName[payer.switchAccountId] = '';
             this.addPayerMappingList = [];
             this.addDbConfigForm.reset();
             // this.providerMappingController.
-            
-          })
+          });
         }
         if (this.associatedPayers.length == 0) {
           this.errors.payersError = 'There are no payers associated with this provider.';
         }
-         this.sharedServices.loadingChanged.next(false);
-         this.fetchSettings();
+        this.sharedServices.loadingChanged.next(false);
+        this.fetchSettings();
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -155,16 +189,14 @@ export class ProvidersConfigComponent implements OnInit {
 
       console.log(error);
       this.sharedServices.loadingChanged.next(false);
-    })
+    });
   }
 
   fetchSettings() {
-    this.getSetting(SERVICE_CODE_VALIDATION_KEY, this.serviceCodeValidationSettings, this.newServiceCodeValidationSettings);
-    this.getSetting(SERVICE_CODE_RESTRICTION_KEY, this.serviceCodeRestrictionSettings, this.newServiceRestrictionSettings);
+    this.getSetting(SERVICE_CODE_RESTRICTION_KEY, this.serviceCodeValidationSettings, this.newServiceValidationSettings);
     this.getSetting(VALIDATE_RESTRICT_PRICE_UNIT, this.priceUnitSettings, this.newPriceUnitSettings);
     this.getSetting(ICD10_RESTRICTION_KEY, this.ICD10ValidationSettings, this.newICD10ValidationSettings);
-    this.getSetting(SFDA_VALIDATION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings);
-    this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaRestrictionSettings, this.newSFDARestrictionSettings);
+    this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings);
     this.getPortalUserSettings();
     // ####### Chages on 02-01-2021 start
     this.getDatabaseConfig();
@@ -174,24 +206,27 @@ export class ProvidersConfigComponent implements OnInit {
   }
 
   save() {
-    if (this.isLoading || this.componentLoading.serviceCode || this.componentLoading.portalUser || this.componentLoading.ICD10Validation 
-      || this.componentLoading.sfda || this.componentLoading.midtable || this.componentLoading.payerMapping || this.componentLoading.providerMapping) {
+    if (this.isLoading ||
+      this.componentLoading.serviceCode ||
+      this.componentLoading.portalUser ||
+      this.componentLoading.ICD10Validation ||
+      this.componentLoading.sfda ||
+      this.componentLoading.midtable ||
+      this.componentLoading.payerMapping ||
+      this.componentLoading.providerMapping) {
       return;
     }
-    let flag1 = this.saveSettings(SERVICE_CODE_VALIDATION_KEY,this.newServiceCodeValidationSettings,this.serviceCodeValidationSettings);
-    let flag2 = this.savePortalUserSettings();
-    let flag3 = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY,this.newServiceRestrictionSettings,this.serviceCodeRestrictionSettings);
-    let flag4 = this.saveSettings(ICD10_RESTRICTION_KEY,this.newICD10ValidationSettings,this.ICD10ValidationSettings);
-    let flag5 = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT,this.newPriceUnitSettings,this.priceUnitSettings);
-    let flag6 = this.saveSettings(SFDA_VALIDATION_KEY,this.newSFDAValidationSettings,this.sfdaValidationSettings);
-    let flag7 = this.saveSettings(SFDA_RESTRICTION_KEY,this.newSFDARestrictionSettings,this.sfdaRestrictionSettings);
-    //change on 02-01-2021 start
-    let dbFlag = this.addDatabaseConfig();
-    let payerFlag = this.savePayerMapping();
-    let providerFlag = this.addProviderMapping();
-    console.log(dbFlag + " "+  payerFlag + " " + providerFlag)
-    //change on 02-01-2021 end
-    if (flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag7 && dbFlag && payerFlag && providerFlag) {
+    const flag2 = this.savePortalUserSettings();
+    const flag3 = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings, this.serviceCodeValidationSettings);
+    const flag4 = this.saveSettings(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings, this.ICD10ValidationSettings);
+    const flag5 = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings, this.priceUnitSettings);
+    const flag7 = this.saveSettings(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings, this.sfdaValidationSettings);
+    // change on 02-01-2021 start
+    const dbFlag = this.addDatabaseConfig();
+    const payerFlag = this.savePayerMapping();
+    const providerFlag = this.addProviderMapping();
+    // change on 02-01-2021 end
+    if (flag2 && flag3 && flag4 && flag5 && flag7 && dbFlag && payerFlag && providerFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -202,18 +237,18 @@ export class ProvidersConfigComponent implements OnInit {
 
   }
 
-  saveSettings(URLKey:string,newSettingValues: { [key: string]: boolean },settingValues: any[]) {
-    let payers = Object.keys(newSettingValues);
+  saveSettings(URLKey: string, newSettingValues: { [key: string]: boolean }, settingValues: any[]) {
+    const payers = Object.keys(newSettingValues);
     if (payers.length > 0) {
-      let newSettingsKeys = payers.filter(payerId => {
-        let setting = settingValues.find(setting => setting.payerId == payerId);
+      const newSettingsKeys = payers.filter(payerId => {
+        const setting = settingValues.find(setting => setting.payerId == payerId);
         return (setting != null && (setting.value == '1') != newSettingValues[payerId])
           || setting == null;
       });
       if (newSettingsKeys.length > 0) {
-        this.setComponentLoading(URLKey,true);
-        this.setSaveError(URLKey,null);
-        this.setSaveSuccess(URLKey,null);
+        this.setComponentLoading(URLKey, true);
+        this.setSaveError(URLKey, null);
+        this.setSaveSuccess(URLKey, null);
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
           payerId: payerId,
           key: URLKey,
@@ -222,106 +257,85 @@ export class ProvidersConfigComponent implements OnInit {
         )).subscribe(event => {
           if (event instanceof HttpResponse) {
             newSettingsKeys.map(payerId => {
-              let index = settingValues.findIndex(setting => setting.payerId == payerId);
+              const index = settingValues.findIndex(setting => setting.payerId == payerId);
               if (index != -1) {
-                this.setSettingIndexed(URLKey,index,(newSettingValues[payerId]) ? '1' : '0');
-                
+                this.setSettingIndexed(URLKey, index, (newSettingValues[payerId]) ? '1' : '0');
               } else {
-                this.addValueToSetting(URLKey,payerId,newSettingValues);
+                this.addValueToSetting(URLKey, payerId, newSettingValues);
               }
             });
-            this.setSaveSuccess(URLKey,"Settings were saved successfully");
-            this.setComponentLoading(URLKey,false);
+            this.setSaveSuccess(URLKey, 'Settings were saved successfully');
+            this.setComponentLoading(URLKey, false);
           }
         }, error => {
-          this.setSaveError(URLKey,'Could not save settings, please try again later.');
-          this.resetSection(URLKey,newSettingValues);
+          this.setSaveError(URLKey, 'Could not save settings, please try again later.');
+          this.resetSection(URLKey, newSettingValues);
           this.componentLoading.serviceCode = false;
         });
         return false;
-      } return true;
-    } return true;
+      }
+      return true;
+    }
+    return true;
   }
   addValueToSetting(URLKey: string, payerId: string, newSettingValues: { [key: string]: boolean; }) {
 
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
-          this.serviceCodeValidationSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
-          break;
       case SERVICE_CODE_RESTRICTION_KEY:
-          this.serviceCodeRestrictionSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
-          break;
+        this.serviceCodeValidationSettings.push({
+          providerId: this.selectedProvider,
+          payerId: payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
+        break;
       case VALIDATE_RESTRICT_PRICE_UNIT:
-          this.priceUnitSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
+        this.priceUnitSettings.push({
+          providerId: this.selectedProvider,
+          payerId: payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
         break;
       case ICD10_RESTRICTION_KEY:
-          this.ICD10ValidationSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
+        this.ICD10ValidationSettings.push({
+          providerId: this.selectedProvider,
+          payerId: payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
         break;
-      case SFDA_VALIDATION_KEY:
-          this.sfdaValidationSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
-          break;
       case SFDA_RESTRICTION_KEY:
-          this.sfdaRestrictionSettings.push({
-            providerId: this.selectedProvider,
-            payerId: payerId,
-            key: URLKey,
-            value: (newSettingValues[payerId]) ? '1' : '0'
-          });
+        this.sfdaValidationSettings.push({
+          providerId: this.selectedProvider,
+          payerId: payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
         break;
     }
   }
   setSettingIndexed(URLKey: string, index: number, value: string) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
-          this.serviceCodeValidationSettings[index].value = value;
-          break;
       case SERVICE_CODE_RESTRICTION_KEY:
-          this.serviceCodeRestrictionSettings[index].value = value;
-          break;
+        this.serviceCodeValidationSettings[index].value = value;
+        break;
       case VALIDATE_RESTRICT_PRICE_UNIT:
-          this.priceUnitSettings[index].value = value;
+        this.priceUnitSettings[index].value = value;
         break;
       case ICD10_RESTRICTION_KEY:
-          this.ICD10ValidationSettings[index].value = value;
+        this.ICD10ValidationSettings[index].value = value;
         break;
-      case SFDA_VALIDATION_KEY:
-          this.sfdaValidationSettings[index].value = value;
-          break;
       case SFDA_RESTRICTION_KEY:
-          this.sfdaRestrictionSettings[index].value = value;
+        this.sfdaValidationSettings[index].value = value;
         break;
     }
   }
 
   savePortalUserSettings() {
     if (this.portalUsernameController.value != '' && this.portalPasswordController.value != '') {
-      let password: string = this.portalPasswordController.value;
-      let match = password.match("(.)\\1*");
+      const password: string = this.portalPasswordController.value;
+      const match = password.match('(.)\\1*');
       if (this.portalUserSettings == null
         || (this.portalUserSettings != null && this.portalUsernameController.value != this.portalUserSettings.username)
         || match[0] != match['input']) {
@@ -332,7 +346,7 @@ export class ProvidersConfigComponent implements OnInit {
           if (event instanceof HttpResponse) {
             this.portalUserSettings = { username: this.portalUsernameController.value };
             this.portalPasswordController.setValue('************************');
-            this.success.portalUserSaveSuccess = "Settings were saved successfully";
+            this.success.portalUserSaveSuccess = 'Settings were saved successfully';
             this.componentLoading.portalUser = false;
           }
         }, error => {
@@ -342,27 +356,27 @@ export class ProvidersConfigComponent implements OnInit {
             } else if (error.status == 401) {
               this.errors.portalUserSaveError = 'username/password is not correct, or user does not have required privilages';
             } else {
-              this.errors.portalUserSaveError = 'Could not save settings at the moment, please try again later.'
+              this.errors.portalUserSaveError = 'Could not save settings at the moment, please try again later.';
             }
           } else {
-            this.errors.portalUserSaveError = 'Could not save settings at the moment, please try again later.'
+            this.errors.portalUserSaveError = 'Could not save settings at the moment, please try again later.';
           }
 
           this.resetPortalUserSettings();
           this.componentLoading.portalUser = false;
         });
         return false;
-      } return true;
-    } return true;
+      }
+      return true;
+    }
+    return true;
   }
 
   reset() {
-    this.resetSection(SERVICE_CODE_VALIDATION_KEY, this.newServiceCodeValidationSettings);
-    this.resetSection(SERVICE_CODE_RESTRICTION_KEY,this.newServiceRestrictionSettings);
-    this.resetSection(VALIDATE_RESTRICT_PRICE_UNIT,this.newPriceUnitSettings);
-    this.resetSection(ICD10_RESTRICTION_KEY,this.newICD10ValidationSettings);
-    this.resetSection(SFDA_VALIDATION_KEY,this.newSFDAValidationSettings);
-    this.resetSection(SFDA_RESTRICTION_KEY,this.newSFDARestrictionSettings);
+    this.resetSection(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings);
+    this.resetSection(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings);
+    this.resetSection(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings);
+    this.resetSection(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings);
     this.resetDbAndMapping();
   }
   resetSection(URLKey: string, newSettingArray: { [key: string]: boolean; }) {
@@ -370,14 +384,10 @@ export class ProvidersConfigComponent implements OnInit {
       this.setComponentLoading(URLKey, true);
 
       switch (URLKey) {
-        case SERVICE_CODE_VALIDATION_KEY:
-            setTimeout(() => this.componentLoading.serviceCode = false, 100);
-            this.newServiceCodeValidationSettings = {};
-            break;
         case SERVICE_CODE_RESTRICTION_KEY:
-            setTimeout(() => this.componentLoading.serviceCode = false, 100);
-            this.newServiceRestrictionSettings = {};
-            break;
+          setTimeout(() => this.componentLoading.serviceCode = false, 100);
+          this.newServiceValidationSettings = {};
+          break;
         case VALIDATE_RESTRICT_PRICE_UNIT:
           setTimeout(() => this.componentLoading.serviceCode = false, 100);
           this.newPriceUnitSettings = {};
@@ -386,13 +396,9 @@ export class ProvidersConfigComponent implements OnInit {
           setTimeout(() => this.componentLoading.ICD10Validation = false, 100);
           this.newICD10ValidationSettings = {};
           break;
-        case SFDA_VALIDATION_KEY:
-            setTimeout(() => this.componentLoading.sfda = false, 100);
-            this.newSFDAValidationSettings = {};
-            break;
         case SFDA_RESTRICTION_KEY:
           setTimeout(() => this.componentLoading.sfda = false, 100);
-          this.newSFDARestrictionSettings = {};
+          this.newSFDAValidationSettings = {};
           break;
       }
     }
@@ -406,16 +412,16 @@ export class ProvidersConfigComponent implements OnInit {
     }
   }
 
-  getSetting(URLKey: string, seetingValues: any[], newSettingValues: { [key: string]: boolean }) {
+  getSetting(URLKey: string, settingValues: any[], newSettingValues: { [key: string]: boolean }) {
     this.setComponentLoading(URLKey, true);
     this.superAdmin.getProviderPayerSettings(this.selectedProvider, URLKey).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
-          seetingValues = event.body;
-          let payers = Object.keys(newSettingValues);
+          settingValues = event.body;
+          const payers = Object.keys(newSettingValues);
           if (payers.length > 0) {
             payers.forEach(payer => {
-              let setting = seetingValues.find(setting => setting.payerId == payer);
+              const setting = settingValues.find(setting => setting.payerId == payer);
               newSettingValues[payer] = (setting != null && setting.value == '1');
             });
           }
@@ -434,7 +440,6 @@ export class ProvidersConfigComponent implements OnInit {
   }
   setErrorMessage(message: string, URLKey: string) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
         this.errors.serviceCodeError = message;
@@ -442,7 +447,6 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
         this.errors.ICD10SaveError = message;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
         this.errors.sfdaError = message;
         break;
@@ -451,7 +455,6 @@ export class ProvidersConfigComponent implements OnInit {
 
   setComponentLoading(URLKey: string, componentLoading: boolean) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
         this.componentLoading.serviceCode = componentLoading;
@@ -459,51 +462,44 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
         this.componentLoading.ICD10Validation = componentLoading;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
         this.componentLoading.sfda = componentLoading;
         break;
     }
   }
 
-  setSaveError(URLKey: string, value: any)
-  {
+  setSaveError(URLKey: string, value: any) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
-          this.errors.serviceCodeSaveError = value;
+        this.errors.serviceCodeSaveError = value;
         break;
       case ICD10_RESTRICTION_KEY:
-          this.errors.ICD10SaveError = value;
+        this.errors.ICD10SaveError = value;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
-          this.errors.sfdaSaveError = value;
+        this.errors.sfdaSaveError = value;
         break;
     }
 
   }
 
-  setSaveSuccess(URLKey: string, value: any)
-  {
+  setSaveSuccess(URLKey: string, value: any) {
     switch (URLKey) {
-      case SERVICE_CODE_VALIDATION_KEY:
       case SERVICE_CODE_RESTRICTION_KEY:
       case VALIDATE_RESTRICT_PRICE_UNIT:
-          this.success.serviceCodeSaveSuccess = value;
+        this.success.serviceCodeSaveSuccess = value;
         break;
       case ICD10_RESTRICTION_KEY:
-          this.success.ICD10SaveSuccess = value;
+        this.success.ICD10SaveSuccess = value;
         break;
-      case SFDA_VALIDATION_KEY:
       case SFDA_RESTRICTION_KEY:
-          this.success.sfdaSaveSuccess = value;
+        this.success.sfdaSaveSuccess = value;
         break;
     }
   }
 
-  
+
 
   getPortalUserSettings() {
     this.componentLoading.portalUser = true;
@@ -531,52 +527,23 @@ export class ProvidersConfigComponent implements OnInit {
   get isLoading() {
     return this.sharedServices.loading;
   }
-  getPriceUnitCheckBoxLabel(payerId) {
-    if (!this.newServiceRestrictionSettings[payerId] && !this.newServiceCodeValidationSettings[payerId]) {
-      return '';
-    } else if (this.newServiceRestrictionSettings[payerId]) {
-      return 'Restriction';
-    } else {
-      return 'Warning';
-    }
-  }
 
-  onServiceCodeSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newServiceRestrictionSettings[payerid] = !event.checked;
-    }
-  }
-  onServiceRestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newServiceCodeValidationSettings[payerid] = !event.checked;
-    }
-  }
+
   isPriceUnitDisabled(payerId: string) {
-    return !this.newServiceCodeValidationSettings[payerId] && !this.newServiceRestrictionSettings[payerId];
+    return !this.newServiceValidationSettings[payerId];
   }
 
-  onSFDAWarningSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newSFDARestrictionSettings[payerid] = !event.checked;
-    }
-  }
-  onSFDARestrictionSettingChange(payerid: string, event: MatSlideToggleChange) {
-    if (event.checked) {
-      this.newSFDAValidationSettings[payerid] = !event.checked;
-    }
-  }
 
-  
   getDatabaseConfig() {
     this.componentLoading.midtable = true;
     this.errors.midtableError = null;
     this.errors.midtableSaveError = null;
     this.success.midtableSaveSuccess = null;
     this.dbMapping.getDatabaseConfig(this.selectedProvider).subscribe(event => {
-      
+
       if (event instanceof HttpResponse) {
         const data = event.body['dbObject'];
-        if(data != null) {
+        if (data != null) {
           this.addDbConfigForm.patchValue({
             dbType: data.dbType,
             hostName: data.hostName,
@@ -585,6 +552,8 @@ export class ProvidersConfigComponent implements OnInit {
             dbUserName: data.dbUserName,
             dbPassword: data.dbPassword
           });
+        } else {
+          this.addDbConfigForm.reset();
         }
         this.componentLoading.midtable = false;
       }
@@ -595,45 +564,89 @@ export class ProvidersConfigComponent implements OnInit {
         }
       }
       this.componentLoading.midtable = false;
-    })
+    });
   }
 
   addDatabaseConfig() {
     this.errors.midtableSaveError = null;
     this.success.midtableSaveSuccess = null;
-    if(this.addDbConfigForm.valid){
-      const body = {
-        dbType: this.addDbConfigForm.value.dbType.trim(),
-        hostName: this.addDbConfigForm.value.hostName.trim(),
-        port: this.addDbConfigForm.value.port,
-        databaseName: this.addDbConfigForm.value.databaseName.trim(),
-        dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
-        dbPassword: this.addDbConfigForm.value.dbPassword.trim(),
-        providerId: this.selectedProvider
-      };
-      this.componentLoading.midtable = true;
-      this.dbMapping.setDatabaseConfig(this.selectedProvider,body).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          console.log(event.status);
-          const data = event.body['message'];
-          if(data != null){
-            this.success.midtableSaveSuccess = "Data save successfully";
-          }else{
-            this.errors.midtableSaveError = "Could not save mid table configuration !";
+    if (this.addDbConfigForm.value.hostName == null && this.addDbConfigForm.value.port == null
+      && this.addDbConfigForm.value.databaseName == null && this.addDbConfigForm.value.dbUserName == null
+      && this.addDbConfigForm.value.dbPassword == null) {
+      return true;
+    }
+    if (this.addDbConfigForm.dirty) {
+      if (this.addDbConfigForm.valid) {
+        if (this.addDbConfigForm.controls['dbType'].untouched || this.addDbConfigForm.controls['hostName'].untouched
+          || this.addDbConfigForm.controls['port'].untouched || this.addDbConfigForm.controls['databaseName'].untouched
+          || this.addDbConfigForm.controls['dbUserName'].untouched || this.addDbConfigForm.controls['dbPassword'].untouched) {
+          return true;
+        }
+        const body = {
+          dbType: this.addDbConfigForm.value.dbType,
+          hostName: this.addDbConfigForm.value.hostName.trim(),
+          port: this.addDbConfigForm.value.port,
+          databaseName: this.addDbConfigForm.value.databaseName.trim(),
+          dbUserName: this.addDbConfigForm.value.dbUserName.trim(),
+          dbPassword: this.addDbConfigForm.value.dbPassword.trim(),
+          providerId: this.selectedProvider
+        };
+        if (body.hostName == '' && body.port == null && body.databaseName == '' && body.dbUserName == ''
+          && body.dbPassword == '') {
+          this.dbMapping.deleteDatabaseConfig(this.selectedProvider).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              const data = event.body['response'];
+              if (data) {
+                this.getDatabaseConfig();
+                this.success.midtableSaveSuccess = 'Data save successfully';
+              } else {
+                this.errors.midtableSaveError = 'Could not save mid table configuration !';
+              }
+              this.componentLoading.midtable = false;
+            }
+          }, error => {
+            if (error instanceof HttpErrorResponse) {
+              if (error.status != 404) {
+                this.errors.midtableSaveError = 'Could not add db config, please try again later.';
+              }
+            }
+            this.componentLoading.midtable = false;
+          });
+          return false;
+        }
+        this.componentLoading.midtable = true;
+        this.dbMapping.setDatabaseConfig(this.selectedProvider, body).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            const data = event.body['message'];
+            if (data != null) {
+              this.getDatabaseConfig();
+              this.success.midtableSaveSuccess = 'Data save successfully';
+            } else {
+              this.errors.midtableSaveError = 'Could not save mid table configuration !';
+            }
+            this.componentLoading.midtable = false;
+          }
+        }, error => {
+          if (error instanceof HttpErrorResponse) {
+            if (error.status != 404) {
+              this.errors.midtableSaveError = 'Could not add db config, please try again later.';
+            }
           }
           this.componentLoading.midtable = false;
-        }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status != 404) {
-            this.errors.midtableSaveError = 'Could not add db config, please try again later.';
-          }
-        }
-        this.componentLoading.midtable = false;
-      })
-      return false;
-    } 
-    this.errors.midtableSaveError = 'Invalid data !!';
+        });
+        return false;
+      }
+      if (this.addDbConfigForm.invalid &&
+        ((this.addDbConfigForm.value.hostName == null || this.addDbConfigForm.value.hostName.trim() == '')
+          || this.addDbConfigForm.value.dbType == null || this.addDbConfigForm.value.port == null
+          || (this.addDbConfigForm.value.databaseName == null || this.addDbConfigForm.value.databaseName.trim() == '')
+          || (this.addDbConfigForm.value.dbUserName == null || this.addDbConfigForm.value.dbUserName.trim() == '')
+          || (this.addDbConfigForm.value.dbPassword == null || this.addDbConfigForm.value.dbPassword.trim() == ''))) {
+        this.errors.midtableSaveError = 'Please fill all fields.';
+        return true;
+      }
+      return true;
+    }
     return true;
   }
 
@@ -642,70 +655,96 @@ export class ProvidersConfigComponent implements OnInit {
     const isValid = !isWhitespace;
     return isValid ? null : { 'required': true };
   }
-  
+
+  validateForm() {
+    this.addDbConfigForm.controls['dbType'].clearValidators();
+    this.addDbConfigForm.controls['hostName'].clearValidators();
+    this.addDbConfigForm.controls['port'].clearValidators();
+    this.addDbConfigForm.controls['databaseName'].clearValidators();
+    this.addDbConfigForm.controls['dbUserName'].clearValidators();
+    this.addDbConfigForm.controls['dbPassword'].clearValidators();
+    if (!((this.addDbConfigForm.value.hostName == null || this.addDbConfigForm.value.hostName.trim() == '')
+      && this.addDbConfigForm.value.port == null
+      && (this.addDbConfigForm.value.databaseName == null || this.addDbConfigForm.value.databaseName.trim() == '')
+      && (this.addDbConfigForm.value.dbUserName == null || this.addDbConfigForm.value.dbUserName.trim() == '')
+      && (this.addDbConfigForm.value.dbPassword == null || this.addDbConfigForm.value.dbPassword.trim() == ''))) {
+
+      this.addDbConfigForm.controls['dbType'].setValidators([Validators.required]);
+      this.addDbConfigForm.controls['hostName'].setValidators([Validators.required]);
+      this.addDbConfigForm.controls['port'].setValidators([Validators.required]);
+      this.addDbConfigForm.controls['databaseName'].setValidators([Validators.required]);
+      this.addDbConfigForm.controls['dbUserName'].setValidators([Validators.required]);
+      this.addDbConfigForm.controls['dbPassword'].setValidators([Validators.required]);
+    }
+    this.addDbConfigForm.controls['dbType'].updateValueAndValidity();
+    this.addDbConfigForm.controls['hostName'].updateValueAndValidity();
+    this.addDbConfigForm.controls['port'].updateValueAndValidity();
+    this.addDbConfigForm.controls['databaseName'].updateValueAndValidity();
+    this.addDbConfigForm.controls['dbUserName'].updateValueAndValidity();
+    this.addDbConfigForm.controls['dbPassword'].updateValueAndValidity();
+  }
+
   get f() { return this.addDbConfigForm.controls; }
 
-  onPayerMapSetting(payerData,event,index){
+  onPayerMapSetting(payerData, event, index) {
     this.newPayerName[payerData.switchAccountId] = payerData.name;
-    if(event.checked && !this.addPayerMappingList.includes(payerData.switchAccountId)){
+    if (event.checked && !this.addPayerMappingList.includes(payerData.switchAccountId)) {
       this.addPayerMappingList.push(payerData.switchAccountId);
-    }else{
-      var temp = this.addPayerMappingList.findIndex(x => x === payerData.switchAccountId);
-      this.addPayerMappingList.splice(temp,1);
+    } else {
+      const temp = this.addPayerMappingList.findIndex(x => x === payerData.switchAccountId);
+      this.addPayerMappingList.splice(temp, 1);
     }
-    console.log(this.addPayerMappingList);
   }
-  
-  savePayerMapping(){
+
+  savePayerMapping() {
     this.errors.payerMappingSaveError = null;
     this.success.payerMappingSaveSuccess = null;
-    let isChanged: boolean = false;
-    if(this.existingPayers != undefined && this.existingPayers.length > 0){
-      this.existingPayers.forEach(payer=>{
-        if(!this.addPayerMappingList.includes(payer.payerId)){
+    let isChanged = false;
+    if (this.existingPayers != undefined && this.existingPayers.length > 0) {
+      this.existingPayers.forEach(payer => {
+        if (!this.addPayerMappingList.includes(payer.payerId)) {
           this.deletePayerMappingList.push(payer.payerId);
           isChanged = true;
         }
-      })
+      });
       this.addPayerMappingList.forEach(payerId => {
-        if(this.existingPayers.find(payer => payer.payerId === payerId) == undefined) {
+        if (this.existingPayers.find(payer => payer.payerId === payerId) == undefined) {
           isChanged = true;
         }
-      })
+      });
       this.addPayerMappingList.forEach(payerId => {
-        if(this.newPayerMappingValue[payerId] != this.payerMappingValue[payerId]) {
+        if (this.newPayerMappingValue[payerId] != this.payerMappingValue[payerId]) {
           isChanged = true;
         }
-      })
+      });
       this.addPayerMappingList.forEach(payerId => {
-        if(isChanged && this.newPayerMappingValue[payerId] == '') {
+        if (isChanged && this.newPayerMappingValue[payerId] == '') {
           isChanged = false;
           this.errors.payerMappingSaveError = 'Please fill mapped value for payer.';
           return true;
         }
-      })
+      });
     }
-    if(isChanged){
-      var selectedPayer = [];
-      if(this.addPayerMappingList.length > 0){
-        this.addPayerMappingList.forEach(id=>{
-          var data = {
-            payerId : id,
-            mapPayerName : this.newPayerMappingValue[id],
-            payerName : this.newPayerName[id]
-          }
+    if (isChanged) {
+      const selectedPayer = [];
+      if (this.addPayerMappingList.length > 0) {
+        this.addPayerMappingList.forEach(id => {
+          const data = {
+            payerId: id,
+            mapPayerName: this.newPayerMappingValue[id],
+            payerName: this.newPayerName[id]
+          };
           selectedPayer.push(data);
-        })
+        });
         this.componentLoading.payerMapping = true;
-        this.dbMapping.savePayerMapping(this.selectedProvider, selectedPayer).subscribe(event=>{
-          console.log(event);
+        this.dbMapping.savePayerMapping(this.selectedProvider, selectedPayer).subscribe(event => {
           if (event instanceof HttpResponse) {
             const data = event.body['response'];
-            if(data){
+            if (data) {
               this.getPayerMapping();
-              this.success.payerMappingSaveSuccess = "Settings were saved successfully.";
-            }else{
-              this.errors.payerMappingSaveError = "Could not save payer mapping details !";
+              this.success.payerMappingSaveSuccess = 'Settings were saved successfully.';
+            } else {
+              this.errors.payerMappingSaveError = 'Could not save payer mapping details !';
             }
             this.componentLoading.payerMapping = false;
           }
@@ -716,29 +755,28 @@ export class ProvidersConfigComponent implements OnInit {
             }
           }
           this.componentLoading.payerMapping = false;
-        })
+        });
       }
 
-      var deletePayers = [];
-      if(this.deletePayerMappingList.length > 0){
-        this.deletePayerMappingList.forEach(id=>{
-          var data = {
-            payerId : id
-          }
+      const deletePayers = [];
+      if (this.deletePayerMappingList.length > 0) {
+        this.deletePayerMappingList.forEach(id => {
+          const data = {
+            payerId: id
+          };
           deletePayers.push(data);
-        })
+        });
         this.componentLoading.payerMapping = true;
-        //call delete function
-        this.dbMapping.deletePayerMapping(this.selectedProvider, deletePayers).subscribe(event=>{
-          console.log(event);
+        // call delete function
+        this.dbMapping.deletePayerMapping(this.selectedProvider, deletePayers).subscribe(event => {
           this.deletePayerMappingList = [];
           if (event instanceof HttpResponse) {
             const data = event.body['response'];
-            if(data){
+            if (data) {
               this.getPayerMapping();
-              this.success.payerMappingSaveSuccess = "Settings were saved successfully.";
-            }else{
-              this.errors.payerMappingSaveError = "Could not save payer mapping details !";
+              this.success.payerMappingSaveSuccess = 'Settings were saved successfully.';
+            } else {
+              this.errors.payerMappingSaveError = 'Could not save payer mapping details !';
             }
             this.componentLoading.payerMapping = false;
           }
@@ -749,12 +787,13 @@ export class ProvidersConfigComponent implements OnInit {
             }
           }
           this.componentLoading.payerMapping = false;
-        })     
+        });
       }
       return false;
-    } return true;
+    }
+    return true;
   }
-  getPayerMapping(){
+  getPayerMapping() {
     this.componentLoading.payerMapping = true;
     this.errors.payerMappingError = null;
     this.errors.payerMappingSaveError = null;
@@ -762,17 +801,17 @@ export class ProvidersConfigComponent implements OnInit {
     this.dbMapping.getPayerMapping(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         const response = event.body['response'];
-        if(response){
+        if (response) {
           const mappingList = event.body['mappingList'];
           this.existingPayers = mappingList;
-          if(this.existingPayers.length > 0){
-            this.existingPayers.forEach(payer=>{
+          if (this.existingPayers.length > 0) {
+            this.existingPayers.forEach(payer => {
               this.newPayerMappingEnable[payer.payerId] = true;
               this.newPayerMappingValue[payer.payerId] = payer.mappingName;
               this.payerMappingValue[payer.payerId] = payer.mappingName;
               this.newPayerName[payer.payerId] = payer.payerName;
               this.addPayerMappingList.push(payer.payerId);
-            })
+            });
           }
         }
         this.componentLoading.payerMapping = false;
@@ -792,26 +831,49 @@ export class ProvidersConfigComponent implements OnInit {
   get selectedProviderCode() {
     return this.providers.find(provider => provider.switchAccountId == this.selectedProvider).code;
   }
-    
+
   addProviderMapping() {
     this.errors.providerMappingSaveError = null;
     this.success.providerMappingSaveSuccess = null;
-    if(this.providerMappingController.value != '') { 
-      if (this.providerMappingController.value != this.providerMappingValue) {
+    if (this.providerMappingController.value != null &&
+      this.providerMappingController.value != this.providerMappingValue) {
+      if (this.providerMappingController.value.trim() == '') {
+        this.componentLoading.providerMapping = true;
+        this.dbMapping.deleteProviderMapping(this.selectedProvider).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            const data = event.body['response'];
+            if (data) {
+              this.getProviderMapping();
+              this.success.providerMappingSaveSuccess = 'Settings were saved successfully.';
+            } else {
+              this.errors.providerMappingSaveError = 'Could not save provider mapping details !';
+            }
+            this.componentLoading.providerMapping = false;
+          }
+        }, error => {
+          if (error instanceof HttpErrorResponse) {
+            if (error.status != 404) {
+              this.errors.providerMappingSaveError = 'Could not save provider mapping, please try again later.';
+            }
+          }
+          this.componentLoading.providerMapping = false;
+        });
+        return false;
+      }
       const body = {
         providerCode: this.selectedProviderCode,
         mappingProviderCode: this.providerMappingController.value
-      }
+      };
       this.componentLoading.providerMapping = true;
       this.dbMapping.setProviderMapping(body, this.selectedProvider).subscribe(event => {
-        console.log(event);
         if (event instanceof HttpResponse) {
           this.providerMappingValue = body.mappingProviderCode;
           const data = event.body['message'];
-          if(data != null){
-            this.success.providerMappingSaveSuccess = "Settings were saved successfully.";
-          }else{
-            this.errors.providerMappingSaveError = "Could not save provider mapping details !";
+          if (data != null) {
+            this.getProviderMapping();
+            this.success.providerMappingSaveSuccess = 'Settings were saved successfully.';
+          } else {
+            this.errors.providerMappingSaveError = 'Could not save provider mapping details !';
           }
           this.componentLoading.providerMapping = false;
         }
@@ -824,47 +886,44 @@ export class ProvidersConfigComponent implements OnInit {
         this.componentLoading.providerMapping = false;
       });
       return false;
-    } return true;
-    } 
-    this.errors.providerMappingSaveError = "Please fill mapped value for provider.";
+    }
     return true;
   }
-    
+
   getProviderMapping() {
     this.componentLoading.providerMapping = true;
     this.errors.providerMappingError = null;
     this.errors.providerMappingSaveError = null;
-    this.success.providerMappingSaveSuccess = null;  
+    this.success.providerMappingSaveSuccess = null;
     this.dbMapping.getProviderMapping(this.selectedProvider).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          const data = event.body['providerMapping'];
-          if(data != null) {
-            this.providerMappingController.setValue(data.mappingProviderCode);
-            this.providerMappingValue = data.mappingProviderCode;
-          }
-          else{
-            this.providerMappingController.setValue("");
-          }
+      if (event instanceof HttpResponse) {
+        const data = event.body['providerMapping'];
+        if (data != null) {
+          this.providerMappingController.setValue(data.mappingProviderCode);
+          this.providerMappingValue = data.mappingProviderCode;
+        } else {
+          this.providerMappingController.setValue(null);
         }
-        this.componentLoading.providerMapping = false;
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status != 404) {
-            this.errors.providerMappingError = 'Could not load provider settings, please try again later.';
-          }
+      }
+      this.componentLoading.providerMapping = false;
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.providerMappingError = 'Could not load provider settings, please try again later.';
         }
-        this.componentLoading.providerMapping = false;
-      });
+      }
+      this.componentLoading.providerMapping = false;
+    });
   }
-  resetDbAndMapping(){
-     
-     this.newPayerMappingEnable= {};
-     this.newPayerMappingValue = {};
-     this.payerMappingValue = {};
-     this.newPayerName = {};
-     this.addPayerMappingList = [];
-     this.addDbConfigForm.reset();
-     this.providerMappingController.setValue("");
-    
+  resetDbAndMapping() {
+
+    this.newPayerMappingEnable = {};
+    this.newPayerMappingValue = {};
+    this.payerMappingValue = {};
+    this.newPayerName = {};
+    this.addPayerMappingList = [];
+    this.addDbConfigForm.reset();
+    this.providerMappingController.setValue('');
+
   }
 }

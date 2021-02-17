@@ -1,7 +1,7 @@
 <button type="button" *ngIf="clickable" class="click-trigger" matRipple (click)="action.emit()"></button>
-<div class="ribbon" [style.background-color]="accentColor">
+<div class="ribbon bg-{{accentColor}}">
 </div>
-<div class="primary-card-title" [style.color]="accentColor">{{title}}</div>
+<div class="primary-card-title text-{{accentColor}}">{{title}}</div>
 <div class="primary-card-content">
     <ng-content></ng-content>
 </div>

@@ -12,14 +12,14 @@ import { Admission } from '../models/admission.model';
 @Component({
   selector: 'claim-admission',
   templateUrl: './admission.component.html',
-  styleUrls: ['./admission.component.css']
+  styles: []
 })
 export class AdmissionComponent implements OnInit {
 
   admissionDateController: FormControl = new FormControl();
   dischargeDateController: FormControl = new FormControl();
   lengthOfStayController: FormControl = new FormControl();
-  lengthOfStayUnit: string = 'Day';
+  lengthOfStayUnit = 'Day';
   roomNumberController: FormControl = new FormControl();
   bedNumberController: FormControl = new FormControl();
 
@@ -35,12 +35,12 @@ export class AdmissionComponent implements OnInit {
     ).subscribe(({ mode, claim }) => {
       if (mode == 'VIEW') {
         this.setData(claim);
-        this.toggleEdit(false, mode,);
+        this.toggleEdit(false, mode);
       } else if (mode == 'EDIT') {
         this.setData(claim);
-        this.toggleEdit(true, mode,);
+        this.toggleEdit(true, mode);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, mode, true);
       }
     });
@@ -75,8 +75,12 @@ export class AdmissionComponent implements OnInit {
       } else if (lengthOfStay.days != null) {
         this.lengthOfStayController.setValue(lengthOfStay.days);
         this.lengthOfStayUnit = 'Day';
-      } else this.lengthOfStayController.setValue('');
-    } else this.lengthOfStayController.setValue('');
+      } else {
+        this.lengthOfStayController.setValue('');
+      }
+    } else {
+      this.lengthOfStayController.setValue('');
+    }
 
     this.roomNumberController.setValue(roomNumber);
     this.bedNumberController.setValue(bedNumber);
@@ -84,10 +88,11 @@ export class AdmissionComponent implements OnInit {
 
   toggleEdit(allowEdit: boolean, mode: ClaimPageMode, enableForNulls?: boolean) {
     if (allowEdit) {
-      if (mode != 'EDIT')
+      if (mode != 'EDIT') {
         this.admissionDateController.enable();
-      else
+      } else {
         this.admissionDateController.disable();
+      }
       this.dischargeDateController.enable();
       this.lengthOfStayController.enable();
       this.roomNumberController.enable();
@@ -101,16 +106,21 @@ export class AdmissionComponent implements OnInit {
     }
 
     if (enableForNulls) {
-      if (this.isControlNull(this.admissionDateController))
+      if (this.isControlNull(this.admissionDateController)) {
         this.admissionDateController.enable();
-      if (this.isControlNull(this.dischargeDateController))
+      }
+      if (this.isControlNull(this.dischargeDateController)) {
         this.dischargeDateController.enable();
-      if (this.isControlNull(this.lengthOfStayController))
+      }
+      if (this.isControlNull(this.lengthOfStayController)) {
         this.lengthOfStayController.enable();
-      if (this.isControlNull(this.roomNumberController))
+      }
+      if (this.isControlNull(this.roomNumberController)) {
         this.roomNumberController.enable();
-      if (this.isControlNull(this.bedNumberController))
+      }
+      if (this.isControlNull(this.bedNumberController)) {
         this.bedNumberController.enable();
+      }
     }
   }
 
@@ -118,21 +128,25 @@ export class AdmissionComponent implements OnInit {
     switch (fieldName) {
       case 'admissionDate':
         let date1: string;
-        if (!this.isControlNull(this.admissionDateController))
+        if (!this.isControlNull(this.admissionDateController)) {
           date1 = this.admissionDateController.value;
-        if (date1 != null)
+        }
+        if (date1 != null) {
           this.store.dispatch(updateAdmissionDate({ date: new Date(date1) }));
-        else
+        } else {
           this.store.dispatch(updateAdmissionDate({ date: null }));
+        }
         break;
       case 'dischargeDate':
         let date2: string;
-        if (!this.isControlNull(this.dischargeDateController))
-          date2 = this.dischargeDateController.value
-        if (date2 != null)
+        if (!this.isControlNull(this.dischargeDateController)) {
+          date2 = this.dischargeDateController.value;
+        }
+        if (date2 != null) {
           this.store.dispatch(updateDischargeDate({ date: new Date(date2) }));
-        else
+        } else {
           this.store.dispatch(updateDischargeDate({ date: null }));
+        }
         break;
       case 'lengthOfStay':
         this.store.dispatch(updateLengthOfStay({ length: this.returnPeriod(this.lengthOfStayController.value, this.lengthOfStayUnit) }));
@@ -151,23 +165,25 @@ export class AdmissionComponent implements OnInit {
     switch (field) {
       case ('stayUnit'):
         this.lengthOfStayUnit = event.value;
-        if (this.lengthOfStayController.value != null)
+        if (this.lengthOfStayController.value != null) {
           this.store.dispatch(updateLengthOfStay({ length: this.returnPeriod(this.lengthOfStayController.value, this.lengthOfStayUnit) }));
+        }
         break;
     }
   }
 
   returnPeriod(value: string, unit: string): Period {
-    if (unit === 'Year')
-      return new Period(Number.parseInt(value), 'years');
-    else if (unit === 'Month')
-      return new Period(Number.parseInt(value), 'months');
-    else if (unit === 'Day')
-      return new Period(Number.parseInt(value), 'days');
-    else if (unit == 'Week')
-      return new Period(Number.parseInt(value) * 7, 'days');
-    else
-      return new Period(Number.parseInt(value), 'years');
+    if (unit === 'Year') {
+      return new Period(Number.parseInt(value, 10), 'years');
+    } else if (unit === 'Month') {
+      return new Period(Number.parseInt(value, 10), 'months');
+    } else if (unit === 'Day') {
+      return new Period(Number.parseInt(value, 10), 'days');
+    } else if (unit == 'Week') {
+      return new Period(Number.parseInt(value, 10) * 7, 'days');
+    } else {
+      return new Period(Number.parseInt(value, 10), 'years');
+    }
   }
 
   fieldHasError(fieldName) {

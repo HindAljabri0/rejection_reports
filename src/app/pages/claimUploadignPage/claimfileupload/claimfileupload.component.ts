@@ -19,14 +19,6 @@ type AOA = any[][];
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
-  constructor(public uploadService: UploadService, public common: SharedServices,
-    private dialogService: DialogService, private adminService: AdminService,
-    private fileValidationService: ClaimFilesValidationService) { }
-
-  ngOnInit(): void {
-  }
-
-
   title = 'testing';
   uploading = false;
   currentFileUpload: File;
@@ -37,14 +29,17 @@ export class ClaimfileuploadComponent implements OnInit {
   priceListDoesNotExistMessages: string[] = [];
   showFile = false;
   fileUploads: Observable<string[]>;
-
-
-
   uploadContainerClass = '';
   error = '';
 
   isVertical = true;
+  constructor(
+    public uploadService: UploadService, public common: SharedServices,
+    private dialogService: DialogService, private adminService: AdminService,
+    private fileValidationService: ClaimFilesValidationService) { }
 
+  ngOnInit(): void {
+  }
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
@@ -73,18 +68,18 @@ export class ClaimfileuploadComponent implements OnInit {
       if (validationResult.length == 0) {
         /* grab first sheet */
         let ws: XLSX.WorkSheet;
-        if (wb.Sheets.hasOwnProperty('GenInfo'))
+        if (wb.Sheets.hasOwnProperty('GenInfo')) {
           ws = wb.Sheets['GenInfo'];
-        else {
+        } else {
           ws = wb.Sheets[wb.SheetNames[0]];
         }
 
         /* save data */
-        let data = <AOA>(XLSX.utils.sheet_to_json(ws));
+        const data = <AOA>(XLSX.utils.sheet_to_json(ws));
         if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
           data.map(row => this.payerIdsFromCurrentFile.push(row['PAYERID']));
           this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(this.onlyUnique);
-          this.checkServiceCodeValidation();
+          this.checkServiceCodeRestriction();
         } else {
           this.showError(`Invalid file selected! It doesn't have 'PAYERID' column\n`);
         }
@@ -110,42 +105,8 @@ export class ClaimfileuploadComponent implements OnInit {
     }
   }
 
-  checkServiceCodeValidation() {
-    this.serviceCodeValidationDisabledMessages = [];
-    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined);
-    let count = this.payerIdsFromCurrentFile.length;
-    this.payerIdsFromCurrentFile.forEach(payerId => {
-      if (payerId != undefined) {
-        this.adminService.checkIfServiceCodeValidationIsEnabled(this.common.providerId, payerId).subscribe(event => {
-          if (event instanceof HttpResponse) {
-            let setting = JSON.parse(JSON.stringify(event.body));
-            if (setting.hasOwnProperty('value') && setting['value'] == 0) {
-              this.serviceCodeValidationDisabledMessages.push(payerId);
-            }
-            count--;
-            if (count <= 0) {
-              this.common.loadingChanged.next(false);
-              this.checkServiceCodeRestriction();
-            }
-          }
-        }, errorEvent => {
-          if (errorEvent instanceof HttpErrorResponse) {
-            if (errorEvent.status == 404) {
-              this.serviceCodeValidationDisabledMessages.push(payerId);
-            }
-            count--;
-            if (count <= 0) {
-              this.common.loadingChanged.next(false);
-              this.checkServiceCodeRestriction();
-            }
-          }
-        });
-      }
-    });
-  }
-
   checkServiceCodeRestriction() {
-    let payersWithValidationOff = this.payerIdsFromCurrentFile.filter(id => this.serviceCodeValidationDisabledMessages.includes(id));
+    const payersWithValidationOff = this.payerIdsFromCurrentFile.filter(id => this.serviceCodeValidationDisabledMessages.includes(id));
     let count = payersWithValidationOff.length;
     if (count == 0) {
       this.common.loadingChanged.next(false);
@@ -156,10 +117,12 @@ export class ClaimfileuploadComponent implements OnInit {
       if (payerId != undefined) {
         this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.common.providerId, payerId).subscribe(event => {
           if (event instanceof HttpResponse) {
-            let setting = JSON.parse(JSON.stringify(event.body));
+            const setting = JSON.parse(JSON.stringify(event.body));
             if (setting.hasOwnProperty('value') && setting['value'] == 1) {
-              let index = this.serviceCodeValidationDisabledMessages.findIndex(id => id == payerId);
-              if (index != -1) this.serviceCodeValidationDisabledMessages.splice(index, 1);
+              const index = this.serviceCodeValidationDisabledMessages.findIndex(id => id == payerId);
+              if (index != -1) {
+                this.serviceCodeValidationDisabledMessages.splice(index, 1);
+              }
             }
             count--;
             if (count <= 0) {
@@ -185,7 +148,8 @@ export class ClaimfileuploadComponent implements OnInit {
 
   checkPriceList() {
     this.priceListDoesNotExistMessages = [];
-    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined && !this.serviceCodeValidationDisabledMessages.includes(id));
+    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined &&
+      !this.serviceCodeValidationDisabledMessages.includes(id));
     let count = this.payerIdsFromCurrentFile.length;
     this.payerIdsFromCurrentFile.forEach(payerId => {
       this.common.loadingChanged.next(true);
@@ -212,8 +176,8 @@ export class ClaimfileuploadComponent implements OnInit {
     if (this.common.loading || this.uploading) {
       return;
     }
-    let isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
-    let isServiceCodeVaildationDisabled = this.serviceCodeValidationDisabledMessages.length > 0;
+    const isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
+    const isServiceCodeVaildationDisabled = this.serviceCodeValidationDisabledMessages.length > 0;
 
     if (isPriseListDoesntExist || isServiceCodeVaildationDisabled) {
       this.dialogService.openMessageDialog({
@@ -229,7 +193,7 @@ export class ClaimfileuploadComponent implements OnInit {
         if (value) {
           this.startUpload();
         }
-      })
+      });
     } else {
       this.startUpload();
     }
@@ -237,20 +201,20 @@ export class ClaimfileuploadComponent implements OnInit {
   }
 
   startUpload() {
-    let providerId = this.common.providerId;
+    const providerId = this.common.providerId;
     this.uploading = true;
     this.uploadService.pushFileToStorage(providerId, this.currentFileUpload);
-    let progressObservable = this.uploadService.progressChange.subscribe(progress => {
+    const progressObservable = this.uploadService.progressChange.subscribe(progress => {
       if (progress.percentage == 100) {
         progressObservable.unsubscribe();
       }
     });
-    let summaryObservable = this.uploadService.summaryChange.subscribe(async value => {
+    const summaryObservable = this.uploadService.summaryChange.subscribe(async value => {
       summaryObservable.unsubscribe();
       this.uploading = false;
       this.cancel();
     });
-    let errorobservable = this.uploadService.errorChange.subscribe(error => {
+    const errorobservable = this.uploadService.errorChange.subscribe(error => {
       this.dialogService.openMessageDialog(new MessageDialogData("", error, true));
       errorobservable.unsubscribe();
       this.uploading = false;

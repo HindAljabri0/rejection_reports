@@ -1,19 +1,22 @@
-<app-detailscard title="Upload History" [accentColor]="'#3060AA'">
-    <div inHeader style="position: absolute; top: 10%; right: 20px;">
-        <reusable-search-bar searchBy="Upload Name" [queries]="queries" (onSearch)="search($event)" (onQueryRemoved)="onQueryRemoved($event)"></reusable-search-bar>
+<div class="inner-loader-wrapper">
+    <div class="inner-loader" *ngIf="loading">
+        <mat-spinner diameter="48"></mat-spinner>
     </div>
-    <div id="infinitScroll" scrollable (scrollPosition)="scrollHandler($event)">
-        <div *ngFor="let key of uploadsMapKeys">
-            <h2 style="width: 100%; text-align: start; padding: 20px 90px;">{{key}}</h2>
-            <div class="notifications">
-                <div class="notification" *ngFor="let uploadCardDate of uploadsMap.get(key)">
-                    <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="inCenter">
-                    </app-upload-history-card>
+    <app-detailscard title="Claims History" class="uploaded-card-all">
+        <reusable-search-bar class="reusable-search" inHeader searchBy="Upload Name" [queries]="queries" (onSearch)="search($event)" (onQueryRemoved)="onQueryRemoved($event)">
+        </reusable-search-bar>
+        <div class="scroll-block" *ngIf="uploadsMapKeys.length>0" scrollable (scrollPosition)="scrollHandler($event)">
+            <ng-container *ngFor="let key of uploadsMapKeys">
+                <h4 class="month">{{key}}</h4>
+                <div class="row small-gutter">
+                    <div class="col-xl-4 col-md-6" *ngFor="let uploadCardDate of uploadsMap.get(key)">
+                        <app-upload-history-card [data]="uploadCardDate" [isUploadHistroyCenter]="inCenter" [fromRightSideBar]='false'>
+                        </app-upload-history-card>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
         </div>
-        <mat-spinner *ngIf="loading" style="margin: 0px auto;" [diameter]="50"></mat-spinner>
-        <p *ngIf="!loading && currentPage == 0">There is no data to show</p>
-        <p *ngIf="currentPage >= maxPages">There is no more data</p>
-    </div>
-</app-detailscard>
+        <app-empty-state *ngIf="!loading && currentPage == 0"></app-empty-state>
+        <p class="info-block" *ngIf="currentPage >= maxPages">There is no more data</p>
+    </app-detailscard>
+</div>

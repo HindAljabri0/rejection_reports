@@ -2,8 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
-import { updateClaimDate, updateCaseType, updateFileNumber, updateMemberDob, updateIllnessDuration, updateAge, updateMainSymptoms, updateSignificantSign, updateCommReport, updateEligibilityNum, updateRadiologyReport, updateOtherCondition } from '../store/claim.actions';
-import { getDepartmentCode, FieldError, getGenInfoErrors, getClaim, ClaimPageType, getPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
+import {
+  updateClaimDate,
+  updateCaseType,
+  updateFileNumber,
+  updateMemberDob,
+  updateIllnessDuration,
+  updateAge,
+  updateMainSymptoms,
+  updateSignificantSign,
+  updateCommReport,
+  updateEligibilityNum,
+  updateRadiologyReport,
+  updateOtherCondition
+} from '../store/claim.actions';
+import {
+  getDepartmentCode,
+  FieldError,
+  getGenInfoErrors,
+  getClaim,
+  ClaimPageType,
+  getPageType,
+  getPageMode,
+  ClaimPageMode
+} from '../store/claim.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { Claim } from '../models/claim.model';
@@ -11,11 +33,11 @@ import { Claim } from '../models/claim.model';
 @Component({
   selector: 'gen-info',
   templateUrl: './gen-info.component.html',
-  styleUrls: ['./gen-info.component.css']
+  styles: []
 })
 export class GenInfoComponent implements OnInit {
 
-  isRetrievedClaim: boolean = false;
+  isRetrievedClaim = false;
 
   departmentCode: string;
 
@@ -27,14 +49,14 @@ export class GenInfoComponent implements OnInit {
   illnessDurationController: FormControl = new FormControl();
   ageController: FormControl = new FormControl();
   mainSymptomsController: FormControl = new FormControl();
-  unitIllness: string = 'Day';
-  unitAge: string = 'Year';
+  unitIllness = 'Day';
+  unitAge = 'Year';
 
   significantSignController: FormControl = new FormControl();
   commReportController: FormControl = new FormControl();
   eligibilityNumController: FormControl = new FormControl();
   selectedCaseType: string;
-  isCaceTypeEnabled: boolean = true;
+  isCaceTypeEnabled = true;
   radiologyReportController: FormControl = new FormControl();
   otherConditionController: FormControl = new FormControl();
 
@@ -57,7 +79,7 @@ export class GenInfoComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
@@ -80,8 +102,12 @@ export class GenInfoComponent implements OnInit {
       } else if (illnessDuration.days != null) {
         this.illnessDurationController.setValue(illnessDuration.days);
         this.unitIllness = 'Day';
-      } else this.illnessDurationController.setValue('');
-    } else this.illnessDurationController.setValue('');
+      } else {
+        this.illnessDurationController.setValue('');
+      }
+    } else {
+      this.illnessDurationController.setValue('');
+    }
     const ageDuration = claim.caseInformation.patient.age;
     if (ageDuration != null) {
       if (ageDuration.years != null) {
@@ -93,17 +119,25 @@ export class GenInfoComponent implements OnInit {
       } else if (ageDuration.days != null) {
         this.ageController.setValue(ageDuration.days);
         this.unitAge = 'Day';
-      } else this.ageController.setValue('');
-    } else this.ageController.setValue('');
+      } else {
+        this.ageController.setValue('');
+      }
+    } else {
+      this.ageController.setValue('');
+    }
     this.mainSymptomsController.setValue(claim.caseInformation.caseDescription.chiefComplaintSymptoms);
     const visitDate = claim.visitInformation.visitDate;
     if (visitDate != null) {
       this.claimDateController.setValue(this.datePipe.transform(visitDate, 'yyyy-MM-dd'));
-    } else this.claimDateController.setValue('');
+    } else {
+      this.claimDateController.setValue('');
+    }
     const dob = claim.caseInformation.patient.dob;
     if (dob != null) {
       this.memberDobController.setValue(this.datePipe.transform(dob, 'yyyy-MM-dd'));
-    } else this.memberDobController.setValue('');
+    } else {
+      this.memberDobController.setValue('');
+    }
     this.significantSignController.setValue(claim.caseInformation.caseDescription.signicantSigns);
     this.commReportController.setValue(claim.commreport);
     this.eligibilityNumController.setValue(claim.claimIdentities.eligibilityNumber);
@@ -135,32 +169,43 @@ export class GenInfoComponent implements OnInit {
       this.commReportController.disable();
       this.radiologyReportController.disable();
       this.otherConditionController.disable();
-      this.eligibilityNumController.disable()
+      this.eligibilityNumController.disable();
     }
 
     if (enableForNulls) {
-      if (this.isControlNull(this.fileNumberController))
+      if (this.isControlNull(this.fileNumberController)) {
         this.fileNumberController.enable();
-      if (this.isControlNull(this.illnessDurationController))
+      }
+      if (this.isControlNull(this.illnessDurationController)) {
         this.illnessDurationController.enable();
-      if (this.isControlNull(this.ageController))
+      }
+      if (this.isControlNull(this.ageController)) {
         this.ageController.enable();
-      if (this.isControlNull(this.mainSymptomsController))
+      }
+      if (this.isControlNull(this.mainSymptomsController)) {
         this.mainSymptomsController.enable();
-      if (this.isControlNull(this.claimDateController))
+      }
+      if (this.isControlNull(this.claimDateController)) {
         this.claimDateController.enable();
-      if (this.isControlNull(this.memberDobController))
+      }
+      if (this.isControlNull(this.memberDobController)) {
         this.memberDobController.enable();
-      if (this.isControlNull(this.significantSignController))
+      }
+      if (this.isControlNull(this.significantSignController)) {
         this.significantSignController.enable();
-      if (this.isControlNull(this.commReportController))
+      }
+      if (this.isControlNull(this.commReportController)) {
         this.commReportController.enable();
-      if (this.isControlNull(this.radiologyReportController))
+      }
+      if (this.isControlNull(this.radiologyReportController)) {
         this.radiologyReportController.enable();
-      if (this.isControlNull(this.otherConditionController))
+      }
+      if (this.isControlNull(this.otherConditionController)) {
         this.otherConditionController.enable();
-      if (this.isControlNull(this.eligibilityNumController))
+      }
+      if (this.isControlNull(this.eligibilityNumController)) {
         this.eligibilityNumController.enable();
+      }
     }
   }
 
@@ -179,11 +224,11 @@ export class GenInfoComponent implements OnInit {
         this.store.dispatch(updateMemberDob({ memberDob: new Date(this.memberDobController.value) }));
         break;
       case ('illnessDuration'):
-        var illnessPeriod = this.returnPeriod(this.illnessDurationController.value, this.unitIllness);
+        const illnessPeriod = this.returnPeriod(this.illnessDurationController.value, this.unitIllness);
         this.store.dispatch(updateIllnessDuration({ illnessDuration: illnessPeriod }));
         break;
       case ('age'):
-        var agePeriod = this.returnPeriod(this.ageController.value, this.unitAge);
+        const agePeriod = this.returnPeriod(this.ageController.value, this.unitAge);
         this.store.dispatch(updateAge({ age: agePeriod }));
         break;
       case ('mainSymptoms'):
@@ -212,28 +257,33 @@ export class GenInfoComponent implements OnInit {
     switch (field) {
       case ('illnessDurationUnit'):
         this.unitIllness = event.value;
-        if (this.illnessDurationController.value != null)
-          this.store.dispatch(updateIllnessDuration({ illnessDuration: this.returnPeriod(this.illnessDurationController.value, this.unitIllness) }));
+        if (this.illnessDurationController.value != null) {
+          this.store.dispatch(updateIllnessDuration({
+            illnessDuration: this.returnPeriod(this.illnessDurationController.value, this.unitIllness)
+          }));
+        }
         break;
       case ('ageUnit'):
         this.unitAge = event.value;
-        if (this.ageController.value != null)
+        if (this.ageController.value != null) {
           this.store.dispatch(updateAge({ age: this.returnPeriod(this.ageController.value, this.unitAge) }));
+        }
         break;
     }
   }
 
   returnPeriod(value: string, unit: string): Period {
-    if (unit === 'Year')
-      return new Period(Number.parseInt(value), 'years');
-    else if (unit === 'Month')
-      return new Period(Number.parseInt(value), 'months');
-    else if (unit === 'Day')
-      return new Period(Number.parseInt(value), 'days');
-    else if (unit == 'Week')
-      return new Period(Number.parseInt(value) * 7, 'days');
-    else
-      return new Period(Number.parseInt(value), 'years');
+    if (unit === 'Year') {
+      return new Period(Number.parseInt(value, 10), 'years');
+    } else if (unit === 'Month') {
+      return new Period(Number.parseInt(value, 10), 'months');
+    } else if (unit === 'Day') {
+      return new Period(Number.parseInt(value, 10), 'days');
+    } else if (unit == 'Week') {
+      return new Period(Number.parseInt(value, 10) * 7, 'days');
+    } else {
+      return new Period(Number.parseInt(value, 10), 'years');
+    }
   }
 
   fieldHasError(fieldName) {

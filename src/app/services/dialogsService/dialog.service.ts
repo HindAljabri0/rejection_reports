@@ -6,13 +6,17 @@ import { Observable, Subject } from 'rxjs';
 import { ClaimDialogComponent } from 'src/app/components/dialogs/claim-dialog/claim-dialog.component';
 import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { PaymentClaimDetail } from 'src/app/models/paymentClaimDetail';
-import { PaymentClaimDetailDailogComponent } from 'src/app/components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
+import {
+  PaymentClaimDetailDailogComponent
+} from 'src/app/components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { SharedServices } from '../shared.services';
 import { SearchService } from '../serchService/search.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ReportsService } from '../reportsService/reports.service';
 import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/rejectionReportClaimDialogData';
-import { RejectionReportClaimDialogComponent } from 'src/app/components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
+import {
+  RejectionReportClaimDialogComponent
+} from 'src/app/components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -21,24 +25,25 @@ export class DialogService {
 
   onClaimDialogClose: Subject<any> = new Subject;
 
-  constructor(private commenServices: SharedServices,
+  constructor(
+    private commenServices: SharedServices,
     private dialog: MatDialog,
     private searchService: SearchService,
     private reportService: ReportsService) { }
 
-  openMessageDialog(dialogData: MessageDialogData, width?:string, height?:string): Observable<any> {
+  openMessageDialog(dialogData: MessageDialogData, width?: string, height?: string): Observable<any> {
     this.closeAll();
     const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: width || '35%',
-      height: height || '30%',
-      panelClass: dialogData.isError ? 'dialogError' : (!dialogData.withButtons? 'dialogSuccess' : ''),
+      panelClass: ['primary-dialog', dialogData.isError ? 'error-dialog' : (!dialogData.withButtons ? 'success-dialog' : '')],
       data: dialogData,
     });
     return dialogRef.afterClosed();
   }
 
-  getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string, maxNumberOfAttachment, edit?:boolean) {
-    if (this.loading) return;
+  getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string, maxNumberOfAttachment, edit?: boolean) {
+    if (this.loading) {
+      return;
+    }
     this.commenServices.loadingChanged.next(true);
     this.searchService.getClaim(providerId, claimId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -52,16 +57,16 @@ export class DialogService {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status == 404) {
-          this.openMessageDialog(new MessageDialogData("", 'Claim was not found!', true));
+          this.openMessageDialog(new MessageDialogData('', 'Claim was not found!', true));
         } else {
-          this.openMessageDialog(new MessageDialogData("", 'Could not reach the server at the moment. Please try again later.', true));
+          this.openMessageDialog(new MessageDialogData('', 'Could not reach the server at the moment. Please try again later.', true));
         }
       }
       this.commenServices.loadingChanged.next(false);
     });
   }
 
-  openClaimDialog(providerId: string, payerId: string, status: string, claim: ViewedClaim, maxNumberOfAttachment, edit?:boolean) {
+  openClaimDialog(providerId: string, payerId: string, status: string, claim: ViewedClaim, maxNumberOfAttachment, edit?: boolean) {
     claim.providerId = providerId;
     claim.payerid = payerId;
     claim.status = status;
@@ -70,7 +75,7 @@ export class DialogService {
       width: '50%',
       height: '70%',
       panelClass: 'claimDialog',
-      data: {claim: claim, edit: (edit || false), maxNumberOfAttachment:maxNumberOfAttachment},
+      data: { claim: claim, edit: (edit || false), maxNumberOfAttachment: maxNumberOfAttachment },
     });
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);
@@ -86,7 +91,7 @@ export class DialogService {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.openMessageDialog(new MessageDialogData("", errorEvent.message, true));
+        this.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
       }
     });
   }
@@ -103,7 +108,7 @@ export class DialogService {
     });
   }
 
-  openRejectionReportClaimDialog(claim: RejectionReportClaimDialogData){
+  openRejectionReportClaimDialog(claim: RejectionReportClaimDialogData) {
     this.closeAll();
     const dialogRef = this.dialog.open(RejectionReportClaimDialogComponent, {
       width: '50%',
@@ -116,7 +121,7 @@ export class DialogService {
     });
   }
 
-  closeAll(){
+  closeAll() {
     this.dialog.closeAll();
   }
 

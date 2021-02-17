@@ -9,7 +9,7 @@ import { ClaimPageMode, getClaim, getPageMode } from '../store/claim.reducer';
 @Component({
   selector: 'claim-attachments',
   templateUrl: './attachments.component.html',
-  styleUrls: ['./attachments.component.css']
+  styles: []
 })
 export class AttachmentsComponent implements OnInit {
 
@@ -29,24 +29,26 @@ export class AttachmentsComponent implements OnInit {
       map(values => ({ mode: values[0], retrievedAttachments: values[1].attachment }))
     ).subscribe(({ mode, retrievedAttachments }) => {
       this.pageMode = mode;
-      this.setData(retrievedAttachments)
+      this.setData(retrievedAttachments);
     });
   }
 
   setData(attachments: AttachmentRequest[]) {
-    if (attachments != null)
+    if (attachments != null) {
       this.attachments = [...attachments];
-    else this.attachments = [];
+    } else {
+      this.attachments = [];
+    }
     this.selectFilesError = null;
   }
 
   getImageOfBlob(attachment: AttachmentRequest) {
-    let fileExt = attachment.fileName.split(".").pop();
+    const fileExt = attachment.fileName.split('.').pop();
     if (fileExt.toLowerCase() == 'pdf') {
-      let objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
+      const objectURL = `data:application/pdf;base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
     } else {
-      let objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
+      const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
 
@@ -54,23 +56,24 @@ export class AttachmentsComponent implements OnInit {
 
   selectFile(event) {
     this.selectFilesError = null;
-    let file = event.item(0);
+    const file = event.item(0);
     if (file instanceof File) {
-      if (file.size == 0)
+      if (file.size == 0) {
         return;
-      let mimeType = file.type;
+      }
+      const mimeType = file.type;
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
         this.fileType = null;
         return;
       }
       if (this.attachments.find(attachment => attachment.fileName == file.name) != undefined) {
         this.fileType = null;
-        this.selectFilesError = "A file with the same name already exists."
+        this.selectFilesError = 'A file with the same name already exists.';
         return;
       }
       if (file.size / 1024 / 1024 > 2) {
         this.fileType = null;
-        this.selectFilesError = "Selected files should not be more than 2M."
+        this.selectFilesError = 'Selected files should not be more than 2M.';
         return;
       }
       this.preview(file);
@@ -78,7 +81,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   preview(file: File) {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
       let data: string = reader.result as string;
@@ -86,7 +89,7 @@ export class AttachmentsComponent implements OnInit {
       this.attachments.push({ attachmentFile: data, fileName: file.name, fileType: this.fileType, userComment: null });
       this.fileType = null;
       this.updateCurrentAttachments();
-    }
+    };
   }
 
   deleteCurrentAttachment(index: number) {
@@ -100,7 +103,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   isPdf(attachment: AttachmentRequest) {
-    let fileExt = attachment.fileName.split(".").pop();
+    const fileExt = attachment.fileName.split('.').pop();
     return fileExt.toLowerCase() == 'pdf';
   }
 

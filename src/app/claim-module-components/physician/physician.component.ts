@@ -1,25 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import { updatePhysicianId, updatePhysicianName, updatePhysicianCategory, updateDepartment, updatePageType } from '../store/claim.actions';
-import { getPhysicianCategory, getDepartments, FieldError, getPhysicianErrors, getDepartmentCode, getClaim, getPageType, ClaimPageType, getPageMode, ClaimPageMode } from '../store/claim.reducer';
+import {
+  getPhysicianCategory,
+  getDepartments,
+  FieldError,
+  getPhysicianErrors,
+  getDepartmentCode,
+  getClaim,
+  getPageType,
+  ClaimPageType,
+  getPageMode,
+  ClaimPageMode
+} from '../store/claim.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 
 @Component({
   selector: 'claim-physician-header',
   templateUrl: './physician.component.html',
-  styleUrls: ['./physician.component.css']
+  styles: []
 })
 export class PhysicianComponent implements OnInit {
 
   physicianNameController: FormControl = new FormControl();
   physicianIdController: FormControl = new FormControl();
-  selectedCategory: string;
-  categoryEditable: boolean = true;
-  selectedDepartment: string;
-  departmentEditable: boolean = true;
+  selectedCategory = '';
+  categoryEditable = true;
+  selectedDepartment: number;
+  departmentEditable = true;
 
   categories: any[] = [];
   departments: any[];
@@ -29,8 +39,10 @@ export class PhysicianComponent implements OnInit {
 
   pageType: ClaimPageType;
   pageMode: ClaimPageMode;
+  @Input() claimType = '';
 
-  constructor(private store: Store) { }
+  constructor(private store: Store) {
+  }
 
   ngOnInit() {
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
@@ -40,7 +52,7 @@ export class PhysicianComponent implements OnInit {
       map(values => ({ departments: values[0], mode: values[1] }))
     ).subscribe(values => {
       if (values.mode.startsWith('CREATE')) {
-        this.departments = values.departments.filter(department => department.name == "Dental" || department.name == "Optical")
+        this.departments = values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical');
       } else {
         this.departments = values.departments;
       }
@@ -57,17 +69,17 @@ export class PhysicianComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
 
-    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = type);
+    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = +type);
     setTimeout(() => {
       const category = this.selectedCategory;
       const department = this.selectedDepartment;
-      this.selectedDepartment = '1';
+      this.selectedDepartment = 1;
       this.selectedCategory = '-1';
       setTimeout(() => { this.selectedDepartment = department; this.selectedCategory = category; }, 500);
     }, 500);
@@ -77,15 +89,16 @@ export class PhysicianComponent implements OnInit {
     this.physicianIdController.setValue(claim.caseInformation.physician.physicianID);
     this.physicianNameController.setValue(claim.caseInformation.physician.physicianName);
     this.selectedCategory = claim.caseInformation.physician.physicianCategory;
-    this.selectedDepartment = `${claim.visitInformation.departmentCode}`;
+    this.selectedDepartment = +claim.visitInformation.departmentCode;
   }
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
     this.departmentEditable = allowEdit;
-    if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == '')))
+    if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == ''))) {
       this.physicianNameController.enable();
-    else
+    } else {
       this.physicianNameController.disable();
+    }
     if (enableForNulls) {
       if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
         this.physicianIdController.disable();
@@ -109,26 +122,32 @@ export class PhysicianComponent implements OnInit {
         this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.selectedCategory }));
         break;
       case 'department':
-        const dental = this.departments.find(department => department.name == "Dental");
-        const optical = this.departments.find(department => department.name == "Optical");
-        const pharmacy = this.departments.find(department => department.name == "Pharmacy");
-        if ((dental != null && this.selectedDepartment == dental.departmentId) || (optical != null && this.selectedDepartment == optical.departmentId) || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
+        const dental = this.departments.find(department => department.name == 'Dental');
+        const optical = this.departments.find(department => department.name == 'Optical');
+        const pharmacy = this.departments.find(department => department.name == 'Pharmacy');
+        if ((dental != null && this.selectedDepartment == dental.departmentId)
+          || (optical != null && this.selectedDepartment == optical.departmentId)
+          || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
           this.store.dispatch(updatePageType({ pageType: 'DENTAL_OPTICAL' }));
         } else {
-          this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }))
+          this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }));
         }
-        this.store.dispatch(updateDepartment({ department: this.selectedDepartment }));
+        this.store.dispatch(updateDepartment({ department: this.selectedDepartment.toString() }));
         break;
     }
   }
 
-  beautifyCategory(category: string) {
-    let str = category.substr(0, 1) + category.substr(1).toLowerCase();
-    if (str.includes('_')) {
-      let split = str.split('_');
-      str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
+  beautifyCategory(category) {
+    if (category != null && category != '-1') {
+      let str = category.substr(0, 1) + category.substr(1).toLowerCase();
+      if (str.includes('_')) {
+        const split = str.split('_');
+        str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
+      }
+      return str;
+    } else {
+      return '';
     }
-    return str;
   }
 
   fieldHasError(fieldName) {
@@ -143,7 +162,7 @@ export class PhysicianComponent implements OnInit {
     return '';
   }
 
-  departmentsHasCode(code){
+  departmentsHasCode(code) {
     return this.departments.findIndex(dep => dep.departmentId == code) > -1;
   }
 }
