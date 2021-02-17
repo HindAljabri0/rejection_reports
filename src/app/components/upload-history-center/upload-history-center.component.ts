@@ -4,13 +4,13 @@ import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-upload-history-center',
   templateUrl: './upload-history-center.component.html',
-  styleUrls: ['./upload-history-center.component.css']
+  styles: []
 })
 export class UploadHistoryCenterComponent implements OnInit {
 
   inCenter = true;
 
-  showCenter: boolean = false;
+  showCenter = false;
 
   constructor(private commen: SharedServices) {
     this.commen.showUploadHistoryCenterChange.subscribe(value => {

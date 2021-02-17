@@ -1,6 +1,27 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { loadLOVs, setLOVs, setError, startCreatingNewClaim, setLoading, startValidatingClaim, getUploadId, setUploadId, viewThisMonthClaims, saveClaim, cancelClaim, openCreateByApprovalDialog, getClaimDataByApproval, openSelectServiceDialog, showOnSaveDoneDialog, retrieveClaim, viewRetrievedClaim, saveClaimChanges, finishValidation, goToClaim } from './claim.actions';
+import {
+    loadLOVs,
+    setLOVs,
+    setError,
+    startCreatingNewClaim,
+    setLoading,
+    startValidatingClaim,
+    getUploadId,
+    setUploadId,
+    viewThisMonthClaims,
+    saveClaim,
+    cancelClaim,
+    openCreateByApprovalDialog,
+    getClaimDataByApproval,
+    openSelectServiceDialog,
+    showOnSaveDoneDialog,
+    retrieveClaim,
+    viewRetrievedClaim,
+    saveClaimChanges,
+    finishValidation,
+    goToClaim
+} from './claim.actions';
 import { switchMap, map, catchError, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { of } from 'rxjs';
@@ -45,8 +66,8 @@ export class ClaimEffects {
         this.store.select(getDepartments)
             .subscribe(departments => {
                 if (departments != null && departments.length > 0) {
-                    this.dentalDepartmentCode = departments.find(department => department.name == "Dental").departmentId + '';
-                    this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
+                    this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
+                    this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
                 }
             });
     }
@@ -62,26 +83,38 @@ export class ClaimEffects {
 
     getClaimDataFromApproval$ = createEffect(() => this.actions$.pipe(
         ofType(getClaimDataByApproval),
-        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId, data.payerId, data.approvalNumber, data.claimType == this.dentalDepartmentCode ? 'DENTAL' : 'OPTICAL').pipe(
-            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
-            map(response => {
-                this.dialog.closeAll();
-                return startCreatingNewClaim({
-                    data: {
-                        claim: Claim.fromApprovalResponse(data.claimType, data.providerClaimNumber, data.payerId, data.approvalNumber, response),
-                        services: Service.fromResponse(response),
+        switchMap(data => this.approvalInquireService.getClaimDataByApprovalNumber(this.sharedServices.providerId,
+            data.payerId,
+            data.approvalNumber,
+            data.claimType == this.dentalDepartmentCode ? 'DENTAL' : 'OPTICAL').pipe(
+                filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+                map(response => {
+                    this.dialog.closeAll();
+                    return startCreatingNewClaim({
+                        data: {
+                            claim: Claim.fromApprovalResponse(data.claimType,
+                                data.providerClaimNumber,
+                                data.payerId,
+                                data.approvalNumber,
+                                response),
+                            services: Service.fromResponse(response),
+                        }
+                    });
+                }),
+                catchError(err => {
+                    console.log(err);
+                    this.dialog.closeAll();
+                    if (err.hasOwnProperty('status') && (err.status == 0 || err.status >= 500)) {
+                        return of({ type: setError.type, error: { code: `APPROVAL_ERROR_SERVER`, } });
                     }
-                });
-            }),
-            catchError(err => {
-                console.log(err);
-                this.dialog.closeAll();
-                if (err.hasOwnProperty('status') && (err.status == 0 || err.status >= 500)) {
-                    return of({ type: setError.type, error: { code: `APPROVAL_ERROR_SERVER`, } });
-                }
-                return of({ type: setError.type, error: { code: `APPROVAL_ERROR_${data.claimType == this.dentalDepartmentCode ? 'DENTAL' : 'OPTICAL'}`, } });
-            })
-        ))
+                    return of({
+                        type: setError.type,
+                        error: {
+                            code: `APPROVAL_ERROR_${data.claimType == this.dentalDepartmentCode ? 'DENTAL' : 'OPTICAL'}`,
+                        }
+                    });
+                })
+            ))
     ));
 
     loadLOVs$ = createEffect(() => this.actions$.pipe(
@@ -202,7 +235,14 @@ export class ClaimEffects {
                     } catch (error) { }
                 }
                 this.store.dispatch(setLoading({ loading: false }));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description || 'Could not handle the request.' } });
+                return of({
+                    type: setError.type,
+                    error: {
+                        code: 'CLAIM_SAVING_ERROR',
+                        status: status,
+                        description: description || 'Could not handle the request.'
+                    }
+                });
             })
         ))
     ));
@@ -212,7 +252,7 @@ export class ClaimEffects {
         tap(data => this.dialog.open(OnSavingDoneComponent, {
             data: data,
             closeOnNavigation: true,
-            width: '40%',
+            panelClass: ['primary-dialog']
         }))
     ), { dispatch: false });
 
@@ -220,7 +260,8 @@ export class ClaimEffects {
         ofType(viewThisMonthClaims),
         tap(value => {
             if (value.claimId != null) {
-                this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId, claimId: value.claimId, editMode: value.editMode || false } });
+                this.router.navigate([this.sharedServices.providerId, 'claims'],
+                    { queryParams: { uploadId: value.uploadId, claimId: value.claimId, editMode: value.editMode || false } });
             } else {
                 this.router.navigate([this.sharedServices.providerId, 'claims'], { queryParams: { uploadId: value.uploadId } });
             }

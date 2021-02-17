@@ -8,24 +8,24 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 @Component({
   selector: 'reusable-search-bar',
   templateUrl: './reusable-search-bar.component.html',
-  styleUrls: ['./reusable-search-bar.component.css']
+  styles: []
 })
 export class ReusableSearchBarComponent implements OnInit {
 
   @Input() queries: Query[] = [];
-  @Input() searchBy:string;
+  @Input() searchBy: string;
 
   @Output() onSearch = new EventEmitter();
   @Output() onQueryRemoved = new EventEmitter();
 
-  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
   searchTextControl: FormControl = new FormControl();
 
   fromDateControl: FormControl = new FormControl();
-  fromDateHasError: boolean = false;
+  fromDateHasError = false;
   toDateControl: FormControl = new FormControl();
-  toDateHasError: boolean = false;
+  toDateHasError = false;
 
   fromDate: QueryType = QueryType.DATEFROM;
   toDate: QueryType = QueryType.DATETO;
@@ -56,7 +56,7 @@ export class ReusableSearchBarComponent implements OnInit {
         this.toDateControl.setValue('');
         break;
     }
-    
+
     this.onQueryRemoved.emit(query);
   }
 
@@ -67,11 +67,11 @@ export class ReusableSearchBarComponent implements OnInit {
       case QueryType.TEXT:
         return this.searchBy;
       case QueryType.DATEFROM:
-        return "From Claim Date"
+        return 'From Claim Date';
       case QueryType.DATETO:
-        return "To Claim Date"
+        return 'To Claim Date';
       default:
-        return "";
+        return '';
     }
   }
 
@@ -88,27 +88,29 @@ export class ReusableSearchBarComponent implements OnInit {
   search() {
     this.onSearch.emit(this.queries);
   }
-  searchWithText(){
+  searchWithText() {
     this.updateChips(QueryType.TEXT, this.searchTextControl.value);
     this.search();
   }
 
   updateChips(queryType: QueryType, content: string) {
     if (content != null && content.trim().length != 0) {
-      let query: Query = this.queries.find(query => query.type == queryType);
+      const query: Query = this.queries.find(query => query.type == queryType);
       if (query != null) {
         query.content = content.trim();
       } else {
-        if (queryType == QueryType.TEXT) this.clear();
+        if (queryType == QueryType.TEXT) {
+          this.clear();
+        }
         this.queries.push({ type: queryType, content: content.trim() });
       }
     }
-    
+
     if (queryType != QueryType.TEXT) {
-      let query: Query = this.queries.find(query => query.type == QueryType.TEXT);
-      if (query != null) this.remove(query);
+      const query: Query = this.queries.find(query => query.type == QueryType.TEXT);
+      if (query != null) { this.remove(query); }
     }
-    this.searchTextControl.setValue('', {emitEvent:false});
+    this.searchTextControl.setValue('', { emitEvent: false });
   }
 
 
@@ -116,12 +118,12 @@ export class ReusableSearchBarComponent implements OnInit {
     if (this.searchTextControl.value != null && this.searchTextControl.value.trim().length != 0) {
       return this.searchTextControl.value.trim();
     } else if (this.queries.map(query => query.type == QueryType.TEXT).includes(true)) {
-      return this.queries.map(query => { if (query.type == QueryType.TEXT) return query.content; })
-    } else return '';
+      return this.queries.map(query => { if (query.type == QueryType.TEXT) { return query.content; } });
+    } else { return ''; }
   }
 
   clear() {
-    if(this.queries.length != 0){
+    if (this.queries.length != 0) {
       this.queries = [];
       this.onQueryRemoved.emit();
     }

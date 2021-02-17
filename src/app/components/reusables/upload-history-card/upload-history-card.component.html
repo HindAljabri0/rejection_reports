@@ -1,55 +1,28 @@
-<div class="notification clickable" [routerLink]="['/',providerId,'claims']"
-    [queryParams]="{uploadId: data.uploadSummaryID}" (click)="hideCenter()">
-    <div class="header">
-        <table>
-            <thead>
-                <th style="text-align: left;">Upload Name: {{data.uploadName}}</th>
-                <th><span class="spacer"></span>Upload Date: {{data.uploadDate.toDateString()}}</th>
-            </thead>
-        </table>
-    </div>
-    <div class="batchContent" [ngClass]="{'cardInCenter':isUploadHistroyCenter}" *ngIf='!fromRightSideBar'>
-        <table style="text-align: start;">
-            <tr>
-                <th style="padding: 20px 15px; font-size: medium;">
-                    Total Number of Claims<br>
-                    {{data.noOfAcceptedClaims + data.noOfNotAcceptedClaims + data.noOfNotUploadedClaims}}
-                </th>
-            </tr>
-            <tr>
-                <th colspan="2" style="padding: 5px 0px;">
-                    <table>
-                        <tr style="font-size: smaller;">
-                            <td class="paid" style="border-top: 1px solid #00FF1E;">
-                                Ready for Submission
-                            </td>
-                            <td class="partlyPaid" style="border-top: 1px solid #64FFF9;">
-                                Rejected By Waseel
-                            </td>
-                            <td class="rejected" style="border-top: 1px solid #FF7BD6;">
-                                Not Uploaded
-                            </td>
-                            <td class="paid" style="border-top: 1px solid #00FF1E;">
-                                Downloadable
-                            </td>
-                        </tr>
-                        <tr style="font-size: medium;">
-                            <td>
-                                {{data.noOfAcceptedClaims}}
-                            </td>
-                            <td>
-                                {{data.noOfNotAcceptedClaims}}
-                            </td>
-                            <td>
-                                {{data.noOfNotUploadedClaims}}
-                            </td>
-                            <td>
-                                {{data.noOfDownloadableClaims}}
-                            </td>
-                        </tr>
-                    </table>
-                </th>
-            </tr>
-        </table>
-    </div>
+<div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadSummaryID}" (click)="hideCenter()">
+    <p class="medium text-primary">{{data.uploadName}}</p>
+    <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</span>
+    <ng-container *ngIf='!fromRightSideBar'>
+        <hr class="hr separator">
+        <p class="small-label">Total Number of Claims</p>
+        <p class="dashboard-numbers text-primary">{{data.noOfAcceptedClaims + data.noOfNotAcceptedClaims + data.noOfNotUploadedClaims}}</p>
+        <hr class="hr separator">
+        <div class="row small-gutter">
+            <div class="col-6 pb-2">
+                <p class="small-label">Ready for Submission</p>
+                <p class="dashboard-numbers text-ready-submission">{{data.noOfAcceptedClaims}}</p>
+            </div>
+            <div class="col-6 pb-2">
+                <p class="small-label">Rejected By Waseel</p>
+                <p class="dashboard-numbers text-rejected-waseel">{{data.noOfNotAcceptedClaims}}</p>
+            </div>
+            <div class="col-6">
+                <p class="small-label">Not Uploaded</p>
+                <p class="dashboard-numbers text-not-saved">{{data.noOfNotUploadedClaims}}</p>
+            </div>
+            <div class="col-6">
+                <p class="small-label">Downloadable</p>
+                <p class="dashboard-numbers text-ready-submission">{{data.noOfDownloadableClaims}}</p>
+            </div>
+        </div>
+    </ng-container>
 </div>

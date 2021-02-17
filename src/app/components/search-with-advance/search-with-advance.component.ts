@@ -1,11 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Query } from 'src/app/models/searchData/query';
-import { QueryType } from 'src/app/models/searchData/queryType';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SharedServices } from 'src/app/services/shared.services';
-import { MatMenuTrigger } from '@angular/material';
 import { FormControl } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Moment } from 'moment';
@@ -18,13 +14,14 @@ import { Moment } from 'moment';
 export class SearchWithAdvanceComponent implements OnInit {
 
   searchModes: { key: string, label: string }[] = [
-    { key: "claimRefNo", label: "Provider Claim Ref. No." },
-    { key: "memberId", label: "Member ID" },
-    { key: "payer&date", label: "Payer" },
-    { key: "invoiceNo", label: "Invoice No." },
-    { key: "patientFileNo", label: "Patient File No" },
-    { key: "policyNo", label: "Policy No." }
-  ]
+    { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
+    { key: 'memberId', label: 'Member ID' },
+    { key: 'payer&date', label: 'Payer' },
+    { key: 'batchId', label: 'Batch ID' },
+    { key: 'invoiceNo', label: 'Invoice No.' },
+    { key: 'patientFileNo', label: 'Patient File No' },
+    { key: 'policyNo', label: 'Policy No.' }
+  ];
   selectedSearchMode = 'claimRefNo';
 
 
@@ -112,7 +109,10 @@ export class SearchWithAdvanceComponent implements OnInit {
         queryParams: {
           claimRefNo: this.selectedSearchMode == 'claimRefNo' ? this.searchControl.value : null,
           memberId: this.selectedSearchMode == 'memberId' ? this.searchControl.value : null,
-          batchId: this.selectedSearchMode == 'batchId' ? this.searchControl.value : null
+          batchId: this.selectedSearchMode == 'batchId' ? this.searchControl.value : null,
+          invoiceNo: this.selectedSearchMode == 'invoiceNo' ? this.searchControl.value : null,
+          patientFileNo: this.selectedSearchMode == 'patientFileNo' ? this.searchControl.value : null,
+          policyNo: this.selectedSearchMode == 'policyNo' ? this.searchControl.value : null,
         }
       });
 

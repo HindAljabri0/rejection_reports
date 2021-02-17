@@ -8,10 +8,12 @@
         </div>
         <div class="col-md-5">
             <div class="form-group form-group-lg" [class.has-error]="payersHasError">
-                <select class="form-control custom-select-control" (change)="selectedPayer = $event.target.value; payersHasError = false;" required>
-                    <option value="-1">Select Payer</option>
-                    <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
-                </select>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select (selectionChange)="selectedPayer = $event.value; payersHasError = false;" required>
+                        <mat-option value="-1">Select Payer</mat-option>
+                        <mat-option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
     </div>

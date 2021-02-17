@@ -1,18 +1,14 @@
-<app-detailscard title="Providers Configration" [accentColor]="'white'"
-    [bottomLeftActionText]="(isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '': 'Reset'"
-    [bottomRightActionText]="(isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '': 'Save'"
-    (bottomLeftAction)="reset()" (bottomRightAction)="save()">
+<app-detailscard title="Providers Configration" [bottomLeftActionText]=" (isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '' : 'Reset'"
+    [bottomRightActionText]=" (isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '' : 'Save'" (bottomLeftAction)=" reset()" (bottomRightAction)="save()">
     <div class="selectProvider">
         <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
             <mat-label>Select Provider</mat-label>
-            <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
-                [readonly]="isLoading">
+            <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()" [readonly]="isLoading">
             <button mat-button matSuffix mat-icon-button>
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders"
-                    [value]="provider.switchAccountId + ' | ' + provider.name"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.name"
                     (click)="selectProvider(provider.switchAccountId)">
                     {{provider.switchAccountId}} | {{provider.name}}
                 </mat-option>
@@ -37,12 +33,10 @@
                     <span style="color: #40ac60;">{{success.midtableSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div *ngIf="(errors.midtableError == null || errors.midtableError == '') && !componentLoading.midtable"
-                style="margin-top: 20px;">
+            <div *ngIf="(errors.midtableError == null || errors.midtableError == '') && !componentLoading.midtable" style="margin-top: 20px;">
                 <form [formGroup]="addDbConfigForm" (ngSubmit)="addDatabaseConfig()" autocomplete="off">
                     <div class="row">
-                        <mat-radio-group style="margin: 10px 0 10px 0;" name="dbtype" class="col-sm-12"
-                            formControlName="dbType">
+                        <mat-radio-group style="margin: 10px 0 10px 0;" name="dbtype" class="col-sm-12" formControlName="dbType">
                             <mat-radio-button class="col-sm-3" value="ORACLE"> Oracle </mat-radio-button>
                             <mat-radio-button class="col-sm-3" value="MYSQL"> MySql </mat-radio-button>
                             <mat-radio-button class="col-sm-3" value="SQLSERVER"> SqlServer 2016 onwards
@@ -50,58 +44,36 @@
                             <mat-radio-button class="col-sm-3" value="SQLSERVERLEGACY"> SqlServer Legacy
                             </mat-radio-button>
                         </mat-radio-group>
-                        <mat-hint *ngIf="f.dbType.errors && (f.dbType.dirty || f.dbType.touched)">
-                            <mat-error *ngIf="f.dbType.errors.required">* DataBase type is required</mat-error>
-                        </mat-hint>
                     </div>
                     <div class="row mt-2">
                         <mat-form-field appearance="outline" class="col-sm-4">
                             <mat-label>HostName</mat-label>
-                            <input matInput placeholder="HostName/IP" formControlName="hostName" required type="text">
-                            <mat-hint *ngIf="f.hostName.errors && (f.hostName.dirty || f.hostName.touched)">
-                                <mat-error *ngIf="f.hostName.errors.required">* Hostname is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="HostName/IP" formControlName="hostName" type="text" (change)="validateForm()" autocomplete="">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-sm-4">
                             <mat-label>Port</mat-label>
-                            <input matInput placeholder="Port" required type="number" formControlName="port">
-                            <mat-hint *ngIf="f.port.errors && (f.port.dirty || f.port.touched)">
-                                <mat-error *ngIf="f.port.errors.required">* Port is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="Port" type="number" formControlName="port" (change)="validateForm()" autocomplete="">
                             <!-- <mat-error *ngIf="port.hasError('required')">Port is required</mat-error> -->
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-sm-4">
                             <mat-label>DatabaseName</mat-label>
-                            <input matInput placeholder="DatabaseName/SID" required type="text"
-                                formControlName="databaseName">
-                            <mat-hint *ngIf="f.databaseName.errors && (f.databaseName.dirty || f.databaseName.touched)">
-                                <mat-error *ngIf="f.databaseName.errors.required">* DatabaseName is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="DatabaseName/SID" type="text" autocomplete="" formControlName="databaseName" (change)="validateForm()">
                             <!-- <mat-error *ngIf="databaseName.hasError('required')">DatabaseName is required</mat-error> -->
                         </mat-form-field>
                     </div>
                     <div class="row mt-2">
                         <mat-form-field appearance="outline" class="col-sm-6">
                             <mat-label>Username</mat-label>
-                            <input matInput placeholder="Database Username" required type="text"
-                                formControlName="dbUserName">
-                            <mat-hint *ngIf="f.dbUserName.errors && (f.dbUserName.dirty || f.dbUserName.touched)">
-                                <mat-error *ngIf="f.dbUserName.errors.required">* UserName is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="Database Username" type="text" formControlName="dbUserName" (change)="validateForm()" autocomplete="">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-sm-6">
                             <mat-label>Password</mat-label>
-                            <input matInput placeholder="Database Passowrd" required type="password"
-                                formControlName="dbPassword">
-                            <mat-hint *ngIf="f.dbPassword.errors && (f.dbPassword.dirty || f.dbPassword.touched)">
-                                <mat-error *ngIf="f.dbPassword.errors.required">* Password is required</mat-error>
-                            </mat-hint>
+                            <input matInput placeholder="Database Passowrd" type="password" formControlName="dbPassword" (change)="validateForm()" autocomplete="new-password">
                         </mat-form-field>
                     </div>
                 </form>
             </div>
-            <div *ngIf="errors.midtableError != null && errors.midtableError != '' && !componentLoading.midtable"
-                style="width: 100%; padding: 10px 30px; display: flex;">
+            <div *ngIf="errors.midtableError != null && errors.midtableError != '' && !componentLoading.midtable" style="width: 100%; padding: 10px 30px; display: flex;">
                 <p>{{errors.midtableError}}</p>
             </div>
             <div *ngIf="componentLoading.midtable" style="width: 100%; padding: 10px;">
@@ -121,8 +93,7 @@
                     <span style="color: #40ac60;">{{success.payerMappingSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div *ngIf="(errors.payerMappingError == null || errors.payerMappingError == '') && !componentLoading.payerMapping"
-                style="margin-top: 20px;">
+            <div *ngIf="(errors.payerMappingError == null || errors.payerMappingError == '') && !componentLoading.payerMapping" style="margin-top: 20px;">
                 <table style="width: 100%; margin: 10px">
                     <thead>
                         <th style="width: 33%">Payer</th>
@@ -137,15 +108,12 @@
                         <td style="text-align: center; width: 33%; height: 80px;">
                             <mat-form-field appearance="outline" *ngIf="newPayerMappingEnable[payer.switchAccountId]">
                                 <mat-label>value</mat-label>
-                                <input matInput placeholder="mapped value"
-                                    [(ngModel)]="newPayerMappingValue[payer.switchAccountId]" required type="text">
+                                <input matInput placeholder="mapped value" [(ngModel)]="newPayerMappingValue[payer.switchAccountId]" required type="text">
                             </mat-form-field>
                         </td>
                         <td style="width: 33%; height: 80px;">
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" color="primary"
-                                [(ngModel)]="newPayerMappingEnable[payer.switchAccountId]"
-                                (change)="onPayerMapSetting(payer, $event,i)">
+                                        width: 15%" color="primary" [(ngModel)]="newPayerMappingEnable[payer.switchAccountId]" (change)="onPayerMapSetting(payer, $event,i)">
                             </mat-slide-toggle>
                         </td>
                     </tr>
@@ -172,8 +140,7 @@
                     <span style="color: #40ac60;">{{success.providerMappingSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div *ngIf="(errors.providerMappingError == null || errors.providerMappingError == '') && !componentLoading.providerMapping"
-                style="margin-top: 20px;">
+            <div *ngIf="(errors.providerMappingError == null || errors.providerMappingError == '') && !componentLoading.providerMapping" style="margin-top: 20px;">
                 <table style="width: 100%; margin: 10px">
                     <thead>
                         <th>Provider</th>
@@ -186,8 +153,7 @@
                         <td style="text-align: center; width: 33%;">
                             <mat-form-field appearance="outline">
                                 <mat-label>value</mat-label>
-                                <input matInput [formControl]="providerMappingController" placeholder="mapped value"
-                                    required type="text">
+                                <input matInput [formControl]="providerMappingController" placeholder="mapped value" type="text">
                             </mat-form-field>
                         </td>
                     </tr>
@@ -228,15 +194,13 @@
                         </td>
                         <td>
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
-                                [(ngModel)]="newServiceValidationSettings[payer.switchAccountId]">
+                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary" [(ngModel)]="newServiceValidationSettings[payer.switchAccountId]">
                             </mat-slide-toggle>
                         </td>
                         <td style="width: 20%;">
-                            <mat-checkbox
-                                style="z-index: 0; display: block; margin-left: auto; margin-right: auto; width: fit-content"
-                                [disabled]="!payer.hasAssociatedPriceList || isPriceUnitDisabled(payer.switchAccountId)"
-                                color="primary" [(ngModel)]="newPriceUnitSettings[payer.switchAccountId]">
+                            <mat-checkbox style="z-index: 0; display: block; margin-left: auto; margin-right: auto; width: fit-content"
+                                [disabled]="!payer.hasAssociatedPriceList || isPriceUnitDisabled(payer.switchAccountId)" color="primary"
+                                [(ngModel)]="newPriceUnitSettings[payer.switchAccountId]">
                                 Restrict
                             </mat-checkbox>
                         </td>
@@ -244,8 +208,7 @@
                 </table>
 
             </div>
-            <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.serviceCode"
-                style="width: 100%; padding: 10px 30px; display: flex;">
+            <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.serviceCode" style="width: 100%; padding: 10px 30px; display: flex;">
                 <p>{{errors.payersError}}</p>
             </div>
             <div *ngIf="componentLoading.serviceCode" style="width: 100%; padding: 10px;">
@@ -279,16 +242,14 @@
                         </td>
                         <td>
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
-                                [(ngModel)]="newICD10ValidationSettings[payer.switchAccountId]">
+                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary" [(ngModel)]="newICD10ValidationSettings[payer.switchAccountId]">
                             </mat-slide-toggle>
                         </td>
                     </tr>
                 </table>
 
             </div>
-            <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.ICD10Validation"
-                style="width: 100%; padding: 10px 30px; display: flex;">
+            <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.ICD10Validation" style="width: 100%; padding: 10px 30px; display: flex;">
                 <p>{{errors.payersError}}</p>
             </div>
             <div *ngIf="componentLoading.ICD10Validation" style="width: 100%; padding: 10px;">
@@ -309,8 +270,7 @@
                     <span style="color: #40ac60;">{{success.portalUserSaveSuccess}}</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser"
-                style="margin-top: 20px;">
+            <div *ngIf="(errors.portalUserError == null || errors.portalUserError == '') && !componentLoading.portalUser" style="margin-top: 20px;">
                 <mat-form-field appearance="outline" style="width: 49%; margin-right: 2%;">
                     <input matInput placeholder="Portal Username" [formControl]="portalUsernameController" st>
                     <mat-icon matSuffix style="color: #D0CECE;">account_circle</mat-icon>
@@ -320,8 +280,7 @@
                     <mat-icon matSuffix style="color: #D0CECE;">lock</mat-icon>
                 </mat-form-field>
             </div>
-            <div *ngIf="errors.portalUserError != null && errors.portalUserError != '' && !componentLoading.portalUser"
-                style="width: 100%; padding: 10px 30px; display: flex;">
+            <div *ngIf="errors.portalUserError != null && errors.portalUserError != '' && !componentLoading.portalUser" style="width: 100%; padding: 10px 30px; display: flex;">
                 <p>{{errors.portalUserError}}</p>
             </div>
             <div *ngIf="componentLoading.portalUser" style="width: 100%; padding: 10px;">
@@ -354,16 +313,14 @@
                         </td>
                         <td>
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" color="primary"
-                                [(ngModel)]="newSFDAValidationSettings[payer.switchAccountId]">
+                                        width: 15%" color="primary" [(ngModel)]="newSFDAValidationSettings[payer.switchAccountId]">
                             </mat-slide-toggle>
                         </td>
                     </tr>
                 </table>
 
             </div>
-            <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.sfda"
-                style="width: 100%; padding: 10px 30px; display: flex;">
+            <div *ngIf="errors.payersError != null && errors.payersError != '' && !componentLoading.sfda" style="width: 100%; padding: 10px 30px; display: flex;">
                 <p>{{errors.payersError}}</p>
             </div>
             <div *ngIf="componentLoading.sfda" style="width: 100%; padding: 10px;">

@@ -53,14 +53,18 @@ export class LabResultsComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
 
     this.actions.pipe(
       ofType(saveLabResults)
-    ).subscribe(() => { if (this.expandedResult != -1) this.updateClaimInvestigations() });
+    ).subscribe(() => {
+      if (this.expandedResult != -1) {
+        this.updateClaimInvestigations();
+      }
+    });
 
     this.store.select(getLabResultsErrors).subscribe(errors => this.errors = errors);
   }
@@ -70,9 +74,9 @@ export class LabResultsComponent implements OnInit {
     if (claim.caseInformation.caseDescription.investigation != null) {
       claim.caseInformation.caseDescription.investigation.forEach(
         investigation => {
-          let controls = this.createEmptyResultControls();
+          const controls = this.createEmptyResultControls();
           if (investigation.investigationDate != null) {
-            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'dd-MM-yyyy'))
+            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'dd-MM-yyyy'));
           } else {
             controls.testDate.setValue('');
           }
@@ -81,7 +85,7 @@ export class LabResultsComponent implements OnInit {
           controls.resultDescription.setValue(investigation.investigationDescription);
 
           investigation.observation.forEach(observation => {
-            let componentControls = this.createEmptyComponentControls();
+            const componentControls = this.createEmptyComponentControls();
             componentControls.componentCode.setValue(observation.observationCode);
 
             componentControls.componentDescription.setValue(observation.observationDescription);
@@ -136,7 +140,7 @@ export class LabResultsComponent implements OnInit {
       testSerial: new FormControl(),
       resultDescription: new FormControl(),
       componentsControls: []
-    }
+    };
   }
 
   createEmptyComponentControls() {
@@ -148,7 +152,7 @@ export class LabResultsComponent implements OnInit {
       componentResultUnit: new FormControl(),
       componentResultComment: new FormControl(),
       isOpen: false
-    }
+    };
   }
 
   onDeleteResultClick(i) {
