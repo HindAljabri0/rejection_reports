@@ -74,6 +74,7 @@ import {
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
+import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa-rejection-report.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
     ImageTooltipComponent,
     SummaryComponent,
     GmReportsPageComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    BupaRejectionReportComponent
   ],
   imports: [
     AppRoutingModule,
