@@ -12,4 +12,16 @@ export class BupaRejectionReportComponent implements OnInit {
   ngOnInit() {
   }
 
+  controlBlur(e) {
+    e.currentTarget.parentElement.classList.remove('focused');
+  }
+
+  controlFocus(e) {
+    e.currentTarget.parentElement.classList.add('focused');
+  }
+
+  controlClick(e) {
+    e.currentTarget.querySelector('.form-control').focus();
+  }
+
 }

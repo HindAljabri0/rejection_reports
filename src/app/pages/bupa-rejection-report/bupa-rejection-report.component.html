@@ -1,1 +1,518 @@
-<p>bupa-rejection-report works!</p>
+<div class="block-header has-border bupa-header">
+    <p class="align-self-center">Bupa Rejection Report</p>
+    <div class="filter-panel">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Enter batch ID" />
+        </div>
+        <div class="form-group">
+            <div class="date-picker">
+                <input [matDatepicker]="receivedDatePicker" class="form-control" placeholder="Select received date" />
+                <mat-datepicker-toggle [for]="receivedDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #receivedDatePicker></mat-datepicker>
+            </div>
+        </div>
+        <div class="form-group referral-batch">
+            <label class="control-label">Referral Batch</label>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select value="Yes">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div class="block-body bg-white p-0">
+    <div class="table-responsive">
+        <table class="primary-grid bupa-table" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th colspan="4" width="33.3333%" class="text-center title">Batch Difference</th>
+                    <th colspan="4" width="33.3333%" class="text-center title">Deduction</th>
+                    <th colspan="4" width="33.3333%" class="text-center title">Statement Summary</th>
+                </tr>
+                <tr>
+                    <th width="10" class="text-center">No.</th>
+                    <th>Item Description</th>
+                    <th>Billed Amount</th>
+                    <th>VAT Amount</th>
+                    <th width="10" class="text-center">No.</th>
+                    <th>Item Description</th>
+                    <th>Billed Amount</th>
+                    <th>VAT Amount</th>
+                    <th width="10" class="text-center">No.</th>
+                    <th>Item Description</th>
+                    <th>Billed Amount</th>
+                    <th>VAT Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td>Invalid Membership</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="1" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="2" (focus)="controlFocus($event)" />
+                    </td>
+                    <td class="text-center">6</td>
+                    <td>A. Appropriateness of Care</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="13" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="14" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>Presented Net Billed</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="47" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="48" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">2</td>
+                    <td>Difference in Computation</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="3" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="4" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>B. Technical / Contractual</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="15" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="16" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>Batch Difference</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="49" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="50" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">3</td>
+                    <td>Claims not Received</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="5" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="6" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center">7</td>
+                    <td>B.1 Consultation within the free follow-up period</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="17" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="18" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center">17</td>
+                    <td>Discount Difference</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="51" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="52" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">4</td>
+                    <td>Invalid Service Code</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="7" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="8" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center">8</td>
+                    <td>B.2 Charges/service included, bundled or part of billed procedure/consultation or management.</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="19" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="20" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center">18</td>
+                    <td>Deductible Difference</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="53" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="54" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">5</td>
+                    <td>Late Submission</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="9" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="10" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center">9</td>
+                    <td>B.3 Duplicate / Repeated Billing / Finally Settled</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="21" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="22" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>Deduction</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="55" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="56" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">10</td>
+                    <td>C- Pricelist Shortfall / Billed<br>Above Contractual / Agreed Prices</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="23" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="24" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>Pending</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="57" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="58" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center"></td>
+                    <td>D. Policy Compliance</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="25" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="26" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">11</td>
+                    <td>C.1 Not covered by the effective insurance policy (condition /service) / within the waiting period</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="27" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="28" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">12</td>
+                    <td>C.2 Out of validity of effective insurance policy.</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="29" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="30" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">13</td>
+                    <td>C.3 Age / gender not matching with the type of service provided.</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="31" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="32" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center"></td>
+                    <td>E. Pre-authorization</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="33" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="34" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">14</td>
+                    <td>D.1 Requires pre-authorisation per policy.</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="35" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="36" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">15</td>
+                    <td>D.2 Not part of pre-authorisation request</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="37" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="38" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">16</td>
+                    <td>D.3 Already rejected / Cancelled at pre-authorisation</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="39" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="40" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center"></td>
+                    <td>F. Unwarranted Variations</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="41" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="42" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center"></td>
+                    <td>G- Pharmacy Benefit Management</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="43" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control" (blur)="controlBlur($event)" tabindex="44" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="text-lg semibold">
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center"></td>
+                    <td>Grand Total Rejections amounts</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="59" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="60" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+                <tr class="text-lg semibold">
+                    <td class="text-center"></td>
+                    <td>Subtotal batch difference</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="11" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="12" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>Subtotal deductions</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="45" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="46" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="text-center"></td>
+                    <td>Approved to pay</td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="61" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                    <td class="form-group" (click)="controlClick($event)">
+                        <input type="text" class="form-control semibold" (blur)="controlBlur($event)" tabindex="62" (focus)="controlFocus($event)" />
+                        <span class="ratio"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="block-footer has-border bupa-footer">
+    <div class="left-block">
+        <div class="form-group form-group-static">
+            <div class="control-label">Provider Billed</div>
+            <p class="form-control-static">00,00</p>
+        </div>
+        <div class="form-group form-group-static">
+            <div class="control-label">Presented Discount</div>
+            <p class="form-control-static">00,00</p>
+        </div>
+        <div class="form-group form-group-static">
+            <div class="control-label">Presented Deductible</div>
+            <p class="form-control-static">00,00</p>
+        </div>
+        <div class="form-group form-group-static">
+            <div class="control-label">Net Billed with VAT</div>
+            <p class="form-control-static">00,00</p>
+        </div>
+        <div class="form-group form-group-static">
+            <div class="control-label">VAT Amount</div>
+            <p class="form-control-static">00,00</p>
+        </div>
+    </div>
+    <div class="right-block btn-list">
+        <button mat-button tabindex="63">Clear Fields</button>
+        <button mat-flat-button color="primary" tabindex="64">Verify & Save</button>
+    </div>
+</div>

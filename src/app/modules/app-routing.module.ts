@@ -10,6 +10,7 @@ import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.compon
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
+import { BupaRejectionReportComponent } from '../pages/bupa-rejection-report/bupa-rejection-report.component';
 
 
 
@@ -26,6 +27,7 @@ import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page
       { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
+      { path: 'bupa-rejection-report', component: BupaRejectionReportComponent, canActivate: [RouteCanActiveService] },
       {
         path: 'configurations',
         loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
