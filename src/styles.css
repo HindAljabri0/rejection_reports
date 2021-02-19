@@ -204,7 +204,11 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 .sidebar .nav-list>li>a:hover,.sidebar .nav-list>li>a:focus,.sidebar .nav-list>li>a:active{background-color: #ecebeb;}
 .sidebar .nav-list>.new>a::after{content: ".";color: #EB2A75;font-size: 70px;position: absolute;left: 83%;top: 85px;}
 .sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
-.sidebar .nav-list>li>a>img {margin-right: 14px;display: block;height: 26px;width: 26px;}
+.sidebar .nav-list>li>a>img {display: block;height: 24px;width: 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.72;}
+.sidebar .nav-list>li>a>.active-icon{margin-right: 14px;margin-left:-24px;transform: translate(0, 8px) scale(0.2);opacity: 0;}
+.sidebar .nav-list>li>a:hover>.default-icon,.sidebar .nav-list>li>a:focus>.default-icon,.sidebar .nav-list>li>a:active>.default-icon{opacity: 1;}
+.sidebar .nav-list>li>.is-active>.active-icon{transform: scale(1);opacity: 1;}
+.sidebar .nav-list>li>.is-active>.default-icon,.sidebar .nav-list>li>.is-active:hover>.default-icon,.sidebar .nav-list>li>.is-active:focus>.default-icon,.sidebar .nav-list>li>.is-active:active>.default-icon{transform: translate(0, -8px) scale(0.2);opacity: 0;}
 .nav-backdrop{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0,0,0,0.6);opacity: 0;visibility: hidden;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);display: none;z-index: 11;}
 .nav-backdrop>button{background: none;border:0;display: block;height: 100%;width: 100%;}
 
