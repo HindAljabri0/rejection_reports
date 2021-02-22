@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { BupaRejectionConfirmDialogComponent } from './bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 
 @Component({
   selector: 'app-bupa-rejection-report',
@@ -7,21 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BupaRejectionReportComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
-  controlBlur(e) {
-    e.currentTarget.parentElement.classList.remove('focused');
-  }
-
-  controlFocus(e) {
-    e.currentTarget.parentElement.classList.add('focused');
-  }
-
   controlClick(e) {
     e.currentTarget.querySelector('.form-control').focus();
+  }
+
+  saveClick() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.autoFocus = false;
+    const dialogRef = this.dialog.open(BupaRejectionConfirmDialogComponent, dialogConfig);
   }
 
 }

@@ -75,6 +75,7 @@ import {
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
 import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa-rejection-report.component';
+import { BupaRejectionConfirmDialogComponent } from './pages/bupa-rejection-report/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa
     SummaryComponent,
     GmReportsPageComponent,
     ChangeLogDialogComponent,
-    BupaRejectionReportComponent
+    BupaRejectionReportComponent,
+    BupaRejectionConfirmDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -183,7 +185,8 @@ import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa
     TopFiveRejectionsComponent,
     ImageTooltipComponent,
     UploadSummaryDialogComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    BupaRejectionConfirmDialogComponent
   ],
 })
 export class AppModule { }
