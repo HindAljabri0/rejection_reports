@@ -80,6 +80,13 @@
                         <span class="text">Rejection Report</span>
                     </a>
                 </li>
+                <li i18n="@@rejectionUpload">
+                    <a routerLink="bupa-rejection-reports/{{providerId}}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-upload-claims.svg" alt="Rejection Upload" class="default-icon" />
+                        <img src="assets/ic-upload-claims-active.svg" alt="Rejection Upload" class="active-icon" />
+                        <span class="text">Rejection Upload</span>
+                    </a>
+                </li>
             </ul>
             <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
             <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">

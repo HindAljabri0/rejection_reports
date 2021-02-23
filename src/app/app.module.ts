@@ -74,8 +74,8 @@ import {
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
-import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa-rejection-report.component';
-import { BupaRejectionConfirmDialogComponent } from './pages/bupa-rejection-report/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+import { BupaRejectionConfirmDialogComponent } from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -125,7 +125,6 @@ import { BupaRejectionConfirmDialogComponent } from './pages/bupa-rejection-repo
     SummaryComponent,
     GmReportsPageComponent,
     ChangeLogDialogComponent,
-    BupaRejectionReportComponent,
     BupaRejectionConfirmDialogComponent
   ],
   imports: [
