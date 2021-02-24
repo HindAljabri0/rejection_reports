@@ -75,7 +75,11 @@ import {
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
 import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa-rejection-report.component';
-import { BupaRejectionConfirmDialogComponent } from './pages/bupa-rejection-report/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+import {
+  BupaRejectionConfirmDialogComponent
+} from './pages/bupa-rejection-report/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+import { CleanClaimProgressReportComponent } from './pages/clean-claim-progress-report/clean-claim-progress-report.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -126,7 +130,8 @@ import { BupaRejectionConfirmDialogComponent } from './pages/bupa-rejection-repo
     GmReportsPageComponent,
     ChangeLogDialogComponent,
     BupaRejectionReportComponent,
-    BupaRejectionConfirmDialogComponent
+    BupaRejectionConfirmDialogComponent,
+    CleanClaimProgressReportComponent
   ],
   imports: [
     AppRoutingModule,
@@ -146,7 +151,8 @@ import { BupaRejectionConfirmDialogComponent } from './pages/bupa-rejection-repo
     CarouselModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    GuidedTourModule
+    GuidedTourModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     ThemeService,

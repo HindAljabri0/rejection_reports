@@ -8,7 +8,7 @@
 
     <div class="block-header" *ngIf="errorMessage == null">
         <p *ngIf="uploadNameExist" class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
-        <div class="ml-auto d-flex">
+        <div class="ml-auto d-flex mt-n2 mb-n2">
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': !isManagingAttachments}" (click)="isManagingAttachments = false">Claims</button>
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': isManagingAttachments}" (click)="isManagingAttachments = true">Attachments
                 Management</button>
