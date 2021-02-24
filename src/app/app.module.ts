@@ -74,10 +74,9 @@ import {
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
-import { BupaRejectionReportComponent } from './pages/bupa-rejection-report/bupa-rejection-report.component';
 import {
   BupaRejectionConfirmDialogComponent
-} from './pages/bupa-rejection-report/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+} from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 import { CleanClaimProgressReportComponent } from './pages/clean-claim-progress-report/clean-claim-progress-report.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
@@ -129,7 +128,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     SummaryComponent,
     GmReportsPageComponent,
     ChangeLogDialogComponent,
-    BupaRejectionReportComponent,
     BupaRejectionConfirmDialogComponent,
     CleanClaimProgressReportComponent
   ],
