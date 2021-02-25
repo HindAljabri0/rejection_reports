@@ -73,6 +73,12 @@ import {
   UploadSummaryDialogComponent
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
+import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
+import {
+  BupaRejectionConfirmDialogComponent
+} from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+import { CleanClaimProgressReportComponent } from './pages/clean-claim-progress-report/clean-claim-progress-report.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -120,7 +126,10 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
     ImageToolTipDirective,
     ImageTooltipComponent,
     SummaryComponent,
-    GmReportsPageComponent
+    GmReportsPageComponent,
+    ChangeLogDialogComponent,
+    BupaRejectionConfirmDialogComponent,
+    CleanClaimProgressReportComponent
   ],
   imports: [
     AppRoutingModule,
@@ -140,7 +149,8 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
     CarouselModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    GuidedTourModule
+    GuidedTourModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     ThemeService,
@@ -178,7 +188,9 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
     ImageTooltipComponent,
-    UploadSummaryDialogComponent
+    UploadSummaryDialogComponent,
+    ChangeLogDialogComponent,
+    BupaRejectionConfirmDialogComponent
   ],
 })
 export class AppModule { }

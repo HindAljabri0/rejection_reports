@@ -10,13 +10,15 @@
             <ul class="nav-list">
                 <li i18n="@@dashboard">
                     <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/dashboard.svg" />
+                        <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
+                        <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
                 <li i18n="@@uploadclaims">
                     <a routerLink="upload" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/uploadclaim.svg" />
+                        <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
+                        <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" />
                         <span class="text">Upload Claims</span>
                     </a>
                 </li>
@@ -28,25 +30,29 @@
             </li> -->
                 <li i18n="@@createclaim">
                     <a routerLink="claims/add" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/addclaim.svg" />
+                        <img src="assets/ic-create-claim.svg" alt="Create Claim" class="default-icon" />
+                        <img src="assets/ic-create-claim-active.svg" alt="Create Claim" class="active-icon" />
                         <span class="text">Create Claim</span>
                     </a>
                 </li>
                 <li i18n="@@claimhistory">
                     <a routerLink="upload/history" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/summary.svg" />
+                        <img src="assets/ic-claim-history.svg" alt="Claims History" class="default-icon" />
+                        <img src="assets/ic-claim-history-active.svg" alt="Claims History" class="active-icon" />
                         <span class="text">Claims History</span>
                     </a>
                 </li>
                 <li i18n="@@notifications">
                     <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/notification.svg" />
+                        <img src="assets/ic-notifications.svg" alt="Notification" class="default-icon" />
+                        <img src="assets/ic-notifications-active.svg" alt="Notification" class="active-icon" />
                         <span class="text">Notifications</span>
                     </a>
                 </li>
                 <li i18n="@@announcements">
                     <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/Announcements.svg" />
+                        <img src="assets/ic-announcement.svg" alt="Announcements" class="default-icon" />
+                        <img src="assets/ic-announcement-active.svg" alt="Announcements" class="active-icon" />
                         <span class="text">Announcements</span>
                     </a>
                 </li>
@@ -55,20 +61,30 @@
             <ul class="nav-list">
                 <li i18n="@@paymentreport">
                     <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/payment_report.svg" />
+                        <img src="assets/ic-payment-report.svg" alt="Payment Report" class="default-icon" />
+                        <img src="assets/ic-payment-report-active.svg" alt="Payment Report" class="active-icon" />
                         <span class="text">Payment Report</span>
                     </a>
                 </li>
                 <li i18n="@@submissionreport">
                     <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/submission_report.svg" />
+                        <img src="assets/ic-submission-report.svg" alt="Submission Report" class="default-icon" />
+                        <img src="assets/ic-submission-report-active.svg" alt="Submission Report" class="active-icon" />
                         <span class="text">Submission Report</span>
                     </a>
                 </li>
                 <li i18n="@@rejectionreport">
                     <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/rejection_report.svg" />
+                        <img src="assets/ic-rejection-report.svg" alt="Rejection Report" class="default-icon" />
+                        <img src="assets/ic-rejection-report-active.svg" alt="Rejection Report" class="active-icon" />
                         <span class="text">Rejection Report</span>
+                    </a>
+                </li>
+                <li i18n="@@rejectionUpload">
+                    <a routerLink="bupa-rejection-reports/{{providerId}}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-upload-claims.svg" alt="Rejection Upload" class="default-icon" />
+                        <img src="assets/ic-upload-claims-active.svg" alt="Rejection Upload" class="active-icon" />
+                        <span class="text">Rejection Upload</span>
                     </a>
                 </li>
             </ul>
@@ -76,13 +92,15 @@
             <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
                 <li i18n="@@gmsummaryreport">
                     <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/payment_report.svg" />
+                        <img src="assets/ic-summary-report.svg" alt="Summary Report" class="default-icon" />
+                        <img src="assets/ic-summary-report-active.svg" alt="Summary Report" class="active-icon" />
                         <span class="text">Summary Report</span>
                     </a>
                 </li>
                 <li i18n="@@gmebillingreport">
                     <a routerLink="{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                        <img src="assets/payment_report.svg" />
+                        <img src="assets/ic-ebilling-report.svg" alt="E-billing Report" class="default-icon" />
+                        <img src="assets/ic-ebilling-report-active.svg" alt="E-billing Report" class="active-icon" />
                         <span class="text">E-Billing Report</span>
                     </a>
                 </li>

@@ -10,8 +10,7 @@ import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.compon
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
-
-
+import { CleanClaimProgressReportComponent } from '../pages/clean-claim-progress-report/clean-claim-progress-report.component';
 
 @NgModule({
   imports: [
@@ -26,6 +25,7 @@ import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page
       { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
       { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
+      { path: 'clean-claim-progress-report', component: CleanClaimProgressReportComponent, canActivate: [RouteCanActiveService] },
       {
         path: 'configurations',
         loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
@@ -40,6 +40,11 @@ import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page
         path: 'claims',
         loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
         canLoad: [RouteCanActiveService]
+      },
+      {
+        path: 'bupa-rejection-reports/:providerId',
+        loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+        canActivate: [RouteCanActiveService]
       }
     ])
   ],

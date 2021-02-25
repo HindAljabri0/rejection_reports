@@ -1,9 +1,8 @@
 
 export class AttachmentRequest {
-
     fileName: string;
-	fileType: FileType;
-	attachmentFile: string;
+    fileType: FileType;
+    attachmentFile: string;
     userComment: string;
 }
 

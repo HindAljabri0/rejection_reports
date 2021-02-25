@@ -296,7 +296,11 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
 
   deleteClaimByUploadid(uploadSummaryID: number, refNumber: string) {
-    this.dialogService.openMessageDialog(new MessageDialogData('Delete Upload?', `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Upload?',
+        `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
@@ -304,7 +308,10 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
 
-              this.dialogService.openMessageDialog(new MessageDialogData('', `Upload with reference ${refNumber} was deleted successfully.`, false))
+              this.dialogService.openMessageDialog(
+                new MessageDialogData('',
+                  `Upload with reference ${refNumber} was deleted successfully.`,
+                  false))
                 .subscribe(afterColse => {
                   this.uploadService.summaryChange.next(new UploadSummary());
                   this.router.navigate(['']);

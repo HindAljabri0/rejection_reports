@@ -19,8 +19,12 @@ import { ClaimDiagnosisComponent } from 'src/app/claim-module-components/claim-d
 import { ClaimIllnessesComponent } from 'src/app/claim-module-components/claim-illnesses/claim-illnesses.component';
 import { GenInfoComponent } from 'src/app/claim-module-components/gen-info/gen-info.component';
 import { InvoicesServicesComponent } from 'src/app/claim-module-components/invoices-services/invoices-services.component';
-import { CreateByApprovalFormComponent } from 'src/app/claim-module-components/dialogs/create-by-approval-form/create-by-approval-form.component';
-import { SelectServiceDialogComponent } from 'src/app/claim-module-components/dialogs/select-service-dialog/select-service-dialog.component';
+import {
+  CreateByApprovalFormComponent
+} from 'src/app/claim-module-components/dialogs/create-by-approval-form/create-by-approval-form.component';
+import {
+  SelectServiceDialogComponent
+} from 'src/app/claim-module-components/dialogs/select-service-dialog/select-service-dialog.component';
 import { OnSavingDoneComponent } from 'src/app/claim-module-components/dialogs/on-saving-done/on-saving-done.component';
 import { VitalSignsComponent } from 'src/app/claim-module-components/vital-signs/vital-signs.component';
 import { AdmissionComponent } from 'src/app/claim-module-components/admission/admission.component';
@@ -50,7 +54,7 @@ import { LabResultsComponent } from 'src/app/claim-module-components/lab-results
   ],
   imports: [
     RouterModule.forChild([
-      {path: ':id', component: MainClaimPageComponent}
+      { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
     EffectsModule.forFeature([ClaimEffects]),

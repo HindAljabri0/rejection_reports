@@ -8,7 +8,7 @@
 
     <div class="block-header" *ngIf="errorMessage == null">
         <p *ngIf="uploadNameExist" class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
-        <div class="ml-auto d-flex">
+        <div class="ml-auto d-flex mt-n2 mb-n2">
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': !isManagingAttachments}" (click)="isManagingAttachments = false">Claims</button>
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': isManagingAttachments}" (click)="isManagingAttachments = true">Attachments
                 Management</button>
@@ -62,7 +62,7 @@
                 *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
                 {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
             </button>
-            <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==2">
+            <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==1">
                 Validation Details
             </button>
             <span class="spacer"></span>
@@ -87,9 +87,9 @@
                 </button>
             </div>
         </div>
-        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header" dynamicHeight="true">
+        <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
             <mat-tab>
-                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" *ngIf="searchResult != null" [trackX]="true">
+                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchResult != null">
                     <div class="fixed-height">
                         <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
                             <thead>
@@ -248,12 +248,12 @@
                                 <ng-container *ngIf='validationDetails.length > 0'>
                                     <tr *ngFor="let detail of validationDetails">
                                         <td>{{detail.providerClaimeNo}}</td>
-                                        <td [style.color]="accentColor(detail.status)">
+                                        <td class="text-{{accentColor(detail.status)}}">
                                             {{detail.fieldName}}</td>
-                                        <td [style.color]="accentColor(detail.status)">
+                                        <td class="text-{{accentColor(detail.status)}}">
                                             {{detail.description}}</td>
                                         <td class="text-center">
-                                            <span class="status-dot" [style.background-color]="accentColor(detail.status)"></span>
+                                            <span class="status-dot bg-{{accentColor(detail.status)}}"></span>
                                         </td>
                                     </tr>
                                 </ng-container>

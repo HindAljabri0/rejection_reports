@@ -3,7 +3,6 @@ import { NotificationTypes } from './notificationsTypes';
 
 
 export class Notification extends Paginateable {
-
     id: number;
     type: NotificationTypes;
     message: string;
@@ -23,7 +22,7 @@ export class Notification extends Paginateable {
             this.type = body['type'];
             this.message = body['message'];
             this.reference = body['reference'];
-            this.datetime = new Date(body['date']+'');
+            this.datetime = new Date(body['date'] + '');
             this.targetId = body['targetId'];
             this.sourceId = body['sourceId'];
             this.targetUser = body['targetUser'];

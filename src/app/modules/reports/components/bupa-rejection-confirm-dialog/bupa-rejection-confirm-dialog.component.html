@@ -1,0 +1,59 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Confirm calculated values</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+    <table cellpadding="0" class="primary-grid" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Billed Amount</th>
+                <th>VAT Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="text-primary medium">Subtotal batch difference</th>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalBatchDiff}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalBatchDiffVat}}</h3>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-primary medium">Subtotal deductions</th>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalDeductions}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalDeductionsVat}}</h3>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-primary medium">Grand Total Rejections amounts</th>
+                <td>
+                    <h3 class="medium">{{dialogData.grandTotalRejection}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.grandTotalRejectionVat}}</h3>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-primary medium">Approved to pay</th>
+                <td>
+                    <h3 class="medium">{{dialogData.approvedToPay}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.approvedToPayVat}}</h3>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Close</button>
+        <button mat-flat-button color="primary">Confirm & Save</button>
+    </div>
+</div>

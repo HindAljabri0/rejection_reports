@@ -5,10 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AnnouncementsService } from 'src/app/services/announcementService/announcements.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { DataSource } from '@angular/cdk/table';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { CollectionViewer } from '@angular/cdk/collections';
-import { async } from 'q';
 // import { InfiniteScroll } from 'ngx-infinite-scroll';
 
 
@@ -19,27 +15,29 @@ import { async } from 'q';
 })
 export class AnnouncementsPageComponent implements OnInit {
 
-  providerId:string;
-  cardTitle:string = 'All Announcements';
-  currentPage:number = 0;
-  pageSize:number = 10;
+  providerId: string;
+  cardTitle = 'All Announcements';
+  currentPage = 0;
+  pageSize = 10;
 
   // modalScrollDistance = 2;
   // throttle = 300;
 
 
 
-  announcementsMap:Map<string, Announcement[]> = new Map();
-  announcementsMapKeys:string[] = new Array();
+  announcementsMap: Map<string, Announcement[]> = new Map();
+  announcementsMapKeys: string[] = new Array();
 
-  totalAnnouncements: number = 0;
-  currentAnnouncementsCount:number = 0;
+  totalAnnouncements = 0;
+  currentAnnouncementsCount = 0;
   payers: { id: number, name: string }[];
   payerids: number[];
 
-  constructor(public commen:SharedServices, public routeActive:ActivatedRoute, 
-              public announcementsService: AnnouncementsService,
-              ) { }
+  constructor(
+    public commen: SharedServices,
+    public routeActive: ActivatedRoute,
+    public announcementsService: AnnouncementsService,
+  ) { }
 
   ngOnInit() {
     this.routeActive.params.subscribe(value => {
@@ -52,35 +50,36 @@ export class AnnouncementsPageComponent implements OnInit {
 
 
 
-  getData(nextPage:boolean){
-    if(nextPage) this.currentPage++;
+  getData(nextPage: boolean) {
+    if (nextPage) {
+      this.currentPage++;
+    }
     this.announcementsService.getAnnouncements(this.providerId, this.payerids, this.currentPage, this.pageSize).subscribe(event => {
-      if(event instanceof HttpResponse){
-        const paginatedResult:PaginatedResult<Announcement> = new PaginatedResult(event.body, Announcement);
+      if (event instanceof HttpResponse) {
+        const paginatedResult: PaginatedResult<Announcement> = new PaginatedResult(event.body, Announcement);
         this.totalAnnouncements = paginatedResult.totalElements;
-        for(let announcement of paginatedResult.content){
+        for (const announcement of paginatedResult.content) {
           const id = announcement.messageId;
-          if(!this.announcementsMap.has(`${id}`)){
+          if (!this.announcementsMap.has(`${id}`)) {
             this.announcementsMap.set(`${id}`, new Array());
             this.announcementsMapKeys.push(`${id}`);
           }
           this.announcementsMap.get(`${id}`).push(announcement);
-          
-         this.currentAnnouncementsCount++;
+
+          this.currentAnnouncementsCount++;
         }
       }
     }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse) {
-      }
+      if (errorEvent instanceof HttpErrorResponse) { }
     });
   }
 
   announcementsNotFinished() {
-    return this.currentAnnouncementsCount < this. totalAnnouncements;
+    return this.currentAnnouncementsCount < this.totalAnnouncements;
   }
 
- /* onScrollDown() {
-    console.log('scrolled down!!');
-  }*/
+  /* onScrollDown() {
+     console.log('scrolled down!!');
+   }*/
 
 }

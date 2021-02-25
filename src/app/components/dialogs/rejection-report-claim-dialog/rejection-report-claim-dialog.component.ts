@@ -9,7 +9,8 @@ import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/reject
 })
 export class RejectionReportClaimDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<RejectionReportClaimDialogComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<RejectionReportClaimDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public claim: RejectionReportClaimDialogData) { }
 
   ngOnInit() {
