@@ -74,7 +74,7 @@ export class ClaimValidationService {
     if (payer != '102' && (policyNum == null || policyNum.trim().length == 0)) {
       fieldErrors.push({ fieldName: 'policyNum' });
     }
-    if(this.pageType == 'DENTAL_OPTICAL'){
+    if (this.pageType == 'DENTAL_OPTICAL') {
       if (approvalNum == null || approvalNum.trim().length == 0) {
         fieldErrors.push({ fieldName: 'approvalNum' });
       } else if (!this.regexWithSym.test(approvalNum)) {
@@ -171,10 +171,17 @@ export class ClaimValidationService {
 
     let fieldErrors: FieldError[] = [];
 
-    if (diagnosis == null || diagnosis.length == 0) {
-      fieldErrors.push({ fieldName: 'diagnosis' });
+
+    if (this.claim.visitInformation.departmentCode != this.opticalDepartmentCode && this.claim.visitInformation.departmentCode != this.dentalDepartmentCode) {
+
+      if (diagnosis == null || diagnosis.length == 0) {
+        fieldErrors.push({ fieldName: 'diagnosis' });
+      }
+      this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
+
     }
-    this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
+
+
 
   }
 
