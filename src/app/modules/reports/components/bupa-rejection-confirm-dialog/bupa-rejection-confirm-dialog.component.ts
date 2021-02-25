@@ -21,4 +21,7 @@ export class BupaRejectionConfirmDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
+  
+
 }

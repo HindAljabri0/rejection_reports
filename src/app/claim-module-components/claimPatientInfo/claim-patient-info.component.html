@@ -57,11 +57,11 @@
         <div class="col-md-6">
             <div class="form-group style-horizontal" [class.has-error]="fieldHasError('policyNum')">
                 <div class="left-block">
-                    <label class="control-label">Policy No.<span *ngIf="selectedPayer != 102" class="asterisk">*</span></label>
+                    <label class="control-label">Policy No.<span *ngIf="selectedPayer!==102 && selectedPayer!==207 &&selectedPayer!== 313" class="asterisk">*</span></label>
                 </div>
                 <div class="right-block">
                     <input class="form-control" type="text" placeholder="Enter policy number" [formControl]="policyNumController" (change)="updateClaim('policyNum')"
-                        [required]="selectedPayer != 102" [matTooltip]="getFieldError('policyNum')">
+                        [required]="selectedPayer !== 102 && selectedPayer !== 207 &&selectedPayer !==313 " [matTooltip]="getFieldError('policyNum')">
                 </div>
             </div>
         </div>

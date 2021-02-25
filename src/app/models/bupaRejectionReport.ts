@@ -154,4 +154,26 @@ export class BupaRejectionReportModel {
     approvedToPayPercent = '';
     approvedToPayVat = 0;
     approvedToPayVatPercent = '';
+
+
+    providerBilled = 0;
+    
+
+    
+    presentedDiscount= 0;
+   
+
+
+    presentedDeductible= 0;
+
+
+
+    netBilledwithVAT= 0;
+ 
+
+   
+    vATAmount= 0;
+ 
+
+
 }
