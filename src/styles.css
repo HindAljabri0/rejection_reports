@@ -244,7 +244,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .form-group.form-group-lg{margin-bottom: 24px;}
 .form-control,.form-control[readonly],.form-control:disabled{border:1px solid #EFF5FF;height:40px;background-color: #EFF5FF;padding: 4px 12px;color: #3060AA;border-radius: 6px;font-size: inherit;line-height: inherit;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: none;caret-color: #3060AA;font-size:14px;line-height: 20px;}
 select.form-control{cursor: pointer;}
-textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding-bottom: 8px;}
+textarea.form-control,textarea.form-control:disabled,textarea.form-control[readonly]{min-height: 40px;resize: vertical;padding-top: 9px;padding-bottom: 9px;height:auto;}
 .form-control:focus,.form-control[readonly]:focus,.form-control.custom-select-control.mat-form-field.mat-focused{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
 .form-control::-webkit-outer-spin-button, .form-control::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
 .form-control[type=number] {-moz-appearance: textfield;}

@@ -79,6 +79,7 @@ import {
 } from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 import { CleanClaimProgressReportComponent } from './pages/clean-claim-progress-report/clean-claim-progress-report.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     GmReportsPageComponent,
     ChangeLogDialogComponent,
     BupaRejectionConfirmDialogComponent,
-    CleanClaimProgressReportComponent
+    CleanClaimProgressReportComponent,
+    MainLayoutComponent
   ],
   imports: [
     AppRoutingModule,
