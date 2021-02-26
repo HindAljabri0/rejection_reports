@@ -71,10 +71,11 @@ export class ClaimValidationService {
     if (nationalId != null && nationalId.trim().length != 10) {
       fieldErrors.push({ fieldName: 'nationalId', error: 'National id must be 10 numbers or 0.' });
     }
-    if (payer != '102' && (policyNum == null || policyNum.trim().length == 0)) {
+    if (payer != '102' && payer != '207'&& payer != '313' && ( policyNum == null || policyNum.trim().length == 0)) {
       fieldErrors.push({ fieldName: 'policyNum' });
+
     }
-    if(this.pageType == 'DENTAL_OPTICAL'){
+    if (this.pageType == 'DENTAL_OPTICAL') {
       if (approvalNum == null || approvalNum.trim().length == 0) {
         fieldErrors.push({ fieldName: 'approvalNum' });
       } else if (!this.regexWithSym.test(approvalNum)) {
@@ -162,7 +163,7 @@ export class ClaimValidationService {
   }
 
   validateDiagnosis() {
-    if (this.claim.claimIdentities.payerID == '102' && this.claim.visitInformation.departmentCode == this.opticalDepartmentCode) {
+    if (this.claim.claimIdentities.payerID == '102' &&  this.claim.visitInformation.departmentCode == this.opticalDepartmentCode) {
       this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: [] }));
       return;
     }
@@ -171,10 +172,17 @@ export class ClaimValidationService {
 
     let fieldErrors: FieldError[] = [];
 
-    if (diagnosis == null || diagnosis.length == 0) {
-      fieldErrors.push({ fieldName: 'diagnosis' });
+
+    if (this.claim.visitInformation.departmentCode != this.opticalDepartmentCode && this.claim.visitInformation.departmentCode != this.dentalDepartmentCode) {
+
+      if (diagnosis == null || diagnosis.length == 0) {
+        fieldErrors.push({ fieldName: 'diagnosis' });
+      }
+      this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
+
     }
-    this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
+
+
 
   }
 
