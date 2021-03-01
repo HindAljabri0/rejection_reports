@@ -1,39 +1,40 @@
 <div class="block-header has-border">
     <p class="align-self-center">Bupa Rejection Report</p>
 </div>
-<div class="block-filter-panel">
-    <div class="row small-gutter">
-        <div class="col-xxl-2 col-md-4">
-            <div class="form-group">
-                <label class="control-label">Batch ID</label>
-                <input type="text" class="form-control" placeholder="Enter batch ID" />
+<form #bupaReport='ngForm'
+    (ngSubmit)='bupaReport.valid && bupaRejectionReportData.grandTotalRejectionVat > 0 && bupaRejectionReportData.grandTotalRejection > 0 && saveClick()'>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-xxl-2 col-md-4">
+                <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && batchId.invalid}">
+                    <label class="control-label">Batch ID</label>
+                    <input type="text" class="form-control" #batchId='ngModel' name='batchId' [(ngModel)]='bupaRejectionReportData.batchId' required placeholder="Enter batch ID" />
+                </div>
             </div>
-        </div>
-        <div class="col-xxl-2 col-md-4">
-            <div class="form-group">
-                <label class="control-label">Received Date</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="receivedDatePicker" class="form-control"
-                        placeholder="Select received date" />
-                    <mat-datepicker-toggle [for]="receivedDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #receivedDatePicker></mat-datepicker>
+            <div class="col-xxl-2 col-md-4">
+                <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && receivedDate.invalid}">
+                    <label class="control-label">Received Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="receivedDatePicker" [(ngModel)]='bupaRejectionReportData.receivedDate' #receivedDate='ngModel' name='receivedDate' class="form-control" required
+                            placeholder="Select received date" />
+                        <mat-datepicker-toggle [for]="receivedDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #receivedDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-md-4">
+                <div class="form-group referral-batch">
+                    <label class="control-label">Referral Batch</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="Yes">
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
-        <div class="col-xxl-2 col-md-4">
-            <div class="form-group referral-batch">
-                <label class="control-label">Referral Batch</label>
-                <mat-form-field class="form-control custom-select-control">
-                    <mat-select value="Yes">
-                        <mat-option value="Yes">Yes</mat-option>
-                        <mat-option value="No">No</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
     </div>
-</div>
-<form #bupaReport='ngForm' (ngSubmit)='bupaReport.valid && saveClick()'>
     <div class="block-body bg-white p-0">
         <div class="table-responsive">
             <table class="primary-grid bupa-table" cellpadding="0" cellspacing="0" border="0">
@@ -542,12 +543,12 @@
                         <td></td>
                         <td class="text-center"></td>
                         <td>Grand Total Rejections amounts</td>
-                        <td class="form-group row-click" [ngClass]="{'has-error' : bupaReport.submitted && grandTotalRejection.invalid}" (click)="controlClick($event)">
-                            <input type="number" [(ngModel)]="bupaRejectionReportData.grandTotalRejection" #grandTotalRejection="ngModel" name="grandTotalRejection" required class="form-control" disabled tabindex="59" />
+                        <td class="form-group row-click" [ngClass]="{'has-error' : bupaReport.submitted && (grandTotalRejection.invalid || bupaRejectionReportData.grandTotalRejection === 0)}" (click)="controlClick($event)">
+                            <input type="number" [(ngModel)]="bupaRejectionReportData.grandTotalRejection" #grandTotalRejection="ngModel" name="grandTotalRejection" disabled required class="form-control"  tabindex="59" />
                             <span class="ratio">{{bupaRejectionReportData.grandTotalRejectionPercent}}</span>
                         </td>
-                        <td class="form-group row-click" [ngClass]="{'has-error' : bupaReport.submitted && grandTotalRejectionVat.invalid}" (click)="controlClick($event)">
-                            <input type="number" [(ngModel)]="bupaRejectionReportData.grandTotalRejectionVat" #grandTotalRejectionVat="ngModel" name="grandTotalRejectionVat" required class="form-control" disabled tabindex="60" />
+                        <td class="form-group row-click" [ngClass]="{'has-error' : bupaReport.submitted && (grandTotalRejectionVat.invalid || bupaRejectionReportData.grandTotalRejectionVat === 0)}" (click)="controlClick($event)">
+                            <input type="number" [(ngModel)]="bupaRejectionReportData.grandTotalRejectionVat" disabled #grandTotalRejectionVat="ngModel" name="grandTotalRejectionVat" required class="form-control"  tabindex="60" />
                             <span class="ratio">{{bupaRejectionReportData.grandTotalRejectionVatPercent}}</span>
                         </td>
                     </tr>
@@ -602,40 +603,39 @@
         <div class="form-group form-group-static" [ngClass]="{'has-error' : bupaReport.submitted && providerBilled.invalid}" (click)="controlClick($event)">
           <div class="control-label">Provider Billed </div>
        <p class="form-control-static">
-          <input type ="text"  placeholder="Enter the filed " [(ngModel)]="bupaRejectionReportData.approvedToPayVat" #providerBilled="ngModel"
+          <input type ="text"  placeholder="Enter provider billed " [(ngModel)]="bupaRejectionReportData.providerBilled" #providerBilled="ngModel"
           name="providerBilled" required class="form-control"/> </p>
       </div>
       <div class="form-group form-group-static" [ngClass]="{'has-error' : bupaReport.submitted && presentedDiscount.invalid}" (click)="controlClick($event)">
       <div class="control-label">Presented Discount </div>
-      <input type ="text" placeholder="Enter the filed " [(ngModel)]="bupaRejectionReportData.presentedDiscount" #presentedDiscount="ngModel"
+      <input type ="text" placeholder="Enter presented discount " [(ngModel)]="bupaRejectionReportData.presentedDiscount" #presentedDiscount="ngModel"
       name="presentedDiscount" required class="form-control" />
       </div>
 
       <div class="form-group form-group-static" [ngClass]="{'has-error' : bupaReport.submitted && presentedDeductible.invalid}" (click)="controlClick($event)">
         <div class="control-label"> Presented Deductible </div>
-        <input type ="text" placeholder="Enter the filed " [(ngModel)]="bupaRejectionReportData.presentedDeductible" #presentedDeductible="ngModel"
+        <input type ="text" placeholder="Enter presented deductible " [(ngModel)]="bupaRejectionReportData.presentedDeductible" #presentedDeductible="ngModel"
         name="presentedDeductible" required class="form-control"/>
         </div>
 
         <div class="form-group form-group-static" [ngClass]="{'has-error' : bupaReport.submitted && netBilledwithVAT.invalid}" (click)="controlClick($event)">
             <div class="control-label"> Net Billed with VAT </div>
-            <input type ="text" placeholder="Enter the filed" [(ngModel)]="bupaRejectionReportData.netBilledwithVAT" #netBilledwithVAT="ngModel"
+            <input type ="text" placeholder="Enter net billed with VAT" [(ngModel)]="bupaRejectionReportData.netBilledwithVAT" #netBilledwithVAT="ngModel"
             name="netBilledwithVAT" required class="form-control"/>
-            </div>
+        </div>
 
-            <div class="form-group form-group-static" [ngClass]="{'has-error' : bupaReport.submitted && vATAmount.invalid}" (click)="controlClick($event)">
-                <div class="control-label"> VAT Amount </div>
-                
-                <input type ="text" placeholder="Enter the filed " [(ngModel)]="bupaRejectionReportData.vATAmount" #vATAmount="ngModel"
+        <div class="form-group form-group-static" [ngClass]="{'has-error' : bupaReport.submitted && vATAmount.invalid}" (click)="controlClick($event)">
+            <div class="control-label"> VAT Amount </div>        
+            <input type ="text" placeholder="Enter VAT amount " [(ngModel)]="bupaRejectionReportData.vATAmount" #vATAmount="ngModel"
                 name="vATAmount" required class="form-control"/>
-                </div>
+            </div>
             
 
     
 
 
         <div class="right-block btn-list">
-            <button mat-button tabindex="68" type="button" (click)='clearAllFields()'>Clear Fields</button>
-            <button mat-flat-button color="primary" type="submit" tabindex="69">Verify & Save</button>
+            <button mat-button tabindex="63" type="button" (click)='clearAllFields(bupaReport)'>Clear Fields</button>
+            <button mat-flat-button color="primary" type="submit" tabindex="64">Verify & Save</button>
         </div>
         

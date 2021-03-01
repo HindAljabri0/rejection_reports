@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, PercentPipe } from '@angular/common';
+import { CommonModule, PercentPipe, DatePipe } from '@angular/common';
 
 import { ReportsRoutingModule } from './reports-routing.module';
 import { BupaRejectionReportComponent } from './components/bupa-rejection-report/bupa-rejection-report.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [BupaRejectionReportComponent],
@@ -15,6 +14,6 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     FormsModule
   ],
-  providers: [PercentPipe]
+  providers: [PercentPipe, DatePipe]
 })
 export class ReportsModule { }

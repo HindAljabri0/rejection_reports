@@ -47,7 +47,7 @@ import { MainLayoutComponent } from '../main-layout/main-layout.component';
             canLoad: [RouteCanActiveService]
           },
           {
-            path: 'bupa-rejection-reports/:providerId',
+            path: 'reports/:providerId',
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
             canActivate: [RouteCanActiveService]
           }

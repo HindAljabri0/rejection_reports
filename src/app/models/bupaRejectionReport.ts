@@ -1,178 +1,182 @@
 export class BupaRejectionReportModel {
 
-    invalidMembership = 0;
+    batchId :number;
+    payerId = null;
+    receivedDate : Date;
+
+    invalidMembership = null;
     invalidMembershipPercent = '';
-    invalidMembershipVat = 0;
+    invalidMembershipVat = null;
     invalidMembershipVatPercent = '';
-
-    diffInComputation = 0;
+    
+    diffInComputation = null;
     diffInComputationPercent = '';
-    diffInComputationVat = 0;
+    diffInComputationVat = null;
     diffInComputationVatPercent = '';
-
-    claimsNotReceived = 0;
+    
+    claimsNotReceived = null;
     claimsNotReceivedPercent = '';
-    claimsNotReceivedVat = 0;
+    claimsNotReceivedVat = null;
     claimsNotReceivedVatPercent = '';
-
-    invalidServiceCode = 0;
+    
+    invalidServiceCode = null;
     invalidServiceCodePercent = '';
-    invalidServiceCodeVat = 0;
+    invalidServiceCodeVat = null;
     invalidServiceCodeVatPercent = '';
-
-    lateSubmission = 0;
+    
+    lateSubmission = null;
     lateSubmissionPercent = '';
-    lateSubmissionVat = 0;
+    lateSubmissionVat = null;
     lateSubmissionVatPercent = '';
-
-    subTotalBatchDiff = 0;
+    
+    subTotalBatchDiff = null;
     subTotalBatchDiffPercent = '';
-    subTotalBatchDiffVat = 0;
+    subTotalBatchDiffVat = null;
     subTotalBatchDiffVatPercent = '';
-
-    appropriatenessOfCare = 0;
+    
+    appropriatenessOfCare = null;
     appropriatenessOfCarePercent = '';
-    appropriatenessOfCareVat = 0;
+    appropriatenessOfCareVat = null;
     appropriatenessOfCareVatPercent = '';
-
-    technicalContractual = 0;
+    
+    technicalContractual = null;
     technicalContractualPercent = '';
-    technicalContractualVat = 0;
+    technicalContractualVat = null;
     technicalContractualVatPercent = '';
-
-    consultInWithinFreeFollowUp = 0;
+    
+    consultInWithinFreeFollowUp = null;
     consultInWithinFreeFollowUpPercent = '';
-    consultInWithinFreeFollowUpVat = 0;
+    consultInWithinFreeFollowUpVat = null;
     consultInWithinFreeFollowUpVatPercent = '';
-
-    chargesServicesIncluded = 0;
+    
+    chargesServicesIncluded = null;
     chargesServicesIncludedPercent = '';
-    chargesServicesIncludedVat = 0;
+    chargesServicesIncludedVat = null;
     chargesServicesIncludedVatPercent = '';
-
-    duplicateRepeatedBillingOrFinallySettled = 0;
+    
+    duplicateRepeatedBillingOrFinallySettled = null;
     duplicateRepeatedBillingOrFinallySettledPercent = '';
-    duplicateRepeatedBillingOrFinallySettledVat = 0;
+    duplicateRepeatedBillingOrFinallySettledVat = null;
     duplicateRepeatedBillingOrFinallySettledVatPercent = '';
-
-    priceListShortFallOrBilled = 0;
+    
+    priceListShortFallOrBilled = null;
     priceListShortFallOrBilledPercent = '';
-    priceListShortFallOrBilledVat = 0;
+    priceListShortFallOrBilledVat = null;
     priceListShortFallOrBilledVatPercent = '';
-
-    policyCompliance = 0;
+    
+    policyCompliance = null;
     policyCompliancePercent = '';
-    policyComplianceVat = 0;
+    policyComplianceVat = null;
     policyComplianceVatPercent = '';
-
-    notCoveredByEffInsurancePolicy = 0;
+    
+    notCoveredByEffInsurancePolicy = null;
     notCoveredByEffInsurancePolicyPercent = '';
-    notCoveredByEffInsurancePolicyVat = 0;
+    notCoveredByEffInsurancePolicyVat = null;
     notCoveredByEffInsurancePolicyVatPercent = '';
-
-    outOfValidityByEffInsurancePolicy = 0;
+    
+    outOfValidityByEffInsurancePolicy = null;
     outOfValidityByEffInsurancePolicyPercent = '';
-    outOfValidityByEffInsurancePolicyVat = 0;
+    outOfValidityByEffInsurancePolicyVat = null;
     outOfValidityByEffInsurancePolicyVatPercent = '';
-
-    ageGenderMismatch = 0;
+    
+    ageGenderMismatch = null;
     ageGenderMismatchPercent = '';
-    ageGenderMismatchVat = 0;
+    ageGenderMismatchVat = null;
     ageGenderMismatchVatPercent = '';
-
-    preAuthorization = 0;
+    
+    preAuthorization = null;
     preAuthorizationPercent = '';
-    preAuthorizationVat = 0;
+    preAuthorizationVat = null;
     preAuthorizationVatPercent = '';
-
-    requiresPreAuthRequestPerPolicy = 0;
+    
+    requiresPreAuthRequestPerPolicy = null;
     requiresPreAuthRequestPerPolicyPercent = '';
-    requiresPreAuthRequestPerPolicyVat = 0;
+    requiresPreAuthRequestPerPolicyVat = null;
     requiresPreAuthRequestPerPolicyVatPercent = '';
-
-    notPartOfPreAuthReq = 0;
+    
+    notPartOfPreAuthReq = null;
     notPartOfPreAuthReqPercent = '';
-    notPartOfPreAuthReqVat = 0;
+    notPartOfPreAuthReqVat = null;
     notPartOfPreAuthReqVatPercent = '';
-
-    alreadyRejectedCancelledAtPreAuthRequest = 0;
+    
+    alreadyRejectedCancelledAtPreAuthRequest = null;
     alreadyRejectedCancelledAtPreAuthRequestPercent = '';
-    alreadyRejectedCancelledAtPreAuthRequestVat = 0;
+    alreadyRejectedCancelledAtPreAuthRequestVat = null;
     alreadyRejectedCancelledAtPreAuthRequestVatPercent = '';
-
-    unwarrantedVariations = 0;
+    
+    unwarrantedVariations = null;
     unwarrantedVariationsPercent = '';
-    unwarrantedVariationsVat = 0;
+    unwarrantedVariationsVat = null;
     unwarrantedVariationsVatPercent = '';
-
-    pharmacyBenefitManagement = 0;
+    
+    pharmacyBenefitManagement = null;
     pharmacyBenefitManagementPercent = '';
-    pharmacyBenefitManagementVat = 0;
+    pharmacyBenefitManagementVat = null;
     pharmacyBenefitManagementVatPercent = '';
-
-    subTotalDeductions = 0;
+    
+    subTotalDeductions = null;
     subTotalDeductionsPercent = '';
-    subTotalDeductionsVat = 0;
+    subTotalDeductionsVat = null;
     subTotalDeductionsVatPercent = '';
-
-    presentedNetBilled = 0;
+    
+    presentedNetBilled = null;
     presentedNetBilledPercent = '';
-    presentedNetBilledVat = 0;
+    presentedNetBilledVat = null;
     presentedNetBilledVatPercent = '';
-
-    batchDifference = 0;
+    
+    batchDifference = null;
     batchDifferencePercent = '';
-    batchDifferenceVat = 0;
+    batchDifferenceVat = null;
     batchDifferenceVatPercent = '';
-
-    discountDifference = 0;
+    
+    discountDifference = null;
     discountDifferencePercent = '';
-    discountDifferenceVat = 0;
+    discountDifferenceVat = null;
     discountDifferenceVatPercent = '';
-
-    deductibleDifference = 0
+    
+    deductibleDifference = null
     deductibleDifferencePercent = '';
-    deductibleDifferenceVat = 0;
+    deductibleDifferenceVat = null;
     deductibleDifferenceVatPercent = '';
-
-    deduction = 0;
+    
+    deduction = null;
     deductionPercent = '';
-    deductionVat = 0;
+    deductionVat = null;
     deductionVatPercent = '';
-
-    pending = 0;
+    
+    pending = null;
     pendingPercent = '';
-    pendingVat = 0;
+    pendingVat = null;
     pendingVatPercent = '';
-
-    grandTotalRejection = 0;
+    
+    grandTotalRejection = null;
     grandTotalRejectionPercent = '';
-    grandTotalRejectionVat = 0;
+    grandTotalRejectionVat = null;
     grandTotalRejectionVatPercent = '';
-
-    approvedToPay = 0;
+    
+    approvedToPay = null;
     approvedToPayPercent = '';
-    approvedToPayVat = 0;
+    approvedToPayVat = null;
     approvedToPayVatPercent = '';
 
 
-    providerBilled = 0;
+    providerBilled = null;
     
 
     
-    presentedDiscount= 0;
+    presentedDiscount= null;
    
 
 
-    presentedDeductible= 0;
+    presentedDeductible= null;
 
 
 
-    netBilledwithVAT= 0;
+    netBilledwithVAT= null;
  
 
    
-    vATAmount= 0;
+    vATAmount= null;
  
 
 

@@ -4,7 +4,7 @@ import { BupaRejectionReportComponent } from './components/bupa-rejection-report
 
 
 const routes: Routes = [
-  { path: '', component: BupaRejectionReportComponent },
+  { path: 'bupa-rejection-reports', component: BupaRejectionReportComponent },
 ];
 
 @NgModule({
