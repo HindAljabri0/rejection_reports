@@ -10,7 +10,6 @@ import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.compon
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
-import { CleanClaimProgressReportComponent } from '../pages/clean-claim-progress-report/clean-claim-progress-report.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { MainLayoutComponent } from '../main-layout/main-layout.component';
           { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
-          { path: 'clean-claim-progress-report', component: CleanClaimProgressReportComponent, canActivate: [RouteCanActiveService] },
           {
             path: 'configurations',
             loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
