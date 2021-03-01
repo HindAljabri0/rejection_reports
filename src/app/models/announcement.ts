@@ -1,8 +1,6 @@
 import { Paginateable } from './paginateable';
 
-
 export class Announcement extends Paginateable {
-
     messageId: number;
     messageDescription: string;
     criteriaType: string;

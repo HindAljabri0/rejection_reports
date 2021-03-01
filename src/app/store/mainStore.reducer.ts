@@ -1,6 +1,5 @@
-import { createReducer, createFeatureSelector, createSelector, on } from '@ngrx/store'
+import { createReducer, createFeatureSelector, createSelector, on } from '@ngrx/store';
 import * as actions from './mainStore.actions';
-
 
 export interface MainState {
     headerAndSideMenuIsHidden: boolean;
@@ -8,12 +7,12 @@ export interface MainState {
 
 const initState: MainState = {
     headerAndSideMenuIsHidden: false,
-}
+};
 
 const _mainReducer = createReducer(
     initState,
-    on(actions.hideHeaderAndSideMenu, (state) => ({...state, headerAndSideMenuIsHidden: true})),
-    on(actions.showHeaderAndSideMenu, (state) => ({...state, headerAndSideMenuIsHidden: false})),
+    on(actions.hideHeaderAndSideMenu, (state) => ({ ...state, headerAndSideMenuIsHidden: true })),
+    on(actions.showHeaderAndSideMenu, (state) => ({ ...state, headerAndSideMenuIsHidden: false })),
 );
 
 export function mainReducer(state, action) {

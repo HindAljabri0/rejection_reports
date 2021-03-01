@@ -1,19 +1,18 @@
-export enum ClaimStatus{
-    ALL = "All",
-    Accepted = "Accepted",
-    NotAccepted = "NotAccepted",
-    Not_Saved = "Not Saved" ,
+export enum ClaimStatus {
+    ALL = 'All',
+    Accepted = 'Accepted',
+    NotAccepted = 'NotAccepted',
+    Not_Saved = 'Not Saved',
     // Duplicated = "Duplicate",
     Batched = 'Batched',
     INVALID = 'INVALID',
     // Failed = 'Failed',
-    
-    VALID = "VALID",
-    ELIGIBLE = "ELIGIBLE",
-    INELIGIBLE = "INELIGIBLE",
-    APPROVED = "APPROVED",
-    REJECTED = "REJECTED",
-    PARTIALLY_APPROVED= "PARTIALLY APPROVED",
+    VALID = 'VALID',
+    ELIGIBLE = 'ELIGIBLE',
+    INELIGIBLE = 'INELIGIBLE',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
+    PARTIALLY_APPROVED = 'PARTIALLY APPROVED',
     // LIMIT_APPROVED ="LIMI APPROVED",
     // CONDITIONALLY_APPROVED = "CONDITIONALL APPROVED",
     // PENDING = "PENDING",
@@ -22,9 +21,9 @@ export enum ClaimStatus{
     // FURTHER_DETAILS_REQUIRED = "FURTHER DETAIL REQUIRED",
     // UNDER_PROCESS = "UNDE PROCESS",
     // SETTLED = "SETTLED",
-    PAID = "PAID",
-    PARTIALLY_PAID = "PARTIALLY PAID",
-    OUTSTANDING = "OUTSTANDING",
+    PAID = 'PAID',
+    PARTIALLY_PAID = 'PARTIALLY PAID',
+    OUTSTANDING = 'OUTSTANDING',
     // RETURNED = "RETURNED",
     // DUPLICATE = "DUPLICATE",
     // DISPENSED = "DISPENSED",
@@ -32,5 +31,5 @@ export enum ClaimStatus{
     // NOT_DISPENSED = "NO DISPENSED",
     // NO_APPROVAL_REQUIRED= "No Approva Required",
 
-    Downloadable="Downloadable"
+    Downloadable = 'Downloadable'
 }

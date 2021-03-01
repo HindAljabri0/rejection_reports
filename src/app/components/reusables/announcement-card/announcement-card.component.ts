@@ -16,35 +16,38 @@ import { Announcement } from 'src/app/models/announcement';
 export class AnnouncementCardComponent implements OnInit {
 
   @Input() announcement: Announcement;
-    
-    payerIcon: string;
-    payerids: number[];
 
-    ngOnInit() {
-      this.payerids = this.commen.getPayersList().map(item => item.id);
-    }
-    constructor(private router: Router, public announcementService: AnnouncementsService,
-                public dialogService: DialogService, private commen: SharedServices,
-                public routeActive: ActivatedRoute) {
+  payerIcon: string;
+  payerids: number[];
+
+  ngOnInit() {
+    this.payerids = this.commen.getPayersList().map(item => item.id);
+  }
+  constructor(
+    private router: Router,
+    public announcementService: AnnouncementsService,
+    public dialogService: DialogService,
+    private commen: SharedServices,
+    public routeActive: ActivatedRoute) {
   }
 
   parseInt(str: string) {
-    return Number.parseInt(str);
+    return Number.parseInt(str, 10);
   }
 
 
   getAnnouncements() {
     this.announcementService.getAnnouncements(this.commen.providerId, this.payerids, 0, 10)
-    .subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.router.navigate([this.commen.providerId, 'announcements']);
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData('',
-         'Could not reach the server. Please try again later.', true));
-      }
-    });
-   }
+      .subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.router.navigate([this.commen.providerId, 'announcements']);
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog(new MessageDialogData('',
+            'Could not reach the server. Please try again later.', true));
+        }
+      });
+  }
 
 }

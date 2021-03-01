@@ -1,7 +1,7 @@
-export enum QueryReport{
-    DATEFROM = "fromDate",
-    DATETO = "toDate",
+export enum QueryReport {
+    DATEFROM = 'fromDate',
+    DATETO = 'toDate',
     PAYERID = 'payerId',
-    BATCHID = "batchId",
-    REPORT = "report",
+    BATCHID = 'batchId',
+    REPORT = 'report',
 }
