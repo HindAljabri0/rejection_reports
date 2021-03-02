@@ -61,6 +61,9 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-stroked-button,a.mat-button, a.mat-flat-button, a.mat-icon-button, a.mat-stroked-button{line-height: 40px;}
 .btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
+.btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
+.btn-action>img{display: block;height: 24px;width: 24px;}
+.btn-action>.mat-icon{display: block;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -80,7 +83,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .info-block{padding: 16px;border-radius: 6px;color: #3060AA;background-color: rgba(48, 96, 170,0.1);}
 .status-dot{height: 10px;width: 10px;border-radius: 50%;display: inline-block;}
 .status-dot.size-lg{height: 14px;width: 14px;}
-.error-card {background-color: #FF53A3;color: white;margin-bottom: 16px;padding: 12px 16px;border-radius: 6px;}
+.error-card {background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;margin-bottom: 16px;padding: 12px 16px;border-radius: 6px;}
 .inner-loader-wrapper{position: relative;}
 .inner-loader-wrapper .inner-loader{z-index: 8;position: absolute;background-color: rgba(255, 255, 255, 0.5);top: 0;left: 0;right: 0;bottom: 0;display: flex;align-items: center;justify-content: center;}
 .tab-btn {color: #3060AA;opacity: 0.5;}
@@ -670,6 +673,28 @@ bs-datepicker-container bs-datepicker-navigation-view>.current,bs-datepicker-con
 bs-datepicker-container bs-datepicker-navigation-view>.current+.current{margin-left: 0;}
 bs-datepicker-container .theme-green .bs-datepicker-body table td.active-week span:hover,bs-datepicker-container .bs-datepicker-body table td.active-week span:hover{background-color: #e2e2e2;color: #3060AA;opacity: 1;}
 bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-datepicker-body table td.is-other-month span{color:inherit;opacity:0.48;}
+
+/* pagination header
+--------------------------------------------------------------------------------------------------------*/
+.pagination-header{background: #fff;padding: 14px; display: flex;align-items: center;}
+.pagination-header .page-select{display: flex;align-items: center;margin: 0;}
+.pagination-header .page-select .control-label{padding-bottom: 0;padding-right: 8px;}
+.pagination-header .page-select .form-control{width: auto;display: inline-flex;vertical-align: top;}
+.pagination-header .material-paginator{margin-left: auto;}
+.pagination-header .mat-paginator, .pagination-header .mat-paginator-page-size .mat-select-trigger{font-size:inherit;color:inherit;line-height:inherit;}
+.pagination-header .mat-paginator-range-label {margin: 0 8px;}
+.pagination-header .mat-paginator-page-size-select {border: 1px solid #EFF5FF;height: 40px;background-color: #EFF5FF;color: #3060AA;border-radius: 6px;transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1);box-shadow: none;caret-color: #3060AA;font-size: 14px;line-height: 20px;display: flex;align-items: center;padding: 0;background-image: url('./assets/ic-unfold.svg');background-position: right;background-size: 22px 22px;background-repeat: no-repeat;-webkit-appearance: none;-moz-appearance: none;-o-appearance: none;-ms-appearance: none;appearance: none;width: auto;margin-top:0;}
+.pagination-header .mat-paginator-page-size-select .mat-form-field-infix {padding: 0;border: 0;height: 100%;width: 100%;}
+.pagination-header .mat-paginator-page-size-select .mat-form-field-wrapper {padding: 0;flex-grow: 0;flex-shrink: 0;flex-basis: 100%;max-width: 100%;height: 100%;}
+.pagination-header .mat-paginator-page-size-select .mat-form-field-underline, .pagination-header .mat-paginator-page-size-select .mat-select-arrow-wrapper {display: none;}
+.pagination-header .mat-paginator-page-size-select .mat-select-value, .pagination-header .mat-paginator-page-size-select .mat-select-trigger {display: block;max-width: none;color: inherit;}
+.pagination-header .mat-paginator-page-size-select .mat-select-trigger {padding: 4px 12px;padding-right: 28px;height: 100%;display: flex;align-items: center;}
+.pagination-header .mat-paginator-page-size-select .mat-form-field-flex {height: 100%;}
+.pagination-header .mat-paginator-page-size-select .mat-select {display: block;height: 100%;}
+.pagination-header .mat-paginator-container {min-height: auto;padding: 0;}
+.pagination-header .action-btn{display: block;padding: 3px;background: none;border:0;}
+.pagination-header .action-btn>img{display: block;height: 24px;width: 24px;}
+.pagination-header .action-btn[disabled]{opacity: 0.5;cursor:not-allowed;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
