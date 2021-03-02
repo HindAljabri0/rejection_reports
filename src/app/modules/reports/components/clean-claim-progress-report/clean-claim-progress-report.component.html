@@ -106,24 +106,13 @@
                     <tr class="align-middle medium">
                         <th class="header-cell">Difference</th>
                         <ng-container *ngFor="let item of percenatgeChartData">
-                            <ng-container *ngIf="item.value===Rate.Equal">
-
-                                <td class="text-success">
-                                    <mat-icon>trending_flat</mat-icon>{{item.data}}%
-                                </td>
-                            </ng-container>
-                            <ng-container *ngIf="item.value===Rate.Up">
-
-                                <td class="text-success">
-                                    <mat-icon>trending_up</mat-icon>{{item.data}}%
-                                </td>
-                            </ng-container>
-                            <ng-container *ngIf="item.value===Rate.Down">
-
-                                <td class="text-danger">
-                                    <mat-icon>trending_down</mat-icon>{{item.data}}%
-                                </td>
-                            </ng-container>
+                            <td *ngIf="item.value===Rate.Equal">{{item.data}}%</td>
+                            <td class="text-success" *ngIf="item.value===Rate.Up">
+                                <mat-icon>trending_up</mat-icon><br>{{item.data}}%
+                            </td>
+                            <td class="text-danger" *ngIf="item.value===Rate.Down">
+                                <mat-icon>trending_down</mat-icon><br>{{item.data}}%
+                            </td>
                         </ng-container>
                     </tr>
                 </tbody>
