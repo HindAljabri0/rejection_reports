@@ -656,6 +656,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .clean-claim-progress-report .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
 .clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
+.clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -695,6 +696,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .pagination-header .action-btn{display: block;padding: 3px;background: none;border:0;}
 .pagination-header .action-btn>img{display: block;height: 24px;width: 24px;}
 .pagination-header .action-btn[disabled]{opacity: 0.5;cursor:not-allowed;}
+
+/* radio button
+--------------------------------------------------------------------------------------------------------*/
+.form-group>.radio-group{padding-top: 9px;display: block;}
+.radio-group .mat-radio-button{display: block;margin-bottom: 8px;}
+.radio-group.inline .mat-radio-button{margin-right: 16px;display: inline-block;vertical-align: top;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

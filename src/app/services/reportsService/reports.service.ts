@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BupaRejectionReportModel } from 'src/app/models/bupaRejectionReport';
+import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -135,6 +137,12 @@ export class ReportsService {
     });
     const requestURL = `/providers/${providerId}/report/rejected`;
     const request = new HttpRequest('POST', environment.claimSearchHost + requestURL, body, { responseType: 'text' });
+    return this.http.request(request);
+  }
+
+  generateCleanClaimProgressReport(providerId: string, data: generateCleanClaimProgressReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/charts`;
+    const request = new HttpRequest('POST', environment.uploaderHost + requestURL, data, { responseType: 'text' });
     return this.http.request(request);
   }
 }
