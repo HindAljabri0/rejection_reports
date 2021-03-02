@@ -653,6 +653,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .clean-claim-progress-report .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
 .clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
+.clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -670,6 +671,12 @@ bs-datepicker-container bs-datepicker-navigation-view>.current,bs-datepicker-con
 bs-datepicker-container bs-datepicker-navigation-view>.current+.current{margin-left: 0;}
 bs-datepicker-container .theme-green .bs-datepicker-body table td.active-week span:hover,bs-datepicker-container .bs-datepicker-body table td.active-week span:hover{background-color: #e2e2e2;color: #3060AA;opacity: 1;}
 bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-datepicker-body table td.is-other-month span{color:inherit;opacity:0.48;}
+
+/* radio button
+--------------------------------------------------------------------------------------------------------*/
+.form-group>.radio-group{padding-top: 9px;display: block;}
+.radio-group .mat-radio-button{display: block;margin-bottom: 8px;}
+.radio-group.inline .mat-radio-button{margin-right: 16px;display: inline-block;vertical-align: top;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

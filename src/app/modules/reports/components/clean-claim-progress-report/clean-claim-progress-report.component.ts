@@ -136,7 +136,7 @@ export class CleanClaimProgressReportComponent implements OnInit {
   percenatgeChartData: any = [];
   months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUNE', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  normalDays = ['DAY 1', 'DAY 2'];
+  normalDays = ['DAY'];
   percentageConfig = [{
     key: 'Year', value: this.months,
   },
@@ -226,7 +226,9 @@ export class CleanClaimProgressReportComponent implements OnInit {
           this.percenatgeChartData.push(obj);
         });
         this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
-        this.chart.ngOnChanges({});
+
+        if (this.chart)
+          this.chart.ngOnChanges({});
       }
 
     });

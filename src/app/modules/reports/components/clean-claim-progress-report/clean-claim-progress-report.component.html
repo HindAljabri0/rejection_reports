@@ -37,10 +37,11 @@
             </div>
             <div class="col">
                 <div class="form-group" [ngClass]="{'has-error' : cleanClaimForm.submitted && beforeDate.invalid}">
-                    <label class="control-label">Before {{generateReport.comparisionCriteria}}</label>
+                    <label class="control-label">Before
+                        {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria}}</label>
                     <input autocomplete="off" [(ngModel)]='generateReport.beforeDate' #beforeDate='ngModel'
                         name="beforeDate"
-                        placeholder="Select before {{generateReport.comparisionCriteria | lowercase }}"
+                        placeholder="Select before {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase }}"
                         class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
                         (onShown)="onOpenCalendar($event)" required>
                     <!-- <input autocomplete="off" placeholder="Select before date" class="form-control date-picker" bsDatepicker [bsConfig]="{dateInputFormat: 'MMM YYYY'}"
@@ -52,10 +53,11 @@
             </div>
             <div class="col">
                 <div class="form-group" [ngClass]="{'has-error' : cleanClaimForm.submitted && afterDate.invalid}">
-                    <label class="control-label">After {{generateReport.comparisionCriteria}}</label>
+                    <label class="control-label">After
+                        {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria}}</label>
                     <input autocomplete="off"
-                        placeholder="Select after {{generateReport.comparisionCriteria | lowercase}}" required
-                        class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                        placeholder="Select after {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase}}"
+                        required class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
                         (onShown)="onOpenCalendar($event)" [(ngModel)]='generateReport.afterDate' #afterDate='ngModel'
                         name="afterDate">
                     <!-- <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{dateInputFormat: 'MMM YYYY'}" (onShown)="onOpenCalendar($event)" *ngIf='generateReport.comparisonCriteria === "Month"'>
@@ -71,7 +73,7 @@
         </div>
     </div>
 </form>
-<div class="clean-claim-progress-report" *ngIf="percenatgeChartData.length > 0">
+<div class="clean-claim-progress-report">
     <div class="left-block">
         <ul class="list">
             <li class="title">Comparison Type</li>
@@ -95,7 +97,7 @@
             </li>
         </ul>
     </div>
-    <div class="right-block">
+    <div class="right-block" *ngIf="percenatgeChartData.length > 0">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
             [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
         </canvas>
@@ -112,33 +114,25 @@
                     <tr class="align-middle medium">
                         <th class="header-cell">Difference</th>
                         <ng-container *ngFor="let item of percenatgeChartData">
-                            <ng-container *ngIf="item.value===Rate.Equal">
-
-                                <td class="text-success">
-                                    <mat-icon>trending_flat</mat-icon>{{item.data}}%
-                                </td>
-                            </ng-container>
-                            <ng-container *ngIf="item.value===Rate.Up">
-
-                                <td class="text-success">
-                                    <mat-icon>trending_up</mat-icon>{{item.data}}%
-                                </td>
-                            </ng-container>
-                            <ng-container *ngIf="item.value===Rate.Down">
-
-                                <td class="text-danger">
-                                    <mat-icon>trending_down</mat-icon>{{item.data}}%
-                                </td>
-                            </ng-container>
+                            <td *ngIf="item.value===Rate.Equal">{{item.data}}%</td>
+                            <td class="text-success" *ngIf="item.value===Rate.Up">
+                                <mat-icon>trending_up</mat-icon><br>{{item.data}}%
+                            </td>
+                            <td class="text-danger" *ngIf="item.value===Rate.Down">
+                                <mat-icon>trending_down</mat-icon><br>{{item.data}}%
+                            </td>
                         </ng-container>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="right-block" *ngIf="percenatgeChartData.length === 0">
+        <app-empty-state message="Please apply the filter and generate the report.">
+        </app-empty-state>
+    </div>
 </div>
-<app-empty-state message="Please apply the filter and generate the report." *ngIf="percenatgeChartData.length === 0">
-</app-empty-state>
+
 <div class="block-footer has-border">
     <div class="right-block btn-list">
         <button mat-flat-button color="primary">Print</button>
