@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-bupa-rejection-report',
   templateUrl: './bupa-rejection-report.component.html',
-  styleUrls: ['./bupa-rejection-report.component.css']
+  styles: []
 })
 export class BupaRejectionReportComponent implements OnInit {
 

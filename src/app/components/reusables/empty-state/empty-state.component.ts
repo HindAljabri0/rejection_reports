@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EmptyStateComponent implements OnInit {
 
   @Input() message = 'No data found!';
+  @Input() className = '';
 
   constructor() { }
 

@@ -4,13 +4,13 @@
 <form #bupaReport='ngForm' (ngSubmit)='bupaReport.valid && bupaRejectionReportData.grandTotalRejectionVat > 0 && bupaRejectionReportData.grandTotalRejection > 0 && saveClick()'>
     <div class="block-filter-panel">
         <div class="row small-gutter">
-            <div class="col-xxl-2 col-md-4">
+            <div class="col-xxl-2 col-lg-3 col-md-4">
                 <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && batchId.invalid}">
                     <label class="control-label">Batch ID</label>
                     <input type="text" class="form-control" #batchId='ngModel' name='batchId' [(ngModel)]='bupaRejectionReportData.batchId' required placeholder="Enter batch ID" />
                 </div>
             </div>
-            <div class="col-xxl-2 col-md-4">
+            <div class="col-xxl-2 col-lg-3 col-md-4">
                 <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && receivedDate.invalid}">
                     <label class="control-label">Received Date</label>
                     <div class="date-picker">
@@ -21,15 +21,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-2 col-md-4">
+            <div class="col-xxl-2 col-lg-3 col-md-4">
                 <div class="form-group referral-batch">
                     <label class="control-label">Referral Batch</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="Yes">
-                            <mat-option value="Yes">Yes</mat-option>
-                            <mat-option value="No">No</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <mat-radio-group class="radio-group inline">
+                        <mat-radio-button color="primary" value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button color="primary" value="No">No</mat-radio-button>
+                    </mat-radio-group>
                 </div>
             </div>
         </div>
@@ -46,16 +44,16 @@
                     <tr>
                         <th width="10" class="text-center">No.</th>
                         <th>Item Description</th>
-                        <th>Billed Amount</th>
-                        <th>VAT Amount</th>
+                        <th width="92">Billed Amount</th>
+                        <th width="92">VAT Amount</th>
                         <th width="10" class="text-center">No.</th>
                         <th>Item Description</th>
-                        <th>Billed Amount</th>
-                        <th>VAT Amount</th>
+                        <th width="92">Billed Amount</th>
+                        <th width="92">VAT Amount</th>
                         <th width="10" class="text-center">No.</th>
                         <th>Item Description</th>
-                        <th>Billed Amount</th>
-                        <th>VAT Amount</th>
+                        <th width="92">Billed Amount</th>
+                        <th width="92">VAT Amount</th>
                     </tr>
                 </thead>
                 <tbody>
