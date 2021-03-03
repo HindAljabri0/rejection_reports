@@ -1,7 +1,6 @@
 import { Observation } from './observation.model';
 
 export class Investigation {
-
     investigationType: string;
     investigationCode: string;
     investigationDescription: string;

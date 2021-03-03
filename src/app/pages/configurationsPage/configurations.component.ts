@@ -3,7 +3,14 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { SharedServices } from 'src/app/services/shared.services';
-import { addNewMappingValue, cancelChangesOfCodeValueManagement, deleteMappingValue, loadProviderMappingValues, saveChangesOfCodeValueManagement, setCodeValueManagementLoading } from './store/configurations.actions';
+import {
+  addNewMappingValue,
+  cancelChangesOfCodeValueManagement,
+  deleteMappingValue,
+  loadProviderMappingValues,
+  saveChangesOfCodeValueManagement,
+  setCodeValueManagementLoading
+} from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
 
 @Component({
@@ -22,14 +29,14 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   error: string;
   success: string;
 
-  isLoading: boolean = false;
-  hasChanges: boolean = false;
+  isLoading = false;
+  hasChanges = false;
 
   selectedCategory: string;
   tempSelectedCategory: string;
   selectedCode: string;
   tempSelectedCode: string;
-  selectedPayer: string = '-1';
+  selectedPayer = '-1';
   tempSelectedPayer: string;
 
   filterWLECodesControl: FormControl = new FormControl('');
@@ -66,18 +73,20 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
 
   getCategoriesFromStore() {
     this.categoriesStoreSubscription = this.store.select(codeValueManagementSelectors.getCurrentValues).subscribe(values => {
-      let payersCodes = [];
+      const payersCodes = [];
       this.categories = [];
       values.forEach((value, key) => {
         this.codeValueDictionary.set(key, { label: value.label, codes: new Map() });
-        value.codes.forEach((cValue, cKey) => this.codeValueDictionary.get(key).codes.set(cKey, { label: cValue.label, values: [...cValue.values] }));
-        if (!key.startsWith('departmentName') && !key.endsWith('Unit'))
+        value.codes.forEach((cValue, cKey) => this.codeValueDictionary.get(key).codes.set(cKey,
+          { label: cValue.label, values: [...cValue.values] }));
+        if (!key.startsWith('departmentName') && !key.endsWith('Unit')) {
           this.categories.push({ label: value.label, key: key });
-        else if (!key.endsWith('Unit')) {
-          payersCodes.push(key.split('_')[1])
+        } else if (!key.endsWith('Unit')) {
+          payersCodes.push(key.split('_')[1]);
         }
       });
-      this.payers = this.sharedServices.getPayersList().filter(payer => payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
+      this.payers = this.sharedServices.getPayersList().filter(payer =>
+        payersCodes.includes(this.sharedServices.getPayerCode(`${payer.id}`)));
       this.selectedPayer = this.tempSelectedPayer || '-1';
       this.selectCategory(this.tempSelectedCategory);
       this.selectCode(this.tempSelectedCode || '');
@@ -115,15 +124,15 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
           || code.key.toLowerCase().includes(this.filterWLECodesControl.value.toLowerCase())
       );
       this.filteredCodes.sort((c1, c2) =>
-        (this.filterWLECodesControl.value.localeCompare(c1.key) == 0? -1:1)
+        (this.filterWLECodesControl.value.localeCompare(c1.key) == 0 ? -1 : 1)
         -
-        (this.filterWLECodesControl.value.localeCompare(c2.key) == 0? -1:1)
-      )
+        (this.filterWLECodesControl.value.localeCompare(c2.key) == 0 ? -1 : 1)
+      );
     }
   }
 
   getPayerCode() {
-    let code = this.sharedServices.getPayerCode(this.selectedPayer);
+    const code = this.sharedServices.getPayerCode(this.selectedPayer);
     return code;
   }
 

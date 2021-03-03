@@ -29,54 +29,54 @@ export class AnnouncementsService {
     return this.httpClient.request(request);
   }
 
-/* markAnnouncementAsRead(providerId: string, payerids: string) {
-    const requestUrl = `/portal-notifications/${providerId}/${payerids}`;
-    const request = new HttpRequest('PUT', environment.adminServiceHost + requestUrl, {});
-    return this.httpClient.request(request);
-  }
-
-  private watchNewMessage(providerId: string, topic: string): Observable<string> {
-    return new Observable((observer) => {
-      let url = environment.NotificationServiceHost + `/to/${providerId}/topics/${topic}`;
-      let eventSource = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } });
-      this.eventSources[topic] = eventSource;
-      this.observers[topic] = observer;
-      this.eventSources[topic].onmessage = (event) => {
-        this.zone.run(() => this.observers[topic].next(event.data));
-      };
-
-      this.eventSources[topic].onerror = (error) => {
-        if (this.eventSources[topic].readyState === 0) {
-          console.debug('The stream has been closed by the server.');
-          this.eventSources[topic].close();
-          this.observers[topic].complete();
-        } else {
-          this.observers[topic].error('EventSource error: ' + error);
-        }
-      }
-    });
-  }
-
-  startWatchingMessages(providerId: string, topic: string) {
-    if (this.eventSources[topic] != null) return;
-    this.messageWatchSources[topic] = new BehaviorSubject('');
-    this._messageWatchSources[topic] = this.messageWatchSources[topic].asObservable();
-    this.watchNewMessage(providerId, topic).subscribe(data => {
-      this.messageWatchSources[topic].next(data);
-    }, error => console.log('Error: ' + error),
-      () => console.log('done loading team stream')
-    );
-  }
-
-  stopWatchingMessages(topic: string) {
-    if (this.eventSources[topic] != undefined) {
-      this.eventSources[topic].close();
-      this.observers[topic].complete();
-      this.eventSources[topic] = null;
-      this.observers[topic] = null;
-      delete this.eventSources[topic];
-      delete this.observers[topic];
+  /* markAnnouncementAsRead(providerId: string, payerids: string) {
+      const requestUrl = `/portal-notifications/${providerId}/${payerids}`;
+      const request = new HttpRequest('PUT', environment.adminServiceHost + requestUrl, {});
+      return this.httpClient.request(request);
     }
-  }
-*/
+
+    private watchNewMessage(providerId: string, topic: string): Observable<string> {
+      return new Observable((observer) => {
+        let url = environment.NotificationServiceHost + `/to/${providerId}/topics/${topic}`;
+        let eventSource = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } });
+        this.eventSources[topic] = eventSource;
+        this.observers[topic] = observer;
+        this.eventSources[topic].onmessage = (event) => {
+          this.zone.run(() => this.observers[topic].next(event.data));
+        };
+
+        this.eventSources[topic].onerror = (error) => {
+          if (this.eventSources[topic].readyState === 0) {
+            console.debug('The stream has been closed by the server.');
+            this.eventSources[topic].close();
+            this.observers[topic].complete();
+          } else {
+            this.observers[topic].error('EventSource error: ' + error);
+          }
+        }
+      });
+    }
+
+    startWatchingMessages(providerId: string, topic: string) {
+      if (this.eventSources[topic] != null) return;
+      this.messageWatchSources[topic] = new BehaviorSubject('');
+      this._messageWatchSources[topic] = this.messageWatchSources[topic].asObservable();
+      this.watchNewMessage(providerId, topic).subscribe(data => {
+        this.messageWatchSources[topic].next(data);
+      }, error => console.log('Error: ' + error),
+        () => console.log('done loading team stream')
+      );
+    }
+
+    stopWatchingMessages(topic: string) {
+      if (this.eventSources[topic] != undefined) {
+        this.eventSources[topic].close();
+        this.observers[topic].complete();
+        this.eventSources[topic] = null;
+        this.observers[topic] = null;
+        delete this.eventSources[topic];
+        delete this.observers[topic];
+      }
+    }
+  */
 }

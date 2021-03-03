@@ -1,13 +1,16 @@
-
 export class Period {
     years?: number;
     months?: number;
     days?: number;
 
     constructor(value: number, type: 'years' | 'months' | 'days') {
-        if (type == 'years') this.years = value;
-        else if (type == 'months') this.months = value;
-        else if (type == 'days') this.days = value;
+        if (type == 'years') {
+            this.years = value;
+        } else if (type == 'months') {
+            this.months = value;
+        } else if (type == 'days') {
+            this.days = value;
+        }
     }
 
 

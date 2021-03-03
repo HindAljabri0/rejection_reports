@@ -48,6 +48,9 @@ export class LoginComponent implements OnInit {
         }
       });
     });
+    if (this.authService.loggedIn) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnInit() {

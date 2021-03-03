@@ -1,11 +1,11 @@
 import { Amount, GDPN } from './GDPN.model';
 
 export class ServiceDecision {
-    approvedQuantity:number;
-    unitPrice:Amount;
-    serviceGDPN:GDPN;
+    approvedQuantity: number;
+    unitPrice: Amount;
+    serviceGDPN: GDPN;
 
-    constructor(){
+    constructor() {
         this.unitPrice = new Amount(0, 'SAR');
         this.serviceGDPN = new GDPN();
     }

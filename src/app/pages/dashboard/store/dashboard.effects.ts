@@ -3,7 +3,15 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { SearchService } from 'src/app/services/serchService/search.service';
-import { updateSearchCriteria, dashboardCardNames, setCardIsLoading, setCardSummary, setCardError, getDepartmentNames, setDepartmentNames } from './dashboard.actions';
+import {
+    updateSearchCriteria,
+    dashboardCardNames,
+    setCardIsLoading,
+    setCardSummary,
+    setCardError,
+    getDepartmentNames,
+    setDepartmentNames
+} from './dashboard.actions';
 import { tap, switchMap, filter, map, catchError } from 'rxjs/operators';
 import { getSummaryByName } from './dashboard.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -25,7 +33,7 @@ export class DashboardEffects {
         private sharedServices: SharedServices,
         private adminService: AdminService
     ) { }
-    getDapertmentName = createEffect(()=> this.actions$.pipe(
+    getDapertmentName = createEffect(() => this.actions$.pipe(
         ofType(getDepartmentNames),
         switchMap(() => this.adminService.getLOVsForClaimCreation().pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
@@ -33,16 +41,17 @@ export class DashboardEffects {
             catchError(err => of({ type: setDepartmentNames.type }))
         ))
     ));
-    
+
     loadSummaries$ = createEffect(() => this.actions$.pipe(
         ofType(updateSearchCriteria),
         tap(criteria => {
             dashboardCardNames.forEach(name => {
                 this.store.dispatch(setCardIsLoading({ name: name, loading: true }));
                 this.store.select(getSummaryByName(name)).subscribe(data => {
-                    let values = data.data;
-                    if (values["statuses"] != undefined) {
-                        this.searchService.getSummaries(this.sharedServices.providerId, values["statuses"], criteria.fromDate, criteria.toDate, `${criteria.payerId}`)
+                    const values = data.data;
+                    if (values['statuses'] != undefined) {
+                        this.searchService.getSummaries(this.sharedServices.providerId,
+                            values['statuses'], criteria.fromDate, criteria.toDate, `${criteria.payerId}`)
                             .subscribe(event => {
                                 if (event instanceof HttpResponse) {
                                     this.store.dispatch(setCardSummary({ name: name, data: new SearchStatusSummary(event.body) }));
@@ -55,11 +64,15 @@ export class DashboardEffects {
                                 this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                             });
                     } else {
-                        if (values["rejectionBy"] != 'Service' || (values["rejectionBy"] == 'Service' && criteria.payerId == 102)) {
-                            this.searchService.getTopFiveRejections(values["rejectionBy"], this.sharedServices.providerId, `${criteria.payerId}`, criteria.fromDate, criteria.toDate,)
+                        if (values['rejectionBy'] != 'Service' || (values['rejectionBy'] == 'Service' && criteria.payerId == 102)) {
+                            this.searchService.getTopFiveRejections(values['rejectionBy'],
+                                this.sharedServices.providerId, `${criteria.payerId}`, criteria.fromDate, criteria.toDate)
                                 .subscribe(event => {
                                     if (event instanceof HttpResponse) {
-                                        this.store.dispatch(setCardSummary({ name: name, data: new RejectionCardData(values["rejectionBy"], event.body) }));
+                                        this.store.dispatch(setCardSummary({
+                                            name: name,
+                                            data: new RejectionCardData(values['rejectionBy'], event.body)
+                                        }));
                                         this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                                     }
                                 }, errorEvent => {
@@ -69,7 +82,7 @@ export class DashboardEffects {
                                     this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                                 });
                         } else {
-                            this.store.dispatch(setCardError({name: name, error: `Payer's Data Not Available.`}));
+                            this.store.dispatch(setCardError({ name: name, error: `Payer's Data Not Available.` }));
                             this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                         }
                     }
