@@ -80,14 +80,14 @@
                         <span class="text">Rejection Report</span>
                     </a>
                 </li>
-                <li i18n="@@rejectionUpload">
+                <li i18n="@@rejectionUpload" *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <a routerLink="/reports/{{providerId}}/bupa-rejection-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/ic-upload-claims.svg" alt="Rejection Upload" class="default-icon" />
                         <img src="assets/ic-upload-claims-active.svg" alt="Rejection Upload" class="active-icon" />
                         <span class="text">Rejection Report Upload</span>
                     </a>
                 </li>
-                <li i18n="@@cleanClaimProgress">
+                <li i18n="@@cleanClaimProgress" *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
                         <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
@@ -95,8 +95,8 @@
                     </a>
                 </li>
             </ul>
-            <div i18n="@@reports" class="list-title" *ngIf="!doNotShowGlobMedIn.includes(envName)"> GlobMed </div>
-            <ul *ngIf="!doNotShowGlobMedIn.includes(envName)" class="nav-list">
+            <div i18n="@@reports" class="list-title" *ngIf="!doNotShowMenuItemIn.includes(envName)"> GlobMed </div>
+            <ul *ngIf="!doNotShowMenuItemIn.includes(envName)" class="nav-list">
                 <li i18n="@@gmsummaryreport">
                     <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                         <img src="assets/ic-summary-report.svg" alt="Summary Report" class="default-icon" />
