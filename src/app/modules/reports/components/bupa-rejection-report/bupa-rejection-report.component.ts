@@ -99,7 +99,7 @@ export class BupaRejectionReportComponent implements OnInit {
       this.bupaRejectionReportData.unwarrantedVariationsVatPercent = this.percent.transform(this.bupaRejectionReportData.unwarrantedVariationsVat / grandTotalVat, this.minFractionDigits);
       this.bupaRejectionReportData.pharmacyBenefitManagementVatPercent = this.percent.transform(this.bupaRejectionReportData.pharmacyBenefitManagementVat / grandTotalVat, this.minFractionDigits);
       this.bupaRejectionReportData.subTotalDeductionsVatPercent = this.percent.transform(this.bupaRejectionReportData.subTotalDeductionsVat / grandTotalVat, this.minFractionDigits);
-      this.bupaRejectionReportData.presentedNetBilledVatPercent = this.bupaRejectionReportData.presentedNetBilledVat > 0 ? '100%' : null;
+      this.bupaRejectionReportData.presentedNetBilledVatPercent = this.bupaRejectionReportData.presentedNetBilledVat > 0 ? '100%' : '';
       this.bupaRejectionReportData.batchDifferenceVatPercent = this.percent.transform(this.bupaRejectionReportData.batchDifferenceVat / grandTotalVat, this.minFractionDigits);
       this.bupaRejectionReportData.discountDifferenceVatPercent = this.percent.transform(this.bupaRejectionReportData.discountDifferenceVat / grandTotalVat, this.minFractionDigits);
       this.bupaRejectionReportData.deductibleDifferenceVatPercent = this.percent.transform(this.bupaRejectionReportData.deductibleDifferenceVat / grandTotalVat, this.minFractionDigits);
@@ -138,7 +138,7 @@ export class BupaRejectionReportComponent implements OnInit {
       this.bupaRejectionReportData.unwarrantedVariationsPercent = this.percent.transform(this.bupaRejectionReportData.unwarrantedVariations / grandTotal, this.minFractionDigits);
       this.bupaRejectionReportData.pharmacyBenefitManagementPercent = this.percent.transform(this.bupaRejectionReportData.pharmacyBenefitManagement / grandTotal, this.minFractionDigits);
       this.bupaRejectionReportData.subTotalDeductionsPercent = this.percent.transform(this.bupaRejectionReportData.subTotalDeductions / grandTotal, this.minFractionDigits);
-      this.bupaRejectionReportData.presentedNetBilledPercent = this.bupaRejectionReportData.presentedNetBilled > 0 ? '100%' : null;
+      this.bupaRejectionReportData.presentedNetBilledPercent = this.bupaRejectionReportData.presentedNetBilled > 0 ? '100%' : '';
       this.bupaRejectionReportData.batchDifferencePercent = this.percent.transform(this.bupaRejectionReportData.batchDifference / grandTotal, this.minFractionDigits);
       this.bupaRejectionReportData.discountDifferencePercent = this.percent.transform(this.bupaRejectionReportData.discountDifference / grandTotal, this.minFractionDigits);
       this.bupaRejectionReportData.deductibleDifferencePercent = this.percent.transform(this.bupaRejectionReportData.deductibleDifference / grandTotal, this.minFractionDigits);
