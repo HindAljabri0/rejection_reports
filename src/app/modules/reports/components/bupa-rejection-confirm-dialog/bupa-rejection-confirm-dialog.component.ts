@@ -36,7 +36,7 @@ export class BupaRejectionConfirmDialogComponent implements OnInit {
         if (event.status === 200) {
           this.dialogRef.close(true);
           this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false)).subscribe(res => {
-            this.router.navigateByUrl('');
+            // this.router.navigateByUrl('');
           });
         } else {
           this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false));
