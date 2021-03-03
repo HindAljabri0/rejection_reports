@@ -5,10 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { DataSource } from '@angular/cdk/table';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { CollectionViewer } from '@angular/cdk/collections';
-import { async } from 'q';
 // import { InfiniteScroll } from 'ngx-infinite-scroll';
 
 
@@ -19,24 +15,24 @@ import { async } from 'q';
 })
 export class NotificationsPageComponent implements OnInit {
 
-  providerId:string;
-  cardTitle:string = 'All Notifications';
-  currentPage:number = 0;
-  pageSize:number = 10;
+  providerId: string;
+  cardTitle = 'All Notifications';
+  currentPage = 0;
+  pageSize = 10;
 
   // modalScrollDistance = 2;
   // throttle = 300;
 
 
 
-  notificationMap:Map<string, Notification[]> = new Map();
-  notificationsMapKeys:string[] = new Array();
+  notificationMap: Map<string, Notification[]> = new Map();
+  notificationsMapKeys: string[] = new Array();
 
-  totalNotifications:number = 0;
-  currentNotificationsCount:number = 0;
-  errorMessage:string;
+  totalNotifications = 0;
+  currentNotificationsCount = 0;
+  errorMessage: string;
 
-  constructor(public commen:SharedServices, public routeActive:ActivatedRoute, public notificationService:NotificationsService) { }
+  constructor(public commen: SharedServices, public routeActive: ActivatedRoute, public notificationService: NotificationsService) { }
 
   ngOnInit() {
     this.routeActive.params.subscribe(value => {
@@ -47,45 +43,44 @@ export class NotificationsPageComponent implements OnInit {
 
 
 
-  getData(nextPage:boolean){
+  getData(nextPage: boolean) {
     this.errorMessage = null;
-    if(nextPage) this.currentPage++;
+    if (nextPage) {
+      this.currentPage++;
+    }
     this.notificationService.getNotifications(this.providerId, this.currentPage, this.pageSize).subscribe(event => {
-      if(event instanceof HttpResponse){
-        const paginatedResult:PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
+      if (event instanceof HttpResponse) {
+        const paginatedResult: PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.totalNotifications = paginatedResult.totalElements;
-        for(let notification of paginatedResult.content){
+        for (const notification of paginatedResult.content) {
           const year = notification.datetime.getFullYear();
-          const month = notification.datetime.getMonth()+1;
-          if(!this.notificationMap.has(`${year}/${month}`)){
+          const month = notification.datetime.getMonth() + 1;
+          if (!this.notificationMap.has(`${year}/${month}`)) {
             this.notificationMap.set(`${year}/${month}`, new Array());
             this.notificationsMapKeys.push(`${year}/${month}`);
           }
           this.notificationMap.get(`${year}/${month}`).push(notification);
           this.currentNotificationsCount++;
         }
-        if( this.totalNotifications == 0 &&
-          this.currentNotificationsCount == 0)
-          {
-            this.errorMessage="No Notifications Found";
-          }
+        if (this.totalNotifications == 0 &&
+          this.currentNotificationsCount == 0) {
+          this.errorMessage = 'No Notifications Found';
+        }
       }
     }, errorEvent => {
-      if(errorEvent instanceof HttpErrorResponse){
-        
-      }
+      if (errorEvent instanceof HttpErrorResponse) { }
     });
 
-   
+
 
   }
 
-  notificationsNotFinished(){
-    return this.currentNotificationsCount < this.totalNotifications
+  notificationsNotFinished() {
+    return this.currentNotificationsCount < this.totalNotifications;
   }
 
- /* onScrollDown() {
-    console.log('scrolled down!!');
-  }*/
+  /* onScrollDown() {
+     console.log('scrolled down!!');
+   }*/
 
 }

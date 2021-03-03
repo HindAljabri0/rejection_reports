@@ -5,7 +5,7 @@ export class VisitInfo {
     departmentCode: string;
     visitType: string;
 
-    constructor(claimType:string){
+    constructor(claimType: string) {
         this.departmentCode = claimType;
     }
 }

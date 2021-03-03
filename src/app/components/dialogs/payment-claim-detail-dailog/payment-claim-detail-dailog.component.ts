@@ -9,10 +9,12 @@ import { PaymentClaimDetail } from 'src/app/models/paymentClaimDetail';
 })
 export class PaymentClaimDetailDailogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<PaymentClaimDetailDailogComponent>, @Inject(MAT_DIALOG_DATA) public claim:PaymentClaimDetail) { }
+  constructor(
+    private dialogRef: MatDialogRef<PaymentClaimDetailDailogComponent>,
+    @Inject(MAT_DIALOG_DATA) public claim: PaymentClaimDetail) { }
 
   ngOnInit() {
-    
+
   }
 
 }

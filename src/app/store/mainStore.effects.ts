@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Subject, queueScheduler, interval } from 'rxjs';
-import { delay, takeWhile, tap } from 'rxjs/operators';
+import { interval } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { changePageTitle, showSnackBarMessage } from './mainStore.actions';
 
 

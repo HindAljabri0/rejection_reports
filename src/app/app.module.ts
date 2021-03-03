@@ -74,6 +74,11 @@ import {
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
+import {
+  BupaRejectionConfirmDialogComponent
+} from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +127,9 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
     ImageTooltipComponent,
     SummaryComponent,
     GmReportsPageComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    MainLayoutComponent,
+    BupaRejectionConfirmDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -142,7 +149,8 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
     CarouselModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    GuidedTourModule
+    GuidedTourModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     ThemeService,
@@ -181,7 +189,8 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
     TopFiveRejectionsComponent,
     ImageTooltipComponent,
     UploadSummaryDialogComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    BupaRejectionConfirmDialogComponent
   ],
 })
 export class AppModule { }

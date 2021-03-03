@@ -5,13 +5,13 @@ import { EventEmitter } from '@angular/core';
   templateUrl: './abstractcard.component.html',
   styleUrls: ['./abstractcard.component.css']
 })
-export class AbstractcardComponent  {
+export class AbstractcardComponent {
 
   constructor() { }
 
   @Input() title: string;
   @Input() actionText: string;
-  @Input() accentColor:string;
-  @Input() clickable:boolean = true;
+  @Input() accentColor: string;
+  @Input() clickable = true;
   @Output() action = new EventEmitter();
 }
