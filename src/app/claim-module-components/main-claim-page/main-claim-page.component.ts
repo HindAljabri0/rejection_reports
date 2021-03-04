@@ -158,7 +158,7 @@ export class MainClaimPageComponent implements OnInit {
     this.claimType = type;
     const payers = this.sharedService.getPayersList();
     this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
-    this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
+   
   }
 
   save() {
