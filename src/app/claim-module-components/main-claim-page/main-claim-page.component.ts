@@ -16,6 +16,7 @@ import {
   startCreatingNewClaim
 } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
+
 import {
   getClaim,
   getClaimModuleError,
@@ -26,7 +27,7 @@ import {
   ClaimPageMode,
   ClaimPageType,
   getRetrievedClaimProps,
-  getPaginationControl
+  getPaginationControl,
 } from '../store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -34,12 +35,15 @@ import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-main-claim-page',
   templateUrl: './main-claim-page.component.html',
   styles: []
 })
 export class MainClaimPageComponent implements OnInit {
+
+
 
   claim: Claim;
   claimProps: RetrievedClaimProps;
@@ -58,6 +62,7 @@ export class MainClaimPageComponent implements OnInit {
     searchTabCurrentResults: number[];
   };
   claimType = '';
+
 
   constructor(
     private router: Router,
@@ -114,7 +119,7 @@ export class MainClaimPageComponent implements OnInit {
     });
   }
 
- 
+
   ngOnInit() {
     this.store.select(getClaimModuleIsLoading).subscribe(loading => {
       this.isLoading = loading;
@@ -140,7 +145,7 @@ export class MainClaimPageComponent implements OnInit {
       });
   }
 
-  
+
 
   editPageTitle() {
     if (this.pageMode == 'VIEW' || this.pageMode == 'EDIT') {
@@ -157,9 +162,22 @@ export class MainClaimPageComponent implements OnInit {
       `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
     this.claimType = type;
     const payers = this.sharedService.getPayersList();
-    this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
-   
+    if (this.claimType == this.dentalDepartmentCode || this.claimType == this.opticalDepartmentCode) {
+      this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
+    } else {
+      this.store.dispatch(startCreatingNewClaim({
+        data: {
+          claimType: this.claimType,
+          providerClaimNumber: providerClaimNumber
+        }
+      }));
+
+    }
   }
+
+
+
+
 
   save() {
     if (this.isLoading) { return; }
@@ -241,5 +259,9 @@ export class MainClaimPageComponent implements OnInit {
     return this.claimProps != null &&
       ['accepted', 'notaccepted', 'failed', 'invalid', 'downloadable'].includes(this.claimProps.statusCode.toLowerCase());
   }
+
+
+
+
 
 }
