@@ -1,0 +1,9 @@
+<app-sidebar *ngIf="!(isHeaderAndSideMenuHidden$ | async)"></app-sidebar>
+<app-header *ngIf="!(isHeaderAndSideMenuHidden$ | async)" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
+<div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async)}">
+    <router-outlet>
+    </router-outlet>
+</div>
+<app-notification-center></app-notification-center>
+<app-upload-history-center></app-upload-history-center>
+<app-announcement-center></app-announcement-center>
