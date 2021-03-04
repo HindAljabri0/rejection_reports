@@ -1,7 +1,8 @@
 <div class="block-header has-border">
     <p>Clean Claim Progress Report</p>
     <span class="spacer"></span>
-    <p class="text-normal-color"><span class="text-medium-grey">Report Date:</span> 02/07/2019</p>
+    <p class="text-normal-color"><span class="text-medium-grey">Report Date:</span> {{currentDate | date : 'shortDate'}}
+    </p>
 </div>
 <form #cleanClaimForm='ngForm' (ngSubmit)='cleanClaimForm.valid && generate()'>
     <div class="block-filter-panel has-border">

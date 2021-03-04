@@ -43,7 +43,8 @@ export class CleanClaimProgressReportComponent implements OnInit {
       yAxes: [{
         ticks: {
           fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
+          fontColor: this.chartFontColor,
+          beginAtZero: true
         },
         scaleLabel: {
           display: true,
@@ -154,6 +155,7 @@ export class CleanClaimProgressReportComponent implements OnInit {
     return this.sharedService.providerId;
   }
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  currentDate = new Date();
   constructor(private sharedService: SharedServices, private reportSerice: ReportsService, private datePipe: DatePipe) {
   }
 
