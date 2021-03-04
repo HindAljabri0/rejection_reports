@@ -6,6 +6,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BupaRejectionConfirmDialogComponent } from '../bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 import { PercentPipe } from '@angular/common';
 import { NgForm } from '@angular/forms';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-bupa-rejection-report',
@@ -21,7 +23,7 @@ export class BupaRejectionReportComponent implements OnInit {
   subTotalBatchVatDiffrence = ['invalidMembershipVat', 'diffInComputationVat', 'claimsNotReceivedVat', 'invalidServiceCodeVat', 'lateSubmissionVat'];
   subTotalDedeuction = ['appropriatenessOfCare', 'technicalContractual', 'priceListShortFallOrBilled', 'policyCompliance', 'preAuthorization', 'unwarrantedVariations', 'pharmacyBenefitManagement'];
   subTotalVatDeduction = ['appropriatenessOfCareVat', 'technicalContractualVat', 'priceListShortFallOrBilledVat', 'policyComplianceVat', 'preAuthorizationVat', 'unwarrantedVariationsVat', 'pharmacyBenefitManagementVat']
-  constructor(private dialog: MatDialog, private percent: PercentPipe) {
+  constructor(private dialog: MatDialog, private percent: PercentPipe, private dialogService: DialogService) {
   }
 
   ngOnInit() {
@@ -32,10 +34,17 @@ export class BupaRejectionReportComponent implements OnInit {
   }
 
   saveClick(form: NgForm) {
+    this.checkAllValuesHundredPercentBelow();
     this.bupaRejectionReportData.payerId = 319;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.autoFocus = false;
+
+    if (this.checkAllValuesHundredPercentBelow()) {
+      this.dialogService.openMessageDialog(new MessageDialogData('', 'Please provide correct data as percentage cannot be greater than 100%', true));
+      return;
+    }
+
     const dialogRef = this.dialog.open(BupaRejectionConfirmDialogComponent, { panelClass: ['primary-dialog'], autoFocus: false, data: this.bupaRejectionReportData });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -44,6 +53,18 @@ export class BupaRejectionReportComponent implements OnInit {
     }, error => {
 
     });
+  }
+  checkAllValuesHundredPercentBelow() {
+    let isPercentageHundredAbove = false;
+    const allInputPercentageKeys = Object.keys(this.bupaRejectionReportData).filter(ele => ele.includes('Percent'));
+    for (let item of allInputPercentageKeys) {
+      const value = Number(this.bupaRejectionReportData[item].replace('%', ''));
+      if (value > 100) {
+        isPercentageHundredAbove = true;
+        break;
+      }
+    }
+    return isPercentageHundredAbove;
   }
 
   updatePercentageCalculation(item) {
