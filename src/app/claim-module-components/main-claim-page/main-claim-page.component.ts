@@ -12,7 +12,8 @@ import {
   toEditMode,
   cancelEdit,
   saveLabResults,
-  goToClaim
+  goToClaim,
+  startCreatingNewClaim
 } from '../store/claim.actions';
 import { Claim } from '../models/claim.model';
 import {
@@ -113,6 +114,7 @@ export class MainClaimPageComponent implements OnInit {
     });
   }
 
+ 
   ngOnInit() {
     this.store.select(getClaimModuleIsLoading).subscribe(loading => {
       this.isLoading = loading;
@@ -138,6 +140,8 @@ export class MainClaimPageComponent implements OnInit {
       });
   }
 
+  
+
   editPageTitle() {
     if (this.pageMode == 'VIEW' || this.pageMode == 'EDIT') {
       const mode = this.pageMode.charAt(0) + this.pageMode.substring(1).toLowerCase();
@@ -153,6 +157,7 @@ export class MainClaimPageComponent implements OnInit {
       `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
     this.claimType = type;
     const payers = this.sharedService.getPayersList();
+    this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
     this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
   }
 
