@@ -191,6 +191,8 @@ export class CleanClaimProgressReportComponent implements OnInit {
     } else {
       this.datePickerConfig = { dateInputFormat: 'YYYY' }
     }
+    this.generateReport.beforeDate = '';
+    this.generateReport.afterDate = '';
   }
 
   generate() {
