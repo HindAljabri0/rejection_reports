@@ -8,44 +8,70 @@
             <tr>
                 <th></th>
                 <th>Billed Amount</th>
+                <th>Percentage</th>
                 <th>VAT Amount</th>
+                <th>Percentage</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th class="text-primary medium">Subtotal batch difference</th>
                 <td>
-                    <h3 class="medium">{{dialogData.subTotalBatchDiff}}</h3>
+                    <h3 class="medium">{{dialogData.subTotalBatchDiff | number : '1.2-2'}}</h3>
                 </td>
                 <td>
-                    <h3 class="medium">{{dialogData.subTotalBatchDiffVat}}</h3>
+                    <h3 class="medium">{{dialogData.subTotalBatchDiffPercent }}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalBatchDiffVat | number : '1.2-2'}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalBatchDiffVatPercent}}</h3>
                 </td>
             </tr>
             <tr>
                 <th class="text-primary medium">Subtotal deductions</th>
                 <td>
-                    <h3 class="medium">{{dialogData.subTotalDeductions}}</h3>
+                    <h3 class="medium">{{dialogData.subTotalDeductions | number : '1.2-2'}}</h3>
                 </td>
                 <td>
-                    <h3 class="medium">{{dialogData.subTotalDeductionsVat}}</h3>
+                    <h3 class="medium">{{dialogData.subTotalDeductionsPercent }}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalDeductionsVat | number : '1.2-2'}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.subTotalDeductionsVatPercent }}</h3>
                 </td>
             </tr>
             <tr>
                 <th class="text-primary medium">Grand Total Rejections amounts</th>
                 <td>
-                    <h3 class="medium">{{dialogData.grandTotalRejection}}</h3>
+                    <h3 class="medium">{{dialogData.grandTotalRejection | number : '1.2-2'}}</h3>
                 </td>
                 <td>
-                    <h3 class="medium">{{dialogData.grandTotalRejectionVat}}</h3>
+                    <h3 class="medium">{{dialogData.grandTotalRejectionPercent }}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.grandTotalRejectionVat | number : '1.2-2'}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.grandTotalRejectionVatPercent }}</h3>
                 </td>
             </tr>
             <tr>
                 <th class="text-primary medium">Approved to pay</th>
                 <td>
-                    <h3 class="medium">{{dialogData.approvedToPay}}</h3>
+                    <h3 class="medium">{{dialogData.approvedToPay | number : '1.2-2'}}</h3>
                 </td>
                 <td>
-                    <h3 class="medium">{{dialogData.approvedToPayVat}}</h3>
+                    <h3 class="medium">{{dialogData.approvedToPayPercent }}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.approvedToPayVat | number : '1.2-2'}}</h3>
+                </td>
+                <td>
+                    <h3 class="medium">{{dialogData.approvedToPayVatPercent }}</h3>
                 </td>
             </tr>
         </tbody>
@@ -54,6 +80,6 @@
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">Close</button>
-        <button mat-flat-button color="primary">Confirm & Save</button>
+        <button mat-flat-button color="primary" (click)='save()'>Confirm & Save</button>
     </div>
 </div>

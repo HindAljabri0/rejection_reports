@@ -204,8 +204,9 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .sidebar hr{margin: 0;}
 .sidebar .list-container{padding: 10px 0;}
 .sidebar .list-title {color: #878B96;list-style: none;margin: 10px 0;text-decoration: none;padding-left: 16px;}
-.sidebar .nav-list>li>a{display: flex;align-items: center;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
+.sidebar .nav-list>li>a{display: flex;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
 .sidebar .nav-list>li>a:hover,.sidebar .nav-list>li>a:focus,.sidebar .nav-list>li>a:active{background-color: #ecebeb;}
+.sidebar .nav-list>li>a .text{align-self:center;-ms-flex-item-align: center;}
 .sidebar .nav-list>.new>a{padding-right: 24px;}
 .sidebar .nav-list>.new>a::after{content: '';background-color: #EB2A75;position: absolute;height: 6px;width: 6px;border-radius: 500px;display: block;top: 50%;right: 14px;transform: translate(0, -50%);}
 .sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
@@ -244,7 +245,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .form-group.form-group-lg{margin-bottom: 24px;}
 .form-control,.form-control[readonly],.form-control:disabled{border:1px solid #EFF5FF;height:40px;background-color: #EFF5FF;padding: 4px 12px;color: #3060AA;border-radius: 6px;font-size: inherit;line-height: inherit;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: none;caret-color: #3060AA;font-size:14px;line-height: 20px;}
 select.form-control{cursor: pointer;}
-textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding-bottom: 8px;}
+textarea.form-control,textarea.form-control:disabled,textarea.form-control[readonly]{min-height: 40px;resize: vertical;padding-top: 9px;padding-bottom: 9px;height:auto;}
 .form-control:focus,.form-control[readonly]:focus,.form-control.custom-select-control.mat-form-field.mat-focused{border:1px solid #3060AA;background-color: #EFF5FF;box-shadow: none;color: #3060AA;}
 .form-control::-webkit-outer-spin-button, .form-control::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
 .form-control[type=number] {-moz-appearance: textfield;}
@@ -622,7 +623,8 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 /* bupa
 --------------------------------------------------------------------------------------------------------*/
 .bupa-footer .left-block{display: flex;padding-left: 30px;}
-.bupa-footer .left-block .form-group{margin-bottom: 0;margin-right: 20px;}
+.bupa-footer .left-block .control-label{white-space: nowrap;}
+.bupa-footer .left-block .form-group{margin-bottom: 0;margin-right: 14px;}
 .bupa-table.primary-grid>thead>tr>th, .bupa-table.primary-grid>thead>tr>td, .bupa-table.primary-grid>tbody>tr>th, .bupa-table.primary-grid>tbody>tr>td{padding: 7px;}
 .bupa-table.primary-grid>tbody>tr>th, .bupa-table.primary-grid>tbody>tr>td{border:1px solid #e1e1e1;}
 .bupa-table.primary-grid>thead>tr>th, .bupa-table.primary-grid>thead>tr>td{border:1px solid #b3d1ff;}
@@ -651,6 +653,7 @@ textarea.form-control{min-height: 40px;resize: vertical;padding-top: 8px;padding
 .clean-claim-progress-report .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
 .clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
+.clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -668,6 +671,12 @@ bs-datepicker-container bs-datepicker-navigation-view>.current,bs-datepicker-con
 bs-datepicker-container bs-datepicker-navigation-view>.current+.current{margin-left: 0;}
 bs-datepicker-container .theme-green .bs-datepicker-body table td.active-week span:hover,bs-datepicker-container .bs-datepicker-body table td.active-week span:hover{background-color: #e2e2e2;color: #3060AA;opacity: 1;}
 bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-datepicker-body table td.is-other-month span{color:inherit;opacity:0.48;}
+
+/* radio button
+--------------------------------------------------------------------------------------------------------*/
+.form-group>.radio-group{padding-top: 9px;display: block;}
+.radio-group .mat-radio-button{display: block;margin-bottom: 8px;}
+.radio-group.inline .mat-radio-button{margin-right: 16px;display: inline-block;vertical-align: top;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
