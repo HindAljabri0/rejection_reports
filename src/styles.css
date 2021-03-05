@@ -689,6 +689,16 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .status-text.ball-green:before{background-color: #7DF467;}
 .status-text.ball-brown:before{background-color: #B48A60;}
 
+/* custom file upload
+--------------------------------------------------------------------------------------------------------*/
+.custom-file-upload{position: relative;}
+.custom-file-upload>.upload-control{position: absolute;top: 0;left: 0;height: 100%;width: 100%;opacity: 0;display: block;z-index: 1;cursor: pointer;}
+.custom-file-upload>.content{position: relative;z-index: 0;padding: 32px 16px;border:2px dashed #b9b9b9;text-align: center;}
+.custom-file-upload>.content>img{display: block;margin: 0 auto 12px;height: 56px;width: 56px;}
+.custom-file-upload>.content>p{font-weight: 600;padding: 0 0 2px;color:#3060AA;}
+.custom-file-upload>.content>span{color:#707070;}
+.custom-file-upload>.content>p,.custom-file-upload>.content>span{max-width: 300px;margin: 0 auto;display: block;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl,
