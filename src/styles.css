@@ -311,6 +311,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-header>.title-btn.mat-button.active:after{opacity: 1;transform:scaleX(1);}
 .block-header>.title-btn.mat-button:first-child{margin-left: -14px;}
 .block-header .block-description{font-size: 14px;line-height: 18px;font-weight: 500;color: #707070;}
+.block-header .right-block{margin-left: auto;}
+.secondary-header{padding: 12px 14px;color:#0079C8;background: #fff;font-weight: 500;}
 .block-filter-panel{background: #fff;padding: 14px 14px 0;}
 .block-body {padding: 14px;background-color: #f0eeee;}
 .block-body.create-claim-body{min-height: calc(100vh - 218px);padding-bottom: 0;}
@@ -677,6 +679,15 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .form-group>.radio-group{padding-top: 9px;display: block;}
 .radio-group .mat-radio-button{display: block;margin-bottom: 8px;}
 .radio-group.inline .mat-radio-button{margin-right: 16px;display: inline-block;vertical-align: top;}
+
+/* status text
+--------------------------------------------------------------------------------------------------------*/
+.status-text{display: flex;align-items: center;}
+.status-text:before{height: 6px;width:6px;border-radius:500px;display:block;background-color: #ededed;content:'';margin-right: 6px;}
+.status-text.ball-blue:before{background-color: #1F78B4;}
+.status-text.ball-purple:before{background-color: #6F4DE2;}
+.status-text.ball-green:before{background-color: #7DF467;}
+.status-text.ball-brown:before{background-color: #B48A60;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
