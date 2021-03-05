@@ -1,4 +1,6 @@
-<p *ngIf="errorMessage != null" class="error-card">{{errorMessage}}</p>
+<div *ngIf="errorMessage != null" class="p-3 bg-white">
+    <p class="error-card mb-0">{{errorMessage}}</p>
+</div>
 <ng-content></ng-content>
 
 <div class="inner-loader-wrapper">

@@ -5,7 +5,7 @@
                 <mat-icon class="mr-1" *ngIf="genInfoTabHasErrors()" [class.text-danger]="genInfoTabHasErrors()">error</mat-icon>
                 <span [class.text-danger]="genInfoTabHasErrors()">General Information</span>
             </ng-template>
-            <gen-info></gen-info>
+            <gen-info [claimType]='claimType'></gen-info>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
