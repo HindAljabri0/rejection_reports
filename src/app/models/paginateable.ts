@@ -1,5 +1,3 @@
-
-
 export class Paginateable {
-    constructor(protected body: {}){}
+    constructor(protected body: {}) { }
 }

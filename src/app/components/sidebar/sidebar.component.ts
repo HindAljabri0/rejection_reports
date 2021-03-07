@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class SidebarComponent implements OnInit {
 
   providerId: string;
-  doNotShowGlobMedIn: string[] = ['oci_prod', 'oci_staging'];
+  doNotShowMenuItemIn: string[] = ['oci_prod'];
   envName = environment.name;
   isAdmin = false;
   isProviderAdmin = false;

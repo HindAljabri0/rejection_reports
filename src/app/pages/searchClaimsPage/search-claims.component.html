@@ -8,7 +8,7 @@
 
     <div class="block-header" *ngIf="errorMessage == null">
         <p *ngIf="uploadNameExist" class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
-        <div class="ml-auto d-flex">
+        <div class="ml-auto d-flex mt-n2 mb-n2">
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': !isManagingAttachments}" (click)="isManagingAttachments = false">Claims</button>
             <button mat-flat-button class="tab-btn" [ngClass]="{'active': isManagingAttachments}" (click)="isManagingAttachments = true">Attachments
                 Management</button>
@@ -89,8 +89,9 @@
         </div>
         <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
             <mat-tab>
-                    <div class="table-responsive" *ngIf="searchResult != null">
-                        <table class="primary-grid contextful" cellpadding="0" cellspacing="0" border="0">
+                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="searchResult != null">
+                    <div class="fixed-height">
+                        <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
                             <thead>
                                 <tr *ngIf="summaries != null && summaries[selectedCardKey] != null">
                                     <th
@@ -213,7 +214,7 @@
                             </tbody>
                         </table>
                     </div>
-                
+                </ng-scrollbar>
                 <div class="block-footer">
                     <div class="right-block btn-list">
                         <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}</button>

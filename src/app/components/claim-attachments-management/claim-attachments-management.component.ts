@@ -2,8 +2,24 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { cancelAttachmentEdit, requestClaimAttachments, requestClaimsPage, saveAttachmentsChanges, SearchPaginationAction, showErrorMessage, updateClaimAttachments } from 'src/app/pages/searchClaimsPage/store/search.actions';
-import { getCurrentSearchResult, getClaimsWithChanges, getIsAssignedAttachmentsLoading, getPageInfo, getSelectedClaimAttachments, getIsSavingChanges, getSavingResponses } from 'src/app/pages/searchClaimsPage/store/search.reducer';
+import {
+  cancelAttachmentEdit,
+  requestClaimAttachments,
+  requestClaimsPage,
+  saveAttachmentsChanges,
+  SearchPaginationAction,
+  showErrorMessage,
+  updateClaimAttachments
+} from 'src/app/pages/searchClaimsPage/store/search.actions';
+import {
+  getCurrentSearchResult,
+  getClaimsWithChanges,
+  getIsAssignedAttachmentsLoading,
+  getPageInfo,
+  getSelectedClaimAttachments,
+  getIsSavingChanges,
+  getSavingResponses
+} from 'src/app/pages/searchClaimsPage/store/search.reducer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
@@ -14,8 +30,8 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
 
-  currentPage: number = 0;
-  maxPages: number = 0;
+  currentPage = 0;
+  maxPages = 0;
 
   claims: { id: string, referenceNumber: string, memberId: string, hasAttachments: boolean }[] = [];
 
@@ -31,14 +47,14 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
   selectedAssignedAttachments: number[] = [];
 
   attachmentBeingTypeEdited: { attachment, type: string, name: string, attachmentId?: string };
-  attachmentBeingTypeEditedIsAssigned: boolean = false;
-  selectAttachmentBeingEdited: number = -1;
+  attachmentBeingTypeEditedIsAssigned = false;
+  selectAttachmentBeingEdited = -1;
 
-  attachmentsLoading: boolean = false;
-  assignedAttachmentsLoading: boolean = false;
-  saving: boolean = false;
+  attachmentsLoading = false;
+  assignedAttachmentsLoading = false;
+  saving = false;
 
-  hasChanges: boolean = false;
+  hasChanges = false;
 
   afterSavingResponses: { id: string, status: string, error?}[] = [];
 
@@ -49,14 +65,16 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
       claims => {
         this.selectedClaim = null;
         this.selectedClaimAssignedAttachments = [];
-        this.selectedAttachments = []
-        if (this.assignedAttachmentsSubscription$ != null) this.assignedAttachmentsSubscription$.unsubscribe();
+        this.selectedAttachments = [];
+        if (this.assignedAttachmentsSubscription$ != null) {
+          this.assignedAttachmentsSubscription$.unsubscribe();
+        }
         this.claims = claims.map(claim => ({
           id: claim.claimId,
           referenceNumber: claim.providerClaimNumber,
           memberId: claim.memberId,
           hasAttachments: claim.numOfAttachments > 0
-        }))
+        }));
       }
     );
     this.store.select(getPageInfo).subscribe(info => {
@@ -78,7 +96,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
           });
         }
       }
-      this.afterSavingResponses = responses
+      this.afterSavingResponses = responses;
     });
   }
 
@@ -90,14 +108,14 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
     this.attachmentsLoading = true;
     const numOfFiles = event.length;
     for (let i = 0; i < numOfFiles; i++) {
-      let file = event.item(i);
-      let error = { code: 'SELECT_ATTACHMENT', message: null }
+      const file = event.item(i);
+      const error = { code: 'SELECT_ATTACHMENT', message: null };
       if (file.size == 0) {
         error.message = `[${file.name}] file is empty`;
         this.store.dispatch(showErrorMessage({ error: error }));
         continue;
       }
-      let mimeType = file.type;
+      const mimeType = file.type;
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
         error.message = `[${file.name}] is not an image or a PDF file`;
         this.store.dispatch(showErrorMessage({ error: error }));
@@ -119,17 +137,19 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
   }
 
   preview(file: File) {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
       let data: string = reader.result as string;
       data = data.substring(data.indexOf(',') + 1);
       this.attachments.push({ attachment: data, name: file.name, type: '' });
-    }
+    };
   }
 
   onClaimClicked(claimId: string) {
-    if (this.selectedClaim == claimId) return;
+    if (this.selectedClaim == claimId) {
+      return;
+    }
     this.selectedClaim = claimId;
     this.selectedAttachments = [];
     const index = this.claims.findIndex(claim => claim.id == claimId);
@@ -141,7 +161,9 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
         this.assignedAttachmentsSubscription$.unsubscribe();
       }
       this.selectedAssignedAttachments = [];
-      this.assignedAttachmentsSubscription$ = this.store.select(getSelectedClaimAttachments(claimId)).subscribe(attachments => this.selectedClaimAssignedAttachments = attachments.map(att => ({ attachment: att.file, type: att.type, name: att.name, attachmentId: att.attachmentId })));
+      this.assignedAttachmentsSubscription$ = this.store.select(getSelectedClaimAttachments(claimId))
+        .subscribe(attachments => this.selectedClaimAssignedAttachments = attachments.map(att =>
+          ({ attachment: att.file, type: att.type, name: att.name, attachmentId: att.attachmentId })));
     }
   }
 
@@ -158,7 +180,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
 
   getFileType(type: string) {
     if (type == null || type.trim().length == 0) {
-      return 'Select Type'
+      return 'Select Type';
     }
     return type.replace('_', ' ').replace('_', ' ').toUpperCase();
   }
@@ -170,25 +192,43 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
   toggleAttachmentSelection(i: number) {
     if (!this.selectedAttachments.includes(i)) {
       if (this.attachments[i] != null && this.selectedClaimAssignedAttachments.some(att => att.name == this.attachments[i].name)) {
-        this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `Attachment with the same name already assigned to selected claim.` } }));
+        this.store.dispatch(showErrorMessage({
+          error: {
+            code: 'SELECTION_ERROR',
+            message: `Attachment with the same name already assigned to selected claim.`
+          }
+        }));
         return;
       }
       if (this.attachments[i] != null && this.selectedAttachments.some(index => this.attachments[index].name == this.attachments[i].name)) {
-        this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `Attachment with the same name already selected .` } }));
+        this.store.dispatch(showErrorMessage({
+          error: {
+            code: 'SELECTION_ERROR',
+            message: `Attachment with the same name already selected .`
+          }
+        }));
         return;
       }
     }
     this.toggleSelectionInList(this.selectedAttachments, i);
     if ((this.selectedAttachments.length + this.selectedClaimAssignedAttachments.length) > 7) {
-      this.store.dispatch(showErrorMessage({ error: { code: 'SELECTION_ERROR', message: `You can't assign more than 7 attachments to a claim.` } }));
+      this.store.dispatch(showErrorMessage({
+        error: {
+          code: 'SELECTION_ERROR',
+          message: `You can't assign more than 7 attachments to a claim.`
+        }
+      }));
       this.toggleSelectionInList(this.selectedAttachments, i);
     }
   }
 
   toggleSelectionInList(list: number[], i: number) {
     const index = list.findIndex(num => num == i);
-    if (index == -1) list.push(i);
-    else list.splice(index, 1);
+    if (index == -1) {
+      list.push(i);
+    } else {
+      list.splice(index, 1);
+    }
   }
 
   changePage(action: SearchPaginationAction) {
@@ -213,7 +253,13 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
     }
     this.selectedClaimAssignedAttachments = this.selectedClaimAssignedAttachments.concat(
       this.attachments.filter((att, i) => this.selectedAttachments.includes(i))
-        .map(att => ({ claimId: this.selectedClaim, attachment: att.attachment, name: att.name, type: att.type, attachmentId: att.attachmentId }))
+        .map(att => ({
+          claimId: this.selectedClaim,
+          attachment: att.attachment,
+          name: att.name,
+          type: att.type,
+          attachmentId: att.attachmentId
+        }))
     );
     this.attachments = this.attachments.filter((att, i) => !this.selectedAttachments.includes(i));
     this.selectedAttachments = [];
@@ -228,9 +274,10 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
       this.selectedClaimAssignedAttachments.filter((att, i) => this.selectedAssignedAttachments.includes(i))
         .map(att => ({ attachment: att.attachment, name: att.name, type: att.type, attachmentId: att.attachmentId }))
     );
-    this.selectedClaimAssignedAttachments = this.selectedClaimAssignedAttachments.filter((att, i) => !this.selectedAssignedAttachments.includes(i));
+    this.selectedClaimAssignedAttachments = this.selectedClaimAssignedAttachments.filter((att, i) =>
+      !this.selectedAssignedAttachments.includes(i));
     this.selectedAssignedAttachments = [];
-    this.updateClaimAttachments()
+    this.updateClaimAttachments();
   }
 
   updateClaimAttachments() {
@@ -239,7 +286,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
       attachments: this.selectedClaimAssignedAttachments.map(att =>
         ({ claimId: this.selectedClaim, file: att.attachment, name: att.name, type: att.type, attachmentId: att.attachmentId })
       )
-    }))
+    }));
   }
 
   cancel() {
@@ -270,7 +317,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
         if (confirmed) {
           this.store.dispatch(saveAttachmentsChanges());
         }
-      })
+      });
     }
   }
 

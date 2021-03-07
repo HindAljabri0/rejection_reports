@@ -1,7 +1,6 @@
 import { Period } from './period.type';
 
 export class Patient {
-
     fullName: string;
     firstName: string;
     middleName: string;
@@ -12,5 +11,4 @@ export class Patient {
     nationality: string;
     patientFileNumber: string;
     contactNumber: string;
-
 }

@@ -1,7 +1,6 @@
 import { Paginateable } from './paginateable';
 
 export class PaymentRefernceDetail extends Paginateable {
-
     paymentDate: Date;
     paymentReference: string;
     totalNumberOfClaims: number;
@@ -11,11 +10,11 @@ export class PaymentRefernceDetail extends Paginateable {
 
     constructor(body: {}) {
         super(body);
-        this.payerId = body["payerId"];
-        this.paymentDate= body["paymentDate"];
-        this.paymentReference= body["paymentReference"];
-        this.totalNumberOfClaims= body["totalNumberOfClaims"];
-        this.totalPaidAmount= body["totalPaidAmount"];
-        this.totalPaidVatAmount= body["totalPaidVatAmount"];
+        this.payerId = body['payerId'];
+        this.paymentDate = body['paymentDate'];
+        this.paymentReference = body['paymentReference'];
+        this.totalNumberOfClaims = body['totalNumberOfClaims'];
+        this.totalPaidAmount = body['totalPaidAmount'];
+        this.totalPaidVatAmount = body['totalPaidVatAmount'];
     }
 }
