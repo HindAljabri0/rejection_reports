@@ -44,7 +44,6 @@ export class BupaRejectionReportComponent implements OnInit {
       this.dialogService.openMessageDialog(new MessageDialogData('', 'Please provide correct data as percentage cannot be greater than 100%', true));
       return;
     }
-
     const dialogRef = this.dialog.open(BupaRejectionConfirmDialogComponent, { panelClass: ['primary-dialog'], autoFocus: false, data: this.bupaRejectionReportData });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
