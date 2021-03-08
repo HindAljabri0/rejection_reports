@@ -129,6 +129,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .unordered-list.change-log-list>li{font-size:16px;line-height:22px;padding-bottom: 8px;}
 .change-log-dialog{position: relative;}
 .change-log-dialog:before{background: url('assets/changelog-bg.svg') right bottom no-repeat;position: absolute;content:'';display: block;top: 0;right: 0;bottom: 0;left: 0;opacity: 0.72;border-radius: 4px;}
+.action-with-text{border:0;padding:8px 12px;margin:0;background:none;display:flex;align-items:center;}
+.action-with-text>.mat-icon{margin-right:4px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -306,6 +308,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* block
 --------------------------------------------------------------------------------------------------------*/
 .block-header{display: flex;color: #3060AA;background-color: #fff;border-top-left-radius: 6px;border-top-right-radius: 6px;padding: 14px;font-size: 16px;line-height: 22px;font-weight: 600;}
+.block-header.no-radius{border-radius:0;}
 .block-header.has-border,.block-filter-panel.has-border{border-bottom:1px solid #e1e1e1;}
 .block-header>.title-btn.mat-button{font-size:inherit;font-weight:inherit;margin: -14px 0;padding: 0 14px;line-height:50px;border-radius:0;position: relative;color:currentColor;}
 .block-header>.title-btn.mat-button:after{background-color: currentColor;content:'';display: block;height: 2px;left: 0;right: 0;bottom: 0;position: absolute;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: scaleX(0.4);opacity: 0;}
@@ -759,6 +762,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .progress-list .progress-block .bar{background-color: #E6E6E6;position:relative;flex-grow:0;flex-shrink:0;flex-basis: calc(100% - 60px);max-width:calc(100% - 60px);height:2px;}
 .progress-list .progress-block .bar .progress-line{position:absolute;background-color: #0079C8;left:0;top:0;bottom:0;}
 .progress-list .progress-block .text{text-align: right;flex-grow:0;flex-shrink:0;flex-basis: 60px;max-width:60px;padding-left:4px;}
+
+/* credit report details header
+--------------------------------------------------------------------------------------------------------*/
+.credit-report-details-header{background-color: #F9F9F9;padding: 14px;color:#505050;display:flex;}
+.credit-report-details-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 180px);max-width: calc(100% - 180px);}
+.credit-report-details-header>.right-block{flex-grow:0;flex-shrink:0;flex-basis:180px;max-width: 180px;padding-left: 14px;text-align: right;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
