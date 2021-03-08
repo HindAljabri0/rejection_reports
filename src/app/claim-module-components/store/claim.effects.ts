@@ -68,6 +68,7 @@ export class ClaimEffects {
                 if (departments != null && departments.length > 0) {
                     this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
                     this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
+                   
                 }
             });
     }
