@@ -1,8 +1,15 @@
-<div class="body">
-    <mat-button-toggle [disabled]="!enableEdit" value="NA" (change)="updateIllnesses($event)"
-        [checked]="selectedIllnesses.includes('NA')">N/A
-    </mat-button-toggle>
-    <mat-button-toggle *ngFor="let code of illnessOptionsList" [value]="code" (change)="updateIllnesses($event)"
-        [disabled]="!enableEdit" [checked]="selectedIllnesses.includes(code)">
-        {{beautifyCode(code)}}</mat-button-toggle>
-</div>
+<ng-container *ngIf="illnessOptionsList.length > 0 || pageMode != 'VIEW'">
+    <div class="primary-button-toggle inline">
+        <mat-button-toggle [disabled]="!enableEdit" value="NA" (change)="updateIllnesses($event)" [checked]="selectedIllnesses.includes('NA')">N/A
+        </mat-button-toggle>
+        <mat-button-toggle *ngFor="let code of illnessOptionsList" [value]="code" (change)="updateIllnesses($event)" [disabled]="!enableEdit"
+            [checked]="selectedIllnesses.includes(code)">
+            {{beautifyCode(code)}}</mat-button-toggle>
+    </div>
+</ng-container>
+<ng-container *ngIf="illnessOptionsList.length == 0 && pageMode == 'VIEW'">
+    <div class="primary-button-toggle inline">
+        <mat-button-toggle *ngFor=" let code of selectedIllnesses" [value]="code" disabled="true" checked="true">
+            {{beautifyCode(code)}}</mat-button-toggle>
+    </div>
+</ng-container>

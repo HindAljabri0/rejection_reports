@@ -1,0 +1,914 @@
+<div class="block-header has-border">
+    <p class="align-self-center">Bupa Rejection Report</p>
+</div>
+<form #bupaReport='ngForm'
+    (ngSubmit)='bupaReport.valid && bupaRejectionReportData.grandTotalRejectionVat > 0 && bupaRejectionReportData.grandTotalRejection > 0 && saveClick(bupaReport)'>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-xxl-2 col-lg-3 col-md-4">
+                <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && batchId.invalid}">
+                    <label class="control-label">Batch ID</label>
+                    <input type="text" class="form-control" #batchId='ngModel' name='batchId' tabindex="1"
+                        [(ngModel)]='bupaRejectionReportData.batchId' required placeholder="Enter batch ID" />
+                </div>
+            </div>
+            <div class="col-xxl-2 col-lg-3 col-md-4">
+                <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && receivedDate.invalid}">
+                    <label class="control-label">Received Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="receivedDatePicker" [(ngModel)]='bupaRejectionReportData.receivedDate'
+                            tabindex="2" #receivedDate='ngModel' name='receivedDate' class="form-control" required
+                            placeholder="Select received date" />
+                        <mat-datepicker-toggle [for]="receivedDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #receivedDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-lg-3 col-md-4">
+                <div class="form-group referral-batch">
+                    <label class="control-label">Referral Batch</label>
+                    <!-- [(ngModel)]='bupaRejectionReportData.referralBatch' #referralBatch='ngModel' -->
+                    <!-- [ngClass]="{'has-error' : bupaReport.submitted && referralBatch.invalid}" -->
+                    <mat-radio-group class="radio-group inline" tabindex="3">
+                        <mat-radio-button color="primary" name='referralBatch' value="true">Yes
+                        </mat-radio-button>
+                        <mat-radio-button color="primary" name='referralBatch' value="false">No
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-body bg-white p-0">
+        <div class="table-responsive">
+            <table class="primary-grid bupa-table" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th colspan="4" width="33.3333%" class="text-center title">Batch Difference</th>
+                        <th colspan="4" width="33.3333%" class="text-center title">Deduction</th>
+                        <th colspan="4" width="33.3333%" class="text-center title">Statement Summary</th>
+                    </tr>
+                    <tr>
+                        <th width="10" class="text-center">No.</th>
+                        <th>Item Description</th>
+                        <th width="92">Billed Amount</th>
+                        <th width="92">VAT Amount</th>
+                        <th width="10" class="text-center">No.</th>
+                        <th>Item Description</th>
+                        <th width="92">Billed Amount</th>
+                        <th width="92">VAT Amount</th>
+                        <th width="10" class="text-center">No.</th>
+                        <th>Item Description</th>
+                        <th width="92">Billed Amount</th>
+                        <th width="92">VAT Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">1</td>
+                        <td>Invalid Membership</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && invalidMembership.invalid}"
+                            (click)="controlClick($event)">
+                            <input type="number" [(ngModel)]="bupaRejectionReportData.invalidMembership"
+                                #invalidMembership="ngModel" pattern="^(\d*\.)?\d+$" name="invalidMembership"
+                                (ngModelChange)="updatePercentageCalculation('invalidMembership')" required tabindex="2"
+                                class="form-control">
+                            <span class="ratio">{{bupaRejectionReportData.invalidMembershipPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && invalidMembershipVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input type="number" [(ngModel)]="bupaRejectionReportData.invalidMembershipVat"
+                                #invalidMembershipVat="ngModel" name="invalidMembershipVat" required
+                                class="form-control" tabindex="3"
+                                (ngModelChange)="updatePercentageCalculation('invalidMembershipVat')" />
+                            <span class="ratio">{{bupaRejectionReportData.invalidMembershipVatPercent}}</span>
+                        </td>
+                        <td class="text-center">6</td>
+                        <td>A. Appropriateness of Care</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && appropriatenessOfCare.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.appropriatenessOfCare"
+                                #appropriatenessOfCare="ngModel" name="appropriatenessOfCare" required
+                                (ngModelChange)="updatePercentageCalculation('appropriatenessOfCare')"
+                                class="form-control" tabindex="13" />
+                            <span class="ratio">{{bupaRejectionReportData.appropriatenessOfCarePercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && appropriatenessOfCareVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.appropriatenessOfCareVat"
+                                #appropriatenessOfCareVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('appropriatenessOfCareVat')"
+                                name="appropriatenessOfCareVat" required class="form-control" tabindex="14" />
+                            <span class="ratio">{{bupaRejectionReportData.appropriatenessOfCareVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td>Presented Net Billed</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && presentedNetBilled.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.presentedNetBilled" #presentedNetBilled="ngModel"
+                                name="presentedNetBilled" required class="form-control" tabindex="47"
+                                (ngModelChange)='updateBillCalculation()' />
+                            <span class="ratio">{{bupaRejectionReportData.presentedNetBilledPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && presentedNetBilledVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.presentedNetBilledVat"
+                                #presentedNetBilledVat="ngModel" name="presentedNetBilledVat" required
+                                class="form-control" tabindex="48" (ngModelChange)='updateVatCalculation()' />
+                            <span class="ratio">{{bupaRejectionReportData.presentedNetBilledVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">2</td>
+                        <td>Difference in Computation</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && diffInComputation.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.diffInComputation"
+                                (ngModelChange)="updatePercentageCalculation('diffInComputation')"
+                                #diffInComputation="ngModel" name="diffInComputation" required class="form-control"
+                                tabindex="3" />
+                            <span class="ratio">{{bupaRejectionReportData.diffInComputationPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && diffInComputationVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.diffInComputationVat"
+                                #diffInComputationVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('diffInComputationVat')"
+                                name="diffInComputationVat" required class="form-control" tabindex="4" />
+                            <span class="ratio">{{bupaRejectionReportData.diffInComputationVatPercent}}</span>
+                        </td>
+                        <td class="text-center">8</td>
+                        <td>B. Technical / Contractual</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && technicalContractual.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.technicalContractual"
+                                (ngModelChange)="updatePercentageCalculation('technicalContractual')"
+                                #technicalContractual="ngModel" name="technicalContractual" required
+                                class="form-control" tabindex="15" />
+                            <span class="ratio">{{bupaRejectionReportData.technicalContractualPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && technicalContractualVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.technicalContractualVat"
+                                (ngModelChange)="updatePercentageCalculation('technicalContractualVat')"
+                                #technicalContractualVat="ngModel" name="technicalContractualVat" required
+                                class="form-control" tabindex="16" />
+                            <span class="ratio">{{bupaRejectionReportData.technicalContractualVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td>Batch Difference</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && batchDifference.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.batchDifference" #batchDifference="ngModel"
+                                name="batchDifference" required class="form-control"
+                                (ngModelChange)='updateBillCalculation()' tabindex="49" />
+                            <span class="ratio">{{bupaRejectionReportData.batchDifferencePercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && batchDifferenceVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.batchDifferenceVat" #batchDifferenceVat="ngModel"
+                                name="batchDifferenceVat" required class="form-control"
+                                (ngModelChange)='updateVatCalculation()' tabindex="50" />
+                            <span class="ratio">{{bupaRejectionReportData.batchDifferenceVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">3</td>
+                        <td>Claims not Received</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && claimsNotReceived.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.claimsNotReceived" #claimsNotReceived="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('claimsNotReceived')"
+                                name="claimsNotReceived" required class="form-control" tabindex="5" />
+                            <span class="ratio">{{bupaRejectionReportData.claimsNotReceivedPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && claimsNotReceivedVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.claimsNotReceivedVat"
+                                (ngModelChange)="updatePercentageCalculation('claimsNotReceivedVat')"
+                                #claimsNotReceivedVat="ngModel" name="claimsNotReceivedVat" required
+                                class="form-control" tabindex="6" />
+                            <span class="ratio">{{bupaRejectionReportData.claimsNotReceivedVatPercent}}</span>
+                        </td>
+                        <td class="text-center">9</td>
+                        <td>B.1 Consultation within the free follow-up period</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && consultInWithinFreeFollowUp.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.consultInWithinFreeFollowUp"
+                                #consultInWithinFreeFollowUp="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('consultInWithinFreeFollowUp')"
+                                name="consultInWithinFreeFollowUp" required class="form-control" tabindex="17" />
+                            <span class="ratio">{{bupaRejectionReportData.consultInWithinFreeFollowUpPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && consultInWithinFreeFollowUpVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.consultInWithinFreeFollowUpVat"
+                                #consultInWithinFreeFollowUpVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('consultInWithinFreeFollowUpVat')"
+                                name="consultInWithinFreeFollowUpVat" required class="form-control" tabindex="18" />
+                            <span class="ratio">{{bupaRejectionReportData.consultInWithinFreeFollowUpVatPercent}}</span>
+                        </td>
+                        <td class="text-center">17</td>
+                        <td>Discount Difference</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && discountDifference.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.discountDifference" #discountDifference="ngModel"
+                                name="discountDifference" required class="form-control"
+                                (ngModelChange)='updateBillCalculation()' tabindex="51" />
+                            <span class="ratio">{{bupaRejectionReportData.discountDifferencePercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && discountDifferenceVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.discountDifferenceVat"
+                                #discountDifferenceVat="ngModel" name="discountDifferenceVat" required
+                                class="form-control" (ngModelChange)='updateVatCalculation()' tabindex="52" />
+                            <span class="ratio">{{bupaRejectionReportData.discountDifferenceVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">4</td>
+                        <td>Invalid Service Code</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && invalidServiceCode.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.invalidServiceCode" #invalidServiceCode="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('invalidServiceCode')"
+                                name="invalidServiceCode" required class="form-control" tabindex="7" />
+                            <span class="ratio">{{bupaRejectionReportData.invalidServiceCodePercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && invalidServiceCodeVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.invalidServiceCodeVat"
+                                #invalidServiceCodeVat="ngModel" name="invalidServiceCodeVat" required
+                                (ngModelChange)="updatePercentageCalculation('invalidServiceCodeVat')"
+                                class="form-control" tabindex="8" />
+                            <span class="ratio">{{bupaRejectionReportData.invalidServiceCodeVatPercent}}</span>
+                        </td>
+                        <td class="text-center">8</td>
+                        <td>B.2 Charges / service included, bundled or part of billed procedure / consultation or
+                            management.</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && chargesServicesIncluded.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.chargesServicesIncluded"
+                                #chargesServicesIncluded="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('chargesServicesIncluded')"
+                                name="chargesServicesIncluded" required class="form-control" tabindex="19" />
+                            <span class="ratio">{{bupaRejectionReportData.chargesServicesIncludedPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && chargesServicesIncludedVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.chargesServicesIncludedVat"
+                                (ngModelChange)="updatePercentageCalculation('chargesServicesIncludedVat')"
+                                #chargesServicesIncludedVat="ngModel" name="chargesServicesIncludedVat" required
+                                class="form-control" tabindex="20" />
+                            <span class="ratio">{{bupaRejectionReportData.chargesServicesIncludedVatPercent}}</span>
+                        </td>
+                        <td class="text-center">18</td>
+                        <td>Deductible Difference</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && deductibleDifference.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.deductibleDifference"
+                                #deductibleDifference="ngModel" name="deductibleDifference" required
+                                class="form-control" (ngModelChange)='updateBillCalculation()' tabindex="53" />
+                            <span class="ratio">{{bupaRejectionReportData.deductibleDifferencePercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && deductibleDifferenceVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.deductibleDifferenceVat"
+                                #deductibleDifferenceVat="ngModel" name="deductibleDifferenceVat" required
+                                class="form-control" (ngModelChange)='updateVatCalculation()' tabindex="54" />
+                            <span class="ratio">{{bupaRejectionReportData.deductibleDifferenceVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">5</td>
+                        <td>Late Submission</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && lateSubmission.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.lateSubmission" #lateSubmission="ngModel"
+                                (ngModelChange)='updatePercentageCalculation("")' name="lateSubmission" required
+                                class="form-control" tabindex="9" />
+                            <!-- <span class="ratio">{{bupaRejectionReportData.lateSubmissionPercent}}</span> -->
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && lateSubmissionVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.lateSubmissionVat" #lateSubmissionVat="ngModel"
+                                (ngModelChange)='updatePercentageCalculation("")' name="lateSubmissionVat" required
+                                class="form-control" tabindex="10" />
+                            <!-- <span class="ratio">{{bupaRejectionReportData.lateSubmissionVatPercent}}</span> -->
+                        </td>
+                        <td class="text-center">9</td>
+                        <td>B.3 Duplicate / Repeated Billing / Finally Settled</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && duplicateRepeatedBillingOrFinallySettled.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.duplicateRepeatedBillingOrFinallySettled"
+                                (ngModelChange)="updatePercentageCalculation('duplicateRepeatedBillingOrFinallySettled')"
+                                #duplicateRepeatedBillingOrFinallySettled="ngModel"
+                                name="duplicateRepeatedBillingOrFinallySettled" required class="form-control"
+                                tabindex="21" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.duplicateRepeatedBillingOrFinallySettledPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && duplicateRepeatedBillingOrFinallySettledVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.duplicateRepeatedBillingOrFinallySettledVat"
+                                #duplicateRepeatedBillingOrFinallySettledVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('duplicateRepeatedBillingOrFinallySettledVat')"
+                                name="duplicateRepeatedBillingOrFinallySettledVat" required class="form-control"
+                                tabindex="22" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.duplicateRepeatedBillingOrFinallySettledVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td>Deduction</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && deduction.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number" [(ngModel)]="bupaRejectionReportData.deduction"
+                                #deduction="ngModel" name="deduction" required class="form-control"
+                                (ngModelChange)='updateBillCalculation()' tabindex="55" />
+                            <span class="ratio">{{bupaRejectionReportData.deductionPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && deductionVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.deductionVat" #deductionVat="ngModel"
+                                name="deductionVat" required class="form-control"
+                                (ngModelChange)='updateVatCalculation()' tabindex="56" />
+                            <span class="ratio">{{bupaRejectionReportData.deductionVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">10</td>
+                        <td>C- Pricelist Shortfall / Billed<br>Above Contractual / Agreed Prices</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && priceListShortFallOrBilled.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.priceListShortFallOrBilled"
+                                #priceListShortFallOrBilled="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('priceListShortFallOrBilled')"
+                                name="priceListShortFallOrBilled" required class="form-control" tabindex="23" />
+                            <span class="ratio">{{bupaRejectionReportData.priceListShortFallOrBilledPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && priceListShortFallOrBilledVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.priceListShortFallOrBilledVat"
+                                (ngModelChange)="updatePercentageCalculation('priceListShortFallOrBilledVat')"
+                                #priceListShortFallOrBilledVat="ngModel" name="priceListShortFallOrBilledVat" required
+                                class="form-control" tabindex="24" />
+                            <span class="ratio">{{bupaRejectionReportData.priceListShortFallOrBilledVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td>Pending</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && pending.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number" [(ngModel)]="bupaRejectionReportData.pending"
+                                #pending="ngModel" name="pending" required class="form-control"
+                                (ngModelChange)='updateBillCalculation()' tabindex="57" />
+                            <span class="ratio">{{bupaRejectionReportData.pendingPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && pendingVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.pendingVat" #pendingVat="ngModel" name="pendingVat"
+                                required class="form-control" (ngModelChange)='updateVatCalculation()' tabindex="58" />
+                            <span class="ratio">{{bupaRejectionReportData.pendingVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"></td>
+                        <td>D. Policy Compliance</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && policyCompliance.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.policyCompliance"
+                                (ngModelChange)="updatePercentageCalculation('policyCompliance')"
+                                #policyCompliance="ngModel" name="policyCompliance" required class="form-control"
+                                tabindex="25" />
+                            <span class="ratio">{{bupaRejectionReportData.policyCompliancePercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && policyComplianceVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.policyComplianceVat" #policyComplianceVat="ngModel"
+                                name="policyComplianceVat" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('policyComplianceVat')" tabindex="26" />
+                            <span class="ratio">{{bupaRejectionReportData.policyComplianceVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">11</td>
+                        <td>C.1 Not covered by the effective insurance policy (condition /service) / within the waiting
+                            period</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && notCoveredByEffInsurancePolicy.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.notCoveredByEffInsurancePolicy"
+                                #notCoveredByEffInsurancePolicy="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('notCoveredByEffInsurancePolicy')"
+                                name="notCoveredByEffInsurancePolicy" required class="form-control" tabindex="27" />
+                            <span class="ratio">{{bupaRejectionReportData.notCoveredByEffInsurancePolicyPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && notCoveredByEffInsurancePolicyVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.notCoveredByEffInsurancePolicyVat"
+                                #notCoveredByEffInsurancePolicyVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('notCoveredByEffInsurancePolicyVat')"
+                                name="notCoveredByEffInsurancePolicyVat" required class="form-control" tabindex="28" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.notCoveredByEffInsurancePolicyVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">12</td>
+                        <td>C.2 Out of validity of effective insurance policy.</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && outOfValidityByEffInsurancePolicy.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.outOfValidityByEffInsurancePolicy"
+                                #outOfValidityByEffInsurancePolicy="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('outOfValidityByEffInsurancePolicy')"
+                                name="outOfValidityByEffInsurancePolicy" required class="form-control" tabindex="29" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.outOfValidityByEffInsurancePolicyPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && outOfValidityByEffInsurancePolicyVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.outOfValidityByEffInsurancePolicyVat"
+                                #outOfValidityByEffInsurancePolicyVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('outOfValidityByEffInsurancePolicyVat')"
+                                name="outOfValidityByEffInsurancePolicyVat" required class="form-control"
+                                tabindex="30" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.outOfValidityByEffInsurancePolicyVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">13</td>
+                        <td>C.3 Age / gender not matching with the type of service provided.</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && ageGenderMismatch.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.ageGenderMismatch" #ageGenderMismatch="ngModel"
+                                name="ageGenderMismatch" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('ageGenderMismatch')" tabindex="31" />
+                            <span class="ratio">{{bupaRejectionReportData.ageGenderMismatchPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && ageGenderMismatchVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.ageGenderMismatchVat"
+                                #ageGenderMismatchVat="ngModel" name="ageGenderMismatchVat" required
+                                class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('ageGenderMismatchVat')" tabindex="32" />
+                            <span class="ratio">{{bupaRejectionReportData.ageGenderMismatchVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"></td>
+                        <td>E. Pre-authorization</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && preAuthorization.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.preAuthorization" #preAuthorization="ngModel"
+                                name="preAuthorization" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('preAuthorization')" tabindex="33" />
+                            <span class="ratio">{{bupaRejectionReportData.preAuthorizationPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && preAuthorizationVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.preAuthorizationVat" #preAuthorizationVat="ngModel"
+                                name="preAuthorizationVat" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('preAuthorizationVat')" tabindex="34" />
+                            <span class="ratio">{{bupaRejectionReportData.preAuthorizationVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">14</td>
+                        <td>D.1 Requires pre-authorisation per policy.</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && requiresPreAuthRequestPerPolicy.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.requiresPreAuthRequestPerPolicy"
+                                #requiresPreAuthRequestPerPolicy="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('requiresPreAuthRequestPerPolicy')"
+                                name="requiresPreAuthRequestPerPolicy" required class="form-control" tabindex="35" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.requiresPreAuthRequestPerPolicyPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && requiresPreAuthRequestPerPolicyVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.requiresPreAuthRequestPerPolicyVat"
+                                #requiresPreAuthRequestPerPolicyVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('requiresPreAuthRequestPerPolicyVat')"
+                                name="requiresPreAuthRequestPerPolicyVat" required class="form-control" tabindex="36" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.requiresPreAuthRequestPerPolicyVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">15</td>
+                        <td>D.2 Not part of pre-authorisation request</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && notPartOfPreAuthReq.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.notPartOfPreAuthReq" #notPartOfPreAuthReq="ngModel"
+                                name="notPartOfPreAuthReq" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('notPartOfPreAuthReq')" tabindex="37" />
+                            <span class="ratio">{{bupaRejectionReportData.notPartOfPreAuthReqPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && notPartOfPreAuthReqVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.notPartOfPreAuthReqVat"
+                                #notPartOfPreAuthReqVat="ngModel" name="notPartOfPreAuthReqVat"
+                                (ngModelChange)="updatePercentageCalculation('notPartOfPreAuthReqVat')" required
+                                class="form-control" tabindex="38" />
+                            <span class="ratio">{{bupaRejectionReportData.notPartOfPreAuthReqVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">16</td>
+                        <td>D.3 Already rejected / Cancelled at pre-authorisation</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && alreadyRejectedCancelledAtPreAuthRequest.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.alreadyRejectedCancelledAtPreAuthRequest"
+                                #alreadyRejectedCancelledAtPreAuthRequest="ngModel"
+                                name="alreadyRejectedCancelledAtPreAuthRequest" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('alreadyRejectedCancelledAtPreAuthRequest')"
+                                tabindex="39" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.alreadyRejectedCancelledAtPreAuthRequestPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && alreadyRejectedCancelledAtPreAuthRequestVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.alreadyRejectedCancelledAtPreAuthRequestVat"
+                                #alreadyRejectedCancelledAtPreAuthRequestVat="ngModel"
+                                name="alreadyRejectedCancelledAtPreAuthRequestVat" required class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('alreadyRejectedCancelledAtPreAuthRequestVat')"
+                                tabindex="40" />
+                            <span
+                                class="ratio">{{bupaRejectionReportData.alreadyRejectedCancelledAtPreAuthRequestVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"></td>
+                        <td>F. Unwarranted Variations</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && unwarrantedVariations.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.unwarrantedVariations"
+                                #unwarrantedVariations="ngModel" name="unwarrantedVariations" required
+                                class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('unwarrantedVariations')" tabindex="41" />
+                            <span class="ratio">{{bupaRejectionReportData.unwarrantedVariationsPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && unwarrantedVariationsVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.unwarrantedVariationsVat"
+                                #unwarrantedVariationsVat="ngModel" name="unwarrantedVariationsVat" required
+                                class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('unwarrantedVariationsVat')"
+                                tabindex="42" />
+                            <span class="ratio">{{bupaRejectionReportData.unwarrantedVariationsVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"></td>
+                        <td>G- Pharmacy Benefit Management</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && pharmacyBenefitManagement.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.pharmacyBenefitManagement"
+                                #pharmacyBenefitManagement="ngModel" name="pharmacyBenefitManagement" required
+                                class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('pharmacyBenefitManagement')"
+                                tabindex="43" />
+                            <span class="ratio">{{bupaRejectionReportData.pharmacyBenefitManagementPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && pharmacyBenefitManagementVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.pharmacyBenefitManagementVat"
+                                #pharmacyBenefitManagementVat="ngModel" name="pharmacyBenefitManagementVat" required
+                                class="form-control"
+                                (ngModelChange)="updatePercentageCalculation('pharmacyBenefitManagementVat')"
+                                tabindex="44" />
+                            <span class="ratio">{{bupaRejectionReportData.pharmacyBenefitManagementVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="text-lg semibold">
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"></td>
+                        <td>Grand Total Rejections amounts</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && (grandTotalRejection.invalid || bupaRejectionReportData.grandTotalRejection === 0)}"
+                            (click)="controlClick($event)">
+                            <input type="number" [(ngModel)]="bupaRejectionReportData.grandTotalRejection"
+                                #grandTotalRejection="ngModel" name="grandTotalRejection" disabled required
+                                class="form-control" tabindex="59" />
+                            <span class="ratio">{{bupaRejectionReportData.grandTotalRejectionPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && (grandTotalRejectionVat.invalid || bupaRejectionReportData.grandTotalRejectionVat === 0)}"
+                            (click)="controlClick($event)">
+                            <input type="number" [(ngModel)]="bupaRejectionReportData.grandTotalRejectionVat" disabled
+                                #grandTotalRejectionVat="ngModel" name="grandTotalRejectionVat" required
+                                class="form-control" tabindex="60" />
+                            <span class="ratio">{{bupaRejectionReportData.grandTotalRejectionVatPercent}}</span>
+                        </td>
+                    </tr>
+                    <tr class="text-lg semibold">
+                        <td class="text-center"></td>
+                        <td>Subtotal batch difference</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && subTotalBatchDiff.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number" disabled
+                                [(ngModel)]="bupaRejectionReportData.subTotalBatchDiff" #subTotalBatchDiff="ngModel"
+                                name="subTotalBatchDiff" required
+                                (ngModelChange)="updatePercentageCalculation('subTotalBatchDiff')" class="form-control"
+                                tabindex="11" />
+                            <span class="ratio">{{bupaRejectionReportData.subTotalBatchDiffPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && subTotalBatchDiffVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number" disabled
+                                [(ngModel)]="bupaRejectionReportData.subTotalBatchDiffVat"
+                                #subTotalBatchDiffVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('subTotalBatchDiffVat')"
+                                name="subTotalBatchDiffVat" required class="form-control" tabindex="12" />
+                            <span class="ratio">{{bupaRejectionReportData.subTotalBatchDiffVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td>Subtotal deductions</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && subTotalDeductions.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number" disabled
+                                [(ngModel)]="bupaRejectionReportData.subTotalDeductions" #subTotalDeductions="ngModel"
+                                name="subTotalDeductions" required
+                                (ngModelChange)="updatePercentageCalculation('subTotalDeductions')" class="form-control"
+                                tabindex="45" />
+                            <span class="ratio">{{bupaRejectionReportData.subTotalDeductionsPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && subTotalDeductionsVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.subTotalDeductionsVat" disabled
+                                #subTotalDeductionsVat="ngModel"
+                                (ngModelChange)="updatePercentageCalculation('subTotalDeductionsVat')"
+                                name="subTotalDeductionsVat" required class="form-control" tabindex="46" />
+                            <span class="ratio">{{bupaRejectionReportData.subTotalDeductionsVatPercent}}</span>
+                        </td>
+                        <td class="text-center"></td>
+                        <td>Approved to pay</td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && approvedToPay.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.approvedToPay" #approvedToPay="ngModel"
+                                name="approvedToPay" required class="form-control"
+                                (ngModelChange)='updateBillCalculation()' tabindex="61" />
+                            <span class="ratio">{{bupaRejectionReportData.approvedToPayPercent}}</span>
+                        </td>
+                        <td class="form-group row-click"
+                            [ngClass]="{'has-error' : bupaReport.submitted && approvedToPayVat.invalid}"
+                            (click)="controlClick($event)">
+                            <input pattern="^(\d*\.)?\d+$" type="number"
+                                [(ngModel)]="bupaRejectionReportData.approvedToPayVat" #approvedToPayVat="ngModel"
+                                name="approvedToPayVat" required class="form-control"
+                                (ngModelChange)='updateVatCalculation()' tabindex="62" />
+                            <span class="ratio">{{bupaRejectionReportData.approvedToPayVatPercent}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="block-footer has-border bupa-footer sticky-bottom">
+        <div class="left-block">
+            <div class="form-group" [class.has-error]="bupaReport.submitted && providerBilled.invalid">
+                <div class="control-label">Provider Billed </div>
+                <p class="form-control-static">
+                    <input type="text" placeholder="Enter provider billed" pattern="^(\d*\.)?\d+$" type="number"
+                        [(ngModel)]="bupaRejectionReportData.providerBilled" #providerBilled="ngModel"
+                        name="providerBilled" required class="form-control" tabindex="63" />
+                </p>
+            </div>
+            <div class="form-group" [class.has-error]="bupaReport.submitted && presentedDiscount.invalid">
+                <div class="control-label">Presented Discount </div>
+                <input type="text" placeholder="Enter presented discount" pattern="^(\d*\.)?\d+$" type="number"
+                    [(ngModel)]="bupaRejectionReportData.presentedDiscount" #presentedDiscount="ngModel"
+                    name="presentedDiscount" required class="form-control" tabindex="64" />
+            </div>
+
+            <div class="form-group" [class.has-error]="bupaReport.submitted && presentedDeductible.invalid">
+                <div class="control-label"> Presented Deductible </div>
+                <input type="text" placeholder="Enter presented deductible" pattern="^(\d*\.)?\d+$" type="number"
+                    [(ngModel)]="bupaRejectionReportData.presentedDeductible" #presentedDeductible="ngModel"
+                    name="presentedDeductible" required class="form-control" tabindex="65" />
+            </div>
+
+            <div class="form-group" [class.has-error]="bupaReport.submitted && netBilledwithVAT.invalid">
+                <div class="control-label"> Net Billed with VAT </div>
+                <input type="text" placeholder="Enter net billed with VAT" pattern="^(\d*\.)?\d+$" type="number"
+                    [(ngModel)]="bupaRejectionReportData.netBilledwithVAT" #netBilledwithVAT="ngModel"
+                    name="netBilledwithVAT" required class="form-control" tabindex="66" />
+            </div>
+
+            <div class="form-group" [class.has-error]="bupaReport.submitted && vATAmount.invalid">
+                <div class="control-label"> VAT Amount </div>
+                <input type="text" placeholder="Enter VAT amount" [(ngModel)]="bupaRejectionReportData.vATAmount"
+                    pattern="^(\d*\.)?\d+$" type="number" #vATAmount="ngModel" name="vATAmount" required
+                    class="form-control" tabindex="67" />
+            </div>
+        </div>
+
+        <div class="right-block btn-list text-nowrap">
+            <button mat-button tabindex="68" type="button" (click)='clearAllFields(bupaReport)'>Clear Fields</button>
+            <button mat-flat-button color="primary" type="submit" tabindex="68">Verify & Save</button>
+        </div>
+    </div>
+</form>

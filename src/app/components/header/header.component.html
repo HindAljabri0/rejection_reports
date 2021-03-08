@@ -1,31 +1,36 @@
-<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-<mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
-<mat-toolbar color="primary">
-    <div class="impos" style="margin-right: 70px;">
-        <a routerLink="/"><img src="assets/waseel_logo.png" alt="Waseel" width="40%"></a>
-    </div>
-    <app-search-with-advance></app-search-with-advance>
-    <span class="spacer"></span>
-    <app-language-switcher [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
-    <button (click)="toggleUploadHistoryCenter()" style="margin-right: 5px;" class="iconButton" mat-icon-button matTooltip="Upload History">
-    <mat-icon aria-hidden="false">cloud</mat-icon>
-    <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon>
+<header class="brand-header">
+  <button class="nav-toggle" (click)="toggleNav()" mat-icon-button>
+    <mat-icon aria-hidden="false" aria-label="Toggle">menu</mat-icon>
   </button>
-    <button (click)="toggleNotificationCenter()" style="margin-right: 5px;" class="iconButton {{notificationIconClasses}}" mat-icon-button matTooltip="Notifications">
-    <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
-  </button>
-    <button (click)="toggleAnnouncementCenter()" style="margin-right: 10px;" class="iconButton" mat-icon-button matTooltip="Announcements">
-    <mat-icon aria-hidden="false" aria-label="Announcements">announcements</mat-icon>
-  </button>
-    <span class="user-info">
-    <span matTooltip="{{providerId}}">
-      <div class="inner-user-info">{{userName}}</div>
-      <div class="inner-user-info">{{providerName}}</div>
-    </span>
-
-    <button (click)="logout()" class="{{notificationIconClasses}}" style="margin-left: 50px; background-color: #22477f" mat-icon-button matTooltip="Sign Out">
-      <mat-icon aria-hidden="false" aria-label="Sing Out" style="font-size: large;">exit_to_app</mat-icon>
+  <div class="logo-wrapper">
+    <a routerLink="/" class="logo"><img src="assets/waseel_logo.png" alt="Waseel"></a>
+  </div>
+  <app-search-with-advance></app-search-with-advance>
+  <div class="right-block">
+    <button (click)="toggleSearch()" class="icon-btn tablet-search" mat-icon-button matTooltip="Search">
+      <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
     </button>
-
-    </span>
-</mat-toolbar>
+    <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
+    <button (click)="toggleUploadHistoryCenter()" class="icon-btn uploads-btn" mat-icon-button matTooltip="Uploads">
+      <mat-icon aria-hidden="false">cloud_queue</mat-icon>
+      <!-- <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon> -->
+    </button>
+    <button (click)="toggleNotificationCenter()" class="icon-btn {{notificationIconClasses}} notifications-btn" mat-icon-button matTooltip="Notifications">
+      <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
+    </button>
+    <button (click)="toggleAnnouncementCenter()" class="icon-btn announcements-btn" mat-icon-button matTooltip="Announcements">
+      <mat-icon aria-hidden="false" aria-label="Announcements" class="material-icons-outlined">feedback</mat-icon>
+    </button>
+    <div class="user-info">
+      <div matTooltip="{{providerId}}" class="left-block">
+        <span class="inner-user-info">{{userName}}</span>
+        <span class="inner-user-info">{{providerName}}</span>
+      </div>
+      <button (click)="logout()" class="logout" mat-icon-button matTooltip="Sign Out">
+        <mat-icon aria-hidden="false" aria-label="Sign Out">exit_to_app</mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
+</header>

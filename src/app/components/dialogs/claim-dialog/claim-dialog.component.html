@@ -1,8 +1,8 @@
 <mat-card *ngIf="loading" class="loadingSpinner">
     <mat-spinner *ngIf="loadingResponse == null" diameter="40"></mat-spinner>
-    <mat-icon *ngIf="loadingResponse != null && isAccepted()" [style.color]="commen.getCardAccentColor('Accepted')">
+    <mat-icon *ngIf="loadingResponse != null && isAccepted()" class="text-{{commen.getCardAccentColor('Accepted')}}">
         check_circle</mat-icon>
-    <mat-icon *ngIf="loadingResponse != null && !isAccepted()" [style.color]="commen.getCardAccentColor('NotAccepted')">
+    <mat-icon *ngIf="loadingResponse != null && !isAccepted()" class="text-{{commen.getCardAccentColor('NotAccepted')}}">
         cancel</mat-icon>
     <p *ngIf="loadingResponse != null">{{loadingResponse}}</p>
     <mat-card-actions *ngIf="loadingResponse != null" style="text-align: end;">
@@ -20,16 +20,16 @@
 </div>
 <div class="header sub">
     <p style="    padding-right: 37%;">Doctor Name: {{data.claim.physicianname}}</p>
-        <span class="spacer"></span>
+    <span class="spacer"></span>
     <p>Payer Name: {{payeridToPayername()}}</p>
     <p *ngIf="data.claim.payerclaimrefno != null && data.claim.payerclaimrefno != ''">Payer Claim R-No:
         {{data.claim.payerclaimrefno}}
     </p>
 </div>
-<div class="header sub" >
-        <p [style.color]="statusToColor(data.claim.status)">Status: {{statusToName(data.claim.status)}}</p>
-        <span class="spacer"></span>
-        <p>Description: {{data.claim.statusdetail}}</p>
+<div class="header sub">
+    <p class="text-{{statusToColor(data.claim.status)}}">Status: {{statusToName(data.claim.status)}}</p>
+    <span class="spacer"></span>
+    <p>Description: {{data.claim.statusdetail}}</p>
 </div>
 <div class="content">
     <div class="gInfo">
@@ -46,8 +46,7 @@
                 </th>
                 <td class="{{eligibilityClasses}}">
                     <label *ngIf="!isEditMode">{{data.claim.eligibilitynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.eligibilitynumber}}"
-                        [formControl]="eligibilitynumber" maxlength="20">
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.eligibilitynumber}}" [formControl]="eligibilitynumber" maxlength="20">
                 </td>
             </tr>
             <tr>
@@ -57,8 +56,7 @@
                 </th>
                 <td class="{{memberidClasses}}">
                     <label *ngIf="!isEditMode">{{data.claim.memberid}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.memberid}}" [formControl]="memberid"
-                        maxlength="30">
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.memberid}}" [formControl]="memberid" maxlength="30">
                 </td>
                 <th>
                     Porvider Claim Number
@@ -75,8 +73,7 @@
 
                 <td class="{{approvalClasses}}">
                     <label *ngIf="!isEditMode">{{data.claim.approvalnumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.approvalnumber}}"
-                        [formControl]="approvalnumber" maxlength="20">
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.approvalnumber}}" [formControl]="approvalnumber" maxlength="20">
                 </td>
 
                 <th>
@@ -93,8 +90,7 @@
                 </th>
                 <td>
                     <label *ngIf="!isEditMode">{{data.claim.policynumber}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.policynumber}}"
-                        [formControl]="policynumber" maxlength="30">
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.policynumber}}" [formControl]="policynumber" maxlength="30">
                 </td>
 
                 <th>
@@ -102,8 +98,7 @@
                 </th>
                 <td>
                     <label *ngIf="!isEditMode">{{data.claim.nationalId}}</label>
-                    <input type="text" *ngIf="isEditMode" value="{{data.claim.nationalId}}" [formControl]="nationalId"
-                        maxlength="30">
+                    <input type="text" *ngIf="isEditMode" value="{{data.claim.nationalId}}" [formControl]="nationalId" maxlength="30">
                 </td>
             </tr>
             <tr>
@@ -124,8 +119,7 @@
             <tr>
                 <td colspan="4">
                     <label *ngIf="!isEditMode">{{data.claim.chiefcomplaintsymptoms}}</label>
-                    <textarea *ngIf="isEditMode" value="{{data.claim.chiefcomplaintsymptoms}}"
-                        [formControl]="chiefComplaintSymptoms" style="width: 100%;"></textarea>
+                    <textarea *ngIf="isEditMode" value="{{data.claim.chiefcomplaintsymptoms}}" [formControl]="chiefComplaintSymptoms" style="width: 100%;"></textarea>
                 </td>
             </tr>
         </table>
@@ -156,8 +150,7 @@
     <div class="services">
         <p>Diagnosis</p>
         <mat-form-field class="icd10search" *ngIf="isEditMode" style="width: 100%;">
-            <input type="text" placeholder="Select diagnosis" aria-label="ICD10" matInput [formControl]="searchDiag"
-                [matAutocomplete]="auto" (keyup)="searchICDCodes()">
+            <input type="text" placeholder="Select diagnosis" aria-label="ICD10" matInput [formControl]="searchDiag" [matAutocomplete]="auto" (keyup)="searchICDCodes()">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of icedOptions" (click)="addICDDignosis(option)">
                     {{option.diagnosisCode}} | {{option.diagnosisDescription}}
@@ -215,8 +208,9 @@
                     <td *ngIf="!servicesErrors.includes(service.servicecode)" [matTooltip]="service.servicedescription">{{service.servicecode}}</td>
                     <td *ngIf="servicesErrors.includes(service.servicecode)" class="servicesWarning">
                         {{service.servicecode}}
-                        <mat-icon *ngIf="!isEditMode" style="font-size:15px; display: inline;" matTooltip="Out of price list" >error</mat-icon>
-                        <mat-icon *ngIf="isEditMode" [matMenuTriggerFor]="editServiceCodeMenu" (click)="serviceUnderEditting = service" style="font-size:15px; display: inline; cursor: pointer;" matTooltip="Edit">edit</mat-icon>
+                        <mat-icon *ngIf="!isEditMode" style="font-size:15px; display: inline;" matTooltip="Out of price list">error</mat-icon>
+                        <mat-icon *ngIf="isEditMode" [matMenuTriggerFor]="editServiceCodeMenu" (click)="serviceUnderEditting = service"
+                            style="font-size:15px; display: inline; cursor: pointer;" matTooltip="Edit">edit</mat-icon>
                     </td>
                     <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">{{service.gross}}</td>
                     <td [ngClass]="{'servicesWarning': servicesErrors.includes(service.servicecode)}">{{service.invoicedepartment}}</td>
@@ -241,15 +235,17 @@
         </table>
         <mat-menu #editServiceCodeMenu class="serviceCodesEditMenu">
             <mat-form-field *ngIf="priceListExist" style="width: 90%; margin: 20px 10px 20px 20px;" (click)="$event.stopPropagation()">
-                <input type="text" placeholder="Select service code" matInput [formControl]="searchServicesController"
-                    [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()" (click)="$event.stopPropagation()">
+                <input type="text" placeholder="Select service code" matInput [formControl]="searchServicesController" [matAutocomplete]="servicesOptionsAutoComplete"
+                    (keyup)="searchServices()" (click)="$event.stopPropagation()">
                 <mat-autocomplete #servicesOptionsAutoComplete>
                     <mat-option [matMenuTriggerFor]="editServiceCodeMenu" *ngFor="let option of servicesOptions" (click)="editService(option)">
                         {{option}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <p *ngIf="!priceListExist" style="width: 90%; margin: 20px 10px 20px 20px; color: #f59517;">Price list does not exist! <mat-icon style="display: inline; font-size: 15px;">error</mat-icon></p>
+            <p *ngIf="!priceListExist" style="width: 90%; margin: 20px 10px 20px 20px; color: #f59517;">Price list does not exist! <mat-icon
+                    style="display: inline; font-size: 15px;">error</mat-icon>
+            </p>
         </mat-menu>
     </div>
     <div class="services">
@@ -262,70 +258,60 @@
         <div class="attachments">
             <div class="attachment" *ngFor="let attachment of data.claim.attachments">
                 <div class="thumbnail">
-                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)"
-                        [src]="getImageOfBlob(attachment)" [alt]="attachment.filename">
-                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)"
-                        src="assets/pdfIcon.png" [alt]="attachment.filename">
+                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.filename">
+                    <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)" src="assets/pdfIcon.png" [alt]="attachment.filename">
                 </div>
                 <p style="margin: auto 5px">{{attachment.filename}}</p>
                 <span class="spacer"></span>
-                <a [href]="getImageOfBlob(attachment)" [download]="attachment.filename" *ngIf="!isEditMode"
-                    mat-icon-button color="primary" style="margin: auto;">
+                <a [href]="getImageOfBlob(attachment)" [download]="attachment.filename" *ngIf="!isEditMode" mat-icon-button color="primary" style="margin: auto;">
                     <mat-icon style="font-size: 20px;">save_alt</mat-icon>
                 </a>
-                <button (click)="deleteAttachment(attachment)" *ngIf="isEditMode" mat-icon-button color="warn"
-                    style="margin: auto;">
+                <button (click)="deleteAttachment(attachment)" *ngIf="isEditMode" mat-icon-button color="warn" style="margin: auto;">
                     <mat-icon style="font-size: 20px;">cancel</mat-icon>
                 </button>
             </div>
             <ng-container *ngFor="let attachment of newAttachmentsPreview">
                 <div class="attachment" *ngIf="attachment != null">
                     <div class="thumbnail">
-                        <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src != 'pdf'"
-                            [src]="attachment.src" [alt]="attachment.name">
-                        <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src == 'pdf'"
-                            src="assets/pdfIcon.png" [alt]="attachment.name">
+                        <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src != 'pdf'" [src]="attachment.src" [alt]="attachment.name">
+                        <img width="60px" height="60px" class="thumbnailImage" *ngIf="attachment.src == 'pdf'" src="assets/pdfIcon.png" [alt]="attachment.name">
                     </div>
                     <div class="attachmentInfo">
                         <p style="margin: auto 5px">{{attachment.name}}</p>
                         <span class="spacer"></span>
-                        <button (click)="deleteNewAttachment(attachment)" *ngIf="isEditMode" mat-icon-button
-                            color="warn" style="margin: auto;">
+                        <button (click)="deleteNewAttachment(attachment)" *ngIf="isEditMode" mat-icon-button color="warn" style="margin: auto;">
                             <mat-icon style="font-size: 20px;">cancel</mat-icon>
                         </button>
                     </div>
                 </div>
             </ng-container>
 
-            <div class="attachment"
-                *ngIf="isEditMode && (newAttachmentsPreview.length + data.claim.attachments.length) < maxNumberOfAttachment">
-                <button mat-button [matMenuTriggerFor]="attachmentTypeMenu" mat-icon-button mat-icon-button color="primary"
-                    style="margin: auto">
+            <div class="attachment" *ngIf="isEditMode && (newAttachmentsPreview.length + data.claim.attachments.length) < maxNumberOfAttachment">
+                <button mat-button [matMenuTriggerFor]="attachmentTypeMenu" mat-icon-button mat-icon-button color="primary" style="margin: auto">
                     <mat-icon>add</mat-icon>
                 </button>
 
                 <mat-menu #attachmentTypeMenu="matMenu">
                     <div style="padding: 10px;">
-                    <label>What Type of Attachment?</label>
-                    <mat-radio-group aria-label="Select an option">
+                        <label>What Type of Attachment?</label>
+                        <mat-radio-group aria-label="Select an option">
 
-                        <mat-radio-button class="block" (click)="this.fileType = 'MEDICAL_REPORT'; fileInput.click()" id="MEDICAL_REPORT"
-                            value="MEDICAL_REPORT">Medical Report</mat-radio-button>
+                            <mat-radio-button class="block" (click)="this.fileType = 'MEDICAL_REPORT'; fileInput.click()" id="MEDICAL_REPORT" value="MEDICAL_REPORT">Medical Report
+                            </mat-radio-button>
 
-                        <mat-radio-button class="block" (click)="this.fileType = 'IQAMA_ID_COPY'; fileInput.click()" id="IQAMA_ID_COPY"
-                            value="IQAMA_ID_COPY">Iqama/ID Copy</mat-radio-button>
+                            <mat-radio-button class="block" (click)="this.fileType = 'IQAMA_ID_COPY'; fileInput.click()" id="IQAMA_ID_COPY" value="IQAMA_ID_COPY">Iqama/ID Copy
+                            </mat-radio-button>
 
-                        <mat-radio-button class="block" (click)="this.fileType = 'X_RAY_RESULT'; fileInput.click()" id="X_RAY_RESULT"
-                            value="X_RAY_RESULT">X-Ray Result</mat-radio-button>
+                            <mat-radio-button class="block" (click)="this.fileType = 'X_RAY_RESULT'; fileInput.click()" id="X_RAY_RESULT" value="X_RAY_RESULT">X-Ray Result
+                            </mat-radio-button>
 
-                        <mat-radio-button class="block" (click)="this.fileType = 'LAB_RESULT'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">Lab
-                            Result</mat-radio-button>
+                            <mat-radio-button class="block" (click)="this.fileType = 'LAB_RESULT'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">Lab
+                                Result</mat-radio-button>
 
-                        <input hidden type="file" #fileInput id="file" onclick="this.value = null"
-                            (change)="selectFile($event.target.files)"
-                            accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
-                    </mat-radio-group>
-                    <!--button mat-menu-item (click)="fileInput.click()">Item 1
+                            <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+                                accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                        </mat-radio-group>
+                        <!--button mat-menu-item (click)="fileInput.click()">Item 1
                                 <input hidden type="file" #fileInput id="file" onclick="this.value = null"
                                 (change)="selectFile($event.target.files)"
                                 accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
@@ -335,7 +321,7 @@
                                 (change)="selectFile($event.target.files)"
                                 accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
                             </button-->
-                        </div>
+                    </div>
                 </mat-menu>
 
             </div>

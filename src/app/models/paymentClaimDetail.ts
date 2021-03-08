@@ -1,7 +1,6 @@
 import { PaymentServiceDetails } from './paymentServiceDetails';
 
 export class PaymentClaimDetail {
-
     claimId: number;
     providerClaimNumber: string;
     patientName: string;

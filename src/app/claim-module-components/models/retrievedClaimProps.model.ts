@@ -12,12 +12,5 @@ export class RetrievedClaimProps {
     paymentReference: string;
     claimDecisionGDPN: GDPN;
     eligibilityCheck: string;
-    servicesDecision: {
-        invoiceNumber: string;
-        serviceNumber: number;
-        gdpn: GDPN;
-        approvedQuantity: number;
-        serviceDenialCode: string;
-        decisionComment: string;
-    }[];
+
 }

@@ -20,7 +20,7 @@ export class AnnouncementCenterComponent implements OnInit {
   }
 
   ngOnInit() {
-   //  this.commen.showAnnouncementCenterChange.next(true);
+    //  this.commen.showAnnouncementCenterChange.next(true);
   }
 
   toggleAnnouncementCenter(show: boolean) {
@@ -29,9 +29,9 @@ export class AnnouncementCenterComponent implements OnInit {
     } else { this.status = ''; }
   }
 
-  //get numOfUnreadAnnouncements() {
+  // get numOfUnreadAnnouncements() {
   //  return this.commen.unReadAnnouncementsCount;
-  //}
+  // }
 
   get numOfAnnouncements() {
     return this.commen.announcementsCount;

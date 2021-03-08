@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuditTrailService } from 'src/app/services/audit/audit-trail.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
-import { filter, map, timeout } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
@@ -18,8 +16,8 @@ export class AuditTrailComponent implements OnInit {
   filteredlogs: AuditLog[] = [];
   exampleFilterLog: AuditLog = new AuditLog();
 
-  lastResultSize: number = 0;
-  filterLastResultSize: number = 0;
+  lastResultSize = 0;
+  filterLastResultSize = 0;
 
   objectIdControl: FormControl = new FormControl();
   userIdControl: FormControl = new FormControl();
@@ -36,15 +34,15 @@ export class AuditTrailComponent implements OnInit {
 
   ngOnInit() {
     this.types = [
-      { value: "GenericAuditLogType", text: "Generic" },
-      { value: "ClaimManipulationAuditLogType", text: "ClaimManipulation" },
-      { value: "ClaimSubmissionAuditLogType", text: "ClaimSubmission" },
-      { value: "UploadAuditLogType", text: "Upload" },
-      { value: "LoginAuditLogType", text: "Login" },
+      { value: 'GenericAuditLogType', text: 'Generic' },
+      { value: 'ClaimManipulationAuditLogType', text: 'ClaimManipulation' },
+      { value: 'ClaimSubmissionAuditLogType', text: 'ClaimSubmission' },
+      { value: 'UploadAuditLogType', text: 'Upload' },
+      { value: 'LoginAuditLogType', text: 'Login' },
     ];
     this.commenService.loadingChanged.next(true);
     this.auditTrailService.getAllLogs().subscribe(value => {
-      let auditLogs = value as AuditLog[];
+      const auditLogs = value as AuditLog[];
       this.lastResultSize = auditLogs.length;
       auditLogs.map(log => this.logs.push(new AuditLog().deserialize(log)));
       this.commenService.loadingChanged.next(false);
@@ -58,21 +56,22 @@ export class AuditTrailComponent implements OnInit {
     this.watchLogsSubscription = this.auditTrailService._logWatchSource.subscribe(value => {
       if (value !== null && value.id != null) {
         this.logs.unshift(value);
-        if(this.matchsCurrentFilter(value))
+        if (this.matchsCurrentFilter(value)) {
           this.filteredlogs.unshift(value);
+        }
       }
     });
   }
 
-  stopWatchingLogs(){
+  stopWatchingLogs() {
     this.auditTrailService.stopWatchingLogs();
     this.watchLogsSubscription.unsubscribe();
   }
 
-  reWatchLogs(){
+  reWatchLogs() {
     this.commenService.loadingChanged.next(true);
     this.auditTrailService.getAllLogs(this.exampleFilterLog, 10, this.logsArray[0].eventTimeStamp, true).subscribe(value => {
-      let auditLogs = value as AuditLog[];
+      const auditLogs = value as AuditLog[];
       auditLogs.map(log => this.logsArray.unshift(new AuditLog().deserialize(log)));
       this.commenService.loadingChanged.next(false);
       this.auditTrailService.startWatchingLogs();
@@ -83,7 +82,9 @@ export class AuditTrailComponent implements OnInit {
   }
 
   filter() {
-    if(this.commenService.loading) return;
+    if (this.commenService.loading) {
+      return;
+    }
     let doFilter = false;
     if (this.objectIdControl.value != null && this.objectIdControl.value != '') {
       this.exampleFilterLog.objectId = this.objectIdControl.value;
@@ -101,8 +102,8 @@ export class AuditTrailComponent implements OnInit {
       this.exampleFilterLog.eventType = this.eventTypeControl.value;
       doFilter = true;
     }
-    let beforeDate:Date = null;
-    if(this.beforeDateControl.value != null && this.beforeDateControl.value != ''){
+    let beforeDate: Date = null;
+    if (this.beforeDateControl.value != null && this.beforeDateControl.value != '') {
       beforeDate = new Date(this.beforeDateControl.value);
       doFilter = true;
     }
@@ -112,7 +113,7 @@ export class AuditTrailComponent implements OnInit {
       this.exampleFilterLog.id = 7;
       this.commenService.loadingChanged.next(true);
       this.auditTrailService.getAllLogs(this.exampleFilterLog, 10, beforeDate).subscribe(value => {
-        let auditLogs = value as AuditLog[];
+        const auditLogs = value as AuditLog[];
         this.filterLastResultSize = auditLogs.length;
         auditLogs.map(log => this.filteredlogs.push(new AuditLog().deserialize(log)));
         this.commenService.loadingChanged.next(false);
@@ -133,39 +134,40 @@ export class AuditTrailComponent implements OnInit {
     this.filterLastResultSize = 0;
   }
 
-  loadMore(){
+  loadMore() {
     this.commenService.loadingChanged.next(true);
-    this.auditTrailService.getAllLogs(this.exampleFilterLog, 10, this.logsArray[this.logsArray.length-1].eventTimeStamp).subscribe(value => {
-      let auditLogs = value as AuditLog[];
-      this.setLastResultSize(auditLogs.length);
-      auditLogs.map(log => this.logsArray.push(new AuditLog().deserialize(log)));
-      this.commenService.loadingChanged.next(false);
-    }, error => {
-      this.commenService.loadingChanged.next(false);
-    });
+    this.auditTrailService.getAllLogs(this.exampleFilterLog,
+      10, this.logsArray[this.logsArray.length - 1].eventTimeStamp).subscribe(value => {
+        const auditLogs = value as AuditLog[];
+        this.setLastResultSize(auditLogs.length);
+        auditLogs.map(log => this.logsArray.push(new AuditLog().deserialize(log)));
+        this.commenService.loadingChanged.next(false);
+      }, error => {
+        this.commenService.loadingChanged.next(false);
+      });
   }
 
-  matchsCurrentFilter(value: AuditLog):boolean{
+  matchsCurrentFilter(value: AuditLog): boolean {
     let objectIdMatches = true;
     let userIdMatches = true;
     let providerIdMatches = true;
     let eventTypeMatches = true;
-    if(this.exampleFilterLog.objectId != null){
+    if (this.exampleFilterLog.objectId != null) {
       objectIdMatches = this.exampleFilterLog.objectId == value.objectId;
     }
-    if(this.exampleFilterLog.userId != null){
+    if (this.exampleFilterLog.userId != null) {
       userIdMatches = this.exampleFilterLog.userId == value.userId;
     }
-    if(this.exampleFilterLog.providerId != null){
+    if (this.exampleFilterLog.providerId != null) {
       providerIdMatches = this.exampleFilterLog.providerId == value.providerId;
     }
-    if(this.exampleFilterLog.eventType != null){
-      eventTypeMatches = this.exampleFilterLog.eventType.replace("AuditLogType", "") == value.eventType;
+    if (this.exampleFilterLog.eventType != null) {
+      eventTypeMatches = this.exampleFilterLog.eventType.replace('AuditLogType', '') == value.eventType;
     }
     return objectIdMatches && userIdMatches && providerIdMatches && eventTypeMatches;
   }
 
-  get isFiltered(){
+  get isFiltered() {
     return this.exampleFilterLog.id == 7;
   }
 
@@ -173,19 +175,19 @@ export class AuditTrailComponent implements OnInit {
     return this.isFiltered ? this.filteredlogs : this.logs;
   }
 
-  setLastResultSize(size:number) {
-    this.isFiltered ? this.filterLastResultSize = size : this.lastResultSize = size ;
+  setLastResultSize(size: number) {
+    this.isFiltered ? this.filterLastResultSize = size : this.lastResultSize = size;
   }
 
-  get isEmpty(){
+  get isEmpty() {
     return this.logs.length == 0 || (this.isFiltered && this.filteredlogs.length == 0);
   }
 
-  get thereIsMoreToLoad(){
+  get thereIsMoreToLoad() {
     return this.isFiltered ? this.filterLastResultSize == 10 : this.lastResultSize == 10;
   }
 
-  get loading(){
+  get loading() {
     return this.commenService.loading;
   }
 

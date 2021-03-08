@@ -9,7 +9,8 @@ table td{
 }
 
 .currency{
-    font: Bold 10px Roboto;
+    font-weight: 700;
+    font-size: 10px;
     letter-spacing: 0;
     color: #3060AA;
     opacity: 0.25;

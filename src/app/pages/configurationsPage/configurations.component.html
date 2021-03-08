@@ -5,7 +5,12 @@
                 <mat-panel-title style="color: #3F6DB3;">
                     Code Value Management
                 </mat-panel-title>
+<<<<<<< HEAD
                 <mat-panel-description>
+=======
+                <mat-panel-description style="display: grid; place-items: end;">
+                    <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div class="bodyOfCodeValueManagement">
@@ -13,10 +18,26 @@
                     <header>
                         Categories
                     </header>
+<<<<<<< HEAD
                     <div style="height: 85%; overflow-y: auto;">
                         <div class="item" *ngFor="let category of codeValueDictionary.keys()"
                             [class.selected]="selectedCategory == category" (click)="selectCategory(category);">
                             {{category}}
+=======
+                    <div style="height: 85%; overflow-y: auto;" *ngIf="!isLoading">
+                        <div *ngIf="payers.length > 0" class="item"
+                            [class.selected]="selectedPayer != null && selectedPayer != '-1' && selectedCategory.includes('departmentName_')"
+                            (click)="selectCategory('departmentName_')">
+                            Department Code
+                            <select [value]="selectedPayer" (change)="selectedPayer = $event.target.value;" required>
+                                <option value="-1">Select a Payer</option>
+                                <option *ngFor="let payer of payers" [value]="payer.id">{{payer.name}}</option>
+                            </select>
+                        </div>
+                        <div class="item" *ngFor="let category of categories"
+                            [class.selected]="selectedCategory == category.key" (click)="selectCategory(category.key);">
+                            {{category.label}}
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
                         </div>
                     </div>
                 </div>
@@ -24,11 +45,23 @@
                     <header>
                         WLE Codes
                     </header>
+<<<<<<< HEAD
                     <div style="height: 85%; overflow-y: auto;"
                         *ngIf="selectedCategory != null && codeValueDictionary.has(selectedCategory)">
                         <div class="item" *ngFor="let code of codeValueDictionary.get(selectedCategory).keys()"
                             [class.selected]="selectedCode == code" (click)="selectCode(code)">
                             {{code}}
+=======
+                    <div style="height: 85%; overflow-y: auto;">
+                        <div class="item" *ngIf="codes.length > 10" style="cursor: unset;">
+                            <input [formControl]="filterWLECodesControl" (keyup)="filterCodes()">
+                            <mat-icon class="inputIcon">search</mat-icon>
+                        </div>
+                        <div class="item"
+                            *ngFor="let code of (filterWLECodesControl.value == ''? codes : filteredCodes)"
+                            [class.selected]="selectedCode == code.key" (click)="selectCode(code.key)">
+                            {{code.label}}
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
                         </div>
                     </div>
                 </div>
@@ -36,16 +69,24 @@
                     <header class="">
                         Mapped Values
                     </header>
+<<<<<<< HEAD
                     <ng-container
                         *ngIf="selectedCategory != null && codeValueDictionary.has(selectedCategory) && selectedCode != null && codeValueDictionary.get(selectedCategory).has(selectedCode)">
+=======
+                    <ng-container *ngIf="selectedCode != null && selectedCode != '' && !isLoading">
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
                         <div class="mappedValueInput">
                             <input [formControl]="mappedValueInputControl">
                             <button mat-flat-button [disabled]="mappedValueInputControl.value == ''"
                                 (click)="addMappedValueToSelections()">Add</button>
                         </div>
                         <div style="height: 64%; overflow-y: auto;">
+<<<<<<< HEAD
                             <div class="editableItem"
                                 *ngFor="let value of codeValueDictionary.get(selectedCategory).get(selectedCode); let i = index;">
+=======
+                            <div class="editableItem" *ngFor="let value of values; let i = index;">
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
                                 {{value}}
                                 <button mat-flat-button style="color: #EC6B6B;"
                                     (click)="removeMappedValueFromSelections(i)">Remove</button>
@@ -53,6 +94,20 @@
                         </div>
                     </ng-container>
                 </div>
+<<<<<<< HEAD
+=======
+                <div class="codeValueManagementActions">
+                    <p *ngIf="success != null && !isLoading"
+                        style="font-size: large; font-weight: 400; display: inline; color: #3ab73a; margin-right: 30%;">
+                        {{success}}</p>
+                    <p *ngIf="error != null  && !isLoading"
+                        style="color: #EC6B6B; font-size: large; font-weight: 400; display: inline; margin-right: 30%;">
+                        {{error}}</p>
+                    <button mat-flat-button [disabled]="isLoading || !hasChanges" (click)="cancel()">Cancel</button>
+                    <button mat-raised-button color="primary" [disabled]="isLoading || !hasChanges"
+                        (click)="save()">Save</button>
+                </div>
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
             </div>
         </mat-expansion-panel>
     </mat-accordion>

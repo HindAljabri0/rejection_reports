@@ -1,56 +1,133 @@
-<div class="mainCardBody">
-    <label class="leftLabel">Full Name</label>
-    <div class="leftComponent" [matTooltip]="getFieldError('fullName')" style="display: flex; width: 100%;">
-        <input id="fullNameInput" [ngClass]="{'fieldError': fieldHasError('fullName')}" type="text"
-            [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
-        <select id="genderDiv"
-            [ngClass]="{'female': selectedGender == 'F', 'male': selectedGender == 'M', 'fieldError': fieldHasError('gender')}"
-            [value]="selectedGender" [disabled]="!editableFields.gender"
-            (change)="selectedGender = $event.target.value; updateClaim('gender');" matTooltip="Select Gender">
-            <option value="">Gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-        </select>
+<div class="block-card pb-0 full-height">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('fullName') || fieldHasError('gender')">
+                <div class="left-block">
+                    <label class="control-label">Full Name</label>
+                </div>
+                <div class="right-block">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Enter full name" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
+                        <button type="button" [class.male]="selectedGender=='M'" [class.female]="selectedGender=='F'" mat-flat-button color="primary"
+                            class="gender-btn input-group-append" matTooltip="Select Gender" [disabled]="!editableFields.gender" (click)="handleGenderChangeClick();">
+                            <img src="./assets/ic-male-error.svg" alt="Male" *ngIf="selectedGender=='M' && fieldHasError('gender')" />
+                            <img src="./assets/ic-female-error.svg" alt="Female" *ngIf="selectedGender=='F' && fieldHasError('gender')" />
+                            <img src="./assets/ic-male.svg" alt="Male" *ngIf="selectedGender=='M' && !fieldHasError('gender')" />
+                            <img src="./assets/ic-female.svg" alt="Female" *ngIf="selectedGender=='F' && !fieldHasError('gender')" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal">
+                <div class="left-block">
+                    <label class="control-label">Payer<span class="asterisk">*</span></label>
+                </div>
+                <div class="right-block">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [disabled]="!editableFields.payer" [value]="selectedPayer" (selectionChange)="selectedPayer = $event.value; updateClaim('payer');" required>
+                            <mat-option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
+                                {{selectedPayer}}</mat-option>
+                            <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal">
+                <div class="left-block">
+                    <label class="control-label">Visit Type<span class="asterisk">*</span></label>
+                </div>
+                <div class="right-block">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType"
+                            (selectionChange)="selectedVisitType = $event.value; updateClaim('visitType');" required>
+                            <mat-option *ngIf="!visitTypes.includes(selectedVisitType) && pageMode == 'VIEW'" [value]="selectedVisitType">
+                                {{beautifyVisitType(selectedVisitType)}}</mat-option>
+                            <mat-option *ngFor="let visitType of visitTypes" [value]="visitType">
+                                {{beautifyVisitType(visitType)}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('policyNum')">
+                <div class="left-block">
+                    <label class="control-label">Policy No.<span *ngIf="selectedPayer!==102 && selectedPayer!==207 &&selectedPayer!== 313" class="asterisk">*</span></label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" type="text" placeholder="Enter policy number" [formControl]="policyNumController" (change)="updateClaim('policyNum')"
+                        [required]="selectedPayer !== 102 && selectedPayer !== 207 &&selectedPayer !==313 " [matTooltip]="getFieldError('policyNum')">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal">
+                <div class="left-block">
+                    <label class="control-label">Nationality</label>
+                </div>
+                <div class="right-block">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [value]="selectedNationality" [disabled]="!editableFields.nationality"
+                            (selectionChange)="selectedNationality = $event.value; updateClaim('nationality');" required #nationalitySelect>
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl" name='searchedNationality'></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option value="">Select Nationality</mat-option>
+                            <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
+                                {{nationality.Name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('memberId')">
+                <div class="left-block">
+                    <label class="control-label">Member ID<span class="asterisk">*</span></label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" placeholder="Enter member ID" type="text" [formControl]="memberIdController" (change)="updateClaim('memberId')"
+                        [matTooltip]="getFieldError('memberId')" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('planType')">
+                <div class="left-block">
+                    <label class="control-label">Plan Type</label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" placeholder="Enter plan type" type="text" [formControl]="planTypeController" (change)="updateClaim('planType')"
+                        [matTooltip]="getFieldError('planType')">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('nationalId')">
+                <div class="left-block">
+                    <label class="control-label">National ID</label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" placeholder="Enter national ID" type="number" [matTooltip]="getFieldError('nationalId')" [formControl]="nationalIdController"
+                        (change)="updateClaim('nationalId')">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group style-horizontal" [class.has-error]="fieldHasError('approvalNum')">
+                <div class="left-block">
+                    <label class="control-label">Approval No.<span *ngIf="claimPageType == 'DENTAL_OPTICAL'" class="asterisk">*</span></label>
+                </div>
+                <div class="right-block">
+                    <input class="form-control" placeholder="Enter approval number" type="text" [formControl]="approvalNumController" (change)="updateClaim('approvalNum')"
+                        required>
+                </div>
+            </div>
+        </div>
     </div>
-    <label class="rightLabel">Payer*</label>
-    <select class="rightComponent" [disabled]="!editableFields.payer" [value]="selectedPayer"
-        (change)="selectedPayer = $event.target.value; updateClaim('payer');" required>
-        <option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</option>
-    </select>
-    <label class="leftLabel">Visit Type*</label>
-    <select class="leftComponent" [value]="selectedVisitType" [disabled]="!editableFields.visitType"
-        (change)="selectedVisitType = $event.target.value; updateClaim('visitType');" required>
-        <option *ngFor="let visitType of visitTypes" [value]="visitType">
-            {{beautifyVisitType(visitType)}}</option>
-    </select>
-    <label class="rightLabel">Policy No.<span *ngIf="selectedPayer != 102">*</span></label>
-    <input class="rightComponent" type="text" [ngClass]="{'fieldError': fieldHasError('policyNum')}"
-        [formControl]="policyNumController" (change)="updateClaim('policyNum')" [required]="selectedPayer != 102"
-        [matTooltip]="getFieldError('policyNum')">
-
-    <label class="leftLabel">Nationality</label>
-    <select class="leftComponent" [value]="selectedNationality" [disabled]="!editableFields.nationality"
-        (change)="selectedNationality = $event.target.value; updateClaim('nationality');" required>
-        <option value=""></option>
-        <option *ngFor="let nationality of nationalities" [value]="nationality.Code">
-            {{nationality.Name}}</option>
-    </select>
-    <label class="rightLabel">Member ID*</label>
-    <input [ngStyle]="{'grid-column': claimPageType == 'INPATIENT_OUTPATIENT'? '9 / span 2': '9 / span 4'}" type="text"
-        [ngClass]="{'fieldError': fieldHasError('memberId')}" [formControl]="memberIdController"
-        (change)="updateClaim('memberId')" [matTooltip]="getFieldError('memberId')" required>
-    <ng-container *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
-        <label style="grid-column: 11 / span 1">Plan Type</label>
-        <input style="grid-column: 12 / span 1" type="text" [ngClass]="{'fieldError': fieldHasError('planType')}"
-            [formControl]="planTypeController" (change)="updateClaim('planType')"
-            [matTooltip]="getFieldError('planType')">
-    </ng-container>
-    <label class="leftLabel">National ID</label>
-    <input class="leftComponent" type="number" [matTooltip]="getFieldError('nationalId')"
-        [ngClass]="{'fieldError': fieldHasError('nationalId')}" [formControl]="nationalIdController"
-        (change)="updateClaim('nationalId')">
-    <label class="rightLabel">Approval No.<span *ngIf="claimPageType == 'DENTAL_OPTICAL'">*</span></label>
-    <input class="rightComponent" type="text" [ngClass]="{'fieldError': fieldHasError('approvalNum')}"
-        [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required>
-
 </div>

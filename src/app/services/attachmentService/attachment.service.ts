@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest, HttpResponse, HttpEventType, HttpErrorResponse, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpRequest
+} from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -24,13 +27,13 @@ export class AttachmentService {
     return this.http.request(req);
   }
 
-  deleteAttachment(providerID: string, attachmentID:string){
+  deleteAttachment(providerID: string, attachmentID: string) {
     const requestUrl = `/providers/${providerID}/attach/${attachmentID}`;
     const request = new HttpRequest('DELETE', environment.claimServiceHost + requestUrl);
     return this.http.request(request);
   }
 
-  getMaxAttachmentAllowed(providerID: string){
+  getMaxAttachmentAllowed(providerID: string) {
     const requestUrl = `/providers/${providerID}/attach/allowedNumber`;
     const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);
     return this.http.request(request);

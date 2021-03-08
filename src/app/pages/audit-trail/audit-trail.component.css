@@ -1,18 +1,18 @@
 .hidden{
     display: none;
 }
-::ng-deep .mainPage .mat-form-field-wrapper{
+::ng-deep .mat-form-field-wrapper{
     border-radius: 5px;
     background-color: #EFF5FF;
     margin: 0px;
     padding: 0px;
 }
 
-::ng-deep .mainPage .mat-form-field-flex{
+::ng-deep .mat-form-field-flex{
     min-height: 39.09px;
 }
 
-::ng-deep .mainPage .mat-datepicker-toggle button{
+::ng-deep .mat-datepicker-toggle button{
     height: 24px !important;
 }
 

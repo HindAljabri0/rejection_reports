@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styles: []
 })
 export class SidebarComponent implements OnInit {
 
   providerId: string;
-  isAdmin: boolean = false;
+  doNotShowMenuItemIn: string[] = ['oci_prod'];
+  envName = environment.name;
+  isAdmin = false;
+  isProviderAdmin = false;
 
   constructor(private auth: AuthService, private uploadService: UploadService) {
     this.auth.isUserNameUpdated.subscribe(updated => {
@@ -22,10 +26,17 @@ export class SidebarComponent implements OnInit {
     this.init();
   }
 
-  init(){
+  init() {
     this.providerId = this.auth.getProviderId();
-    let privilege = localStorage.getItem('101101');
+    const privilege = localStorage.getItem('101101');
     this.isAdmin = privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
+    try {
+      const providerId = localStorage.getItem('provider_id');
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      this.isProviderAdmin = userPrivileges.split('|').includes('3.0');
+    } catch (error) {
+      this.isProviderAdmin = false;
+    }
   }
 
   get uploadProgress(): number {
@@ -34,6 +45,11 @@ export class SidebarComponent implements OnInit {
 
   get uploadSummaryIsNotNull(): boolean {
     return this.uploadService.summary.uploadSummaryID != null;
+  }
+
+  toggleNav() {
+    document.body.classList.remove('nav-open');
+    document.getElementsByTagName('html')[0].classList.remove('nav-open');
   }
 
 }

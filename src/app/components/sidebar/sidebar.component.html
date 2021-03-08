@@ -1,96 +1,151 @@
-<div class="w3-sidebar w3-light-grey w3-bar-block ">
-    <!-- <h3 class="w3-bar-item">Menu</h3> -->
-    <!-- <ul class="nav navbar-nav" routerLinkActive="active">
+<div class="sidebar">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
+        <!-- <h3 class="w3-bar-item">Menu</h3> -->
+        <!-- <ul class="nav navbar-nav" routerLinkActive="active">
             <li><a class="nav-link" routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
             <li><a class="nav-link" routerLink="upload" routerLinkActive="is-active">Upload</a></li>
         </ul> -->
-    <div class="list-container" *ngIf="!isAdmin">
-        <div i18n="@@claims" class="list-tittle"> Claims </div>
-        <ul id="zero">
-            <a routerLink="" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                <li i18n="@@dashboard" id="li-container">
-                    <img class="icon" src="assets/dashboard.svg" /> Dashboard
+        <div class="list-container" *ngIf="!isAdmin">
+            <div i18n="@@claims" class="list-title"> Claims </div>
+            <ul class="nav-list">
+                <li i18n="@@dashboard">
+                    <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
+                        <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
+                        <span class="text">Dashboard</span>
+                    </a>
                 </li>
-            </a>
-            <a routerLink="upload" routerLinkActive="is-active">
-                <li i18n="@@uploadclaims" id="li-container">
-                    <img class="icon" src="assets/uploadclaim.svg" />Upload Claims
+                <li i18n="@@uploadclaims">
+                    <a routerLink="/upload" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
+                        <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" />
+                        <span class="text">Upload Claims</span>
+                    </a>
                 </li>
-            </a>
-            <a routerLink="summary" routerLinkActive="is-active" *ngIf="!uploadSummaryIsNotNull || uploadProgress != 101">
-                <li i18n="@@uploadsummary" id="li-container">
-                    <img class="icon" src="assets/summary.svg" /> Upload Summary
-                </li>
-            </a>
-            <a routerLink="summary" routerLinkActive="is-active" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
-                <li i18n="@@uploadsummary" id="li-container" class="new">
-                    <img class="icon" src="assets/summary.svg" /> Upload Summary
-                </li>
-            </a>
-            <a routerLink="claims/add" routerLinkActive="is-active">
-                <li i18n="@@createclaim" id="li-container">
-                    <img class="icon" src="assets/addclaim.svg" /> Create Claim
-                </li>
-            </a>
-            <a routerLink="{{providerId}}/notifications" routerLinkActive="is-active">
-                <li i18n="@@notifications" id="li-container">
-                    <img class="icon" src="assets/notification.svg" /> Notifications
-                </li>
-            </a>
-            <a routerLink="{{providerId}}/announcements" routerLinkActive="is-active">
-                <li i18n="@@announcements" id="li-container">
-                    <img class="icon" src="assets/Announcements.svg" /> Announcements
-                </li>
-            </a>
-        </ul>
-        <div>
-            <div i18n="@@reports" class="list-tittle"> Reports </div>
-            <ul id="zero">
-                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active">
-                    <li i18n="@@paymentreport" id="li-container">
-                        <img class="icon" src="assets/payment_report.svg" /> Payment Report
-                    </li>
+                <!-- <li i18n="@@uploadsummary" class="new" *ngIf="uploadSummaryIsNotNull && uploadProgress == 101">
+                <a routerLink="summary" routerLinkActive="is-active">
+                    <img src="assets/summary.svg" />
+                    <span class="text">Upload Summary</span>
                 </a>
-                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active">
-                    <li i18n="@@submissionreport" id="li-container">
-                        <img class="icon" src="assets/submission_report.svg" /> Submission Report
-                    </li>
-                </a>
-                <a routerLink="{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active">
-                    <li i18n="@@rejectionreport" id="li-container">
-                        <img class="icon" src="assets/rejection_report.svg" /> Rejection Report
-                    </li>
-                </a>
+            </li> -->
+                <li i18n="@@createclaim">
+                    <a routerLink="/claims/add" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-create-claim.svg" alt="Create Claim" class="default-icon" />
+                        <img src="assets/ic-create-claim-active.svg" alt="Create Claim" class="active-icon" />
+                        <span class="text">Create Claim</span>
+                    </a>
+                </li>
+                <li i18n="@@claimhistory">
+                    <a routerLink="/upload/history" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-claim-history.svg" alt="Claims History" class="default-icon" />
+                        <img src="assets/ic-claim-history-active.svg" alt="Claims History" class="active-icon" />
+                        <span class="text">Claims History</span>
+                    </a>
+                </li>
+                <li i18n="@@notifications">
+                    <a routerLink="/{{providerId}}/notifications" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-notifications.svg" alt="Notification" class="default-icon" />
+                        <img src="assets/ic-notifications-active.svg" alt="Notification" class="active-icon" />
+                        <span class="text">Notifications</span>
+                    </a>
+                </li>
+                <li i18n="@@announcements">
+                    <a routerLink="/{{providerId}}/announcements" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-announcement.svg" alt="Announcements" class="default-icon" />
+                        <img src="assets/ic-announcement-active.svg" alt="Announcements" class="active-icon" />
+                        <span class="text">Announcements</span>
+                    </a>
+                </li>
             </ul>
-        </div>
-        <div>
-            <div class="list-tittle"> <hr> </div>
-            <ul id="zero">
-                <a routerLink="configurations" routerLinkActive="is-active">
-                    <li i18n="@@configurations" id="li-container">
-                        Configuration
-                    </li>
-                </a>
-            </ul>
-        </div>
-    </div>
-    <div class="list-container" *ngIf="isAdmin">
-        <div i18n="@@configuration" class="list-tittle"> Configuration </div>
-        <ul id="zero">
-            <a routerLink="administration/config/providers" routerLinkActive="is-active">
-                <li i18n="@@providerconfiguration" id="li-container">
-                    Provider Configuration
+            <div i18n="@@reports" class="list-title"> Reports </div>
+            <ul class="nav-list">
+                <li i18n="@@paymentreport">
+                    <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-payment-report.svg" alt="Payment Report" class="default-icon" />
+                        <img src="assets/ic-payment-report-active.svg" alt="Payment Report" class="active-icon" />
+                        <span class="text">Payment Report</span>
+                    </a>
                 </li>
-            </a>
-        </ul>
+                <li i18n="@@submissionreport">
+                    <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-submission-report.svg" alt="Submission Report" class="default-icon" />
+                        <img src="assets/ic-submission-report-active.svg" alt="Submission Report" class="active-icon" />
+                        <span class="text">Submission Report</span>
+                    </a>
+                </li>
+                <li i18n="@@rejectionreport">
+                    <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '3'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-rejection-report.svg" alt="Rejection Report" class="default-icon" />
+                        <img src="assets/ic-rejection-report-active.svg" alt="Rejection Report" class="active-icon" />
+                        <span class="text">Rejection Report</span>
+                    </a>
+                </li>
+                <li i18n="@@rejectionUpload" *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                    <a routerLink="/reports/{{providerId}}/bupa-rejection-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-upload-claims.svg" alt="Rejection Upload" class="default-icon" />
+                        <img src="assets/ic-upload-claims-active.svg" alt="Rejection Upload" class="active-icon" />
+                        <span class="text">Rejection Report Upload</span>
+                    </a>
+                </li>
+                <li i18n="@@cleanClaimProgress" *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                    <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
+                        <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
+                        <span class="text">Clean Claim Progress Reports</span>
+                    </a>
+                </li>
+            </ul>
+            <div i18n="@@reports" class="list-title" *ngIf="!doNotShowMenuItemIn.includes(envName)"> GlobMed </div>
+            <ul *ngIf="!doNotShowMenuItemIn.includes(envName)" class="nav-list">
+                <li i18n="@@gmsummaryreport">
+                    <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-summary-report.svg" alt="Summary Report" class="default-icon" />
+                        <img src="assets/ic-summary-report-active.svg" alt="Summary Report" class="active-icon" />
+                        <span class="text">Summary Report</span>
+                    </a>
+                </li>
+                <li i18n="@@gmebillingreport">
+                    <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-ebilling-report.svg" alt="E-billing Report" class="default-icon" />
+                        <img src="assets/ic-ebilling-report-active.svg" alt="E-billing Report" class="active-icon" />
+                        <span class="text">E-Billing Report</span>
+                    </a>
+                </li>
+            </ul>
+            <div *ngIf="isProviderAdmin">
+                <div class="list-title">
+                    <hr>
+                </div>
+                <ul class="nav-list">
+                    <li i18n="@@configurations">
+                        <a routerLink="/configurations" routerLinkActive="is-active">
+                            <span class="text">Configurations</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="list-container" *ngIf="isAdmin">
+            <div i18n="@@configuration" class="list-title"> Configuration </div>
+            <ul class="nav-list">
+                <li i18n="@@providerconfiguration">
+                    <a routerLink="/administration/config/providers" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <span class="text">Provider Configuration</span>
+                    </a>
+                </li>
+            </ul>
 
-        <div i18n="@@audit" class="list-tittle"> Audit </div>
-        <ul id="zero">
-            <a routerLink="administration/auditLogs" routerLinkActive="is-active">
-                <li i18n="@@audittrail" id="li-container">
-                    Audit Trail
+            <div i18n="@@audit" class="list-title"> Audit </div>
+            <ul class="nav-list">
+                <li i18n="@@audittrail">
+                    <a routerLink="/administration/auditLogs" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <span class="text">Audit Trail</span>
+                    </a>
                 </li>
-            </a>
-        </ul>
-    </div>
+            </ul>
+        </div>
+    </ng-scrollbar>
+</div>
+<div class="nav-backdrop">
+    <button type="button" (click)="toggleNav()"></button>
 </div>

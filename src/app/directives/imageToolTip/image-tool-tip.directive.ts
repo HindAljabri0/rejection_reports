@@ -13,8 +13,10 @@ export class ImageToolTipDirective implements OnInit {
 
   private overlayRef: OverlayRef;
 
-  constructor(private overlayPositionBuilder: OverlayPositionBuilder,
-    private elementRef: ElementRef, private overlay: Overlay) { }
+  constructor(
+    private overlayPositionBuilder: OverlayPositionBuilder,
+    private elementRef: ElementRef,
+    private overlay: Overlay) { }
 
   ngOnInit() {
     const positionStrategy = this.overlayPositionBuilder
@@ -56,7 +58,7 @@ export class ImageToolTipDirective implements OnInit {
               background-color: white;
               padding: 5px;
               border-radius: 5px;
-              -webkit-box-shadow: -6px 1px 13px -1px rgba(0,0,0,0.4); 
+              -webkit-box-shadow: -6px 1px 13px -1px rgba(0,0,0,0.4);
               box-shadow: -6px 1px 13px -1px rgba(0,0,0,0.4);
             }`
   ]
@@ -69,7 +71,7 @@ export class ImageTooltipComponent {
   constructor(private sanitizer: DomSanitizer) { }
 
   getImageOfBlob() {
-    let objectURL = `data:image/${this.extension};base64,` + this.src;
+    const objectURL = `data:image/${this.extension};base64,` + this.src;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 }

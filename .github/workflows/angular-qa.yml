@@ -7,10 +7,14 @@ on:
   push:
     branches:
       - qa
+<<<<<<< HEAD
   pull_request:
     branches:
       - qa
 
+=======
+      
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 jobs:
   build:
 
@@ -48,7 +52,7 @@ jobs:
       run: docker build . -t me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:latest -t me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:${{ github.sha }}
 
     - name: Docker Push
-      run: docker push me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui
+      run: docker push --all-tags me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui
 
     - name: Deploy to K8S
       uses: waseel-asp/kubectl@v1.17.9

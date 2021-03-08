@@ -18,9 +18,9 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 })
 export class SubmittedInvoicesComponent implements OnInit {
 
-  detailCardTitle = "Submitted Invoices";
-  detailTopActionText = "vertical_align_bottom";
-  detailAccentColor = "#3060AA";
+  detailCardTitle = 'Submitted Invoices';
+  detailTopActionText = 'vertical_align_bottom';
+  detailAccentColor = 'primary';
   detailActionText: string = null;
   detailSubActionText: string = null;
   detailCheckBoxIndeterminate: boolean;
@@ -36,7 +36,7 @@ export class SubmittedInvoicesComponent implements OnInit {
   @Output() onPaginationChange = new EventEmitter();
 
   paginatorPagesNumbers: number[];
-  @ViewChild('paginator', {static: false}) paginator: MatPaginator;
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 
@@ -46,68 +46,80 @@ export class SubmittedInvoicesComponent implements OnInit {
   claims = Array();
 
 
-  constructor(public reportService: ReportsService, public commen: SharedServices, public routeActive: ActivatedRoute, public router: Router, private dialogService:DialogService) { }
+  constructor(
+    public reportService: ReportsService,
+    public commen: SharedServices,
+    public routeActive: ActivatedRoute,
+    public router: Router,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
-     //this.fetchData();
+    // this.fetchData();
   }
 
   async fetchData() {
-    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null) return;
+    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null) {
+      return;
+    }
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
-    event = await this.reportService.getSubmittedInvoicesSummary(this.providerId, this.from, this.to, this.payerId, this.queryPage, this.pageSize).subscribe((event) => {
-      if (event instanceof HttpResponse) {
-        this.paymentDetails = new PaginatedResult(event.body, SubmittedInvoiceSummary);
-        this.claims = this.paymentDetails.content;
-        const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
-        this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-        this.manualPage = this.paymentDetails.number;
-        this.paginator.pageIndex = this.paymentDetails.number;
-        this.paginator.pageSize = this.paymentDetails.numberOfElements;
-        console.log( this.paymentDetails);
-        if(this.claims.length == 0)
-        {
-          this.errorMessage = "No Results Found";
+    event = await this.reportService.getSubmittedInvoicesSummary(this.providerId,
+      this.from,
+      this.to,
+      this.payerId,
+      this.queryPage,
+      this.pageSize).subscribe((event) => {
+        if (event instanceof HttpResponse) {
+          this.paymentDetails = new PaginatedResult(event.body, SubmittedInvoiceSummary);
+          this.claims = this.paymentDetails.content;
+          const pages = Math.ceil((this.paymentDetails.totalElements / this.paginator.pageSize));
+          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+          this.manualPage = this.paymentDetails.number;
+          this.paginator.pageIndex = this.paymentDetails.number;
+          this.paginator.pageSize = this.paymentDetails.numberOfElements;
+          if (this.claims.length == 0) {
+            this.errorMessage = 'No Results Found';
+          }
         }
-      }
-      this.commen.loadingChanged.next(false);
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if ((error.status / 100).toFixed() == "4") {
-          this.errorMessage = 'Access Denied.';
-        } else if ((error.status / 100).toFixed() == "5") {
-          this.errorMessage = 'Server could not handle the request. Please try again later.';
-        } else {
-          this.errorMessage = 'Somthing went wrong.';
+        this.commen.loadingChanged.next(false);
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == '4') {
+            this.errorMessage = 'Access Denied.';
+          } else if ((error.status / 100).toFixed() == '5') {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
         }
-      }
-      this.commen.loadingChanged.next(false);
-    });
+        this.commen.loadingChanged.next(false);
+      });
   }
 
-   download() {
-    if (this.detailTopActionText == "check_circle") return;
+  download() {
+    if (this.detailTopActionText == 'check_circle') { return; }
 
     this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
-          var exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          const exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
           navigator.msSaveBlob(blob, exportedFilename);
         } else {
-          var a = document.createElement("a");
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          const a = document.createElement('a');
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
           a.target = '_blank';
-          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';          
+          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
-          this.detailTopActionText = "check_circle";
+          this.detailTopActionText = 'check_circle';
         }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData('',
+          'Could not reach the server at the moment. Please try again later.',
+          true));
       }
     });
   }
@@ -124,8 +136,8 @@ export class SubmittedInvoicesComponent implements OnInit {
           var a = document.createElement("a");
           a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
           a.target = '_blank';
-          
-            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';          
+
+            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
           this.detailTopActionText = "check_circle";
         }
@@ -148,14 +160,20 @@ export class SubmittedInvoicesComponent implements OnInit {
   updateManualPage(index) {
     this.manualPage = index;
     this.paginator.pageIndex = index;
-    this.paginatorAction({ previousPageIndex: this.paginator.pageIndex, pageIndex: index, pageSize: this.paginator.pageSize, length: this.paginator.length })
+    this.paginatorAction({
+      previousPageIndex: this.paginator.pageIndex,
+      pageIndex: index,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length
+    });
   }
 
   get paginatorLength() {
     if (this.paymentDetails != null) {
       return this.paymentDetails.totalElements;
+    } else {
+      return 0;
     }
-    else return 0;
   }
 
   mapPayer(payerId) {

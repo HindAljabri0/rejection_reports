@@ -15,6 +15,21 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
+<<<<<<< HEAD
+=======
+.codeValueManagementActions {
+    grid-column: 1 / span 3;
+    text-align: end;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.codeValueManagementActions * {
+    margin-right: 5px;
+}
+
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 .cardInCodeValueManagement {
     height: 50vh;
     background-color: #f9f9f9;
@@ -26,7 +41,12 @@
     background-color: #B9D3FC;
     color: #3F6DB3;
     display: grid;
+<<<<<<< HEAD
     font-size: x-large;
+=======
+    font-size: 15px;
+    font-weight: 600;
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
     padding: 15px;
 }
 
@@ -34,6 +54,10 @@
     color: #3F6DB3;
     font-size: large;
     padding: 15px;
+<<<<<<< HEAD
+=======
+    font-size: 15px;
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
     cursor: pointer;
     transition: background-color 500ms ease, color 500ms ease;
 }
@@ -76,8 +100,30 @@
     border-radius: 3px;
 }
 
+<<<<<<< HEAD
 .mappedValueInput input:focus {
     outline: 1px solid #3060aa4a;;
+=======
+.item input {
+    width: 100%;
+    background-color: white;
+    border: unset;
+    padding: 10px;
+    color: #3060AA;
+    border-radius: 5px;
+}
+
+.inputIcon {
+    position: relative;
+    bottom: 31px;
+    right: 5px;
+    float: right;
+    color: #d4cfcf;
+}
+
+.mappedValueInput input:focus, .item input:focus {
+    outline: 1px solid #3060aa4a;
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 }
 
 .mappedValueInput button {
@@ -98,6 +144,10 @@
     color: #3F6DB3;
     padding: 10px 20px;
     border-radius: 5px;
+<<<<<<< HEAD
+=======
+    font-size: 15px;
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
     display: flex;
     flex-direction: row;
     justify-content: space-between;

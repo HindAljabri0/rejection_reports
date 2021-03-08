@@ -3,11 +3,11 @@ import { ReportsComponent } from './pages/reports/reports-page.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AppComponent } from './app.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component'
+import { SearchClaimsComponent } from './pages/searchClaimsPage/search-claims.component';
 import { ClaimfileuploadComponent } from './pages/claimUploadignPage/claimfileupload/claimfileupload.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -33,14 +33,16 @@ import { PaymentReferenceReportComponent } from './pages/reports/payment-referen
 import { PaymentClaimDetailDailogComponent } from './components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
 import { PaymentClaimSummaryReportComponent } from './pages/reports/payment-claim-summary-report/payment-claim-summary-report.component';
 import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/submitted-invoices.component';
-import { RejectionReportClaimDialogComponent } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
+import {
+  RejectionReportClaimDialogComponent
+} from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
 import { UploadHistoryCenterComponent } from './components/upload-history-center/upload-history-center.component';
 import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
 import { RejectionReportComponent } from './pages/reports/rejection-report/rejection-report.component';
 import { ReusableSearchBarComponent } from './components/reusables/reusable-search-bar/reusable-search-bar.component';
-import { MatiralModule } from './modules/matiral/matiral.module';
+import { MaterialModule } from './modules/material/material.module';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { SharedModule } from './modules/shared.module';
 import { StoreModule } from '@ngrx/store';
@@ -63,8 +65,25 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
+<<<<<<< HEAD
 import { ConfigurationsComponent } from './pages/configurationsPage/configurations.component';
 
+=======
+import { SummaryComponent } from './pages/reports/globmed/summary/summary.component';
+import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
+import {
+  UploadSummaryDialogComponent
+} from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
+import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
+import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
+import {
+  BupaRejectionConfirmDialogComponent
+} from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 
 @NgModule({
   declarations: [
@@ -73,6 +92,7 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
     SidebarComponent,
     HeaderComponent,
     ClaimsummaryComponent,
+    UploadSummaryDialogComponent,
     ClaimpageComponent,
     AbstractcardComponent,
     DragdropDirective,
@@ -110,7 +130,11 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
     ClaimAttachmentsManagementComponent,
     ImageToolTipDirective,
     ImageTooltipComponent,
-    ConfigurationsComponent,
+    SummaryComponent,
+    GmReportsPageComponent,
+    ChangeLogDialogComponent,
+    MainLayoutComponent,
+    BupaRejectionConfirmDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -124,9 +148,14 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
     FormsModule,
     ScrollingModule,
     InfiniteScrollModule,
-    MatiralModule,
+    MaterialModule,
     SharedModule,
     ChartsModule,
+    CarouselModule,
+    NgScrollbarModule,
+    SmoothScrollModule,
+    GuidedTourModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     ThemeService,
@@ -141,6 +170,7 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
       provide: 'RouteCanActiveService',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => true
     },
+    GuidedTourService
     // {
     //   provide: ErrorHandler,
     //   useClass: ApmErrorHandler
@@ -162,7 +192,10 @@ import { ConfigurationsComponent } from './pages/configurationsPage/configuratio
     NonSubmittedClaimsComponent,
     SubmittedClaimsComponent,
     TopFiveRejectionsComponent,
-    ImageTooltipComponent
+    ImageTooltipComponent,
+    UploadSummaryDialogComponent,
+    ChangeLogDialogComponent,
+    BupaRejectionConfirmDialogComponent
   ],
 })
 export class AppModule { }

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { MatDialog } from '@angular/material';
-import { MessageDialogComponent } from '../components/dialogs/message-dialog/message-dialog.component';
+import { Subject } from 'rxjs';
 import { ClaimStatus } from '../models/claimStatus';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -11,30 +9,21 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Notification } from '../models/notification';
 import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
-import { MessageDialogData } from '../models/dialogData/messageDialogData';
-import { ViewedClaim } from '../models/viewedClaim';
-import { SearchService } from './serchService/search.service';
-import { ClaimDialogComponent } from '../components/dialogs/claim-dialog/claim-dialog.component';
 import { AuthService } from './authService/authService.service';
-import { PaymentClaimDetail } from '../models/paymentClaimDetail';
-import { PaymentClaimDetailDailogComponent } from '../components/dialogs/payment-claim-detail-dailog/payment-claim-detail-dailog.component';
-import { PaymentServiceDetails } from '../models/paymentServiceDetails';
-import { ReportsService } from './reportsService/reports.service';
-import { DialogService } from './dialogsService/dialog.service';
-import { RejectionReportClaimDialogData } from '../models/dialogData/rejectionReportClaimDialogData';
 import { UploadSummary } from '../models/uploadSummary';
 import { UploadService } from './claimfileuploadservice/upload.service';
+import { SearchService } from './serchService/search.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedServices {
-  payers: { id: number, name: string }[];
+  private payers: { id: number, name: string }[];
   payerids: number[];
-  loading: boolean = false;
+  loading = false;
   loadingChanged: Subject<boolean> = new Subject<boolean>();
 
-  searchIsOpen: boolean = false;
+  searchIsOpen = false;
   searchIsOpenChange: Subject<boolean> = new Subject<boolean>();
 
   showNotificationCenter: boolean;
@@ -43,9 +32,9 @@ export class SharedServices {
   showAnnouncementCenter: boolean;
   showAnnouncementCenterChange: Subject<boolean> = new Subject();
 
-  //unReadAnnouncementsCount: number = 0;
-  //unReadAnnouncementsCountChange: Subject<number> = new Subject();
-  announcementsCount: number = 0;
+  // unReadAnnouncementsCount: number = 0;
+  // unReadAnnouncementsCountChange: Subject<number> = new Subject();
+  announcementsCount = 0;
   announcementsCountChange: Subject<number> = new Subject();
   announcementsList: Announcement[];
   announcementsListChange: Subject<Announcement[]> = new Subject();
@@ -53,7 +42,7 @@ export class SharedServices {
   showUploadHistoryCenter: boolean;
   showUploadHistoryCenterChange: Subject<boolean> = new Subject();
 
-  unReadNotificationsCount: number = 0;
+  unReadNotificationsCount = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
@@ -62,11 +51,13 @@ export class SharedServices {
   uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
   getUploadId: any;
 
-  constructor(public authService: AuthService,
+  constructor(
+    public authService: AuthService,
     private router: Router,
     private notifications: NotificationsService,
     private announcements: AnnouncementsService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private searchService: SearchService
   ) {
 
 
@@ -112,8 +103,8 @@ export class SharedServices {
     });
     this.uploadHistoryListChange.subscribe(value => {
       this.uploadHistoryList = value.map(upload => {
-        upload.uploadDate = new Date(upload.uploadDate);
-        return upload;
+        // upload.uploaddate = new Date(upload.uploaddate);
+        return new UploadSummary(upload);
       });
     });
     this.router.events.pipe(
@@ -129,7 +120,7 @@ export class SharedServices {
     if (this.providerId == null) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`);
+        const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
           this.unReadNotificationsCountChange.next(count);
         }
@@ -157,7 +148,7 @@ export class SharedServices {
     this.payerids = this.payers.map(item => item.id);
     this.announcements.getAnnouncementsCount(this.providerId, this.payerids).subscribe(event => {
       if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`);
+        const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
           this.announcementsCountChange.next(count);
         }
@@ -180,11 +171,13 @@ export class SharedServices {
   }
 
   getUploadHistory() {
-    if (this.providerId == null) return;
+    if (this.providerId == null) {
+      return;
+    }
 
-    this.uploadService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
+    this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.uploadHistoryListChange.next(event.body["content"]);
+        this.uploadHistoryListChange.next(event.body['content']);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -196,7 +189,6 @@ export class SharedServices {
   markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
       if (event instanceof HttpResponse) {
-        console.log(event);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -217,25 +209,27 @@ export class SharedServices {
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
-        return '#21B744';
+        return 'ready-submission';
       case ClaimStatus.NotAccepted.toLowerCase():
-        return '#EB2A75';
+        return 'rejected-waseel';
       case ClaimStatus.ALL.toLowerCase():
-        return '#3060AA';
+        return 'all-claim';
       case '-':
-        return '#bebebe';
+        return 'middle-grey';
       case ClaimStatus.REJECTED.toLowerCase():
-        return '#FD76B5';
+        return 'rejected';
       case ClaimStatus.PAID.toLowerCase():
-        return '#009633';
-      case ClaimStatus.PARTIALLY_PAID.toLowerCase():  case 'PARTIALLY_PAID'.toLowerCase():
-        return '#00CED4';
+        return 'paid';
+      case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
+        return 'partially-paid';
       case ClaimStatus.OUTSTANDING.toLowerCase():
-        return '#F3A264';
+        return 'under-processing';
       case ClaimStatus.Batched.toLowerCase():
-        return '#F3D34B'
+        return 'not-saved';
+      case ClaimStatus.Downloadable.toLowerCase():
+        return 'ready-submission';
       default:
-        return '#E3A820';
+        return 'not-saved';
     }
   }
 
@@ -246,7 +240,7 @@ export class SharedServices {
       case ClaimStatus.NotAccepted.toLowerCase():
         return 'Rejected by Waseel';
       case ClaimStatus.ALL.toLowerCase():
-        return 'All Claims'
+        return 'All Claims';
       case ClaimStatus.PARTIALLY_PAID.toLowerCase(): case 'PARTIALLY_PAID'.toLowerCase():
         return 'Partially Paid';
       case ClaimStatus.REJECTED.toLowerCase():
@@ -260,19 +254,71 @@ export class SharedServices {
     }
   }
 
-  getPayersList(): { id: number, name: string, arName: string }[] {
-    let payers: { id: number, name: string, arName: string }[] = [];
+  getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
+    if (globMed == null) {
+      globMed = false;
+    }
+    const payers: { id: number, name: string, arName: string }[] = [];
     const payersStr = localStorage.getItem('payers');
     if (payersStr != null) {
       const payersStrSplitted = payersStr.split('|');
-      payersStrSplitted.map(value => payers.push({
-        id: Number.parseInt(value.split(':')[0]),
-        name: value.split(':')[1].split(',')[0],
-        arName: value.split(':')[1].split(',')[1]
-      }));
+      payersStrSplitted
+        .filter(value =>
+          (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
+          || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
+        .map(value => payers.push({
+          id: Number.parseInt(value.split(':')[0], 10),
+          name: value.split(':')[1].split(',')[0],
+          arName: value.split(':')[1].split(',')[1]
+        }));
     }
 
     return payers;
+  }
+
+  getPayerCode(payerId: string) {
+    switch (payerId) {
+      case '204':
+        return 'AXA';
+      case '301':
+        return 'ArabianSh';
+      case '205':
+        return 'SAICO';
+      case '201':
+        return 'Malath';
+      case '207':
+        return 'Rajhi';
+      case '203':
+        return 'GCI';
+      case '202':
+        return 'SGI';
+      case '200':
+        return 'CARS';
+      case '300':
+        return 'MedGulf';
+      case '102':
+        return 'NCCI';
+      case '206':
+        return 'Weqaya';
+      case '303':
+        return 'WeqayaSNC';
+      case '302':
+        return 'ASF';
+      case '209':
+        return 'Walaa';
+      case '208':
+        return 'SAGR';
+      case '305':
+        return 'SACB';
+      case '306':
+        return 'ENAYA';
+      case '307':
+        return 'EMIC';
+      case '314':
+        return 'GlobMed';
+      default:
+        return '';
+    }
   }
 
 }

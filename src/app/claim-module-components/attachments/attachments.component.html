@@ -1,56 +1,69 @@
-<div class="parent">
-    <main>
-
-        <div class="attachment" *ngFor="let attachment of attachments; let i = index">
-            <div class="thumbnail">
-                <img width="60px" class="thumbnailImage" height="60px" *ngIf="!isPdf(attachment)"
-                    [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName">
-                <img width="60px" class="thumbnailImage" height="60px" *ngIf="isPdf(attachment)"
-                    src="assets/pdfIcon.png" [alt]="attachment.fileName">
+<app-empty-state *ngIf="attachments.length === 0 && pageMode == 'VIEW'" message='No attachments found!'></app-empty-state>
+<div class="row small-gutter">
+    <ng-container *ngIf='attachments.length > 0'>
+        <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of attachments; let i = index">
+            <div class="attachment">
+                <div class="thumbnail">
+                    <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
+                    <img *ngIf="isPdf(attachment)" src="assets/ic-pdf-file.svg" [alt]="attachment.fileName" />
+                </div>
+                <div class="content">
+                    <p class="title">{{attachment.fileName}}</p>
+                    <p *ngIf="pageMode == 'VIEW'">{{attachment.fileType}}</p>
+                    <a class="primary-link clickable" *ngIf="pageMode != 'VIEW'" [matMenuTriggerFor]="editAttachmentTypeMenu">{{attachment.fileType}}</a>
+                    <mat-menu #editAttachmentTypeMenu class="primary-menu">
+                        <label class="d-block text-primary pb-2">Edit Attachment Type?</label>
+                        <mat-radio-group aria-label="Select an option" [value]="attachment.fileType">
+                            <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('Medical Report', i);" id="MEDICAL_REPORT" value="Medical Report">Medical
+                                Report
+                            </mat-radio-button>
+                            <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('Iqama/ID copy', i);" id="IQAMA_ID_COPY" value="Iqama/ID copy">Iqama/ID
+                                Copy
+                            </mat-radio-button>
+                            <mat-radio-button color="primary" class="d-block pb-2" (click)="editAttachment('X-Ray result', i);" id="X_RAY_RESULT" value="X-Ray result">X-Ray Result
+                            </mat-radio-button>
+                            <mat-radio-button color="primary" class="d-block" (click)="editAttachment('Lab Result', i);" id="LAB_RESULT" value="Lab Result">Lab Result
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </mat-menu>
+                    <div class="btn-list">
+                        <a [href]="getImageOfBlob(attachment)" [download]="attachment.fileName" mat-icon-button class="text-primary mr-0">
+                            <mat-icon>save_alt</mat-icon>
+                        </a>
+                        <button mat-icon-button *ngIf="pageMode != 'VIEW'" (click)="deleteCurrentAttachment(i)" class="text-danger">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <p style="margin: auto 5px">{{attachment.fileName}}</p>
-            <span class="spacer"></span>
-            <a [href]="getImageOfBlob(attachment)" [download]="attachment.fileName" mat-icon-button color="primary"
-                style="margin: auto;">
-                <mat-icon style="font-size: 20px;">save_alt</mat-icon>
-            </a>
-            <button mat-icon-button color="warn" *ngIf="pageMode != 'VIEW'" style="margin: auto;"
-                (click)="deleteCurrentAttachment(i)">
-                <mat-icon style="font-size: 20px;">cancel</mat-icon>
-            </button>
         </div>
-        <div class="attachment" *ngIf="pageMode != 'VIEW'">
-            <button mat-button [matMenuTriggerFor]="attachmentTypeMenu" mat-icon-button mat-icon-button color="primary"
-                style="margin: auto">
+    </ng-container>
+    <div class="col-md-6 col-lg-4 col-xxl-3">
+        <div class="attachment add-block" *ngIf="pageMode != 'VIEW'">
+            <button type="button" [matMenuTriggerFor]="attachmentTypeMenu" matRipple>
                 <mat-icon>add</mat-icon>
             </button>
 
-            <mat-menu #attachmentTypeMenu="matMenu">
-                <div style="padding: 10px;">
-                    <label>What Type of Attachment?</label>
-                    <mat-radio-group aria-label="Select an option" [value]="fileType">
-
-                        <mat-radio-button class="block" (click)="fileType = 'Medical Report'; fileInput.click()"
-                            id="MEDICAL_REPORT" value="MEDICAL_REPORT">Medical Report</mat-radio-button>
-
-                        <mat-radio-button class="block" (click)="fileType = 'Iqama/ID copy'; fileInput.click()"
-                            id="IQAMA_ID_COPY" value="IQAMA_ID_COPY">Iqama/ID Copy</mat-radio-button>
-
-                        <mat-radio-button class="block" (click)="fileType = 'X-Ray result'; fileInput.click()"
-                            id="X_RAY_RESULT" value="X_RAY_RESULT">X-Ray Result</mat-radio-button>
-
-                        <mat-radio-button class="block" (click)="fileType = 'Lab Result'; fileInput.click()"
-                            id="LAB_RESULT" value="LAB_RESULT">Lab Result</mat-radio-button>
-
-                        <input hidden type="file" #fileInput id="file" onclick="this.value = null"
-                            (change)="selectFile($event.target.files)"
-                            accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
-                    </mat-radio-group>
-                </div>
+            <mat-menu #attachmentTypeMenu="matMenu" class="primary-menu">
+                <label class="d-block text-primary pb-2">What Type of Attachment?</label>
+                <mat-radio-group aria-label="Select an option" [value]="fileType">
+                    <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'Medical Report'; fileInput.click()" id="MEDICAL_REPORT" value="MEDICAL_REPORT">
+                        Medical
+                        Report
+                    </mat-radio-button>
+                    <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'Iqama/ID copy'; fileInput.click()" id="IQAMA_ID_COPY" value="IQAMA_ID_COPY">Iqama/ID
+                        Copy
+                    </mat-radio-button>
+                    <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'X-Ray result'; fileInput.click()" id="X_RAY_RESULT" value="X_RAY_RESULT">X-Ray
+                        Result
+                    </mat-radio-button>
+                    <mat-radio-button class="d-block" color="primary" (click)="fileType = 'Lab Result'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">Lab Result
+                    </mat-radio-button>
+                    <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+                </mat-radio-group>
             </mat-menu>
         </div>
-    </main>
-    <footer>
-        <div *ngIf="selectFilesError != null" style="color: #c44848;">{{selectFilesError}}</div>
-    </footer>
+    </div>
 </div>
+<p *ngIf="selectFilesError != null" class="error-text">{{selectFilesError}}</p>

@@ -25,15 +25,8 @@ import { EligibilityService } from 'src/app/services/eligibilityService/eligibil
   styleUrls: ['./claim-dialog.component.css']
 })
 export class ClaimDialogComponent implements OnInit, AfterContentInit {
-  files: File[] = [];
-  newAttachmentsPreview: { src: (string | ArrayBuffer), name: string, index: number }[] = [];
-  toDeleteAttachments = [];
-  maxNumberOfAttachment: number;
-  fileType: string;
-  payers: { id: string[] | string, name: string }[];
-
-
-  constructor(public commen: SharedServices,
+  constructor(
+    public commen: SharedServices,
     public dialogRef: MatDialogRef<ClaimDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { claim: ViewedClaim, edit: boolean, maxNumberOfAttachment: any },
     public claimUpdateService: ClaimService,
@@ -44,31 +37,16 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
     private sanitizer: DomSanitizer) {
   }
+  files: File[] = [];
+  newAttachmentsPreview: { src: (string | ArrayBuffer), name: string, index: number }[] = [];
+  toDeleteAttachments = [];
+  maxNumberOfAttachment: number;
+  fileType: string;
+  payers: { id: string[] | string, name: string }[];
 
-  ngOnInit() {
-    if (this.data.claim.errors.length > 0) {
-      this.setErrors();
-    }
-    this.maxNumberOfAttachment = Number.parseInt(this.data.maxNumberOfAttachment);
-    this.adminService.checkIfPriceListExist(this.data.claim.providerId, this.data.claim.payerid).subscribe(event => {
-      if(event instanceof HttpResponse){
-        this.priceListExist = true;
-      }
-    });
-    this.dialogRef.backdropClick().subscribe(()=>{
-      this.dialogRef.close(this.data.claim);
-    })
-  }
+  priceListExist = false;
 
-  ngAfterContentInit() {
-    if (this.data.edit) {
-      this.toggleEditMode()
-    }
-  }
-
-  priceListExist:boolean = false;
-
-  loading: boolean = false;
+  loading = false;
   loadingResponse: string;
 
   commentBoxText: string;
@@ -81,10 +59,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   eligibilityClasses: string;
   servicesErrors: string[] = [];
 
-  isEditMode: boolean = false;
+  isEditMode = false;
   serviceUnderEditting: Service;
   edittedServices: { index: number, oldValue: string, newValue: string }[] = [];
-  editButtonLabel: string = "Edit";
+  editButtonLabel = 'Edit';
 
   memberid = new FormControl(this.data.claim.memberid);
   gender = new FormControl(this.data.claim.gender);
@@ -95,19 +73,42 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   nationalId = new FormControl(this.data.claim.nationalId);
 
 
-  searchDiag = new FormControl("");
-  searchServicesController = new FormControl("");
+  searchDiag = new FormControl('');
+  searchServicesController = new FormControl('');
 
   icedOptions: ICDDiagnosis[] = [];
   servicesOptions: string[] = [];
 
   diagnosisList: ICDDiagnosis[] = [];
   toAddFileTypeAttachments: UploadAttachmentType[] = [];
-  eligibilityWaitingList:{result:string, waiting:boolean}[] = [];
+  eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
+
+  selectFilesError = null;
+
+  ngOnInit() {
+    if (this.data.claim.errors.length > 0) {
+      this.setErrors();
+    }
+    this.maxNumberOfAttachment = Number.parseInt(this.data.maxNumberOfAttachment, 10);
+    this.adminService.checkIfPriceListExist(this.data.claim.providerId, this.data.claim.payerid).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.priceListExist = true;
+      }
+    });
+    this.dialogRef.backdropClick().subscribe(() => {
+      this.dialogRef.close(this.data.claim);
+    });
+  }
+
+  ngAfterContentInit() {
+    if (this.data.edit) {
+      this.toggleEditMode();
+    }
+  }
 
   setErrors() {
-    this.commentBoxText = "";
-    for (let error of this.data.claim.errors) {
+    this.commentBoxText = '';
+    for (const error of this.data.claim.errors) {
       if (error.code != 'SERVCOD-VERFIY' && error.code != 'SERVCOD-RESTRICR') {
         this.commentBoxText += `${error.description}\n`;
         this.commentBoxClasses = 'error';
@@ -141,6 +142,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       case ClaimStatus.Accepted:
       case ClaimStatus.INVALID:
       case ClaimStatus.NotAccepted:
+      case ClaimStatus.Downloadable:
       case 'Failed':
         return true;
       default:
@@ -150,11 +152,11 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
-    this.editButtonLabel = this.isEditMode ? "Cancel" : "Edit";
+    this.editButtonLabel = this.isEditMode ? 'Cancel' : 'Edit';
     if (!this.isEditMode) {
       this.diagnosisList = [];
       this.removeAddedDiagFromClaimList();
-      this.toDeleteAttachments.forEach(attachment => this.data.claim.attachments.push(attachment))
+      this.toDeleteAttachments.forEach(attachment => this.data.claim.attachments.push(attachment));
       this.toDeleteAttachments = [];
       this.toAddFileTypeAttachments = [];
       this.files = [];
@@ -183,34 +185,42 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
   searchICDCodes() {
     this.icedOptions = [];
-    if (this.searchDiag.value != "")
+    if (this.searchDiag.value != '') {
       this.adminService.searchICDCode(this.searchDiag.value).subscribe(
         event => {
           if (event instanceof HttpResponse) {
-            if (event.body instanceof Object)
+            if (event.body instanceof Object) {
               Object.keys(event.body).forEach(key => {
                 this.icedOptions.push(new ICDDiagnosis(null,
-                  event.body[key]["icddiagnosisCode"],
-                  event.body[key]["description"]
-                ))
+                  event.body[key]['icddiagnosisCode'],
+                  event.body[key]['description']
+                ));
               });
+            }
           }
         }
       );
+    }
   }
   searchServices() {
     this.servicesOptions = [];
-    if (this.searchServicesController.value != "")
-      this.adminService.searchSeviceCode(this.searchServicesController.value.toUpperCase(), this.data.claim.providerId, this.data.claim.payerid).subscribe(
-        event => {
-          if (event instanceof HttpResponse) {
-            if (event.body instanceof Object)
-              Object.keys(event.body['content']).forEach(key => {
-                this.servicesOptions.push(`${event.body['content'][key]["code"]} | ${event.body['content'][key]["description"]}`.toUpperCase())
-              });
+    if (this.searchServicesController.value != '') {
+      this.adminService.searchServiceCode(this.searchServicesController.value.toUpperCase(),
+        this.data.claim.providerId,
+        this.data.claim.payerid).subscribe(
+          event => {
+            if (event instanceof HttpResponse) {
+              if (event.body instanceof Object) {
+                Object.keys(event.body['content']).forEach(key => {
+                  this.servicesOptions.push(
+                    `${event.body['content'][key]['code']} | ${event.body['content'][key]['description']}`.toUpperCase()
+                  );
+                });
+              }
+            }
           }
-        }
-      );
+        );
+    }
   }
 
   addICDDignosis(diag) {
@@ -218,24 +228,24 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       this.diagnosisList.push(diag);
       this.data.claim.diagnosis.push(diag);
     } else {
-      if (this.data.claim.diagnosis.length >= 14)
-        alert("Only 14 Dignosis are Allowed");
-      else {
-        alert("Diagnosis Already in List");
+      if (this.data.claim.diagnosis.length >= 14) {
+        alert('Only 14 Dignosis are Allowed');
+      } else {
+        alert('Diagnosis Already in List');
       }
     }
 
   }
 
   elementIsInList(diag: any): boolean {
-    let list = this.data.claim.diagnosis.filter((x => x.diagnosisCode == diag.diagnosisCode));
+    const list = this.data.claim.diagnosis.filter((x => x.diagnosisCode == diag.diagnosisCode));
     return list.length > 0;
   }
 
 
   save() {
-    let updateRequestBody: FormData = new FormData();
-    let claim: { [k: string]: any } = {};
+    const updateRequestBody: FormData = new FormData();
+    const claim: { [k: string]: any } = {};
     let flag = false;
     if (this.memberid.value != this.data.claim.memberid) {
       claim.memberid = this.memberid.value;
@@ -285,10 +295,10 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       claim.deletedAttachments = this.toDeleteAttachments.map(attachment => attachment.attachmentid);
     }
 
-    if(this.edittedServices.length > 0){
+    if (this.edittedServices.length > 0) {
       flag = true;
       claim.serviceUpdates = this.edittedServices.map(edittedService => ({
-        serviceid:this.data.claim.services[edittedService.index].serviceid,
+        serviceid: this.data.claim.services[edittedService.index].serviceid,
         serviceCode: edittedService.newValue.split('|')[0].trim(),
         serviceDescription: edittedService.newValue.split('|')[1].trim()
       }));
@@ -296,23 +306,27 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
     if (flag) {
       this.loading = true;
-      let body: FormData = new FormData();
-      if (claim != {})
+      const body: FormData = new FormData();
+      if (claim != {}) {
         body.append('claim', JSON.stringify(claim));
-      this.files.forEach(file => body.append("files", file, file.name));
-      this.claimUpdateService.updateClaim(this.data.claim.providerId, this.data.claim.payerid, this.data.claim.claimid, body).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status == 201) {
-            this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
-            this.reloadeClaim(event.body['status']);
+      }
+      this.files.forEach(file => body.append('files', file, file.name));
+      this.claimUpdateService.updateClaim(this.data.claim.providerId,
+        this.data.claim.payerid,
+        this.data.claim.claimid,
+        body).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            if (event.status == 201) {
+              this.loadingResponse = 'Your claim is now: ' + this.commen.statusToName(event.body['status']);
+              this.reloadeClaim(event.body['status']);
+            }
           }
-        }
-      }, eventError => {
-        if (eventError instanceof HttpErrorResponse) {
-          this.loadingResponse = eventError.message;
-          this.reloadeClaim();
-        }
-      });
+        }, eventError => {
+          if (eventError instanceof HttpErrorResponse) {
+            this.loadingResponse = eventError.message;
+            this.reloadeClaim();
+          }
+        });
     }
   }
   isAccepted() {
@@ -324,8 +338,8 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     this.loadingResponse = null;
   }
 
-  reloadeClaim(status?:string) {
-    if(status != null){
+  reloadeClaim(status?: string) {
+    if (status != null) {
       this.data.claim.status = status;
     }
     this.toDeleteAttachments = [];
@@ -355,45 +369,58 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     });
   }
 
-  payeridToPayername(){
-    if (this.data.claim.payerid == '102') return 'Tawuniya';
-    if (this.data.claim.payerid == '300') return 'Med Gulf';
-    if (this.data.claim.payerid == '306') return 'Saudi Enaya';
-    if (this.data.claim.payerid == '204') return 'AXA';
+  payeridToPayername() {
+    if (this.data.claim.payerid == '102') {
+      return 'Tawuniya';
+    }
+    if (this.data.claim.payerid == '300') {
+      return 'Med Gulf';
+    }
+    if (this.data.claim.payerid == '306') {
+      return 'Saudi Enaya';
+    }
+    if (this.data.claim.payerid == '204') {
+      return 'AXA';
+    }
   }
 
   genderToText(g: string) {
-    if (g == 'M') return 'Male';
-    if (g == 'F') return 'Female';
-    else return '';
+    if (g == 'M') {
+      return 'Male';
+    }
+    if (g == 'F') {
+      return 'Female';
+    } else {
+      return '';
+    }
   }
   /*getStatusdescription(statusdescription: string) {
     if (this.commen.statusToName('Ready for Submission') ) return statusdescription ='Aaaaaaaaa';
   }*/
 
   getPatientFullName() {
-    return `${this.data.claim.firstname != null ? this.data.claim.firstname : ""} ${this.data.claim.middlename != null ? this.data.claim.middlename : ""}  ${this.data.claim.lastname != null ? this.data.claim.lastname : ""}  `;
-    //return `${this.data.claim.firstname} ${this.data.claim.middlename} ${this.data.claim.lastname}`;
+    return `${this.data.claim.firstname != null ? this.data.claim.firstname : ''} ${this.data.claim.middlename != null ? this.data.claim.middlename : ''}  ${this.data.claim.lastname != null ? this.data.claim.lastname : ''}  `;
+    // return `${this.data.claim.firstname} ${this.data.claim.middlename} ${this.data.claim.lastname}`;
   }
 
   getPatientName() {
-    let name = this.getPatientFullName();
-    if (name.length > 30)
+    const name = this.getPatientFullName();
+    if (name.length > 30) {
       return name.substring(0, 27) + '...';
-    else return name;
+    } else {
+      return name;
+    }
   }
 
   uploadAttachmentToBackend(file: File) {
-    this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid + "", file)
+    this.attachmentService.uploadAttachament(this.data.claim.providerId, this.data.claim.claimid + '', file)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           this.loadingResponse += `${file.name} uploaded`;
-          console.log(`${file.name} uploaded`);
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
           this.loadingResponse += `${file.name} error uploading`;
-          console.log(`${file.name} error uploading: ${errorEvent.error}`);
         }
       }
       );
@@ -401,68 +428,67 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
 
   getImageOfBlob(attachment) {
-    let fileExt = attachment.filename.split(".").pop();
+    const fileExt = attachment.filename.split('.').pop();
     if (fileExt.toLowerCase() == 'pdf') {
-      let objectURL = `data:application/pdf;base64,` + attachment.attachmentfile;
+      const objectURL = `data:application/pdf;base64,` + attachment.attachmentfile;
       return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
     } else {
-      let objectURL = `data:image/${fileExt};base64,` + attachment.attachmentfile;
+      const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentfile;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
 
   }
-
-  selectFilesError = null;
   selectFile(event) {
     this.selectFilesError = null;
-    let file = event.item(0);
+    const file = event.item(0);
     if (file instanceof File) {
-      if (file.size == 0)
+      if (file.size == 0) {
         return;
-      let mimeType = file.type;
+      }
+      const mimeType = file.type;
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
         return;
       }
       if (this.files.find(selectedFile => selectedFile.name == file.name) != undefined) {
-        this.selectFilesError = "You can't choose two files of the same name."
+        this.selectFilesError = 'You can\'t choose two files of the same name.';
         return;
       }
       if (this.data.claim.attachments.find(attachment => attachment.filename == file.name) != undefined) {
-        this.selectFilesError = "A file with the same name already exists."
+        this.selectFilesError = 'A file with the same name already exists.';
         return;
       }
       if (file.size / 1024 / 1024 > 2) {
-        this.selectFilesError = "Selected files should not be more than 2M."
+        this.selectFilesError = 'Selected files should not be more than 2M.';
         return;
       }
       this.files.push(file);
-      if (this.fileType != null && this.fileType != "")
+      if (this.fileType != null && this.fileType != '') {
         this.toAddFileTypeAttachments.push(new UploadAttachmentType(file.name, this.fileType));
+      }
       this.preview(file, this.files.length - 1);
-      console.log(this.fileType);
     }
   }
 
   preview(file: File, index: number) {
-    var mimeType = file.type;
+    const mimeType = file.type;
     if (mimeType.includes('pdf')) {
       return this.newAttachmentsPreview.push({ src: 'pdf', name: file.name, index: index });
     }
 
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
       this.newAttachmentsPreview.push({ src: reader.result, name: file.name, index: index });
-    }
+    };
   }
 
   isPdf(attachment) {
-    let fileExt = attachment.filename.split(".").pop();
+    const fileExt = attachment.filename.split('.').pop();
     return fileExt.toLowerCase() == 'pdf';
   }
 
   deleteAttachment(attachment) {
-    let index = this.data.claim.attachments.indexOf(attachment);
+    const index = this.data.claim.attachments.indexOf(attachment);
     if (index >= 0) {
       this.toDeleteAttachments.push(this.data.claim.attachments.splice(index, 1)[0]);
     }
@@ -471,16 +497,17 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
 
   deleteNewAttachment(attachment: { src: string | ArrayBuffer, name: string, index: number }) {
     this.files.splice(attachment.index, 1);
-    let index = this.newAttachmentsPreview.indexOf(attachment);
-    if (index >= 0)
+    const index = this.newAttachmentsPreview.indexOf(attachment);
+    if (index >= 0) {
       this.newAttachmentsPreview.splice(index, 1);
+    }
   }
 
-  statusToName(status:string){
+  statusToName(status: string) {
     return this.commen.statusToName(status);
   }
 
-  statusToColor(status:string){
+  statusToColor(status: string) {
     return this.commen.getCardAccentColor(status);
   }
 
@@ -489,7 +516,7 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
       return;
     }
     const index = this.data.claim.services.findIndex(service => service == this.serviceUnderEditting);
-    if(index >= 0){
+    if (index >= 0) {
       this.edittedServices.push({
         index: index,
         oldValue: `${this.data.claim.services[index].servicecode} | ${this.data.claim.services[index].servicedescription}`,

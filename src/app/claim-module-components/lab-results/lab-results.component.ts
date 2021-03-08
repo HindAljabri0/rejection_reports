@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClaimPageMode, FieldError, getLabResultsErrors } from '../store/claim.reducer';
 import { Investigation } from '../models/investigation.model';
 import { Store } from '@ngrx/store';
@@ -13,7 +13,7 @@ import { Actions, ofType } from '@ngrx/effects';
 @Component({
   selector: 'claim-lab-results',
   templateUrl: './lab-results.component.html',
-  styleUrls: ['./lab-results.component.css']
+  styles: []
 })
 export class LabResultsComponent implements OnInit {
 
@@ -26,7 +26,8 @@ export class LabResultsComponent implements OnInit {
       componentCode: FormControl,
       componentDescription: FormControl,
       componentLabResult: FormControl,
-      componentResultUnit: FormControl
+      componentResultUnit: FormControl,
+      isOpen: boolean
     }[]
   }[] = [];
 
@@ -52,14 +53,18 @@ export class LabResultsComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
 
     this.actions.pipe(
       ofType(saveLabResults)
-    ).subscribe(() => { if (this.expandedResult != -1) this.updateClaimInvestigations() });
+    ).subscribe(() => {
+      if (this.expandedResult != -1) {
+        this.updateClaimInvestigations();
+      }
+    });
 
     this.store.select(getLabResultsErrors).subscribe(errors => this.errors = errors);
   }
@@ -69,9 +74,9 @@ export class LabResultsComponent implements OnInit {
     if (claim.caseInformation.caseDescription.investigation != null) {
       claim.caseInformation.caseDescription.investigation.forEach(
         investigation => {
-          let controls = this.createEmptyResultControls();
+          const controls = this.createEmptyResultControls();
           if (investigation.investigationDate != null) {
-            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'yyyy-MM-dd'))
+            controls.testDate.setValue(this.datePipe.transform(investigation.investigationDate, 'dd-MM-yyyy'));
           } else {
             controls.testDate.setValue('');
           }
@@ -80,7 +85,7 @@ export class LabResultsComponent implements OnInit {
           controls.resultDescription.setValue(investigation.investigationDescription);
 
           investigation.observation.forEach(observation => {
-            let componentControls = this.createEmptyComponentControls();
+            const componentControls = this.createEmptyComponentControls();
             componentControls.componentCode.setValue(observation.observationCode);
 
             componentControls.componentDescription.setValue(observation.observationDescription);
@@ -135,7 +140,7 @@ export class LabResultsComponent implements OnInit {
       testSerial: new FormControl(),
       resultDescription: new FormControl(),
       componentsControls: []
-    }
+    };
   }
 
   createEmptyComponentControls() {
@@ -145,39 +150,56 @@ export class LabResultsComponent implements OnInit {
       componentDescription: new FormControl(),
       componentLabResult: new FormControl(),
       componentResultUnit: new FormControl(),
-      componentResultComment: new FormControl()
-    }
+      componentResultComment: new FormControl(),
+      isOpen: false
+    };
   }
 
-  onDeleteResultClick(event, i) {
-    event.stopPropagation();
+  onDeleteResultClick(i) {
     this.resultsControls.splice(i, 1);
-    this.updateClaimInvestigations();
-  }
-
-  onDeleteComponentClick(event, i, j) {
-    event.stopPropagation();
-    this.resultsControls[i].componentsControls.splice(j, 1);
-    this.updateClaimInvestigations();
-  }
-
-  afterResultExpanded(i: number) {
-    this.expandedResult = i;
-  }
-
-  afterComponentExpanded(j: number) {
-    this.expandedComponent = j;
-  }
-
-  afterResultCollapse(i: number) {
     this.expandedResult = -1;
     this.expandedComponent = -1;
     this.updateClaimInvestigations();
   }
 
-  afterComponentCollapse(resultIndex, componentIndex) {
-    this.expandedComponent = -1
+  onDeleteComponentClick(event, i, j) {
+    event.stopPropagation();
+    this.expandedComponent = -1;
+    this.resultsControls[i].componentsControls.splice(j, 1);
     this.updateClaimInvestigations();
+  }
+
+  toggleResult(i: number) {
+    this.resultsControls.forEach(result => {
+      result.componentsControls.forEach(element => {
+        element.isOpen = false;
+      });
+    });
+    if (this.expandedResult == -1) {
+      this.expandedResult = i;
+    } else if (this.expandedResult == i) {
+      this.expandedResult = -1;
+      this.expandedComponent = -1;
+      this.updateClaimInvestigations();
+    } else {
+      this.expandedResult = i;
+      this.updateClaimInvestigations();
+    }
+  }
+
+  toggleComponentExpansion(event, i, j) {
+    event.stopPropagation();
+    if (this.resultsControls[i].componentsControls[j].isOpen) {
+      this.expandedComponent = -1;
+      this.resultsControls[i].componentsControls[j].isOpen = false;
+      this.updateClaimInvestigations();
+    } else {
+      this.resultsControls[i].componentsControls.forEach(element => {
+        element.isOpen = false;
+      });
+      this.resultsControls[i].componentsControls[j].isOpen = true;
+      this.expandedComponent = j;
+    }
   }
 
   fieldHasError(fieldName) {
@@ -201,13 +223,21 @@ export class LabResultsComponent implements OnInit {
   }
 
   onAddResultClick() {
+    this.expandedResult = -1;
+    this.expandedComponent = -1;
     this.resultsControls.push(this.createEmptyResultControls());
     this.expandedResult = this.resultsControls.length - 1;
     this.updateClaimInvestigations();
   }
+
   onAddComponentClick(i: number) {
+    this.expandedComponent = -1;
     this.resultsControls[i].componentsControls.push(this.createEmptyComponentControls());
     this.expandedComponent = this.resultsControls[i].componentsControls.length - 1;
+    this.resultsControls[i].componentsControls.forEach(element => {
+      element.isOpen = false;
+    });
+    this.resultsControls[i].componentsControls[this.resultsControls[i].componentsControls.length - 1].isOpen = true;
     this.updateClaimInvestigations();
   }
 

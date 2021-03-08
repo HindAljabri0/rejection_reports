@@ -1,8 +1,7 @@
-import { AttachmentService } from './../../services/attachmentService/attachment.service';
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { SearchService } from '../../services/serchService/search.service';
 import { HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
@@ -22,44 +21,55 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { Store } from '@ngrx/store';
 import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClaims } from './store/search.actions';
 import { Actions, ofType } from '@ngrx/effects';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { ClaimError } from 'src/app/models/claimError';
 
 @Component({
   selector: 'app-search-claims',
   templateUrl: './search-claims.component.html',
-  styleUrls: ['./search-claims.component.css']
+  styles: []
 })
 export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  owlCarouselOptions: OwlOptions = {
+    mouseDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 300,
+    navText: ['', ''],
+    margin: 14,
+    responsive: {
+      0: {
+        items: 3,
+        slideBy: 3
+      },
+      992: {
+        items: 4,
+        slideBy: 4
+      },
+      1200: {
+        items: 5,
+        slideBy: 5
+      }
+    },
+    nav: true
+  };
+
   file: File;
 
-  isManagingAttachments: boolean = false;
+  isManagingAttachments = false;
 
-  constructor(public location: Location, public submittionService: ClaimSubmittionService,
-    public commen: SharedServices, public routeActive: ActivatedRoute,
-    public router: Router, public searchService: SearchService,
-    private dialogService: DialogService,
-    private claimService: ClaimService,
-    private eligibilityService: EligibilityService,
-    private notificationService: NotificationsService,
-    private store: Store,
-    private actions$: Actions) {
-  }
-  ngOnDestroy(): void {
-    this.notificationService.stopWatchingMessages('eligibility');
-    this.routerSubscription.unsubscribe();
-  }
-
-  isViewChecked: boolean = false;
+  isViewChecked = false;
 
   progressChange: Subject<{ percentage: number }> = new Subject();
 
 
   placeholder = '-';
-  cardsClickAble: boolean = true;
+  cardsClickAble = true;
   extraCards = 3;
   extraNumbers: number[];
 
   detailCardTitle: string;
-  detailTopActionText = "vertical_align_bottom";
+  detailTopActionIcon = 'ic-download.svg';
   detailAccentColor: string;
   detailActionText: string = null;
   detailSubActionText: string = null;
@@ -76,16 +86,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   claimId: string;
   claimRefNo: string;
   memberId: string;
+  invoiceNo: string;
+  patientFileNo: string;
+  policyNo: string;
   editMode: string;
   routerSubscription: Subscription;
 
   summaries: SearchStatusSummary[];
-  currentSummariesPage: number = 1;
+  currentSummariesPage = 1;
   searchResult: PaginatedResult<SearchedClaim>;
   claims: SearchedClaim[];
   uploadSummaries: UploadSummary[];
   selectedClaims: string[] = new Array();
-  selectedClaimsCountOfPage: number = 0;
+  selectedClaimsCountOfPage = 0;
   allCheckBoxIsIndeterminate: boolean;
   allCheckBoxIsChecked: boolean;
 
@@ -105,14 +118,38 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   queryStatus: number;
   queryPage: number;
 
-  waitingEligibilityCheck: boolean = false;
+  waitingEligibilityCheck = false;
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
-  watchingEligibility: boolean = false;
+  watchingEligibility = false;
+  currentSelectedTab = 0;
+  validationDetails: ClaimError[];
+  results: any[];
+  showValidationTab = false;
+
+  constructor(
+    public location: Location,
+    public submittionService: ClaimSubmittionService,
+    public commen: SharedServices,
+    public routeActive: ActivatedRoute,
+    public router: Router,
+    public searchService: SearchService,
+    private dialogService: DialogService,
+    private claimService: ClaimService,
+    private eligibilityService: EligibilityService,
+    private notificationService: NotificationsService,
+    private store: Store,
+    private actions$: Actions) { }
+
+  ngOnDestroy(): void {
+    this.notificationService.stopWatchingMessages('eligibility');
+    localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
+    this.routerSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes("/claims") && !event.url.includes("/add"))
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add'))
     ).subscribe(() => {
       this.fetchData();
     });
@@ -133,13 +170,13 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           this.goToFirstPage();
           break;
         case SearchPaginationAction.previousPage:
-          this.goToPrePage()
+          this.goToPrePage();
           break;
         case SearchPaginationAction.nextPage:
-          this.goToNextPage()
+          this.goToNextPage();
           break;
         case SearchPaginationAction.lastPage:
-          this.goToLastPage()
+          this.goToLastPage();
           break;
       }
     });
@@ -165,20 +202,26 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.to = value.to;
       this.payerId = value.payer;
       this.batchId = value.batchId;
-      this.uploadId = value.uploadId
-      this.queryStatus = value.status == null ? 0 : Number.parseInt(value.status);
-      this.queryPage = value.page == null ? 0 : Number.parseInt(value.page) - 1;
-      if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) this.queryStatus = 0;
-      if (Number.isNaN(this.queryPage) || this.queryPage < 0) this.queryPage = 0;
+      this.uploadId = value.uploadId;
+      this.queryStatus = value.status == null ? 0 : Number.parseInt(value.status, 10);
+      this.queryPage = value.page == null ? 0 : Number.parseInt(value.page, 10) - 1;
+      if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) { this.queryStatus = 0; }
+      if (Number.isNaN(this.queryPage) || this.queryPage < 0) { this.queryPage = 0; }
       this.casetype = value.casetype;
       this.claimId = value.claimId;
       this.claimRefNo = value.claimRefNo;
       this.memberId = value.memberId;
+      this.invoiceNo = value.invoiceNo;
+      this.patientFileNo = value.patientFileNo;
+      this.policyNo = value.policyNo;
       this.editMode = value.editMode;
       this.store.dispatch(setSearchCriteria({
         batchId: this.batchId,
         fromDate: this.from,
         memberId: this.memberId,
+        invoiceNo: this.invoiceNo,
+        patientFileNo: this.patientFileNo,
+        policyNo: this.policyNo,
         payerId: this.payerId,
         provClaimNum: this.claimRefNo,
         toDate: this.to,
@@ -186,12 +229,20 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         statuses: ['All']
       }));
     }).unsubscribe();
-    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') && (this.batchId == null || this.batchId == '') && (this.uploadId == null || this.uploadId == '') && (this.claimRefNo == null || this.claimRefNo == '') && (this.memberId == null || this.memberId == '')) {
+    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') &&
+      (this.batchId == null || this.batchId == '') &&
+      (this.uploadId == null || this.uploadId == '') &&
+      (this.claimRefNo == null || this.claimRefNo == '') &&
+      (this.memberId == null || this.memberId == '') &&
+      (this.invoiceNo == null || this.invoiceNo == '') &&
+      (this.patientFileNo == null || this.patientFileNo == '') &&
+      (this.policyNo == null || this.policyNo == '')) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+    this.showValidationTab = false;
     for (status in ClaimStatus) {
-      if (status == ClaimStatus.INVALID) continue;
+      if (status == ClaimStatus.INVALID) { continue; }
       let statusCode;
       if (status == ClaimStatus.OUTSTANDING) {
         statusCode = await this.getSummaryOfStatus([status, 'PENDING', 'UNDER_PROCESS']);
@@ -200,9 +251,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       } else if (status == ClaimStatus.Accepted) {
         statusCode = await this.getSummaryOfStatus([status, 'Failed']);
       } else if (status == ClaimStatus.PAID) {
-        statusCode = await this.getSummaryOfStatus([status, 'SETTLED'])
-      } else
+        statusCode = await this.getSummaryOfStatus([status, 'SETTLED']);
+      } else {
         statusCode = await this.getSummaryOfStatus([status]);
+      }
       if (statusCode != 200) {
         break;
       }
@@ -216,29 +268,41 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.getResultsofStatus(this.queryStatus, this.queryPage);
 
-    if (!this.hasData && this.errorMessage == null) this.errorMessage = 'Sorry, we could not find any result.';
+    if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
 
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
     this.commen.loadingChanged.next(true);
     let event;
-    event = await this.searchService.getSummaries(this.providerId, statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).toPromise().catch(error => {
-      this.commen.loadingChanged.next(false);
-      if (error instanceof HttpErrorResponse) {
-        if ((error.status / 100).toFixed() == "4") {
-          this.errorMessage = error.message;
-        } else if ((error.status / 100).toFixed() == "5") {
-          this.errorMessage = 'Server could not handle the request. Please try again later.';
-        } else {
-          this.errorMessage = 'Somthing went wrong.';
+    event = await this.searchService.getSummaries(this.providerId,
+      statuses,
+      this.from,
+      this.to,
+      this.payerId,
+      this.batchId,
+      this.uploadId,
+      this.casetype,
+      this.claimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo).toPromise().catch(error => {
+        this.commen.loadingChanged.next(false);
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == '4') {
+            this.errorMessage = error.message;
+          } else if ((error.status / 100).toFixed() == '5') {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
+          return error.status;
         }
-        return error.status;
-      }
-    });
+      });
     if (event instanceof HttpResponse) {
-      if ((event.status / 100).toFixed() == "2") {
-        const summary = new SearchStatusSummary(event.body);
+      if ((event.status / 100).toFixed() == '2') {
+        const summary: any = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
           this.summaries.push(summary);
         }
@@ -249,10 +313,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   getResultsofStatus(key: number, page?: number, pageSize?: number) {
-    if (this.summaries[key] == null) return;
-    if (this.summaries.length == 0) return;
+    if (this.summaries[key] == null) { return; }
+    if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
-    this.detailTopActionText = "vertical_align_bottom";
+    this.detailTopActionIcon = 'ic-download.svg';
 
     if (this.selectedCardKey != null && key != this.selectedCardKey) {
       this.selectedClaims = new Array();
@@ -267,62 +331,115 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
       this.detailActionText = 'Submit All';
       this.detailSubActionText = 'Submit Selection';
-    } /*else if (this.summaries[key].status == ClaimStatus.Failed){
-      this.detailActionText = 'Re-Submit All';
-      this.detailSubActionText = 'Re-Submit Selection';
-    }*/ else {
+    } else {
       this.detailActionText = null;
       this.detailSubActionText = null;
     }
+    /*else if (this.summaries[key].status == ClaimStatus.Failed){
+      this.detailActionText = 'Re-Submit All';
+      this.detailSubActionText = 'Re-Submit Selection';
+    }*/
     this.claims = new Array();
-    this.store.dispatch(storeClaims({ claims: this.claims, currentPage: page, maxPages: this.searchResult != null ? this.searchResult.totalPages : 0, pageSize: pageSize }));
+    this.store.dispatch(storeClaims({
+      claims: this.claims,
+      currentPage: page,
+      maxPages: this.searchResult != null ? this.searchResult.totalPages : 0,
+      pageSize: pageSize
+    }));
     this.searchResult = null;
+    this.currentSelectedTab = 0;
+    this.validationDetails = [];
+    this.searchService.getResults(this.providerId,
+      this.from,
+      this.to,
+      this.payerId,
+      this.summaries[key].statuses,
+      page,
+      pageSize,
+      this.batchId,
+      this.uploadId,
+      this.casetype,
+      this.claimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo).subscribe((event) => {
+        if (event instanceof HttpResponse) {
+          if ((event.status / 100).toFixed() == '2') {
+            this.searchResult = new PaginatedResult(event.body, SearchedClaim);
+            this.claims = this.searchResult.content;
+            this.storeSearchResultsForClaimViewPagination();
+            this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
+            this.store.dispatch(storeClaims({
+              claims: this.claims,
+              currentPage: this.searchResult.number,
+              maxPages: this.searchResult.totalPages,
+              pageSize: this.searchResult.size
+            }));
+            this.selectedClaimsCountOfPage = 0;
+            for (const claim of this.claims) {
+              if (this.selectedClaims.includes(claim.claimId)) { this.selectedClaimsCountOfPage++; }
+            }
+            if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
+            this.setAllCheckBoxIsIndeterminate();
+            this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
+            this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
+            const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
+            this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+            this.manualPage = this.searchResult.number;
+            // Validation Details
+            const content = event.body['content'];
+            this.validationDetails = [];
+            content.forEach((element) => {
+              if (element.claimErrors && element.claimErrors.length > 0) {
+                const claimErrors = element.claimErrors;
+                claimErrors.forEach((error) => {
+                  const claimError = new ClaimError();
+                  claimError.providerClaimeNo = element.providerClaimNumber;
+                  claimError.status = element.status;
+                  claimError.fieldName = error.fieldName;
+                  claimError.description = error.description;
+                  claimError.code = error.code;
+                  this.validationDetails.push(claimError);
+                });
+              }
+            });
 
-    this.searchService.getResults(this.providerId, this.from, this.to, this.payerId, this.summaries[key].statuses, page, pageSize, this.batchId, this.uploadId, this.casetype, this.claimRefNo, this.memberId).subscribe((event) => {
-      if (event instanceof HttpResponse) {
-        if ((event.status / 100).toFixed() == "2") {
-          this.searchResult = new PaginatedResult(event.body, SearchedClaim);
-          this.claims = this.searchResult.content;
-          this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
-          this.store.dispatch(storeClaims({ claims: this.claims, currentPage: this.searchResult.number, maxPages: this.searchResult.totalPages, pageSize: this.searchResult.size }));
-          this.selectedClaimsCountOfPage = 0;
-          for (let claim of this.claims) {
-            if (this.selectedClaims.includes(claim.claimId)) this.selectedClaimsCountOfPage++;
+          } else if ((event.status / 100).toFixed() == '4') {
+            console.log('400');
+          } else if ((event.status / 100).toFixed() == '5') {
+            console.log('500');
+          } else {
+            console.log('000');
           }
-          if (this.payerId == null) this.payerId = this.claims[0].payerId;
-          this.setAllCheckBoxIsIndeterminate();
-          this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
-          this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
-          const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
-          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
-          this.manualPage = this.searchResult.number;
-        } else if ((event.status / 100).toFixed() == "4") {
-          console.log("400");
-        } else if ((event.status / 100).toFixed() == "5") {
-          console.log("500");
-        } else {
-          console.log("000");
+          this.commen.loadingChanged.next(false);
+        }
+        if (this.claimId != null) {
+          const index = this.claims.findIndex(claim => claim.claimId == this.claimId);
+          if (index != -1) {
+            this.showClaim(this.claims[index].status, this.claimId, (this.editMode != null && this.editMode == 'true'));
+          }
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if ((error.status / 100).toFixed() == '4') {
+            this.errorMessage = 'Access Denied.';
+          } else if ((error.status / 100).toFixed() == '5') {
+            this.errorMessage = 'Server could not handle the request. Please try again later.';
+          } else {
+            this.errorMessage = 'Somthing went wrong.';
+          }
         }
         this.commen.loadingChanged.next(false);
-      }
-      if (this.claimId != null) {
-        let index = this.claims.findIndex(claim => claim.claimId == this.claimId);
-        if (index != -1) {
-          this.showClaim(this.claims[index].status, this.claimId, (this.editMode != null && this.editMode == 'true'));
-        }
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if ((error.status / 100).toFixed() == "4") {
-          this.errorMessage = 'Access Denied.';
-        } else if ((error.status / 100).toFixed() == "5") {
-          this.errorMessage = 'Server could not handle the request. Please try again later.';
-        } else {
-          this.errorMessage = 'Somthing went wrong.';
-        }
-      }
-      this.commen.loadingChanged.next(false);
-    });
+      });
+  }
+  storeSearchResultsForClaimViewPagination() {
+    if (this.claims != null && this.claims.length > 0) {
+      const claimsIds = this.claims.map(claim => claim.claimId);
+      localStorage.setItem(SEARCH_TAB_RESULTS_KEY, claimsIds.join(','));
+    } else {
+      localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
+    }
   }
 
   submitSelectedClaims() {
@@ -336,13 +453,15 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.submittionService.submitClaims(this.selectedClaims, this.providerId, this.payerId).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
-          this.dialogService.openMessageDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+          ).subscribe(result => {
             this.resetURL();
             this.fetchData();
           });
         }
         if (event['error'] != null) {
-          for (let error of event['error']['errors']) {
+          for (const error of event['error']['errors']) {
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           }
         }
@@ -352,16 +471,18 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }, errorEvent => {
       this.commen.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status >= 500 || errorEvent.status == 0)
+        if (errorEvent.status >= 500 || errorEvent.status == 0) {
           if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
-        if (errorEvent.error['errors'] != null)
-          for (let error of errorEvent.error['errors']) {
+        }
+        if (errorEvent.error['errors'] != null) {
+          for (const error of errorEvent.error['errors']) {
             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
           }
+        }
       }
       this.deSelectAll();
     });
@@ -371,34 +492,47 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.commen.loading) {
       return;
     }
+
+
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.uploadId).subscribe((event) => {
-      if (event instanceof HttpResponse) {
-        if (event.body['queuedStatus'] == 'QUEUED') {
-          this.dialogService.openMessageDialog(new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)).subscribe(result => {
-            this.resetURL();
-            this.fetchData();
-          });
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype,
+      this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
+
+        if (event instanceof HttpResponse) {
+          if (event.body['queuedStatus'] == 'QUEUED') {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Success', 'The selected claims were queued to be submitted.', false)
+            ).subscribe(result => {
+              this.resetURL();
+              this.fetchData();
+            });
+          }
+          this.commen.loadingChanged.next(false);
         }
+      }, errorEvent => {
         this.commen.loadingChanged.next(false);
-      }
-    }, errorEvent => {
-      this.commen.loadingChanged.next(false);
-      if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status >= 500 || errorEvent.status == 0)
-          this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
-        if (errorEvent.error['message'] != null) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
+        if (errorEvent instanceof HttpErrorResponse) {
+          if (errorEvent.status >= 500 || errorEvent.status == 0) {
+            if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+            } else {
+              this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+            }
+          }
+          if (errorEvent.error['errors'] != null) {
+            for (const error of errorEvent.error['errors']) {
+              this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+            }
+          }
         }
-      }
-    });
+      });
   }
 
 
   get hasData() {
     this.extraNumbers = new Array();
     this.extraCards = 6 - this.summaries.length;
-    if (this.extraCards < 0) this.extraCards = 0;
+    if (this.extraCards < 0) { this.extraCards = 0; }
     for (let i = 0; i < this.extraCards; i++) {
       this.extraNumbers.push(i);
     }
@@ -413,8 +547,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get paginatorLength() {
     if (this.searchResult != null) {
       return this.searchResult.totalElements;
-    }
-    else return 0;
+    } else { return 0; }
   }
 
 
@@ -426,19 +559,24 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
   updateManualPage(index) {
     this.manualPage = index;
-    this.paginatorAction({ previousPageIndex: this.searchResult.number, pageIndex: index, pageSize: this.searchResult.numberOfElements, length: this.searchResult.size })
+    this.paginatorAction({
+      previousPageIndex: this.searchResult.number,
+      pageIndex: index,
+      pageSize: this.searchResult.numberOfElements,
+      length: this.searchResult.size
+    });
   }
 
   setAllCheckBoxIsIndeterminate() {
-    if (this.claims != null)
+    if (this.claims != null) {
       this.allCheckBoxIsIndeterminate = this.selectedClaimsCountOfPage != this.claims.length && this.selectedClaimsCountOfPage != 0;
-    else this.allCheckBoxIsIndeterminate = false;
+    } else { this.allCheckBoxIsIndeterminate = false; }
     this.setAllCheckBoxIsChecked();
   }
   setAllCheckBoxIsChecked() {
-    if (this.claims != null)
+    if (this.claims != null) {
       this.allCheckBoxIsChecked = this.selectedClaimsCountOfPage == this.claims.length;
-    else this.allCheckBoxIsChecked = false;
+    } else { this.allCheckBoxIsChecked = false; }
   }
   selectClaim(claimId: string) {
     if (!this.selectedClaims.includes(claimId)) {
@@ -451,13 +589,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.setAllCheckBoxIsIndeterminate();
   }
   selectAllinPage() {
-    if (this.selectedClaimsCountOfPage != this.claims.length)
-      for (let claim of this.claims) {
-        if (!this.selectedClaims.includes(claim.claimId))
+    if (this.selectedClaimsCountOfPage != this.claims.length) {
+      for (const claim of this.claims) {
+        if (!this.selectedClaims.includes(claim.claimId)) {
           this.selectClaim(claim.claimId);
+        }
       }
-    else {
-      for (let claim of this.claims) {
+    } else {
+      for (const claim of this.claims) {
         this.selectClaim(claim.claimId);
       }
     }
@@ -472,14 +611,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   get selectionCountText() {
-    if (this.searchResult != null)
+    if (this.searchResult != null) {
       return this.selectedClaims.length + ' of ' + this.searchResult.totalElements + ' are selected.';
-    else return '0 of 0 are selected.';
+    } else { return '0 of 0 are selected.'; }
   }
 
   resetURL() {
-    if (this.routerSubscription.closed) return;
-    let claimInfo: string = "";
+    if (this.routerSubscription.closed) { return; }
+    let claimInfo = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
     }
@@ -488,7 +627,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     if (this.from != null && this.to != null && this.payerId != null) {
       this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-        + (this.casetype != null ? `&casetype=${this.casetype}` : "") + claimInfo);
+        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo);
     } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo);
     } else if (this.uploadId != null) {
@@ -504,26 +643,27 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` + (edit != null && edit ? '#edit' : ''));
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` +
+      (edit != null && edit ? '#edit' : ''));
   }
 
   reloadClaim(claim: ViewedClaim) {
     let flag = false;
-    let index = this.claims.findIndex(oldClaim => oldClaim.claimId == `${claim.claimid}`);
+    const index = this.claims.findIndex(oldClaim => oldClaim.claimId == `${claim.claimid}`);
     const oldStatus = this.claims[index].status;
     if (oldStatus != claim.status) {
-      let summaries = this.summaries;
+      const summaries = this.summaries;
 
-      let oldSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(this.claims[index].status.toLowerCase()));
+      const oldSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(this.claims[index].status.toLowerCase()));
       summaries[oldSummaryIndex] = {
         totalClaims: this.summaries[oldSummaryIndex].totalClaims - 1,
         totalNetAmount: this.summaries[oldSummaryIndex].totalNetAmount - claim.net,
         totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
         statuses: this.summaries[oldSummaryIndex].statuses,
         uploadName: this.summaries[oldSummaryIndex].uploadName
-      }
+      };
       this.claims[index].status = claim.status;
-      let newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
+      const newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
       if (newSummaryIndex != -1) {
         summaries[newSummaryIndex] = {
           totalClaims: this.summaries[newSummaryIndex].totalClaims + 1,
@@ -531,8 +671,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName
-        }
-        window.setTimeout(() => this.summaries = summaries, 1000);
+        };
+        window.setTimeout(() => {
+          this.summaries = summaries;
+        }, 1000);
       } else {
         flag = true;
         this.fetchData();
@@ -545,7 +687,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.claims[index].memberId = claim.memberid;
         this.claims[index].policyNumber = claim.policynumber;
         this.claims[index].nationalId = claim.nationalId;
-        this.claims[index].numOfPriceListErrors = claim.errors.filter(error => error.code == 'SERVCOD-VERFIY' || error.code == 'SERVCOD-RESTRICT').length;
+        this.claims[index].numOfPriceListErrors = claim.errors.filter(error => error.code == 'SERVCOD-VERFIY' ||
+          error.code == 'SERVCOD-RESTRICT').length;
         this.claims[index].numOfAttachments = claim.attachments.length;
         this.claims[index].eligibilitycheck = null;
       }
@@ -554,19 +697,42 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkClaim(id: string) {
     this.eligibilityWaitingList[id] = { result: '', waiting: true };
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id)]));
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id, 10)]));
   }
 
   checkSelectedClaims() {
     this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = { result: '', waiting: true });
     this.waitingEligibilityCheck = true;
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, this.selectedClaims.map(id => Number.parseInt(id))));
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId,
+      this.payerId,
+      this.selectedClaims.map(id => Number.parseInt(id, 10))));
   }
+
 
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId, this.payerId, this.from, this.to, this.uploadId));
+
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
+      this.payerId,
+      this.from,
+      this.to,
+      this.uploadId,
+      this.batchId,
+      this.claimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo,
+      this.casetype));
   }
+  /*checkAllClaims() {
+    this.waitingEligibilityCheck = true;
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
+      this.payerId,
+      this.from,
+      this.to,
+      this.uploadId));
+  }*/
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
     this.watchEligibilityChanges();
@@ -582,18 +748,21 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           this.dialogService.openMessageDialog(new MessageDialogData(
             '', 'Some of the selected claims are already checked or are not ready for submission.', true)
           );
-        } else if ((errorEvent.status / 100).toFixed() == "5") {
+        } else if ((errorEvent.status / 100).toFixed() == '5') {
           if (errorEvent.error['errors'] != null) {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
 
-          } else
-            this.dialogService.openMessageDialog(new MessageDialogData('', "Could not reach the server at the moment. Please try again leter.", true));
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('', 'Could not reach the server at the moment. Please try again leter.', true)
+            );
+          }
         }
       }
-    })
+    });
   }
   watchEligibilityChanges() {
-    if (this.watchingEligibility) return;
+    if (this.watchingEligibility) { return; }
 
     this.watchingEligibility = true;
 
@@ -627,14 +796,20 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   deleteClaim(claimId: string, refNumber: string) {
-    this.dialogService.openMessageDialog(new MessageDialogData('Delete Claim?', `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`, false, true))
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Claim?',
+        `This will delete claim with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
           this.claimService.deleteClaim(this.providerId, claimId).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('', `Claim with reference ${refNumber} was deleted successfully.`, false))
+              this.dialogService.openMessageDialog(new MessageDialogData('',
+                `Claim with reference ${refNumber} was deleted successfully.`,
+                false))
                 .subscribe(afterColse => this.fetchData());
             }
           }, errorEvent => {
@@ -648,36 +823,59 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   async download() {
-    if (this.detailTopActionText == "check_circle") return;
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
     this.commen.loadingChanged.next(true);
     let event;
-    event = await this.searchService.downloadSummaries(this.providerId, this.summaries[this.selectedCardKey].statuses, this.from, this.to, this.payerId, this.batchId, this.uploadId).toPromise().catch(error => {
-      if (error instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-      }
-      this.commen.loadingChanged.next(false);
-    });
+    event = await this.searchService.downloadSummaries(this.providerId,
+      this.summaries[this.selectedCardKey].statuses,
+      this.from,
+      this.to,
+      this.payerId,
+      this.batchId,
+      this.uploadId,
+      this.claimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.patientFileNo,
+      this.policyNo).toPromise().catch(error => {
+        if (error instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog(new MessageDialogData('',
+            'Could not reach the server at the moment. Please try again later.',
+            true));
+        }
+        this.commen.loadingChanged.next(false);
+      });
 
     if (event instanceof HttpResponse) {
       if (navigator.msSaveBlob) { // IE 10+
-        var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-        var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+        const exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+        const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
         navigator.msSaveBlob(blob, exportedFilenmae);
       } else {
-        var a = document.createElement("a");
-        var excelData = event.body + "";
+        const a = document.createElement('a');
+        const excelData = event.body + '';
         a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURIComponent(excelData);
         a.target = '_blank';
         if (this.from != null) {
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
         } else if (this.batchId != null) {
           a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-        } else {
+        } else if (this.uploadId != null) {
           a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
+        } else if (this.claimRefNo != null) {
+          a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
+        } else if (this.memberId != null) {
+          a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
+        } else if (this.invoiceNo != null) {
+          a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
+        } else if (this.patientFileNo != null) {
+          a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
+        } else if (this.policyNo != null) {
+          a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
         }
 
         a.click();
-        this.detailTopActionText = "check_circle";
+        this.detailTopActionIcon = 'ic-check-circle.svg';
         this.commen.loadingChanged.next(false);
       }
     }
@@ -685,12 +883,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   doAction() {
-    if (this.detailActionText.includes("Submit")) {
+    if (this.detailActionText.includes('Submit')) {
       this.submitAllAcceptedClaims();
     }
   }
   doSubAction() {
-    if (this.detailActionText.includes("Submit")) {
+    if (this.detailActionText.includes('Submit')) {
       this.submitSelectedClaims();
     }
   }
@@ -704,7 +902,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   getIsRejectedByPayer(status: string) {
-    return status == ClaimStatus.INVALID || status == ClaimStatus.REJECTED || status == ClaimStatus.PARTIALLY_PAID || status == ClaimStatus.PARTIALLY_APPROVED;
+    return status == ClaimStatus.INVALID ||
+      status == ClaimStatus.REJECTED ||
+      status == ClaimStatus.PARTIALLY_PAID ||
+      status == ClaimStatus.PARTIALLY_APPROVED;
   }
 
   accentColor(status) {
@@ -715,28 +916,32 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.paginatorAction({ pageIndex: 0, pageSize: 10 });
   }
   goToPrePage() {
-    if (this.searchResult.number != 0)
+    if (this.searchResult.number != 0) {
       this.paginatorAction({ pageIndex: this.searchResult.number - 1, pageSize: 10 });
+    }
   }
   goToNextPage() {
-    if (this.searchResult.number + 1 < this.searchResult.totalPages)
+    if (this.searchResult.number + 1 < this.searchResult.totalPages) {
       this.paginatorAction({ pageIndex: this.searchResult.number + 1, pageSize: 10 });
+    }
   }
   goToLastPage() {
     this.paginatorAction({ pageIndex: this.searchResult.totalPages - 1, pageSize: 10 });
   }
 
   nextSummary() {
-    if (this.currentSummariesPage + 1 < this.summaries.length)
+    if (this.currentSummariesPage + 1 < this.summaries.length) {
       this.currentSummariesPage++;
+    }
   }
   previousSummary() {
-    if (this.currentSummariesPage - 1 > 0)
+    if (this.currentSummariesPage - 1 > 0) {
       this.currentSummariesPage--;
+    }
   }
 
   isEligibleState(status: string) {
-    if (status == null) return false;
+    if (status == null) { return false; }
     return status.toLowerCase() == 'eligible';
   }
 
@@ -745,3 +950,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
 }
+
+
+export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';

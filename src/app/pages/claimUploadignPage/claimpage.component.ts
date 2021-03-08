@@ -7,11 +7,11 @@ import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-claimpage',
   templateUrl: './claimpage.component.html',
-  styleUrls: ['./claimpage.component.css']
+  styles: []
 })
 export class ClaimpageComponent implements OnInit {
 
-  uploadingObs: boolean = false;
+  uploadingObs = false;
   constructor(
     private uploadService: UploadService,
     public location: Location,
@@ -25,10 +25,12 @@ export class ClaimpageComponent implements OnInit {
 
 
   get summary(): UploadSummary {
-    if (this.location.path().includes("summary"))
+    if (this.location.path().includes('summary')) {
       return this.uploadService.summary;
-    else
+    }
+    else {
       return new UploadSummary();
+    }
   }
 
   get uploading(): boolean {
@@ -37,10 +39,11 @@ export class ClaimpageComponent implements OnInit {
 
   get summaryDate(): string {
     if (this.summary.uploadSummaryID != undefined) {
-      if (!(this.summary.uploadDate instanceof Date))
+      if (!(this.summary.uploadDate instanceof Date)) {
         this.summary.uploadDate = new Date(this.summary.uploadDate);
+      }
       return this.summary.uploadDate.toLocaleDateString();
-    } else return '';
+    } else { return ''; }
   }
 
   get providerId() {

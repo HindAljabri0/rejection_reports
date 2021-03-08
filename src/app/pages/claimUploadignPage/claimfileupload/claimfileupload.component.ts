@@ -15,36 +15,31 @@ type AOA = any[][];
 @Component({
   selector: 'app-claimfileupload',
   templateUrl: './claimfileupload.component.html',
-  styleUrls: ['./claimfileupload.component.css']
+  styles: []
 })
 export class ClaimfileuploadComponent implements OnInit {
   // constructor(private http: HttpClient) {}
-  constructor(public uploadService: UploadService, public common: SharedServices,
-    private dialogService: DialogService, private adminService: AdminService,
-    private fileValidationService: ClaimFilesValidationService) { }
-
-  ngOnInit(): void {
-  }
-
-
   title = 'testing';
   uploading = false;
   currentFileUpload: File;
   selectedFiles: FileList;
   // data: AOA ;
-  payerIdsFromCurrentFIle: string[] = [];
-  serviceCodeVaildationDisabledMessages: string[] = [];
+  payerIdsFromCurrentFile: string[] = [];
+  serviceCodeValidationDisabledMessages: string[] = [];
   priceListDoesNotExistMessages: string[] = [];
   showFile = false;
   fileUploads: Observable<string[]>;
-
-
-
-  uploadContainerClass = 'uploadfilecontainer';
+  uploadContainerClass = '';
   error = '';
 
   isVertical = true;
+  constructor(
+    public uploadService: UploadService, public common: SharedServices,
+    private dialogService: DialogService, private adminService: AdminService,
+    private fileValidationService: ClaimFilesValidationService) { }
 
+  ngOnInit(): void {
+  }
 
   selectFile(event) {
     this.currentFileUpload = event.item(0);
@@ -73,18 +68,18 @@ export class ClaimfileuploadComponent implements OnInit {
       if (validationResult.length == 0) {
         /* grab first sheet */
         let ws: XLSX.WorkSheet;
-        if (wb.Sheets.hasOwnProperty('GenInfo'))
+        if (wb.Sheets.hasOwnProperty('GenInfo')) {
           ws = wb.Sheets['GenInfo'];
-        else {
+        } else {
           ws = wb.Sheets[wb.SheetNames[0]];
         }
 
         /* save data */
-        let data = <AOA>(XLSX.utils.sheet_to_json(ws));
+        const data = <AOA>(XLSX.utils.sheet_to_json(ws));
         if (data.length > 0 && data[0].hasOwnProperty('PAYERID')) {
-          data.map(row => this.payerIdsFromCurrentFIle.push(row['PAYERID']));
-          this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(this.onlyUnique);
-          this.checkServiceCode();
+          data.map(row => this.payerIdsFromCurrentFile.push(row['PAYERID']));
+          this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(this.onlyUnique);
+          this.checkServiceCodeRestriction();
         } else {
           this.showError(`Invalid file selected! It doesn't have 'PAYERID' column\n`);
         }
@@ -104,23 +99,30 @@ export class ClaimfileuploadComponent implements OnInit {
         validExts.toString() + ' types.');
       return false;
     } else {
-      this.uploadContainerClass = 'uploadfilecontainer';
+      this.uploadContainerClass = '';
       this.error = '';
       return true;
     }
   }
 
-  checkServiceCode() {
-    this.serviceCodeVaildationDisabledMessages = [];
-    this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined);
-    let count = this.payerIdsFromCurrentFIle.length;
-    this.payerIdsFromCurrentFIle.forEach(payerId => {
+  checkServiceCodeRestriction() {
+    const payersWithValidationOff = this.payerIdsFromCurrentFile.filter(id => this.serviceCodeValidationDisabledMessages.includes(id));
+    let count = payersWithValidationOff.length;
+    if (count == 0) {
+      this.common.loadingChanged.next(false);
+      this.checkPriceList();
+    }
+    payersWithValidationOff.forEach(payerId => {
+      this.common.loadingChanged.next(true);
       if (payerId != undefined) {
-        this.adminService.checkIfServiceCodeVaildationIsEnabled(this.common.providerId, payerId).subscribe(event => {
+        this.adminService.checkIfServiceCodeRestrictionIsEnabled(this.common.providerId, payerId).subscribe(event => {
           if (event instanceof HttpResponse) {
-            let setting = JSON.parse(JSON.stringify(event.body));
-            if (setting.hasOwnProperty('value') && setting['value'] == 0) {
-              this.serviceCodeVaildationDisabledMessages.push(payerId);
+            const setting = JSON.parse(JSON.stringify(event.body));
+            if (setting.hasOwnProperty('value') && setting['value'] == 1) {
+              const index = this.serviceCodeValidationDisabledMessages.findIndex(id => id == payerId);
+              if (index != -1) {
+                this.serviceCodeValidationDisabledMessages.splice(index, 1);
+              }
             }
             count--;
             if (count <= 0) {
@@ -131,7 +133,7 @@ export class ClaimfileuploadComponent implements OnInit {
         }, errorEvent => {
           if (errorEvent instanceof HttpErrorResponse) {
             if (errorEvent.status == 404) {
-              this.serviceCodeVaildationDisabledMessages.push(payerId);
+              this.serviceCodeValidationDisabledMessages.push(payerId);
             }
             count--;
             if (count <= 0) {
@@ -146,9 +148,10 @@ export class ClaimfileuploadComponent implements OnInit {
 
   checkPriceList() {
     this.priceListDoesNotExistMessages = [];
-    this.payerIdsFromCurrentFIle = this.payerIdsFromCurrentFIle.filter(id => id != undefined && !this.serviceCodeVaildationDisabledMessages.includes(id));
-    let count = this.payerIdsFromCurrentFIle.length;
-    this.payerIdsFromCurrentFIle.forEach(payerId => {
+    this.payerIdsFromCurrentFile = this.payerIdsFromCurrentFile.filter(id => id != undefined &&
+      !this.serviceCodeValidationDisabledMessages.includes(id));
+    let count = this.payerIdsFromCurrentFile.length;
+    this.payerIdsFromCurrentFile.forEach(payerId => {
       this.common.loadingChanged.next(true);
       this.adminService.checkIfPriceListExist(this.common.providerId, payerId).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -173,13 +176,13 @@ export class ClaimfileuploadComponent implements OnInit {
     if (this.common.loading || this.uploading) {
       return;
     }
-    let isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
-    let isServiceCodeVaildationDisabled = this.serviceCodeVaildationDisabledMessages.length > 0;
+    const isPriseListDoesntExist = this.priceListDoesNotExistMessages.length > 0;
+    const isServiceCodeVaildationDisabled = this.serviceCodeValidationDisabledMessages.length > 0;
 
     if (isPriseListDoesntExist || isServiceCodeVaildationDisabled) {
       this.dialogService.openMessageDialog({
         title: 'Caution!',
-        message: (isServiceCodeVaildationDisabled ? `Service code vaildation is disabled in our system between you and the payer(s): ${this.serviceCodeVaildationDisabledMessages.toString()}. ` : '')
+        message: (isServiceCodeVaildationDisabled ? `Service code validation is disabled in our system between you and the payer(s): ${this.serviceCodeValidationDisabledMessages.toString()}. ` : '')
           + (isPriseListDoesntExist ? `There is no price list in our system between you and the payer(s): ${this.priceListDoesNotExistMessages.toString()}. ` : '')
           + 'Do you wish to continue?',
         isError: false,
@@ -190,7 +193,7 @@ export class ClaimfileuploadComponent implements OnInit {
         if (value) {
           this.startUpload();
         }
-      })
+      });
     } else {
       this.startUpload();
     }
@@ -198,20 +201,20 @@ export class ClaimfileuploadComponent implements OnInit {
   }
 
   startUpload() {
-    let providerId = this.common.providerId;
+    const providerId = this.common.providerId;
     this.uploading = true;
     this.uploadService.pushFileToStorage(providerId, this.currentFileUpload);
-    let progressObservable = this.uploadService.progressChange.subscribe(progress => {
+    const progressObservable = this.uploadService.progressChange.subscribe(progress => {
       if (progress.percentage == 100) {
         progressObservable.unsubscribe();
       }
     });
-    let summaryObservable = this.uploadService.summaryChange.subscribe(async value => {
+    const summaryObservable = this.uploadService.summaryChange.subscribe(async value => {
       summaryObservable.unsubscribe();
       this.uploading = false;
       this.cancel();
     });
-    let errorobservable = this.uploadService.errorChange.subscribe(error => {
+    const errorobservable = this.uploadService.errorChange.subscribe(error => {
       this.dialogService.openMessageDialog(new MessageDialogData("", error, true));
       errorobservable.unsubscribe();
       this.uploading = false;
@@ -238,7 +241,7 @@ export class ClaimfileuploadComponent implements OnInit {
 
   showError(error: string) {
     this.currentFileUpload = null;
-    this.uploadContainerClass = 'uploadContainerErrorClass';
+    this.uploadContainerClass = 'has-error';
     this.error = error;
     this.common.loadingChanged.next(false);
   }

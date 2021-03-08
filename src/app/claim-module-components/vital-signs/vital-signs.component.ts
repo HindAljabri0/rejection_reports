@@ -4,13 +4,21 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
-import { updateBloodPressure, updateHeight, updateLastMenstruationPeriod, updatePulse, updateRespiratoryRate, updateTemperature, updateWeight } from '../store/claim.actions';
+import {
+  updateBloodPressure,
+  updateHeight,
+  updateLastMenstruationPeriod,
+  updatePulse,
+  updateRespiratoryRate,
+  updateTemperature,
+  updateWeight
+} from '../store/claim.actions';
 import { FieldError, getClaim, getPageMode } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-vital-signs',
   templateUrl: './vital-signs.component.html',
-  styleUrls: ['./vital-signs.component.css']
+  styles: []
 })
 export class VitalSignsComponent implements OnInit {
 
@@ -39,7 +47,7 @@ export class VitalSignsComponent implements OnInit {
         this.setData(claim);
         this.toggleEdit(true);
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
-        this.setData(claim)
+        this.setData(claim);
         this.toggleEdit(false, true);
       }
     });
@@ -60,8 +68,10 @@ export class VitalSignsComponent implements OnInit {
     this.weightController.setValue(weight);
     this.heightController.setValue(height);
     if (lastMenstruationPeriod != null) {
-      this.lastMenstruationPeriodController.setValue(this.datePipe.transform(lastMenstruationPeriod, 'yyyy-MM-dd'));
-    } else this.lastMenstruationPeriodController.setValue('');
+      this.lastMenstruationPeriodController.setValue(this.datePipe.transform(lastMenstruationPeriod, 'dd-MM-yyyy'));
+    } else {
+      this.lastMenstruationPeriodController.setValue('');
+    }
   }
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
@@ -84,51 +94,60 @@ export class VitalSignsComponent implements OnInit {
     }
 
     if (enableForNulls) {
-      if (this.isControlNull(this.temperatureController))
+      if (this.isControlNull(this.temperatureController)) {
         this.temperatureController.enable();
-      if (this.isControlNull(this.bloodPressureController))
+      }
+      if (this.isControlNull(this.bloodPressureController)) {
         this.bloodPressureController.enable();
-      if (this.isControlNull(this.pulseController))
+      }
+      if (this.isControlNull(this.pulseController)) {
         this.pulseController.enable();
-      if (this.isControlNull(this.respiratoryRateController))
+      }
+      if (this.isControlNull(this.respiratoryRateController)) {
         this.respiratoryRateController.enable();
-      if (this.isControlNull(this.weightController))
+      }
+      if (this.isControlNull(this.weightController)) {
         this.weightController.enable();
-      if (this.isControlNull(this.heightController))
+      }
+      if (this.isControlNull(this.heightController)) {
         this.heightController.enable();
-      if (this.isControlNull(this.lastMenstruationPeriodController))
+      }
+      if (this.isControlNull(this.lastMenstruationPeriodController)) {
         this.lastMenstruationPeriodController.enable();
+      }
     }
   }
 
   updateClaim(fieldName: string) {
     switch (fieldName) {
-      case "temperature":
-        this.store.dispatch(updateTemperature({ temperature: Number.parseInt(this.temperatureController.value) }));
+      case 'temperature':
+        this.store.dispatch(updateTemperature({ temperature: Number.parseInt(this.temperatureController.value, 10) }));
         break;
-      case "bloodPressure":
+      case 'bloodPressure':
         this.store.dispatch(updateBloodPressure({ pressure: this.bloodPressureController.value }));
         break;
-      case "pulse":
-        this.store.dispatch(updatePulse({ pulse: Number.parseInt(this.pulseController.value) }));
+      case 'pulse':
+        this.store.dispatch(updatePulse({ pulse: Number.parseInt(this.pulseController.value, 10) }));
         break;
-      case "respiratoryRate":
-        this.store.dispatch(updateRespiratoryRate({ rate: Number.parseInt(this.respiratoryRateController.value) }));
+      case 'respiratoryRate':
+        this.store.dispatch(updateRespiratoryRate({ rate: Number.parseInt(this.respiratoryRateController.value, 10) }));
         break;
-      case "weight":
-        this.store.dispatch(updateWeight({ weight: Number.parseInt(this.weightController.value) }));
+      case 'weight':
+        this.store.dispatch(updateWeight({ weight: Number.parseInt(this.weightController.value, 10) }));
         break;
-      case "height":
-        this.store.dispatch(updateHeight({ height: Number.parseInt(this.heightController.value) }));
+      case 'height':
+        this.store.dispatch(updateHeight({ height: Number.parseInt(this.heightController.value, 10) }));
         break;
-      case "lastMenstruationPeriod":
+      case 'lastMenstruationPeriod':
         let date2: string;
-        if (!this.isControlNull(this.lastMenstruationPeriodController))
-          date2 = this.lastMenstruationPeriodController.value
-        if (date2 != null)
+        if (!this.isControlNull(this.lastMenstruationPeriodController)) {
+          date2 = this.lastMenstruationPeriodController.value;
+        }
+        if (date2 != null) {
           this.store.dispatch(updateLastMenstruationPeriod({ period: new Date(date2) }));
-        else
+        } else {
           this.store.dispatch(updateLastMenstruationPeriod({ period: null }));
+        }
         break;
     }
   }

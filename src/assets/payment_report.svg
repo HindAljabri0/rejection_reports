@@ -1,21 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
-  <g id="Group_1397" data-name="Group 1397" transform="translate(-33 -538)">
-    <rect id="Rectangle_1475" data-name="Rectangle 1475" width="25" height="25" transform="translate(33 538)" fill="#fff" opacity="0"/>
-    <g id="Rectangle_1865" data-name="Rectangle 1865" transform="translate(37 540)" fill="#f5f6f7" stroke="#707070" stroke-width="1">
-      <rect width="18" height="22" rx="3" stroke="none"/>
-      <rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="none"/>
-    </g>
-    <line id="Line_59" data-name="Line 59" x2="11.824" transform="translate(40 544.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <line id="Line_60" data-name="Line 60" x2="11.824" transform="translate(40 547.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <path id="Path_313" data-name="Path 313" d="M0,0H11.824" transform="translate(40 550.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <line id="Line_62" data-name="Line 62" x2="6.947" transform="translate(40 554.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-    <g id="Rectangle_1865-2" data-name="Rectangle 1865" transform="translate(35 538)" fill="#f5f6f7" stroke="#707070" stroke-width="1">
-      <rect width="18" height="22" rx="3" stroke="none"/>
-      <rect x="0.5" y="0.5" width="17" height="21" rx="2.5" fill="none"/>
-    </g>
-    <g id="Icon_feather-dollar-sign" data-name="Icon feather-dollar-sign" transform="translate(32.513 542.44)">
-      <path id="Path_523" data-name="Path 523" d="M18,1.5v9.962" transform="translate(-6.283 0)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      <path id="Path_524" data-name="Path 524" d="M13.981,7.5h-3.4a1.585,1.585,0,0,0,0,3.17h2.264a1.585,1.585,0,1,1,0,3.17H9" transform="translate(0 -4.189)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-    </g>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 26 26" style="enable-background:new 0 0 26 26;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;fill-opacity:0;}
+	.st1{fill:#F5F6F7;}
+	.st2{fill:none;stroke:#707070;}
+	.st3{fill:none;stroke:#707070;stroke-linecap:round;}
+	.st4{fill:none;stroke:#707070;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<g id="Group_1397" transform="translate(-33 -538)">
+	<rect id="Rectangle_1475" x="33.5" y="538.5" class="st0" width="25" height="25"/>
+	<g id="Rectangle_1865" transform="translate(37 540)">
+		<path class="st1" d="M3.5,0.5h12c1.7,0,3,1.3,3,3v16c0,1.7-1.3,3-3,3h-12c-1.7,0-3-1.3-3-3v-16C0.5,1.8,1.8,0.5,3.5,0.5z"/>
+		<path class="st2" d="M3.5,1h12C16.9,1,18,2.1,18,3.5v16c0,1.4-1.1,2.5-2.5,2.5h-12C2.1,22,1,20.9,1,19.5v-16C1,2.1,2.1,1,3.5,1z"
+			/>
+	</g>
+	<line id="Line_59" class="st3" x1="40.5" y1="545" x2="52.3" y2="545"/>
+	<line id="Line_60" class="st3" x1="40.5" y1="548" x2="52.3" y2="548"/>
+	<path id="Path_313" class="st3" d="M40.5,551h11.8"/>
+	<line id="Line_62" class="st3" x1="40.5" y1="555" x2="47.4" y2="555"/>
+	<g id="Rectangle_1865-2" transform="translate(35 538)">
+		<path class="st1" d="M3.5,0.5h12c1.7,0,3,1.3,3,3v16c0,1.7-1.3,3-3,3h-12c-1.7,0-3-1.3-3-3v-16C0.5,1.8,1.8,0.5,3.5,0.5z"/>
+		<path class="st2" d="M3.5,1h12C16.9,1,18,2.1,18,3.5v16c0,1.4-1.1,2.5-2.5,2.5h-12C2.1,22,1,20.9,1,19.5v-16C1,2.1,2.1,1,3.5,1z"
+			/>
+	</g>
+	<g id="Icon_feather-dollar-sign" transform="translate(32.513 542.44)">
+		<path id="Path_523" class="st4" d="M12.2,2v10"/>
+		<path id="Path_524" class="st4" d="M14.5,3.8h-3.4c-0.9,0-1.6,0.7-1.6,1.6c0,0.9,0.7,1.6,1.6,1.6h2.3c0.9,0,1.6,0.7,1.6,1.6
+			s-0.7,1.6-1.6,1.6c0,0,0,0,0,0H9.5"/>
+	</g>
+</g>
 </svg>

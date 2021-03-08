@@ -9,32 +9,53 @@ import { LoginComponent } from '../pages/loginpage/login.component';
 import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.component';
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
+<<<<<<< HEAD
 import { ConfigurationsComponent } from '../pages/configurationsPage/configurations.component';
 
 
+=======
+import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
+import { MainLayoutComponent } from '../main-layout/main-layout.component';
+>>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
       { path: 'login', component: LoginComponent },
-      { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-      { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
-      { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
-      { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
-      { path: 'configurations', component: ConfigurationsComponent, canActivate: [RouteCanActiveService] },
       {
-        path: 'administration',
-        loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),
-        canLoad: [RouteCanActiveService]
-      },
-      {
-        path: 'claims',
-        loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
-        canLoad: [RouteCanActiveService]
+        path: '',
+        component: MainLayoutComponent,
+        children: [
+          { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
+          { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
+          { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
+          { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
+          { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+          { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
+          { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+          { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },
+          { path: ':providerId/globmed/reports', component: GmReportsPageComponent, canActivate: [RouteCanActiveService] },
+          {
+            path: 'configurations',
+            loadChildren: () => import('./configurations/configurations.module').then(m => m.ConfigurationsModule),
+            canLoad: [RouteCanActiveService]
+          },
+          {
+            path: 'administration',
+            loadChildren: () => import('./adminstration/adminstration.module').then(m => m.AdminstrationModule),
+            canLoad: [RouteCanActiveService]
+          },
+          {
+            path: 'claims',
+            loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule),
+            canLoad: [RouteCanActiveService]
+          },
+          {
+            path: 'reports/:providerId',
+            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+            canActivate: [RouteCanActiveService]
+          }
+        ]
       }
     ])
   ],

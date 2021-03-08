@@ -37,8 +37,8 @@ export class NotificationsService {
 
   private watchNewMessage(providerId: string, topic: string): Observable<string> {
     return new Observable((observer) => {
-      let url = environment.NotificationServiceHost + `/to/${providerId}/topics/${topic}`;
-      let eventSource = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } });
+      const url = environment.NotificationServiceHost + `/to/${providerId}/topics/${topic}`;
+      const eventSource = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } });
       this.eventSources[topic] = eventSource;
       this.observers[topic] = observer;
       this.eventSources[topic].onmessage = (event) => {
@@ -53,12 +53,14 @@ export class NotificationsService {
         } else {
           this.observers[topic].error('EventSource error: ' + error);
         }
-      }
+      };
     });
   }
 
   startWatchingMessages(providerId: string, topic: string) {
-    if (this.eventSources[topic] != null) return;
+    if (this.eventSources[topic] != null) {
+      return;
+    }
     this.messageWatchSources[topic] = new BehaviorSubject('');
     this._messageWatchSources[topic] = this.messageWatchSources[topic].asObservable();
     this.watchNewMessage(providerId, topic).subscribe(data => {

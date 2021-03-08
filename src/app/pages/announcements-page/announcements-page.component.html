@@ -1,16 +1,14 @@
-<div class="mainPage">
-    <app-detailscard [title]="cardTitle" [accentColor]="'#3060AA'" >
-        <div id="infinitScroll">
-            <div *ngFor="let key of announcementsMapKeys">
-                <div class="announcements">
-                    <div class="announcement" *ngFor="let announcement of announcementsMap.get(key)">
-                        <app-announcement-card  [announcement]="announcement">
+<app-detailscard [title]="cardTitle">
+    <div id="infinitScroll">
+        <div *ngFor="let key of announcementsMapKeys">
+            <div class="announcements">
+                <div class="announcement" *ngFor="let announcement of announcementsMap.get(key)">
+                    <app-announcement-card [announcement]="announcement">
 
-                        </app-announcement-card>
-                    </div>
+                    </app-announcement-card>
                 </div>
             </div>
-            <div id="loadMore" *ngIf="announcementsNotFinished()" (click)="getData(true)">Load more...</div>
         </div>
-    </app-detailscard>
-</div>
+        <div id="loadMore" *ngIf="announcementsNotFinished()" (click)="getData(true)">Load more...</div>
+    </div>
+</app-detailscard>
