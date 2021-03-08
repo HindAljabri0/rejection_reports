@@ -13,7 +13,8 @@ export const environment = {
   adminServiceHost: "http://localhost:8087",
   auditTrailServiceHost: "http://localhost:8089",
   settingsServiceHost: "http://localhost:8111",
-  claimInquireServiceHost: "http://localhost:8580"
+  claimInquireServiceHost: "http://localhost:8580",
+  validationServiceHost: "http://localhost:8121"
 };
 
 /*
