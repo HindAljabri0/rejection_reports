@@ -9,14 +9,8 @@ import { LoginComponent } from '../pages/loginpage/login.component';
 import { ClaimpageComponent } from '../pages/claimUploadignPage/claimpage.component';
 import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-history.component';
 import { ReportsComponent } from '../pages/reports/reports-page.component';
-<<<<<<< HEAD
-import { ConfigurationsComponent } from '../pages/configurationsPage/configurations.component';
-
-
-=======
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
->>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 
 @NgModule({
   imports: [

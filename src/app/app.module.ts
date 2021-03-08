@@ -65,10 +65,8 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
-<<<<<<< HEAD
 import { ConfigurationsComponent } from './pages/configurationsPage/configurations.component';
 
-=======
 import { SummaryComponent } from './pages/reports/globmed/summary/summary.component';
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -83,7 +81,6 @@ import {
 } from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
->>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 
 @NgModule({
   declarations: [

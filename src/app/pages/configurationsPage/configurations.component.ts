@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-=======
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -16,40 +12,12 @@ import {
   setCodeValueManagementLoading
 } from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
->>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 
 @Component({
   selector: 'app-configurations',
   templateUrl: './configurations.component.html',
   styleUrls: ['./configurations.component.css']
 })
-<<<<<<< HEAD
-export class ConfigurationsComponent implements OnInit {
-
-  codeValueDictionary: Map<string, Map<string, string[]>> = new Map();
-
-  selectedCategory:string;
-  selectedCode:string;
-
-  mappedValueInputControl:FormControl = new FormControl('');
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  selectCategory(category:string){
-    this.selectedCategory = category;
-    this.selectCode('');
-  }
-
-  selectCode(code:string){
-    this.selectedCode = code;
-    this.mappedValueInputControl.setValue('');
-  }
-
-  addMappedValueToSelections(){
-=======
 export class ConfigurationsComponent implements OnInit, OnDestroy {
 
   codeValueDictionary: CategorizedCodeValue = new Map();
@@ -169,30 +137,10 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   }
 
   addMappedValueToSelections() {
->>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
     this.addMappedValueToCodeOfCategory(this.selectedCategory, this.selectedCode, this.mappedValueInputControl.value);
     this.mappedValueInputControl.setValue('');
   }
 
-<<<<<<< HEAD
-  removeMappedValueFromSelections(index:number){
-    this.codeValueDictionary.get(this.selectedCategory).get(this.selectedCode).splice(index, 1);
-  }
-
-  addMappedValueToCodeOfCategory(category:string, code:string, value:string){
-    if(!this.codeValueDictionary.has(category)){
-      this.codeValueDictionary.set(category, new Map());
-    }
-    if(!this.codeValueDictionary.get(category).has(code)){
-      this.codeValueDictionary.get(category).set(code, []);
-    }
-    if(this.codeValueDictionary.get(category).get(code).includes(value)){
-      return;
-    }
-    this.codeValueDictionary.get(category).get(code).push(value);
-  }
-
-=======
   removeMappedValueFromSelections(index: number) {
     this.store.dispatch(deleteMappingValue({
       value: {
@@ -246,5 +194,4 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
     this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
     this.store.dispatch(saveChangesOfCodeValueManagement());
   }
->>>>>>> 6e198bd68ac52ee3403e3b0e343208fe5de69293
 }
