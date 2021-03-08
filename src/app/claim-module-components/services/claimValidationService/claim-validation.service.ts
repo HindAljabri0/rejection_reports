@@ -214,10 +214,9 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: `serviceDate:${invoiceIndex}:${serviceIndex}` });
     }
 
-    if (service.serviceCode == null || service.serviceCode.trim().length == 0 || service.serviceCode.startsWith('0')) {
+    if (service.serviceCode == null || service.serviceCode.trim().length == 0) {
       fieldErrors.push({
-        fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`,
-        error: (service.serviceCode != null && service.serviceCode.startsWith('0')) ? 'service code cannot start with zero' : null
+        fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`
       });
     }
 
