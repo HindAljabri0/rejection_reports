@@ -43,7 +43,8 @@ export class CleanClaimProgressReportComponent implements OnInit {
       yAxes: [{
         ticks: {
           fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
+          fontColor: this.chartFontColor,
+          beginAtZero: true
         },
         scaleLabel: {
           display: true,
@@ -138,22 +139,24 @@ export class CleanClaimProgressReportComponent implements OnInit {
   days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   normalDays = ['DAY'];
   percentageConfig = [{
-    key: 'Year', value: this.months,
+    key: 'Year', value: this.months, label: 'Months'
   },
   {
-    key: 'Month', value: [],
+    key: 'Month', value: [], label: 'Weeks'
   },
   {
-    key: 'Week', value: this.days,
+    key: 'Week', value: this.days, label: 'Days'
   },
   {
-    key: 'Day', value: this.normalDays,
+    key: 'Day', value: this.normalDays, label: 'Date'
   }
   ];
+  diffrenceLableName: string = "Year";
   get providerId(): string {
     return this.sharedService.providerId;
   }
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  currentDate = new Date();
   constructor(private sharedService: SharedServices, private reportSerice: ReportsService, private datePipe: DatePipe) {
   }
 
@@ -189,6 +192,8 @@ export class CleanClaimProgressReportComponent implements OnInit {
     } else {
       this.datePickerConfig = { dateInputFormat: 'YYYY' }
     }
+    this.generateReport.beforeDate = '';
+    this.generateReport.afterDate = '';
   }
 
   generate() {
@@ -207,7 +212,9 @@ export class CleanClaimProgressReportComponent implements OnInit {
         this.percenatgeChartData = [];
         const firstYearData = data[0].totalNetAmount;
         const secondYearData = data[1].totalNetAmount;
-        const percentageLabelData = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria).value;
+        const percentageConfig = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria);
+        const percentageLabelData = percentageConfig.value;
+        this.diffrenceLableName = percentageConfig.label;
         firstYearData.map((ele, index) => {
           let value = 0;
           if (ele === 0 && secondYearData[index] > ele)
