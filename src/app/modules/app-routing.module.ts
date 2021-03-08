@@ -45,10 +45,16 @@ import { MainLayoutComponent } from '../main-layout/main-layout.component';
             canLoad: [RouteCanActiveService]
           },
           {
+            path: 'reports',
+            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+            canActivate: [RouteCanActiveService]
+          },
+          {
             path: 'reports/:providerId',
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
             canActivate: [RouteCanActiveService]
-          }
+          },
+
         ]
       }
     ])

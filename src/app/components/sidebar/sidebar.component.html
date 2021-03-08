@@ -86,6 +86,14 @@
                         <span class="text">Rejection Report</span>
                     </a>
                 </li>
+                <li i18n="@@uploadRejectionReport" *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                    <a routerLink="/reports/upload-rejection-report" routerLinkActive="is-active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-upload-claims.svg" alt="Rejection Upload" class="default-icon" />
+                        <img src="assets/ic-upload-claims-active.svg" alt="Rejection Upload" class="active-icon" />
+                        <span class="text">Upload Rejection Report</span>
+                    </a>
+                </li>
                 <li i18n="@@rejectionUpload" *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <a routerLink="/reports/{{providerId}}/bupa-rejection-reports" routerLinkActive="is-active"
                         [routerLinkActiveOptions]="{exact: true}">
