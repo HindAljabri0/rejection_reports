@@ -36,7 +36,8 @@
         <div class="form-group">
             <label class="control-label">Department<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedDepartment" [disabled]="!departmentEditable" (change)="selectedDepartment = $event.value; updateClaim('department');" required>
+                <mat-select [value]="selectedDepartment" [disabled]="!departmentEditable" (selectionChange)="selectedDepartment = $event.value; updateClaim('department');"
+                    required>
                     <mat-option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'" [value]="selectedDepartment">{{selectedDepartment}}</mat-option>
                     <mat-option *ngFor="let department of departments" [value]="department.departmentId">
                         {{department.name}}</mat-option>

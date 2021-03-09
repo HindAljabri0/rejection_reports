@@ -19,9 +19,9 @@ export class BupaRejectionConfirmDialogComponent implements OnInit {
     return this.sharedService.providerId;
   }
 
-  constructor(private dialogRef: MatDialogRef<BupaRejectionConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: BupaRejectionReportModel, private reportService: ReportsService, private sharedService : SharedServices,private dialogService :DialogService,private router : Router) {
+  constructor(private dialogRef: MatDialogRef<BupaRejectionConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: BupaRejectionReportModel, private reportService: ReportsService, private sharedService: SharedServices, private dialogService: DialogService, private router: Router) {
     this.dialogData = this.data;
-   }
+  }
 
   ngOnInit() {
   }
@@ -34,9 +34,12 @@ export class BupaRejectionConfirmDialogComponent implements OnInit {
     this.reportService.saveBupaRejectionReport(this.providerId, this.dialogData).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false)).subscribe(res => {
-            this.router.navigateByUrl('');
-          });          
+          this.dialogRef.close(true);
+          setTimeout(() => {
+            this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false)).subscribe(res => {
+              // this.router.navigateByUrl('');
+            });
+          }, 1000)
         } else {
           this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false));
         }
