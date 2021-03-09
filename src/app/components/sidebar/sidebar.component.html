@@ -87,21 +87,21 @@
 
                 <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@reports">RCM</mat-panel-title>
+                        <mat-panel-title i18n="@@reports">Denial Management</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@uploadRejectionReport">
                             <a routerLink="/reports/upload-rejection-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-upload.svg" alt="File Upload" class="default-icon" />
                                 <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload" class="active-icon" />
-                                <span class="text">Upload Rejection Report</span>
+                                <span class="text">Credit Report Upload</span>
                             </a>
                         </li>
                         <li i18n="@@rejectionUpload">
                             <a routerLink="/reports/{{providerId}}/bupa-rejection-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-create.svg" alt="Add File" class="default-icon" />
                                 <img src="assets/ic-credit-report-create-active.svg" alt="Add File" class="active-icon" />
-                                <span class="text">Create Rejection Report</span>
+                                <span class="text">Credit Report Create</span>
                             </a>
                         </li>
                         <li i18n="@@cleanClaimProgress">
