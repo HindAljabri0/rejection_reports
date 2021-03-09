@@ -6,6 +6,9 @@
 				<source>
 					Claims
 				</source>
+				<target>
+					المطالبات
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -25,6 +28,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					لوحة القيادة
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -44,6 +56,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تحميل المطالبات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -63,6 +84,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					إنشاء مطالبة
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -82,6 +112,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					سجل المطالبات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -101,6 +140,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					إشعارات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -120,6 +168,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					الإعلانات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -133,6 +190,9 @@
 				<source>
 					Reports
 				</source>
+				<target>
+					التقارير
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -168,6 +228,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير الدفع
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -187,6 +256,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير التقديم
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -206,6 +284,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير الرفض
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -225,6 +312,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تحميل تقرير الائتمان
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -244,6 +340,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					إنشاء تقرير الائتمان
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -263,6 +368,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقارير تقدم المطالبة النظيفة
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -282,6 +396,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير ملخص
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -301,6 +424,15 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير الفواتير الإلكترونية
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -318,6 +450,13 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					التكوينات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -331,6 +470,9 @@
 				<source>
 					Configuration
 				</source>
+				<target>
+					إعدادات
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -348,6 +490,13 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تكوين الموفر
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -361,6 +510,9 @@
 				<source>
 					Audit
 				</source>
+				<target>
+					مراجعة
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -378,6 +530,13 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					سجل تدقيق
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/components/sidebar/sidebar.component.html
@@ -391,6 +550,9 @@
 				<source>
 					Enter username here...
 				</source>
+				<target>
+					أدخل اسم المستخدم هنا ...
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/pages/loginpage/login.component.html
@@ -404,6 +566,9 @@
 				<source>
 					Password
 				</source>
+				<target>
+					كلمة المرور
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/pages/loginpage/login.component.html
@@ -425,6 +590,9 @@
 				<source>
 					Sign In
 				</source>
+				<target>
+					تسجيل الدخول
+				</target>
 				<context-group purpose="location">
 					<context context-type="sourcefile">
 						src/app/pages/loginpage/login.component.html
