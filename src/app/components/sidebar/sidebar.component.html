@@ -87,7 +87,7 @@
 
                 <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Denial Management</mat-panel-title>
+                        <mat-panel-title i18n="@@denialManagement">Denial Management</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@uploadRejectionReport">
@@ -109,6 +109,13 @@
                                 <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
                                 <span class="text">Clean Claim Progress Reports</span>
+                            </a>
+                        </li>
+                        <li i18n="@@rejectedClaimProgress">
+                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
+                                <span class="text">Rejected Claim Progress Report</span>
                             </a>
                         </li>
                     </ul>

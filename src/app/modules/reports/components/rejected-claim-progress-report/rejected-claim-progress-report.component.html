@@ -1,0 +1,157 @@
+<div class="block-header has-border">
+    <p>Rejected Claim Progress Report</p>
+    <span class="spacer"></span>
+    <p class="text-normal-color"><span class="text-medium-grey">Report Date:</span> 3/9/21
+    </p>
+</div>
+<div class="block-filter-panel has-border">
+    <div class="row small-gutter align-items-end">
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">Payer</label>
+                <div class="right-block">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option value="Payer 1">Payer 1</mat-option>
+                            <mat-option value="Payer 2">Payer 2</mat-option>
+                            <mat-option value="Payer 3">Payer 3</mat-option>
+                            <mat-option value="Payer 4">Payer 4</mat-option>
+                            <mat-option value="Payer 5">Payer 5</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">Comparison Criteria</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="Year">
+                        <mat-option value="Year">Year</mat-option>
+                        <mat-option value="Month">Month</mat-option>
+                        <mat-option value="Week">Week</mat-option>
+                        <mat-option value="Day">Day</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">Before Year</label>
+                <input autocomplete="off" placeholder="Select before year" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                    (onShown)="onOpenCalendar($event)">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">After Year</label>
+                <input autocomplete="off" placeholder="Select after year" required class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                    (onShown)="onOpenCalendar($event)">
+            </div>
+        </div>
+        <div class="col-lg-auto">
+            <div class="form-group">
+                <button mat-flat-button color="primary" type="button">Generate</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clean-claim-progress-report">
+    <div class="left-block">
+        <ul class="list">
+            <li class="title">Comparison Type</li>
+            <li>
+                <button type="button" class="active" matRipple>Total Net Amount</button>
+            </li>
+            <li>
+                <button type="button" matRipple>VAT Amount</button>
+            </li>
+            <li>
+                <button type="button" matRipple>Sum of Top 10 Rejected Services</button>
+            </li>
+            <li>
+                <button type="button" matRipple>Sum of Top 10 Rejected Diagnosis Codes</button>
+            </li>
+            <li>
+                <button type="button" matRipple>Sum of Top 10 Rejected Medications</button>
+            </li>
+            <li>
+                <button type="button" matRipple>Sum of Top 10 Rejected Devices</button>
+            </li>
+        </ul>
+    </div>
+    <div class="right-block">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+            [chartType]="barChartType">
+        </canvas>
+        <div class="table-responsive pt-2">
+            <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Months</th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>Apr</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle medium">
+                        <th class="header-cell">Difference</th>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>10%
+                        </td>
+                        <td class="text-danger">
+                            <mat-icon>trending_down</mat-icon><br>10%
+                        </td>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>1%
+                        </td>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>8%
+                        </td>
+                        <td class="text-danger">
+                            <mat-icon>trending_down</mat-icon><br>5%
+                        </td>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>2%
+                        </td>
+                        <td class="text-danger">
+                            <mat-icon>trending_down</mat-icon><br>1%
+                        </td>
+                        <td class="text-danger">
+                            <mat-icon>trending_down</mat-icon><br>10%
+                        </td>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>10%
+                        </td>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>10%
+                        </td>
+                        <td class="text-danger">
+                            <mat-icon>trending_down</mat-icon><br>5%
+                        </td>
+                        <td class="text-success">
+                            <mat-icon>trending_up</mat-icon><br>10%
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="block-footer has-border">
+    <div class="right-block btn-list">
+        <button mat-flat-button color="primary">Print</button>
+    </div>
+</div>
