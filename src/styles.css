@@ -213,7 +213,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .sidebar .nav-list>.new>a{padding-right: 24px;}
 .sidebar .nav-list>.new>a::after{content: '';background-color: #EB2A75;position: absolute;height: 6px;width: 6px;border-radius: 500px;display: block;top: 50%;right: 14px;transform: translate(0, -50%);}
 .sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
-.sidebar .nav-list>li>a>img {display: block;height: 24px;width: 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.72;}
+.sidebar .nav-list>li>a>img {display: block;height: 24px;flex-basis:24px;flex-grow:0;flex-shrink:0;max-width:24px; transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.72;}
 .sidebar .nav-list>li>a>.active-icon{margin-right: 14px;margin-left:-24px;transform: translate(0, 8px) scale(0.2);opacity: 0;}
 .sidebar .nav-list>li>a:hover>.default-icon,.sidebar .nav-list>li>a:focus>.default-icon,.sidebar .nav-list>li>a:active>.default-icon{opacity: 1;}
 .sidebar .nav-list>li>.is-active>.active-icon{transform: scale(1);opacity: 1;}
