@@ -26,7 +26,6 @@
             </div>
         </ng-container>
     </ng-template>
-    <gdpn-calculation *ngIf="!isLoading"></gdpn-calculation>
 
     <div class="block-body create-claim-body" *ngIf="!isLoading">
         <div class="error-block mb-3" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">
@@ -75,7 +74,7 @@
     <mat-menu #claimTypeMenu yPosition="above" xPosition="before">
         <ng-template matMenuContent>
             <label class="menu-label">Claim Type</label>
-            
+
             <button mat-menu-item (click)="startCreatingClaim('INPATIENT')">Inpatient</button>
             <button mat-menu-item (click)="startCreatingClaim('OUTPATIENT')">Outpatient</button>
             <button mat-menu-item (click)="startCreatingClaim(dentalDepartmentCode)">Dental</button>
