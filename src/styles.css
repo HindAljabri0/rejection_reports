@@ -132,6 +132,10 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .change-log-dialog:before{background: url('assets/changelog-bg.svg') right bottom no-repeat;position: absolute;content:'';display: block;top: 0;right: 0;bottom: 0;left: 0;opacity: 0.72;border-radius: 4px;}
 .action-with-text{border:0;padding:8px 12px;margin:0;background:none;display:flex;align-items:center;}
 .action-with-text>.mat-icon{margin-right:4px;}
+.border-right{border-right:1px solid #e1e1e1;}
+.border-bottom{border-bottom:1px solid #e1e1e1;}
+.border-top{border-top:1px solid #e1e1e1;}
+.border-left{border-left:1px solid #e1e1e1;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -211,12 +215,12 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .sidebar .list-title {color: #878B96;list-style: none;padding: 10px;text-decoration: none;padding-left: 16px;}
 .sidebar .nav-list>li>a{display: flex;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;min-height:40px;}
 .sidebar .nav-list>li>a:hover,.sidebar .nav-list>li>a:focus,.sidebar .nav-list>li>a:active{background-color: #ecebeb;}
-.sidebar .nav-list>li>a .text{align-self:center;-ms-flex-item-align: center;}
+.sidebar .nav-list>li>a .text{align-self:center;-ms-flex-item-align: center;padding-left: 14px;}
 .sidebar .nav-list>.new>a{padding-right: 24px;}
 .sidebar .nav-list>.new>a::after{content: '';background-color: #EB2A75;position: absolute;height: 6px;width: 6px;border-radius: 500px;display: block;top: 50%;right: 14px;transform: translate(0, -50%);}
 .sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
 .sidebar .nav-list>li>a>img {display: block;height: 24px;flex-basis:24px;flex-grow:0;flex-shrink:0;max-width:24px; transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.72;}
-.sidebar .nav-list>li>a>.active-icon{margin-right: 14px;margin-left:-24px;transform: translate(0, 8px) scale(0.2);opacity: 0;}
+.sidebar .nav-list>li>a>.active-icon{margin-left:-24px;transform: translate(0, 8px) scale(0.2);opacity: 0;}
 .sidebar .nav-list>li>a:hover>.default-icon,.sidebar .nav-list>li>a:focus>.default-icon,.sidebar .nav-list>li>a:active>.default-icon{opacity: 1;}
 .sidebar .nav-list>li>.is-active>.active-icon{transform: scale(1);opacity: 1;}
 .sidebar .nav-list>li>.is-active>.default-icon,.sidebar .nav-list>li>.is-active:hover>.default-icon,.sidebar .nav-list>li>.is-active:focus>.default-icon,.sidebar .nav-list>li>.is-active:active>.default-icon{transform: translate(0, -8px) scale(0.2);opacity: 0;}
@@ -795,11 +799,11 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* regular payment header
 --------------------------------------------------------------------------------------------------------*/
-.regular-payment-header{background-color: #F8F8FF;padding: 14px 14px 0;color:#505050;}
-.regular-payment-header .title{font-size: 16px;line-height: 22px;font-weight: 600;padding-bottom: 14px;}
-.regular-payment-header .content-wrapper{display: flex;}
-.regular-payment-header .content{flex-basis:calc(100% - 138px);flex-grow: 0;flex-shrink:0;max-width:calc(100% - 138px);}
-.regular-payment-header .content-wrapper .chart-block{height:138px; flex-basis:138px;flex-grow: 0;flex-shrink:0;max-width:138px;padding: 0 0 14px 14px;}
+.collection-management-header{background-color: #F8F8FF;padding: 14px 14px 0;color:#505050;}
+.collection-management-header .title{font-size: 16px;line-height: 22px;font-weight: 600;padding-bottom: 14px;}
+.collection-management-header .content-wrapper{display: flex;}
+.collection-management-header .content{flex-basis:calc(100% - 138px);flex-grow: 0;flex-shrink:0;max-width:calc(100% - 138px);}
+.collection-management-header .content-wrapper .chart-block{height:138px; flex-basis:138px;flex-grow: 0;flex-shrink:0;max-width:138px;padding: 0 0 14px 14px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

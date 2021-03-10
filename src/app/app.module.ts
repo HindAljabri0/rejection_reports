@@ -82,6 +82,10 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { RegularPaymentListComponent } from './components/regular-payment-list/regular-payment-list.component';
 import { FileUploadDialogComponent } from './components/file-upload-dialog/file-upload-dialog.component';
 import { RegularPaymentDetailsComponent } from './components/regular-payment-details/regular-payment-details.component';
+import { FinalSettlementReportListComponent } from './components/final-settlement-report-list/final-settlement-report-list.component';
+import {
+  FinalSettlementReportDetailsComponent
+} from './components/final-settlement-report-details/final-settlement-report-details.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +139,9 @@ import { RegularPaymentDetailsComponent } from './components/regular-payment-det
     BupaRejectionConfirmDialogComponent,
     RegularPaymentListComponent,
     FileUploadDialogComponent,
-    RegularPaymentDetailsComponent
+    RegularPaymentDetailsComponent,
+    FinalSettlementReportListComponent,
+    FinalSettlementReportDetailsComponent
   ],
   imports: [
     AppRoutingModule,
