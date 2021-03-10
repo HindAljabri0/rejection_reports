@@ -412,6 +412,10 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .delete-btn{flex-grow: 0;flex-shrink: 0;max-width: 24px;border:0;background:none;flex-basis:24px;min-width: 24px;display:block;padding:0;}
 .primary-grid .delete-btn .mat-icon{display:block;}
 .primary-grid>tbody>.seperator-row,.primary-grid>tbody>.seperator-row:nth-child(even){background: #fafafa;font-weight: 600;}
+.primary-grid>tbody>tr>.form-group{margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
+.primary-grid .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;position: relative;z-index: 1;color:inherit;}
+.primary-grid .form-control:focus{border-color:#3060AA;}
+.primary-grid .has-error .form-control:focus{border-color:#CC2F2F;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
@@ -651,12 +655,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .bupa-table.primary-grid>tbody>tr>th:last-child, .bupa-table.primary-grid>tbody>tr>td:last-child,.bupa-table.primary-grid>thead>tr>th:last-child, .bupa-table.primary-grid>thead>tr>td:last-child{border-right: 0;}
 .bupa-table.primary-grid>thead>tr:first-child>td,.bupa-table.primary-grid>thead>tr:first-child>th{border-top:0;}
 .bupa-table.primary-grid>tbody>tr:nth-child(even){background: none;}
-.bupa-table.primary-grid>tbody>tr>.form-group{padding: 5px;margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
-.bupa-table.primary-grid>tbody>tr>.form-group:first-child:after{left: 0;}
-.bupa-table.primary-grid>tbody>tr>.form-group:last-child:after{right: 0;}
-.bupa-table .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: none;border:1px solid #d4d4d4;width: 80px;position: relative;z-index: 1;font-weight: 600;}
-.bupa-table .form-control:focus{border-color:#3060AA;}
-.bupa-table .has-error .form-control:focus{border-color:#CC2F2F;}
+.bupa-table>tbody>tr>.form-group{padding:5px;}
+.bupa-table .form-control{width:80px;color:#3060AA;font-weight: 600;}
 .bupa-table .ratio{display: block;padding: 5px 5px 0;position: relative;z-index: 1;}
 
 /* clean claim progress report

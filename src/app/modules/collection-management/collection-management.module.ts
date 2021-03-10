@@ -10,6 +10,9 @@ import { SharedModule } from '../shared.module';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
+import { CollectionSummaryListComponent } from './collection-summary-list/collection-summary-list.component';
+import { CollectionSummaryCreateComponent } from './collection-summary-create/collection-summary-create.component';
+import { CollectionSummaryDetailsComponent } from './collection-summary-details/collection-summary-details.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { ChartsModule } from 'ng2-charts';
     RegularPaymentDetailsComponent,
     FinalSettlementReportListComponent,
     FinalSettlementReportDetailsComponent,
-    FileUploadDialogComponent
+    FileUploadDialogComponent,
+    CollectionSummaryListComponent,
+    CollectionSummaryCreateComponent,
+    CollectionSummaryDetailsComponent
   ],
   imports: [
     CommonModule,

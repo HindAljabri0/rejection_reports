@@ -1,5 +1,5 @@
 <div class="block-header has-border">
-    <p>Regular Payment Details Reports</p>
+    <p>Collections Summary</p>
 </div>
 <div class="block-filter-panel">
     <div class="row small-gutter">
@@ -54,33 +54,31 @@
                 <th>Payer Name</th>
                 <th>Billed Amount</th>
                 <th>Paid Amount</th>
-                <th>Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Collection Net Ratio</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">Bupa</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">1,000,000</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">800,000</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">Jul-19</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">25.0%</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">Bupa</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">1,000,000</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">800,000</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">Jul-19</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">Dec-19</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">25.0%</td>
             </tr>
             <tr>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">MedGulf</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">1,000,000</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">800,000</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">Jul-19</td>
-                <td class="row-click" routerLink="/collection-management/regular-payment-details">25.0%</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">MedGulf</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">1,000,000</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">800,000</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">Jul-19</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">Dec-19</td>
+                <td class="row-click" routerLink="/collection-management/collection-summary-details">25.0%</td>
             </tr>
         </tbody>
     </table>
 </div>
-<div class="file-upload-wrapper page-fab">
-    <div class="content">
-        <button mat-fab color="primary" class="page-fab">
-            <mat-icon>add</mat-icon>
-        </button>
-    </div>
-    <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange()" />
-</div>
+<button mat-fab color="primary" class="page-fab" routerLink="/collection-management/collection-summary-create">
+    <mat-icon>add</mat-icon>
+</button>
