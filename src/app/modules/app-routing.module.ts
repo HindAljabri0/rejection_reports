@@ -11,12 +11,12 @@ import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-histor
 import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
-import { RegularPaymentListComponent } from '../components/regular-payment-list/regular-payment-list.component';
-import { RegularPaymentDetailsComponent } from '../components/regular-payment-details/regular-payment-details.component';
-import { FinalSettlementReportListComponent } from '../components/final-settlement-report-list/final-settlement-report-list.component';
+import { RegularPaymentListComponent } from './collection-management/regular-payment-list/regular-payment-list.component';
+import { RegularPaymentDetailsComponent } from './collection-management/regular-payment-details/regular-payment-details.component';
+import { FinalSettlementReportListComponent } from './collection-management/final-settlement-report-list/final-settlement-report-list.component';
 import {
   FinalSettlementReportDetailsComponent
-} from '../components/final-settlement-report-details/final-settlement-report-details.component';
+} from './collection-management/final-settlement-report-details/final-settlement-report-details.component';
 
 @NgModule({
   imports: [
@@ -60,12 +60,9 @@ import {
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
             canActivate: [RouteCanActiveService]
           },
-          { path: 'regular-payment-list', component: RegularPaymentListComponent, canActivate: [RouteCanActiveService] },
-          { path: 'regular-payment-details', component: RegularPaymentDetailsComponent, canActivate: [RouteCanActiveService] },
-          { path: 'final-settlement-report-list', component: FinalSettlementReportListComponent, canActivate: [RouteCanActiveService] },
           {
-            path: 'final-settlement-report-details',
-            component: FinalSettlementReportDetailsComponent,
+            path: 'collection-management',
+            loadChildren: () => import('./collection-management/collection-management.module').then(m => m.CollectionManagementModule),
             canActivate: [RouteCanActiveService]
           }
         ]

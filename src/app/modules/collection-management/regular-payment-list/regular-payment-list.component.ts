@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { FileUploadDialogComponent } from '../file-upload-dialog/file-upload-dialog.component';
+import { FileUploadDialogComponent } from '../../../components/file-upload-dialog/file-upload-dialog.component';
 
 @Component({
   selector: 'app-regular-payment-list',
