@@ -9,6 +9,7 @@ export class EmptyStateComponent implements OnInit {
 
   @Input() message = 'No data found!';
   @Input() className = '';
+  @Input() icon = 'ic-empty-state.svg';
 
   constructor() { }
 

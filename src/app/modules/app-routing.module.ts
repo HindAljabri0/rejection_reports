@@ -11,6 +11,8 @@ import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-histor
 import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
+import { RegularPaymentListComponent } from '../components/regular-payment-list/regular-payment-list.component';
+import { RegularPaymentDetailsComponent } from '../components/regular-payment-details/regular-payment-details.component';
 
 @NgModule({
   imports: [
@@ -54,7 +56,8 @@ import { MainLayoutComponent } from '../main-layout/main-layout.component';
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
             canActivate: [RouteCanActiveService]
           },
-
+          { path: 'regular-payment-list', component: RegularPaymentListComponent, canActivate: [RouteCanActiveService] },
+          { path: 'regular-payment-details', component: RegularPaymentDetailsComponent, canActivate: [RouteCanActiveService] }
         ]
       }
     ])

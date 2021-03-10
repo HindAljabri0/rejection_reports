@@ -87,7 +87,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .tab-btn.mat-flat-button{padding-left: 10px;padding-right: 10px;}
 .tab-btn.active {opacity: 1;}
 .row-click,.clickable{cursor: pointer!important;}
-.page-fab.mat-fab{position: fixed;right: 48px;bottom: 48px;z-index: 7;}
+.page-fab, .page-fab.mat-fab{position: fixed;right: 48px;bottom: 48px;z-index: 7;}
+.page-fab .page-fab.mat-fab{position: static;}
 .menu-label{font-size: 12px;padding: 4px 16px;color: #3060AA;font-weight: 600;display: block;}
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
 .fixed-height{max-height: calc(100vh - 170px);}
@@ -145,6 +146,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-under-processing,.text-deep-red{color: #7D0202!important;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #909090!important;}
+.text-grey{color: #707070!important;}
 .text-success{color: #29bf24!important;}
 .text-danger{color: #CC2F2F!important;}
 .text-middle-grey{color:#bebebe!important;}
@@ -557,7 +559,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .empty-state{padding: 48px 15px;text-align:center;background-color: rgba(48, 96, 170,0.05);display: flex;flex-direction: column;justify-content: center;}
 .summary-empty-state .empty-state{min-height: calc(100vh - 475px);}
 .claim-list-empty-state  .empty-state{min-height:calc(100vh - 406px);   }
-.empty-state>img{height: 64px;width: 64px;display: block;margin: 0 auto 16px;}
+.empty-state>img{height: 64px;width: 64px;display: block;margin: 0 auto 24px;}
 .empty-state>span{font-size: 18px;line-height: 22px;}
 
 /* login
@@ -708,6 +710,13 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .custom-file-upload>.content>span{color:#707070;}
 .custom-file-upload>.content>p,.custom-file-upload>.content>span{max-width: 300px;margin: 0 auto;display: block;}
 
+/* file upload wrapper
+--------------------------------------------------------------------------------------------------------*/
+.file-upload-wrapper{position: relative;display: block;}
+.file-upload-wrapper>.content{z-index:0;position:relative;}
+.file-upload-wrapper>.file-upload-control{position: absolute;top: 0;left: 0;height:100%;width:100%;z-index: 1;opacity: 0;display:block;cursor: pointer;}
+.file-upload-wrapper.page-fab{position: fixed;}
+
 /* custom breadcrumb
 --------------------------------------------------------------------------------------------------------*/
 .custom-breadcrumb{display: flex;flex-wrap:wrap;}
@@ -774,6 +783,23 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .credit-report-details-header{background-color: #F9F9F9;padding: 14px;color:#505050;display:flex;}
 .credit-report-details-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 180px);max-width: calc(100% - 180px);}
 .credit-report-details-header>.right-block{flex-grow:0;flex-shrink:0;flex-basis:180px;max-width: 180px;padding-left: 14px;text-align: right;}
+
+/* inline labelled text
+--------------------------------------------------------------------------------------------------------*/
+.inline-labelled-text{padding-bottom: 14px;}
+.inline-labelled-text>label{color:#3060AA;padding-bottom: 2px;}
+.inline-labelled-text .with-icon{display: flex;}
+.inline-labelled-text .with-icon>.mat-icon,.inline-labelled-text .with-icon>img{display: block;height:24px;flex-basis:24px;max-width:24px;flex-grow:0;flex-shrink:0;margin-right:4px;}
+.inline-labelled-text p{font-size:16px;line-height:22px;font-weight: 500;}
+.inline-labelled-text p>span{font-weight:400;}
+
+/* regular payment header
+--------------------------------------------------------------------------------------------------------*/
+.regular-payment-header{background-color: #F8F8FF;padding: 14px 14px 0;color:#505050;}
+.regular-payment-header .title{font-size: 16px;line-height: 22px;font-weight: 600;padding-bottom: 14px;}
+.regular-payment-header .content-wrapper{display: flex;}
+.regular-payment-header .content{flex-basis:calc(100% - 138px);flex-grow: 0;flex-shrink:0;max-width:calc(100% - 138px);}
+.regular-payment-header .content-wrapper .chart-block{height:138px; flex-basis:138px;flex-grow: 0;flex-shrink:0;max-width:138px;padding: 0 0 14px 14px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
