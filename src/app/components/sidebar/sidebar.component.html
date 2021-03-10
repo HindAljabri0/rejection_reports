@@ -121,6 +121,29 @@
                     </ul>
                 </mat-expansion-panel>
 
+                <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Collection Management</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li>
+                            <a routerLink="/regular-payment-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Regular Payment Details</span>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a routerLink="/collection-summary" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Collection Summary</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/final-settlement-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Final Settlement Reports</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </mat-expansion-panel>
+
                 <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)" [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title>GlobMed</mat-panel-title>

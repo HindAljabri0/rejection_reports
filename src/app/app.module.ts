@@ -79,6 +79,9 @@ import {
 } from './modules/reports/components/bupa-rejection-confirm-dialog/bupa-rejection-confirm-dialog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { RegularPaymentListComponent } from './components/regular-payment-list/regular-payment-list.component';
+import { FileUploadDialogComponent } from './components/file-upload-dialog/file-upload-dialog.component';
+import { RegularPaymentDetailsComponent } from './components/regular-payment-details/regular-payment-details.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +132,10 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     GmReportsPageComponent,
     ChangeLogDialogComponent,
     MainLayoutComponent,
-    BupaRejectionConfirmDialogComponent
+    BupaRejectionConfirmDialogComponent,
+    RegularPaymentListComponent,
+    FileUploadDialogComponent,
+    RegularPaymentDetailsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -190,7 +196,8 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     ImageTooltipComponent,
     UploadSummaryDialogComponent,
     ChangeLogDialogComponent,
-    BupaRejectionConfirmDialogComponent
+    BupaRejectionConfirmDialogComponent,
+    FileUploadDialogComponent
   ],
 })
 export class AppModule { }
