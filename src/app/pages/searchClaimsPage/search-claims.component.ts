@@ -23,6 +23,7 @@ import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClai
 import { Actions, ofType } from '@ngrx/effects';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ClaimError } from 'src/app/models/claimError';
+import { ValidationService } from 'src/app/services/validationService/validation.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -137,6 +138,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
     private notificationService: NotificationsService,
+    private validationService: ValidationService,
     private store: Store,
     private actions$: Actions) { }
 
@@ -329,16 +331,18 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
-      this.detailActionText = 'Submit All';
-      this.detailSubActionText = 'Submit Selection';
+
+      this.detailActionText = 'Submit';
+      this.detailSubActionText = 'Re-Validate';
+    } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
+
+      this.detailActionText = 'Re-Validate';
+      this.detailSubActionText = null;
     } else {
       this.detailActionText = null;
       this.detailSubActionText = null;
     }
-    /*else if (this.summaries[key].status == ClaimStatus.Failed){
-      this.detailActionText = 'Re-Submit All';
-      this.detailSubActionText = 'Re-Submit Selection';
-    }*/
+
     this.claims = new Array();
     this.store.dispatch(storeClaims({
       claims: this.claims,
@@ -494,6 +498,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
 
+
     this.commen.loadingChanged.next(true);
     this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype,
       this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
@@ -526,6 +531,44 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           }
         }
       });
+  }
+
+  reValidateClaims() {
+
+    if (this.commen.loading) return;
+    this.commen.loadingChanged.next(true);
+    this.validationService.reValidateClaims(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to)
+      .subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const numberOfClaims = event.body["numberOfClaims"];
+          const numberOfRejectedClaims = event.body["numberOfRejectedClaims"];
+          const numberOfAcceptedClaims = event.body["numberOfAcceptedClaims"];
+          const numberOfDownloadableClaims = event.body["numberOfDownloadableClaims"];
+
+          this.dialogService.openMessageDialog({
+            title: "Validation Results",
+            message: `No. of Cliam: ${numberOfClaims} \nNo of Rejected by Waseel: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
+            isError: false
+          }).subscribe(result => {
+              location.reload();
+            });
+
+          this.commen.loadingChanged.next(false);
+
+        }
+      }, errorEvent =>{
+        if ( errorEvent instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog({
+            title: "Validation Results",
+            message: errorEvent.message,
+            isError: true
+          });
+
+        
+
+      }
+      this.commen.loadingChanged.next(false);
+    })
   }
 
 
@@ -883,13 +926,18 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   doAction() {
-    if (this.detailActionText.includes('Submit')) {
+    if (this.detailActionText.includes('Submit All')) {
       this.submitAllAcceptedClaims();
+    } else if (this.detailActionText.includes('Submit Selecations')) {
+      this.submitSelectedClaims();
+    } else if (this.detailActionText.includes('Re-Validate')) {
+      this.reValidateClaims();
     }
   }
+
   doSubAction() {
-    if (this.detailActionText.includes('Submit')) {
-      this.submitSelectedClaims();
+    if (this.detailSubActionText.includes('Re-Validate')) {
+      this.reValidateClaims();
     }
   }
 

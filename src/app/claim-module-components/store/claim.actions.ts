@@ -16,6 +16,8 @@ export const retrieveClaim = createAction('[ Claim ] retrieve claim to view/edit
 export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim', props<any>());
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number',
   props<ApprovalFormData>());
+
+ 
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{
   approvalNumber: string,
   payerId: string,
