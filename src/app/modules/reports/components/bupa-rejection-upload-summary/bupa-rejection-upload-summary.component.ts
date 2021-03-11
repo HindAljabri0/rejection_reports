@@ -7,7 +7,7 @@ import { getPaginationControl } from 'src/app/claim-module-components/store/clai
 @Component({
   selector: 'app-bupa-rejection-upload-summary',
   templateUrl: './bupa-rejection-upload-summary.component.html',
-  styleUrls: ['./bupa-rejection-upload-summary.component.css']
+  styles: []
 })
 export class BupaRejectionUploadSummaryComponent implements OnInit {
   public chartOneLabels: Label[] = ['Rejection Medical Reasons Breakdown', 'Rejection Medical Reasons Breakdown'];
