@@ -1,5 +1,5 @@
 <div class="block-header has-border">
-    <p class="align-self-center">Bupa Rejection Report</p>
+    <p class="align-self-center">Credit Report Create</p>
 </div>
 <form #bupaReport='ngForm'
     (ngSubmit)='bupaReport.valid && bupaRejectionReportData.grandTotalRejectionVat > 0 && bupaRejectionReportData.grandTotalRejection > 0 && saveClick(bupaReport)'>
@@ -107,7 +107,7 @@
                                 name="appropriatenessOfCareVat" required class="form-control" tabindex="14" />
                             <span class="ratio">{{bupaRejectionReportData.appropriatenessOfCareVatPercent}}</span>
                         </td>
-                        <td class="text-center"></td>
+                        <td class="text-center">22</td>
                         <td>Presented Net Billed</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && presentedNetBilled.invalid}"
@@ -151,7 +151,7 @@
                                 name="diffInComputationVat" required class="form-control" tabindex="4" />
                             <span class="ratio">{{bupaRejectionReportData.diffInComputationVatPercent}}</span>
                         </td>
-                        <td class="text-center">8</td>
+                        <td class="text-center">7</td>
                         <td>B. Technical / Contractual</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && technicalContractual.invalid}"
@@ -173,7 +173,7 @@
                                 class="form-control" tabindex="16" />
                             <span class="ratio">{{bupaRejectionReportData.technicalContractualVatPercent}}</span>
                         </td>
-                        <td class="text-center"></td>
+                        <td class="text-center">23</td>
                         <td>Batch Difference</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && batchDifference.invalid}"
@@ -216,7 +216,7 @@
                                 class="form-control" tabindex="6" />
                             <span class="ratio">{{bupaRejectionReportData.claimsNotReceivedVatPercent}}</span>
                         </td>
-                        <td class="text-center">9</td>
+                        <td class="text-center">8</td>
                         <td>B.1 Consultation within the free follow-up period</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && consultInWithinFreeFollowUp.invalid}"
@@ -238,7 +238,7 @@
                                 name="consultInWithinFreeFollowUpVat" required class="form-control" tabindex="18" />
                             <span class="ratio">{{bupaRejectionReportData.consultInWithinFreeFollowUpVatPercent}}</span>
                         </td>
-                        <td class="text-center">17</td>
+                        <td class="text-center">24</td>
                         <td>Discount Difference</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && discountDifference.invalid}"
@@ -281,7 +281,7 @@
                                 class="form-control" tabindex="8" />
                             <span class="ratio">{{bupaRejectionReportData.invalidServiceCodeVatPercent}}</span>
                         </td>
-                        <td class="text-center">8</td>
+                        <td class="text-center">9</td>
                         <td>B.2 Charges / service included, bundled or part of billed procedure / consultation or
                             management.</td>
                         <td class="form-group row-click"
@@ -304,7 +304,7 @@
                                 class="form-control" tabindex="20" />
                             <span class="ratio">{{bupaRejectionReportData.chargesServicesIncludedVatPercent}}</span>
                         </td>
-                        <td class="text-center">18</td>
+                        <td class="text-center">25</td>
                         <td>Deductible Difference</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && deductibleDifference.invalid}"
@@ -346,7 +346,7 @@
                                 class="form-control" tabindex="10" />
                             <!-- <span class="ratio">{{bupaRejectionReportData.lateSubmissionVatPercent}}</span> -->
                         </td>
-                        <td class="text-center">9</td>
+                        <td class="text-center">10</td>
                         <td>B.3 Duplicate / Repeated Billing / Finally Settled</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && duplicateRepeatedBillingOrFinallySettled.invalid}"
@@ -372,7 +372,7 @@
                             <span
                                 class="ratio">{{bupaRejectionReportData.duplicateRepeatedBillingOrFinallySettledVatPercent}}</span>
                         </td>
-                        <td class="text-center"></td>
+                        <td class="text-center">26</td>
                         <td>Deduction</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && deduction.invalid}"
@@ -397,7 +397,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">10</td>
+                        <td class="text-center">11</td>
                         <td>C- Pricelist Shortfall / Billed<br>Above Contractual / Agreed Prices</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && priceListShortFallOrBilled.invalid}"
@@ -419,7 +419,7 @@
                                 class="form-control" tabindex="24" />
                             <span class="ratio">{{bupaRejectionReportData.priceListShortFallOrBilledVatPercent}}</span>
                         </td>
-                        <td class="text-center"></td>
+                        <td class="text-center">27</td>
                         <td>Pending</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && pending.invalid}"
@@ -443,7 +443,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center"></td>
+                        <td class="text-center">12</td>
                         <td>D. Policy Compliance</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && policyCompliance.invalid}"
@@ -474,7 +474,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">11</td>
+                        <td class="text-center">13</td>
                         <td>C.1 Not covered by the effective insurance policy (condition /service) / within the waiting
                             period</td>
                         <td class="form-group row-click"
@@ -508,7 +508,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">12</td>
+                        <td class="text-center">14</td>
                         <td>C.2 Out of validity of effective insurance policy.</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && outOfValidityByEffInsurancePolicy.invalid}"
@@ -543,7 +543,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">13</td>
+                        <td class="text-center">15</td>
                         <td>C.3 Age / gender not matching with the type of service provided.</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && ageGenderMismatch.invalid}"
@@ -574,7 +574,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center"></td>
+                        <td class="text-center">16</td>
                         <td>E. Pre-authorization</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && preAuthorization.invalid}"
@@ -604,7 +604,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">14</td>
+                        <td class="text-center">17</td>
                         <td>D.1 Requires pre-authorisation per policy.</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && requiresPreAuthRequestPerPolicy.invalid}"
@@ -638,7 +638,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">15</td>
+                        <td class="text-center">18</td>
                         <td>D.2 Not part of pre-authorisation request</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && notPartOfPreAuthReq.invalid}"
@@ -669,7 +669,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">16</td>
+                        <td class="text-center">19</td>
                         <td>D.3 Already rejected / Cancelled at pre-authorisation</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && alreadyRejectedCancelledAtPreAuthRequest.invalid}"
@@ -705,7 +705,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center"></td>
+                        <td class="text-center">20</td>
                         <td>F. Unwarranted Variations</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && unwarrantedVariations.invalid}"
@@ -738,7 +738,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center"></td>
+                        <td class="text-center">21</td>
                         <td>G- Pharmacy Benefit Management</td>
                         <td class="form-group row-click"
                             [ngClass]="{'has-error' : bupaReport.submitted && pharmacyBenefitManagement.invalid}"

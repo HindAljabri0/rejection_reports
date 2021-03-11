@@ -217,8 +217,8 @@
                 </ng-scrollbar>
                 <div class="block-footer">
                     <div class="right-block btn-list">
-                        <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}</button>
-                        <button *ngIf="detailActionText != null" (click)="doAction()" mat-flat-button color="primary">{{detailActionText}}</button>
+                        <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}{{selectedClaims.length==0?" All":" Selecations"}}</button>
+                        <button *ngIf="detailActionText != null" (click)="doAction()" mat-flat-button color="primary">{{detailActionText}}{{selectedClaims.length==0?" All":" Selecations"}}</button>
                     </div>
                 </div>
             </mat-tab>

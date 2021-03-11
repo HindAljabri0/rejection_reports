@@ -71,7 +71,7 @@ export class ClaimValidationService {
     if (nationalId != null && nationalId.trim().length != 10) {
       fieldErrors.push({ fieldName: 'nationalId', error: 'National id must be 10 numbers or 0.' });
     }
-    if (payer != '102' && payer != '207'&& payer != '313' && ( policyNum == null || policyNum.trim().length == 0)) {
+    if (payer != '102' && payer != '207' && payer != '313' && (policyNum == null || policyNum.trim().length == 0)) {
       fieldErrors.push({ fieldName: 'policyNum' });
 
     }
@@ -163,7 +163,7 @@ export class ClaimValidationService {
   }
 
   validateDiagnosis() {
-    if (this.claim.claimIdentities.payerID == '102' &&  this.claim.visitInformation.departmentCode == this.opticalDepartmentCode) {
+    if (this.claim.claimIdentities.payerID == '102' && this.claim.visitInformation.departmentCode == this.opticalDepartmentCode) {
       this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: [] }));
       return;
     }
@@ -238,6 +238,8 @@ export class ClaimValidationService {
         fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}` });
       else if (GDPN.patientShare.value > GDPN.gross.value)
         fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}`, error: 'must be less than or equal (unit price * quantity)' });
+    } else if (GDPN.patientShare == null || GDPN.patientShare.value == null) {
+      fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}` });
     }
     if (GDPN.discount != null && GDPN.discount.value != null) {
       if (GDPN.discount.value < 0)
@@ -247,12 +249,17 @@ export class ClaimValidationService {
       else if (GDPN.discount.type == 'SAR' && GDPN.discount.value > ((GDPN.gross.value || 0) - (GDPN.patientShare.value || 0)))
         fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}`, error: 'must be less than or equal (unit price * quantity - patientshare)' });
     }
+    else if (GDPN.discount == null || GDPN.discount.value == null) {
+      fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}` });
+    }
+    
     if (GDPN.netVATrate != null && GDPN.netVATrate.value != null && GDPN.netVATrate.value < 0) {
       fieldErrors.push({ fieldName: `serviceNetVatRate:${invoiceIndex}:${serviceIndex}` });
     }
     if (GDPN.patientShareVATrate != null && GDPN.patientShareVATrate.value != null && GDPN.patientShareVATrate.value < 0) {
       fieldErrors.push({ fieldName: `servicePatientShareVatRate:${invoiceIndex}:${serviceIndex}` });
     }
+    
 
     if (this.claim.visitInformation.departmentCode == this.dentalDepartmentCode) {
       if (service.toothNumber == null) {

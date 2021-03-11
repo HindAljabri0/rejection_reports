@@ -186,19 +186,19 @@
                             </div>
                             <div
                                 [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                                <div class="form-group" [class.has-error]="fieldHasError('servicePatientShare:'+i+':'+j)"
-                                    [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
-                                    <label class="control-label">Patient Share</label>
+                                <div class="form-group" [class.has-error]="fieldHasError('servicePatientShare:'+i+':'+j)" 
+                                    [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)" >
+                                    <label class="control-label">Patient Share <span class="asterisk">*</span> </label>
                                     <div class="input-group">
-                                        <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare">
+                                        <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare"  >
                                         <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                     </div>
                                 </div>
                             </div>
                             <div
                                 [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                                <div class="form-group" [class.has-error]="fieldHasError('serviceDiscount:'+i+':'+j)" [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
-                                    <label class="control-label">Service Discount</label>
+                                <div class="form-group" [class.has-error]="fieldHasError('serviceDiscount:'+i+':'+j)" [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)" >
+                                    <label class="control-label">Service Discount <span class="asterisk">*</span></label>
                                     <div class="input-group">
                                         <input class="form-control" placeholder="Enter service discount" type="number" [formControl]="service.serviceDiscount">
                                         <span class="input-group-append">

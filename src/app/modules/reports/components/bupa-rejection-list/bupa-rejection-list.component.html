@@ -1,0 +1,70 @@
+<div class="block-header has-border">
+    <p class="align-self-center">Credit Report Upload</p>
+    <div class="right-block my-n1">
+        <button type="button" color="primary" mat-flat-button (click)="openPdf()">Upload</button>
+    </div>
+</div>
+<div class="secondary-header">
+    <p>Payers Rejections Report</p>
+</div>
+<div class="bg-white table-responsive">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Payer Name</th>
+                <th>Received Date</th>
+                <th>Batch Id</th>
+                <th>Total Rejections Amount</th>
+                <th>Total Rejection ratio</th>
+                <th>Medical Rejection ratio</th>
+                <th>Technical Rejection ratio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr routerLink="/reports/upload-rejection-report-summary/0" routerLinkActive>
+                <td class="semibold text-primary row-click">Bupa</td>
+                <td class="row-click">03/04/2020</td>
+                <td class="row-click">B1DD</td>
+                <td class="row-click">1,596,900.00 SR</td>
+                <td class="row-click">
+                    <div class="status-text ball-blue">39.5%</div>
+                </td>
+                <td class="row-click">47%</td>
+                <td class="row-click">63%</td>
+            </tr>
+            <tr routerLink="/reports/upload-rejection-report-summary/0" routerLinkActive>
+                <td class="semibold text-primary row-click">Tuwneyah</td>
+                <td class="row-click">03/04/2020</td>
+                <td class="row-click">B1DD</td>
+                <td class="row-click">596,900.00 SR</td>
+                <td class="row-click">
+                    <div class="status-text ball-purple">22.7%</div>
+                </td>
+                <td class="row-click">11%</td>
+                <td class="row-click">89%</td>
+            </tr>
+            <tr routerLink="/reports/upload-rejection-report-summary/0" routerLinkActive>
+                <td class="semibold text-primary row-click">Medgulf</td>
+                <td class="row-click">03/04/2020</td>
+                <td class="row-click">B1DD</td>
+                <td class="row-click">96,900.00 SR</td>
+                <td class="row-click">
+                    <div class="status-text ball-green">26.5%</div>
+                </td>
+                <td class="row-click">35%</td>
+                <td class="row-click">65%</td>
+            </tr>
+            <tr routerLink="/reports/upload-rejection-report-summary/0" routerLinkActive>
+                <td class="semibold text-primary row-click">AXA</td>
+                <td class="row-click">03/04/2020</td>
+                <td class="row-click">B1DD</td>
+                <td class="row-click">87,912.00 SR</td>
+                <td class="row-click">
+                    <div class="status-text ball-brown">19%</div>
+                </td>
+                <td class="row-click">40%</td>
+                <td class="row-click">60%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

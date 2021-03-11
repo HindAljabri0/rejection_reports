@@ -18,6 +18,7 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { UploadSummaryDialogComponent } from './upload-summary-dialog/upload-summary-dialog.component';
 import { ClaimSummaryError } from 'src/app/models/claimSummaryError';
+import { AuthService } from 'src/app/services/authService/authService.service';
 
 @Component({
   selector: 'app-claimsummary',
@@ -109,6 +110,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     private routeActive: ActivatedRoute,
     private dialogService: DialogService,
     private claimService: ClaimService,
+    private authService: AuthService,
     private dialog: MatDialog) {
 
     this.routingObservable = this.router.events.pipe(
@@ -345,6 +347,9 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
             }
           });
         }
+      }, err => {
+        if (err.status)
+          this.authService.logout();
       }), eventError => {
         this.commen.loadingChanged.next(false);
       };
