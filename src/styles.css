@@ -390,14 +390,15 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* grid
 --------------------------------------------------------------------------------------------------------*/
-.primary-grid{width: 100%;color:#333;background-color: #fff;}
-.primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td{vertical-align: top;padding:11px 8px;}
-.primary-grid>tbody>tr>th>.mat-icon,.primary-grid>tbody>tr>td>.mat-icon{display: inline-block;vertical-align: top;margin: -2px 0;}
-.primary-grid>tbody>tr>th>.mat-icon.size-21,.primary-grid>tbody>tr>td>.mat-icon.size-21{font-size:21px;line-height:21px;height:21px;width:21px;margin:0;}
-.primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle,.primary-grid>thead>.align-middle>td,.primary-grid>thead>.align-middle>th,.primary-grid>tbody>.align-middle>td,.primary-grid>tbody>.align-middle>th{vertical-align: middle;}
-.primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid .header-cell{font-weight: 500;}
+.primary-grid,.primary-grid.mat-table{width: 100%;color:#333;background-color: #fff;font-size:inherit;line-height: inherit;}
+.primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td,.primary-grid>thead>tr>th.mat-header-cell,.primary-grid>thead>tr>td.mat-header-cell,.primary-grid>tbody>tr>th.mat-cell,.primary-grid>tbody>tr>td.mat-cell{vertical-align: top;padding:11px 8px;font-size:inherit;line-height: inherit;height:auto;border:0;}
+.primary-grid>tbody>tr>th>.mat-icon,.primary-grid>tbody>tr>td>.mat-icon,.primary-grid>tbody>tr>th.mat-cell>.mat-icon,.primary-grid>tbody>tr>td.mat-cell>.mat-icon{display: inline-block;vertical-align: top;margin: -2px 0;}
+.primary-grid>tbody>tr>th>.mat-icon.size-21,.primary-grid>tbody>tr>td>.mat-icon.size-21,.primary-grid>tbody>tr>th.mat-cell>.mat-icon.size-21,.primary-grid>tbody>tr>td.mat-cell>.mat-icon.size-21{font-size:21px;line-height:21px;height:21px;width:21px;margin:0;}
+.primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle,.primary-grid>thead>.align-middle>td,.primary-grid>thead>.align-middle>th,.primary-grid>tbody>.align-middle>td,.primary-grid>tbody>.align-middle>th,.primary-grid>thead>.align-middle>td.mat-header-cell,.primary-grid>thead>.align-middle>th.mat-header-cell,.primary-grid>tbody>.align-middle>td.mat-cell,.primary-grid>tbody>.align-middle>th.mat-cell{vertical-align: middle;}
+.primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid .header-cell,.primary-grid>thead>tr>th.mat-header-cell,.primary-grid>thead>tr>td.mat-header-cell{font-weight: 500;}
 .primary-grid>thead>tr>th .mat-icon-button,.primary-grid>thead>tr>td .mat-icon-button{margin: -11px 0;}
 .primary-grid>thead>tr>th .mat-icon-button .mat-icon,.primary-grid>thead>tr>td .mat-icon-button .mat-icon{font-size: 22px;line-height: 22px;}
+.primary-grid tr.mat-header-row,.primary-grid tr.mat-footer-row,.primary-grid tr.mat-row{height:auto;}
 .primary-grid:not(.contextful)>thead>tr>th,.primary-grid:not(.contextful)>thead>tr>td,.primary-grid .header-cell{background-color: #D5E4FC;color:#3060AA;}
 .primary-grid:not(.contextful)>.header-primary>tr>th,.primary-grid:not(.contextful)>.header-primary>tr>td{color:#fff;background-color: #3060AA;}
 .primary-grid>thead>tr>th:first-child,.primary-grid>thead>tr>td:first-child,.primary-grid>tbody>tr>th:first-child,.primary-grid>tbody>tr>td:first-child{padding-left: 12px;}
