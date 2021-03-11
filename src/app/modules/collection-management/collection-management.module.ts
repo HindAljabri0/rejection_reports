@@ -13,6 +13,8 @@ import { ChartsModule } from 'ng2-charts';
 import { CollectionSummaryListComponent } from './collection-summary-list/collection-summary-list.component';
 import { CollectionSummaryCreateComponent } from './collection-summary-create/collection-summary-create.component';
 import { CollectionSummaryDetailsComponent } from './collection-summary-details/collection-summary-details.component';
+import { VatPaymentReportListComponent } from './vat-payment-report-list/vat-payment-report-list.component';
+import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/vat-payment-report-details.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { CollectionSummaryDetailsComponent } from './collection-summary-details/
     FileUploadDialogComponent,
     CollectionSummaryListComponent,
     CollectionSummaryCreateComponent,
-    CollectionSummaryDetailsComponent
+    CollectionSummaryDetailsComponent,
+    VatPaymentReportListComponent,
+    VatPaymentReportDetailsComponent
   ],
   imports: [
     CommonModule,

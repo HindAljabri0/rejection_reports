@@ -1,0 +1,86 @@
+<div class="block-header has-border">
+    <p>VAT Payment Reports</p>
+</div>
+<div class="block-filter-panel">
+    <div class="row small-gutter">
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">Payer</label>
+                <div class="right-block">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option value="Payer 1">Payer 1</mat-option>
+                            <mat-option value="Payer 2">Payer 2</mat-option>
+                            <mat-option value="Payer 3">Payer 3</mat-option>
+                            <mat-option value="Payer 4">Payer 4</mat-option>
+                            <mat-option value="Payer 5">Payer 5</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">From Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
+                    <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
+                    <mat-datepicker #fromDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label">To Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
+                    <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                    <mat-datepicker #toDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto align-self-end">
+            <div class="form-group">
+                <button type="button" mat-flat-button color="primary">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Payer Name</th>
+                <th>Grand Total Payment Amount</th>
+                <th>Grand Total Amount</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">Bupa</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">1,000,000</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">800,000</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">JAN 2018</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">DEC 2019</td>
+            </tr>
+            <tr>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">MedGulf</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">1,000,000</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">800,000</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">JAN 2018</td>
+                <td class="row-click" routerLink="/collection-management/vat-payment-details">DEC 2019</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="file-upload-wrapper page-fab">
+    <div class="content">
+        <button mat-fab color="primary" class="page-fab">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange()" />
+</div>
