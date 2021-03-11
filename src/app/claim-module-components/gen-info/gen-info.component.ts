@@ -139,6 +139,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
       this.pageMode = mode;
+      this.payersList = this.sharedServices.getPayersList();
       if (mode == 'VIEW') {
         this.setData(claim);
         this.toggleEdit(false);
@@ -173,7 +174,6 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.filterNationality();
       });
-    this.payersList = this.sharedServices.getPayersList();
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
 
