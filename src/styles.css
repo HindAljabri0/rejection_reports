@@ -47,8 +47,8 @@ select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }
 option:not(:checked) { color: black; }
 input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus, textarea:-webkit-autofill,textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus,select:-webkit-autofill,select:-webkit-autofill:hover,select:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0px 1000px #F5F6F7 inset !important;}
 strong,.bold{font-weight: 700;}
-.semibold{font-weight: 600;}
-.medium{font-weight: 500;}
+.semibold{font-weight: 600!important;}
+.medium{font-weight: 500!important;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
@@ -414,7 +414,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .delete-btn .mat-icon{display:block;}
 .primary-grid>tbody>.seperator-row,.primary-grid>tbody>.seperator-row:nth-child(even){background: #fafafa;font-weight: 600;}
 .primary-grid>tbody>tr>.form-group{margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
-.primary-grid .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;position: relative;z-index: 1;color:inherit;}
+.primary-grid .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
+.primary-grid textarea.form-control{height:auto;padding:8px;}
 .primary-grid .form-control:focus{border-color:#3060AA;}
 .primary-grid .has-error .form-control:focus{border-color:#CC2F2F;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
@@ -795,7 +796,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .inline-labelled-text>label{color:#3060AA;padding-bottom: 2px;}
 .inline-labelled-text .with-icon{display: flex;}
 .inline-labelled-text .with-icon>.mat-icon,.inline-labelled-text .with-icon>img{display: block;height:24px;flex-basis:24px;max-width:24px;flex-grow:0;flex-shrink:0;margin-right:4px;}
-.inline-labelled-text p{font-size:16px;line-height:22px;font-weight: 500;}
+.inline-labelled-text p{font-weight: 500;}
 .inline-labelled-text p>span{font-weight:400;}
 
 /* regular payment header
@@ -805,6 +806,27 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .collection-management-header .content-wrapper{display: flex;}
 .collection-management-header .content{flex-basis:calc(100% - 138px);flex-grow: 0;flex-shrink:0;max-width:calc(100% - 138px);}
 .collection-management-header .content-wrapper .chart-block{height:138px; flex-basis:138px;flex-grow: 0;flex-shrink:0;max-width:138px;padding: 0 0 14px 14px;}
+.collection-management-header .inline-labelled-text p{font-size:16px;line-height:22px;}
+
+/* credit report details table
+--------------------------------------------------------------------------------------------------------*/
+.credit-report-details-table .header-block{display:flex;align-items:center;}
+.credit-report-details-table .header-block .right-block{margin-left:auto;}
+.credit-report-details-table .header-block .right-block .action-btn{color:inherit;border:0;background:none;padding:10px;font-weight:inherit;}
+.credit-report-details-table .inline-labelled-text{color:#505050;}
+.credit-report-details-table .body-block{display: flex;}
+.credit-report-details-table .body-block>.grid-checkbox{max-width: 36px;flex-basis:36px;flex-grow:0;flex-shrink: 0;margin-right: 0;}
+.credit-report-details-table .body-block>.mat-icon{max-width: 24px;flex-basis:24px;flex-grow:0;flex-shrink: 0;margin-left: 12px;margin-top:12px;}
+.credit-report-details-table .body-block>.content{max-width: calc(100% - 72px);flex-basis:calc(100% - 72px);flex-grow:0;flex-shrink: 0;}
+
+/* attachment list
+--------------------------------------------------------------------------------------------------------*/
+.attachment-list{display: flex;flex-wrap:wrap;}
+.attachment-list>li{flex-grow:0;flex-shrink:0;flex-basis:80px;max-width:80px;margin-right: 12px;margin-bottom: 12px;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:14px 10px 8px;border:1px solid #e1e1e1;font-size:12px;line-height:16px;font-weight:500;}
+.attachment-list>li>img{height: 32px;width:32px;display:flex;margin-bottom:8px;flex-grow:0;flex-basis:0;flex-basis:32px;max-width:32px;}
+.attachment-list>li>span{white-space:nowrap;overflow:hidden;display:block;max-width:100%;text-overflow:ellipsis;}
+.attachment-list .file-upload-wrapper{height:100%;width:100%;display:flex;align-items:center;justify-content:center;}
+.attachment-list .add-block{padding:0;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

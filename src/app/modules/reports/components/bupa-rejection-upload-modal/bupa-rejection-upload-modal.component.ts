@@ -11,7 +11,7 @@ type AOA = any[][];
 @Component({
   selector: 'app-bupa-rejection-upload-modal',
   templateUrl: './bupa-rejection-upload-modal.component.html',
-  style: []
+  styles: []
 })
 export class BupaRejectionUploadModalComponent implements OnInit {
   uploadContainerClass = '';
