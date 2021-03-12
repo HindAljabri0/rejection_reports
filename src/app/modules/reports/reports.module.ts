@@ -14,9 +14,18 @@ import { BupaRejectionUploadModalComponent } from './components/bupa-rejection-u
 import { BupaRejectionUploadSummaryComponent } from './components/bupa-rejection-upload-summary/bupa-rejection-upload-summary.component';
 import { BupaRejectionUploadDetailsComponent } from './components/bupa-rejection-upload-details/bupa-rejection-upload-details.component';
 import { UploadRejectionFileService } from 'src/app/services/uploadRejectionFileService/uploadRejectionFile.service';
+import { RejectedClaimProgressReportComponent } from './components/rejected-claim-progress-report/rejected-claim-progress-report.component';
 
 @NgModule({
-  declarations: [BupaRejectionReportComponent, CleanClaimProgressReportComponent, BupaRejectionListComponent, BupaRejectionUploadModalComponent, BupaRejectionUploadSummaryComponent, BupaRejectionUploadDetailsComponent],
+  declarations: [
+    BupaRejectionReportComponent,
+    CleanClaimProgressReportComponent,
+    BupaRejectionListComponent,
+    BupaRejectionUploadModalComponent,
+    BupaRejectionUploadSummaryComponent,
+    BupaRejectionUploadDetailsComponent,
+    RejectedClaimProgressReportComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,

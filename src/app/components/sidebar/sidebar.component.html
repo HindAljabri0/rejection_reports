@@ -87,21 +87,21 @@
 
                 <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@reports">RCM</mat-panel-title>
+                        <mat-panel-title i18n="@@denialManagement">Denial Management</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@uploadRejectionReport">
                             <a routerLink="/reports/upload-rejection-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-upload.svg" alt="File Upload" class="default-icon" />
                                 <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload" class="active-icon" />
-                                <span class="text">Upload Rejection Report</span>
+                                <span class="text">Credit Report Upload</span>
                             </a>
                         </li>
                         <li i18n="@@rejectionUpload">
                             <a routerLink="/reports/{{providerId}}/bupa-rejection-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-create.svg" alt="Add File" class="default-icon" />
                                 <img src="assets/ic-credit-report-create-active.svg" alt="Add File" class="active-icon" />
-                                <span class="text">Create Rejection Report</span>
+                                <span class="text">Credit Report Create</span>
                             </a>
                         </li>
                         <li i18n="@@cleanClaimProgress">
@@ -111,12 +111,47 @@
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
+                        <li i18n="@@rejectedClaimProgress">
+                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
+                                <span class="text">Rejected Claim Progress Report</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Collection Management</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li>
+                            <a routerLink="/collection-management/regular-payment-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Regular Payment Details</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/collection-summary-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Collection Summary</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/final-settlement-report-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Final Settlement Reports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/vat-payment-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">VAT Payment Reports</span>
+                            </a>
+                        </li>
                     </ul>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)" [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@reports">GlobMed</mat-panel-title>
+                        <mat-panel-title>GlobMed</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@gmsummaryreport">

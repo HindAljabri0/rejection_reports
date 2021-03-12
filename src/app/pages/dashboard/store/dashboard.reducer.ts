@@ -42,7 +42,8 @@ const initState: DashboardStatus = {
             'INVALID',
             'DUPLICATE',
             'OUTSTANDING',
-            'PENDING'])
+            'PENDING',
+            'UNDER_PROCESS'])
     },
     acceptedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed']) },
     notAcceptedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['NotAccepted']) },

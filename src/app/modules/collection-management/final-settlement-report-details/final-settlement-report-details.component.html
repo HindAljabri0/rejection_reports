@@ -1,0 +1,211 @@
+<div class="block-header has-border">
+    <p>Final Settlement Report</p>
+</div>
+<div class="collection-management-header">
+    <p class="title">NCCI July-Dec 2019</p>
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-xl-auto col-lg-3 col-md-4 border-right">
+                    <div class="inline-labelled-text">
+                        <label>Net Without Vat</label>
+                        <p>2,380,666.61 SR</p>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Aging 0-30</label>
+                        <p>50,000 SR</p>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Aging 31-60</label>
+                        <p>150,000 SR</p>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Aging 61-90</label>
+                        <p>63,000 SR</p>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Aging 91 And Above</label>
+                        <p>750.00 SR</p>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Balance</label>
+                        <p>2,000,000 SR</p>
+                    </div>
+                </div>
+            </div>
+            <hr class="hr mb-3">
+            <div class="row">
+                <div class="col-xl-auto col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Total Collected</label>
+                        <div class="with-icon">
+                            <mat-icon class="text-success">arrow_upward</mat-icon>
+                            <p>
+                                1,615,365.32 SR<br>
+                                <span class="text-grey">67.85%</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Unpaid Remaining Net Collected</label>
+                        <div class="with-icon">
+                            <mat-icon class="text-danger">arrow_downward</mat-icon>
+                            <p>
+                                765,301.29 SR<br>
+                                <span class="text-grey">32.15%</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Accepted Rejection</label>
+                        <div class="with-icon">
+                            <mat-icon class="text-danger">arrow_downward</mat-icon>
+                            <p>
+                                428,519.99 SR<br>
+                                <span class="text-grey">18.00%</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Total Approved Amounts</label>
+                        <div class="with-icon">
+                            <mat-icon class="text-success">arrow_upward</mat-icon>
+                            <p>
+                                1,952,146.62 SR<br>
+                                <span class="text-grey">82.00%</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-auto col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Due Payable Balance</label>
+                        <div class="with-icon">
+                            <mat-icon class="text-danger">arrow_downward</mat-icon>
+                            <p>
+                                336,781.30 SR<br>
+                                <span class="text-grey">14.15%</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chart-block">
+            <canvas baseChart [datasets]="chartData" [options]="chartOptions" [labels]="chartLabels" [chartType]="chartType">
+            </canvas>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Billing Month</th>
+                <th>Net Without VAT</th>
+                <th class="text-nowrap">Payment-1</th>
+                <th class="text-nowrap">Payment-2</th>
+                <th class="text-nowrap">Payment-3</th>
+                <th class="text-nowrap">Payment-4</th>
+                <th>Total Collected Without Paid VAT</th>
+                <th>Unpaid Remaining Net Collected</th>
+                <th>Collection Net Ratio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Jul-19</td>
+                <td class="text-nowrap">427,332.8 SR</td>
+                <td class="text-nowrap">95,813.1 SR</td>
+                <td class="text-nowrap">7,336.0 SR</td>
+                <td class="text-nowrap">193,702.0 SR</td>
+                <td>0.0</td>
+                <td class="text-nowrap">296,851.1 SR</td>
+                <td class="text-nowrap">130,481.7 SR</td>
+                <td>69.5%</td>
+            </tr>
+            <tr>
+                <td>Aug-19</td>
+                <td class="text-nowrap">427,332.8 SR</td>
+                <td class="text-nowrap">95,813.1 SR</td>
+                <td class="text-nowrap">7,336.0 SR</td>
+                <td class="text-nowrap">193,702.0 SR</td>
+                <td>0.0</td>
+                <td class="text-nowrap">296,851.1 SR</td>
+                <td class="text-nowrap">130,481.7 SR</td>
+                <td>69.5%</td>
+            </tr>
+            <tr>
+                <td>Sep-19</td>
+                <td class="text-nowrap">427,332.8 SR</td>
+                <td class="text-nowrap">95,813.1 SR</td>
+                <td class="text-nowrap">7,336.0 SR</td>
+                <td class="text-nowrap">193,702.0 SR</td>
+                <td>0.0</td>
+                <td class="text-nowrap">296,851.1 SR</td>
+                <td class="text-nowrap">130,481.7 SR</td>
+                <td>69.5%</td>
+            </tr>
+            <tr>
+                <td>Oct-19</td>
+                <td class="text-nowrap">427,332.8 SR</td>
+                <td class="text-nowrap">95,813.1 SR</td>
+                <td class="text-nowrap">7,336.0 SR</td>
+                <td class="text-nowrap">193,702.0 SR</td>
+                <td>0.0</td>
+                <td class="text-nowrap">296,851.1 SR</td>
+                <td class="text-nowrap">130,481.7 SR</td>
+                <td>69.5%</td>
+            </tr>
+            <tr>
+                <td>Nov-19</td>
+                <td class="text-nowrap">427,332.8 SR</td>
+                <td class="text-nowrap">95,813.1 SR</td>
+                <td class="text-nowrap">7,336.0 SR</td>
+                <td class="text-nowrap">193,702.0 SR</td>
+                <td>0.0</td>
+                <td class="text-nowrap">296,851.1 SR</td>
+                <td class="text-nowrap">130,481.7 SR</td>
+                <td>69.5%</td>
+            </tr>
+            <tr>
+                <td>Dec-19</td>
+                <td class="text-nowrap">427,332.8 SR</td>
+                <td class="text-nowrap">95,813.1 SR</td>
+                <td class="text-nowrap">7,336.0 SR</td>
+                <td class="text-nowrap">193,702.0 SR</td>
+                <td>0.0</td>
+                <td class="text-nowrap">296,851.1 SR</td>
+                <td class="text-nowrap">130,481.7 SR</td>
+                <td>69.5%</td>
+            </tr>
+            <tr>
+                <td class="header-cell text-nowrap">Grand Total</td>
+                <td class="header-cell text-nowrap">427,332.8 SR</td>
+                <td class="header-cell text-nowrap">95,813.1 SR</td>
+                <td class="header-cell text-nowrap">7,336.0 SR</td>
+                <td class="header-cell text-nowrap">193,702.0 SR</td>
+                <td class="header-cell">0.0</td>
+                <td class="header-cell text-nowrap">296,851.1 SR</td>
+                <td class="header-cell text-nowrap">130,481.7 SR</td>
+                <td class="header-cell">69.5%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

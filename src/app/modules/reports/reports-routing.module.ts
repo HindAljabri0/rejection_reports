@@ -5,11 +5,13 @@ import { CleanClaimProgressReportComponent } from './components/clean-claim-prog
 import { BupaRejectionListComponent } from './components/bupa-rejection-list/bupa-rejection-list.component';
 import { BupaRejectionUploadSummaryComponent } from './components/bupa-rejection-upload-summary/bupa-rejection-upload-summary.component';
 import { BupaRejectionUploadDetailsComponent } from './components/bupa-rejection-upload-details/bupa-rejection-upload-details.component';
+import { RejectedClaimProgressReportComponent } from './components/rejected-claim-progress-report/rejected-claim-progress-report.component';
 
 
 const routes: Routes = [
   { path: 'bupa-rejection-reports', component: BupaRejectionReportComponent },
   { path: 'clean-claim-progress-reports', component: CleanClaimProgressReportComponent },
+  { path: 'rejected-claim-progress-reports', component: RejectedClaimProgressReportComponent },
   { path: 'upload-rejection-report', component: BupaRejectionListComponent },
   { path: 'upload-rejection-report-summary/:batchId', component: BupaRejectionUploadSummaryComponent },
   { path: 'upload-rejection-report-summaryDetail/:batchId/:summaryType', component: BupaRejectionUploadDetailsComponent },
