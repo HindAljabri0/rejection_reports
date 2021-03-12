@@ -13,7 +13,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.css']
+  styles: []
 })
 export class SummaryComponent implements OnInit {
 
@@ -32,7 +32,7 @@ export class SummaryComponent implements OnInit {
 
   errorMessage: string;
 
-  downloadButtonText = 'vertical_align_bottom';
+  detailTopActionIcon = 'ic-download.svg';
 
   constructor(
     private globMedService: GlobMedService,
@@ -78,7 +78,7 @@ export class SummaryComponent implements OnInit {
   }
 
   async download() {
-    if (this.downloadButtonText == 'check_circle') {
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') {
       return;
     }
     this.sharedServices.loadingChanged.next(true);

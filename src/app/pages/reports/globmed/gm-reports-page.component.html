@@ -1,54 +1,69 @@
-<div class="row" style="padding: 1%;">
-    <div class="col-md-12">
-        <div class="card " style="width: 100%; width: inherit; padding: 0px; background-color: #F8F7FF; " [style.height]="height">
-            <div class="" style="background: white; padding: 10px 20px;  ">
-                <div class="menuContent">
-                    <div class="searchByDate">
-                        <mat-form-field floatLabel="never">
-                            <mat-label>Select Report</mat-label>
-                            <mat-select [formControl]="reportTypeControl" (selectionChange)="searchSelect($event)" required>
-                                <mat-option *ngFor="let report of reports" [value]="report.id">
-                                    {{report.name}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="reportTypeControl.hasError('required')">Please select a Report
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field *ngIf="reportTypeControl.value == 2">
-                            <mat-label>Select Payer</mat-label>
-                            <mat-select [formControl]="selectedPayerControl" required>
-                                <mat-option *ngFor="let payer of payers" [value]="payer.id">
-                                    {{payer.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" floatLabel="never" style="border: none; border-radius: 4px; ">
-                            <input matInput [matDatepicker]="fromPicker" placeholder="From Date" [formControl]="fromDateControl" (keyup.enter)="search()" required>
-                            <mat-datepicker-toggle matSuffix [for]="fromPicker">
-                                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #fromPicker></mat-datepicker>
-                            <mat-error *ngIf="fromDateControl.hasError('required')">Please choose a date</mat-error>
-                        </mat-form-field>
-                        <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" floatLabel="never">
-                            <input matInput [matDatepicker]="toPicker" placeholder="To Date" [formControl]="toDateControl" (keyup.enter)="search()" required>
-                            <mat-datepicker-toggle matSuffix [for]="toPicker">
-                                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #toPicker></mat-datepicker>
-                            <mat-error *ngIf="toDateControl.hasError('required')">Please choose a date</mat-error>
-                        </mat-form-field>
-                        <div style="display: grid; align-items: center; justify-content: end;">
-                            <button mat-raised-button color="primary" (click)="search()">Search</button>
-                        </div>
-                    </div>
+<div class="block-header has-border">
+    <p>{{reports[reportTypeControl.value-1].name}}</p>
+</div>
+<div class="block-filter-panel has-border">
+    <div class="row small-gutter">
+        <div class="col">
+            <div class="form-group" [class.has-error]="reportTypeControl.hasError('required')">
+                <label class="control-label">Report</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select [formControl]="reportTypeControl" (selectionChange)="searchSelect($event)" required>
+                        <mat-option *ngFor="let report of reports" [value]="report.id">
+                            {{report.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="reportTypeControl.invalid">
+                    <span class="error-text" *ngIf="reportTypeControl.hasError('required')">Please select a Report</span>
                 </div>
             </div>
-            <div class="card-body ">
-                <app-summary #summarySearchResult [type]="reportTypeControl.value" [payer]="selectedPayerControl.value" [providerId]="providerId" [from]="fromDate" [to]="toDate"
-                    [queryPage]="page" [pageSize]="pageSize" (onPaginationChange)="paginationChange($event)">
-                </app-summary>
+        </div>
+        <div class="col" *ngIf="reportTypeControl.value == 2">
+            <div class="form-group">
+                <label class="control-label">Payer</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select [formControl]="selectedPayerControl" required>
+                        <mat-option *ngFor="let payer of payers" [value]="payer.id">
+                            {{payer.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group" [class.has-error]="fromDateHasError">
+                <label class="control-label">From Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="fromPicker" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="search()" required class="form-control">
+                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </div>
+                <div *ngIf="fromDateControl.invalid && fromDateHasError">
+                    <span *ngIf="fromDateControl.hasError('required')">Please choose a date</span>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group" [class.has-error]="toDateHasError">
+                <label class="control-label">To Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="toPicker" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="search()" required class="form-control">
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </div>
+                <div *ngIf="toDateControl.invalid && toDateHasError">
+                    <span *ngIf="toDateControl.hasError('required')">Please choose a date</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-auto">
+            <div class="form-group">
+                <label class="control-label d-lg-block d-none">&nbsp;</label>
+                <button mat-flat-button color="primary" (click)="search()">Search</button>
             </div>
         </div>
     </div>
 </div>
+<app-summary #summarySearchResult [type]="reportTypeControl.value" [payer]="selectedPayerControl.value" [providerId]="providerId" [from]="fromDate" [to]="toDate" [queryPage]="page"
+    [pageSize]="pageSize" (onPaginationChange)="paginationChange($event)">
+</app-summary>
