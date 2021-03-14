@@ -5,7 +5,7 @@ import { BupaRejectionUploadModalComponent } from '../bupa-rejection-upload-moda
 @Component({
   selector: 'app-bupa-rejection-list',
   templateUrl: './bupa-rejection-list.component.html',
-  styleUrls: ['./bupa-rejection-list.component.css']
+  styles: []
 })
 export class BupaRejectionListComponent implements OnInit {
 

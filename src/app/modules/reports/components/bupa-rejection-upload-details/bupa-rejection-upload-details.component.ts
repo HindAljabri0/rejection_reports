@@ -7,7 +7,7 @@ import { getPaginationControl } from 'src/app/claim-module-components/store/clai
 @Component({
   selector: 'app-bupa-rejection-upload-details',
   templateUrl: './bupa-rejection-upload-details.component.html',
-  styleUrls: ['./bupa-rejection-upload-details.component.css']
+  styles: []
 })
 export class BupaRejectionUploadDetailsComponent implements OnInit {
 

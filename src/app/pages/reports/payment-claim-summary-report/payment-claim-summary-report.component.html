@@ -1,49 +1,41 @@
-<div class="paginatorContainer">
-    <div class="page-select">
-        <div class="label">Go to page:</div>
-        <mat-form-field>
+<div class="pagination-header">
+    <div class="form-group page-select">
+        <label class="control-label">Go to page: </label>
+        <mat-form-field class="form-control custom-select-control">
             <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
                 <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <div class="label" style="margin-left: auto; font-weight: 700;"></div>
     </div>
-    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-        (page)="paginatorAction($event)">
-    </mat-paginator>
+    <div class="material-paginator">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+        </mat-paginator>
+    </div>
 </div>
-<mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
-    <mat-expansion-panel-header>
-        <mat-panel-title style="width: 100%;">
-            <table style="color: #3060AA !important;">
-                <tr>
-                    <td>Claim Status</td>
-                    <td>Provider Claim Number</td>
-                    <td>Payer Claim Number</td>
-                    <td>Requested Amount</td>
-                    <td>Paid Amount</td>
-                </tr>
-            </table>
-        </mat-panel-title>
-    </mat-expansion-panel-header>
-</mat-expansion-panel>
 
-<ng-container *ngIf="claimsSummaryResult != null">
-    <mat-expansion-panel *ngFor="let claimPayment of claimsSummaryResult.content"
-        style="margin-bottom: 6px; cursor: pointer;" hideToggle [disabled]="0 == 0"
-        (click)="openCLaimPaymentDialog(claimPayment.claimId)">
-        <mat-expansion-panel-header>
-            <mat-panel-title style="width: 100%;">
-                <table style="color: black !important;">
-                    <tr>
-                        <td style="width: 20%;">{{claimPayment.claimStatus}}</td>
-                    <td style="width: 20%;">{{claimPayment.providerClaimNumber}}</td>
-                    <td style="width: 20%;">{{claimPayment.payerClaimNumber}}</td>
-                    <td style="width: 20%;">{{claimPayment.requstedNetAmount}}</td>
-                    <td style="width: 20%;">{{claimPayment.paidNetAmount}}</td>
-                    </tr>
-                </table>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-    </mat-expansion-panel>
-</ng-container>
+<div class="table-responsive" *ngIf="claimsSummaryResult != null">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Claim Status</th>
+                <th>Provider Claim Number</th>
+                <th>Payer Claim Number</th>
+                <th>Requested Amount</th>
+                <th>Paid Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let claimPayment of claimsSummaryResult.content">
+                <td class="row-click" (click)="openCLaimPaymentDialog(claimPayment.claimId)">{{claimPayment.claimStatus}}</td>
+                <td class="row-click" (click)="openCLaimPaymentDialog(claimPayment.claimId)">{{claimPayment.providerClaimNumber}}</td>
+                <td class="row-click" (click)="openCLaimPaymentDialog(claimPayment.claimId)">{{claimPayment.payerClaimNumber}}</td>
+                <td class="row-click" (click)="openCLaimPaymentDialog(claimPayment.claimId)">{{claimPayment.requstedNetAmount}}</td>
+                <td class="row-click" (click)="openCLaimPaymentDialog(claimPayment.claimId)">{{claimPayment.paidNetAmount}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="px-3 pb-3 bg-white" *ngIf="claimsSummaryResult == null">
+    <p class="error-card m-0">No Results Found</p>
+</div>

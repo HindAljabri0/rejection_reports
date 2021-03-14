@@ -5,7 +5,7 @@
             <div class="attachment">
                 <div class="thumbnail">
                     <img *ngIf="!isPdf(attachment)" [src]="getImageOfBlob(attachment)" [alt]="attachment.fileName" />
-                    <img *ngIf="isPdf(attachment)" src="assets/ic-pdf-file.svg" [alt]="attachment.fileName" />
+                    <img *ngIf="isPdf(attachment)" src="assets/file-types/ic-pdf.svg" [alt]="attachment.fileName" />
                 </div>
                 <div class="content">
                     <p class="title">{{attachment.fileName}}</p>

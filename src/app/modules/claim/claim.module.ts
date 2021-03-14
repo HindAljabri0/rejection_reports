@@ -8,8 +8,6 @@ import { RouterModule } from '@angular/router';
 import { MainClaimPageComponent } from 'src/app/claim-module-components/main-claim-page/main-claim-page.component';
 import { StoreModule } from '@ngrx/store';
 import { claimReducer } from 'src/app/claim-module-components/store/claim.reducer';
-import { ClaimPatientInfo } from 'src/app/claim-module-components/claimPatientInfo/claim-patient-info.component';
-import { PhysicianComponent } from 'src/app/claim-module-components/physician/physician.component';
 import { GdpnCalculationComponent } from 'src/app/claim-module-components/gdpn-calculation/gdpn-calculation.component';
 import { EffectsModule } from '@ngrx/effects';
 import { ClaimEffects } from 'src/app/claim-module-components/store/claim.effects';
@@ -35,8 +33,6 @@ import { LabResultsComponent } from 'src/app/claim-module-components/lab-results
 @NgModule({
   declarations: [
     MainClaimPageComponent,
-    ClaimPatientInfo,
-    PhysicianComponent,
     GdpnCalculationComponent,
     ClaimDataComponent,
     ClaimDiagnosisComponent,
