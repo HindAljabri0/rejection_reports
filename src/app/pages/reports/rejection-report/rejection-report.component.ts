@@ -15,16 +15,12 @@ import { ClaimStatus } from 'src/app/models/claimStatus';
 @Component({
   selector: 'app-rejection-report',
   templateUrl: './rejection-report.component.html',
-  styleUrls: ['./rejection-report.component.css']
+  styles: []
 })
 export class RejectionReportComponent implements OnInit {
   detailCardTitle = 'Submitted Invoices';
-  detailTopActionText = 'vertical_align_bottom';
+  detailTopActionIcon = 'ic-download.svg';
   detailAccentColor = 'primary';
-  detailActionText: string = null;
-  detailSubActionText: string = null;
-  detailCheckBoxIndeterminate: boolean;
-  detailCheckBoxChecked: boolean;
   @Input() from: string;
   @Input() to: string;
   @Input() payerId: string[];
@@ -101,7 +97,7 @@ export class RejectionReportComponent implements OnInit {
   }
 
   download() {
-    if (this.detailTopActionText == 'check_circle') {
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') {
       return;
     }
 
@@ -117,7 +113,7 @@ export class RejectionReportComponent implements OnInit {
           a.target = '_blank';
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
-          this.detailTopActionText = 'check_circle';
+          this.detailTopActionIcon = 'ic-check-circle.svg';
         }
       }
     }, errorEvent => {
