@@ -1,55 +1,57 @@
-<div class="header">
-    <p>
-
-    </p>
-    <span class="spacer"></span>
-    <div *ngIf="searchResult != null && searchResult.totalPages > 0"
-        style="font-size: small; display: flex; align-items: end;">
-        <mat-icon (click)="goToFirstPage()" style="cursor: pointer;">skip_previous</mat-icon>
-        &nbsp;&nbsp;&nbsp;
-        <mat-icon (click)="goToPrePage()" style="cursor: pointer;">navigate_before</mat-icon>
-        &nbsp;&nbsp;&nbsp;
-        <p style="font-weight: 600; font-size: larger;">{{(searchResult.number+1)}}</p>
-        <p style="font-size: larger;">/ {{searchResult.totalPages}}</p>
-        &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToNextPage()" style="cursor: pointer;">navigate_next
-        </mat-icon>
-        &nbsp;&nbsp;&nbsp;<mat-icon (click)="goToLastPage()" style="cursor: pointer;">skip_next</mat-icon>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <mat-icon (click)="download()" style="cursor: pointer;">{{downloadButtonText}}</mat-icon>
+<div class="block-header" *ngIf="searchResult != null && searchResult.totalPages > 0">
+    <div class="right-block">
+        <div class="custom-paginator">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="searchResult.number==0">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="searchResult.number==0">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
+            </p>
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+            <button matRipple (click)="download()" type="button" class="action-btn">
+                <img src="./assets/{{detailTopActionIcon}}" />
+            </button>
+        </div>
     </div>
 </div>
-<table>
-    <tr class="claimsHeader">
-        <td>Claim Ref. No.</td>
-        <td>Dr. Name</td>
-        <td>Member ID</td>
-        <td>National ID</td>
-        <td>Patient File No.</td>
-        <td>Claim Date</td>
-        <td>Net Amount</td>
-        <td style="width: 5%;"> Net Vat</td>
-    </tr>
-    <tr *ngIf="errorMessage != null" style="margin-bottom: 10px;">
-        <td colspan="8">
-            {{errorMessage}}
-        </td>
-    </tr>
-    <tr class="claims" *ngFor="let claim of claims">
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
-            {{claim.providerClaimNumber}}</td>
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.drName}}</td>
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.memberId}}
-        </td>
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.nationalId}}
-        </td>
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
-            {{claim.patientFileNumber}}</td>
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">{{claim.claimDate}}
-        </td>
-        <td (click)="showClaim(claim.claimId)" style="cursor: pointer;">
-            {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span></td>
-        <td (click)="showClaim(claim.claimId)" style="width: 5%; cursor: pointer;">
-            {{claim.netVatAmount}}<span class="currency"> {{claim.unitOfNetVatAmount}}</span>
-        </td>
-    </tr>
-</table>
+<div class="table-responsive">
+    <table class="primary-grid" cellspacing="0" cellpadding="0" border="0">
+        <thead>
+            <tr>
+                <td>Claim Ref. No.</td>
+                <td>Dr. Name</td>
+                <td>Member ID</td>
+                <td>National ID</td>
+                <td>Patient File No.</td>
+                <td>Claim Date</td>
+                <td>Net Amount</td>
+                <td> Net Vat</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="errorMessage != null">
+                <td colspan="8">
+                    <div class="error-block">{{errorMessage}}</div>
+                </td>
+            </tr>
+            <tr *ngFor="let claim of claims">
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.providerClaimNumber}}</td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.drName}}</td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.memberId}}</td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.nationalId}}</td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.patientFileNumber}}</td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.claimDate}}</td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.netAmount}} <span class="currency">{{claim.unitOfNetAmount}}</span></td>
+                <td (click)="showClaim(claim.claimId)" class="row-click">{{claim.netVatAmount}}<span class="currency">{{claim.unitOfNetVatAmount}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

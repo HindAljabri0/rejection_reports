@@ -16,7 +16,7 @@ import { MatMenuTrigger } from '@angular/material';
 @Component({
   selector: 'app-reports-page',
   templateUrl: './reports-page.component.html',
-  styleUrls: ['./reports-page.component.css']
+  styles: []
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
@@ -33,7 +33,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     { id: 2, name: 'Claim Date' },
   ];
 
-  downloadIcon = 'vertical_align_bottom';
+  actionIcon = 'ic-download.svg';
 
 
   reportTypeControl: FormControl = new FormControl();
@@ -144,7 +144,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     // debugger;
     this.fromDateHasError = false;
     this.toDateHasError = true;
-    this.payerIdHasError = true;
+    this.payerIdHasError = false;
     this.rejectionCriteriaHasError = true;
 
     this.isValidFormSubmitted = false;
@@ -248,7 +248,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   download() {
-    if (this.downloadIcon == 'check_circle') {
+    if (this.actionIcon == 'ic-check-circle.svg') {
       return;
     }
 
@@ -265,7 +265,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           a.download = exportedFilenmae;
 
           a.click();
-          this.downloadIcon = 'check_circle';
+          this.actionIcon = 'ic-check-circle.svg';
         }
       }
     }, errorEvent => {
@@ -279,7 +279,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
 
   downloadInvoice() {
-    if (this.downloadIcon == 'check_circle') {
+    if (this.actionIcon == 'ic-check-circle.svg') {
       return;
     }
 
@@ -297,7 +297,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             a.download = exportedFilenmae;
 
             a.click();
-            this.downloadIcon = 'check_circle';
+            this.actionIcon = 'ic-check-circle.svg';
           }
         }
       }, errorEvent => {

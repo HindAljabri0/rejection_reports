@@ -4,14 +4,13 @@ import { HttpResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { PaymentClaimSummary } from 'src/app/models/paymentClaimSummary';
-import { SharedServices } from 'src/app/services/shared.services';
 import { EventEmitter } from '@angular/core';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-payment-claim-summary-report',
   templateUrl: './payment-claim-summary-report.component.html',
-  styleUrls: ['./payment-claim-summary-report.component.css']
+  styles: []
 })
 export class PaymentClaimSummaryReportComponent implements OnInit {
 
@@ -30,7 +29,6 @@ export class PaymentClaimSummaryReportComponent implements OnInit {
   claimsSummaryResult: PaginatedResult<PaymentClaimSummary>;
 
   constructor(private reportService: ReportsService, private dialogService: DialogService) { }
-
 
   ngOnInit() {
   }

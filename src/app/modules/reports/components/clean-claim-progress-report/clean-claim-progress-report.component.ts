@@ -135,7 +135,7 @@ export class CleanClaimProgressReportComponent implements OnInit {
   beforeDatePickerTitle = 'before year';
   afterDatePickerTitle = 'after year'
   percenatgeChartData: any = [];
-  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUNE', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   normalDays = ['DAY'];
   percentageConfig = [{
