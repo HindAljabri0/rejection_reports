@@ -550,25 +550,25 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             message: `No. of Cliam: ${numberOfClaims} \nNo of Rejected by Waseel: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
             isError: false
           }).subscribe(result => {
-              location.reload();
-            });
+            location.reload();
+          });
 
           this.commen.loadingChanged.next(false);
 
         }
-      }, errorEvent =>{
-        if ( errorEvent instanceof HttpErrorResponse) {
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog({
             title: "Validation Results",
             message: errorEvent.message,
             isError: true
           });
 
-        
 
-      }
-      this.commen.loadingChanged.next(false);
-    })
+
+        }
+        this.commen.loadingChanged.next(false);
+      })
   }
 
 
@@ -926,10 +926,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   doAction() {
-    if (this.detailActionText.includes('Submit All')) {
-      this.submitAllAcceptedClaims();
-    } else if (this.detailActionText.includes('Submit Selecations')) {
-      this.submitSelectedClaims();
+    if (this.detailActionText.includes('Submit')) {
+      if (this.selectedClaims.length == 0)
+        this.submitAllAcceptedClaims();
+      else
+        this.submitSelectedClaims();
     } else if (this.detailActionText.includes('Re-Validate')) {
       this.reValidateClaims();
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-regular-payment-details',
@@ -8,13 +9,14 @@ import { Label } from 'ng2-charts';
   styles: []
 })
 export class RegularPaymentDetailsComponent implements OnInit {
+  chartColors = this.sharedService.getAnalogousColor(2);
   public chartLabels: Label[] = ['Payment Amount', 'Billed Amounts'];
   public chartData: ChartDataSets[] = [
     {
       data: [1615365.32, 765301.29],
       borderWidth: 1,
-      backgroundColor: ['#29bf24', '#CC2F2F'],
-      hoverBackgroundColor: ['#29bf24', '#CC2F2F']
+      backgroundColor: this.chartColors,
+      hoverBackgroundColor: this.chartColors
     }
   ];
   public chartType: ChartType = 'doughnut';
@@ -35,7 +37,7 @@ export class RegularPaymentDetailsComponent implements OnInit {
     }
   };
 
-  constructor() { }
+  constructor(public sharedService: SharedServices) { }
 
   ngOnInit() {
   }
