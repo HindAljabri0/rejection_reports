@@ -8,9 +8,9 @@
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.name"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                     (click)="selectProvider(provider.switchAccountId)">
-                    {{provider.switchAccountId}} | {{provider.name}}
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                 </mat-option>
                 <mat-option *ngIf="errors.providersError != null && errors.providersError != '' && !isLoading">
                     {{errors.providersError}}

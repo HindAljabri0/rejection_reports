@@ -110,7 +110,7 @@ export class ProvidersConfigComponent implements OnInit {
 
             const provider = this.providers.find(provider => provider.switchAccountId == this.selectedProvider);
             if (provider != undefined) {
-              this.providerController.setValue(`${provider.switchAccountId} | ${provider.name}`);
+              this.providerController.setValue(`${provider.switchAccountId} | ${provider.code} | ${provider.name}`);
               this.updateFilter();
               this.getAssociatedPayers();
             } else {
@@ -139,7 +139,7 @@ export class ProvidersConfigComponent implements OnInit {
 
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
+      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
     );
   }
 
