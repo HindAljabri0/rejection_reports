@@ -1,30 +1,31 @@
+import { CommonModule, DatePipe, PercentPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CommonModule, PercentPipe, DatePipe } from '@angular/common';
-
-import { ReportsRoutingModule } from './reports-routing.module';
-import { BupaRejectionReportComponent } from './components/bupa-rejection-report/bupa-rejection-report.component';
-import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
-import { CleanClaimProgressReportComponent } from './components/clean-claim-progress-report/clean-claim-progress-report.component';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ChartsModule } from 'ng2-charts';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
+import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared.module';
-import { BupaRejectionListComponent } from './components/bupa-rejection-list/bupa-rejection-list.component';
-import { BupaRejectionUploadModalComponent } from './components/bupa-rejection-upload-modal/bupa-rejection-upload-modal.component';
-import { BupaRejectionUploadSummaryComponent } from './components/bupa-rejection-upload-summary/bupa-rejection-upload-summary.component';
-import { BupaRejectionUploadDetailsComponent } from './components/bupa-rejection-upload-details/bupa-rejection-upload-details.component';
-import { UploadRejectionFileService } from 'src/app/services/uploadRejectionFileService/uploadRejectionFile.service';
+import { CleanClaimProgressReportComponent } from './components/clean-claim-progress-report/clean-claim-progress-report.component';
+import { CreditReportCreateComponent } from './components/credit-report-create/credit-report-create.component';
+import { CreditReportListComponent } from './components/credit-report-list/credit-report-list.component';
+import { CreditReportSummaryDetailsComponent } from './components/credit-report-summary-details/credit-report-summary-details.component';
+import { CreditReportSummaryComponent } from './components/credit-report-summary/credit-report-summary.component';
+import { CreditReportUploadModalComponent } from './components/credit-report-upload-modal/credit-report-upload-modal.component';
 import { RejectedClaimProgressReportComponent } from './components/rejected-claim-progress-report/rejected-claim-progress-report.component';
+import { ReportsRoutingModule } from './reports-routing.module';
+import { CreditReportCreateConfirmDialogComponent } from './components/credit-report-create-confirm-dialog/credit-report-create-confirm-dialog.component';
 
 @NgModule({
   declarations: [
-    BupaRejectionReportComponent,
+    CreditReportCreateComponent,
     CleanClaimProgressReportComponent,
-    BupaRejectionListComponent,
-    BupaRejectionUploadModalComponent,
-    BupaRejectionUploadSummaryComponent,
-    BupaRejectionUploadDetailsComponent,
-    RejectedClaimProgressReportComponent
+    CreditReportListComponent,
+    CreditReportUploadModalComponent,
+    CreditReportSummaryComponent,
+    CreditReportSummaryDetailsComponent,
+    RejectedClaimProgressReportComponent,
+    CreditReportCreateConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +36,7 @@ import { RejectedClaimProgressReportComponent } from './components/rejected-clai
     BsDatepickerModule,
     ChartsModule
   ],
-  providers: [PercentPipe, DatePipe, UploadRejectionFileService],
-  entryComponents: [BupaRejectionUploadModalComponent]
+  providers: [PercentPipe, DatePipe, CreditReportService],
+  entryComponents: [CreditReportCreateConfirmDialogComponent]
 })
 export class ReportsModule { }

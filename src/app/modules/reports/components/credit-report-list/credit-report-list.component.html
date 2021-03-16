@@ -1,0 +1,44 @@
+<div class="block-header has-border">
+    <p>Credit Report Upload</p>
+</div>
+<div class="secondary-header">
+    <p>Payers Rejections Report</p>
+</div>
+<div class="bg-white table-responsive">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Payer Name</th>
+                <th>Received Date</th>
+                <th>Batch Id</th>
+                <th>Total Rejections Amount</th>
+                <th>Total Rejection ratio</th>
+                <th>Medical Rejection ratio</th>
+                <th>Technical Rejection ratio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of creditReportData" routerLink="/reports/creditReportSummary/0" routerLinkActive>
+                <td class="semibold text-primary row-click">{{item.payerName}}</td>
+                <td class="row-click">{{item.receivedDate | date : 'shortDate'}}</td>
+                <td class="row-click">{{item.batchId}}</td>
+                <td class="row-click">{{item.totalrejectionAmount}}</td>
+                <td class="row-click">
+                    <div class="status-text ball-blue">{{item.totalRejectionRatio}}</div>
+                </td>
+                <td class="row-click">{{item.medicalRejectionRatio}}</td>
+                <td class="row-click">{{item.technicalRejectionRatio}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="file-upload-wrapper page-fab">
+    <div class="content">
+        <button mat-fab color="primary" class="page-fab">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <input type="file" accept=".pdf" class="file-upload-control" (click)="clearFiles($event)"
+        (change)="openPdf($event)" />
+</div>

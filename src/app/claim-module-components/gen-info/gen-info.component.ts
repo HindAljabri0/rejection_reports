@@ -165,7 +165,10 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     });
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
-    this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getGenInfoErrors).pipe(
+      withLatestFrom(this.store.select(getPatientErrors)),
+      map(values => ([...values[0], ...values[1]]))
+    ).subscribe(errors => this.errors = errors);
 
 
     this.filteredNations.next(this.nationalities.slice());

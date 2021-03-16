@@ -1,20 +1,22 @@
-<app-detailscard [title]="cardTitle">
-    <div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
-        <mat-card>
-            <p>{{errorMessage}}</p>
-        </mat-card>
-    </div>
-    <div id="infinitScroll">
-        <div *ngFor="let key of notificationsMapKeys">
-            <p>{{key}}</p>
-            <div class="notifications">
-                <div class="notification" *ngFor="let notification of notificationMap.get(key)">
-                    <app-notification-card [notification]="notification">
+<div class="animate__animated animate__faster animate__fadeIn">
+    <app-detailscard [title]="cardTitle">
+        <div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
+            <mat-card>
+                <p>{{errorMessage}}</p>
+            </mat-card>
+        </div>
+        <div id="infinitScroll">
+            <div *ngFor="let key of notificationsMapKeys">
+                <p>{{key}}</p>
+                <div class="notifications">
+                    <div class="notification" *ngFor="let notification of notificationMap.get(key)">
+                        <app-notification-card [notification]="notification">
 
-                    </app-notification-card>
+                        </app-notification-card>
+                    </div>
                 </div>
             </div>
+            <div id="loadMore" *ngIf="notificationsNotFinished()" (click)="getData(true)">Load more...</div>
         </div>
-        <div id="loadMore" *ngIf="notificationsNotFinished()" (click)="getData(true)">Load more...</div>
-    </div>
-</app-detailscard>
+    </app-detailscard>
+</div>
