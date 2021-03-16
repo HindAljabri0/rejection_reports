@@ -74,61 +74,26 @@
                 <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
                 <button *ngIf="claim != null && editable" mat-flat-button color="primary" (click)="edit()">Edit</button>
             </div>
-
-            <div class="block-footer sticky-bottom" *ngIf="!isLoading">
-                <div class="left-block custom-paginator"
-                    *ngIf="paginationControl != null && paginationControl.size > 0">
-                    <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
-                        [disabled]="paginationControl.currentIndex==0">
-                        <img src="./assets/ic-page-first.svg" alt="First" />
-                    </button>
-                    <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
-                        [disabled]="paginationControl.currentIndex==0">
-                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                    </button>
-                    <p class="page-info">
-                        {{(paginationControl.currentIndex+1)}}<small>/{{paginationControl.size}}</small>
-                    </p>
-                    <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
-                        [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
-                        <img src="./assets/ic-page-next.svg" alt="Next" />
-                    </button>
-                    <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
-                        [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
-                        <img src="./assets/ic-page-last.svg" alt="Last" />
-                    </button>
-                </div>
-                <div class="right-block btn-list" *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'">
-                    <button *ngIf="claim != null" mat-flat-button (click)="cancel()">Cancel</button>
-                    <button *ngIf="claim != null" mat-flat-button color="primary" (click)="save()">Save</button>
-                </div>
-                <div class="right-block btn-list" *ngIf="pageMode == 'VIEW'">
-                    <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
-                    <button *ngIf="claim != null && editable" mat-flat-button color="primary"
-                        (click)="edit()">Edit</button>
-                </div>
-                <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
-                    <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
-                    <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary"
-                        (click)="save()">Save</button>
-                </div>
+            <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
+                <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
+                <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary"
+                    (click)="save()">Save</button>
             </div>
-
-            <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimTypeMenu"
-                *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
-                <mat-icon>add</mat-icon>
-            </button>
-
-            <mat-menu #claimTypeMenu yPosition="above" xPosition="before">
-                <ng-template matMenuContent>
-                    <label class="menu-label">Claim Type</label>
-
-                    <button mat-menu-item (click)="startCreatingClaim('INPATIENT')">Inpatient</button>
-                    <button mat-menu-item (click)="startCreatingClaim('OUTPATIENT')">Outpatient</button>
-                    <button mat-menu-item (click)="startCreatingClaim(dentalDepartmentCode)">Dental</button>
-                    <button mat-menu-item (click)="startCreatingClaim(opticalDepartmentCode)">Optical</button>
-                </ng-template>
-            </mat-menu>
         </div>
+        <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimTypeMenu"
+            *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
+            <mat-icon>add</mat-icon>
+        </button>
+
+        <mat-menu #claimTypeMenu yPosition="above" xPosition="before">
+            <ng-template matMenuContent>
+                <label class="menu-label">Claim Type</label>
+
+                <button mat-menu-item (click)="startCreatingClaim('INPATIENT')">Inpatient</button>
+                <button mat-menu-item (click)="startCreatingClaim('OUTPATIENT')">Outpatient</button>
+                <button mat-menu-item (click)="startCreatingClaim(dentalDepartmentCode)">Dental</button>
+                <button mat-menu-item (click)="startCreatingClaim(opticalDepartmentCode)">Optical</button>
+            </ng-template>
+        </mat-menu>
     </div>
 </div>
