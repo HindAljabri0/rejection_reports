@@ -1,13 +1,12 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { Label, BaseChartDirective } from 'ng2-charts';
-import { SharedServices } from 'src/app/services/shared.services';
-import { generateCleanClaimProgressReport, GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
+import { BaseChartDirective, Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { ComparisionType, generateCleanClaimProgressReport, GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { DatePipe } from '@angular/common';
-
+import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-clean-claim-progress-report',
   templateUrl: './clean-claim-progress-report.component.html',
@@ -61,9 +60,12 @@ export class CleanClaimProgressReportComponent implements OnInit {
     },
     plugins: {
       datalabels: {
+        formatter: (value, ctx) => {
+          return this.generateReport.comparisionType === ComparisionType.CleanClaims || this.generateReport.comparisionType === ComparisionType.UncleanClaims ? value + "%" : value;
+        },
         anchor: 'end',
         align: 'end',
-      }
+      },
     },
     legend: {
       labels: {
@@ -74,7 +76,15 @@ export class CleanClaimProgressReportComponent implements OnInit {
     tooltips: {
       bodyFontFamily: this.chartFontFamily,
       titleFontFamily: this.chartFontFamily,
-      footerFontFamily: this.chartFontFamily
+      footerFontFamily: this.chartFontFamily,
+      callbacks: {
+        label: (tooltipItem, data) => {
+          let allData = data.datasets[tooltipItem.datasetIndex].data;
+          let tooltipLabel = data.labels[tooltipItem.index];
+          let tooltipData = allData[tooltipItem.index];
+          return this.generateReport.comparisionType === ComparisionType.CleanClaims || this.generateReport.comparisionType === ComparisionType.UncleanClaims ? tooltipLabel + " : " + tooltipData + "%" : tooltipLabel + " : " + tooltipData;
+        }
+      }
     },
     title: {
       display: true,
@@ -83,12 +93,19 @@ export class CleanClaimProgressReportComponent implements OnInit {
       fontColor: this.chartFontColor,
       fullWidth: true,
       fontSize: 16
-    }
+    },
+
   };
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  public barChartPlugins = [pluginDataLabels];
+  public barChartPlugins = [{
+    beforeInit: (chart, options) => {
+      chart.legend.afterFit = function () {
+        this.height += 10;
+      };
+    }
+  }, pluginDataLabels];
   public barChartData: ChartDataSets[] = [
     {
       data: [],
@@ -187,7 +204,7 @@ export class CleanClaimProgressReportComponent implements OnInit {
       this.datePickerConfig = { dateInputFormat: 'MMM YYYY' };
     } else if (event.value === 'Week') {
       this.datePickerConfig = { selectWeek: true, selectFromOtherMonth: true, dateInputFormat: 'DD/MM/YYYY' };
-    } else if (event.value) {
+    } else if (event.value === 'Day') {
       this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
     } else {
       this.datePickerConfig = { dateInputFormat: 'YYYY' }
@@ -253,6 +270,19 @@ export class CleanClaimProgressReportComponent implements OnInit {
       return this.datePipe.transform(date, 'yyyy-MM-dd');
     }
   }
+  get cptype() {
+    return ComparisionType;
+  }
+
+  selectComparisionType(type, form) {
+    if (form.invalid) {
+      form.submitted = true;
+      return;
+    }
+    this.generateReport.comparisionType = type;
+    this.generate();
+  }
+
 }
 
 

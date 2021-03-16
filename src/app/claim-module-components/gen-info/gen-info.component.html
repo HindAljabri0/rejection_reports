@@ -1,14 +1,14 @@
 <div class="row small-gutter general-info-wrapper">
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('fullName') || fieldHasError('gender')">
+        <div class="form-group" [class.has-error]="fieldHasError('fullName')">
             <label class="control-label">Full Name</label>
             <div class="row extra-small-gutter">
                 <div class="col">
                     <input class="form-control" placeholder="Enter full name" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto form-group" [class.has-error]="fieldHasError('gender')">
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select [value]="selectedGender" (selectionChange)="updateClaim('gender')" [disabled]="!editableFields.gender">
+                        <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value; updateClaim('gender');" [disabled]="!editableFields.gender">
                             <mat-option value="M">Male</mat-option>
                             <mat-option value="F">Female</mat-option>
                         </mat-select>
@@ -220,8 +220,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group">
-            <label class="control-label">Visit Type<span class="asterisk">*</span></label>
+        <div class="form-group" [class.has-error]="fieldHasError('visitType')">
+            <label class="control-label">Visit Type</label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType" (selectionChange)="selectedVisitType = $event.value; updateClaim('visitType');"
                     required>

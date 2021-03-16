@@ -62,6 +62,7 @@ export class MainClaimPageComponent implements OnInit {
     searchTabCurrentResults: number[];
   };
   claimType = '';
+  claimName: string;
 
 
   constructor(
@@ -163,8 +164,10 @@ export class MainClaimPageComponent implements OnInit {
     this.claimType = type;
     const payers = this.sharedService.getPayersList();
     if (this.claimType == this.dentalDepartmentCode || this.claimType == this.opticalDepartmentCode) {
+      this.claimName = type == this.dentalDepartmentCode ? 'Dental' : 'Optical';
       this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
     } else {
+      this.claimName = type === 'INPATIENT' ? 'Inpatient' : 'Outpatient';
       this.store.dispatch(startCreatingNewClaim({
         data: {
           claimType: this.claimType,

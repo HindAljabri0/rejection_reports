@@ -14,8 +14,12 @@ export class RegularPaymentListComponent implements OnInit {
   ngOnInit() {
   }
 
-  fileUploadChange() {
-    const dialogRef = this.dialog.open(FileUploadDialogComponent, { panelClass: ['primary-dialog'], autoFocus: false });
+  fileUploadChange(event) {
+    const dialogRef = this.dialog.open(FileUploadDialogComponent, { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
+  }
+
+  clearFiles(event) {
+    event.target.value = "";
   }
 
 }
