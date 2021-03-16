@@ -333,10 +333,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
 
       this.detailActionText = 'Submit';
-      this.detailSubActionText = 'Re-validate';
+      this.detailSubActionText = 'Re-Validate';
     } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
 
-      this.detailActionText = 'Re-validate';
+      this.detailActionText = 'Re-Validate';
       this.detailSubActionText = null;
     } else {
       this.detailActionText = null;
