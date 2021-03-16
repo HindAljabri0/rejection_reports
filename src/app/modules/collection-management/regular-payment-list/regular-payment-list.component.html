@@ -83,6 +83,8 @@
                 <mat-icon>add</mat-icon>
             </button>
         </div>
-        <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange()" />
+        <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange($event)"
+            (click)="clearFiles($event)" />
     </div>
+
 </div>

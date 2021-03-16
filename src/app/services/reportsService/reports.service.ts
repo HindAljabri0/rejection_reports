@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { BupaRejectionReportModel } from 'src/app/models/bupaRejectionReport';
+import { CreditReportQueryModel } from 'src/app/models/creditReportQuery';
 import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
 import { Observable } from 'rxjs';
 
@@ -125,7 +125,7 @@ export class ReportsService {
     return this.http.request(request);
   }
 
-  saveBupaRejectionReport(providerId: string, data: BupaRejectionReportModel) {
+  saveBupaRejectionReport(providerId: string, data: CreditReportQueryModel) {
     let body = { ...data };
     Object.keys(body).some(key => {
       if (body[key].toString().includes('%')) {
