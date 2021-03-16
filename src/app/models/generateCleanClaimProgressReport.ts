@@ -3,11 +3,19 @@ export class generateCleanClaimProgressReport {
     beforeDate = '';
     afterDate = '';
     comparisionCriteria = 'Year';
-    comparisonType = '';
+    comparisionType = ComparisionType.TotalNetAmount;
 }
 
 export enum GrowthRate {
     Up = 1,
     Down = 2,
     Equal = 0
+}
+
+export enum ComparisionType {
+    TotalNetAmount = 'TOTALNETAMOUNT',
+    VATAmount = 'VATAMOUNT',
+    CleanClaims = 'CLEANCLAIMS',
+    UncleanClaims = 'UNCLEANCLAIMS',
+    NumberOfErrors = 'NUMBEROFERRORS'
 }
