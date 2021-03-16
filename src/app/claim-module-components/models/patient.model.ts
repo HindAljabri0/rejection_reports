@@ -7,7 +7,7 @@ export class Patient {
     lastName: string;
     age: Period;
     dob: Date;
-    gender: 'M' | 'F';
+    gender: 'M' | 'F' = 'M';
     nationality: string;
     patientFileNumber: string;
     contactNumber: string;
