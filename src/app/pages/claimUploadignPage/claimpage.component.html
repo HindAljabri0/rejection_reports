@@ -1,9 +1,11 @@
-<div class="block-header">
-    <p>Upload Name: {{summary.uploadName}}</p><span class="spacer"></span>
-    <p>{{summaryDate}}</p>
-</div>
-<div class="block-body">
-    <app-claimsummary></app-claimsummary>
-    <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined">
-    </app-claimfileupload>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header">
+        <p>Upload Name: {{summary.uploadName}}</p><span class="spacer"></span>
+        <p>{{summaryDate}}</p>
+    </div>
+    <div class="block-body">
+        <app-claimsummary></app-claimsummary>
+        <app-claimfileupload *ngIf="summary.uploadSummaryID == undefined">
+        </app-claimfileupload>
+    </div>
 </div>
