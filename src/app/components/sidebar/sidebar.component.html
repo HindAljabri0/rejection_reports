@@ -121,11 +121,11 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                <mat-expansion-panel hideToggle class="hide-toggle" *ngIf="!doNotShowMenuItemIn.includes(envName)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Collection Management</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <ul class="nav-list">
+                    <!-- <ul class="nav-list">
                         <li>
                             <a routerLink="/collection-management/regular-payment-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Regular Payment Details</span>
@@ -146,7 +146,7 @@
                                 <span class="text">VAT Payment Reports</span>
                             </a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)" [expanded]="summaryReport.isActive || ebillingReport.isActive">

@@ -234,7 +234,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .sidebar .mat-expansion-panel-body{padding: 0;}
 .sidebar .mat-expansion-panel{box-shadow:none;background:none;}
 .sidebar .mat-expansion-panel-header{height:40px!important;min-height:40px!important;max-height:40px!important;padding:5px 40px 5px 16px;position:relative;}
-.sidebar .mat-expansion-panel-header:after{background:url('assets/ic-chevron-down.svg') center no-repeat;position:absolute;content:'';top:50%;right:12px;transform: translate(0,-50%) rotate(0deg);height:24px;width:24px;display:block;background-size:20px 20px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.sidebar .mat-expansion-panel:not(.hide-toggle) .mat-expansion-panel-header:after{background:url('assets/ic-chevron-down.svg') center no-repeat;position:absolute;content:'';top:50%;right:12px;transform: translate(0,-50%) rotate(0deg);height:24px;width:24px;display:block;background-size:20px 20px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
 .sidebar .mat-expansion-panel.mat-expanded .mat-expansion-panel-header:after{transform: translate(0,-50%) rotate(180deg);}
 .sidebar .mat-expansion-panel-header-title{color:#4F5666;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: 100%;margin: 0;}
 .sidebar .mat-expansion-panel-body .nav-list>li>a .text{padding-left: 14px;}
