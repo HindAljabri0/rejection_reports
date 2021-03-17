@@ -169,6 +169,13 @@ export class CleanClaimProgressReportComponent implements OnInit {
   }
   ];
   diffrenceLableName: string = "Year";
+  labelConfig = [
+    { type: ComparisionType.TotalNetAmount, value: 'Total Net Amount Tracking Report' },
+    { type: ComparisionType.VATAmount, value: 'VAT Amount Tracking Report' },
+    { type: ComparisionType.CleanClaims, value: 'Clean Claims Tracking Report' },
+    { type: ComparisionType.UncleanClaims, value: 'Unclean Claims Tracking Report' },
+    { type: ComparisionType.NumberOfErrors, value: 'Number of Errors Tracking Report' }
+  ]
   get providerId(): string {
     return this.sharedService.providerId;
   }
@@ -250,6 +257,8 @@ export class CleanClaimProgressReportComponent implements OnInit {
           this.percenatgeChartData.push(obj);
         });
         this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
+        const chartLableName = this.labelConfig.find(ele => ele.type === this.generateReport.comparisionType).value;
+        this.barChartOptions.title.text = chartLableName;
 
         if (this.chart)
           this.chart.ngOnChanges({});
