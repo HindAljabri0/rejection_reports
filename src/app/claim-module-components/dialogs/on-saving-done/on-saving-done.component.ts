@@ -45,7 +45,16 @@ export class OnSavingDoneComponent implements OnInit {
   }
 
   onOK() {
-    this.location.go(this.location.path().replace('#edit', ''));
+    let pathSegments = this.location.path().split('/');
+    let oldClaimId = pathSegments.pop();
+    oldClaimId.replace("#edit", '');
+    const paginationIds = localStorage.getItem('search_tab_result');
+    if (paginationIds != null) {
+      let paginationIdsSegments = paginationIds.split(',');
+      localStorage.setItem('search_tab_result', paginationIdsSegments.map(id => { if (id == oldClaimId) return this.data.claimId; else return id; }).join(','));
+    }
+    pathSegments.push(this.data.claimId);
+    this.location.go(pathSegments.join('/'));
     location.reload();
   }
 
