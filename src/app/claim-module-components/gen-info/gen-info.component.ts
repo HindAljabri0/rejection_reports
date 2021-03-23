@@ -592,12 +592,14 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   }
 
   beautifyVisitType(visitType: string) {
-    let str = visitType.substr(0, 1) + visitType.substr(1).toLowerCase();
-    if (str.includes('_')) {
-      const split = str.split('_');
-      str = split[0] + ' ' + this.beautifyVisitType(split[1].toUpperCase());
+    if (visitType != null) {
+      let str = visitType.substr(0, 1) + visitType.substr(1).toLowerCase();
+      if (str.includes('_')) {
+        const split = str.split('_');
+        str = split[0] + ' ' + this.beautifyVisitType(split[1].toUpperCase());
+      }
+      return str;
     }
-    return str;
   }
 
   beautifyCategory(category) {
