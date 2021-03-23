@@ -1,0 +1,162 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Accounts Receivable</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <div class="right-block">
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="">
+                                <mat-option value="">Select Payer</mat-option>
+                                <mat-option value="Payer 1">Payer 1</mat-option>
+                                <mat-option value="Payer 2">Payer 2</mat-option>
+                                <mat-option value="Payer 3">Payer 3</mat-option>
+                                <mat-option value="Payer 4">Payer 4</mat-option>
+                                <mat-option value="Payer 5">Payer 5</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Received From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
+                        <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Received To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
+                        <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Batch Reference No.</label>
+                    <input class="form-control" placeholder="Ex. 005BQ" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Claim Month</label>
+                    <input class="form-control" placeholder="Ex. JAN 20" />
+                </div>
+            </div>
+            <div class="col-auto align-self-end">
+                <div class="form-group">
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="primary-grid manual-row-color" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th colspan="2">Payer Name</th>
+                    <th>Invoice Date</th>
+                    <th>Invoice Number</th>
+                    <th>Total Amount</th>
+                    <th>Deviating Term</th>
+                    <th>Due Date</th>
+                    <th>Amount Outstanding</th>
+                    <th>Days Overdue</th>
+                    <th class="text-center">Aging Indicator</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-primary text-center row-click" width="10">
+                        <mat-icon class="size-21">add_circle_outline</mat-icon>
+                    </td>
+                    <td class="row-click">Bupa</td>
+                    <td class="row-click">7/1/2017</td>
+                    <td class="row-click">F12346-1</td>
+                    <td class="row-click">1000</td>
+                    <td class="row-click">7</td>
+                    <td class="row-click">7/8/17</td>
+                    <td class="row-click">500.00</td>
+                    <td class="row-click">1,347</td>
+                    <td class="text-center row-click"><span class="status-dot account-receivable-green"></span></td>
+                    <td><a href="#" class="primary-link" title="Add payment">Add payment</a></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="pt-0">
+                        <div class="row small-gutter">
+                            <div class="col-8">
+                                <div class="account-receivable-card">
+                                    <p class="title">Payment Graph</p>
+                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                        [chartType]="barChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="account-receivable-card">
+                                    <p class="title">Aging Indicator</p>
+                                    <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
+                                        [chartType]="doughnutChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="text-primary text-center row-click" width="10">
+                        <mat-icon class="size-21">add_circle_outline</mat-icon>
+                    </td>
+                    <td class="row-click">MedGulf</td>
+                    <td class="row-click">7/1/2017</td>
+                    <td class="row-click">F12346-1</td>
+                    <td class="row-click">1000</td>
+                    <td class="row-click">7</td>
+                    <td class="row-click">7/8/17</td>
+                    <td class="row-click">500.00</td>
+                    <td class="row-click">1,347</td>
+                    <td class="text-center row-click"><span class="status-dot account-receivable-orange"></span></td>
+                    <td><a href="#" class="primary-link" title="Add payment">Add payment</a></td>
+                </tr>
+                <tr class="even">
+                    <td colspan="11" class="pt-0">
+                        <div class="row small-gutter">
+                            <div class="col-8">
+                                <div class="account-receivable-card">
+                                    <p class="title">Payment Graph</p>
+                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                        [chartType]="barChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="account-receivable-card">
+                                    <p class="title">Aging Indicator</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="file-upload-wrapper page-fab">
+        <div class="content">
+            <button mat-fab color="primary" class="page-fab">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <input type="file" accept=".xlsx" class="file-upload-control" (change)="fileUploadChange($event)" />
+    </div>
+</div>

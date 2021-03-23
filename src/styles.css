@@ -87,6 +87,10 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .info-block{padding: 16px;border-radius: 6px;color: #3060AA;background-color: rgba(48, 96, 170,0.1);}
 .status-dot{height: 10px;width: 10px;border-radius: 50%;display: inline-block;}
 .status-dot.size-lg{height: 14px;width: 14px;}
+.status-dot.account-receivable-green{background-color: #45E23F;}
+.status-dot.account-receivable-orange{background-color: #FFAD41;}
+.status-dot.account-receivable-yellow{background-color: #F0F63C;}
+.status-dot.account-receivable-red{background-color: #F55656;}
 .error-card {background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;margin-bottom: 16px;padding: 12px 16px;border-radius: 6px;}
 .inner-loader-wrapper{position: relative;}
 .inner-loader-wrapper .inner-loader{z-index: 8;position: absolute;background-color: rgba(255, 255, 255, 0.5);top: 0;left: 0;right: 0;bottom: 0;display: flex;align-items: center;justify-content: center;}
@@ -418,7 +422,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.contextful)>.header-primary>tr>th,.primary-grid:not(.contextful)>.header-primary>tr>td{color:#fff;background-color: #3060AA;}
 .primary-grid>thead>tr>th:first-child,.primary-grid>thead>tr>td:first-child,.primary-grid>tbody>tr>th:first-child,.primary-grid>tbody>tr>td:first-child{padding-left: 12px;}
 .primary-grid>thead>tr>th:last-child,.primary-grid>thead>tr>td:last-child,.primary-grid>tbody>tr>th:last-child,.primary-grid>tbody>tr>td:last-child{padding-right: 12px;}
-.primary-grid>tbody>tr:nth-child(even){background-color: #EDF4FF;}
+.primary-grid:not(.manual-row-color)>tbody>tr:nth-child(even),.primary-grid.manual-row-color>tbody>.even{background-color: #EDF4FF;}
 .primary-grid .actions{text-align: right;white-space: nowrap;}
 .primary-grid .actions .mat-icon-button{width: 30px;height: 30px;line-height: 30px;margin:-5px 0;display: inline-block;vertical-align: middle;}
 .primary-grid .actions .mat-icon-button .mat-button-wrapper{display: block;}
@@ -864,6 +868,11 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* animations
 --------------------------------------------------------------------------------------------------------*/
 .animate__animated.animate__faster {-webkit-animation-duration: 0.3s!important;animation-duration: 0.3s!important;-webkit-animation-timing-function: cubic-bezier(0.35,0,0.25,1)!important;animation-timing-function: cubic-bezier(0.35,0,0.25,1)!important;}
+
+/* account receivable card
+--------------------------------------------------------------------------------------------------------*/
+.account-receivable-card{padding: 12px;background-color: #fff;border-radius:6px;}
+.account-receivable-card .title{font-weight: 500;padding-bottom: 16px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
