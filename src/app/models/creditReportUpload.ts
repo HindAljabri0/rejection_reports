@@ -6,4 +6,5 @@ export class CreditReportUploadModel {
     totalRejectionRatio: string;
     medicalRejectionRatio: string;
     technicalRejectionRatio: string;
+    routerLink: string;
 }

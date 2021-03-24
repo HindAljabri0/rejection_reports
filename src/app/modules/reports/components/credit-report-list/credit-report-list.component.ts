@@ -26,16 +26,18 @@ export class CreditReportListComponent implements OnInit {
       totalrejectionAmount: '1,596,900.00 SR',
       totalRejectionRatio: '1,596,900.00 SR',
       medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%'
+      technicalRejectionRatio: '47%',
+      routerLink: '/reports/creditReportSummary/0'
     },
     {
-      payerName: 'Bupa',
+      payerName: 'Tawuniya',
       receivedDate: new Date('03/04/2020'),
       batchId: 'B1DD',
       totalrejectionAmount: '1,596,900.00 SR',
       totalRejectionRatio: '1,596,900.00 SR',
       medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%'
+      technicalRejectionRatio: '47%',
+      routerLink: '/reports/tawuniya-credit-report-details'
     }];
     this.creditReportData = data;
   }
