@@ -308,7 +308,7 @@
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
-					Credit Report Upload
+					Credit Reports
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
@@ -317,7 +317,7 @@
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
-					تحميل تقرير الائتمان
+					تقارير الائتمان
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</target>
