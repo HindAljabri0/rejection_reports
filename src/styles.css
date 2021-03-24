@@ -803,6 +803,11 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .credit-report-summary-body>.right-block .primary-tab .mat-tab-body{padding: 0;}
 .credit-report-summary-body>.left-block .legend-text{color:#707070;display: flex;font-size:13px;padding-bottom: 6px;}
 .credit-report-summary-body>.left-block .legend-text:before{content:'';height:8px;flex-grow:0;flex-basis:8px;flex-shrink:0;max-width:8px; margin-right:6px;border-radius:50px;display:block;margin-top:5px;}
+.credit-report-summary-body>.left-block .information-block{padding: 12px;border-bottom: 1px solid rgba(112, 112, 112,0.2);}
+.credit-report-summary-body>.left-block .information-block>li{display: flex;font-weight: 500;padding-bottom: 8px;}
+.credit-report-summary-body>.left-block .information-block>li:last-child{padding-bottom: 0;}
+.credit-report-summary-body>.left-block .information-block>li>span{color:#3060AA;display: block;padding-right: 6px;}
+.credit-report-summary-body>.left-block .information-block>li>p{margin-left: auto;text-align: right;}
 .rejection-reason-chart-block{padding: 12px;border-bottom:1px solid rgba(112, 112, 112,0.2);}
 .rejection-reason-chart-block .legend-text:before{background-color: #2D47D6;}
 .rejection-reason-chart-block .content-wrapper{display: flex;align-items: center;}
