@@ -123,6 +123,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   showValidationTab = false;
   isRevalidate = false;
   isSubmit = false;
+  isDeleteBtnVisible: boolean = true;
+  status: any = 1;
+
 
   constructor(
     public location: Location,
@@ -426,6 +429,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         this.commen.loadingChanged.next(false);
       });
+    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing) ? false : true;
+    const status = this.routeActive.snapshot.queryParamMap.get('status');
+    this.status = status === null ? this.status : status;
   }
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
@@ -989,6 +996,52 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get showEligibilityButton() {
     return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all');
+  }
+  deleteClaimByUploadid() {
+
+    if (this.commen.loading) { return; }
+    this.commen.loadingChanged.next(true);
+
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Upload?',
+        `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              const status = event.body['status'];
+              if (status == "Deleted") {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    `Your claims deleted successfully.`,
+                    false))
+                  .subscribe(afterColse => {
+                    // this.claimService.summaryChange.next(new UploadSummary());
+                    // this.router.navigate(['']);
+                    location.reload();
+                  });
+              }
+              else {
+                const error = event.body['errors'];
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    error[0].description,
+                    false));
+              }
+
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+            }
+          });
+        }
+      });
   }
 }
 
