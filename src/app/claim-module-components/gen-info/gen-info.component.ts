@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Period } from '../models/period.type';
@@ -14,7 +14,23 @@ import {
   updateCommReport,
   updateEligibilityNum,
   updateRadiologyReport,
-  updateOtherCondition
+  updateOtherCondition,
+  updatePatientName,
+  setError,
+  updatePayer,
+  updateVisitType,
+  updateNationality,
+  updatePatientMemberId,
+  updatePolicyNum,
+  updateNationalId,
+  updateApprovalNum,
+  updatePatientGender,
+  updatePlanType,
+  updatePhysicianId,
+  updatePhysicianCategory,
+  updatePhysicianName,
+  updatePageType,
+  updateDepartment
 } from '../store/claim.actions';
 import {
   getDepartmentCode,
@@ -24,18 +40,27 @@ import {
   ClaimPageType,
   getPageType,
   getPageMode,
-  ClaimPageMode
+  ClaimPageMode,
+  nationalities,
+  getVisitType,
+  getPatientErrors,
+  getPhysicianCategory,
+  getDepartments,
+  getPhysicianErrors
 } from '../store/claim.reducer';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { Claim } from '../models/claim.model';
+import { ReplaySubject, Subject } from 'rxjs';
+import { MatSelect } from '@angular/material';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'gen-info',
   templateUrl: './gen-info.component.html',
   styles: []
 })
-export class GenInfoComponent implements OnInit {
+export class GenInfoComponent implements OnInit, OnDestroy {
 
   isRetrievedClaim = false;
 
@@ -64,14 +89,61 @@ export class GenInfoComponent implements OnInit {
 
   pageMode: ClaimPageMode;
   claimPageType: ClaimPageType;
+  fullNameController: FormControl = new FormControl();
+  editableFields = {
+    payer: true,
+    visitType: true,
+    nationality: true,
+    gender: true
+  };
 
-  constructor(private store: Store, private datePipe: DatePipe) { }
+  selectedGender = 'M';
+  selectedPayer: number;
+  selectedVisitType: string;
+  selectedNationality = '';
+  memberIdController: FormControl = new FormControl();
+  policyNumController: FormControl = new FormControl();
+  nationalIdController: FormControl = new FormControl();
+  approvalNumController: FormControl = new FormControl();
+
+  planTypeController: FormControl = new FormControl();
+
+  payersList: { id: number, name: string, arName: string }[] = [];
+  visitTypes: any[] = [];
+  nationalities = nationalities;
+
+  nationalityFilterCtrl: FormControl = new FormControl();
+  filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  _onDestroy = new Subject<void>();
+  @ViewChild('nationalitySelect', { static: true }) nationalitySelect: MatSelect;
+  selectedCategory = '';
+  pageType: ClaimPageType;
+  selectedDepartment: number;
+  categoryEditable = true;
+  categories: any[] = [];
+  departments: any[];
+  physicianNameController: FormControl = new FormControl();
+  physicianIdController: FormControl = new FormControl();
+  departmentEditable = true;
+  @Input() claimType = '';
+  departmentFilterCtrl: FormControl = new FormControl();
+  filteredDepartments: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  @ViewChild('departmentSelect', { static: true }) departmentSelect: MatSelect;
+  isDepartmentDisable: boolean = false;
+  isPageModeCreate: boolean = false;
+  constructor(
+    private store: Store,
+    private datePipe: DatePipe,
+    private sharedServices: SharedServices
+  ) { }
 
   ngOnInit() {
     this.store.select(getPageMode).pipe(
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
+      this.pageMode = mode;
+      this.payersList = this.sharedServices.getPayersList();
       if (mode == 'VIEW') {
         this.setData(claim);
         this.toggleEdit(false);
@@ -81,11 +153,79 @@ export class GenInfoComponent implements OnInit {
       } else if (mode == 'CREATE_FROM_RETRIEVED') {
         this.setData(claim);
         this.toggleEdit(false, true);
+      } else {
+        if (this.payersList.length > 0) {
+          this.selectedPayer = this.payersList[0].id;
+        } else {
+          this.store.dispatch(setError({ error: { code: 'PAYERS_LIST' } }));
+        }
+
+        if (this.visitTypes.length > 0) {
+          this.selectedVisitType = this.visitTypes[0];
+        }
+        this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
+        this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
       }
     });
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
-    this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getGenInfoErrors).pipe(
+      withLatestFrom(this.store.select(getPatientErrors)),
+      map(values => ([...values[0], ...values[1]]))
+    ).subscribe(errors => this.errors = errors);
+
+
+    this.filteredNations.next(this.nationalities.slice());
+
+    this.nationalityFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterNationality();
+      });
+
+    this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
+    this.store.select(getPageType).subscribe(type => this.claimPageType = type);
+
+    this.store.select(getPatientErrors).subscribe(errors => this.errors = errors);
+
+
+    this.store.select(getPageType).subscribe(type => this.pageType = type);
+    this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = +type);
+
+    setTimeout(() => {
+      const category = this.selectedCategory;
+      const department = this.selectedDepartment;
+      this.selectedDepartment = null;
+      this.selectedCategory = '-1';
+      setTimeout(() => {
+        this.selectedDepartment = department; this.selectedCategory = category;
+      }, 500);
+    }, 500);
+    this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
+    this.store.select(getDepartments).pipe(
+      withLatestFrom(this.store.select(getPageMode)),
+      map(values => ({ departments: values[0], mode: values[1] }))
+    ).subscribe(values => {
+      if (values.mode.startsWith('CREATE')) {
+        this.isDepartmentDisable = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL' ? true : false;
+        this.departments = values.departments;
+        this.isPageModeCreate = true;
+      } else {
+        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL' ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical') : values.departments;
+      }
+      this.filteredDepartments.next(this.departments.slice());
+      this.departmentFilterCtrl.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterDepartments();
+        });
+    });
+    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
 
   setData(claim: Claim) {
@@ -144,6 +284,25 @@ export class GenInfoComponent implements OnInit {
     this.selectedCaseType = claim.caseInformation.caseType;
     this.radiologyReportController.setValue(claim.caseInformation.radiologyReport);
     this.otherConditionController.setValue(claim.caseInformation.otherConditions);
+
+    this.fullNameController.setValue(claim.caseInformation.patient.fullName);
+    if (claim.claimIdentities.payerID != null) {
+      this.selectedPayer = Number.parseInt(claim.claimIdentities.payerID, 10);
+    }
+    this.selectedGender = claim.caseInformation.patient.gender;
+    this.selectedVisitType = claim.visitInformation.visitType;
+    this.selectedNationality = claim.caseInformation.patient.nationality;
+    this.nationalIdController.setValue(claim.member.idNumber);
+    this.approvalNumController.setValue(claim.claimIdentities.approvalNumber);
+    this.policyNumController.setValue(claim.member.policyNumber);
+    this.memberIdController.setValue(claim.member.memberID);
+    this.planTypeController.setValue(claim.member.planType);
+    this.setInitialValueOfNationality();
+
+    this.physicianIdController.setValue(claim.caseInformation.physician.physicianID);
+    this.physicianNameController.setValue(claim.caseInformation.physician.physicianName);
+    this.selectedCategory = claim.caseInformation.physician.physicianCategory;
+    this.selectedDepartment = +claim.visitInformation.departmentCode;
   }
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
@@ -160,6 +319,7 @@ export class GenInfoComponent implements OnInit {
       this.radiologyReportController.enable();
       this.otherConditionController.enable();
       this.eligibilityNumController.enable();
+      this.fullNameController.enable();
     } else {
       this.illnessDurationController.disable();
       this.ageController.disable();
@@ -170,6 +330,7 @@ export class GenInfoComponent implements OnInit {
       this.radiologyReportController.disable();
       this.otherConditionController.disable();
       this.eligibilityNumController.disable();
+      this.fullNameController.disable();
     }
 
     if (enableForNulls) {
@@ -206,10 +367,68 @@ export class GenInfoComponent implements OnInit {
       if (this.isControlNull(this.eligibilityNumController)) {
         this.eligibilityNumController.enable();
       }
+      if (this.isControlNull(this.fullNameController)) {
+        this.fullNameController.enable();
+      }
+    }
+
+    this.editableFields = {
+      gender: allowEdit || (enableForNulls && this.selectedGender != 'M' && this.selectedGender != 'F'),
+      nationality: allowEdit || (enableForNulls && this.nationalities.findIndex(n => n.Code == this.selectedNationality) == -1),
+      payer: allowEdit || (enableForNulls && this.payersList.findIndex(p => p.id == this.selectedPayer) == -1),
+      visitType: allowEdit || (enableForNulls && !this.visitTypes.includes(this.selectedVisitType))
+    };
+    if (allowEdit) {
+      this.memberIdController.enable();
+      this.policyNumController.enable();
+      this.nationalIdController.enable();
+      this.approvalNumController.enable();
+      this.planTypeController.enable();
+    } else {
+      this.memberIdController.disable();
+      this.policyNumController.disable();
+      this.nationalIdController.disable();
+      this.approvalNumController.disable();
+      this.planTypeController.disable();
+    }
+    if (enableForNulls) {
+      if (this.isControlNull(this.memberIdController)) {
+        this.memberIdController.enable();
+      }
+      if (this.isControlNull(this.policyNumController)) {
+        this.policyNumController.enable();
+      }
+      if (this.isControlNull(this.nationalIdController) || this.nationalIdController.value.length != 10) {
+        this.nationalIdController.enable();
+      }
+      if (this.isControlNull(this.approvalNumController)) {
+        this.approvalNumController.enable();
+      }
+      if (this.isControlNull(this.planTypeController)) {
+        this.planTypeController.enable();
+      }
+    }
+
+    this.categoryEditable = allowEdit || (enableForNulls && !this.categories.includes(this.selectedCategory));
+    this.departmentEditable = allowEdit;
+    if (allowEdit || (enableForNulls && (this.physicianNameController.value == null || this.physicianNameController.value == ''))) {
+      this.physicianNameController.enable();
+    } else {
+      this.physicianNameController.disable();
+    }
+    if (enableForNulls) {
+      if (this.physicianIdController.value == null || this.physicianIdController.value == '') {
+        this.physicianIdController.disable();
+      } else {
+        this.physicianIdController.enable();
+      }
+    } else {
+      this.physicianIdController.disable();
     }
   }
 
   updateClaim(field: string) {
+    this.errors = this.errors.filter(error => error.fieldName == field);
     switch (field) {
       case ('claimDate'):
         this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
@@ -248,6 +467,60 @@ export class GenInfoComponent implements OnInit {
         break;
       case 'otherCondition':
         this.store.dispatch(updateOtherCondition({ condition: this.otherConditionController.value }));
+        break;
+      case 'fullName':
+        this.store.dispatch(updatePatientName({ name: this.fullNameController.value }));
+        break;
+      case 'payer':
+        this.store.dispatch(updatePayer({ payerId: this.selectedPayer }));
+        break;
+      case 'visitType':
+        this.store.dispatch(updateVisitType({ visitType: this.selectedVisitType }));
+        break;
+      case 'nationality':
+        this.store.dispatch(updateNationality({ nationality: this.selectedNationality }));
+        break;
+      case 'memberId':
+        this.store.dispatch(updatePatientMemberId({ memberId: this.memberIdController.value }));
+        break;
+      case 'policyNum':
+        this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value }));
+        break;
+      case 'nationalId':
+        this.store.dispatch(updateNationalId({
+          nationalId: this.nationalIdController.value == null ? null : `${this.nationalIdController.value}`
+        }));
+        break;
+      case 'approvalNum':
+        this.store.dispatch(updateApprovalNum({ approvalNo: this.approvalNumController.value }));
+        break;
+      case 'gender':
+        this.store.dispatch(updatePatientGender({ gender: this.selectedGender }));
+        break;
+      case 'planType':
+        this.store.dispatch(updatePlanType({ planType: this.planTypeController.value }));
+        break;
+      case 'physicianId':
+        this.store.dispatch(updatePhysicianId({ physicianId: this.physicianIdController.value }));
+        break;
+      case 'physicianName':
+        this.store.dispatch(updatePhysicianName({ physicianName: this.physicianNameController.value }));
+        break;
+      case 'physicianCategory':
+        this.store.dispatch(updatePhysicianCategory({ physicianCategory: this.selectedCategory }));
+        break;
+      case 'department':
+        const dental = this.departments.find(department => department.name == 'Dental');
+        const optical = this.departments.find(department => department.name == 'Optical');
+        const pharmacy = this.departments.find(department => department.name == 'Pharmacy');
+        if ((dental != null && this.selectedDepartment == dental.departmentId)
+          || (optical != null && this.selectedDepartment == optical.departmentId)
+          || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
+          this.store.dispatch(updatePageType({ pageType: 'DENTAL_OPTICAL' }));
+        } else {
+          this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }));
+        }
+        this.store.dispatch(updateDepartment({ department: this.selectedDepartment.toString() }));
         break;
     }
   }
@@ -300,6 +573,99 @@ export class GenInfoComponent implements OnInit {
 
   isControlNull(control: FormControl) {
     return control.value == null || control.value == '';
+  }
+
+
+  filterDepartments() {
+    if (!this.departments) {
+      return;
+    }
+    // get the search keyword
+    let search = this.departmentFilterCtrl.value;
+    if (!search) {
+      this.filteredDepartments.next(this.departments.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredDepartments.next(
+      this.departments.filter(department => department.name.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  filterNationality() {
+    if (!this.nationalities) {
+      return;
+    }
+    // get the search keyword
+    let search = this.nationalityFilterCtrl.value;
+    if (!search) {
+      this.filteredNations.next(this.nationalities.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredNations.next(
+      this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  setInitialValueOfNationality() {
+    this.filteredNations
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.nationalitySelect.compareWith = (
+          a: { Code: string, Name: string },
+          b: { Code: string, Name: string }) =>
+          a && b && a.Code === b.Code;
+      });
+  }
+
+  setInitialValueOfDepartment() {
+    this.filteredDepartments
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.departmentSelect.compareWith = (
+          a: { Code: string, Name: string },
+          b: { Code: string, Name: string }) =>
+          a && b && a.Code === b.Code;
+      });
+  }
+
+
+  payersListHasId(id) {
+    return this.payersList.findIndex(payer => payer.id == id) > -1;
+  }
+
+  beautifyVisitType(visitType: string) {
+    if (visitType != null) {
+      let str = visitType.substr(0, 1) + visitType.substr(1).toLowerCase();
+      if (str.includes('_')) {
+        const split = str.split('_');
+        str = split[0] + ' ' + this.beautifyVisitType(split[1].toUpperCase());
+      }
+      return str;
+    }
+  }
+
+  beautifyCategory(category) {
+    if (category != null && category != '-1') {
+      let str = category.substr(0, 1) + category.substr(1).toLowerCase();
+      if (str.includes('_')) {
+        const split = str.split('_');
+        str = split[0] + ' ' + this.beautifyCategory(split[1].toUpperCase());
+      }
+      return str;
+    } else {
+      return '';
+    }
+  }
+
+  departmentsHasCode(code) {
+    return this.departments.findIndex(dep => dep.departmentId == code) > -1;
   }
 
 }

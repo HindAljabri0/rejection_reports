@@ -1,68 +1,56 @@
-<div class="paginatorContainer">
-    <div class="page-select">
-        <div class="label">Go to page:</div>
-        <mat-form-field>
+<div class="pagination-header">
+    <div class="form-group page-select">
+        <label class="control-label">Go to page: </label>
+        <mat-form-field class="form-control custom-select-control">
             <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
                 <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <div class="label" style="margin-left: auto; font-weight: 700;"></div>
     </div>
-    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
-    </mat-paginator>
-    <span class="downloadIcon bg-{{detailAccentColor}}" style="border-radius: 6px; padding: 4px 10px; margin-right: 15px;">
-        <mat-icon _ngcontent-wxe-c14="" aria-hidden="false" aria-label="Download" (click)="download()" class="mat-icon notranslate material-icons mat-icon-no-color" role="img"
-            matTooltip="Download" style="font-size: large;font-weight: 800; color: white;text-align: center; margin-top: 2px;">
-            {{detailTopActionText}}</mat-icon>
-    </span>
-</div>
-<mat-expansion-panel style="margin-bottom: 6px; cursor: unset;" hideToggle [disabled]="0 == 0">
-    <mat-expansion-panel-header>
-        <mat-panel-title style="width: 100%;">
-            <table style="color: #3060AA !important;font-size:13px">
-                <tr>
-                    <td style="width: 9%">Doctor Id</td>
-                    <td style="width: 9%">Patient Name</td>
-                    <td style="width: 9%">Claim Id</td>
-                    <td style="width: 9%">File Number</td>
-                    <td style="width: 9%;padding-left: 1%;">Memeber Id</td>
-                    <td style="width: 9%;padding-left: 1%;">Policy Number</td>
-                    <td style="width: 9%">Claim Date</td>
-                    <td style="width: 9%">Net Amount</td>
-                    <td style="width: 9%">Rejected By</td>
-                    <td style="width: 9%">Status</td>
-                    <td style="width: 9%">Status Details</td>
-                </tr>
-            </table>
-        </mat-panel-title>
-    </mat-expansion-panel-header>
-</mat-expansion-panel>
-
-<div *ngIf="errorMessage != null" style="margin-bottom: 10px;">
-    <mat-card>
-        <p>{{errorMessage}}</p>
-    </mat-card>
+    <div class="material-paginator">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+        </mat-paginator>
+    </div>
+    <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
+        <img src="./assets/{{detailTopActionIcon}}" />
+    </button>
 </div>
 
+<div class="table-responsive" *ngIf="errorMessage == null">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Doctor Id</th>
+                <th>Patient Name</th>
+                <th>Claim Id</th>
+                <th>File Number</th>
+                <th>Memeber Id</th>
+                <th>Policy Number</th>
+                <th>Claim Date</th>
+                <th>Net Amount</th>
+                <th>Rejected By</th>
+                <th>Status</th>
+                <th>Status Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let claim of rejectedClaims">
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memeberId}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-<mat-expansion-panel *ngFor="let claim of rejectedClaims" style="margin-bottom: 6px; cursor: pointer;" hideToggle [disabled]="0 == 0" (click)="onClaimClick(claim.claimId)">
-    <mat-expansion-panel-header>
-        <mat-panel-title style="width: 100%;">
-            <table style="color: black !important;font-size:12px">
-                <tr>
-                    <td style="width: 9%;">{{claim.doctorId}}</td>
-                    <td style="width: 9%">{{claim.patientName}}</td>
-                    <td style="width: 9%">{{claim.claimRefNo}}</td>
-                    <td style="width: 9%;">{{claim.patientFileNumber}}</td>
-                    <td style="width: 9%;padding-left: 1%;">{{claim.memeberId}}</td>
-                    <td style="width: 9%;padding-left: 1%;">{{claim.policyNumber}}</td>
-                    <td style="width: 9%;">{{claim.claimdate}}</td>
-                    <td style="width: 9%">{{claim.netAmount}}</td>
-                    <td style="width: 9%;">{{claim.rejectedBy}}</td>
-                    <td style="width: 9%;">{{claim.status}}</td>
-                    <td style="width: 9%;">{{claim.statusDetails}}</td>
-                </tr>
-            </table>
-        </mat-panel-title>
-    </mat-expansion-panel-header>
-</mat-expansion-panel>
+<div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+    <p class="error-card m-0">{{errorMessage}}</p>
+</div>

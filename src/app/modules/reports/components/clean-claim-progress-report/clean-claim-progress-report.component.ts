@@ -1,13 +1,12 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { Label, BaseChartDirective } from 'ng2-charts';
-import { SharedServices } from 'src/app/services/shared.services';
-import { generateCleanClaimProgressReport, GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
+import { BaseChartDirective, Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { ComparisionType, generateCleanClaimProgressReport, GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { DatePipe } from '@angular/common';
-
+import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-clean-claim-progress-report',
   templateUrl: './clean-claim-progress-report.component.html',
@@ -43,7 +42,8 @@ export class CleanClaimProgressReportComponent implements OnInit {
       yAxes: [{
         ticks: {
           fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
+          fontColor: this.chartFontColor,
+          beginAtZero: true
         },
         scaleLabel: {
           display: true,
@@ -60,9 +60,13 @@ export class CleanClaimProgressReportComponent implements OnInit {
     },
     plugins: {
       datalabels: {
+        formatter: (value, ctx) => {
+          return this.generateReport.comparisionType === ComparisionType.CleanClaims ||
+            this.generateReport.comparisionType === ComparisionType.UncleanClaims ? value + '%' : value;
+        },
         anchor: 'end',
         align: 'end',
-      }
+      },
     },
     legend: {
       labels: {
@@ -73,7 +77,18 @@ export class CleanClaimProgressReportComponent implements OnInit {
     tooltips: {
       bodyFontFamily: this.chartFontFamily,
       titleFontFamily: this.chartFontFamily,
-      footerFontFamily: this.chartFontFamily
+      footerFontFamily: this.chartFontFamily,
+      callbacks: {
+        label: (tooltipItem, data) => {
+          const allData = data.datasets[tooltipItem.datasetIndex].data;
+          const tooltipLabel = data.labels[tooltipItem.index];
+          const tooltipData = allData[tooltipItem.index];
+          return this.generateReport.comparisionType === ComparisionType.CleanClaims ||
+            this.generateReport.comparisionType === ComparisionType.UncleanClaims
+            ? tooltipLabel + ' : ' + tooltipData + '%'
+            : tooltipLabel + ' : ' + tooltipData;
+        }
+      }
     },
     title: {
       display: true,
@@ -82,12 +97,19 @@ export class CleanClaimProgressReportComponent implements OnInit {
       fontColor: this.chartFontColor,
       fullWidth: true,
       fontSize: 16
-    }
+    },
+
   };
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  public barChartPlugins = [pluginDataLabels];
+  public barChartPlugins = [{
+    beforeInit: (chart, options) => {
+      chart.legend.afterFit = function () {
+        this.height += 10;
+      };
+    }
+  }, pluginDataLabels];
   public barChartData: ChartDataSets[] = [
     {
       data: [],
@@ -132,28 +154,37 @@ export class CleanClaimProgressReportComponent implements OnInit {
   generateReport: generateCleanClaimProgressReport = new generateCleanClaimProgressReport();
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'YYYY' };
   beforeDatePickerTitle = 'before year';
-  afterDatePickerTitle = 'after year'
+  afterDatePickerTitle = 'after year';
   percenatgeChartData: any = [];
-  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUNE', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   normalDays = ['DAY'];
   percentageConfig = [{
-    key: 'Year', value: this.months,
+    key: 'Year', value: this.months, label: 'Months'
   },
   {
-    key: 'Month', value: [],
+    key: 'Month', value: [], label: 'Weeks'
   },
   {
-    key: 'Week', value: this.days,
+    key: 'Week', value: this.days, label: 'Days'
   },
   {
-    key: 'Day', value: this.normalDays,
+    key: 'Day', value: this.normalDays, label: 'Date'
   }
+  ];
+  diffrenceLableName = 'Year';
+  labelConfig = [
+    { type: ComparisionType.TotalNetAmount, value: 'Total Net Amount Tracking Report' },
+    { type: ComparisionType.VATAmount, value: 'VAT Amount Tracking Report' },
+    { type: ComparisionType.CleanClaims, value: 'Clean Claims Tracking Report' },
+    { type: ComparisionType.UncleanClaims, value: 'Unclean Claims Tracking Report' },
+    { type: ComparisionType.NumberOfErrors, value: 'Number of Errors Tracking Report' }
   ];
   get providerId(): string {
     return this.sharedService.providerId;
   }
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  currentDate = new Date();
   constructor(private sharedService: SharedServices, private reportSerice: ReportsService, private datePipe: DatePipe) {
   }
 
@@ -184,15 +215,17 @@ export class CleanClaimProgressReportComponent implements OnInit {
       this.datePickerConfig = { dateInputFormat: 'MMM YYYY' };
     } else if (event.value === 'Week') {
       this.datePickerConfig = { selectWeek: true, selectFromOtherMonth: true, dateInputFormat: 'DD/MM/YYYY' };
-    } else if (event.value) {
+    } else if (event.value === 'Day') {
       this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
     } else {
-      this.datePickerConfig = { dateInputFormat: 'YYYY' }
+      this.datePickerConfig = { dateInputFormat: 'YYYY' };
     }
+    this.generateReport.beforeDate = '';
+    this.generateReport.afterDate = '';
   }
 
   generate() {
-    let body = { ...this.generateReport };
+    const body = { ...this.generateReport };
     body.beforeDate = this.setDate(body.beforeDate);
     body.afterDate = this.setDate(body.afterDate);
     this.reportSerice.generateCleanClaimProgressReport(this.providerId, body).subscribe(event => {
@@ -207,16 +240,23 @@ export class CleanClaimProgressReportComponent implements OnInit {
         this.percenatgeChartData = [];
         const firstYearData = data[0].totalNetAmount;
         const secondYearData = data[1].totalNetAmount;
-        const percentageLabelData = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria).value;
+        const percentageConfig = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria);
+        const percentageLabelData = percentageConfig.value;
+        this.diffrenceLableName = percentageConfig.label;
         firstYearData.map((ele, index) => {
           let value = 0;
-          if (ele === 0 && secondYearData[index] > ele)
+          if (ele === 0 && secondYearData[index] > ele) {
             value = 100;
-          else if (secondYearData[index] === 0 && ele > secondYearData[index])
+          } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
             value = 100;
-          const finalValue = ele !== 0 && secondYearData[index] !== 0 ? ele > secondYearData[index] ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index]) : value;
-          if (this.generateReport.comparisionCriteria === "Month")
+          }
+          const finalValue = ele !== 0 && secondYearData[index] !== 0
+            ? ele > secondYearData[index]
+              ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
+            : value;
+          if (this.generateReport.comparisionCriteria === 'Month') {
             percentageLabelData[index] = 'WEEK ' + (index + 1);
+          }
 
           const obj = {
             label: percentageLabelData[index],
@@ -226,9 +266,12 @@ export class CleanClaimProgressReportComponent implements OnInit {
           this.percenatgeChartData.push(obj);
         });
         this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
+        const chartLableName = this.labelConfig.find(ele => ele.type === this.generateReport.comparisionType).value;
+        this.barChartOptions.title.text = chartLableName;
 
-        if (this.chart)
+        if (this.chart) {
           this.chart.ngOnChanges({});
+        }
       }
 
     });
@@ -246,6 +289,19 @@ export class CleanClaimProgressReportComponent implements OnInit {
       return this.datePipe.transform(date, 'yyyy-MM-dd');
     }
   }
+  get cptype() {
+    return ComparisionType;
+  }
+
+  selectComparisionType(type, form) {
+    if (form.invalid) {
+      form.submitted = true;
+      return;
+    }
+    this.generateReport.comparisionType = type;
+    this.generate();
+  }
+
 }
 
 

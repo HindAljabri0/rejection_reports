@@ -18,6 +18,7 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { UploadSummaryDialogComponent } from './upload-summary-dialog/upload-summary-dialog.component';
 import { ClaimSummaryError } from 'src/app/models/claimSummaryError';
+import { AuthService } from 'src/app/services/authService/authService.service';
 
 @Component({
   selector: 'app-claimsummary',
@@ -109,6 +110,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     private routeActive: ActivatedRoute,
     private dialogService: DialogService,
     private claimService: ClaimService,
+    private authService: AuthService,
     private dialog: MatDialog) {
 
     this.routingObservable = this.router.events.pipe(
@@ -295,37 +297,37 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
 
 
-  deleteClaimByUploadid(uploadSummaryID: number, refNumber: string) {
-    this.dialogService.openMessageDialog(
-      new MessageDialogData('Delete Upload?',
-        `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
-        false,
-        true))
-      .subscribe(result => {
-        if (result === true) {
-          this.commen.loadingChanged.next(true);
-          this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
-            if (event instanceof HttpResponse) {
-              this.commen.loadingChanged.next(false);
+  // deleteClaimByUploadid(uploadSummaryID: number, refNumber: string) {
+  //   this.dialogService.openMessageDialog(
+  //     new MessageDialogData('Delete Upload?',
+  //       `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+  //       false,
+  //       true))
+  //     .subscribe(result => {
+  //       if (result === true) {
+  //         this.commen.loadingChanged.next(true);
+  //         this.claimService.deleteClaimByUploadid(this.providerId, uploadSummaryID).subscribe(event => {
+  //           if (event instanceof HttpResponse) {
+  //             this.commen.loadingChanged.next(false);
 
-              this.dialogService.openMessageDialog(
-                new MessageDialogData('',
-                  `Upload with reference ${refNumber} was deleted successfully.`,
-                  false))
-                .subscribe(afterColse => {
-                  this.uploadService.summaryChange.next(new UploadSummary());
-                  this.router.navigate(['']);
-                });
-            }
-          }, errorEvent => {
-            if (errorEvent instanceof HttpErrorResponse) {
-              this.commen.loadingChanged.next(false);
-              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-            }
-          });
-        }
-      });
-  }
+  //             this.dialogService.openMessageDialog(
+  //               new MessageDialogData('',
+  //                 `Upload with reference ${refNumber} was deleted successfully.`,
+  //                 false))
+  //               .subscribe(afterColse => {
+  //                 this.uploadService.summaryChange.next(new UploadSummary());
+  //                 this.router.navigate(['']);
+  //               });
+  //           }
+  //         }, errorEvent => {
+  //           if (errorEvent instanceof HttpErrorResponse) {
+  //             this.commen.loadingChanged.next(false);
+  //             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+  //           }
+  //         });
+  //       }
+  //     });
+  // }
 
   openUploadSummaryDialog(data: any) {
     this.commen.loadingChanged.next(true);
@@ -345,10 +347,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
             }
           });
         }
+      }, err => {
+        if (err.status)
+          this.authService.logout();
       }), eventError => {
         this.commen.loadingChanged.next(false);
       };
 
   }
-
 }

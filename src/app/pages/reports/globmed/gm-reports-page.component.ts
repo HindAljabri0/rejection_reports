@@ -11,7 +11,7 @@ import { SummaryComponent } from './summary/summary.component';
 @Component({
   selector: 'app-gm-reports-page',
   templateUrl: './gm-reports-page.component.html',
-  styleUrls: ['./gm-reports-page.component.css']
+  styles: []
 })
 export class GmReportsPageComponent implements OnInit, AfterViewInit {
 

@@ -23,6 +23,7 @@ import { requestClaimsPage, SearchPaginationAction, setSearchCriteria, storeClai
 import { Actions, ofType } from '@ngrx/effects';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ClaimError } from 'src/app/models/claimError';
+import { ValidationService } from 'src/app/services/validationService/validation.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -70,11 +71,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   detailCardTitle: string;
   detailTopActionIcon = 'ic-download.svg';
-  detailAccentColor: string;
-  detailActionText: string = null;
-  detailSubActionText: string = null;
-  detailCheckBoxIndeterminate: boolean;
-  detailCheckBoxChecked: boolean;
 
   providerId: string;
   from: string;
@@ -125,6 +121,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   validationDetails: ClaimError[];
   results: any[];
   showValidationTab = false;
+  isRevalidate = false;
+  isSubmit = false;
+  isDeleteBtnVisible: boolean = true;
+  status: any = 1;
+
 
   constructor(
     public location: Location,
@@ -137,6 +138,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
     private notificationService: NotificationsService,
+    private validationService: ValidationService,
     private store: Store,
     private actions$: Actions) { }
 
@@ -329,16 +331,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
-      this.detailActionText = 'Submit All';
-      this.detailSubActionText = 'Submit Selection';
-    } else {
-      this.detailActionText = null;
-      this.detailSubActionText = null;
+      this.isRevalidate = true;
+      this.isSubmit = true;
+    } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
+      this.isRevalidate = true;
     }
-    /*else if (this.summaries[key].status == ClaimStatus.Failed){
-      this.detailActionText = 'Re-Submit All';
-      this.detailSubActionText = 'Re-Submit Selection';
-    }*/
+
     this.claims = new Array();
     this.store.dispatch(storeClaims({
       claims: this.claims,
@@ -382,7 +380,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             }
             if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
             this.setAllCheckBoxIsIndeterminate();
-            this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
             this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
             const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
             this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
@@ -432,6 +429,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         this.commen.loadingChanged.next(false);
       });
+    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing) ? false : true;
+    const status = this.routeActive.snapshot.queryParamMap.get('status');
+    this.status = status === null ? this.status : status;
   }
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
@@ -494,6 +495,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
 
+
     this.commen.loadingChanged.next(true);
     this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype,
       this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
@@ -525,6 +527,56 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             }
           }
         }
+      });
+  }
+
+  reValidateClaims() {
+
+    if (this.commen.loading) { return; }
+    this.commen.loadingChanged.next(true);
+    this.validationService.reValidateClaims(this.providerId,
+      this.payerId,
+      this.batchId,
+      this.uploadId,
+      null,
+      this.claimRefNo,
+      this.patientFileNo,
+      this.invoiceNo,
+      this.policyNo,
+      this.summaries[this.selectedCardKey].statuses,
+      this.memberId,
+      this.selectedClaims,
+      this.from, this.to)
+      .subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const numberOfClaims = event.body['numberOfClaims'];
+          const numberOfRejectedClaims = event.body['numberOfRejectedClaims'];
+          const numberOfAcceptedClaims = event.body['numberOfAcceptedClaims'];
+          const numberOfDownloadableClaims = event.body['numberOfDownloadableClaims'];
+
+          this.dialogService.openMessageDialog({
+            title: 'Validation Results',
+            message: `No. of Cliam: ${numberOfClaims} \nNo of Rejected by Waseel: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
+            isError: false
+          }).subscribe(result => {
+            location.reload();
+          });
+
+          this.commen.loadingChanged.next(false);
+
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog({
+            title: 'Validation Results',
+            message: errorEvent.message,
+            isError: true
+          });
+
+
+
+        }
+        this.commen.loadingChanged.next(false);
       });
   }
 
@@ -881,14 +933,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
   }
 
-
-  doAction() {
-    if (this.detailActionText.includes('Submit')) {
+  submitAll() {
+    if (this.selectedClaims.length == 0) {
       this.submitAllAcceptedClaims();
-    }
-  }
-  doSubAction() {
-    if (this.detailActionText.includes('Submit')) {
+    } else {
       this.submitSelectedClaims();
     }
   }
@@ -948,6 +996,52 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get showEligibilityButton() {
     return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all');
+  }
+  deleteClaimByUploadid() {
+
+    if (this.commen.loading) { return; }
+    this.commen.loadingChanged.next(true);
+
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Upload?',
+        `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              const status = event.body['status'];
+              if (status == "Deleted") {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    `Your claims deleted successfully.`,
+                    false))
+                  .subscribe(afterColse => {
+                    // this.claimService.summaryChange.next(new UploadSummary());
+                    // this.router.navigate(['']);
+                    location.reload();
+                  });
+              }
+              else {
+                const error = event.body['errors'];
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    error[0].description,
+                    false));
+              }
+
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+            }
+          });
+        }
+      });
   }
 }
 
