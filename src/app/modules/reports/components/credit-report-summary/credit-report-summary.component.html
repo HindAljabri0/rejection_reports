@@ -1,11 +1,8 @@
 <div class="block-header has-border">
     <ul class="custom-breadcrumb">
-        <li><a routerLink="/reports/upload-rejection-report" class="primary-link">Credit Reports</a></li>
+        <li><a routerLink="/reports/creditReportList" class="primary-link">Credit Reports</a></li>
         <li class="active">Bupa</li>
     </ul>
-    <div class="right-block">
-        <p>Received Date: {{summayData.receivedDate | date : 'shortDate'}}</p>
-    </div>
 </div>
 <div class="credit-report-summary-header">
     <div class="left-block">
@@ -78,7 +75,7 @@
             </li>
             <li>
                 <span>Received Date</span>
-                <p>16/04/2020</p>
+                <p>{{summayData.receivedDate | date : 'shortDate'}}</p>
             </li>
             <li>
                 <span>Referral Batch</span>
@@ -901,5 +898,8 @@
         <button matRipple type="button" title="Last Page">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
+    </div>
+    <div class="btn-list right-block">
+        <button type="button" color="primary" mat-flat-button>Submit</button>
     </div>
 </div>

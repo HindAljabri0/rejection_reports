@@ -143,10 +143,11 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .change-log-dialog:before{background: url('assets/changelog-bg.svg') right bottom no-repeat;position: absolute;content:'';display: block;top: 0;right: 0;bottom: 0;left: 0;opacity: 0.72;border-radius: 4px;}
 .action-with-text{border:0;padding:8px 12px;margin:0;background:none;display:flex;align-items:center;}
 .action-with-text>.mat-icon{margin-right:4px;}
-.border-right{border-right:1px solid #e1e1e1;}
-.border-bottom{border-bottom:1px solid #e1e1e1;}
-.border-top{border-top:1px solid #e1e1e1;}
-.border-left{border-left:1px solid #e1e1e1;}
+.border-right,.border-lg-right,.border-xl-right{border-right:1px solid #e1e1e1;}
+.border-bottom,.border-lg-bottom,.border-xl-bottom{border-bottom:1px solid #e1e1e1;}
+.border-top,.border-lg-top,.border-xl-top{border-top:1px solid #e1e1e1;}
+.border-left,.border-lg-left,.border-xl-left{border-left:1px solid #e1e1e1;}
+.primary-grid textarea.form-control.comment-box,.comment-box{height:80px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -482,6 +483,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 --------------------------------------------------------------------------------------------------------*/
 .primary-dialog{width: 600px;max-width: calc(100% - 30px)!important;}
 .primary-dialog.dialog-sm{width: 400px;}
+.primary-dialog.dialog-md{width: 500px;}
 .primary-dialog.dialog-lg{width: 800px;}
 .primary-dialog.dialog-xl{width: 1140px;}
 .primary-dialog .mat-dialog-container{padding: 0;max-height: calc(100vh - 64px);}
@@ -804,10 +806,17 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .credit-report-summary-body>.left-block .legend-text{color:#707070;display: flex;font-size:13px;padding-bottom: 6px;}
 .credit-report-summary-body>.left-block .legend-text:before{content:'';height:8px;flex-grow:0;flex-basis:8px;flex-shrink:0;max-width:8px; margin-right:6px;border-radius:50px;display:block;margin-top:5px;}
 .credit-report-summary-body>.left-block .information-block{padding: 12px;border-bottom: 1px solid rgba(112, 112, 112,0.2);}
-.credit-report-summary-body>.left-block .information-block>li{display: flex;font-weight: 500;padding-bottom: 8px;}
+.credit-report-summary-body>.left-block .information-block.no-border{border:0;}
+.credit-report-summary-body>.left-block .information-block>li{display: flex;padding-bottom: 8px;}
 .credit-report-summary-body>.left-block .information-block>li:last-child{padding-bottom: 0;}
 .credit-report-summary-body>.left-block .information-block>li>span{color:#3060AA;display: block;padding-right: 6px;}
 .credit-report-summary-body>.left-block .information-block>li>p{margin-left: auto;text-align: right;}
+.credit-report-summary-body>.left-block .information-block .inline-labelled-text{padding-bottom: 12px;}
+.credit-report-summary-body>.left-block .information-block .inline-labelled-text>label{padding-bottom: 0;}
+.credit-report-summary-body>.left-block .information-block .inline-labelled-text:last-child{padding-bottom: 0;}
+.credit-report-summary-body>.left-block .message{background-color: #f6f6f6;padding: 12px;display: flex;}
+.credit-report-summary-body>.left-block .message>.mat-icon{flex-grow: 0;flex-shrink: 0;flex-basis: 24px;max-width: 24px;margin-right: 8px;}
+.credit-report-summary-body>.left-block .message>p{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 32px);max-width: calc(100% - 32px);}
 .rejection-reason-chart-block{padding: 12px;border-bottom:1px solid rgba(112, 112, 112,0.2);}
 .rejection-reason-chart-block .legend-text:before{background-color: #2D47D6;}
 .rejection-reason-chart-block .content-wrapper{display: flex;align-items: center;}
@@ -854,7 +863,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* credit report details table
 --------------------------------------------------------------------------------------------------------*/
 .credit-report-details-table .header-block{display:flex;align-items:center;}
-.credit-report-details-table .header-block .right-block{margin-left:auto;}
+.credit-report-details-table .header-block .right-block{margin:-4px -4px -4px auto;}
 .credit-report-details-table .header-block .right-block .action-btn{color:inherit;border:0;background:none;padding:10px;font-weight:inherit;}
 .credit-report-details-table .inline-labelled-text{color:#505050;}
 .credit-report-details-table .body-block{display: flex;}
@@ -895,6 +904,14 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .aging-indicator-header .chart-wrapper.good .marker{transform: rotate(22.5+45deg);}
 .aging-indicator-header .chart-wrapper.fair .marker{transform: rotate(112.5deg);}
 .aging-indicator-header .chart-wrapper.bad .marker{transform: rotate(157.5deg);}
+
+/* information table
+--------------------------------------------------------------------------------------------------------*/
+.information-table{width: 100%;}
+.information-table>tbody>tr>td{vertical-align: top;padding: 9px 14px;}
+.information-table>tbody>.heading-row>td{font-weight: 600;}
+.information-table>tbody>tr>.title{color:#3060AA;background-color: #F0F5FF;}
+.information-table>tbody>tr>.content{text-align: right;background-color: #F7FAFF;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
@@ -977,6 +994,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .clean-claim-progress-report>.left-block{max-width: 220px;flex-basis:220px;}
     .clean-claim-progress-report>.right-block{max-width: calc(100% - 220px);flex-basis:calc(100% - 220px);}
     .general-info-wrapper>div{flex-basis:25%;max-width: 25%;}
+    .border-xl-right{border-right:0;}
+    .border-xl-left{border-left:0;}
+    .border-xl-top{border-top:0;}
+    .border-xl-bottom{border-bottom:0;}
 }
 @media (max-width:991px) { 
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}
@@ -996,6 +1017,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .credit-report-summary-header>.right-block{padding-left: 10px;padding-right: 10px;}
     .credit-report-summary-header>.right-block .content{flex-basis:180px;max-width:180px;}
     .credit-report-summary-header .progress-steps{flex-basis:calc(100% - 180px);max-width:calc(100% - 180px);}
+    .border-lg-right{border-right:0;}
+    .border-lg-left{border-left:0;}
+    .border-lg-top{border-top:0;}
+    .border-lg-bottom{border-bottom:0;}
 }
 
 .mat-grid-tile .mat-figure {
