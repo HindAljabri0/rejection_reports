@@ -14,8 +14,9 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDetailsDialog() {
-    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-lg'] });
+  openDetailsDialog(event) {
+    event.preventDefault();
+    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-md'] });
   }
 
 }
