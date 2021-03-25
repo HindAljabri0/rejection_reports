@@ -9,6 +9,7 @@ import { CollectionSummaryCreateComponent } from './collection-summary-create/co
 import { CollectionSummaryDetailsComponent } from './collection-summary-details/collection-summary-details.component';
 import { VatPaymentReportListComponent } from './vat-payment-report-list/vat-payment-report-list.component';
 import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/vat-payment-report-details.component';
+import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
 
 const routes: Routes = [
   { path: 'regular-payment-list', component: RegularPaymentListComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'collection-summary-details', component: CollectionSummaryDetailsComponent },
   { path: 'collection-summary-create', component: CollectionSummaryCreateComponent },
   { path: 'vat-payment-list', component: VatPaymentReportListComponent },
-  { path: 'vat-payment-details', component: VatPaymentReportDetailsComponent }
+  { path: 'vat-payment-details', component: VatPaymentReportDetailsComponent },
+  { path: 'accounts-receivable-list', component: AccountsReceivableListComponent }
 ];
 
 @NgModule({

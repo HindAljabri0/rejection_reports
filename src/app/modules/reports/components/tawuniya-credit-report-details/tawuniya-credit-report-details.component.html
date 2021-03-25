@@ -1,0 +1,215 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <ul class="custom-breadcrumb">
+            <li><a routerLink="/reports/upload-rejection-report" class="primary-link">Credit Reports</a></li>
+            <li class="active">Tawuniya</li>
+        </ul>
+        <div class="right-block">
+            <p>Received Date: 11/11/2018</p>
+        </div>
+    </div>
+    <div class="block-body bg-white">
+        <div class="row">
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Provider</label>
+                    <p>Olaya Medical Center</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Provider City</label>
+                    <p>Riyadh</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Batch Reference Number</label>
+                    <p>222222</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Plan Name</label>
+                    <p>Balsam Silver</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Plan Number</label>
+                    <p>10121</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Policy Name</label>
+                    <p>1022 Riyadh Bank</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Policy Number</label>
+                    <p>1022</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Claim Month</label>
+                    <p>October-2018</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Batch Received Date</label>
+                    <p>-</p>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-md-4">
+                <div class="inline-labelled-text">
+                    <label>Credit Report Status</label>
+                    <p>Invalid</p>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-0">
+        <p class="semibold pb-3">With reference to your Credit Request mentioned above and for a fair, full and final settlement, please be advised of the following:</p>
+        <div class="table-responsive">
+            <table class="primary-grid">
+                <tbody>
+                    <tr>
+                        <td class="semibold">Requested Amount (Net)</td>
+                        <td class="semibold">0.000</td>
+                    </tr>
+                    <tr>
+                        <td>Difference In Discounts</td>
+                        <td>0.000</td>
+                    </tr>
+                    <tr>
+                        <td>Difference In Deductible</td>
+                        <td>0.000</td>
+                    </tr>
+                    <tr>
+                        <td>Transferred Batch Amount [0118MDB099500, 0118MDB099500, 0118MDB099500]</td>
+                        <td>0.000</td>
+                    </tr>
+                    <tr>
+                        <td>Bills Not Recieved</td>
+                        <td>0.000</td>
+                    </tr>
+                    <tr>
+                        <td>Rejected Claims Amount</td>
+                        <td>0.000</td>
+                    </tr>
+                    <tr>
+                        <td>Net Deducted Services For the Reasons Mentioned Later</td>
+                        <td>0.000</td>
+                    </tr>
+                    <tr>
+                        <td class="semibold">Total Amount Payable by Tawuniya</td>
+                        <td class="semibold">0.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="bg-white">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab">
+            <mat-tab [label]="'Deducted Services'">
+                <app-empty-state></app-empty-state>
+            </mat-tab>
+            <mat-tab [label]="'Rejected Claims Services'">
+                <div class="table-responsive">
+                    <table class="primary-grid">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </th>
+                                <th>Waseel Batch</th>
+                                <th>Doctor Code</th>
+                                <th>Claim No</th>
+                                <th>Provider Ref</th>
+                                <th>Service Code</th>
+                                <th>Service</th>
+                                <th>Exceed Price</th>
+                                <th>Deducted Amount</th>
+                                <th>Rejection Reason</th>
+                                <th>Provider Agree/Disagree</th>
+                                <th>Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td class="row-click" (click)="openDetailsDialog()">716-1236</td>
+                                <td class="row-click" (click)="openDetailsDialog()">PK</td>
+                                <td class="row-click" (click)="openDetailsDialog()">1259</td>
+                                <td class="row-click" (click)="openDetailsDialog()">File125</td>
+                                <td class="row-click" (click)="openDetailsDialog()">RX3</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Sickness</td>
+                                <td class="row-click" (click)="openDetailsDialog()">0.000</td>
+                                <td class="row-click" (click)="openDetailsDialog()">0.000</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Over Medication</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Disagreed</td>
+                                <td class="row-click" (click)="openDetailsDialog()">check attachment please</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td class="row-click" (click)="openDetailsDialog()">716-1237</td>
+                                <td class="row-click" (click)="openDetailsDialog()">PK</td>
+                                <td class="row-click" (click)="openDetailsDialog()">1259</td>
+                                <td class="row-click" (click)="openDetailsDialog()">File125</td>
+                                <td class="row-click" (click)="openDetailsDialog()">RX4</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Allergy</td>
+                                <td class="row-click" (click)="openDetailsDialog()">0.000</td>
+                                <td class="row-click" (click)="openDetailsDialog()">0.000</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Over Medication</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Disagreed</td>
+                                <td class="row-click" (click)="openDetailsDialog()">sdfsdf</td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" class="semibold text-right">
+                                    Total (SR)
+                                </td>
+                                <td class="semibold">0.000</td>
+                                <td class="semibold">0.000</td>
+                                <td colspan="3"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="12" class="semibold text-center">
+                                    Total Rejection (SR): 0.000
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex pt-2">
+                    <div class="custom-paginator ml-auto">
+                        <button matRipple type="button" title="First Page">
+                            <img src="./assets/ic-page-first.svg" alt="First" />
+                        </button>
+                        <button matRipple type="button" title="Previous Page">
+                            <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                        </button>
+                        <p class="page-info">
+                            1<small>/5</small>
+                        </p>
+                        <button matRipple type="button" title="Next Page">
+                            <img src="./assets/ic-page-next.svg" alt="Next" />
+                        </button>
+                        <button matRipple type="button" title="Last Page">
+                            <img src="./assets/ic-page-last.svg" alt="Last" />
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div class="block-body bg-white">
+        <p class="semibold">Please confirm your acceptance within 15 days. Otherwise, we will consider this credit request settlement as accepted and final.</p>
+    </div>
+</div>
