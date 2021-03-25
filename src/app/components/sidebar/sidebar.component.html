@@ -85,7 +85,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                <mat-expansion-panel hideToggle *ngIf="!envProd">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@denialManagement">Denial Management</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -121,7 +121,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)">
+                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Collection Management</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -154,7 +154,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!doNotShowMenuItemIn.includes(envName)" [expanded]="summaryReport.isActive || ebillingReport.isActive">
+                <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title>GlobMed</mat-panel-title>
                     </mat-expansion-panel-header>
