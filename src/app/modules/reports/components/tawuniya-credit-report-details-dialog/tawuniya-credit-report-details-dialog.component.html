@@ -1,188 +1,141 @@
-<div class="primary-dialog-header">
-    <h5 class="primary-dialog-title"></h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Deducted Services</h5>
+    <p class="ml-auto">Claim No <span class="text-normal-color">313925748</span></p>
+    <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
 </div>
-<div class="primary-dialog-body pt-0">
-    <p class="block-title mb-2">Batch Information</p>
-    <div class="row">
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Batch Reference Number</label>
-                <p>222222</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Waseel Batch</label>
-                <p>716-1236</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Visit Date</label>
-                <p>09-12-2018</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Invoice Date</label>
-                <p>-</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Payer Claim No</label>
-                <p>1259</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Policy No.</label>
-                <p>-</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Member ID</label>
-                <p>-</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Member Name</label>
-                <p>-</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Patient File No</label>
-                <p>File125</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Invoice No</label>
-                <p>1221</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Physician ID</label>
-                <p>PK</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Physician Name</label>
-                <p>bashatah</p>
-            </div>
-        </div>
-    </div>
-    <p class="block-title mb-2 pt-2">Diagnosis</p>
-    <div class="row">
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Diagnosis Code</label>
-                <p>-</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Diagnosis Description</label>
-                <p>-</p>
-            </div>
-        </div>
-    </div>
-    <p class="block-title mb-2 pt-2">Service Information</p>
-    <div class="row">
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Serial No</label>
-                <p>221</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Service Code</label>
-                <p>RX3</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Service Price</label>
-                <p>10.200</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Service Description</label>
-                <p>Sickness</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Exceed Price</label>
-                <p>0.000</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Quantity</label>
-                <p>0.0</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Patient Share</label>
-                <p>10.620</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Requested Net Amount</label>
-                <p>11.326</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Gross Amount</label>
-                <p>321.762</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Received Gross</label>
-                <p>0.000</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Received Discount</label>
-                <p>0.000</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Payer Discount</label>
-                <p>0.000</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Rejected Amount</label>
-                <p>0.000</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="inline-labelled-text">
-                <label>Rejection Reason</label>
-                <p>Over Medication</p>
-            </div>
-        </div>
-    </div>
-    <p class="block-title mb-2 pt-2">Provider Comment and Attachment</p>
-    <div class="inline-labelled-text">
-        <label>Comment</label>
-        <p>check attachment please</p>
+<div class="primary-dialog-body p-0">
+    <div class="table-responsive">
+        <table class="information-table" cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+                <tr class="heading-row">
+                    <td colspan="2">Batch Information</td>
+                </tr>
+                <tr>
+                    <td class="title">Batch Reference Number</td>
+                    <td class="content">WP17MDB029134</td>
+                </tr>
+                <tr>
+                    <td class="title">Waseel Batch</td>
+                    <td class="content">212627</td>
+                </tr>
+                <tr>
+                    <td class="title">Physician Name</td>
+                    <td class="content">AMMAR AL YOUSEF</td>
+                </tr>
+                <tr>
+                    <td class="title">Physician ID</td>
+                    <td class="content">11BB</td>
+                </tr>
+                <tr>
+                    <td class="title">Member Name</td>
+                    <td class="content">ABDUL RAHMAN ABDULLAH AL-SHEHRI</td>
+                </tr>
+                <tr>
+                    <td class="title">Patient File No</td>
+                    <td class="content">1860365</td>
+                </tr>
+                <tr>
+                    <td class="title">Member ID</td>
+                    <td class="content">00105424807320</td>
+                </tr>
+                <tr>
+                    <td class="title">Policy No</td>
+                    <td class="content">88991</td>
+                </tr>
+                <tr>
+                    <td class="title">Invoice No</td>
+                    <td class="content">151601814389</td>
+                </tr>
+                <tr>
+                    <td class="title">Visit Date</td>
+                    <td class="content">14-12-2016</td>
+                </tr>
+                <tr>
+                    <td class="title">Invoice Date</td>
+                    <td class="content">December-2016</td>
+                </tr>
+                <tr>
+                    <td class="title">Payer Claim No</td>
+                    <td class="content">313925748</td>
+                </tr>
+                <tr class="heading-row">
+                    <td colspan="2">Diagnosis</td>
+                </tr>
+                <tr>
+                    <td class="title">Diagnosis Code</td>
+                    <td class="td content">L20.8</td>
+                </tr>
+                <tr>
+                    <td class="title">Diagnosis Description</td>
+                    <td class="td content">Other atopic dermatitis</td>
+                </tr>
+                <tr class="heading-row">
+                    <td colspan="2">Service Information</td>
+                </tr>
+                <tr>
+                    <td class="title">Serial No</td>
+                    <td class="content">1</td>
+                </tr>
+                <tr>
+                    <td class="title">Service Code</td>
+                    <td class="content">212627</td>
+                </tr>
+                <tr>
+                    <td class="title">Service Price</td>
+                    <td class="content">1.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Service Description</td>
+                    <td class="content">CONSULTATION FEE</td>
+                </tr>
+                <tr>
+                    <td class="title">Exceed Price</td>
+                    <td class="content">22.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Patient Share</td>
+                    <td class="content">22.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Requested Net Amount</td>
+                    <td class="content">206.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Gross Amount</td>
+                    <td class="content">265.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Received Gross</td>
+                    <td class="content">39.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Deducted Amount</td>
+                    <td class="content">15.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Received Discount</td>
+                    <td class="content">39.0</td>
+                </tr>
+                <tr>
+                    <td class="title">Payer Discount</td>
+                    <td class="content">10</td>
+                </tr>
+                <tr>
+                    <td class="title">Rejection Reason</td>
+                    <td class="content">-</td>
+                </tr>
+                <tr class="heading-row">
+                    <td colspan="2">Provider Comment and Attachment</td>
+                </tr>
+                <tr>
+                    <td class="title">Comment</td>
+                    <td class="content">-</td>
+                </tr>
+                <tr>
+                    <td class="title">Attachment</td>
+                    <td class="content">-</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
