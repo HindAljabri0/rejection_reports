@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
-import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { EventEmitter } from '@angular/core';
 import { SubmittedInvoiceSummary } from 'src/app/models/submittedInvoiceSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
@@ -14,17 +13,12 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 @Component({
   selector: 'app-submitted-invoices',
   templateUrl: './submitted-invoices.component.html',
-  styleUrls: ['./submitted-invoices.component.css']
+  styles: []
 })
 export class SubmittedInvoicesComponent implements OnInit {
 
   detailCardTitle = 'Submitted Invoices';
-  detailTopActionText = 'vertical_align_bottom';
-  detailAccentColor = 'primary';
-  detailActionText: string = null;
-  detailSubActionText: string = null;
-  detailCheckBoxIndeterminate: boolean;
-  detailCheckBoxChecked: boolean;
+  detailTopActionIcon = 'ic-download.svg';
   @Input() from: string;
   @Input() to: string;
   @Input() payerId: string[];
@@ -98,7 +92,9 @@ export class SubmittedInvoicesComponent implements OnInit {
   }
 
   download() {
-    if (this.detailTopActionText == 'check_circle') { return; }
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') {
+      return;
+    }
 
     this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -112,7 +108,7 @@ export class SubmittedInvoicesComponent implements OnInit {
           a.target = '_blank';
           a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
-          this.detailTopActionText = 'check_circle';
+          this.detailTopActionIcon = 'ic-check-circle.svg';
         }
       }
     }, errorEvent => {
@@ -125,7 +121,7 @@ export class SubmittedInvoicesComponent implements OnInit {
   }
 
   /* download() {
-    if (this.detailTopActionText == "check_circle") return;
+    if (this.detailTopActionIcon == "ic-check-circle.svg") return;
     this.reportService.downloadSubmittedInvoices(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (navigator.msSaveBlob) { // IE 10+
@@ -139,7 +135,7 @@ export class SubmittedInvoicesComponent implements OnInit {
 
             a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
           a.click();
-          this.detailTopActionText = "check_circle";
+          this.detailTopActionIcon = "ic-check-circle.svg";
         }
       }
     }, errorEvent => {

@@ -1,7 +1,6 @@
 import { Period } from './period.type';
 
 export class Admission {
-
     admissionDate: Date;
     admissionType: 'ELECTIVE' | 'EMERGENCY' | 'REFERRAL';
     estimatedLengthOfStay: Period;
@@ -12,7 +11,7 @@ export class Admission {
         dischargeDate: Date;
     };
 
-    constructor(){
-        this.discharge = {actualLengthOfStay: null, dischargeDate: null}
+    constructor() {
+        this.discharge = { actualLengthOfStay: null, dischargeDate: null };
     }
 }

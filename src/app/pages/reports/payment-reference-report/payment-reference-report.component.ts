@@ -12,16 +12,10 @@ import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-payment-reference-report',
   templateUrl: './payment-reference-report.component.html',
-  styleUrls: ['./payment-reference-report.component.css']
+  styles: []
 })
 export class PaymentReferenceReportComponent implements OnInit {
 
-  detailCardTitle = 'Payment References';
-  detailTopActionText = 'vertical_align_bottom';
-  detailActionText: string = null;
-  detailSubActionText: string = null;
-  detailCheckBoxIndeterminate: boolean;
-  detailCheckBoxChecked: boolean;
   @Input() from: string;
   @Input() to: string;
   @Input() payerId: string[];
@@ -41,8 +35,6 @@ export class PaymentReferenceReportComponent implements OnInit {
 
   paymentDetails: PaginatedResult<PaymentRefernceDetail>;
   payments = Array();
-
-
 
   constructor(
     public reportService: ReportsService,

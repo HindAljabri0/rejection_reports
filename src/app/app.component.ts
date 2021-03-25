@@ -1,50 +1,41 @@
 import { AuthService } from './services/authService/authService.service';
-import { Component, LOCALE_ID, Inject, OnInit, HostBinding } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { isHeaderAndSideMenuHidden } from './store/mainStore.reducer';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Waseele';
-
-  languageList = [ // <--- add this
-    { code: 'en', label: 'English', dir: 'ltr' },
-    { code: 'ar', label: 'عربى', dir: 'rtl' }
-  ];
-
-  @HostBinding('attr.dir') dir = 'ltr';
-
-  activeLanguageLabel = 'English';
-
-  isHeaderAndSideMenuHidden$: Observable<boolean>;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     public authService: AuthService,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(LOCALE_ID) protected locale: string,
-    private store: Store
+    private router: Router,
+    readonly viewportScroller: ViewportScroller,
   ) {
-    this.isHeaderAndSideMenuHidden$ = this.store.select(isHeaderAndSideMenuHidden);
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      document.body.classList.remove('nav-open');
+      document.getElementsByTagName('html')[0].classList.remove('nav-open');
+    });
   }
 
   ngOnInit() {
-
-    if (this.locale.startsWith('ar')) {
-      this.activeLanguageLabel = 'عربى';
-      // this.dir = 'rtl';
-    }
-
-    this.document.documentElement.lang = this.locale;
   }
 
   get isLoggedIn() {
     return this.authService.loggedIn;
+  }
+
+  ngOnDestroy() {
+    // unsubscribe all the observable
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

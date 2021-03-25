@@ -1,4 +1,4 @@
-<header class="brand-header">
+<header class="brand-header animate__animated animate__fadeIn animate__faster">
   <button class="nav-toggle" (click)="toggleNav()" mat-icon-button>
     <mat-icon aria-hidden="false" aria-label="Toggle">menu</mat-icon>
   </button>
@@ -12,14 +12,14 @@
     </button>
     <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
     <button (click)="toggleUploadHistoryCenter()" class="icon-btn uploads-btn" mat-icon-button matTooltip="Uploads">
-      <mat-icon aria-hidden="false">cloud</mat-icon>
+      <mat-icon aria-hidden="false">cloud_queue</mat-icon>
       <!-- <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon> -->
     </button>
     <button (click)="toggleNotificationCenter()" class="icon-btn {{notificationIconClasses}} notifications-btn" mat-icon-button matTooltip="Notifications">
       <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
     </button>
     <button (click)="toggleAnnouncementCenter()" class="icon-btn announcements-btn" mat-icon-button matTooltip="Announcements">
-      <mat-icon aria-hidden="false" aria-label="Announcements">announcements</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="Announcements" class="material-icons-outlined">feedback</mat-icon>
     </button>
     <div class="user-info">
       <div matTooltip="{{providerId}}" class="left-block">

@@ -11,8 +11,8 @@ import { environment } from 'src/environments/environment';
 export class SidebarComponent implements OnInit {
 
   providerId: string;
-  doNotShowGlobMedIn: string[] = ['oci_prod', 'oci_staging'];
-  envName = environment.name;
+  envProd = false;
+  envStaging = false;
   isAdmin = false;
   isProviderAdmin = false;
 
@@ -24,6 +24,8 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.init();
+    this.envProd = (environment.name == 'oci_prod' || environment.name == 'prod');
+    this.envStaging = (environment.name == 'oci_staging' || environment.name == 'staging');
   }
 
   init() {

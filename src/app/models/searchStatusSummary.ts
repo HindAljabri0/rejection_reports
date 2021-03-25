@@ -1,8 +1,8 @@
 export class SearchStatusSummary {
   statuses: string[];
-  totalClaims: number = 0;
-  totalNetAmount: number = 0;
-  totalVatNetAmount: number = 0;
+  totalClaims = 0;
+  totalNetAmount = 0;
+  totalVatNetAmount = 0;
   gross?: number = 0;
   uploadName: string;
 
@@ -27,6 +27,6 @@ export class SearchStatusSummary {
       totalVatNetAmount: 0,
       uploadName: null,
       gross: 0
-    }
+    };
   }
 }

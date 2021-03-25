@@ -1,10 +1,8 @@
-
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router, RouterEvent, NavigationEnd, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
-import { filter } from 'rxjs/operators';
 import { SubmittedInvoicesComponent } from './submitted-invoices/submitted-invoices.component';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -12,68 +10,74 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
 import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { MatMenuTrigger, MatDatepickerInputEvent, MatSelectChange, MatChipInputEvent } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material';
 
 
 @Component({
   selector: 'app-reports-page',
   templateUrl: './reports-page.component.html',
-  styleUrls: ['./reports-page.component.css']
+  styles: []
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
   isValidFormSubmitted = false;
   payers: { id: string[] | string, name: string }[];
   reports: { id: number, name: string }[] = [
-    { id: 1, name: "Payment Report" }, 
-    { id: 2, name: "Claim Submission Report" },
-    { id: 3, name: "Rejection Report" },
+    { id: 1, name: 'Payment Report' },
+    { id: 2, name: 'Claim Submission Report' },
+    { id: 3, name: 'Rejection Report' },
   ];
 
   criterias: { id: number, name: string }[] = [
-    { id: 1, name: "Upload Date" },
-    { id: 2, name: "Claim Date" },
+    { id: 1, name: 'Upload Date' },
+    { id: 2, name: 'Claim Date' },
   ];
 
-  downloadIcon = "vertical_align_bottom";
+  actionIcon = 'ic-download.svg';
 
 
   reportTypeControl: FormControl = new FormControl();
   fromDateControl: FormControl = new FormControl();
-  fromDateHasError: boolean = false;
+  fromDateHasError = false;
 
   toDateControl: FormControl = new FormControl();
-  toDateHasError: boolean = false;
+  toDateHasError = false;
 
   payerIdControl: FormControl = new FormControl();
-  payerIdHasError: boolean = false;
+  payerIdHasError = false;
 
   rejectionCriteriaControl: FormControl = new FormControl();
-  rejectionCriteriaHasError: boolean = false;
+  rejectionCriteriaHasError = false;
 
   page: number;
   pageSize: number;
-  tempPage: number = 0;
-  tempPageSize: number = 10;
+  tempPage = 0;
+  tempPageSize = 10;
 
   paymentReference: string;
   claimId: string;
   criteria: string;
 
-  @ViewChild('paymentSearchResult', {static: false}) paymentSearchResult: PaymentReferenceReportComponent;
-  @ViewChild('paymentClaimSummaryReport', {static: false}) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
-  @ViewChild('submittedInvoicesSearchResult', {static: false}) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
-  @ViewChild('rejectionReport', {static: false}) rejectionReportComponent: SubmittedInvoicesComponent;
-  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
+  @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
+  @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
+  @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
+  @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: SubmittedInvoicesComponent;
+  @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
   payerId: number[];
 
 
-  constructor(private location: Location, private router: Router, private routeActive: ActivatedRoute, private commen: SharedServices, private reportsService: ReportsService, private dialogService: DialogService) { }
+  constructor(
+    private location: Location,
+    private router: Router,
+    private routeActive: ActivatedRoute,
+    private commen: SharedServices,
+    private reportsService: ReportsService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.payers = [];
-    let allPayersIds = [];
+    const allPayersIds = [];
     this.commen.getPayersList().map(value => {
       this.payers.push({
         id: `${value.id}`,
@@ -83,7 +87,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
     this.payers.push({
       id: allPayersIds,
-      name: "All"
+      name: 'All'
     });
     this.routeActive.queryParams.subscribe(value => {
       if (value.from != undefined) {
@@ -95,13 +99,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.toDateControl.setValue(toDate);
       }
       if (value.payer != undefined) {
-        if (value.payer instanceof Array && value.payer.length > 1)
+        if (value.payer instanceof Array && value.payer.length > 1) {
           this.payerIdControl.setValue(allPayersIds);
-        else
+        } else {
           this.payerIdControl.setValue(value.payer);
+        }
       }
       if (value.type != undefined) {
-        this.reportTypeControl.setValue(Number.parseInt(value.type));
+        this.reportTypeControl.setValue(Number.parseInt(value.type, 10));
       }
       if (value.pRef != null) {
         this.paymentReference = value.pRef;
@@ -110,40 +115,47 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.claimId = value.claimId;
       }
       if (value.criteria != null) {
-        this.rejectionCriteriaControl.setValue(Number.parseInt(value.criteria));
+        this.rejectionCriteriaControl.setValue(Number.parseInt(value.criteria, 10));
         this.criteria = value.criteria;
       }
       if (value.page != null) {
-        this.page = Number.parseInt(value.page);
+        this.page = Number.parseInt(value.page, 10);
       } else {
         this.page = 0;
       }
       if (value.pageSize != null) {
-        this.pageSize = Number.parseInt(value.pageSize);
+        this.pageSize = Number.parseInt(value.pageSize, 10);
       } else {
         this.pageSize = 10;
       }
     });
-    
+
   }
 
   ngAfterViewInit() {
     if (this.paymentReference == null) {
-    //  this.search();
+      //  this.search();
     } else {
       this.paymentClaimSummaryReport.fetchData(this.paymentReference);
     }
   }
 
   search() {
-    //debugger;
+    // debugger;
     this.fromDateHasError = false;
     this.toDateHasError = true;
-    this.payerIdHasError = true;
+    this.payerIdHasError = false;
     this.rejectionCriteriaHasError = true;
 
     this.isValidFormSubmitted = false;
-    if (this.paymentReference != null || this.reportTypeControl.invalid || this.payerIdControl.invalid || this.fromDateControl.invalid || this.toDateControl.invalid || this.fromDateControl.value == null || this.toDateControl.value == null || this.rejectionCriteriaControl.invalid) {
+    if (this.paymentReference != null ||
+      this.reportTypeControl.invalid ||
+      this.payerIdControl.invalid ||
+      this.fromDateControl.invalid ||
+      this.toDateControl.invalid ||
+      this.fromDateControl.value == null ||
+      this.toDateControl.value == null ||
+      this.rejectionCriteriaControl.invalid) {
       this.toDateHasError = true;
       this.fromDateHasError = true;
       this.payerIdHasError = true;
@@ -160,9 +172,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.trigger.openMenu();
       this.payerIdHasError = true;
       }*/
-    //return;
+      // return;
     }
-    let queryParams: Params = {};
+    const queryParams: Params = {};
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
@@ -188,13 +200,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.reportTypeControl.value == 3) {
       this.rejectionReportComponent.fetchData();
     }
-    //else {
-      //this.trigger.openMenu();
-    //}
+    // else {
+    // this.trigger.openMenu();
+    // }
     this.isValidFormSubmitted = true;
   }
-  searchSelect(event)
-  {
+  searchSelect(event) {
     this.search();
   }
 
@@ -210,11 +221,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.paymentReference = ref;
       this.paymentClaimSummaryReport.fetchData(this.paymentReference);
       this.location.go(`${this.location.path()}&pRef=${ref}`);
-    }
-    else if (this.reportTypeControl.value == 2) {
+    } else if (this.reportTypeControl.value == 2) {
       this.claimId = ref;
-    }
-    else if (this.reportTypeControl.value == 3) {
+    } else if (this.reportTypeControl.value == 3) {
       this.criteria = ref;
     }
 
@@ -232,63 +241,72 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.pageSize = this.tempPageSize;
     this.paymentSearchResult.queryPage = this.page;
     this.paymentSearchResult.pageSize = this.pageSize;
-    if (this.paymentSearchResult.payments.length == 0) this.paymentSearchResult.fetchData();
+    if (this.paymentSearchResult.payments.length == 0) {
+      this.paymentSearchResult.fetchData();
+    }
     this.resetURL();
   }
 
   download() {
-    if (this.downloadIcon == "check_circle") return;
+    if (this.actionIcon == 'ic-check-circle.svg') {
+      return;
+    }
 
     this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference).subscribe(event => {
       if (event instanceof HttpResponse) {
-        var exportedFilenmae = `Report_Payment_Reference_${this.paymentReference}.csv`;
+        const exportedFilenmae = `Report_Payment_Reference_${this.paymentReference}.csv`;
         if (navigator.msSaveBlob) { // IE 10+
-          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+          const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
           navigator.msSaveBlob(blob, exportedFilenmae);
         } else {
-          var a = document.createElement("a");
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
+          const a = document.createElement('a');
+          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
           a.target = '_blank';
-          a.download = exportedFilenmae
+          a.download = exportedFilenmae;
 
           a.click();
-          this.downloadIcon = "check_circle";
+          this.actionIcon = 'ic-check-circle.svg';
         }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         console.log(errorEvent);
-        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
+        this.dialogService.openMessageDialog(new MessageDialogData('',
+          'Could not reach the server at the moment. Please try again later.', true));
       }
     });
   }
 
 
   downloadInvoice() {
-    if (this.downloadIcon == "check_circle") return;
+    if (this.actionIcon == 'ic-check-circle.svg') {
+      return;
+    }
 
-    this.reportsService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.fromDate, this.toDate, this.payerIdControl.value).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        var exportedFilenmae = `Report_Submitted_Invoice_Reference.csv`;
-        if (navigator.msSaveBlob) { // IE 10+
-          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-          navigator.msSaveBlob(blob, exportedFilenmae);
-        } else {
-          var a = document.createElement("a");
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
-          a.target = '_blank';
-          a.download = exportedFilenmae
+    this.reportsService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId,
+      this.fromDate, this.toDate, this.payerIdControl.value).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          const exportedFilenmae = `Report_Submitted_Invoice_Reference.csv`;
+          if (navigator.msSaveBlob) { // IE 10+
+            const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
+            navigator.msSaveBlob(blob, exportedFilenmae);
+          } else {
+            const a = document.createElement('a');
+            a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
+            a.target = '_blank';
+            a.download = exportedFilenmae;
 
-          a.click();
-          this.downloadIcon = "check_circle";
+            a.click();
+            this.actionIcon = 'ic-check-circle.svg';
+          }
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        console.log(errorEvent);
-        this.dialogService.openMessageDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-      }
-    });
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          console.log(errorEvent);
+          this.dialogService.openMessageDialog(new MessageDialogData('',
+            'Could not reach the server at the moment. Please try again later.', true));
+        }
+      });
   }
 
   resetURL() {
@@ -301,7 +319,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       URL += `&pRef=${this.paymentReference}`;
     }
     if (this.claimId != null) {
-      URL += `&claimId=${this.claimId}`
+      URL += `&claimId=${this.claimId}`;
     }
     if (this.page > 0) {
       URL += `&page=${this.page}`;
@@ -310,7 +328,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       URL += `&pageSize=${this.pageSize}`;
     }
     if (this.criteria != null) {
-      URL += `&criteria=${this.criteria}`
+      URL += `&criteria=${this.criteria}`;
     }
     this.location.go(URL);
   }
@@ -336,12 +354,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   get fromDate() {
-    let date: Date = new Date(this.fromDateControl.value);
+    const date: Date = new Date(this.fromDateControl.value);
     return `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
   }
 
   get toDate() {
-    let date: Date = new Date(this.toDateControl.value);
+    const date: Date = new Date(this.toDateControl.value);
     return `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
   }
 
@@ -352,6 +370,5 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   get height() {
     return `${this.pageSize * 55 + 275}px`;
   }
-
 
 }

@@ -74,6 +74,8 @@ import {
 } from './pages/claimUploadignPage/claimsummary/upload-summary-dialog/upload-summary-dialog.component';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +124,8 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
     ImageTooltipComponent,
     SummaryComponent,
     GmReportsPageComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    MainLayoutComponent
   ],
   imports: [
     AppRoutingModule,
@@ -142,7 +145,8 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
     CarouselModule,
     NgScrollbarModule,
     SmoothScrollModule,
-    GuidedTourModule
+    GuidedTourModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     ThemeService,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { changeSelectedTab } from '../store/claim.actions';
 import { MatTabChangeEvent } from '@angular/material';
@@ -35,6 +35,7 @@ export class ClaimDataComponent implements OnInit {
   pageType: ClaimPageType;
 
   isInpatientClaim: boolean;
+  @Input() claimType = '';
 
   constructor(private store: Store) { }
 

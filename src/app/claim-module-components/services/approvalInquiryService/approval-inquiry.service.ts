@@ -7,16 +7,16 @@ import { environment } from 'src/environments/environment';
 })
 export class ApprovalInquiryService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getClaimDataByApprovalNumber(providerId:string, payerId:string, approvalNumber:string, approvalType:string){
+  getClaimDataByApprovalNumber(providerId: string, payerId: string, approvalNumber: string, approvalType: string) {
     const requestUrl = `/providers/${providerId}/inquiry/approval`;
     const body = {
-      approvalReferenceNumber: approvalNumber, 
+      approvalReferenceNumber: approvalNumber,
       approvalType: approvalType,
       payerId: payerId
-    }
-    const request = new HttpRequest('POST', environment.claimInquireServiceHost+requestUrl, body);
+    };
+    const request = new HttpRequest('POST', environment.claimInquireServiceHost + requestUrl, body);
     return this.http.request(request);
   }
 }

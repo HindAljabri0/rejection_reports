@@ -71,10 +71,11 @@ export class ClaimValidationService {
     if (nationalId != null && nationalId.trim().length != 10) {
       fieldErrors.push({ fieldName: 'nationalId', error: 'National id must be 10 numbers or 0.' });
     }
-    if (payer != '102' && (policyNum == null || policyNum.trim().length == 0)) {
+    if (payer != '102' && payer != '207' && payer != '313' && (policyNum == null || policyNum.trim().length == 0)) {
       fieldErrors.push({ fieldName: 'policyNum' });
+
     }
-    if(this.pageType == 'DENTAL_OPTICAL'){
+    if (this.pageType == 'DENTAL_OPTICAL') {
       if (approvalNum == null || approvalNum.trim().length == 0) {
         fieldErrors.push({ fieldName: 'approvalNum' });
       } else if (!this.regexWithSym.test(approvalNum)) {
@@ -171,10 +172,17 @@ export class ClaimValidationService {
 
     let fieldErrors: FieldError[] = [];
 
-    if (diagnosis == null || diagnosis.length == 0) {
-      fieldErrors.push({ fieldName: 'diagnosis' });
+
+    if (this.claim.visitInformation.departmentCode != this.opticalDepartmentCode && this.claim.visitInformation.departmentCode != this.dentalDepartmentCode) {
+
+      if (diagnosis == null || diagnosis.length == 0) {
+        fieldErrors.push({ fieldName: 'diagnosis' });
+      }
+      this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
+
     }
-    this.store.dispatch(addClaimErrors({ module: 'diagnosisErrors', errors: fieldErrors }));
+
+
 
   }
 
@@ -206,10 +214,9 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: `serviceDate:${invoiceIndex}:${serviceIndex}` });
     }
 
-    if (service.serviceCode == null || service.serviceCode.trim().length == 0 || service.serviceCode.startsWith('0')) {
+    if (service.serviceCode == null || service.serviceCode.trim().length == 0) {
       fieldErrors.push({
-        fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`,
-        error: (service.serviceCode != null && service.serviceCode.startsWith('0')) ? 'service code cannot start with zero' : null
+        fieldName: `serviceCode:${invoiceIndex}:${serviceIndex}`
       });
     }
 
@@ -231,6 +238,8 @@ export class ClaimValidationService {
         fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}` });
       else if (GDPN.patientShare.value > GDPN.gross.value)
         fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}`, error: 'must be less than or equal (unit price * quantity)' });
+    } else if (GDPN.patientShare == null || GDPN.patientShare.value == null) {
+      fieldErrors.push({ fieldName: `servicePatientShare:${invoiceIndex}:${serviceIndex}` });
     }
     if (GDPN.discount != null && GDPN.discount.value != null) {
       if (GDPN.discount.value < 0)
@@ -240,12 +249,17 @@ export class ClaimValidationService {
       else if (GDPN.discount.type == 'SAR' && GDPN.discount.value > ((GDPN.gross.value || 0) - (GDPN.patientShare.value || 0)))
         fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}`, error: 'must be less than or equal (unit price * quantity - patientshare)' });
     }
+    else if (GDPN.discount == null || GDPN.discount.value == null) {
+      fieldErrors.push({ fieldName: `serviceDiscount:${invoiceIndex}:${serviceIndex}` });
+    }
+    
     if (GDPN.netVATrate != null && GDPN.netVATrate.value != null && GDPN.netVATrate.value < 0) {
       fieldErrors.push({ fieldName: `serviceNetVatRate:${invoiceIndex}:${serviceIndex}` });
     }
     if (GDPN.patientShareVATrate != null && GDPN.patientShareVATrate.value != null && GDPN.patientShareVATrate.value < 0) {
       fieldErrors.push({ fieldName: `servicePatientShareVatRate:${invoiceIndex}:${serviceIndex}` });
     }
+    
 
     if (this.claim.visitInformation.departmentCode == this.dentalDepartmentCode) {
       if (service.toothNumber == null) {

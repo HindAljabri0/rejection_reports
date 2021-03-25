@@ -160,7 +160,7 @@ const _claimReducer = createReducer(
             };
         } else {
             const claim = new Claim(data['claimType'], data['providerClaimNumber']);
-            return { ...state, claim: claim, mode: 'CREATE' };
+            return { ...state, claim: claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT' || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL' };
         }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),

@@ -12,4 +12,4 @@ export class LocaleId {
         }
         return storedLocaleId;
     }
-  }
+}

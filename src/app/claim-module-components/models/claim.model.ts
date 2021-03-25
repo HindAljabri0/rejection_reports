@@ -22,7 +22,8 @@ export class Claim {
     attachment: AttachmentRequest[];
 
     constructor(claimType: string, providerClaimNumber: string) {
-        this.caseInformation = new CaseInfo('OUTPATIENT');
+        const type = claimType === 'INPATIENT' ? 'INPATIENT' : 'OUTPATIENT';
+        this.caseInformation = new CaseInfo(type);
         this.claimIdentities = new ClaimIdentifier(providerClaimNumber);
         this.member = new Member();
         this.visitInformation = new VisitInfo(claimType);
