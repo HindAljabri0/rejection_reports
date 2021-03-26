@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'clean-claim-progress-reports', component: CleanClaimProgressReportComponent },
   { path: 'rejected-claim-progress-reports', component: RejectedClaimProgressReportComponent },
   { path: 'creditReportList', component: CreditReportListComponent },
-  { path: 'creditReportSummary/:batchId', component: CreditReportSummaryComponent },
+  { path: 'creditReportSummary', component: CreditReportSummaryComponent },
   { path: 'creditReportSummaryDetails', component: CreditReportSummaryDetailsComponent },
   { path: 'tawuniya-credit-report-details', component: TawuniyaCreditReportDetailsComponent },
   { path: 'claim-submissions', component: ClaimSubmissionsComponent }

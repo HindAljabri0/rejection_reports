@@ -73,9 +73,13 @@ export class CreditReportUploadModalComponent implements OnInit {
 
   startUpload() {
     const providerId = this.common.providerId;
-    this.creditReportService.pushFileToStorage(providerId, this.currentFileUpload).subscribe((res: any) => {
+    const payerId = 319;
+    this.common.loadingChanged.next(true);
+    //payerid static
+    this.creditReportService.pushFileToStorage(providerId, payerId, this.currentFileUpload).subscribe((res: any) => {
+      this.common.loadingChanged.next(true);
       if (res.body !== undefined) {
-        this.router.navigateByUrl(`/reports/creditReportSummary/${0}`);
+        this.router.navigate([`/reports/creditReportSummary`], { queryParams: { batchId: res.body.batchId, payerId: res.body.payerId } });
         this.closeDialog();
       }
     }, err => {

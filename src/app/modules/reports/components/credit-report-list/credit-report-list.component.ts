@@ -27,7 +27,7 @@ export class CreditReportListComponent implements OnInit {
       totalRejectionRatio: '1,596,900.00 SR',
       medicalRejectionRatio: '39.5%',
       technicalRejectionRatio: '47%',
-      routerLink: '/reports/creditReportSummary/0'
+      routerLink: '/reports/creditReportSummary'
     },
     {
       payerName: 'Tawuniya',

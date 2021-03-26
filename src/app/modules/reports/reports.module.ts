@@ -47,6 +47,6 @@ import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-
     ChartsModule
   ],
   providers: [PercentPipe, DatePipe, CreditReportService],
-  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent]
+  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent, CreditReportUploadModalComponent]
 })
 export class ReportsModule { }
