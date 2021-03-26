@@ -1,253 +1,268 @@
-<div class="item-group-panel">
-    <div class="parent-panel invoice-list">
-        <ul>
-            <li class="title">Invoices</li>
-            <li *ngFor="let invoice of controllers; let i = index" [class.active]="expandedInvoice == i">
-                <button type="button" title="Invoice {{(i+1)}}" class="list-btn invoice-btn" [class.text-danger]="invoiceHasErrors(i)" (click)="toggleInvoice(i)">
-                    <span>
-                        <span class="invoice-title">
-                            <span class="value title">Invoice {{(i+1)}}</span>
-                            <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
-                        </span>
-                        <span class="right value">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}</span>
-                    </span>
-                    <span>
-                        <span>Invoice No.</span>
-                        <span class="right value">{{invoice.invoice.invoiceNumber}}</span>
-                    </span>
-                    <span>
-                        <span>Net - <span class="value">{{invoice.invoice.invoiceGDPN.net.value}}</span></span>
-                        <span class="right">VAT - <span class="value">{{invoice.invoice.invoiceGDPN.netVATamount.value}}</span></span>
-                    </span>
-                    <span>
-                        <span>No. of Services</span>
-                        <span class="right value">{{invoice.services.length}}</span>
-                    </span>
-                </button>
-                <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick($event, i)"
-                    *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && controllers.length > 1">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
-            </li>
-        </ul>
-        <button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" mat-flat-button color="primary" class="mt-2" (click)="onAddInvoiceClick()">Add
-            Invoice</button>
-    </div>
-    <ng-container *ngFor="let invoice of controllers; let i = index">
-        <div class="child-panel" *ngIf="expandedInvoice != -1 && expandedInvoice == i">
-            <p class="block-title mb-2">Invoice {{(i+1)}}</p>
-            <div class="row small-gutter">
-                <div
-                    [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                    <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
-                        <label class="control-label">Invoice Number<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
-                    </div>
-                </div>
-                <div
-                    [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                    <div class="form-group" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
-                        <label class="control-label">Invoice Date<span class="asterisk">*</span></label>
-                        <div class="date-picker">
-                            <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
-                            <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker #invoiceDatePicker></mat-datepicker>
-                        </div>
-                    </div>
-                </div>
-                <div [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4':'']">
-                    <div class="form-group">
-                        <label class="control-label">Invoice Department<span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
-                                [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
-                                <mat-option *ngFor="let department of departments" [value]="department.departmentId">
-                                    {{department.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            <p class="block-title">Services</p>
-            <div class="list-expansion-panel">
-                <mat-expansion-panel *ngFor="let service of invoice.services; let j = index" hideToggle [expanded]="service.isOpen">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <button (click)="toggleServiceExpansion($event,i,j)" [class.text-danger]="serviceHasErrors(i, j)" class="toggle-btn">
-                                <span>Service {{(j+1)}}</span>
-                                <mat-icon *ngIf="serviceHasErrors(i, j)">error</mat-icon>
-                                <span class="ml-auto text-right pr-2">{{service.serviceDate.value| date:"dd/MM/yyyy"}}</span>
-                                <span *ngIf="service.statusCode != null"
-                                    class="ml-auto semibold text-right text-{{getStatusColor(service.statusCode)}}">{{getStatusText(service.statusCode)}}</span>
-                            </button>
-                            <ng-container *ngIf="pageMode != 'VIEW'">
-                                <a href="#" class="primary-link mr-2" title="Select a retrieved service"
-                                    *ngIf="pageMode == 'CREATE_FROM_RETRIEVED' && !service.retrieved && j == expandedService"
-                                    (click)="onSelectRetrievedServiceClick($event, i, j)">Select a retrieved service</a>
-                            </ng-container>
-                            <button (click)="onDeleteServiceClick($event, i, j)" class="text-danger delete-btn" *ngIf="controllers[i].services.length > 1 && pageMode != 'VIEW'">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="service-status-description text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}"
-                        *ngIf=" service.statusCode != null && service.statusDescription != null">
-                        {{service.statusDescription}}
-                    </div>
-                    <div class="row small-gutter">
-                        <div class="col-auto">
-                            <div class="statistic-box">
-                                <label>Gross Amount</label>
-                                <h3>{{calcGross(controllers[i].services[j])}}</h3>
-                            </div>
-                        </div>
-                        <div class="col-auto flex-grow-1">
-                            <div class="statistic-box d-flex">
-                                <div>
-                                    <label>Net Amount</label>
-                                    <h3>{{calcNet(controllers[i].services[j])}}</h3>
+<div class="table-responsive">
+    <table class="primary-grid manual-row-color invoice-table">
+        <thead>
+            <tr>
+                <th width="10"></th>
+                <th>Serial No.</th>
+                <th>Date</th>
+                <th>Invoice No.</th>
+                <th>Net Value</th>
+                <th>Net VAT</th>
+                <th>Services</th>
+                <th width="10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let invoice of controllers; let i = index">
+                <tr [class.even]="i%2" [class.text-danger]="invoiceHasErrors(i)" [class.light-bg-danger]="invoiceHasErrors(i)">
+                    <td class="row-click" (click)="toggleInvoice(i)">
+                        <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
+                    </td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceNumber}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.net.value}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.netVATamount.value}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.services.length}}</td>
+                    <td>
+                        <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick($event, i)"
+                            *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && controllers.length > 1">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="expandedInvoice == i">
+                    <td colspan="8" class="pl-7 pr-7">
+                        <p class="block-title mb-2">Invoice {{(i+1)}}</p>
+                        <div class="row small-gutter">
+                            <div
+                                [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
+                                    <label class="control-label">Invoice Number<span class="asterisk">*</span></label>
+                                    <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
                                 </div>
-                                <div class="text-right ml-auto pl-2">
-                                    <label>Net Vat</label>
-                                    <h3>{{calcNetVat(controllers[i].services[j])}}</h3>
+                            </div>
+                            <div
+                                [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                <div class="form-group" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
+                                    <label class="control-label">Invoice Date<span class="asterisk">*</span></label>
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
+                                        <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #invoiceDatePicker></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4':'']">
+                                <div class="form-group">
+                                    <label class="control-label">Invoice Department<span class="asterisk">*</span></label>
+                                    <mat-form-field class="form-control custom-select-control">
+                                        <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
+                                            [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
+                                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                                {{department.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <div class="statistic-box">
-                                <label>Patient Share Vat Amount</label>
-                                <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
-                            </div>
-                        </div>
-                        <div class="col-auto" *ngIf="service.statusCode != null">
-                            <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
-                                <label>Actual Deducted Amount</label>
-                                <h3>{{service.acutalDeductedAmount}}</h3>
-                            </div>
-                        </div>
-                        <div class="col-auto" *ngIf="service.statusCode != null">
-                            <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
-                                <label>Actual Paid Amount</label>
-                                <h3>{{calcNet(controllers[i].services[j]) - service.acutalDeductedAmount}}</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row small-gutter">
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceCode:'+i+':'+j)" [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
-                                <label class="control-label">Service Code<span class="asterisk">*</span></label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="Enter service code or select service" [formControl]="service.serviceCode">
-                                    <span *ngIf="pageMode != 'VIEW' && !service.retrieved" class="input-group-append">
-                                        <span class="input-group-text clickable medium" [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
-                                    </span>
+                        <p class="block-title">Services</p>
+                        <div class="list-expansion-panel">
+                            <mat-expansion-panel *ngFor="let service of invoice.services; let j = index" hideToggle [expanded]="service.isOpen">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <button (click)="toggleServiceExpansion($event,i,j)" [class.text-danger]="serviceHasErrors(i, j)" class="toggle-btn">
+                                            <span>Service {{(j+1)}}</span>
+                                            <mat-icon *ngIf="serviceHasErrors(i, j)">error</mat-icon>
+                                            <span class="ml-auto text-right pr-2">{{service.serviceDate.value| date:"dd/MM/yyyy"}}</span>
+                                            <span *ngIf="service.statusCode != null"
+                                                class="ml-auto semibold text-right text-{{getStatusColor(service.statusCode)}}">{{getStatusText(service.statusCode)}}</span>
+                                        </button>
+                                        <ng-container *ngIf="pageMode != 'VIEW'">
+                                            <a href="#" class="primary-link mr-2" title="Select a retrieved service"
+                                                *ngIf="pageMode == 'CREATE_FROM_RETRIEVED' && !service.retrieved && j == expandedService"
+                                                (click)="onSelectRetrievedServiceClick($event, i, j)">Select a
+                                                retrieved service</a>
+                                        </ng-container>
+                                        <button (click)="onDeleteServiceClick($event, i, j)" class="text-danger delete-btn"
+                                            *ngIf="controllers[i].services.length > 1 && pageMode != 'VIEW'">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="service-status-description text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}"
+                                    *ngIf=" service.statusCode != null && service.statusDescription != null">
+                                    {{service.statusDescription}}
                                 </div>
-                            </div>
-                        </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceDescription:'+i+':'+j)" [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)">
-                                <label class="control-label">Service Description<span class="asterisk">*</span></label>
-                                <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription" type="text">
-                            </div>
-                        </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceDate:'+i+':'+j)" [matTooltip]="getFieldError('serviceDate:'+i+':'+j)">
-                                <label class="control-label">Service Date<span class="asterisk">*</span></label>
-                                <div class="date-picker">
-                                    <input [matDatepicker]="picker" class="form-control" placeholder="Select service date" [formControl]="service.serviceDate">
-                                    <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
+                                <div class="row small-gutter">
+                                    <div class="col-auto">
+                                        <div class="statistic-box">
+                                            <label>Gross Amount</label>
+                                            <h3>{{calcGross(controllers[i].services[j])}}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto flex-grow-1">
+                                        <div class="statistic-box d-flex">
+                                            <div>
+                                                <label>Net Amount</label>
+                                                <h3>{{calcNet(controllers[i].services[j])}}</h3>
+                                            </div>
+                                            <div class="text-right ml-auto pl-2">
+                                                <label>Net Vat</label>
+                                                <h3>{{calcNetVat(controllers[i].services[j])}}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="statistic-box">
+                                            <label>Patient Share Vat Amount</label>
+                                            <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto" *ngIf="service.statusCode != null">
+                                        <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
+                                            <label>Actual Deducted Amount</label>
+                                            <h3>{{service.acutalDeductedAmount}}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto" *ngIf="service.statusCode != null">
+                                        <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
+                                            <label>Actual Paid Amount</label>
+                                            <h3>{{calcNet(controllers[i].services[j]) - service.acutalDeductedAmount}}</h3>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice:'+i+':'+j)" [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)">
-                                <label class="control-label">Unit Price<span class="asterisk">*</span></label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="Enter unit price" type="number" [formControl]="service.unitPrice">
-                                    <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
+                                <div class="row small-gutter">
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceCode:'+i+':'+j)" [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
+                                            <label class="control-label">Service Code<span class="asterisk">*</span></label>
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" placeholder="Enter service code or select service" [formControl]="service.serviceCode">
+                                                <span *ngIf="pageMode != 'VIEW' && !service.retrieved" class="input-group-append">
+                                                    <span class="input-group-text clickable medium" [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceDescription:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)">
+                                            <label class="control-label">Service Description<span class="asterisk">*</span></label>
+                                            <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription" type="text">
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceDate:'+i+':'+j)" [matTooltip]="getFieldError('serviceDate:'+i+':'+j)">
+                                            <label class="control-label">Service Date<span class="asterisk">*</span></label>
+                                            <div class="date-picker">
+                                                <input [matDatepicker]="picker" class="form-control" placeholder="Select service date" [formControl]="service.serviceDate">
+                                                <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)">
+                                            <label class="control-label">Unit Price<span class="asterisk">*</span></label>
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Enter unit price" type="number" [formControl]="service.unitPrice">
+                                                <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)">
+                                            <label class="control-label">Quantity<span class="asterisk">*</span></label>
+                                            <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('servicePatientShare:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
+                                            <label class="control-label">Patient Share <span class="asterisk">*</span> </label>
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare">
+                                                <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceDiscount:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
+                                            <label class="control-label">Service Discount <span class="asterisk">*</span></label>
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Enter service discount" type="number" [formControl]="service.serviceDiscount">
+                                                <span class="input-group-append">
+                                                    <span class="input-group-text clickable medium"
+                                                        (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit
+                                                        == 'SAR'? 'SAR':'%'}}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceNetVatRate:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)">
+                                            <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Enter net vat rate" type="number" [formControl]="service.netVatRate">
+                                                <span class="input-group-append"><span class="input-group-text medium">%</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                        <div class="form-group" [class.has-error]="fieldHasError('servicePatientShareVatRate:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)">
+                                            <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Enter patient share vat rate" type="number" [formControl]="service.patientShareVatRate">
+                                                <span class="input-group-append"><span class="input-group-text medium">%</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']"
+                                        *ngIf="claimType == dentalDepartmentCode">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceToothNumber:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
+                                            <label class="control-label">Tooth Number<span class="asterisk">*</span></label>
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Select tooth number" type="number" [formControl]="service.toothNumber">
+                                                <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="input-group-append">
+                                                    <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </mat-expansion-panel>
                         </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity:'+i+':'+j)" [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)">
-                                <label class="control-label">Quantity<span class="asterisk">*</span></label>
-                                <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
-                            </div>
+                        <div class="text-right mt-2 btn-list" *ngIf="pageMode != 'VIEW'">
+                            <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" color="primary" (click)="onAddRetrievedServiceClick(i)">Add a Retreived
+                                Service</button>
+                            <button mat-flat-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
                         </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('servicePatientShare:'+i+':'+j)" [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
-                                <label class="control-label">Patient Share <span class="asterisk">*</span> </label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare">
-                                    <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceDiscount:'+i+':'+j)" [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
-                                <label class="control-label">Service Discount <span class="asterisk">*</span></label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="Enter service discount" type="number" [formControl]="service.serviceDiscount">
-                                    <span class="input-group-append">
-                                        <span class="input-group-text clickable medium"
-                                            (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit
-                                            == 'SAR'? 'SAR':'%'}}</span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceNetVatRate:'+i+':'+j)" [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)">
-                                <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="Enter net vat rate" type="number" [formControl]="service.netVatRate">
-                                    <span class="input-group-append"><span class="input-group-text medium">%</span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
-                            <div class="form-group" [class.has-error]="fieldHasError('servicePatientShareVatRate:'+i+':'+j)"
-                                [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)">
-                                <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="Enter patient share vat rate" type="number" [formControl]="service.patientShareVatRate">
-                                    <span class="input-group-append"><span class="input-group-text medium">%</span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']"
-                            *ngIf="claimType == dentalDepartmentCode">
-                            <div class="form-group" [class.has-error]="fieldHasError('serviceToothNumber:'+i+':'+j)" [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
-                                <label class="control-label">Tooth Number<span class="asterisk">*</span></label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="Select tooth number" type="number" [formControl]="service.toothNumber">
-                                    <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="input-group-append">
-                                        <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-            </div>
-            <div class="text-right mt-2 btn-list" *ngIf="pageMode != 'VIEW'">
-                <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" color="primary" (click)="onAddRetrievedServiceClick(i)">Add a Retreived
-                    Service</button>
-                <button mat-flat-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
-            </div>
-        </div>
-    </ng-container>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
 </div>
+<hr *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" />
+<button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" mat-flat-button color="primary" class="mt-2" (click)="onAddInvoiceClick()">Add
+    Invoice</button>
+
 <mat-menu #editServiceCodeMenu class="primary-menu" xPosition="before">
     <p *ngIf="!priceListExist" class="d-flex text-orange">
         <mat-icon class="mr-1">error</mat-icon>
