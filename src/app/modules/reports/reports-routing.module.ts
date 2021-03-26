@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-submissions.component';
 
 import { CleanClaimProgressReportComponent } from './components/clean-claim-progress-report/clean-claim-progress-report.component';
 import { CreditReportCreateComponent } from './components/credit-report-create/credit-report-create.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'creditReportSummary/:batchId', component: CreditReportSummaryComponent },
   { path: 'creditReportSummaryDetails', component: CreditReportSummaryDetailsComponent },
   { path: 'tawuniya-credit-report-details', component: TawuniyaCreditReportDetailsComponent },
+  { path: 'claim-submissions', component: ClaimSubmissionsComponent }
 ];
 
 @NgModule({

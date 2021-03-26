@@ -224,6 +224,19 @@
                     </ul>
                 </mat-expansion-panel>
             </mat-accordion>
+
+            <mat-expansion-panel hideToggle *ngIf="!envProd">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Reports</mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <span class="text">Claim Submissions</span>
+                        </a>
+                    </li>
+                </ul>
+            </mat-expansion-panel>
         </div>
     </ng-scrollbar>
 </div>
