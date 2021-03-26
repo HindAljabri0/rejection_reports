@@ -19,10 +19,12 @@
                         <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}
+                    </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceNumber}}</td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.net.value}}</td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.netVATamount.value}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.netVATamount.value}}
+                    </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.services.length}}</td>
                     <td>
                         <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick($event, i)"
@@ -126,7 +128,8 @@
                                     <div class="col-auto" *ngIf="service.statusCode != null">
                                         <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
                                             <label>Actual Paid Amount</label>
-                                            <h3>{{calcNet(controllers[i].services[j]) - service.acutalDeductedAmount}}</h3>
+                                            <h3>{{calcNet(controllers[i].services[j]) - service.acutalDeductedAmount}}
+                                            </h3>
                                         </div>
                                     </div>
                                 </div>
@@ -140,6 +143,17 @@
                                                     <span class="input-group-text clickable medium" [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                                                 </span>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceType:'+i+':'+j)" [matTooltip]="getFieldError('serviceType:'+i+':'+j)">
+                                            <label class="control-label">Service Type</label>
+                                            <mat-form-field class="form-control custom-select-control">
+                                                <mat-select [formControl]="service.serviceType">
+                                                    <mat-option *ngFor="let service of allServiceTypes" [value]="service.key">
+                                                        {{service.value}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
@@ -179,7 +193,8 @@
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('servicePatientShare:'+i+':'+j)"
                                             [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
-                                            <label class="control-label">Patient Share <span class="asterisk">*</span> </label>
+                                            <label class="control-label">Patient Share <span class="asterisk">*</span>
+                                            </label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare">
                                                 <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>

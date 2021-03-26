@@ -66,7 +66,8 @@ export class InvoicesServicesComponent implements OnInit {
       patientShareVatRate: FormControl,
       priceCorrection: number,
       rejection: number,
-      isOpen: boolean
+      isOpen: boolean,
+      serviceType: FormControl
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -89,6 +90,18 @@ export class InvoicesServicesComponent implements OnInit {
   errors: FieldError[] = [];
 
   pageMode: ClaimPageMode;
+
+  allServiceTypes = [
+    { key: 'N/A', value: 'N/A' },
+    { key: 'LABORATORY', value: 'LABORATORY' },
+    { key: 'MEDICATION', value: 'MEDICATION' },
+    { key: 'CONSULTATION', value: 'CONSULTATION' },
+    { key: 'PROCEDURE', value: 'PROCEDURE' },
+    { key: 'HOSPITLIZATION', value: 'HOSPITLIZATION' },
+    { key: 'DENTAL', value: 'DENTAL' },
+    { key: 'SUPPLY', value: 'SUPPLY' },
+    { key: 'RADIOLOGY', value: 'RADIOLOGY' },
+  ];
 
   constructor(
     private store: Store,
@@ -192,6 +205,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
+        this.controllers[index].services[serviceIndex].serviceType.setValue(service.serviceType);
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
         this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
 
@@ -250,6 +264,7 @@ export class InvoicesServicesComponent implements OnInit {
           servicesControllers.serviceCode.enable();
           servicesControllers.serviceDate.enable();
           servicesControllers.serviceDescription.enable();
+          servicesControllers.serviceType.enable();
           servicesControllers.serviceDiscount.enable();
           servicesControllers.toothNumber.enable();
           servicesControllers.unitPrice.enable();
@@ -261,6 +276,7 @@ export class InvoicesServicesComponent implements OnInit {
           servicesControllers.serviceCode.disable();
           servicesControllers.serviceDate.disable();
           servicesControllers.serviceDescription.disable();
+          servicesControllers.serviceType.disable();
           servicesControllers.serviceDiscount.disable();
           servicesControllers.toothNumber.disable();
           servicesControllers.unitPrice.disable();
@@ -287,6 +303,9 @@ export class InvoicesServicesComponent implements OnInit {
           }
           if (this.isControlNull(servicesControllers.serviceDescription)) {
             servicesControllers.serviceDescription.enable();
+          }
+          if (this.isControlNull(servicesControllers.serviceType)) {
+            servicesControllers.serviceType.enable();
           }
           if (this.isControlNull(servicesControllers.serviceDiscount)) {
             servicesControllers.serviceDiscount.enable();
@@ -329,7 +348,8 @@ export class InvoicesServicesComponent implements OnInit {
       patientShareVatRate: new FormControl(0),
       priceCorrection: 0,
       rejection: 0,
-      isOpen: false
+      isOpen: false,
+      serviceType: new FormControl()
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
@@ -345,6 +365,8 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].serviceCode.disable();
     this.controllers[i].services[j].serviceDescription.setValue(service.serviceDescription);
     this.controllers[i].services[j].serviceDescription.disable();
+    this.controllers[i].services[j].serviceType.setValue(service.serviceType);
+    this.controllers[i].services[j].serviceType.disable();
     this.controllers[i].services[j].unitPrice.setValue(service.unitPrice.value);
     this.controllers[i].services[j].unitPrice.disable();
     this.controllers[i].services[j].quantity.setValue(decision.approvedQuantity);
@@ -448,7 +470,7 @@ export class InvoicesServicesComponent implements OnInit {
     const patientShareVATamount = this.calcPatientVatRate(service);
     const newService: Service = {
       serviceNumber: service.serviceNumber,
-      serviceType: 'N/A',
+      serviceType: service.serviceType.value,
       serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
       serviceCode: service.serviceCode.value,
       serviceDescription: service.serviceDescription.value,
