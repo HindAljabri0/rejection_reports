@@ -115,12 +115,15 @@ export class CreditReportSummaryDetailsComponent implements OnInit {
   labelName: string;
   detailsConfig: any[] = [];
   summaryKeys: any = [];
-
+  batchId: string;
+  payerId: string;
   constructor(private store: Store, private creditReportService: CreditReportService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       this.summaryType = parseFloat(params['summaryType']);
+      this.batchId = params['batchId'];
+      this.payerId = params['payerId'];
     });
 
     // const datas = [{

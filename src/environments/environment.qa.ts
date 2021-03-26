@@ -11,5 +11,6 @@ export const environment = {
   auditTrailServiceHost: `${host}/audit-trail`,
   settingsServiceHost: `${host}/settings`,
   claimInquireServiceHost: `${host}/claim-inquiry`,
-  validationServiceHost: `${host}/validate`
+  validationServiceHost: `${host}/validate`,
+  creditReportService: `${host}/reports`
 };

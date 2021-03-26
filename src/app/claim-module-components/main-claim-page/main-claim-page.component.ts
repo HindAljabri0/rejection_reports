@@ -264,7 +264,9 @@ export class MainClaimPageComponent implements OnInit {
   }
 
 
-
+  ngOnDestroy(): void {
+    this.cancel();
+  }
 
 
 }

@@ -680,16 +680,21 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.from != null && this.to != null && this.payerId != null) {
       this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
         + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo);
+      return;
     } else if (this.batchId != null) {
       this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo);
+      return;
     } else if (this.uploadId != null) {
       this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo);
+      return;
     }
     if (this.selectedCardKey != 0) {
       this.location.go(this.location.path() + `&status=${this.selectedCardKey}`);
+      return;
     }
     if (this.selectedPage != null && this.selectedPage > 0) {
       this.location.go(this.location.path() + `&page=${(this.selectedPage + 1)}`);
+      return;
     }
   }
 
@@ -998,10 +1003,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
   deleteClaimByUploadid() {
-
-    if (this.commen.loading) { return; }
-    this.commen.loadingChanged.next(true);
-
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Upload?',
         `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,

@@ -6,8 +6,9 @@ import { Subscription } from 'rxjs';
 import { getPaginationControl } from 'src/app/claim-module-components/store/claim.reducer';
 import { CreditReportModel } from 'src/app/models/creditReportModel';
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SummaryType } from 'src/app/models/allCreditSummaryDetailsModels/summaryType';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-bupa-rejection-upload-summary',
@@ -72,22 +73,35 @@ export class CreditReportSummaryComponent implements OnInit {
     currentIndex: number;
     size: number;
   };
-  summayData: CreditReportModel = new CreditReportModel();
+  summaryData: CreditReportModel = new CreditReportModel();
   private subscription = new Subscription();
-  constructor(private store: Store, private creditReportService: CreditReportService, private router: Router) { }
+  batchId: string;
+  payerId: string;
+  constructor(private store: Store, private creditReportService: CreditReportService, private router: Router, private activatedRoute: ActivatedRoute, public common: SharedServices) { }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.batchId = params['batchId'];
+      this.payerId = params['payerId'];
+    });
     this.store.select(getPaginationControl).subscribe(control => {
       this.paginationControl = control;
     });
     this.getCreditReportSummaryData();
   }
   getCreditReportSummaryData() {
-    const batchId = "0";
-    this.subscription.add(this.creditReportService.getCreditReportsList(batchId).subscribe((res: any) => {
+    this.common.loadingChanged.next(true);
+    const providerId = this.common.providerId;
+    const data = {
+      batchId: this.batchId,
+      payerId: this.payerId
+    };
+    this.subscription.add(this.creditReportService.getCreditReportSummary(providerId, data).subscribe((res: any) => {
       if (res.body !== undefined) {
-        const data: any = JSON.stringify(res.body);
-        this.summayData = data;
+        this.common.loadingChanged.next(false);
+        if (res.body.data !== null)
+          this.summaryData = res.body.data;
+
       }
     }, err => {
       console.log(err);
@@ -120,7 +134,7 @@ export class CreditReportSummaryComponent implements OnInit {
     this.subscription.unsubscribe();
   }
   goToSummaryDetailsPage(summaryType) {
-    this.router.navigate(['/reports/creditReportSummaryDetails'], { queryParams: { batchId: 0, summaryType: summaryType } })
+    this.router.navigate(['/reports/creditReportSummaryDetails'], { queryParams: { batchId: this.batchId, payerId: this.payerId, summaryType: summaryType } })
   }
 
   get summType() {

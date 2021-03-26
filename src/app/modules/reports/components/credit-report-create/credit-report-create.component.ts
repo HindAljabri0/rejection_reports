@@ -34,6 +34,7 @@ export class CreditReportCreateComponent implements OnInit {
   saveClick(form: NgForm) {
     this.checkAllValuesHundredPercentBelow();
     this.bupaRejectionReportData.payerId = 319;
+    //bupa payerid static
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.autoFocus = false;

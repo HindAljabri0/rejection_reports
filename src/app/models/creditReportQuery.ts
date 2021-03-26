@@ -3,7 +3,7 @@ export class CreditReportQueryModel {
     batchId: number;
     payerId = null;
     receivedDate: Date;
-    // referralBatch = true;
+    referralBatch = 0;
 
     invalidMembership = null;
     invalidMembershipPercent = '';
