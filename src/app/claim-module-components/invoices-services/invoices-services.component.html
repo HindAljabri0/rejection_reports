@@ -35,15 +35,13 @@
                     <td colspan="8" class="pl-7 pr-7">
                         <p class="block-title mb-2">Invoice {{(i+1)}}</p>
                         <div class="row small-gutter">
-                            <div
-                                [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                 <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
                                     <label class="control-label">Invoice Number<span class="asterisk">*</span></label>
                                     <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
                                 </div>
                             </div>
-                            <div
-                                [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                 <div class="form-group" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
                                     <label class="control-label">Invoice Date<span class="asterisk">*</span></label>
                                     <div class="date-picker">
@@ -53,8 +51,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4':'']">
+                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">Invoice Department<span class="asterisk">*</span></label>
                                     <mat-form-field class="form-control custom-select-control">
@@ -134,8 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="row small-gutter">
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceCode:'+i+':'+j)" [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
                                             <label class="control-label">Service Code<span class="asterisk">*</span></label>
                                             <div class="input-group">
@@ -146,16 +142,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceDescription:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)">
                                             <label class="control-label">Service Description<span class="asterisk">*</span></label>
                                             <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription" type="text">
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceDate:'+i+':'+j)" [matTooltip]="getFieldError('serviceDate:'+i+':'+j)">
                                             <label class="control-label">Service Date<span class="asterisk">*</span></label>
                                             <div class="date-picker">
@@ -165,8 +159,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)">
                                             <label class="control-label">Unit Price<span class="asterisk">*</span></label>
@@ -176,16 +169,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)">
                                             <label class="control-label">Quantity<span class="asterisk">*</span></label>
                                             <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('servicePatientShare:'+i+':'+j)"
                                             [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
                                             <label class="control-label">Patient Share <span class="asterisk">*</span> </label>
@@ -195,8 +186,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceDiscount:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
                                             <label class="control-label">Service Discount <span class="asterisk">*</span></label>
@@ -210,8 +200,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceNetVatRate:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)">
                                             <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
@@ -221,8 +210,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('servicePatientShareVatRate:'+i+':'+j)"
                                             [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)">
                                             <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
@@ -232,8 +220,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div [ngClass]="[pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'?'col-md-6':'',pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'?'col-xl-4 col-md-6':'']"
-                                        *ngIf="claimType == dentalDepartmentCode">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6" *ngIf="claimType == dentalDepartmentCode">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceToothNumber:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
                                             <label class="control-label">Tooth Number<span class="asterisk">*</span></label>
