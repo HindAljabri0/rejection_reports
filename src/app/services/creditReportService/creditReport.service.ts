@@ -78,4 +78,10 @@ export class CreditReportService {
         const req = new HttpRequest('POST', environment.creditReportService + `/providers/${batchId}/report/rejected/upload`, formdata);
         return this.http.request(req);
     }
+
+    listTawuniyaCreditReports(providerId: string, page: number, pageSize: number) {
+        const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
+        return this.http.request(request);
+    }
 }

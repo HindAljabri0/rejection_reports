@@ -12,5 +12,6 @@ export const environment = {
   settingsServiceHost: `${host}/settings`,
   claimInquireServiceHost: `${host}/claim-inquiry`,
   validationServiceHost: `${host}/validate`,
-  creditReportService: `${host}/reports`
+  creditReportService: `${host}/reports`,
+  tawuniyaCreditReportService: `${host}/credit-report`
 };
