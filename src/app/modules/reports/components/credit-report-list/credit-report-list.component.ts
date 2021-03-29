@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/credit-report-upload-modal.component';
 
 
@@ -15,7 +16,7 @@ export class CreditReportListComponent implements OnInit {
   private subscription = new Subscription();
   creditReportData: CreditReportUploadModel[] = [];
   currentFileUpload: File;
-  constructor(private dialog: MatDialog, private creditReportService: CreditReportService) { }
+  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices ) { }
 
   ngOnInit() {
     this.getCreditReportListData();
@@ -23,34 +24,20 @@ export class CreditReportListComponent implements OnInit {
       payerName: 'Bupa',
       receivedDate: new Date('03/04/2020'),
       batchId: 'B1DD',
-      totalrejectionAmount: '1,596,900.00 SR',
-      totalRejectionRatio: '1,596,900.00 SR',
+      totalRejectionsAmount: '1,596,900.00 SR',
       medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%',
-      routerLink: '/reports/creditReportSummary'
-    },
-    {
-      payerName: 'Tawuniya',
-      receivedDate: new Date('03/04/2020'),
-      batchId: 'B1DD',
-      totalrejectionAmount: '1,596,900.00 SR',
-      totalRejectionRatio: '1,596,900.00 SR',
-      medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%',
-      routerLink: '/reports/tawuniya-credit-report-details'
+      technicalRejectionRatio: '47%'
     }];
     this.creditReportData = data;
   }
   getCreditReportListData() {
-    const batchId = "0";
-    this.subscription.add(this.creditReportService.getCreditReportsList(batchId).subscribe((res: any) => {
+    this.subscription.add(this.creditReportService.listTawuniyaCreditReports(this.sharedServices.providerId, 0, 10).subscribe((res: any) => {
       if (res.body !== undefined) {
-        const data: any = JSON.stringify(res.body);
-        this.creditReportData = data;
+        this.creditReportData = res.body.content;
       }
     }, err => {
       console.log(err);
-    }))
+    }));
   }
 
   openPdf(event) {
