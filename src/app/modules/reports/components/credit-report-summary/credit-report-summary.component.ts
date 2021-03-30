@@ -134,7 +134,7 @@ export class CreditReportSummaryComponent implements OnInit {
     this.subscription.unsubscribe();
   }
   goToSummaryDetailsPage(summaryType) {
-    this.router.navigate(['/reports/creditReportSummaryDetails'], { queryParams: { batchId: this.batchId, payerId: this.payerId, summaryType: summaryType } })
+    // this.router.navigate(['/reports/creditReportSummaryDetails'], { queryParams: { batchId: this.batchId, payerId: this.payerId, summaryType: summaryType } })
   }
 
   get summType() {
