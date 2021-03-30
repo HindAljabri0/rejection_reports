@@ -83,6 +83,7 @@ export class CreditReportUploadModalComponent implements OnInit {
         this.closeDialog();
       }
     }, err => {
+      this.common.loadingChanged.next(false);
       this.error = err.error;
       console.log(err);
     });

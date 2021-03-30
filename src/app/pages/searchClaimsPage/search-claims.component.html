@@ -77,10 +77,12 @@
             </button>
             <div class="right-block">
                 <div class="actions">
-                    <button matRipple type="button" (click)="reValidateClaims()" *ngIf="isRevalidate"
+                    <!-- <button matRipple type="button" (click)="reValidateClaims()" *ngIf="isRevalidate"
                         class="action-btn">
                         <img src="./assets/ic-refresh.svg" alt="Refresh" />
-                    </button>
+                    </button> -->
+                    <button matRipple class="action-btn" *ngIf="isRevalidate" (click)="reValidateClaims()">Re-Validate
+                        {{selectedClaims.length==0?" All":"Selection"}}</button>
                     <button matRipple (click)="download()" type="button" class="action-btn"
                         *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
                         <img src="./assets/{{detailTopActionIcon}}" />
