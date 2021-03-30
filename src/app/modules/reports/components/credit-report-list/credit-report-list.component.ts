@@ -20,23 +20,17 @@ export class CreditReportListComponent implements OnInit {
 
   ngOnInit() {
     this.getCreditReportListData();
-    const data = [{
-      payerName: 'Bupa',
-      receivedDate: new Date('03/04/2020'),
-      batchId: 'B1DD',
-      totalRejectionsAmount: '1,596,900.00 SR',
-      medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%'
-    }];
-    this.creditReportData = data;
   }
   getCreditReportListData() {
+    this.sharedServices.loadingChanged.next(true);
     this.subscription.add(this.creditReportService.listTawuniyaCreditReports(this.sharedServices.providerId, 0, 10).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
+        this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
       console.log(err);
+      this.sharedServices.loadingChanged.next(false);
     }));
   }
 

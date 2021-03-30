@@ -72,6 +72,10 @@
                 <td class="row-click">{{item.medicalRejectionRatio}}</td>
                 <td class="row-click">{{item.technicalRejectionRatio}}</td>
             </tr>
+            <tr>
+                <td colspan="6"><app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
+                </app-empty-state></td>
+            </tr>
         </tbody>
     </table>
 </div>
