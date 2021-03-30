@@ -1,9 +1,13 @@
 import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SummaryType } from 'src/app/models/allCreditSummaryDetailsModels/summaryType';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { environment } from 'src/environments/environment';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class CreditReportService {
     detailsConfig = [
         { label: 'Invalid Membership', type: SummaryType.invalMem },
@@ -81,6 +85,12 @@ export class CreditReportService {
 
     listTawuniyaCreditReports(providerId: string, page: number, pageSize: number) {
         const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
+        return this.http.request(request);
+    }
+
+    getTawuniyaCreditReport(providerId: string, batchId: string) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}`;
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }
