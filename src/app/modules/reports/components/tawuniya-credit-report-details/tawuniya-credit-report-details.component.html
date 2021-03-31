@@ -11,7 +11,7 @@
                 <p>Total Rejections</p>
                 <strong
                     *ngIf="data != null && data.providercreditReportInformation != null">{{data.providercreditReportInformation.totalrejectionsamount
-                    + data.providercreditReportInformation.totaldeductionsamount}} SR</strong>
+                    + data.providercreditReportInformation.totaldeductionsamount | currency: ' ' }} SR</strong>
             </div>
         </div>
         <div class="right-block">
@@ -124,35 +124,35 @@
             <ul class="information-block no-border" *ngIf="data.providercreditReportInformation != null">
                 <li class="semibold">
                     <span>Requested Amount (Net)</span>
-                    <p>{{data.providercreditReportInformation.requestedamount}}</p>
+                    <p>{{data.providercreditReportInformation.requestedamount  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Difference In Discounts</span>
-                    <p>{{data.providercreditReportInformation.differenceindiscounts}}</p>
+                    <p>{{data.providercreditReportInformation.differenceindiscounts  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Difference In Deductible</span>
-                    <p>{{data.providercreditReportInformation.differenceindeductibles}}</p>
+                    <p>{{data.providercreditReportInformation.differenceindeductibles  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Transferred Batch Amount</span>
-                    <p>{{data.providercreditReportInformation.transferredbatchamount}}</p>
+                    <p>{{data.providercreditReportInformation.transferredbatchamount  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Bills Not Recieved</span>
-                    <p>{{data.providercreditReportInformation.billsnotreceived}}</p>
+                    <p>{{data.providercreditReportInformation.billsnotreceived  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Rejected Claims Amount</span>
-                    <p>{{data.providercreditReportInformation.rejectedclaimsamount}}</p>
+                    <p>{{data.providercreditReportInformation.rejectedclaimsamount  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Net Deducted Services</span>
-                    <p>{{data.providercreditReportInformation.netdeductedservices}}</p>
+                    <p>{{data.providercreditReportInformation.netdeductedservices  | currency: ' '}}</p>
                 </li>
                 <li class="semibold">
                     <span>Total Payable</span>
-                    <p>{{data.providercreditReportInformation.totalamountpayable}}</p>
+                    <p>{{data.providercreditReportInformation.totalamountpayable  | currency: ' '}}</p>
                 </li>
             </ul>
         </div>
@@ -240,11 +240,11 @@
                                                     <div class="col-lg-4">
                                                         <div class="inline-labelled-text">
                                                             <label>Exceed Price</label>
-                                                            <p class="semibold">{{deductedService.exceedprice}} SR</p>
+                                                            <p class="semibold">{{deductedService.exceedprice | currency: ' '}} SR</p>
                                                         </div>
                                                         <div class="inline-labelled-text">
                                                             <label>Deducted Amount</label>
-                                                            <p class="semibold">{{deductedService.deductedamount}} SR
+                                                            <p class="semibold">{{deductedService.deductedamount | currency: ' '}} SR
                                                             </p>
                                                         </div>
                                                     </div>
@@ -382,11 +382,11 @@
                                                     <div class="col-lg-4">
                                                         <div class="inline-labelled-text">
                                                             <label>Exceed Price</label>
-                                                            <p class="semibold">{{rejectedServices.exceedprice}} SR</p>
+                                                            <p class="semibold">{{rejectedServices.exceedprice | currency: ' '}} SR</p>
                                                         </div>
                                                         <div class="inline-labelled-text">
                                                             <label>Deducted Amount</label>
-                                                            <p class="semibold">{{rejectedServices.deductedamount}} SR
+                                                            <p class="semibold">{{rejectedServices.deductedamount | currency: ' '}} SR
                                                             </p>
                                                         </div>
                                                     </div>
