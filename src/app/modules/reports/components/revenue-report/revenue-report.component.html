@@ -1,0 +1,62 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Revenue Report</p>
+    </div>
+    <div class="clean-claim-progress-report">
+        <div class="left-block">
+            <ul class="list">
+                <li class="title">Top 5 Rejections</li>
+                <li>
+                    <button type="button" class="active" matRipple>By Payer</button>
+                </li>
+                <li>
+                    <button type="button" matRipple>By Department</button>
+                </li>
+                <li>
+                    <button type="button" matRipple>By Doctor</button>
+                </li>
+            </ul>
+        </div>
+        <div class="right-block">
+            <div class="row align-items-center">
+                <div class="col-7">
+                    <canvas baseChart [datasets]="doughnutChartData" [labels]="doughnutChartLabels" [options]="doughnutChartOptions" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="col-5">
+                    <div class="rejection-card-head">
+                        <h4 class="pb-1">Rejected Claims</h4>
+                        <h6>10 Claims</h6>
+                    </div>
+                    <ul class="item-list">
+                        <li>
+                            <div class="status-dot size-lg" style="background-color: #5fec8c;"></div>
+                            <div>Tawuniya</div>
+                            <div class="ml-auto pl-2 text-right">3 <small>Claims</small></div>
+                        </li>
+                        <li>
+                            <div class="status-dot size-lg" style="background-color: #5fecc7;"></div>
+                            <div>Malath</div>
+                            <div class="ml-auto pl-2 text-right">3 <small>Claims</small></div>
+                        </li>
+                        <li>
+                            <div class="status-dot size-lg" style="background-color: #5fd7ec;"></div>
+                            <div>AXA</div>
+                            <div class="ml-auto pl-2 text-right">2 <small>Claims</small></div>
+                        </li>
+                        <li>
+                            <div class="status-dot size-lg" style="background-color: #5f9cec;"></div>
+                            <div>SAICO</div>
+                            <div class="ml-auto pl-2 text-right">1 <small>Claims</small></div>
+                        </li>
+                        <li>
+                            <div class="status-dot size-lg" style="background-color: #5f62ec;"></div>
+                            <div>Rajhi</div>
+                            <div class="ml-auto pl-2 text-right">1 <small>Claims</small></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

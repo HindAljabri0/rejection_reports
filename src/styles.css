@@ -689,6 +689,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
 .clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
+.clean-claim-progress-report>.right-block .rejection-card-head{display: block;min-height: auto;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
