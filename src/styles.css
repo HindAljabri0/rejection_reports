@@ -129,11 +129,6 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .rejection-card-head>.right-block{flex-grow:0;flex-shrink:0;flex-basis:120px;max-width:120px;}
 .mat-flat-button.input-group-append{border-radius: 0;}
 .mat-flat-button.input-group-append:last-child{border-radius: 0 6px 6px 0;}
-.gender-btn.mat-flat-button,.gender-btn.mat-flat-button[disabled]{min-width: auto;background-color: #3060AA;padding-left: 10px;padding-right: 10px;}
-.gender-btn .mat-button-wrapper>img{display: block;height: 24px;width: 24px;}
-.gender-btn.mat-flat-button.female,.gender-btn.mat-flat-button.female[disabled]{background-color: #ff5ea9;}
-.gender-btn.mat-flat-button.male,.gender-btn.mat-flat-button.male[disabled]{background-color: #42CDFF;}
-.has-error .gender-btn.mat-flat-button,.has-error .gender-btn.mat-flat-button[disabled]{background-color: #ffd5d5;}
 .overlay-backdrop{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,0.6);display: block;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;z-index: 8;}
 .overlay-backdrop.show{opacity: 1;visibility: visible;}
 .overlay-backdrop>button{display: block;height: 100%;width: 100%;background: none;border:0;}
@@ -152,6 +147,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .primary-grid textarea.form-control.comment-box,.comment-box{height:80px;}
 .pl-7{padding-left: 7px !important;}
 .pr-7{padding-right: 7px !important;}
+.inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
