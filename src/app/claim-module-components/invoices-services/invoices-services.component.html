@@ -1,3 +1,13 @@
+<div class="d-flex mb-3">
+    <h4 class="align-self-center medium">Invoice & Services</h4>
+    <button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" mat-flat-button class="ml-auto px-0 primary-text-btn"
+        (click)="onAddInvoiceClick()">
+        <span class="d-flex align-items-center">
+            <mat-icon>add_circle_outline</mat-icon>
+            <span class="pl-1">Add Invoice</span>
+        </span>
+    </button>
+</div>
 <div class="table-responsive">
     <table class="primary-grid manual-row-color invoice-table">
         <thead>
@@ -34,8 +44,8 @@
                     </td>
                 </tr>
                 <tr *ngIf="expandedInvoice == i">
-                    <td colspan="8" class="pl-7 pr-7">
-                        <p class="block-title mb-2">Invoice {{(i+1)}}</p>
+                    <td colspan="8" class="pl-7 pr-7 border-top">
+                        <p class="block-title sm mb-2">Invoice {{(i+1)}}</p>
                         <div class="row small-gutter">
                             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                 <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
@@ -66,7 +76,20 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="block-title">Services</p>
+                        <div class="d-flex">
+                            <h5 class="align-self-center medium">Services</h5>
+                            <div class="ml-auto btn-list" *ngIf="pageMode != 'VIEW'">
+                                <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" class="primary-text-btn px-0"
+                                    (click)="onAddRetrievedServiceClick(i)">
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                    <span class="pl-1">Add a Retreived Service</span>
+                                </button>
+                                <button mat-flat-button (click)="onAddServiceClick(i)" class="primary-text-btn px-0" disableRipple="true">
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                    <span class="pl-1">Add Service</span>
+                                </button>
+                            </div>
+                        </div>
                         <div class="list-expansion-panel">
                             <mat-expansion-panel *ngFor="let service of invoice.services; let j = index" hideToggle [expanded]="service.isOpen">
                                 <mat-expansion-panel-header>
@@ -250,20 +273,13 @@
                                 </div>
                             </mat-expansion-panel>
                         </div>
-                        <div class="text-right mt-2 btn-list" *ngIf="pageMode != 'VIEW'">
-                            <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" color="primary" (click)="onAddRetrievedServiceClick(i)">Add a Retreived
-                                Service</button>
-                            <button mat-flat-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
-                        </div>
                     </td>
                 </tr>
             </ng-container>
         </tbody>
     </table>
 </div>
-<hr *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" />
-<button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" mat-flat-button color="primary" class="mt-2" (click)="onAddInvoiceClick()">Add
-    Invoice</button>
+
 
 <mat-menu #editServiceCodeMenu class="primary-menu" xPosition="before">
     <p *ngIf="!priceListExist" class="d-flex text-orange">
