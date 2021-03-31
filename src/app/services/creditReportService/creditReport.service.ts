@@ -94,4 +94,10 @@ export class CreditReportService {
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }
+
+    getTawuniyaCreditReportDetail(providerId: string, batchId: string, serialNo: string, rejectionType: string) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}/serials/${serialNo}?rejectionType=${rejectionType}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
+        return this.http.request(request);
+    }
 }
