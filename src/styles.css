@@ -64,6 +64,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
 .btn-action>img{display: block;height: 24px;width: 24px;}
 .btn-action>.mat-icon{display: block;}
+.primary-text-btn{color: #3060AA;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -350,6 +351,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-header .actions{display: flex;}
 .block-header .actions .action-btn{margin-right: 6px;}
 .block-header .actions .action-btn:last-child{margin-right: 0;}
+.block-header .actions .mat-flat-button{margin: -5px 0;}
 .secondary-header{padding: 12px 14px;color:#0079C8;background: #fff;font-weight: 500;}
 .block-filter-panel{background: #fff;padding: 14px 14px 0;}
 .block-body {padding: 14px;background-color: #f0eeee;}
