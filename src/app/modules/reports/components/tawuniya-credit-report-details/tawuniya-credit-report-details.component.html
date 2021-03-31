@@ -232,7 +232,7 @@
                                                         </div>
                                                         <div class="text-lg-right">
                                                             <a href="#"
-                                                                (click)="openDetailsDialog($event, deductedService.id.serialno, 'deducted')"
+                                                                (click)="openDetailsDialog($event, deductedService.id.batchreferenceno, deductedService.id.serialno, 'deducted')"
                                                                 class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
                                                                 title="View Details">View Details</a>
                                                         </div>
@@ -374,7 +374,7 @@
                                                         </div>
                                                         <div class="text-lg-right">
                                                             <a href="#"
-                                                                (click)="openDetailsDialog($event, rejectedServices.id.serialno, 'rejected')"
+                                                                (click)="openDetailsDialog($event, rejectedServices.id.batchreferenceno, rejectedServices.id.serialno, 'rejected')"
                                                                 class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
                                                                 title="View Details">View Details</a>
                                                         </div>
