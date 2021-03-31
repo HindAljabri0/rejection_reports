@@ -15,12 +15,12 @@ const routes: Routes = [
   { path: 'creditReportCreate', component: CreditReportCreateComponent },
   { path: 'clean-claim-progress-reports', component: CleanClaimProgressReportComponent },
   { path: 'rejected-claim-progress-reports', component: RejectedClaimProgressReportComponent },
-  { path: 'creditReportList', component: CreditReportListComponent },
-  { path: 'creditReportSummary/:batchId', component: CreditReportSummaryComponent },
+  { path: 'creditReports', component: CreditReportListComponent },
+  { path: 'creditReportSummary', component: CreditReportSummaryComponent },
   { path: 'creditReportSummaryDetails', component: CreditReportSummaryDetailsComponent },
-  { path: 'tawuniya-credit-report-details', component: TawuniyaCreditReportDetailsComponent },
-  { path: 'claim-submissions', component: ClaimSubmissionsComponent },
-  { path: 'revenue-report', component: RevenueReportComponent }
+  { path: 'revenue-report', component: RevenueReportComponent },
+  { path: 'creditReports/tawuniya/batch/:batchId', component: TawuniyaCreditReportDetailsComponent },
+  { path: 'claim-submissions', component: ClaimSubmissionsComponent }
 ];
 
 @NgModule({

@@ -49,6 +49,6 @@ import { RevenueReportComponent } from './components/revenue-report/revenue-repo
     ChartsModule
   ],
   providers: [PercentPipe, DatePipe, CreditReportService],
-  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent]
+  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent, CreditReportUploadModalComponent]
 })
 export class ReportsModule { }

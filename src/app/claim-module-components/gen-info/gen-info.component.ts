@@ -171,7 +171,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
     this.store.select(getGenInfoErrors).pipe(
       withLatestFrom(this.store.select(getPatientErrors)),
-      map(values => ([...values[0], ...values[1]]))
+      withLatestFrom(this.store.select(getPhysicianErrors)),
+      map(values => ([...values[0][0], ...values[0][1], ...values[1]]))
     ).subscribe(errors => this.errors = errors);
 
 

@@ -1,6 +1,6 @@
 <div class="block-header has-border">
     <ul class="custom-breadcrumb">
-        <li><a routerLink="/reports/creditReportList" class="primary-link">Credit Reports</a></li>
+        <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
         <li class="active">Bupa</li>
     </ul>
     <div class="right-block">
@@ -14,7 +14,8 @@
             <strong>742,750,000 SR</strong>
         </div>
         <div class="chart-block">
-            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
+            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels"
+                [chartType]="chartOneType">
             </canvas>
         </div>
     </div>
@@ -71,7 +72,8 @@
 </div>
 <div class="block-header has-border no-radius">
     <ul class="custom-breadcrumb align-self-center">
-        <li><a routerLink="/reports/creditReportSummary/0" class="primary-link">Bupa Rejections
+        <li><a routerLink="/reports/creditReportSummary" [queryParams]="{ batchId: batchId, payerId: payerId}"
+                class="primary-link">Bupa Rejections
                 Breakdown</a></li>
         <li class="active">{{labelName}}</li>
     </ul>

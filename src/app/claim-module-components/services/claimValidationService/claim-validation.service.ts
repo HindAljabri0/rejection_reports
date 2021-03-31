@@ -196,8 +196,6 @@ export class ClaimValidationService {
       }
       if (invoice.invoiceNumber == null || invoice.invoiceNumber.trim().length == 0) {
         fieldErrors.push({ fieldName: `invoiceNumber:${index}` });
-      } else if (!this.regexWithOutSpace.test(invoice.invoiceNumber)) {
-        fieldErrors.push({ fieldName: `invoiceNumber:${index}`, error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }
       invoice.service.forEach((service, serviceIndex) => {
         fieldErrors.push(...this.validateService(service, index, serviceIndex));
