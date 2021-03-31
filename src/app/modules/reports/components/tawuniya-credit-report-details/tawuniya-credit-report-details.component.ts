@@ -52,9 +52,9 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     })
   }
 
-  openDetailsDialog(event, serialNo, serviceType: 'rejected' | 'deducted') {
+  openDetailsDialog(event, batchReferenceNumber, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
-    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-md'] });
+    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-md'], data: {batchReferenceNumber, serialNo, serviceType} });
   }
 
   fixDataDates(){

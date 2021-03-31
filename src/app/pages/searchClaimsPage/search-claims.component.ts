@@ -670,7 +670,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   resetURL() {
     if (this.routerSubscription.closed) { return; }
-    let claimInfo = '';
+    let claimInfo = '', path = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
     }
@@ -678,24 +678,22 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       claimInfo += `&editMode=${this.editMode}`;
     }
     if (this.from != null && this.to != null && this.payerId != null) {
-      this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo);
-      return;
+      path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
+        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo;
+
     } else if (this.batchId != null) {
-      this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo);
-      return;
+      path = `/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo;
     } else if (this.uploadId != null) {
-      this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo);
-      return;
+      path = `/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo;
     }
     if (this.selectedCardKey != 0) {
-      this.location.go(this.location.path() + `&status=${this.selectedCardKey}`);
-      return;
+      path = this.location.path() + `&status=${this.selectedCardKey}`
     }
     if (this.selectedPage != null && this.selectedPage > 0) {
-      this.location.go(this.location.path() + `&page=${(this.selectedPage + 1)}`);
-      return;
+      path = this.location.path() + `&page=${(this.selectedPage + 1)}`
     }
+    if (path !== '')
+      this.location.go(path);
   }
 
 
