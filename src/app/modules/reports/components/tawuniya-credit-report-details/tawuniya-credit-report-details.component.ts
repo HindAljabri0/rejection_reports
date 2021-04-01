@@ -22,7 +22,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     private dialog: MatDialog,
     private routeActive: ActivatedRoute,
     private creditReportService: CreditReportService,
-    private sharedServices: SharedServices
+    private sharedServices: SharedServices,
   ) { }
 
   ngOnInit() {
