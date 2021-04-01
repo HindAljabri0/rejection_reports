@@ -1,9 +1,13 @@
-export class CreditReportModel {
-    id?: any;
+export interface Id {
     batchId: string;
     payerId: string;
+}
+
+export class CreditReportModel {
+    id: Id;
     providerId: string;
     receivedDate: Date;
+    referralBatch: number;
     invalidMembership: number;
     invalidMembershipPercent: number;
     invalidMembershipVat: number;

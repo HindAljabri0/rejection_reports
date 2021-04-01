@@ -4,73 +4,87 @@
     <p class="text-normal-color"><span class="text-medium-grey">Report Date:</span> 3/9/21
     </p>
 </div>
-<div class="block-filter-panel has-border">
-    <div class="row small-gutter align-items-end">
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">Payer</label>
-                <div class="right-block">
+<form #rejectedClaimForm='ngForm' (ngSubmit)='rejectedClaimForm.valid && generate()'>
+    <div class="block-filter-panel has-border">
+        <div class="row small-gutter align-items-end">
+            <div class="col">
+                <div class="form-group" [ngClass]="{'has-error' : rejectedClaimForm.submitted && !generateReport.payerId}">
+                    <label class="control-label">Payer</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Payer</mat-option>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
-                            <mat-option value="Payer 5">Payer 5</mat-option>
+                        <mat-select [(ngModel)]="generateReport.payerId" #payerId name="payer" required (selectionChange)="generateReport.payerId = $event.value;">
+                            <mat-option value=""> Select Payer</mat-option>
+                            <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                ({{payer.arName}})</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">Comparison Criteria</label>
-                <mat-form-field class="form-control custom-select-control">
-                    <mat-select value="Year">
-                        <mat-option value="Year">Year</mat-option>
-                        <mat-option value="Month">Month</mat-option>
-                        <mat-option value="Week">Week</mat-option>
-                        <mat-option value="Day">Day</mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Comparison Criteria</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [(ngModel)]="generateReport.comparisionCriteria" #comparisionCriteria='ngModel' name="comparisionCriteria"
+                            (selectionChange)="comparisionCriteriaChange($event)" required>
+                            <mat-option value="Year">Year</mat-option>
+                            <mat-option value="Month">Month</mat-option>
+                            <mat-option value="Week">Week</mat-option>
+                            <mat-option value="Day">Day</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">Before Year</label>
-                <input autocomplete="off" placeholder="Select before year" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                    (onShown)="onOpenCalendar($event)">
+            <div class="col">
+                <div class="form-group" [ngClass]="{'has-error' : rejectedClaimForm.submitted && beforeDate.invalid}">
+                    <label class="control-label">Before
+                        {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria}}</label>
+                    <input autocomplete="off" [(ngModel)]='generateReport.beforeDate' #beforeDate='ngModel' name="beforeDate"
+                        placeholder="Select before {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase }}"
+                        class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" required>
+                    <!-- <input autocomplete="off" placeholder="Select before date" class="form-control date-picker" bsDatepicker [bsConfig]="{dateInputFormat: 'MMM YYYY'}"
+                    (onShown)="onOpenCalendar($event)" *ngIf='generateReport.comparisonCriteria === "Month"'>
+                <input autocomplete="off" placeholder="Select before date" class="form-control date-picker" bsDatepicker
+                    [bsConfig]="{ selectWeek: true, selectFromOtherMonth: true,dateInputFormat: 'DD/MM/YYYY'}" *ngIf='generateReport.comparisonCriteria === "Week"'>
+                <input autocomplete="off" placeholder="Select before date" class="form-control date-picker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" *ngIf='generateReport.comparisonCriteria === "Day"'> -->
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label class="control-label">After Year</label>
-                <input autocomplete="off" placeholder="Select after year" required class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                    (onShown)="onOpenCalendar($event)">
+            <div class="col">
+                <div class="form-group" [ngClass]="{'has-error' : rejectedClaimForm.submitted && afterDate.invalid}">
+                    <label class="control-label">After
+                        {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria}}</label>
+                    <input autocomplete="off" placeholder="Select after {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase}}"
+                        required class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                        [(ngModel)]='generateReport.afterDate' #afterDate='ngModel' name="afterDate">
+                    <!-- <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{dateInputFormat: 'MMM YYYY'}" (onShown)="onOpenCalendar($event)" *ngIf='generateReport.comparisonCriteria === "Month"'>
+                    <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{ selectWeek: true, selectFromOtherMonth: true,dateInputFormat: 'DD/MM/YYYY'}" *ngIf='generateReport.comparisonCriteria === "Week"'>
+                    <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" *ngIf='generateReport.comparisonCriteria === "Day"'> -->
+                </div>
             </div>
-        </div>
-        <div class="col-lg-auto">
-            <div class="form-group">
-                <button mat-flat-button color="primary" type="button">Generate</button>
+            <div class="col-lg-auto">
+                <div class="form-group">
+                    <button mat-flat-button color="primary" type="submit">Generate</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 <div class="clean-claim-progress-report">
     <div class="left-block">
         <ul class="list">
             <li class="title">Comparison Type</li>
             <li>
-                <button type="button" class="active" matRipple>Total Net Amount</button>
+                <button (click)="selectComparisionType(cptype.TotalNetAmount,rejectedClaimForm)" type="button"
+                    [ngClass]="{'active': cptype.TotalNetAmount===generateReport.comparisionType}" matRipple>Total Net
+                    Amount</button>
             </li>
             <li>
-                <button type="button" matRipple>VAT Amount</button>
+                <button (click)="selectComparisionType(cptype.VATAmount,rejectedClaimForm)" [ngClass]="{'active': cptype.VATAmount===generateReport.comparisionType}" type="button"
+                    matRipple>VAT Amount</button>
             </li>
             <li>
-                <button type="button" matRipple>Sum of Top 10 Rejected Services</button>
+                <button (click)="selectComparisionType(cptype.SUMOfTopTenRejectedService,rejectedClaimForm)"
+                    [ngClass]="{'active': cptype.SUMOfTopTenRejectedService===generateReport.comparisionType}" type="button" matRipple>Sum of Top 10 Rejected Services</button>
             </li>
-            <li>
+            <!-- <li>
                 <button type="button" matRipple>Sum of Top 10 Rejected Diagnosis Codes</button>
             </li>
             <li>
@@ -78,10 +92,10 @@
             </li>
             <li>
                 <button type="button" matRipple>Sum of Top 10 Rejected Devices</button>
-            </li>
+            </li> -->
         </ul>
     </div>
-    <div class="right-block">
+    <div class="right-block" *ngIf="percenatgeChartData.length > 0">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
             [chartType]="barChartType">
         </canvas>
@@ -147,6 +161,10 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="right-block" *ngIf="percenatgeChartData.length === 0">
+        <app-empty-state message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
+        </app-empty-state>
     </div>
 </div>
 

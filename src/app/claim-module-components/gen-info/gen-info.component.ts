@@ -126,7 +126,11 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   physicianIdController: FormControl = new FormControl();
   departmentEditable = true;
   @Input() claimType = '';
-
+  departmentFilterCtrl: FormControl = new FormControl();
+  filteredDepartments: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  @ViewChild('departmentSelect', { static: true }) departmentSelect: MatSelect;
+  isDepartmentDisable: boolean = false;
+  isPageModeCreate: boolean = false;
   constructor(
     private store: Store,
     private datePipe: DatePipe,
@@ -167,16 +171,19 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
     this.store.select(getGenInfoErrors).pipe(
       withLatestFrom(this.store.select(getPatientErrors)),
-      map(values => ([...values[0], ...values[1]]))
+      withLatestFrom(this.store.select(getPhysicianErrors)),
+      map(values => ([...values[0][0], ...values[0][1], ...values[1]]))
     ).subscribe(errors => this.errors = errors);
 
 
     this.filteredNations.next(this.nationalities.slice());
+
     this.nationalityFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterNationality();
       });
+
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
 
@@ -185,12 +192,15 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
     this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getDepartmentCode).subscribe(type => this.selectedDepartment = +type);
+
     setTimeout(() => {
       const category = this.selectedCategory;
       const department = this.selectedDepartment;
-      this.selectedDepartment = 1;
+      this.selectedDepartment = null;
       this.selectedCategory = '-1';
-      setTimeout(() => { this.selectedDepartment = department; this.selectedCategory = category; }, 500);
+      setTimeout(() => {
+        this.selectedDepartment = department; this.selectedCategory = category;
+      }, 500);
     }, 500);
     this.store.select(getPhysicianCategory).subscribe(category => this.categories = category);
     this.store.select(getDepartments).pipe(
@@ -198,10 +208,18 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       map(values => ({ departments: values[0], mode: values[1] }))
     ).subscribe(values => {
       if (values.mode.startsWith('CREATE')) {
-        this.departments = values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical');
-      } else {
+        this.isDepartmentDisable = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL' ? true : false;
         this.departments = values.departments;
+        this.isPageModeCreate = true;
+      } else {
+        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL' ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical') : values.departments;
       }
+      this.filteredDepartments.next(this.departments.slice());
+      this.departmentFilterCtrl.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterDepartments();
+        });
     });
     this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
   }
@@ -558,6 +576,26 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     return control.value == null || control.value == '';
   }
 
+
+  filterDepartments() {
+    if (!this.departments) {
+      return;
+    }
+    // get the search keyword
+    let search = this.departmentFilterCtrl.value;
+    if (!search) {
+      this.filteredDepartments.next(this.departments.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredDepartments.next(
+      this.departments.filter(department => department.name.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
   filterNationality() {
     if (!this.nationalities) {
       return;
@@ -586,6 +624,18 @@ export class GenInfoComponent implements OnInit, OnDestroy {
           a && b && a.Code === b.Code;
       });
   }
+
+  setInitialValueOfDepartment() {
+    this.filteredDepartments
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.departmentSelect.compareWith = (
+          a: { Code: string, Name: string },
+          b: { Code: string, Name: string }) =>
+          a && b && a.Code === b.Code;
+      });
+  }
+
 
   payersListHasId(id) {
     return this.payersList.findIndex(payer => payer.id == id) > -1;

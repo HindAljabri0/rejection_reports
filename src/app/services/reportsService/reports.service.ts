@@ -136,7 +136,7 @@ export class ReportsService {
       }
     });
     const requestURL = `/providers/${providerId}/report/rejected`;
-    const request = new HttpRequest('POST', environment.claimSearchHost + requestURL, body, { responseType: 'text' });
+    const request = new HttpRequest('POST', environment.creditReportService + requestURL, body, { responseType: 'text' });
     return this.http.request(request);
   }
 

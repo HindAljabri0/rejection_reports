@@ -1,0 +1,221 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Accounts Receivable</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option value="Payer 1">Payer 1</mat-option>
+                            <mat-option value="Payer 2">Payer 2</mat-option>
+                            <mat-option value="Payer 3">Payer 3</mat-option>
+                            <mat-option value="Payer 4">Payer 4</mat-option>
+                            <mat-option value="Payer 5">Payer 5</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Received From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
+                        <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Received To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
+                        <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto align-self-end">
+                <div class="form-group">
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="primary-grid manual-row-color" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th colspan="2">Payer Name</th>
+                    <th>Invoice Date</th>
+                    <th>Invoice Number</th>
+                    <th>Total Amount</th>
+                    <th>Deviating Term</th>
+                    <th>Due Date</th>
+                    <th>Amount Outstanding</th>
+                    <th>Days Overdue</th>
+                    <th class="text-center">Aging Indicator</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-primary text-center row-click" (click)="recordOneOpen=!recordOneOpen" width="10">
+                        <mat-icon *ngIf="!recordOneOpen" class="size-21">add_circle_outline</mat-icon>
+                        <mat-icon *ngIf="recordOneOpen" class="size-21">remove_circle_outline</mat-icon>
+                    </td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">Bupa</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7/1/2017</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">F12346-1</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1000</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7/8/17</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">500.00</td>
+                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1,347</td>
+                    <td class="text-center row-click" (click)="recordOneOpen=!recordOneOpen"><span class="status-dot account-receivable-green"></span></td>
+                    <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                </tr>
+                <tr *ngIf="recordOneOpen">
+                    <td colspan="11" class="pt-0">
+                        <div class="row small-gutter">
+                            <div class="col-7">
+                                <div class="account-receivable-card">
+                                    <p class="title">Payment Graph</p>
+                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                        [chartType]="barChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="account-receivable-card">
+                                    <p class="title">Aging Indicator</p>
+                                    <div class="row align-items-center aging-indicator-header">
+                                        <div class="col-8">
+                                            <div class="chart-wrapper excellent">
+                                                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
+                                                    [chartType]="doughnutChartType">
+                                                </canvas>
+                                                <div class="marker"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <ul class="legend">
+                                                <li class="green">Excellent</li>
+                                                <li class="yellow">Good</li>
+                                                <li class="orange">Fair</li>
+                                                <li class="red">Bad</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="aging-indicator-body">
+                                        <div class="inline-labelled-text">
+                                            <label>1-30</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                        <div class="inline-labelled-text">
+                                            <label>31-60</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                        <div class="inline-labelled-text">
+                                            <label>61-90</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                        <div class="inline-labelled-text">
+                                            <label>Aged > 91</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td class="text-primary text-center row-click" (click)="recordTwoOpen=!recordTwoOpen" width="10">
+                        <mat-icon *ngIf="!recordTwoOpen" class="size-21">add_circle_outline</mat-icon>
+                        <mat-icon *ngIf="recordTwoOpen" class="size-21">remove_circle_outline</mat-icon>
+                    </td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">MedGulf</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7/1/2017</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">F12346-1</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1000</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7/8/17</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">500.00</td>
+                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1,347</td>
+                    <td class="text-center row-click" (click)="recordTwoOpen=!recordTwoOpen"><span class="status-dot account-receivable-orange"></span></td>
+                    <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                </tr>
+                <tr class="even" *ngIf="recordTwoOpen">
+                    <td colspan="11" class="pt-0">
+                        <div class="row small-gutter">
+                            <div class="col-7">
+                                <div class="account-receivable-card">
+                                    <p class="title">Payment Graph</p>
+                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                        [chartType]="barChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="account-receivable-card">
+                                    <p class="title">Aging Indicator</p>
+                                    <div class="row align-items-center aging-indicator-header">
+                                        <div class="col-8">
+                                            <div class="chart-wrapper fair">
+                                                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
+                                                    [chartType]="doughnutChartType">
+                                                </canvas>
+                                                <div class="marker"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <ul class="legend">
+                                                <li class="green">Excellent</li>
+                                                <li class="yellow">Good</li>
+                                                <li class="orange">Fair</li>
+                                                <li class="red">Bad</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="aging-indicator-body">
+                                        <div class="inline-labelled-text">
+                                            <label>1-30</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                        <div class="inline-labelled-text">
+                                            <label>31-60</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                        <div class="inline-labelled-text">
+                                            <label>61-90</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                        <div class="inline-labelled-text">
+                                            <label>Aged > 91</label>
+                                            <p>0,000,000</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="file-upload-wrapper page-fab">
+        <div class="content">
+            <button mat-fab color="primary" class="page-fab">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <input type="file" accept=".xlsx" class="file-upload-control" (change)="fileUploadChange($event)" />
+    </div>
+</div>
