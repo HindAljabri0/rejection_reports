@@ -207,9 +207,11 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
         this.controllers[index].services[serviceIndex].serviceType.setValue(service.serviceType);
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
-        this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
+        if (service.unitPrice != null)
+          this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
 
-        this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
+        if (service.serviceGDPN.discount != null)
+          this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
         this.controllers[index].services[serviceIndex].serviceDiscountUnit =
           service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
 
