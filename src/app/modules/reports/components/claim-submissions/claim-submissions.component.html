@@ -1,0 +1,137 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">Claim Submission Report</div>
+    <div class="credit-report-summary-header">
+        <div class="left-block">
+            <div class="content">
+                <p>Grand Total</p>
+                <strong>32,151</strong> Claims
+            </div>
+        </div>
+        <div class="right-block filters">
+            <div class="row small-gutter">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="control-label">Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="">
+                                <mat-option value="">Select Payer</mat-option>
+                                <mat-option value="Payer 1">Payer 1</mat-option>
+                                <mat-option value="Payer 2">Payer 2</mat-option>
+                                <mat-option value="Payer 3">Payer 3</mat-option>
+                                <mat-option value="Payer 4">Payer 4</mat-option>
+                                <mat-option value="Payer 5">Payer 5</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="control-label">From Month</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month" />
+                            <mat-datepicker-toggle [for]="fromMonth"></mat-datepicker-toggle>
+                            <mat-datepicker #fromMonth></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="control-label">To Month</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month" />
+                            <mat-datepicker-toggle [for]="toMonth"></mat-datepicker-toggle>
+                            <mat-datepicker #toMonth></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <div class="form-group">
+                        <button type="button" mat-flat-button color="primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="primary-grid">
+            <thead>
+                <tr>
+                    <th class="semibold">Provider Name</th>
+                    <th>Jun-20</th>
+                    <th>Jul-20</th>
+                    <th>Aug-20</th>
+                    <th>Sep-20</th>
+                    <th>Oct-20</th>
+                    <th>Nov-20</th>
+                    <th>Dec-20</th>
+                    <th class="semibold">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="semibold">Experts Medical Specialist Centre complex</td>
+                    <td>1,000,000</td>
+                    <td>500,000</td>
+                    <td>50,000</td>
+                    <td>10,000</td>
+                    <td>1000</td>
+                    <td>500</td>
+                    <td>10</td>
+                    <td class="semibold">1,561,000</td>
+                </tr>
+                <tr>
+                    <td class="semibold">MADAR AL SHIFA POLYCLINIC - MAKKAH</td>
+                    <td>1,000,000</td>
+                    <td>500,000</td>
+                    <td>50,000</td>
+                    <td>10,000</td>
+                    <td>1000</td>
+                    <td>500</td>
+                    <td>10</td>
+                    <td class="semibold">1,561,000</td>
+                </tr>
+                <tr>
+                    <td class="semibold">Experts Medical Specialist Centre complex</td>
+                    <td>1,000,000</td>
+                    <td>500,000</td>
+                    <td>50,000</td>
+                    <td>10,000</td>
+                    <td>1000</td>
+                    <td>500</td>
+                    <td>10</td>
+                    <td class="semibold">1,561,000</td>
+                </tr>
+                <tr>
+                    <td class="semibold">MADAR AL SHIFA POLYCLINIC - MAKKAH</td>
+                    <td>1,000,000</td>
+                    <td>500,000</td>
+                    <td>50,000</td>
+                    <td>10,000</td>
+                    <td>1000</td>
+                    <td>500</td>
+                    <td>10</td>
+                    <td class="semibold">1,561,000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/10</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
+</div>

@@ -59,22 +59,22 @@
                 <th>Received Date</th>
                 <th>Batch Id</th>
                 <th>Total Rejections Amount</th>
-                <th>Total Rejection ratio</th>
                 <th>Medical Rejection ratio</th>
                 <th>Technical Rejection ratio</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of creditReportData" routerLink="{{item.routerLink}}">
+            <tr *ngFor="let item of creditReportData" routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}">
                 <td class="semibold text-primary row-click">{{item.payerName}}</td>
                 <td class="row-click">{{item.receivedDate | date : 'shortDate'}}</td>
                 <td class="row-click">{{item.batchId}}</td>
-                <td class="row-click">{{item.totalrejectionAmount}}</td>
-                <td class="row-click">
-                    <div class="status-text ball-blue">{{item.totalRejectionRatio}}</div>
-                </td>
+                <td class="row-click">{{item.totalRejectionsAmount}}</td>
                 <td class="row-click">{{item.medicalRejectionRatio}}</td>
                 <td class="row-click">{{item.technicalRejectionRatio}}</td>
+            </tr>
+            <tr>
+                <td colspan="6"><app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
+                </app-empty-state></td>
             </tr>
         </tbody>
     </table>

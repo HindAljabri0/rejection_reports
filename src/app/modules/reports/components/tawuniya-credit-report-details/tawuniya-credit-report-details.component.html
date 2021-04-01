@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
         <ul class="custom-breadcrumb">
-            <li><a routerLink="/reports/creditReportList" class="primary-link">Credit Reports</a></li>
+            <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
             <li class="active">Tawuniya</li>
         </ul>
     </div>
@@ -9,7 +9,9 @@
         <div class="left-block">
             <div class="content">
                 <p>Total Rejections</p>
-                <strong>742,750,000 SR</strong>
+                <strong
+                    *ngIf="data != null && data.providercreditReportInformation != null">{{data.providercreditReportInformation.totalrejectionsamount
+                    + data.providercreditReportInformation.totaldeductionsamount | currency: ' ' }} SR</strong>
             </div>
         </div>
         <div class="right-block">
@@ -63,90 +65,94 @@
             </div>
         </div>
     </div>
-    <div class="credit-report-summary-body">
+    <div class="credit-report-summary-body" *ngIf="data != null">
         <div class="left-block">
-            <div class="information-block">
+            <div class="information-block" *ngIf="data.providercreditReportInformation != null">
                 <div class="inline-labelled-text">
                     <label>Received Date</label>
-                    <p>25-02-2019</p>
+                    <p *ngIf="isDate(data.providercreditReportInformation.reportdate)">
+                        {{data.providercreditReportInformation.reportdate.toLocaleDateString()}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Batch Reference Number</label>
-                    <p>WP17MDB029134</p>
+                    <p>{{data.providercreditReportInformation.batchreferenceno}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Batch Received Date</label>
-                    <p>February-2017</p>
+                    <p *ngIf="isDate(data.providercreditReportInformation.batchreceiveddate)">
+                        {{data.providercreditReportInformation.batchreceiveddate.toLocaleDateString()}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Claim Month</label>
-                    <p>December-2016</p>
+                    <p *ngIf="isDate(data.providercreditReportInformation.lossmonth)">
+                        {{data.providercreditReportInformation.lossmonth.toLocaleDateString()}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Credit Report Status</label>
-                    <p>Under Review</p>
+                    <p>{{data.providercreditReportInformation.status}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Provider</label>
-                    <p>Olaya Medical Center</p>
+                    <p>{{data.providercreditReportInformation.providername}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Provider City</label>
-                    <p>Riyadh</p>
+                    <p>{{data.providercreditReportInformation.providercity}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Plan Name</label>
-                    <p>Balsam Silver</p>
+                    <p>{{data.providercreditReportInformation.planname}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Plan Number</label>
-                    <p>10121</p>
+                    <p>{{data.providercreditReportInformation.planno}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Policy Name</label>
-                    <p>1022 Riyadh Bank</p>
+                    <p>{{data.providercreditReportInformation.policyname}}</p>
                 </div>
                 <div class="inline-labelled-text">
                     <label>Policy Number</label>
-                    <p>1022</p>
+                    <p>{{data.providercreditReportInformation.policyno}}</p>
                 </div>
             </div>
             <div class="message">
                 <mat-icon>info</mat-icon>
-                <p>With reference to your Credit Request mentioned above and for a fair, full and final settlement, please be advised of the following</p>
+                <p>With reference to your Credit Request mentioned above and for a fair, full and final settlement,
+                    please be advised of the following</p>
             </div>
-            <ul class="information-block no-border">
+            <ul class="information-block no-border" *ngIf="data.providercreditReportInformation != null">
                 <li class="semibold">
                     <span>Requested Amount (Net)</span>
-                    <p>1,919.100</p>
+                    <p>{{data.providercreditReportInformation.requestedamount  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Difference In Discounts</span>
-                    <p>9.680</p>
+                    <p>{{data.providercreditReportInformation.differenceindiscounts  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Difference In Deductible</span>
-                    <p>0</p>
+                    <p>{{data.providercreditReportInformation.differenceindeductibles  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Transferred Batch Amount</span>
-                    <p>0</p>
+                    <p>{{data.providercreditReportInformation.transferredbatchamount  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Bills Not Recieved</span>
-                    <p>0</p>
+                    <p>{{data.providercreditReportInformation.billsnotreceived  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Rejected Claims Amount</span>
-                    <p>1,202.730</p>
+                    <p>{{data.providercreditReportInformation.rejectedclaimsamount  | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Net Deducted Services</span>
-                    <p>38.480</p>
+                    <p>{{data.providercreditReportInformation.netdeductedservices  | currency: ' '}}</p>
                 </li>
                 <li class="semibold">
                     <span>Total Payable</span>
-                    <p>630.850</p>
+                    <p>{{data.providercreditReportInformation.totalamountpayable  | currency: ' '}}</p>
                 </li>
             </ul>
         </div>
@@ -154,12 +160,14 @@
             <mat-tab-group [dynamicHeight]="true" class="primary-tab">
                 <mat-tab [label]="'Deducted Services'">
                     <div class="table-responsive">
-                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0" border="0">
+                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0"
+                            border="0">
                             <thead>
                                 <tr>
                                     <th>
                                         <div class="header-block">
-                                            <mat-checkbox class="grid-checkbox" color="primary">Select All</mat-checkbox>
+                                            <mat-checkbox class="grid-checkbox" color="primary">Select All
+                                            </mat-checkbox>
                                             <div class="right-block btn-list">
                                                 <button type="button" class="action-btn" matRipple>Agree</button>
                                                 <button type="button" class="action-btn" matRipple>Disagree</button>
@@ -169,7 +177,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr *ngFor="let deductedService of data.detuctedServices">
                                     <td>
                                         <div class="body-block">
                                             <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
@@ -180,25 +188,25 @@
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Waseel Batch</label>
-                                                                    <p>1100</p>
+                                                                    <p>{{deductedService.waseelbatch}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Doctor Code</label>
-                                                                    <p>1100</p>
+                                                                    <p>{{deductedService.physicianid}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Claim No</label>
-                                                                    <p>313925748</p>
+                                                                    <p>{{deductedService.payerclaimno}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Provider Ref.</label>
-                                                                    <p>1860365</p>
+                                                                    <p></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -206,35 +214,38 @@
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Service Code</label>
-                                                                    <p>01002004</p>
+                                                                    <p>{{deductedService.servicecode}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Service</label>
-                                                                    <p>CONSULTATION FEE - 3</p>
+                                                                    <p>{{deductedService.servicedescription}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Rejection Reason</label>
-                                                                    <p>Out Of Price List</p>
+                                                                    <p>{{deductedService.rejectionreason}}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="text-lg-right">
-                                                            <a href="#" (click)="openDetailsDialog($event)" class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
+                                                            <a href="#"
+                                                                (click)="openDetailsDialog($event, deductedService.id.batchreferenceno, deductedService.id.serialno, 'deducted')"
+                                                                class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
                                                                 title="View Details">View Details</a>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="inline-labelled-text">
                                                             <label>Exceed Price</label>
-                                                            <p class="semibold">1,000 SR</p>
+                                                            <p class="semibold">{{deductedService.exceedprice | currency: ' '}} SR</p>
                                                         </div>
                                                         <div class="inline-labelled-text">
                                                             <label>Deducted Amount</label>
-                                                            <p class="semibold">1.0 SR</p>
+                                                            <p class="semibold">{{deductedService.deductedamount | currency: ' '}} SR
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -243,19 +254,22 @@
                                                     <div class="col-lg-8">
                                                         <div class="form-group">
                                                             <label class="control-label text-primary">Comments</label>
-                                                            <textarea class="form-control comment-box"></textarea>
+                                                            <textarea
+                                                                class="form-control comment-box">{{deductedService.comments}}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-group mb-0">
-                                                            <label class="control-label text-primary">Attachments</label>
+                                                            <label class="control-label text-primary">Attachment</label>
                                                             <ul class="attachment-list">
                                                                 <li matTooltip="Report-4594.pdf">
-                                                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                                    <img src="./assets/file-types/ic-pdf.svg"
+                                                                        alt="PDF" />
                                                                     <span>Report-4594.pdf</span>
                                                                 </li>
                                                                 <li matTooltip="Report-4594.xls">
-                                                                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                                    <img src="./assets/file-types/ic-xls.svg"
+                                                                        alt="xls" />
                                                                     <span>Report-4594.xls</span>
                                                                 </li>
                                                                 <li matTooltip="Add Attachments" class="add-block">
@@ -263,7 +277,8 @@
                                                                         <div class="content">
                                                                             <mat-icon>add_circle</mat-icon>
                                                                         </div>
-                                                                        <input type="file" class="file-upload-control" />
+                                                                        <input type="file"
+                                                                            class="file-upload-control" />
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -271,157 +286,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <mat-icon class="text-danger">cancel</mat-icon>
+                                            <mat-icon *ngIf="deductedService.agree != null"
+                                                [ngClass]="{'text-danger':deductedService.agree =='N', 'text-success': deductedService.agree =='Y'}">
+                                                {{deductedService.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div class="body-block">
-                                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                                            <div class="content">
-                                                <div class="row">
-                                                    <div class="col-lg-8 border-lg-right">
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Waseel Batch</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Doctor Code</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Claim No</label>
-                                                                    <p>313925748</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Provider Ref.</label>
-                                                                    <p>1860365</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service Code</label>
-                                                                    <p>01002004</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service</label>
-                                                                    <p>CONSULTATION FEE - 3</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Rejection Reason</label>
-                                                                    <p>Out Of Price List</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="text-lg-right">
-                                                            <a href="#" (click)="openDetailsDialog($event)" class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
-                                                                title="View Details">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="inline-labelled-text">
-                                                            <label>Exceed Price</label>
-                                                            <p class="semibold">1,000 SR</p>
-                                                        </div>
-                                                        <div class="inline-labelled-text">
-                                                            <label>Deducted Amount</label>
-                                                            <p class="semibold">1.0 SR</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <mat-icon class="text-success">check_circle</mat-icon>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="body-block">
-                                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                                            <div class="content">
-                                                <div class="row">
-                                                    <div class="col-lg-8 border-lg-right">
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Waseel Batch</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Doctor Code</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Claim No</label>
-                                                                    <p>313925748</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Provider Ref.</label>
-                                                                    <p>1860365</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service Code</label>
-                                                                    <p>01002004</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service</label>
-                                                                    <p>CONSULTATION FEE - 3</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Rejection Reason</label>
-                                                                    <p>Out Of Price List</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="text-lg-right">
-                                                            <a href="#" (click)="openDetailsDialog($event)" class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
-                                                                title="View Details">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="inline-labelled-text">
-                                                            <label>Exceed Price</label>
-                                                            <p class="semibold">1,000 SR</p>
-                                                        </div>
-                                                        <div class="inline-labelled-text">
-                                                            <label>Deducted Amount</label>
-                                                            <p class="semibold">1.0 SR</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <mat-icon class="text-success">check_circle</mat-icon>
-                                        </div>
-                                    </td>
+                                    <app-empty-state *ngIf="data.detuctedServices == null || data.detuctedServices.length == 0" class="claim-list-empty-state" message='No deducted services found!'>
+                                    </app-empty-state>
                                 </tr>
                             </tbody>
                         </table>
@@ -429,12 +302,14 @@
                 </mat-tab>
                 <mat-tab [label]="'Rejected Claims Services'">
                     <div class="table-responsive">
-                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0" border="0">
+                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0"
+                            border="0">
                             <thead>
                                 <tr>
                                     <th>
                                         <div class="header-block">
-                                            <mat-checkbox class="grid-checkbox" color="primary">Select All</mat-checkbox>
+                                            <mat-checkbox class="grid-checkbox" color="primary">Select All
+                                            </mat-checkbox>
                                             <div class="right-block btn-list">
                                                 <button type="button" class="action-btn" matRipple>Agree</button>
                                                 <button type="button" class="action-btn" matRipple>Disagree</button>
@@ -444,7 +319,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr *ngFor="let rejectedServices of data.rejectedServices">
                                     <td>
                                         <div class="body-block">
                                             <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
@@ -455,25 +330,25 @@
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Waseel Batch</label>
-                                                                    <p>1100</p>
+                                                                    <p>{{rejectedServices.waseelbatch}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Doctor Code</label>
-                                                                    <p>1100</p>
+                                                                    <p>{{rejectedServices.physicianid}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Claim No</label>
-                                                                    <p>313925748</p>
+                                                                    <p>{{rejectedServices.payerclaimno}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Provider Ref.</label>
-                                                                    <p>1860365</p>
+                                                                    <p></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -481,35 +356,38 @@
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Service Code</label>
-                                                                    <p>01002004</p>
+                                                                    <p>{{rejectedServices.servicecode}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Service</label>
-                                                                    <p>CONSULTATION FEE - 3</p>
+                                                                    <p>{{rejectedServices.servicedescription}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3">
                                                                 <div class="inline-labelled-text">
                                                                     <label>Rejection Reason</label>
-                                                                    <p>Out Of Price List</p>
+                                                                    <p>{{rejectedServices.rejectionreason}}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="text-lg-right">
-                                                            <a href="#" (click)="openDetailsDialog($event)" class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
+                                                            <a href="#"
+                                                                (click)="openDetailsDialog($event, rejectedServices.id.batchreferenceno, rejectedServices.id.serialno, 'rejected')"
+                                                                class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
                                                                 title="View Details">View Details</a>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="inline-labelled-text">
                                                             <label>Exceed Price</label>
-                                                            <p class="semibold">1,000 SR</p>
+                                                            <p class="semibold">{{rejectedServices.exceedprice | currency: ' '}} SR</p>
                                                         </div>
                                                         <div class="inline-labelled-text">
                                                             <label>Deducted Amount</label>
-                                                            <p class="semibold">1.0 SR</p>
+                                                            <p class="semibold">{{rejectedServices.deductedamount | currency: ' '}} SR
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -518,19 +396,22 @@
                                                     <div class="col-lg-8">
                                                         <div class="form-group">
                                                             <label class="control-label text-primary">Comments</label>
-                                                            <textarea class="form-control comment-box"></textarea>
+                                                            <textarea
+                                                                class="form-control comment-box">{{rejectedServices.comments}}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-group mb-0">
-                                                            <label class="control-label text-primary">Attachments</label>
+                                                            <label class="control-label text-primary">Attachment</label>
                                                             <ul class="attachment-list">
                                                                 <li matTooltip="Report-4594.pdf">
-                                                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                                    <img src="./assets/file-types/ic-pdf.svg"
+                                                                        alt="PDF" />
                                                                     <span>Report-4594.pdf</span>
                                                                 </li>
                                                                 <li matTooltip="Report-4594.xls">
-                                                                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                                    <img src="./assets/file-types/ic-xls.svg"
+                                                                        alt="xls" />
                                                                     <span>Report-4594.xls</span>
                                                                 </li>
                                                                 <li matTooltip="Add Attachments" class="add-block">
@@ -538,7 +419,8 @@
                                                                         <div class="content">
                                                                             <mat-icon>add_circle</mat-icon>
                                                                         </div>
-                                                                        <input type="file" class="file-upload-control" />
+                                                                        <input type="file"
+                                                                            class="file-upload-control" />
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -546,157 +428,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <mat-icon class="text-danger">cancel</mat-icon>
+                                            <mat-icon *ngIf="rejectedServices.agree != null"
+                                                [ngClass]="{'text-danger':rejectedServices.agree =='N', 'text-success': rejectedServices.agree =='Y'}">
+                                                {{rejectedServices.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div class="body-block">
-                                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                                            <div class="content">
-                                                <div class="row">
-                                                    <div class="col-lg-8 border-lg-right">
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Waseel Batch</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Doctor Code</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Claim No</label>
-                                                                    <p>313925748</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Provider Ref.</label>
-                                                                    <p>1860365</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service Code</label>
-                                                                    <p>01002004</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service</label>
-                                                                    <p>CONSULTATION FEE - 3</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Rejection Reason</label>
-                                                                    <p>Out Of Price List</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="text-lg-right">
-                                                            <a href="#" (click)="openDetailsDialog($event)" class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
-                                                                title="View Details">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="inline-labelled-text">
-                                                            <label>Exceed Price</label>
-                                                            <p class="semibold">1,000 SR</p>
-                                                        </div>
-                                                        <div class="inline-labelled-text">
-                                                            <label>Deducted Amount</label>
-                                                            <p class="semibold">1.0 SR</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <mat-icon class="text-success">check_circle</mat-icon>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="body-block">
-                                            <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
-                                            <div class="content">
-                                                <div class="row">
-                                                    <div class="col-lg-8 border-lg-right">
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Waseel Batch</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Doctor Code</label>
-                                                                    <p>1100</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Claim No</label>
-                                                                    <p>313925748</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Provider Ref.</label>
-                                                                    <p>1860365</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row small-gutter">
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service Code</label>
-                                                                    <p>01002004</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Service</label>
-                                                                    <p>CONSULTATION FEE - 3</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="inline-labelled-text">
-                                                                    <label>Rejection Reason</label>
-                                                                    <p>Out Of Price List</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="text-lg-right">
-                                                            <a href="#" (click)="openDetailsDialog($event)" class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
-                                                                title="View Details">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="inline-labelled-text">
-                                                            <label>Exceed Price</label>
-                                                            <p class="semibold">1,000 SR</p>
-                                                        </div>
-                                                        <div class="inline-labelled-text">
-                                                            <label>Deducted Amount</label>
-                                                            <p class="semibold">1.0 SR</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <mat-icon class="text-success">check_circle</mat-icon>
-                                        </div>
-                                    </td>
+                                    <app-empty-state *ngIf="data.rejectedServices == null || data.rejectedServices.length == 0" class="claim-list-empty-state" message='No rejected services found!'>
+                                    </app-empty-state>
                                 </tr>
                             </tbody>
                         </table>
