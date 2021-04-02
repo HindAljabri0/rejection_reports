@@ -439,6 +439,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.invoice-table) textarea.form-control{height:auto;padding:8px;}
 .primary-grid:not(.invoice-table) .form-control:focus{border-color:#3060AA;}
 .primary-grid:not(.invoice-table) .has-error .form-control:focus{border-color:#CC2F2F;}
+.primary-grid.invoice-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.invoice-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
