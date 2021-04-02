@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
@@ -12,18 +12,20 @@ import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/
   templateUrl: './credit-report-list.component.html',
   styles: []
 })
-export class CreditReportListComponent implements OnInit {
+export class CreditReportListComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
   creditReportData: CreditReportUploadModel[] = [];
   currentFileUpload: File;
-  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices ) { }
+  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
     this.getCreditReportListData();
   }
   getCreditReportListData() {
     this.sharedServices.loadingChanged.next(true);
-    this.subscription.add(this.creditReportService.listTawuniyaCreditReports(this.sharedServices.providerId, 0, 10).subscribe((res: any) => {
+    this.subscription.add(this.creditReportService.listTawuniyaCreditReports(
+      this.sharedServices.providerId, 0, 10
+    ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
         this.sharedServices.loadingChanged.next(false);
@@ -35,7 +37,8 @@ export class CreditReportListComponent implements OnInit {
   }
 
   openPdf(event) {
-    const dialogRef = this.dialog.open(CreditReportUploadModalComponent, { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
+    const dialogRef = this.dialog.open(CreditReportUploadModalComponent,
+      { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
@@ -51,7 +54,7 @@ export class CreditReportListComponent implements OnInit {
     this.subscription.unsubscribe();
   }
   clearFiles(event) {
-    event.target.value = "";
+    event.target.value = '';
   }
 
 }
