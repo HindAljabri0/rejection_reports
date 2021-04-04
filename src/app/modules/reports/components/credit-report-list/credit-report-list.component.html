@@ -61,20 +61,36 @@
                 <th>Total Rejections Amount</th>
                 <th>Medical Rejection ratio</th>
                 <th>Technical Rejection ratio</th>
+                <th>Remaining Days</th>
+                <th>Progress Status</th>
+                <th>Team Members</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of creditReportData" routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}">
+            <tr *ngFor="let item of creditReportData; let i=index" routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}">
                 <td class="semibold text-primary row-click">{{item.payerName}}</td>
                 <td class="row-click">{{item.receivedDate | date : 'shortDate'}}</td>
                 <td class="row-click">{{item.batchId}}</td>
                 <td class="row-click">{{item.totalRejectionsAmount}}</td>
                 <td class="row-click">{{item.medicalRejectionRatio}}</td>
                 <td class="row-click">{{item.technicalRejectionRatio}}</td>
+                <td class="row-click">0 Days Remaining</td>
+                <td class="row-click">
+                    <div class="status-text ball-red" *ngIf="i%4==0">New</div>
+                    <div class="status-text ball-blue" *ngIf="i%4==1">Under Review</div>
+                    <div class="status-text ball-brown" *ngIf="i%4==2">Under Submission</div>
+                    <div class="status-text ball-green" *ngIf="i%4==3">Submitted</div>
+                </td>
+                <td (click)="$event.stopPropagation()">
+                    <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==0" title="@Ahmed Al yosif">@Ahmed Al yosif</a>
+                    <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==1" title="Assign To">Assign To</a>
+                </td>
             </tr>
             <tr>
-                <td colspan="6"><app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
-                </app-empty-state></td>
+                <td colspan="9">
+                    <app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
+                    </app-empty-state>
+                </td>
             </tr>
         </tbody>
     </table>

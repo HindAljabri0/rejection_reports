@@ -58,19 +58,7 @@
                     <td class="title">Payer Claim No</td>
                     <td class="content">{{this.creditReportDetails?.payerClaimNo}}</td>
                 </tr>
-                <tr class="heading-row">
-                    <td colspan="2">Diagnosis</td>
-                </tr>
-                <tr>
-                    <td class="title">Diagnosis Code</td>
-                    <!-- <td class="td content">L20.8</td> -->
-                    <td class="td content">{{this.creditReportDetails?.diagnosisCode}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Diagnosis Description</td>
-                    <!-- <td class="td content">Other atopic dermatitis</td> -->
-                    <td class="td content">{{this.creditReportDetails?.diagnosisDescription}}</td>
-                </tr>
+               
                 <tr class="heading-row">
                     <td colspan="2">Service Information</td>
                 </tr>
@@ -137,6 +125,19 @@
                     <td class="title">Attachment</td>
                     <td class="content">{{this.creditReportDetails?.attachment}}</td>
                 </tr>
+                <tr class="heading-row">
+                    <td colspan="2">Diagnosis</td>
+                </tr>
+                <ng-container *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
+                    <tr>
+                        <td class="title">Diagnosis Code</td>
+                        <td class="td content">{{diagnosis.diagnosisCode}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Diagnosis Description</td>
+                        <td class="td content">{{diagnosis.diagnosisDescription}}</td>
+                    </tr>
+                </ng-container>
             </tbody>
             <tbody *ngIf="creditReportDetails == null">
                 <tr>

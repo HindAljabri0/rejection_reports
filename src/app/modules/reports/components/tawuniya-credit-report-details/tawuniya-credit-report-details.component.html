@@ -9,59 +9,57 @@
         <div class="left-block">
             <div class="content">
                 <p>Total Rejections</p>
-                <strong
-                    *ngIf="data != null && data.providercreditReportInformation != null">{{data.providercreditReportInformation.totalrejectionsamount
+                <strong *ngIf="data != null && data.providercreditReportInformation != null">{{data.providercreditReportInformation.totalrejectionsamount
                     + data.providercreditReportInformation.totaldeductionsamount | currency: ' ' }} SR</strong>
             </div>
         </div>
         <div class="right-block">
-            <ul class="progress-steps">
-                <li>
-                    <div class="status-ball green"></div>
-                    <p>Day 1</p>
-                </li>
-                <li>
-                    <div class="status-ball green"></div>
-                    <p>Day 22</p>
-                </li>
-                <li>
-                    <div class="status-ball yellow"></div>
-                    <p>Day 23</p>
-                </li>
-                <li>
-                    <div class="status-ball blue"></div>
-                    <p>Day 32</p>
-                </li>
-                <li>
-                    <div class="status-ball pink"></div>
-                    <p>Day 45</p>
-                </li>
-                <li>
-                    <div class="status-ball"></div>
-                    <p>To Payer</p>
-                </li>
-            </ul>
-            <div class="content">
-                <small>Count Down</small>
-                <p class="pb-1">32 Days Left</p>
-                <ul class="legend">
-                    <li>
-                        <span class="status-ball green"></span>
-                        Done
-                    </li>
-                    <li>
-                        <span class="status-ball blue"></span>
-                        To do
-                    </li>
-                    <li>
-                        <span class="status-ball yellow"></span>
-                        Pending
-                    </li>
-                    <li>
-                        <span class="status-ball pink"></span>
-                        Not Complete
-                    </li>
-                </ul>
+            <div class="row small-gutter align-items-end">
+                <div class="col-8">
+                    <div class="report-progress">
+                        <small>Count Down</small>
+                        <p class="pb-1">6 Days Left</p>
+                        <ul class="progress-steps">
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review"></li>
+                            <li class="active under-review">
+                                <p>Day 9</p>
+                            </li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <ul class="legend">
+                        <li>
+                            <span class="status-ball new"></span>
+                            New
+                        </li>
+                        <li>
+                            <span class="status-ball under-submission"></span>
+                            Under Submission
+                        </li>
+                        <li>
+                            <span class="status-ball under-review"></span>
+                            Under Review
+                        </li>
+                        <li>
+                            <span class="status-ball submitted"></span>
+                            Submitted
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -124,35 +122,35 @@
             <ul class="information-block no-border" *ngIf="data.providercreditReportInformation != null">
                 <li class="semibold">
                     <span>Requested Amount (Net)</span>
-                    <p>{{data.providercreditReportInformation.requestedamount  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.requestedamount | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Difference In Discounts</span>
-                    <p>{{data.providercreditReportInformation.differenceindiscounts  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.differenceindiscounts | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Difference In Deductible</span>
-                    <p>{{data.providercreditReportInformation.differenceindeductibles  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.differenceindeductibles | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Transferred Batch Amount</span>
-                    <p>{{data.providercreditReportInformation.transferredbatchamount  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.transferredbatchamount | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Bills Not Recieved</span>
-                    <p>{{data.providercreditReportInformation.billsnotreceived  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.billsnotreceived | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Rejected Claims Amount</span>
-                    <p>{{data.providercreditReportInformation.rejectedclaimsamount  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.rejectedclaimsamount | currency: ' '}}</p>
                 </li>
                 <li>
                     <span>Net Deducted Services</span>
-                    <p>{{data.providercreditReportInformation.netdeductedservices  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.netdeductedservices | currency: ' '}}</p>
                 </li>
                 <li class="semibold">
                     <span>Total Payable</span>
-                    <p>{{data.providercreditReportInformation.totalamountpayable  | currency: ' '}}</p>
+                    <p>{{data.providercreditReportInformation.totalamountpayable | currency: ' '}}</p>
                 </li>
             </ul>
         </div>
@@ -160,8 +158,7 @@
             <mat-tab-group [dynamicHeight]="true" class="primary-tab">
                 <mat-tab [label]="'Deducted Services'">
                     <div class="table-responsive">
-                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0"
-                            border="0">
+                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0" border="0">
                             <thead>
                                 <tr>
                                     <th>
@@ -233,8 +230,7 @@
                                                         <div class="text-lg-right">
                                                             <a href="#"
                                                                 (click)="openDetailsDialog($event, deductedService.id.batchreferenceno, deductedService.id.serialno, 'deducted')"
-                                                                class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
-                                                                title="View Details">View Details</a>
+                                                                class="primary-link underlined mb-3 mb-lg-0 d-inline-block" title="View Details">View Details</a>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -254,8 +250,7 @@
                                                     <div class="col-lg-8">
                                                         <div class="form-group">
                                                             <label class="control-label text-primary">Comments</label>
-                                                            <textarea
-                                                                class="form-control comment-box">{{deductedService.comments}}</textarea>
+                                                            <textarea class="form-control comment-box">{{deductedService.comments}}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -263,13 +258,11 @@
                                                             <label class="control-label text-primary">Attachment</label>
                                                             <ul class="attachment-list">
                                                                 <li matTooltip="Report-4594.pdf">
-                                                                    <img src="./assets/file-types/ic-pdf.svg"
-                                                                        alt="PDF" />
+                                                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                                                     <span>Report-4594.pdf</span>
                                                                 </li>
                                                                 <li matTooltip="Report-4594.xls">
-                                                                    <img src="./assets/file-types/ic-xls.svg"
-                                                                        alt="xls" />
+                                                                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
                                                                     <span>Report-4594.xls</span>
                                                                 </li>
                                                                 <li matTooltip="Add Attachments" class="add-block">
@@ -277,8 +270,7 @@
                                                                         <div class="content">
                                                                             <mat-icon>add_circle</mat-icon>
                                                                         </div>
-                                                                        <input type="file"
-                                                                            class="file-upload-control" />
+                                                                        <input type="file" class="file-upload-control" />
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -293,7 +285,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <app-empty-state *ngIf="data.detuctedServices == null || data.detuctedServices.length == 0" class="claim-list-empty-state" message='No deducted services found!'>
+                                    <app-empty-state *ngIf="data.detuctedServices == null || data.detuctedServices.length == 0" class="claim-list-empty-state"
+                                        message='No deducted services found!'>
                                     </app-empty-state>
                                 </tr>
                             </tbody>
@@ -302,8 +295,7 @@
                 </mat-tab>
                 <mat-tab [label]="'Rejected Claims Services'">
                     <div class="table-responsive">
-                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0"
-                            border="0">
+                        <table class="primary-grid credit-report-details-table" cellpadding="0" cellspacing="0" border="0">
                             <thead>
                                 <tr>
                                     <th>
@@ -375,8 +367,7 @@
                                                         <div class="text-lg-right">
                                                             <a href="#"
                                                                 (click)="openDetailsDialog($event, rejectedServices.id.batchreferenceno, rejectedServices.id.serialno, 'rejected')"
-                                                                class="primary-link underlined mb-3 mb-lg-0 d-inline-block"
-                                                                title="View Details">View Details</a>
+                                                                class="primary-link underlined mb-3 mb-lg-0 d-inline-block" title="View Details">View Details</a>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -396,8 +387,7 @@
                                                     <div class="col-lg-8">
                                                         <div class="form-group">
                                                             <label class="control-label text-primary">Comments</label>
-                                                            <textarea
-                                                                class="form-control comment-box">{{rejectedServices.comments}}</textarea>
+                                                            <textarea class="form-control comment-box">{{rejectedServices.comments}}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -405,13 +395,11 @@
                                                             <label class="control-label text-primary">Attachment</label>
                                                             <ul class="attachment-list">
                                                                 <li matTooltip="Report-4594.pdf">
-                                                                    <img src="./assets/file-types/ic-pdf.svg"
-                                                                        alt="PDF" />
+                                                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
                                                                     <span>Report-4594.pdf</span>
                                                                 </li>
                                                                 <li matTooltip="Report-4594.xls">
-                                                                    <img src="./assets/file-types/ic-xls.svg"
-                                                                        alt="xls" />
+                                                                    <img src="./assets/file-types/ic-xls.svg" alt="xls" />
                                                                     <span>Report-4594.xls</span>
                                                                 </li>
                                                                 <li matTooltip="Add Attachments" class="add-block">
@@ -419,8 +407,7 @@
                                                                         <div class="content">
                                                                             <mat-icon>add_circle</mat-icon>
                                                                         </div>
-                                                                        <input type="file"
-                                                                            class="file-upload-control" />
+                                                                        <input type="file" class="file-upload-control" />
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -435,7 +422,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <app-empty-state *ngIf="data.rejectedServices == null || data.rejectedServices.length == 0" class="claim-list-empty-state" message='No rejected services found!'>
+                                    <app-empty-state *ngIf="data.rejectedServices == null || data.rejectedServices.length == 0" class="claim-list-empty-state"
+                                        message='No rejected services found!'>
                                     </app-empty-state>
                                 </tr>
                             </tbody>

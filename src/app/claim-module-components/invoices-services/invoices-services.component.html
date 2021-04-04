@@ -16,6 +16,7 @@
                 <th>Serial No.</th>
                 <th>Date</th>
                 <th>Invoice No.</th>
+                <th>Department</th>
                 <th>Net Value</th>
                 <th>Net VAT</th>
                 <th>Services</th>
@@ -24,14 +25,36 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let invoice of controllers; let i = index">
-                <tr [class.even]="i%2" [class.text-danger]="invoiceHasErrors(i)" [class.light-bg-danger]="invoiceHasErrors(i)">
+                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="invoiceHasErrors(i)" [class.light-bg-danger]="invoiceHasErrors(i)">
                     <td class="row-click" (click)="toggleInvoice(i)">
                         <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
+                            <div class="date-picker">
+                                <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
+                                <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #invoiceDatePicker></mat-datepicker>
+                            </div>
+                        </div>
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceNumber}}</td>
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
+                            <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
+                        </div>
+                    </td>
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1">
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
+                                    [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
+                                    <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                        {{department.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.net.value}}</td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.netVATamount.value}}
                     </td>
@@ -44,38 +67,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="expandedInvoice == i">
-                    <td colspan="8" class="pl-7 pr-7 border-top">
-                        <p class="block-title sm mb-2">Invoice {{(i+1)}}</p>
-                        <div class="row small-gutter">
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
-                                    <label class="control-label">Invoice Number<span class="asterisk">*</span></label>
-                                    <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                <div class="form-group" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
-                                    <label class="control-label">Invoice Date<span class="asterisk">*</span></label>
-                                    <div class="date-picker">
-                                        <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
-                                        <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
-                                        <mat-datepicker #invoiceDatePicker></mat-datepicker>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Invoice Department<span class="asterisk">*</span></label>
-                                    <mat-form-field class="form-control custom-select-control">
-                                        <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
-                                            [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
-                                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
-                                                {{department.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
+                    <td colspan="9" class="pl-7 pr-7 border-top">
                         <div class="d-flex">
                             <h5 class="align-self-center medium">Services</h5>
                             <div class="ml-auto btn-list" *ngIf="pageMode != 'VIEW'">
