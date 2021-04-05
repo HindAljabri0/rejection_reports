@@ -15,6 +15,8 @@ import { CollectionSummaryCreateComponent } from './collection-summary-create/co
 import { CollectionSummaryDetailsComponent } from './collection-summary-details/collection-summary-details.component';
 import { VatPaymentReportListComponent } from './vat-payment-report-list/vat-payment-report-list.component';
 import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/vat-payment-report-details.component';
+import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
+import { AccountReceivableAddPaymentComponent } from './account-receivable-add-payment/account-receivable-add-payment.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/v
     CollectionSummaryCreateComponent,
     CollectionSummaryDetailsComponent,
     VatPaymentReportListComponent,
-    VatPaymentReportDetailsComponent
+    VatPaymentReportDetailsComponent,
+    AccountsReceivableListComponent,
+    AccountReceivableAddPaymentComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,6 @@ import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/v
     ChartsModule,
     CollectionManagementRoutingModule
   ],
-  entryComponents: [FileUploadDialogComponent]
+  entryComponents: [FileUploadDialogComponent, AccountReceivableAddPaymentComponent]
 })
 export class CollectionManagementModule { }

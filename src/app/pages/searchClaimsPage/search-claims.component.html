@@ -67,26 +67,33 @@
             <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1" [class.active]="currentSelectedTab==1">
                 Validation Details
             </button>
-            <span class="spacer"></span>
-            <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
-                <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="searchResult.number==0">
-                    <img src="./assets/ic-page-first.svg" alt="First" />
-                </button>
-                <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="searchResult.number==0">
-                    <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                </button>
-                <p class="page-info">
-                    {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
-                </p>
-                <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
-                    <img src="./assets/ic-page-next.svg" alt="Next" />
-                </button>
-                <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
-                    <img src="./assets/ic-page-last.svg" alt="Last" />
-                </button>
-                <button matRipple (click)="download()" type="button" class="action-btn">
-                    <img src="./assets/{{detailTopActionIcon}}" />
-                </button>
+            <div class="right-block">
+                <div class="actions">
+                    <!-- <button matRipple type="button" (click)="reValidateClaims()" *ngIf="isRevalidate"
+                        class="action-btn">
+                        <img src="./assets/ic-refresh.svg" alt="Refresh" />
+                    </button> -->
+                    <button mat-flat-button class="primary-text-btn" *ngIf="isRevalidate" (click)="reValidateClaims()">Re-Validate
+                        {{selectedClaims.length==0?" All":"Selection"}}</button>
+                    <button matRipple (click)="download()" type="button" class="action-btn"
+                        *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
+                        <img src="./assets/{{detailTopActionIcon}}" />
+                    </button>
+                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                            <span>Menu 1</span>
+                        </button>
+                        <button mat-menu-item>
+                            <span>Menu 2</span>
+                        </button>
+                        <button mat-menu-item>
+                            <span>Menu 3</span>
+                        </button>
+                    </mat-menu>
+                    <button matRipple type="button" class="action-btn" [matMenuTriggerFor]="moreMenu">
+                        <img src="./assets/ic-more.svg" alt="More" />
+                    </button>
+                </div>
             </div>
         </div>
         <mat-tab-group [selectedIndex]="currentSelectedTab" *ngIf="summaries != null && summaries[selectedCardKey] != null" class="hide-tab-header">
@@ -217,12 +224,6 @@
                         </table>
                     </div>
                 </ng-scrollbar>
-                <div class="block-footer">
-                    <div class="right-block btn-list">
-                        <button *ngIf="detailSubActionText != null" (click)="doSubAction()" mat-button>{{detailSubActionText}}{{selectedClaims.length==0?" All":" Selection"}}</button>
-                        <button *ngIf="detailActionText != null" (click)="doAction()" mat-flat-button color="primary">{{detailActionText}}{{selectedClaims.length==0?" All":" Selection"}}</button>
-                    </div>
-                </div>
             </mat-tab>
             <mat-tab>
                 <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" *ngIf="validationDetails != null" [trackX]="true">
@@ -262,7 +263,8 @@
                                 <ng-container *ngIf='validationDetails.length === 0'>
                                     <tr>
                                         <td [colSpan]='4' class="p-0">
-                                            <app-empty-state class="claim-list-empty-state" message='No errors found!'></app-empty-state>
+                                            <app-empty-state class="claim-list-empty-state" message='No errors found!'>
+                                            </app-empty-state>
                                         </td>
                                     </tr>
                                 </ng-container>
@@ -272,5 +274,32 @@
                 </ng-scrollbar>
             </mat-tab>
         </mat-tab-group>
+        <div class="block-footer sticky-bottom">
+            <div class="left-block">
+                <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
+                    <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="searchResult.number==0">
+                        <img src="./assets/ic-page-first.svg" alt="First" />
+                    </button>
+                    <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="searchResult.number==0">
+                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                    </button>
+                    <p class="page-info">
+                        {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
+                    </p>
+                    <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                        <img src="./assets/ic-page-next.svg" alt="Next" />
+                    </button>
+                    <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                        <img src="./assets/ic-page-last.svg" alt="Last" />
+                    </button>
+                </div>
+            </div>
+            <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
+                <button mat-button *ngIf="isDeleteBtnVisible" (click)="deleteClaimByUploadid()">Delete
+                    {{selectedClaims.length==0?" All":"Selection"}}</button>
+                <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
+                    {{selectedClaims.length==0?" All":"Selection"}}</button>
+            </div>
+        </div>
     </ng-container>
 </div>

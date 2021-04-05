@@ -1,9 +1,13 @@
 import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SummaryType } from 'src/app/models/allCreditSummaryDetailsModels/summaryType';
 import { UploadSummary } from 'src/app/models/uploadSummary';
 import { environment } from 'src/environments/environment';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class CreditReportService {
     detailsConfig = [
         { label: 'Invalid Membership', type: SummaryType.invalMem },
@@ -50,9 +54,11 @@ export class CreditReportService {
         this.http = http;
     }
 
-    getCreditReportSummary(batchId: string) {
-        const requestUrl = `/providers/${batchId}/history`;
-        const request = new HttpRequest('GET', environment.uploaderHost + requestUrl);
+    getCreditReportSummary(providerId: string, data: any) {
+        const requestUrl = `/providers/${providerId}/report/rejected/summary`;
+        const formdata: FormData = new FormData();
+        // data = JSON.stringify(data);
+        const request = new HttpRequest('POST', environment.creditReportService + requestUrl, data);
         return this.http.request(request);
     }
 
@@ -69,10 +75,29 @@ export class CreditReportService {
         return this.http.request(request);
     }
 
-    pushFileToStorage(batchId: string, file: File): Observable<any> {
+    pushFileToStorage(batchId: string, payerId: any, file: File): Observable<any> {
         const formdata: FormData = new FormData();
         formdata.append('file', file, file.name);
-        const req = new HttpRequest('POST', environment.claimSearchHost + `/providers/${batchId}/report/rejected/upload`, formdata);
+        formdata.append('payerId', payerId);
+        const req = new HttpRequest('POST', environment.creditReportService + `/providers/${batchId}/report/rejected/upload`, formdata);
         return this.http.request(req);
+    }
+
+    listTawuniyaCreditReports(providerId: string, page: number, pageSize: number) {
+        const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
+        return this.http.request(request);
+    }
+
+    getTawuniyaCreditReport(providerId: string, batchId: string) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
+        return this.http.request(request);
+    }
+
+    getTawuniyaCreditReportDetail(providerId: string, batchId: string, serialNo: string, rejectionType: string) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}/serials/${serialNo}?rejectionType=${rejectionType}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
+        return this.http.request(request);
     }
 }

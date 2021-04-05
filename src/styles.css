@@ -64,6 +64,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
 .btn-action>img{display: block;height: 24px;width: 24px;}
 .btn-action>.mat-icon{display: block;}
+.primary-text-btn{color: #3060AA;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -87,6 +88,10 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .info-block{padding: 16px;border-radius: 6px;color: #3060AA;background-color: rgba(48, 96, 170,0.1);}
 .status-dot{height: 10px;width: 10px;border-radius: 50%;display: inline-block;}
 .status-dot.size-lg{height: 14px;width: 14px;}
+.status-dot.account-receivable-green{background-color: #45E23F;}
+.status-dot.account-receivable-orange{background-color: #FFAD41;}
+.status-dot.account-receivable-yellow{background-color: #F0F63C;}
+.status-dot.account-receivable-red{background-color: #F55656;}
 .error-card {background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;margin-bottom: 16px;padding: 12px 16px;border-radius: 6px;}
 .inner-loader-wrapper{position: relative;}
 .inner-loader-wrapper .inner-loader{z-index: 8;position: absolute;background-color: rgba(255, 255, 255, 0.5);top: 0;left: 0;right: 0;bottom: 0;display: flex;align-items: center;justify-content: center;}
@@ -101,6 +106,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .fixed-height{max-height: calc(100vh - 170px);}
 .primary-dialog .fixed-height{max-height: calc(100vh - 200px);}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
+.block-title.sm{font-size: 16px;line-height: 22px;}
 .service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;border-color:currentColor;}
 .primary-menu .mat-menu-content,.primary-menu .mat-menu-content:not(:empty){padding: 14px;}
 .primary-menu.mat-menu-panel{min-height: auto;}
@@ -123,11 +129,6 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .rejection-card-head>.right-block{flex-grow:0;flex-shrink:0;flex-basis:120px;max-width:120px;}
 .mat-flat-button.input-group-append{border-radius: 0;}
 .mat-flat-button.input-group-append:last-child{border-radius: 0 6px 6px 0;}
-.gender-btn.mat-flat-button,.gender-btn.mat-flat-button[disabled]{min-width: auto;background-color: #3060AA;padding-left: 10px;padding-right: 10px;}
-.gender-btn .mat-button-wrapper>img{display: block;height: 24px;width: 24px;}
-.gender-btn.mat-flat-button.female,.gender-btn.mat-flat-button.female[disabled]{background-color: #ff5ea9;}
-.gender-btn.mat-flat-button.male,.gender-btn.mat-flat-button.male[disabled]{background-color: #42CDFF;}
-.has-error .gender-btn.mat-flat-button,.has-error .gender-btn.mat-flat-button[disabled]{background-color: #ffd5d5;}
 .overlay-backdrop{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,0.6);display: block;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;z-index: 8;}
 .overlay-backdrop.show{opacity: 1;visibility: visible;}
 .overlay-backdrop>button{display: block;height: 100%;width: 100%;background: none;border:0;}
@@ -139,10 +140,14 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .change-log-dialog:before{background: url('assets/changelog-bg.svg') right bottom no-repeat;position: absolute;content:'';display: block;top: 0;right: 0;bottom: 0;left: 0;opacity: 0.72;border-radius: 4px;}
 .action-with-text{border:0;padding:8px 12px;margin:0;background:none;display:flex;align-items:center;}
 .action-with-text>.mat-icon{margin-right:4px;}
-.border-right{border-right:1px solid #e1e1e1;}
-.border-bottom{border-bottom:1px solid #e1e1e1;}
-.border-top{border-top:1px solid #e1e1e1;}
-.border-left{border-left:1px solid #e1e1e1;}
+.border-right,.border-lg-right,.border-xl-right{border-right:1px solid #e1e1e1;}
+.border-bottom,.border-lg-bottom,.border-xl-bottom{border-bottom:1px solid #e1e1e1;}
+.border-top,.border-lg-top,.border-xl-top{border-top:1px solid #e1e1e1;}
+.border-left,.border-lg-left,.border-xl-left{border-left:1px solid #e1e1e1;}
+.primary-grid textarea.form-control.comment-box,.comment-box{height:80px;}
+.pl-7{padding-left: 7px !important;}
+.pr-7{padding-right: 7px !important;}
+.inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -234,7 +239,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .sidebar .mat-expansion-panel-body{padding: 0;}
 .sidebar .mat-expansion-panel{box-shadow:none;background:none;}
 .sidebar .mat-expansion-panel-header{height:40px!important;min-height:40px!important;max-height:40px!important;padding:5px 40px 5px 16px;position:relative;}
-.sidebar .mat-expansion-panel-header:after{background:url('assets/ic-chevron-down.svg') center no-repeat;position:absolute;content:'';top:50%;right:12px;transform: translate(0,-50%) rotate(0deg);height:24px;width:24px;display:block;background-size:20px 20px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.sidebar .mat-expansion-panel:not(.hide-toggle) .mat-expansion-panel-header:after{background:url('assets/ic-chevron-down.svg') center no-repeat;position:absolute;content:'';top:50%;right:12px;transform: translate(0,-50%) rotate(0deg);height:24px;width:24px;display:block;background-size:20px 20px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
 .sidebar .mat-expansion-panel.mat-expanded .mat-expansion-panel-header:after{transform: translate(0,-50%) rotate(180deg);}
 .sidebar .mat-expansion-panel-header-title{color:#4F5666;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: 100%;margin: 0;}
 .sidebar .mat-expansion-panel-body .nav-list>li>a .text{padding-left: 14px;}
@@ -337,6 +342,13 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-header>.title-btn.mat-button:first-child{margin-left: -14px;}
 .block-header .block-description{font-size: 14px;line-height: 18px;font-weight: 500;color: #707070;}
 .block-header .right-block{margin-left: auto;}
+.block-header .action-btn{display: block;padding: 3px;background: none;border:0;}
+.block-header .action-btn>img{display: block;height: 24px;width: 24px;}
+.block-header .action-btn[disabled]{opacity: 0.5;cursor:not-allowed;}
+.block-header .actions{display: flex;}
+.block-header .actions .action-btn{margin-right: 6px;}
+.block-header .actions .action-btn:last-child{margin-right: 0;}
+.block-header .actions .mat-flat-button{margin: -5px 0;}
 .secondary-header{padding: 12px 14px;color:#0079C8;background: #fff;font-weight: 500;}
 .block-filter-panel{background: #fff;padding: 14px 14px 0;}
 .block-body {padding: 14px;background-color: #f0eeee;}
@@ -395,7 +407,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .custom-paginator>button[disabled]{opacity: 0.5;cursor:not-allowed;}
 .custom-paginator .page-info{padding: 0 8px;}
 .custom-paginator .page-info>small{font-size: 12px;}
-.custom-paginator .action-btn{margin: 0 20px;}
+.custom-paginator .action-btn{margin-left: 20px;}
 
 /* grid
 --------------------------------------------------------------------------------------------------------*/
@@ -412,7 +424,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.contextful)>.header-primary>tr>th,.primary-grid:not(.contextful)>.header-primary>tr>td{color:#fff;background-color: #3060AA;}
 .primary-grid>thead>tr>th:first-child,.primary-grid>thead>tr>td:first-child,.primary-grid>tbody>tr>th:first-child,.primary-grid>tbody>tr>td:first-child{padding-left: 12px;}
 .primary-grid>thead>tr>th:last-child,.primary-grid>thead>tr>td:last-child,.primary-grid>tbody>tr>th:last-child,.primary-grid>tbody>tr>td:last-child{padding-right: 12px;}
-.primary-grid>tbody>tr:nth-child(even){background-color: #EDF4FF;}
+.primary-grid:not(.manual-row-color)>tbody>tr:nth-child(even),.primary-grid.manual-row-color>tbody>.even{background-color: #EDF4FF;}
 .primary-grid .actions{text-align: right;white-space: nowrap;}
 .primary-grid .actions .mat-icon-button{width: 30px;height: 30px;line-height: 30px;margin:-5px 0;display: inline-block;vertical-align: middle;}
 .primary-grid .actions .mat-icon-button .mat-button-wrapper{display: block;}
@@ -423,10 +435,10 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .delete-btn .mat-icon{display:block;}
 .primary-grid>tbody>.seperator-row,.primary-grid>tbody>.seperator-row:nth-child(even){background: #fafafa;font-weight: 600;}
 .primary-grid>tbody>tr>.form-group{margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
-.primary-grid .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
-.primary-grid textarea.form-control{height:auto;padding:8px;}
-.primary-grid .form-control:focus{border-color:#3060AA;}
-.primary-grid .has-error .form-control:focus{border-color:#CC2F2F;}
+.primary-grid:not(.invoice-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
+.primary-grid:not(.invoice-table) textarea.form-control{height:auto;padding:8px;}
+.primary-grid:not(.invoice-table) .form-control:focus{border-color:#3060AA;}
+.primary-grid:not(.invoice-table) .has-error .form-control:focus{border-color:#CC2F2F;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
@@ -449,7 +461,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* primary tab
 --------------------------------------------------------------------------------------------------------*/
 .mat-tab-group.mat-primary .mat-tab-body-content{height:auto;}
-.primary-tab .mat-tab-label{min-width: auto;padding: 0 12px;font-size: inherit;line-height: inherit;color: rgba(48, 96, 170,0.5);opacity: 1;font-weight: 600;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.primary-tab .mat-tab-label{min-width: auto;padding: 0 14px;font-size: inherit;line-height: inherit;color: rgba(48, 96, 170,0.5);opacity: 1;font-weight: 600;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
 .primary-tab .mat-tab-nav-bar, .primary-tab .mat-tab-header{border-bottom:1px solid rgba(112, 112, 112,0.3);}
 .primary-tab .mat-tab-label.mat-tab-label-active,.primary-tab.mat-tab-group.mat-primary .mat-tab-label.cdk-keyboard-focused:not(.mat-tab-disabled), .primary-tab.mat-tab-group.mat-primary .mat-tab-label.cdk-program-focused:not(.mat-tab-disabled), .primary-tab.mat-tab-group.mat-primary .mat-tab-link.cdk-keyboard-focused:not(.mat-tab-disabled), .primary-tab.mat-tab-group.mat-primary .mat-tab-link.cdk-program-focused:not(.mat-tab-disabled){opacity: 1;color: #3060aa;}
 .primary-tab .mat-tab-body{padding: 14px;}
@@ -472,6 +484,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 --------------------------------------------------------------------------------------------------------*/
 .primary-dialog{width: 600px;max-width: calc(100% - 30px)!important;}
 .primary-dialog.dialog-sm{width: 400px;}
+.primary-dialog.dialog-md{width: 500px;}
 .primary-dialog.dialog-lg{width: 800px;}
 .primary-dialog.dialog-xl{width: 1140px;}
 .primary-dialog .mat-dialog-container{padding: 0;max-height: calc(100vh - 64px);}
@@ -481,6 +494,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog-header .dialog-close{height: 40px;width: 40px;background: url("./assets/ic-close.svg") center no-repeat;background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px auto;border:0;}
 .primary-dialog-header .dialog-close:hover,.primary-dialog-header .dialog-close:focus,.primary-dialog-header .dialog-close:active{opacity: 1;}
 .primary-dialog-footer,.primary-dialog-body{padding: 16px;}
+.primary-dialog-body .form-group{margin-bottom: 16px;}
 .primary-dialog-header.has-border{border-bottom:1px solid #e1e1e1;}
 .primary-dialog-footer.has-border{border-top:1px solid #e1e1e1;}
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
@@ -674,6 +688,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
 .clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
+.clean-claim-progress-report>.right-block .rejection-card-head{display: block;min-height: auto;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -770,6 +785,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .credit-report-summary-header>.right-block .content small,.credit-report-summary-header>.right-block .content p{color:#3060AA;}
 .credit-report-summary-header>.right-block .content small{font-size: 12px;font-weight: 500;line-height: 16px;}
 .credit-report-summary-header>.right-block .content p{font-weight: 700;}
+.credit-report-summary-header>.right-block.filters{background-color: #fff;display: block;padding: 14px 14px 0;}
 .credit-report-summary-header .legend{display: flex;flex-wrap:wrap;color:#505050;font-size: 12px;font-weight: 500;line-height: 16px;}
 .credit-report-summary-header .legend>li{padding-right: 8px;display: flex;align-items:center;}
 .credit-report-summary-header .legend>li:last-child{padding-right: 0;}
@@ -792,6 +808,18 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .credit-report-summary-body>.right-block .primary-tab .mat-tab-body{padding: 0;}
 .credit-report-summary-body>.left-block .legend-text{color:#707070;display: flex;font-size:13px;padding-bottom: 6px;}
 .credit-report-summary-body>.left-block .legend-text:before{content:'';height:8px;flex-grow:0;flex-basis:8px;flex-shrink:0;max-width:8px; margin-right:6px;border-radius:50px;display:block;margin-top:5px;}
+.credit-report-summary-body>.left-block .information-block{padding: 12px;border-bottom: 1px solid rgba(112, 112, 112,0.2);}
+.credit-report-summary-body>.left-block .information-block.no-border{border:0;}
+.credit-report-summary-body>.left-block .information-block>li{display: flex;padding-bottom: 8px;}
+.credit-report-summary-body>.left-block .information-block>li:last-child{padding-bottom: 0;}
+.credit-report-summary-body>.left-block .information-block>li>span{color:#3060AA;display: block;padding-right: 6px;}
+.credit-report-summary-body>.left-block .information-block>li>p{margin-left: auto;text-align: right;}
+.credit-report-summary-body>.left-block .information-block .inline-labelled-text{padding-bottom: 12px;}
+.credit-report-summary-body>.left-block .information-block .inline-labelled-text>label{padding-bottom: 0;}
+.credit-report-summary-body>.left-block .information-block .inline-labelled-text:last-child{padding-bottom: 0;}
+.credit-report-summary-body>.left-block .message{background-color: #f6f6f6;padding: 12px;display: flex;}
+.credit-report-summary-body>.left-block .message>.mat-icon{flex-grow: 0;flex-shrink: 0;flex-basis: 24px;max-width: 24px;margin-right: 8px;}
+.credit-report-summary-body>.left-block .message>p{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 32px);max-width: calc(100% - 32px);}
 .rejection-reason-chart-block{padding: 12px;border-bottom:1px solid rgba(112, 112, 112,0.2);}
 .rejection-reason-chart-block .legend-text:before{background-color: #2D47D6;}
 .rejection-reason-chart-block .content-wrapper{display: flex;align-items: center;}
@@ -838,7 +866,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* credit report details table
 --------------------------------------------------------------------------------------------------------*/
 .credit-report-details-table .header-block{display:flex;align-items:center;}
-.credit-report-details-table .header-block .right-block{margin-left:auto;}
+.credit-report-details-table .header-block .right-block{margin:-4px -4px -4px auto;}
 .credit-report-details-table .header-block .right-block .action-btn{color:inherit;border:0;background:none;padding:10px;font-weight:inherit;}
 .credit-report-details-table .inline-labelled-text{color:#505050;}
 .credit-report-details-table .body-block{display: flex;}
@@ -858,6 +886,35 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* animations
 --------------------------------------------------------------------------------------------------------*/
 .animate__animated.animate__faster {-webkit-animation-duration: 0.3s!important;animation-duration: 0.3s!important;-webkit-animation-timing-function: cubic-bezier(0.35,0,0.25,1)!important;animation-timing-function: cubic-bezier(0.35,0,0.25,1)!important;}
+
+/* account receivable card
+--------------------------------------------------------------------------------------------------------*/
+.account-receivable-card{padding: 12px;background-color: #fff;border-radius:6px;}
+.account-receivable-card .title{font-weight: 500;padding-bottom: 16px;}
+.aging-indicator-body{display: flex;text-align: center;}
+.aging-indicator-body>.inline-labelled-text{flex-grow: 1;flex-shrink: 0;flex-basis: auto;padding-bottom: 0;border-right:1px solid rgba(112,112,112,0.25);padding-left: 4px;padding-right: 4px;}
+.aging-indicator-body>.inline-labelled-text:last-child{border-right:0;}
+.aging-indicator-header .legend>li{display: flex;align-items:center;}
+.aging-indicator-header .legend>li:before{display: block;content:'';height: 10px;width: 10px;border-radius: 500px;margin-right: 6px;padding-bottom: 2px;}
+.aging-indicator-header .legend>li.green:before{background-color: #45E23F;}
+.aging-indicator-header .legend>li.yellow:before{background-color: #F0F63C;}
+.aging-indicator-header .legend>li.orange:before{background-color: #FFAD41;}
+.aging-indicator-header .legend>li.red:before{background-color: #F55656;}
+.aging-indicator-header .chart-wrapper{position: relative;}
+.aging-indicator-header .chart-wrapper>canvas{display: block;}
+.aging-indicator-header .chart-wrapper .marker{position: absolute;height: 16px;width: 82px;left: 50%;bottom: -2px;background: url('./assets/ic-meter-pointer.svg') center no-repeat;background-size: 82px 16px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);display: block;margin-left: -41px;}
+.aging-indicator-header .chart-wrapper.excellent .marker{transform: rotate(22.5deg);}
+.aging-indicator-header .chart-wrapper.good .marker{transform: rotate(22.5+45deg);}
+.aging-indicator-header .chart-wrapper.fair .marker{transform: rotate(112.5deg);}
+.aging-indicator-header .chart-wrapper.bad .marker{transform: rotate(157.5deg);}
+
+/* information table
+--------------------------------------------------------------------------------------------------------*/
+.information-table{width: 100%;}
+.information-table>tbody>tr>td{vertical-align: top;padding: 9px 14px;}
+.information-table>tbody>.heading-row>td{font-weight: 600;}
+.information-table>tbody>tr>.title{color:#3060AA;background-color: #F0F5FF;}
+.information-table>tbody>tr>.content{text-align: right;background-color: #F7FAFF;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
@@ -940,6 +997,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .clean-claim-progress-report>.left-block{max-width: 220px;flex-basis:220px;}
     .clean-claim-progress-report>.right-block{max-width: calc(100% - 220px);flex-basis:calc(100% - 220px);}
     .general-info-wrapper>div{flex-basis:25%;max-width: 25%;}
+    .border-xl-right{border-right:0;}
+    .border-xl-left{border-left:0;}
+    .border-xl-top{border-top:0;}
+    .border-xl-bottom{border-bottom:0;}
 }
 @media (max-width:991px) { 
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}
@@ -959,6 +1020,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .credit-report-summary-header>.right-block{padding-left: 10px;padding-right: 10px;}
     .credit-report-summary-header>.right-block .content{flex-basis:180px;max-width:180px;}
     .credit-report-summary-header .progress-steps{flex-basis:calc(100% - 180px);max-width:calc(100% - 180px);}
+    .border-lg-right{border-right:0;}
+    .border-lg-left{border-left:0;}
+    .border-lg-top{border-top:0;}
+    .border-lg-bottom{border-bottom:0;}
 }
 
 .mat-grid-tile .mat-figure {

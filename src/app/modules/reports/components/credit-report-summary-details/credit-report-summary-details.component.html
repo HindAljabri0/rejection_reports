@@ -1,6 +1,6 @@
 <div class="block-header has-border">
     <ul class="custom-breadcrumb">
-        <li><a routerLink="/reports/upload-rejection-report" class="primary-link">Credit Reports</a></li>
+        <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
         <li class="active">Bupa</li>
     </ul>
     <div class="right-block">
@@ -72,7 +72,8 @@
 </div>
 <div class="block-header has-border no-radius">
     <ul class="custom-breadcrumb align-self-center">
-        <li><a routerLink="/reports/upload-rejection-report-summary/0" class="primary-link">Bupa Rejections
+        <li><a routerLink="/reports/creditReportSummary" [queryParams]="{ batchId: batchId, payerId: payerId}"
+                class="primary-link">Bupa Rejections
                 Breakdown</a></li>
         <li class="active">{{labelName}}</li>
     </ul>
@@ -571,11 +572,11 @@
                                 <div class="col-8">
                                     <div class="form-group">
                                         <label class="control-label text-primary">Comments</label>
-                                        <textarea rows="6" class="form-control"></textarea>
+                                        <textarea class="form-control comment-box"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <div class="form-group">
+                                    <div class="form-group mb-0">
                                         <label class="control-label text-primary">Attachments</label>
                                         <ul class="attachment-list">
                                             <li matTooltip="Report-4594.pdf">
@@ -711,5 +712,8 @@
         <button (click)="goToLastPage()" matRipple type="button" title="Last Page">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
+    </div>
+    <div class="btn-list right-block">
+        <button type="button" color="primary" mat-flat-button>Save</button>
     </div>
 </div>

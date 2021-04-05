@@ -71,11 +71,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   detailCardTitle: string;
   detailTopActionIcon = 'ic-download.svg';
-  detailAccentColor: string;
-  detailActionText: string = null;
-  detailSubActionText: string = null;
-  detailCheckBoxIndeterminate: boolean;
-  detailCheckBoxChecked: boolean;
 
   providerId: string;
   from: string;
@@ -126,6 +121,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   validationDetails: ClaimError[];
   results: any[];
   showValidationTab = false;
+  isRevalidate = false;
+  isSubmit = false;
+  isDeleteBtnVisible: boolean = true;
+  status: any = 1;
+
 
   constructor(
     public location: Location,
@@ -331,16 +331,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
-
-      this.detailActionText = 'Submit';
-      this.detailSubActionText = 'Re-validate';
+      this.isRevalidate = true;
+      this.isSubmit = true;
     } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
-
-      this.detailActionText = 'Re-validate';
-      this.detailSubActionText = null;
-    } else {
-      this.detailActionText = null;
-      this.detailSubActionText = null;
+      this.isRevalidate = true;
     }
 
     this.claims = new Array();
@@ -386,7 +380,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             }
             if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
             this.setAllCheckBoxIsIndeterminate();
-            this.detailAccentColor = this.commen.getCardAccentColor(this.summaries[key].statuses[0]);
             this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
             const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
             this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
@@ -436,6 +429,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         this.commen.loadingChanged.next(false);
       });
+    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing) ? false : true;
+    const status = this.routeActive.snapshot.queryParamMap.get('status');
+    this.status = status === null ? this.status : status;
   }
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
@@ -535,18 +532,30 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   reValidateClaims() {
 
-    if (this.commen.loading) return;
+    if (this.commen.loading) { return; }
     this.commen.loadingChanged.next(true);
-    this.validationService.reValidateClaims(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to)
+    this.validationService.reValidateClaims(this.providerId,
+      this.payerId,
+      this.batchId,
+      this.uploadId,
+      null,
+      this.claimRefNo,
+      this.patientFileNo,
+      this.invoiceNo,
+      this.policyNo,
+      this.summaries[this.selectedCardKey].statuses,
+      this.memberId,
+      this.selectedClaims,
+      this.from, this.to)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
-          const numberOfClaims = event.body["numberOfClaims"];
-          const numberOfRejectedClaims = event.body["numberOfRejectedClaims"];
-          const numberOfAcceptedClaims = event.body["numberOfAcceptedClaims"];
-          const numberOfDownloadableClaims = event.body["numberOfDownloadableClaims"];
+          const numberOfClaims = event.body['numberOfClaims'];
+          const numberOfRejectedClaims = event.body['numberOfRejectedClaims'];
+          const numberOfAcceptedClaims = event.body['numberOfAcceptedClaims'];
+          const numberOfDownloadableClaims = event.body['numberOfDownloadableClaims'];
 
           this.dialogService.openMessageDialog({
-            title: "Validation Results",
+            title: 'Validation Results',
             message: `No. of Cliam: ${numberOfClaims} \nNo of Rejected by Waseel: ${numberOfRejectedClaims}\nNo. of Ready submission:${numberOfAcceptedClaims} \nNo. of Downloadable:${numberOfDownloadableClaims}`,
             isError: false
           }).subscribe(result => {
@@ -559,7 +568,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog({
-            title: "Validation Results",
+            title: 'Validation Results',
             message: errorEvent.message,
             isError: true
           });
@@ -568,7 +577,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
         }
         this.commen.loadingChanged.next(false);
-      })
+      });
   }
 
 
@@ -661,7 +670,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   resetURL() {
     if (this.routerSubscription.closed) { return; }
-    let claimInfo = '';
+    let claimInfo = '', path = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
     }
@@ -669,19 +678,22 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       claimInfo += `&editMode=${this.editMode}`;
     }
     if (this.from != null && this.to != null && this.payerId != null) {
-      this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo);
+      path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
+        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo;
+
     } else if (this.batchId != null) {
-      this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo);
+      path = `/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo;
     } else if (this.uploadId != null) {
-      this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo);
+      path = `/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo;
     }
     if (this.selectedCardKey != 0) {
-      this.location.go(this.location.path() + `&status=${this.selectedCardKey}`);
+      path = this.location.path() + `&status=${this.selectedCardKey}`
     }
     if (this.selectedPage != null && this.selectedPage > 0) {
-      this.location.go(this.location.path() + `&page=${(this.selectedPage + 1)}`);
+      path = this.location.path() + `&page=${(this.selectedPage + 1)}`
     }
+    if (path !== '')
+      this.location.go(path);
   }
 
 
@@ -924,21 +936,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
   }
 
-
-  doAction() {
-    if (this.detailActionText.includes('Submit')) {
-      if (this.selectedClaims.length == 0)
-        this.submitAllAcceptedClaims();
-      else
-        this.submitSelectedClaims();
-    } else if (this.detailActionText.includes('Re-Validate')) {
-      this.reValidateClaims();
-    }
-  }
-
-  doSubAction() {
-    if (this.detailSubActionText.includes('Re-Validate')) {
-      this.reValidateClaims();
+  submitAll() {
+    if (this.selectedClaims.length == 0) {
+      this.submitAllAcceptedClaims();
+    } else {
+      this.submitSelectedClaims();
     }
   }
 
@@ -997,6 +999,48 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get showEligibilityButton() {
     return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all');
+  }
+  deleteClaimByUploadid() {
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Delete Upload?',
+        `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+        false,
+        true))
+      .subscribe(result => {
+        if (result === true) {
+          this.commen.loadingChanged.next(true);
+          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              const status = event.body['status'];
+              if (status == "Deleted") {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    `Your claims deleted successfully.`,
+                    false))
+                  .subscribe(afterColse => {
+                    // this.claimService.summaryChange.next(new UploadSummary());
+                    // this.router.navigate(['']);
+                    location.reload();
+                  });
+              }
+              else {
+                const error = event.body['errors'];
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    error[0].description,
+                    false));
+              }
+
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              this.commen.loadingChanged.next(false);
+              this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+            }
+          });
+        }
+      });
   }
 }
 
