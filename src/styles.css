@@ -921,6 +921,29 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .information-table>tbody>tr>.title{color:#3060AA;background-color: #F0F5FF;}
 .information-table>tbody>tr>.content{text-align: right;background-color: #F7FAFF;}
 
+/* revenue header
+--------------------------------------------------------------------------------------------------------*/
+.revenue-header{background-color: #F8FBFF;padding: 14px;}
+.revenue-header .title{font-weight: 500;padding-bottom: 4px;}
+.revenue-header p{color: #909090;}
+.revenue-header h5{font-weight: 700;color: #3060AA;}
+.revenue-header>.row>div,.revenue-report-body>.row>div{border-right:1px solid #e1e1e1;}
+.revenue-header>.row>div:last-child,.revenue-report-body>.row>div:last-child{border:0;}
+.revenue-report-body{padding: 14px;background-color: #fff;}
+.revenue-report-body .title{color: #3060AA;display: flex;font-weight: 500;padding-bottom: 14px;}
+.revenue-report-body .title:before{height: 6px;width:6px;border-radius:500px;display:block;background-color: #ededed;content:'';margin-right: 6px;position: relative;top: 7px;}
+.revenue-report-body .theme-green .title:before,.revenue-report-body .theme-green .progress-with-info .active-bar{background-color: #39E6BE;}
+.revenue-report-body .theme-cyan .title:before,.revenue-report-body .theme-cyan .progress-with-info .active-bar{background-color: #39D5E6;}
+.revenue-report-body .theme-amber .title:before,.revenue-report-body .theme-amber .progress-with-info .active-bar{background-color: #E6D539;}
+.revenue-report-body .theme-blue .title:before,.revenue-report-body .theme-blue .progress-with-info .active-bar{background-color: #39A7E6;}
+.progress-with-info {margin-bottom: 14px;}
+.progress-with-info .head-block{display: flex;padding-bottom: 2px;}
+.progress-with-info .head-block>p{font-weight: 500;}
+.progress-with-info .head-block>span{margin-left: auto;text-align: right;}
+.progress-with-info .progress-bar{background-color: #EDEDED;height: 10px;border-radius: 4px;}
+.progress-with-info .progress-bar .active-bar{height: 100%;display: block;border-radius: inherit;}
+.progress-with-info:last-child{margin-bottom: 0;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl,
@@ -1006,6 +1029,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .border-xl-left{border-left:0;}
     .border-xl-top{border-top:0;}
     .border-xl-bottom{border-bottom:0;}
+    .revenue-header>.row>div:nth-child(2),.revenue-report-body>.row>div:nth-child(2){border-right: 0;}
 }
 @media (max-width:991px) { 
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}

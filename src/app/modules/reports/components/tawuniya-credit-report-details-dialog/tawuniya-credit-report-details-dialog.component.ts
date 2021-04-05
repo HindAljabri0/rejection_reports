@@ -14,6 +14,7 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
   dialogData;
   title;
   creditReportDetails;
+  isLoading: Boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<TawuniyaCreditReportDetailsDialogComponent>,
@@ -23,6 +24,7 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
   ) { this.dialogData = data }
 
   ngOnInit() {
+    this.isLoading = true;
     this.title = this.dialogData.serviceType == 'deducted' ? 'Deducted' : 'Rejected';
     this.creditReportService.getTawuniyaCreditReportDetail(this.sharedServices.providerId, this.dialogData.batchReferenceNumber,
       this.dialogData.serialNo, this.dialogData.serviceType).subscribe(event => {
@@ -31,12 +33,14 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
             this.creditReportDetails = event.body;
             this.fixDataDates();
           }
+          this.isLoading = false;
         }
       }, errorEvent => {
         this.creditReportDetails = null;
         if (errorEvent instanceof HttpErrorResponse) {
           console.log(errorEvent.error);
         }
+        this.isLoading = false;
       });
   }
 
