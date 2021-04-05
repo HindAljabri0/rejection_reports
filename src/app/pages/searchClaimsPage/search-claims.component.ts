@@ -243,35 +243,51 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.router.navigate(['']);
     }
     this.showValidationTab = false;
-    for (status in ClaimStatus) {
-      if (status == ClaimStatus.INVALID) { continue; }
-      let statusCode;
-      if (status == ClaimStatus.OUTSTANDING) {
-        statusCode = await this.getSummaryOfStatus([status, 'PENDING', 'UNDER_PROCESS']);
-      } else if (status == ClaimStatus.REJECTED) {
-        statusCode = await this.getSummaryOfStatus([status, 'INVALID', 'DUPLICATE']);
-      } else if (status == ClaimStatus.Accepted) {
-        statusCode = await this.getSummaryOfStatus([status, 'Failed']);
-      } else if (status == ClaimStatus.PAID) {
-        statusCode = await this.getSummaryOfStatus([status, 'SETTLED']);
-      } else {
-        statusCode = await this.getSummaryOfStatus([status]);
-      }
-      if (statusCode != 200) {
-        break;
+    let statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
+    if (statusCode == 200) {
+      let statuses = this.summaries[0].statuses;
+      statuses.sort((s1, s2) => {
+        if (this.isReadyForSubmissionStatus(s1) || s1 == 'NotAccepted' || s1 == 'Batched' || this.isUnderProcessingStatus(s1)) {
+          return -1;
+        } else if (this.isReadyForSubmissionStatus(s2) || s2 == 'NotAccepted' || s2 == 'Batched' || this.isUnderProcessingStatus(s2)) {
+          return 1;
+        }
+        return 0;
+      })
+      let underProcessingIsDone = false;
+      let rejectedByPayerIsDone = false;
+      let readyForSubmissionIsDone = false;
+      let paidIsDone = false;
+      for (let i = 0; i < statuses.length; i++) {
+        let status = statuses[i];
+        if (this.isUnderProcessingStatus(status)) {
+          if (!underProcessingIsDone)
+            await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
+          underProcessingIsDone = true;
+        } else if (this.isRejectedByPayerStatus(status)) {
+          if (!rejectedByPayerIsDone)
+            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'INVALID', 'DUPLICATE']);
+          rejectedByPayerIsDone = true;
+        } else if (this.isReadyForSubmissionStatus(status)) {
+          if (!readyForSubmissionIsDone)
+            await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
+          readyForSubmissionIsDone = true;
+        } else if (this.isPaidStatus(status)) {
+          if (!paidIsDone)
+            await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
+          paidIsDone = true;
+        } else {
+          await this.getSummaryOfStatus([status]);
+        }
       }
     }
 
-    // this.summaries = this.mapRelatedStatus();
-
-
-    // this.summaries.sort((a, b) => b.totalClaims - a.totalClaims);
-    // if (this.summaries.length == 2) this.summaries[0] = this.summaries.pop();
-
-    this.getResultsofStatus(this.queryStatus, this.queryPage);
+    this.getResultsOfStatus(this.queryStatus, this.queryPage);
 
     if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
+
+
 
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
@@ -314,7 +330,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     return event.status;
   }
 
-  getResultsofStatus(key: number, page?: number, pageSize?: number) {
+  getResultsOfStatus(key: number, page?: number, pageSize?: number) {
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
@@ -330,11 +346,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.resetURL();
 
 
-    if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
+    if (key == 0) {
       this.isRevalidate = true;
-      this.isSubmit = true;
-    } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
-      this.isRevalidate = true;
+      this.isSubmit = false;
+    } else {
+      if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
+        this.isRevalidate = true;
+        this.isSubmit = true;
+      } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
+        this.isRevalidate = true;
+      } else {
+        this.isRevalidate = false;
+        this.isSubmit = false;
+      }
     }
 
     this.claims = new Array();
@@ -606,7 +630,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   paginatorAction(event) {
     this.manualPage = event['pageIndex'];
     if (this.summaries[this.selectedCardKey] != null) {
-      this.getResultsofStatus(this.selectedCardKey, event['pageIndex'], event['pageSize']);
+      this.getResultsOfStatus(this.selectedCardKey, event['pageIndex'], event['pageSize']);
     }
   }
   updateManualPage(index) {
@@ -670,7 +694,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   resetURL() {
     if (this.routerSubscription.closed) { return; }
-    let claimInfo = '';
+    let claimInfo = '', path = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
     }
@@ -678,19 +702,32 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       claimInfo += `&editMode=${this.editMode}`;
     }
     if (this.from != null && this.to != null && this.payerId != null) {
-      this.location.go(`/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo);
+      path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
+        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo;
+
     } else if (this.batchId != null) {
-      this.location.go(`/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo);
+      path = `/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo;
     } else if (this.uploadId != null) {
-      this.location.go(`/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo);
+      path = `/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo;
+    } else if (this.claimRefNo != null) {
+      path = `/${this.providerId}/claims?claimRefNo=${this.claimRefNo}` + claimInfo;
+    } else if (this.memberId != null) {
+      path = `/${this.providerId}/claims?memberId=${this.memberId}` + claimInfo;
+    } else if (this.invoiceNo != null) {
+      path = `/${this.providerId}/claims?invoiceNo=${this.invoiceNo}` + claimInfo;
+    } else if (this.patientFileNo != null) {
+      path = `/${this.providerId}/claims?patientFileNo=${this.patientFileNo}` + claimInfo;
+    } else if (this.policyNo != null) {
+      path = `/${this.providerId}/claims?policyNo=${this.policyNo}` + claimInfo;
     }
     if (this.selectedCardKey != 0) {
-      this.location.go(this.location.path() + `&status=${this.selectedCardKey}`);
+      path += `&status=${this.selectedCardKey}`
     }
     if (this.selectedPage != null && this.selectedPage > 0) {
-      this.location.go(this.location.path() + `&page=${(this.selectedPage + 1)}`);
+      path += `&page=${(this.selectedPage + 1)}`
     }
+    if (path !== '')
+      this.location.go(path);
   }
 
 
@@ -998,10 +1035,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
   deleteClaimByUploadid() {
-
-    if (this.commen.loading) { return; }
-    this.commen.loadingChanged.next(true);
-
     this.dialogService.openMessageDialog(
       new MessageDialogData('Delete Upload?',
         `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
@@ -1042,6 +1075,30 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           });
         }
       });
+  }
+
+  isUnderProcessingStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.OUTSTANDING.toUpperCase() ||
+      status == 'PENDING' || status == 'UNDER_PROCESS';
+  }
+
+  isRejectedByPayerStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.REJECTED.toUpperCase() ||
+      status == 'INVALID' || status == 'DUPLICATE';
+  }
+
+  isReadyForSubmissionStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.Accepted.toUpperCase() ||
+      status == 'FAILED';
+  }
+
+  isPaidStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.PAID.toUpperCase() ||
+      status == 'SETTLED';
   }
 }
 

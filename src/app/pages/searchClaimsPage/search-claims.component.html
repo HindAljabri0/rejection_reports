@@ -32,15 +32,15 @@
             <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
                 <ng-template carouselSlide>
                     <app-abstractcard [clickable]="cardsClickAble"
-                        [title]="commen.statusToName(summary.value.statuses[0])"
-                        [accentColor]="commen.getCardAccentColor(summary.value.statuses[0])"
-                        (action)="getResultsofStatus(summary.key)" class="primary-card">
+                        [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
+                        [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])"
+                        (action)="getResultsOfStatus(summary.key)" class="primary-card">
                         <table>
                             <tr>
                                 <th colspan="2">No. of Claims</th>
                             </tr>
                             <tr>
-                                <td class="pb-1 text-{{commen.getCardAccentColor(summary.value.statuses[0])}}"
+                                <td class="pb-1 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}"
                                     colspan="2"><span class="dashboard-numbers">{{summary.value.totalClaims }}</span>
                                 </td>
                             </tr>
@@ -49,12 +49,14 @@
                                 <th>Total Net Vat</th>
                             </tr>
                             <tr>
-                                <td class="text-{{commen.getCardAccentColor(summary.value.statuses[0])}}"><span
-                                        class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span
-                                        class="currency"> SR</span></td>
-                                <td class="text-{{commen.getCardAccentColor(summary.value.statuses[0])}}"><span
-                                        class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span
-                                        class="currency"> SR</span></td>
+                                <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                    <span class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span
+                                        class="currency"> SR</span>
+                                </td>
+                                <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                                    <span class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span
+                                        class="currency"> SR</span>
+                                </td>
                             </tr>
                         </table>
                     </app-abstractcard>
@@ -66,10 +68,11 @@
     </div>
 
     <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
-        <div class="block-header text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+        <div
+            class="block-header text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
             <button type="button" mat-button color="primary" [class.active]="currentSelectedTab==0" class="title-btn"
                 *ngIf="summaries != null && summaries[selectedCardKey] != null" (click)="currentSelectedTab=0">
-                {{commen.statusToName(summaries[selectedCardKey].statuses[0])}}
+                {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
             </button>
             <button type="button" mat-button color="primary" class="title-btn" (click)="currentSelectedTab=1"
                 [class.active]="currentSelectedTab==1">
@@ -77,10 +80,13 @@
             </button>
             <div class="right-block">
                 <div class="actions">
-                    <button matRipple type="button" (click)="reValidateClaims()" *ngIf="isRevalidate"
+                    <!-- <button matRipple type="button" (click)="reValidateClaims()" *ngIf="isRevalidate"
                         class="action-btn">
                         <img src="./assets/ic-refresh.svg" alt="Refresh" />
-                    </button>
+                    </button> -->
+                    <button mat-flat-button class="primary-text-btn" *ngIf="isRevalidate"
+                        (click)="reValidateClaims()">Re-Validate
+                        {{selectedClaims.length==0?" All":"Selection"}}</button>
                     <button matRipple (click)="download()" type="button" class="action-btn"
                         *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
                         <img src="./assets/{{detailTopActionIcon}}" />
@@ -112,41 +118,41 @@
                             <thead>
                                 <tr *ngIf="summaries != null && summaries[selectedCardKey] != null">
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <mat-checkbox class="grid-checkbox" color="primary"
                                             [(checked)]="allCheckBoxIsChecked"
                                             [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage()">
                                         </mat-checkbox>
                                     </th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Claim Ref. No.</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Dr. Name</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Member ID</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         National ID</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Patient File No.</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Claim Date</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Amount</th>
                                     <th
-                                        class="text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Vat</th>
                                     <th
-                                        class="text-center text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
                                     <th
-                                        class="text-right text-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(summaries[selectedCardKey].statuses[0])}}">
+                                        class="text-right text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <button mat-icon-button (click)="checkAllClaims()"
                                             matTooltip="Verify All Ready Claims' Eligibility"
                                             *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">

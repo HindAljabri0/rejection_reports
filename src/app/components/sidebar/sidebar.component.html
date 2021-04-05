@@ -91,7 +91,7 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@uploadRejectionReport">
-                            <a routerLink="/reports/creditReportList" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/reports/creditReports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-upload.svg" alt="File Upload" class="default-icon" />
                                 <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload" class="active-icon" />
                                 <span class="text">Credit Reports</span>
@@ -111,7 +111,7 @@
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectedClaimProgress">
+                        <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
                             <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
@@ -149,6 +149,11 @@
                         <li>
                             <a routerLink="/collection-management/accounts-receivable-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Accounts Receivable</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/reports/revenue-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Revenue Report</span>
                             </a>
                         </li>
                     </ul>

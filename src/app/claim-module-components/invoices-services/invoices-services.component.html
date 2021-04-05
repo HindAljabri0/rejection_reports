@@ -1,3 +1,13 @@
+<div class="d-flex mb-3">
+    <h4 class="align-self-center medium">Invoice & Services</h4>
+    <button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" mat-flat-button class="ml-auto px-0 primary-text-btn"
+        (click)="onAddInvoiceClick()">
+        <span class="d-flex align-items-center">
+            <mat-icon>add_circle_outline</mat-icon>
+            <span class="pl-1">Add Invoice</span>
+        </span>
+    </button>
+</div>
 <div class="table-responsive">
     <table class="primary-grid manual-row-color invoice-table">
         <thead>
@@ -6,6 +16,7 @@
                 <th>Serial No.</th>
                 <th>Date</th>
                 <th>Invoice No.</th>
+                <th>Department</th>
                 <th>Net Value</th>
                 <th>Net VAT</th>
                 <th>Services</th>
@@ -14,14 +25,36 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let invoice of controllers; let i = index">
-                <tr [class.even]="i%2" [class.text-danger]="invoiceHasErrors(i)" [class.light-bg-danger]="invoiceHasErrors(i)">
+                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="invoiceHasErrors(i)" [class.light-bg-danger]="invoiceHasErrors(i)">
                     <td class="row-click" (click)="toggleInvoice(i)">
                         <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceDate | date:"dd/MM/yyyy"}}
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
+                            <div class="date-picker">
+                                <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
+                                <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #invoiceDatePicker></mat-datepicker>
+                            </div>
+                        </div>
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceNumber}}</td>
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
+                            <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
+                        </div>
+                    </td>
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1">
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
+                                    [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
+                                    <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                        {{department.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.net.value}}</td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.netVATamount.value}}
                     </td>
@@ -34,39 +67,21 @@
                     </td>
                 </tr>
                 <tr *ngIf="expandedInvoice == i">
-                    <td colspan="8" class="pl-7 pr-7">
-                        <p class="block-title mb-2">Invoice {{(i+1)}}</p>
-                        <div class="row small-gutter">
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                <div class="form-group" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
-                                    <label class="control-label">Invoice Number<span class="asterisk">*</span></label>
-                                    <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                <div class="form-group" [class.has-error]="fieldHasError('invoiceDate:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
-                                    <label class="control-label">Invoice Date<span class="asterisk">*</span></label>
-                                    <div class="date-picker">
-                                        <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
-                                        <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
-                                        <mat-datepicker #invoiceDatePicker></mat-datepicker>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Invoice Department<span class="asterisk">*</span></label>
-                                    <mat-form-field class="form-control custom-select-control">
-                                        <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
-                                            [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
-                                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
-                                                {{department.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
+                    <td colspan="9" class="pl-7 pr-7 border-top">
+                        <div class="d-flex mt-n2">
+                            <h5 class="align-self-center medium">Services</h5>
+                            <div class="ml-auto btn-list" *ngIf="pageMode != 'VIEW'">
+                                <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" class="primary-text-btn px-0"
+                                    (click)="onAddRetrievedServiceClick(i)">
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                    <span class="pl-1">Add a Retreived Service</span>
+                                </button>
+                                <button mat-flat-button (click)="onAddServiceClick(i)" class="primary-text-btn px-0" disableRipple="true">
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                    <span class="pl-1">Add Service</span>
+                                </button>
                             </div>
                         </div>
-                        <p class="block-title">Services</p>
                         <div class="list-expansion-panel">
                             <mat-expansion-panel *ngFor="let service of invoice.services; let j = index" hideToggle [expanded]="service.isOpen">
                                 <mat-expansion-panel-header>
@@ -250,20 +265,13 @@
                                 </div>
                             </mat-expansion-panel>
                         </div>
-                        <div class="text-right mt-2 btn-list" *ngIf="pageMode != 'VIEW'">
-                            <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" color="primary" (click)="onAddRetrievedServiceClick(i)">Add a Retreived
-                                Service</button>
-                            <button mat-flat-button color="primary" (click)="onAddServiceClick(i)">Add Service</button>
-                        </div>
                     </td>
                 </tr>
             </ng-container>
         </tbody>
     </table>
 </div>
-<hr *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" />
-<button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" mat-flat-button color="primary" class="mt-2" (click)="onAddInvoiceClick()">Add
-    Invoice</button>
+
 
 <mat-menu #editServiceCodeMenu class="primary-menu" xPosition="before">
     <p *ngIf="!priceListExist" class="d-flex text-orange">

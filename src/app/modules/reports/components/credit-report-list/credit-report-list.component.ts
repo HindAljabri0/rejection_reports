@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/credit-report-upload-modal.component';
 
 
@@ -11,50 +12,33 @@ import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/
   templateUrl: './credit-report-list.component.html',
   styles: []
 })
-export class CreditReportListComponent implements OnInit {
+export class CreditReportListComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
   creditReportData: CreditReportUploadModel[] = [];
   currentFileUpload: File;
-  constructor(private dialog: MatDialog, private creditReportService: CreditReportService) { }
+  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
     this.getCreditReportListData();
-    const data = [{
-      payerName: 'Bupa',
-      receivedDate: new Date('03/04/2020'),
-      batchId: 'B1DD',
-      totalrejectionAmount: '1,596,900.00 SR',
-      totalRejectionRatio: '1,596,900.00 SR',
-      medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%',
-      routerLink: '/reports/creditReportSummary/0'
-    },
-    {
-      payerName: 'Tawuniya',
-      receivedDate: new Date('03/04/2020'),
-      batchId: 'B1DD',
-      totalrejectionAmount: '1,596,900.00 SR',
-      totalRejectionRatio: '1,596,900.00 SR',
-      medicalRejectionRatio: '39.5%',
-      technicalRejectionRatio: '47%',
-      routerLink: '/reports/tawuniya-credit-report-details'
-    }];
-    this.creditReportData = data;
   }
   getCreditReportListData() {
-    const batchId = "0";
-    this.subscription.add(this.creditReportService.getCreditReportsList(batchId).subscribe((res: any) => {
+    this.sharedServices.loadingChanged.next(true);
+    this.subscription.add(this.creditReportService.listTawuniyaCreditReports(
+      this.sharedServices.providerId, 0, 10
+    ).subscribe((res: any) => {
       if (res.body !== undefined) {
-        const data: any = JSON.stringify(res.body);
-        this.creditReportData = data;
+        this.creditReportData = res.body.content;
+        this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
       console.log(err);
-    }))
+      this.sharedServices.loadingChanged.next(false);
+    }));
   }
 
   openPdf(event) {
-    const dialogRef = this.dialog.open(CreditReportUploadModalComponent, { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
+    const dialogRef = this.dialog.open(CreditReportUploadModalComponent,
+      { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
@@ -70,7 +54,7 @@ export class CreditReportListComponent implements OnInit {
     this.subscription.unsubscribe();
   }
   clearFiles(event) {
-    event.target.value = "";
+    event.target.value = '';
   }
 
 }

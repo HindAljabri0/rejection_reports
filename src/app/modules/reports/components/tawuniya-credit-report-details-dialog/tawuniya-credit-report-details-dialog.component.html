@@ -1,139 +1,151 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Deducted Services</h5>
-    <p class="ml-auto">Claim No <span class="text-normal-color">313925748</span></p>
+    <h5 class="primary-dialog-title">{{this.title}} Services</h5>
+    <p class="ml-auto">Claim No <span class="text-normal-color">{{this.creditReportDetails?.payerClaimNo}}</span></p>
     <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
+    <div class="inline-loader" *ngIf="isLoading">
+        <mat-spinner diameter="48"></mat-spinner>
+    </div>
     <div class="table-responsive">
         <table class="information-table" cellpadding="0" cellspacing="0" border="0">
-            <tbody>
+            <tbody *ngIf="this.creditReportDetails !== undefined && !isLoading">
                 <tr class="heading-row">
                     <td colspan="2">Batch Information</td>
                 </tr>
                 <tr>
                     <td class="title">Batch Reference Number</td>
-                    <td class="content">WP17MDB029134</td>
+                    <td class="content">{{this.creditReportDetails?.batchReferenceNumber}}</td>
                 </tr>
                 <tr>
                     <td class="title">Waseel Batch</td>
-                    <td class="content">212627</td>
+                    <td class="content">{{this.creditReportDetails?.waseelBatch}}</td>
                 </tr>
                 <tr>
                     <td class="title">Physician Name</td>
-                    <td class="content">AMMAR AL YOUSEF</td>
+                    <td class="content">{{this.creditReportDetails?.physicianName}}</td>
                 </tr>
                 <tr>
                     <td class="title">Physician ID</td>
-                    <td class="content">11BB</td>
+                    <td class="content">{{this.creditReportDetails?.physicianID}}</td>
                 </tr>
                 <tr>
                     <td class="title">Member Name</td>
-                    <td class="content">ABDUL RAHMAN ABDULLAH AL-SHEHRI</td>
+                    <td class="content">{{this.creditReportDetails?.memberName}}</td>
                 </tr>
                 <tr>
                     <td class="title">Patient File No</td>
-                    <td class="content">1860365</td>
+                    <td class="content">{{this.creditReportDetails?.patientFileNo}}</td>
                 </tr>
                 <tr>
                     <td class="title">Member ID</td>
-                    <td class="content">00105424807320</td>
+                    <td class="content">{{this.creditReportDetails?.memberID}}</td>
                 </tr>
                 <tr>
                     <td class="title">Policy No</td>
-                    <td class="content">88991</td>
+                    <td class="content">{{this.creditReportDetails?.policyNo}}</td>
                 </tr>
                 <tr>
                     <td class="title">Invoice No</td>
-                    <td class="content">151601814389</td>
+                    <td class="content">{{this.creditReportDetails?.invoiceNo}}</td>
                 </tr>
                 <tr>
                     <td class="title">Visit Date</td>
-                    <td class="content">14-12-2016</td>
+                    <td class="content">{{this.creditReportDetails?.visitDate}}</td>
                 </tr>
                 <tr>
                     <td class="title">Invoice Date</td>
-                    <td class="content">December-2016</td>
+                    <td class="content">{{this.creditReportDetails?.invoiceDate}}</td>
                 </tr>
                 <tr>
                     <td class="title">Payer Claim No</td>
-                    <td class="content">313925748</td>
+                    <td class="content">{{this.creditReportDetails?.payerClaimNo}}</td>
                 </tr>
-                <tr class="heading-row">
-                    <td colspan="2">Diagnosis</td>
-                </tr>
-                <tr>
-                    <td class="title">Diagnosis Code</td>
-                    <td class="td content">L20.8</td>
-                </tr>
-                <tr>
-                    <td class="title">Diagnosis Description</td>
-                    <td class="td content">Other atopic dermatitis</td>
-                </tr>
+
                 <tr class="heading-row">
                     <td colspan="2">Service Information</td>
                 </tr>
                 <tr>
                     <td class="title">Serial No</td>
-                    <td class="content">1</td>
+                    <td class="content">{{this.creditReportDetails?.serialNo}}</td>
                 </tr>
                 <tr>
                     <td class="title">Service Code</td>
-                    <td class="content">212627</td>
+                    <td class="content">{{this.creditReportDetails?.serviceCode}}</td>
                 </tr>
                 <tr>
                     <td class="title">Service Price</td>
-                    <td class="content">1.0</td>
+                    <td class="content">{{this.creditReportDetails?.servicePrice | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Service Description</td>
-                    <td class="content">CONSULTATION FEE</td>
+                    <td class="content">{{this.creditReportDetails?.serviceDescription}}</td>
                 </tr>
                 <tr>
                     <td class="title">Exceed Price</td>
-                    <td class="content">22.0</td>
+                    <td class="content">{{this.creditReportDetails?.exceedPrice | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Patient Share</td>
-                    <td class="content">22.0</td>
+                    <td class="content">{{this.creditReportDetails?.patientShare | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Requested Net Amount</td>
-                    <td class="content">206.0</td>
+                    <td class="content">{{this.creditReportDetails?.requestedNetAmount | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Gross Amount</td>
-                    <td class="content">265.0</td>
+                    <td class="content">{{this.creditReportDetails?.grossAmount | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Received Gross</td>
-                    <td class="content">39.0</td>
+                    <td class="content">{{this.creditReportDetails?.receivedGross | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Deducted Amount</td>
-                    <td class="content">15.0</td>
+                    <td class="content">{{this.creditReportDetails?.deductedAmoun | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Received Discount</td>
-                    <td class="content">39.0</td>
+                    <td class="content">{{this.creditReportDetails?.receivedDiscount | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Payer Discount</td>
-                    <td class="content">10</td>
+                    <td class="content">{{this.creditReportDetails?.payerDiscount | currency:' '}}</td>
                 </tr>
                 <tr>
                     <td class="title">Rejection Reason</td>
-                    <td class="content">-</td>
+                    <td class="content">{{this.creditReportDetails?.rejectionReason}}</td>
                 </tr>
                 <tr class="heading-row">
                     <td colspan="2">Provider Comment and Attachment</td>
                 </tr>
                 <tr>
                     <td class="title">Comment</td>
-                    <td class="content">-</td>
+                    <td class="content">{{this.creditReportDetails?.comment}}</td>
                 </tr>
                 <tr>
                     <td class="title">Attachment</td>
-                    <td class="content">-</td>
+                    <td class="content">{{this.creditReportDetails?.attachment}}</td>
+                </tr>
+                <tr class="heading-row">
+                    <td colspan="2">Diagnosis</td>
+                </tr>
+                <ng-container *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
+                    <tr>
+                        <td class="title">Diagnosis Code</td>
+                        <td class="td content">{{diagnosis.diagnosisCode}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Diagnosis Description</td>
+                        <td class="td content">{{diagnosis.diagnosisDescription}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+            <tbody *ngIf="this.creditReportDetails == undefined && !isLoading">
+                <tr>
+                    <app-empty-state class="claim-list-empty-state" message='No {{title}} services found!'>
+                    </app-empty-state>
                 </tr>
             </tbody>
         </table>
