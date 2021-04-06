@@ -8,6 +8,8 @@ export class SearchedClaim extends Paginateable {
   policyNumber: string;
   memberId: string;
   nationalId: string;
+  batchId: number;
+  submissionDate: string;
   patientFileNumber: string;
   claimDate: string;
   netAmount: number;
@@ -29,6 +31,8 @@ export class SearchedClaim extends Paginateable {
       this.policyNumber = body['policyNumber'];
       this.memberId = body['memberId'];
       this.nationalId = body['nationalId'];
+      this.batchId = body['batchId'];
+      this.submissionDate = body['submissionDate'];
       this.netAmount = body['netAmount'];
       this.netVatAmount = body['netVatAmount'];
       this.patientFileNumber = body['patientFileNumber'];
