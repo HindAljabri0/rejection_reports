@@ -133,9 +133,15 @@
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Member ID</th>
+                                    <!-- <th
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                                        National ID</th> -->
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        National ID</th>
+                                        Submission Date</th>
+                                    <th
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                                        Batch ID</th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Patient File No.</th>
@@ -183,8 +189,14 @@
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                         {{claim.memberId}}
                                     </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                    <!-- <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                         {{claim.nationalId}}
+                                    </td> -->
+                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        {{claim.batchId}}
+                                    </td>
+                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                        {{claim.submissionDate}}
                                     </td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                         {{claim.patientFileNumber}}</td>
