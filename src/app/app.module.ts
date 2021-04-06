@@ -78,6 +78,7 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { AttachmentViewDialogComponent } from './components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     SummaryComponent,
     GmReportsPageComponent,
     ChangeLogDialogComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    AttachmentViewDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -187,7 +189,8 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     TopFiveRejectionsComponent,
     ImageTooltipComponent,
     UploadSummaryDialogComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    AttachmentViewDialogComponent
   ],
 })
 export class AppModule { }
