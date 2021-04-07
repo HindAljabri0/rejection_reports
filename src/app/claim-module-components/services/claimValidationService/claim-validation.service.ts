@@ -14,6 +14,7 @@ export class ClaimValidationService {
   claim: Claim;
   dentalDepartmentCode: string;
   opticalDepartmentCode: string;
+  pharmacyDepartmentCode: string;
   pageType: ClaimPageType;
 
   constructor(private store: Store) {
@@ -23,6 +24,7 @@ export class ClaimValidationService {
         if (departments != null && departments.length > 0) {
           this.dentalDepartmentCode = departments.find(department => department.name == "Dental").departmentId + '';
           this.opticalDepartmentCode = departments.find(department => department.name == "Optical").departmentId + '';
+          this.pharmacyDepartmentCode = departments.find(department => department.name == 'Pharmacy').departmentId + '';
         }
       });
     this.store.select(getPageType).subscribe(type => this.pageType = type);
@@ -75,7 +77,7 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: 'policyNum' });
 
     }
-    if (this.pageType == 'DENTAL_OPTICAL') {
+    if (this.pageType == 'DENTAL_OPTICAL_PHARMACY' && this.claim.visitInformation.departmentCode != this.pharmacyDepartmentCode) {
       if (approvalNum == null || approvalNum.trim().length == 0) {
         fieldErrors.push({ fieldName: 'approvalNum' });
       } else if (!this.regexWithSym.test(approvalNum)) {
@@ -93,7 +95,7 @@ export class ClaimValidationService {
 
     let fieldErrors: FieldError[] = [];
 
-    if (this.pageType == 'DENTAL_OPTICAL') {
+    if (this.pageType == 'DENTAL_OPTICAL_PHARMACY') {
       if (physicianId != null && physicianId.trim().length > 0 && !this.regexWithOutSpace.test(physicianId)) {
         fieldErrors.push({ fieldName: 'physicianId', error: 'Characters allowed: (0-9), (a-z), (A-Z), (-)' });
       }

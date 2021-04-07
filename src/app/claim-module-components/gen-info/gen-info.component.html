@@ -176,7 +176,7 @@
     </div>
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('approvalNum')">
-            <label class="control-label">Approval No.<span *ngIf="claimPageType == 'DENTAL_OPTICAL'"
+            <label class="control-label">Approval No.<span *ngIf="departmentCode != '68' && claimPageType == 'DENTAL_OPTICAL_PHARMACY'"
                     class="asterisk">*</span></label>
             <input class="form-control" placeholder="Enter approval number" type="text"
                 [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required>
