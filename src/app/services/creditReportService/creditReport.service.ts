@@ -89,6 +89,18 @@ export class CreditReportService {
         return this.http.request(request);
     }
 
+    listBupaCreditReports(providerId: string, data: any) {
+        if (data.receivedFromDate != null)
+            data.receivedFromDate = data.receivedFromDate.format("YYYY-MM-DD");
+
+        if (data.receivedToDate != null)
+            data.receivedToDate = data.receivedToDate.format("YYYY-MM-DD");
+
+        const requestURL = `/providers/${providerId}/report/rejected/list`;
+        const request = new HttpRequest('POST', environment.creditReportService + requestURL, data);
+        return this.http.request(request);
+    }
+
     getTawuniyaCreditReport(providerId: string, batchId: string) {
         const requestURL = `/providers/${providerId}/batches/${batchId}`;
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
