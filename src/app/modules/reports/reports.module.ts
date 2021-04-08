@@ -21,6 +21,8 @@ import { CreditReportListComponent } from './components/credit-report-list/credi
 import { CreditReportSummaryDetailsComponent } from './components/credit-report-summary-details/credit-report-summary-details.component';
 import { CreditReportSummaryComponent } from './components/credit-report-summary/credit-report-summary.component';
 import { CreditReportUploadModalComponent } from './components/credit-report-upload-modal/credit-report-upload-modal.component';
+import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-submissions.component';
+import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { CreditReportUploadModalComponent } from './components/credit-report-upl
     RejectedClaimProgressReportComponent,
     CreditReportCreateConfirmDialogComponent,
     TawuniyaCreditReportDetailsComponent,
-    TawuniyaCreditReportDetailsDialogComponent
+    TawuniyaCreditReportDetailsDialogComponent,
+    ClaimSubmissionsComponent,
+    RevenueReportComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +49,6 @@ import { CreditReportUploadModalComponent } from './components/credit-report-upl
     ChartsModule
   ],
   providers: [PercentPipe, DatePipe, CreditReportService],
-  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent]
+  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent, CreditReportUploadModalComponent]
 })
 export class ReportsModule { }

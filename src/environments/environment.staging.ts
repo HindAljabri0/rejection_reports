@@ -9,7 +9,9 @@ export const environment = {
   authenticationHost: `${host}/oauth`,
   adminServiceHost: `${host}/admin`,
   auditTrailServiceHost: `${host}/audit`,
-  settingsServiceHost:`${host}/settings`,
+  settingsServiceHost: `${host}/settings`,
   claimInquireServiceHost: `${host}/claim-inquiry`,
-  validationServiceHost: `${host}/validate`
+  validationServiceHost: `${host}/validate`,
+  creditReportService: `${host}/reports`,
+  tawuniyaCreditReportService: `${host}/credit-report`
 };

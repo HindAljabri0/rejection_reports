@@ -1,0 +1,291 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Revenue Report</p>
+    </div>
+    <div class="block-filter-panel has-border">
+        <div class="row small-gutter">
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option value="Payer 1">Payer 1</mat-option>
+                            <mat-option value="Payer 2">Payer 2</mat-option>
+                            <mat-option value="Payer 3">Payer 3</mat-option>
+                            <mat-option value="Payer 4">Payer 4</mat-option>
+                            <mat-option value="Payer 5">Payer 5</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
+                        <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
+                        <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto align-self-end">
+                <div class="form-group">
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="revenue-header">
+        <div class="row">
+            <div class="col-lg-3 col-6 mb-3 mb-lg-0">
+                <div class="title">Total</div>
+                <p>Total Billed Amounts</p>
+                <h5>4,550,000 <span class="currency">SR</span></h5>
+            </div>
+            <div class="col-lg-3 col-6 mb-3 mb-lg-0">
+                <div class="title">Payers</div>
+                <p>Total Billed Amounts</p>
+                <h5>1,550,000 <span class="currency">SR</span></h5>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="title">Doctors</div>
+                <p>Total Billed Amounts</p>
+                <h5>1,550,000 <span class="currency">SR</span></h5>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="title">Departments</div>
+                <p>Total Billed Amounts</p>
+                <h5>1,550,000 <span class="currency">SR</span></h5>
+            </div>
+        </div>
+    </div>
+    <div class="block-header has-border no-radius">
+        <p>Top 5 Billed Amount</p>
+    </div>
+    <div class="revenue-report-body">
+        <div class="row">
+            <div class="col-lg-3 col-6 mb-3 mb-lg-0 theme-green">
+                <div class="title">Payers</div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Bupa</p>
+                        <span class="value">1,500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Taywnuah</p>
+                        <span class="value">500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:80%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>AXA</p>
+                        <span class="value">10,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:50%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>MedGulf</p>
+                        <span class="value">2,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Rajhi</p>
+                        <span class="value">500 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:20%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6 mb-3 mb-lg-0 theme-cyan">
+                <div class="title">Doctors</div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Ahmed Noum</p>
+                        <span class="value">1,500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Naif Bader</p>
+                        <span class="value">500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:80%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Sake Aza</p>
+                        <span class="value">10,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:50%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Nora bader</p>
+                        <span class="value">2,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>humaziona ama</p>
+                        <span class="value">500 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:20%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6 theme-amber">
+                <div class="title">Departments</div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Cardio</p>
+                        <span class="value">1,500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>CTS</p>
+                        <span class="value">500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:80%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>BDR</p>
+                        <span class="value">10,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:50%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>FCBF</p>
+                        <span class="value">2,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>IOI</p>
+                        <span class="value">500 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:20%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6 theme-blue">
+                <div class="title">Services</div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Consultation</p>
+                        <span class="value">1,500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Root Canal</p>
+                        <span class="value">500,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:80%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>X-Ray</p>
+                        <span class="value">10,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:50%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Fevadol</p>
+                        <span class="value">2,000 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-with-info">
+                    <div class="head-block">
+                        <p>Panadol</p>
+                        <span class="value">500 <span class="currency">SR</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="active-bar" style="width:20%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
+</div>

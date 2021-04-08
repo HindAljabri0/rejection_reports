@@ -7,40 +7,38 @@
         VAT Amount:
         <span class="value">{{claim.claimGDPN.netVATamount.value}} SR</span>
     </li>
-    <ng-container *ngIf="selectedInvoice == -1">
-        <li>
-            Gross Amount:
-            <span class="value">{{claim.claimGDPN.gross.value}} SR</span>
-        </li>
-        <li>
-            Discount:
-            <span class="value">{{claim.claimGDPN.discount.value}} SR</span>
-        </li>
-        <li>
-            Patient Share:
-            <span class="value">{{claim.claimGDPN.patientShare.value}} SR</span>
-        </li>
-        <li>
-            Net Amount:
-            <span class="value">{{claim.claimGDPN.net.value}} SR</span>
-        </li>
-        <li>
-            Net VAT Amount:
-            <span class="value">{{claim.claimGDPN.netVATamount.value}} SR</span>
-        </li>
-        <li>
-            PSh VAT Amount:
-            <span class="value">{{claim.claimGDPN.patientShareVATamount.value}} SR</span>
-        </li>
-        <li *ngIf="getClaimActualDeductedAmount() != -1" class="text-{{getStatusColorOfClaim()}}">
-            Actual Deducted Amount:
-            <span class="value">{{getClaimActualDeductedAmount()}} SR</span>
-        </li>
-        <li *ngIf="getClaimActualDeductedAmount() != -1" class="text-{{getStatusColorOfClaim()}}">
-            Actual Paid Amount:
-            <span class="value">{{claim.claimGDPN.net.value - getClaimActualDeductedAmount()}} SR</span>
-        </li>
-    </ng-container>
+    <li>
+        Gross Amount:
+        <span class="value">{{claim.claimGDPN.gross.value}} SR</span>
+    </li>
+    <li>
+        Discount:
+        <span class="value">{{claim.claimGDPN.discount.value}} SR</span>
+    </li>
+    <li>
+        Patient Share:
+        <span class="value">{{claim.claimGDPN.patientShare.value}} SR</span>
+    </li>
+    <li>
+        Net Amount:
+        <span class="value">{{claim.claimGDPN.net.value}} SR</span>
+    </li>
+    <li>
+        Net VAT Amount:
+        <span class="value">{{claim.claimGDPN.netVATamount.value}} SR</span>
+    </li>
+    <li>
+        PSh VAT Amount:
+        <span class="value">{{claim.claimGDPN.patientShareVATamount.value}} SR</span>
+    </li>
+    <li *ngIf="getClaimActualDeductedAmount() != -1" class="text-{{getStatusColorOfClaim()}}">
+        Actual Deducted Amount:
+        <span class="value">{{getClaimActualDeductedAmount()}} SR</span>
+    </li>
+    <li *ngIf="getClaimActualDeductedAmount() != -1" class="text-{{getStatusColorOfClaim()}}">
+        Actual Paid Amount:
+        <span class="value">{{claim.claimGDPN.net.value - getClaimActualDeductedAmount()}} SR</span>
+    </li>
     <ng-container *ngIf="selectedInvoice != -1">
         <li class="title">Invoice {{selectedInvoice+1}}</li>
         <li>

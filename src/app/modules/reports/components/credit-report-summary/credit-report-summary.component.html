@@ -1,83 +1,111 @@
 <div class="block-header has-border">
     <ul class="custom-breadcrumb">
-        <li><a routerLink="/reports/upload-rejection-report" class="primary-link">Credit Reports</a></li>
+        <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
         <li class="active">Bupa</li>
     </ul>
-    <div class="right-block">
-        <p>Received Date: {{summayData.receivedDate | date : 'shortDate'}}</p>
-    </div>
 </div>
 <div class="credit-report-summary-header">
     <div class="left-block">
         <div class="content">
             <p>Total Rejections</p>
-            <strong>742,750,000 SR</strong>
+            <strong>{{summaryData.grandTotalRejection}} SR</strong>
         </div>
         <div class="chart-block">
-            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels"
-                [chartType]="chartOneType">
+            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
             </canvas>
         </div>
     </div>
     <div class="right-block">
-        <ul class="progress-steps">
-            <li>
-                <div class="status-ball green"></div>
-                <p>Day 1</p>
-            </li>
-            <li>
-                <div class="status-ball green"></div>
-                <p>Day 22</p>
-            </li>
-            <li>
-                <div class="status-ball yellow"></div>
-                <p>Day 23</p>
-            </li>
-            <li>
-                <div class="status-ball blue"></div>
-                <p>Day 32</p>
-            </li>
-            <li>
-                <div class="status-ball pink"></div>
-                <p>Day 45</p>
-            </li>
-            <li>
-                <div class="status-ball"></div>
-                <p>To Payer</p>
-            </li>
-        </ul>
-        <div class="content">
-            <small>Count Down</small>
-            <p class="pb-1">32 Days Left</p>
-            <ul class="legend">
-                <li>
-                    <span class="status-ball green"></span>
-                    Done
-                </li>
-                <li>
-                    <span class="status-ball blue"></span>
-                    To do
-                </li>
-                <li>
-                    <span class="status-ball yellow"></span>
-                    Pending
-                </li>
-                <li>
-                    <span class="status-ball pink"></span>
-                    Not Complete
-                </li>
-            </ul>
+        <div class="row small-gutter align-items-end">
+            <div class="col-8">
+                <div class="report-progress">
+                    <small>Count Down</small>
+                    <p class="pb-1">6 Days Left</p>
+                    <ul class="progress-steps">
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review">
+                            <p>Day 9</p>
+                        </li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-4">
+                <ul class="legend">
+                    <li>
+                        <span class="status-ball new"></span>
+                        New
+                    </li>
+                    <li>
+                        <span class="status-ball under-submission"></span>
+                        Under Submission
+                    </li>
+                    <li>
+                        <span class="status-ball under-review"></span>
+                        Under Review
+                    </li>
+                    <li>
+                        <span class="status-ball submitted"></span>
+                        Submitted
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 <div class="credit-report-summary-body">
     <div class="left-block">
+        <ul class="information-block">
+            <li>
+                <span>Batch ID</span>
+                <p>{{summaryData?.id?.batchId}}</p>
+            </li>
+            <li>
+                <span>Received Date</span>
+                <p>{{summaryData?.receivedDate | date : 'shortDate'}}</p>
+            </li>
+            <li>
+                <span>Referral Batch</span>
+                <p>{{summaryData?.referralBatch===0?'No':'Yes'}}</p>
+            </li>
+            <li>
+                <span>Provider Billed</span>
+                <p>{{summaryData?.providerBilled}} <span class="currency">SR</span></p>
+            </li>
+            <li>
+                <span>Presented Discount</span>
+                <p>{{summaryData?.presentedDiscount}}<span class="currency">SR</span></p>
+            </li>
+            <li>
+                <span>Presented Deductible</span>
+                <p>{{summaryData?.presentdDeductible}} <span class="currency">SR</span></p>
+            </li>
+            <li>
+                <span>Net Billed with VAT</span>
+                <p>{{summaryData?.presentedNetBilledVat}} <span class="currency">SR</span></p>
+            </li>
+            <li>
+                <span>VAT Amount</span>
+                <p>{{summaryData?.vatAmount}} <span class="currency">SR</span></p>
+            </li>
+        </ul>
         <div class="rejection-reason-chart-block">
             <span class="legend-text">Rejection Medical Reasons Breakdown</span>
             <div class="content-wrapper">
                 <div class="chart">
-                    <canvas baseChart [datasets]="chartTwoData" [options]="chartTwoOptions" [labels]="chartTwoLabels"
-                        [chartType]="chartTwoType">
+                    <canvas baseChart [datasets]="chartTwoData" [options]="chartTwoOptions" [labels]="chartTwoLabels" [chartType]="chartTwoType">
                     </canvas>
                 </div>
                 <div class="content">
@@ -105,72 +133,79 @@
                     Invalid Membership
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:52.47%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.invalidMembershipPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">52.47%</div>
+                        <div class="text">{{summaryData.invalidMembershipPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Difference in Computation
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:36.60%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.diffInComputationPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">36.60%</div>
+                        <div class="text">{{summaryData.diffInComputationPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Claims not Received
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:35.05%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.claimsNotReceivedPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">35.05%</div>
+                        <div class="text">{{summaryData.claimsNotReceivedPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Invalid Service Code
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:87.70%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.invalidServiceCodePercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">87.70%</div>
+                        <div class="text">{{summaryData.invalidServiceCodePercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Late Submission
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:76.30%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.lateSubmissionPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">76.30%</div>
+                        <div class="text">{{summaryData.lateSubmissionPercent}}</div>
                     </div>
                 </li>
                 <li>
                     Subtotal batch difference
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:11.69%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.subTotalBatchDiffPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">11.69%</div>
+                        <div class="text">{{summaryData.subTotalBatchDiffPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     A. Appropriateness of Care
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:75.84%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.appropriatenessOfCarePercent+'%'}"></div>
                         </div>
-                        <div class="text">75.84%</div>
+                        <div class="text">{{summaryData.appropriatenessOfCarePercent}}%</div>
                     </div>
                 </li>
                 <li>
                     B. Technical / Contractual
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:19.25%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.technicalContractualPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">19.25%</div>
+                        <div class="text">{{summaryData.technicalContractualPercent}}%</div>
                     </div>
                 </li>
                 <li>
@@ -178,126 +213,134 @@
                     Above Contractual / Agreed Prices
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:8.50%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.priceListShortFallOrBilledPercent+'%'}"></div>
                         </div>
-                        <div class="text">8.50%</div>
+                        <div class="text">{{summaryData.priceListShortFallOrBilledPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     D. Policy Compliance
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:99.54%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.policyCompliancePercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">99.54%</div>
+                        <div class="text">{{summaryData.policyCompliancePercent}}%</div>
                     </div>
                 </li>
                 <li>
                     E. Pre-authorization
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:82.44%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.preAuthorizationPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">82.44%</div>
+                        <div class="text">{{summaryData.preAuthorizationPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     F. Unwarranted Variations
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:71.17%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.unwarrantedVariationsPercent+'%'}"></div>
                         </div>
-                        <div class="text">71.17%</div>
+                        <div class="text">{{summaryData.unwarrantedVariationsPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     G- Pharmacy Benefit Management
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:3.61%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.pharmacyBenefitManagementPercent+'%'}"></div>
                         </div>
-                        <div class="text">3.61%</div>
+                        <div class="text">{{summaryData.pharmacyBenefitManagementPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Subtotal deductions
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:86.50%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.subTotalDeductionsPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">86.50%</div>
+                        <div class="text">{{summaryData.subTotalDeductionsPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Presented Net Billed
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:15.02%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.presentedNetBilledPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">15.02%</div>
+                        <div class="text">{{summaryData.presentedNetBilledPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Batch Difference
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:15.52%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.batchDifferencePercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">15.52%</div>
+                        <div class="text">{{summaryData.batchDifferencePercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Discount Difference
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:62.00%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.discountDifferencePercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">62.00%</div>
+                        <div class="text">{{summaryData.discountDifferencePercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Deductible Difference
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:28.60%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.deductibleDifferencePercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">28.60%</div>
+                        <div class="text">{{summaryData.deductibleDifferencePercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Deduction
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:24.14%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.deductionPercent+'%'}"></div>
                         </div>
-                        <div class="text">24.14%</div>
+                        <div class="text">{{summaryData.deductionPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Pending
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:15.25%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.pendingPercent+'%'}"></div>
                         </div>
-                        <div class="text">15.25%</div>
+                        <div class="text">{{summaryData.pendingPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Grand Total Rejections amounts
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:71.19%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.grandTotalRejectionPercent+'%'}">
+                            </div>
                         </div>
-                        <div class="text">71.19%</div>
+                        <div class="text">{{summaryData.grandTotalRejectionPercent}}%</div>
                     </div>
                 </li>
                 <li>
                     Approved to pay
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" style="width:38.84%;"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.approvedToPayPercent+'%'}"></div>
                         </div>
-                        <div class="text">38.84%</div>
+                        <div class="text">{{summaryData.approvedToPayPercent}}%</div>
                     </div>
                 </li>
             </ul>
@@ -318,117 +361,117 @@
                                 <th class="header-cell" width="10">%</th>
                                 <th class="header-cell text-nowrap">VAT Amount</th>
                                 <th class="header-cell" width="10">%</th>
-                                <th class="header-cell text-nowrap">Progress Status</th>
+                                <!-- <th class="header-cell text-nowrap">Progress Status</th>
                                 <th class="header-cell text-nowrap">Team Members</th>
-                                <th class="header-cell" width="10"></th>
+                                <th class="header-cell" width="10"></th> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.invalMem)" routerLinkActive>
                                 <td class="row-click text-primary text-center">1</td>
                                 <td class="row-click semibold text-primary">Invalid Membership</td>
-                                <td class="row-click">{{summayData.invalidMembership}}</td>
-                                <td class="row-click">{{summayData.invalidMembershipPercent}}%
+                                <td class="row-click">{{summaryData.invalidMembership}}</td>
+                                <td class="row-click">{{summaryData.invalidMembershipPercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.invalidMembershipVat}}
+                                <td class="row-click">{{summaryData.invalidMembershipVat}}
                                 </td>
-                                <td class="row-click">{{summayData.invalidMembershipVatPercent}}%
+                                <td class="row-click">{{summaryData.invalidMembershipVatPercent}}%
                                 </td>
-                                <td class="row-click">
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.diffInCom)" routerLinkActive>
                                 <td class="row-click text-primary text-center">2</td>
                                 <td class="row-click semibold text-primary">Difference in Computation</td>
-                                <td class="row-click">{{summayData.diffInComputation}}
+                                <td class="row-click">{{summaryData.diffInComputation}}
                                 </td>
-                                <td class="row-click">{{summayData.diffInComputationPercent}}%
+                                <td class="row-click">{{summaryData.diffInComputationPercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.diffInComputationVat}}
+                                <td class="row-click">{{summaryData.diffInComputationVat}}
                                 </td>
-                                <td class="row-click">{{summayData.diffInComputationVatPercent}}%
+                                <td class="row-click">{{summaryData.diffInComputationVatPercent}}%
                                 </td>
-                                <td class="row-click">
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.claNotRec)" routerLinkActive>
                                 <td class="row-click text-primary text-center">3</td>
                                 <td class="row-click semibold text-primary">Claims not Received</td>
-                                <td class="row-click">{{summayData.claimsNotReceived}}
+                                <td class="row-click">{{summaryData.claimsNotReceived}}
                                 </td>
-                                <td class="row-click">{{summayData.claimsNotReceivedPercent}}%
+                                <td class="row-click">{{summaryData.claimsNotReceivedPercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.claimsNotReceivedVat}}
+                                <td class="row-click">{{summaryData.claimsNotReceivedVat}}
                                 </td>
-                                <td class="row-click">{{summayData.claimsNotReceivedVatPercent}}%
+                                <td class="row-click">{{summaryData.claimsNotReceivedVatPercent}}%
                                 </td>
-                                <td class="row-click">
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.invaSouCod)" routerLinkActive>
                                 <td class="row-click text-primary text-center">4</td>
                                 <td class="row-click semibold text-primary">Invalid Service Code</td>
-                                <td class="row-click">{{summayData.invalidServiceCode}}
+                                <td class="row-click">{{summaryData.invalidServiceCode}}
                                 </td>
-                                <td class="row-click">{{summayData.invalidServiceCodePercent}}%
+                                <td class="row-click">{{summaryData.invalidServiceCodePercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.invalidServiceCodeVat}}
+                                <td class="row-click">{{summaryData.invalidServiceCodeVat}}
                                 </td>
-                                <td class="row-click">{{summayData.invalidServiceCodeVatPercent}}%
+                                <td class="row-click">{{summaryData.invalidServiceCodeVatPercent}}%
                                 </td>
-                                <td class="row-click">
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.lateSub)" routerLinkActive>
                                 <td class="row-click text-primary text-center">5</td>
                                 <td class="row-click semibold text-primary">Late Submission</td>
-                                <td class="row-click">{{summayData.lateSubmission}}
+                                <td class="row-click">{{summaryData.lateSubmission}}
                                 </td>
-                                <td class="row-click">{{summayData.lateSubmissionPercent}}%
+                                <td class="row-click">{{summaryData.lateSubmissionPercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.lateSubmissionVat}}
+                                <td class="row-click">{{summaryData.lateSubmissionVat}}
                                 </td>
-                                <td class="row-click">{{summayData.lateSubmissionVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.lateSubmissionVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.subTotBatDiff)" routerLinkActive>
                                 <td class="row-click text-primary text-center"></td>
                                 <td class="row-click semibold text-primary">Subtotal batch difference</td>
-                                <td class="row-click">{{summayData.subTotalBatchDiff}}</td>
-                                <td class="row-click">{{summayData.subTotalBatchDiffPercent}}%</td>
-                                <td class="row-click">{{summayData.subTotalBatchDiffVat}}</td>
-                                <td class="row-click">{{summayData.subTotalBatchDiffVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.subTotalBatchDiff}}</td>
+                                <td class="row-click">{{summaryData.subTotalBatchDiffPercent}}%</td>
+                                <td class="row-click">{{summaryData.subTotalBatchDiffVat}}</td>
+                                <td class="row-click">{{summaryData.subTotalBatchDiffVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr class="seperator-row">
                                 <td colspan="9">Deduction</td>
@@ -439,276 +482,278 @@
                                 <th class="header-cell" width="10">%</th>
                                 <th class="header-cell text-nowrap">VAT Amount</th>
                                 <th class="header-cell" width="10">%</th>
-                                <th class="header-cell text-nowrap">Progress Status</th>
+                                <!-- <th class="header-cell text-nowrap">Progress Status</th>
                                 <th class="header-cell text-nowrap">Team Members</th>
-                                <th class="header-cell" width="10"></th>
+                                <th class="header-cell" width="10"></th> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.approCare)" routerLinkActive>
                                 <td class="row-click text-primary text-center">6</td>
                                 <td class="row-click semibold text-primary">A. Appropriateness of Care</td>
-                                <td class="row-click">{{summayData.appropriatenessOfCare}}</td>
-                                <td class="row-click">{{summayData.appropriatenessOfCarePercent}}%</td>
-                                <td class="row-click">{{summayData.appropriatenessOfCareVat}}</td>
-                                <td class="row-click">{{summayData.appropriatenessOfCareVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.appropriatenessOfCare}}</td>
+                                <td class="row-click">{{summaryData.appropriatenessOfCarePercent}}%</td>
+                                <td class="row-click">{{summaryData.appropriatenessOfCareVat}}</td>
+                                <td class="row-click">{{summaryData.appropriatenessOfCareVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.techContr)" routerLinkActive>
                                 <td class="row-click text-primary text-center">7</td>
                                 <td class="row-click semibold text-primary">B. Technical / Contractual</td>
-                                <td class="row-click">{{summayData.technicalContractual}}</td>
-                                <td class="row-click">{{summayData.technicalContractualPercent}}%</td>
-                                <td class="row-click">{{summayData.technicalContractualVat}}</td>
-                                <td class="row-click">{{summayData.technicalContractualVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.technicalContractual}}</td>
+                                <td class="row-click">{{summaryData.technicalContractualPercent}}%</td>
+                                <td class="row-click">{{summaryData.technicalContractualVat}}</td>
+                                <td class="row-click">{{summaryData.technicalContractualVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.followUpPeriod)" routerLinkActive>
                                 <td class="row-click text-primary text-center">8</td>
                                 <td class="row-click text-primary">B.1 Consultation within the free follow-up period
                                 </td>
-                                <td class="row-click">{{summayData.consultInWithinFreeFollowUp}}</td>
-                                <td class="row-click">{{summayData.consultInWithinFreeFollowUpPercent}}%</td>
-                                <td class="row-click">{{summayData.consultInWithinFreeFollowUpVat}}</td>
-                                <td class="row-click">{{summayData.consultInWithinFreeFollowUpVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.consultInWithinFreeFollowUp}}</td>
+                                <td class="row-click">{{summaryData.consultInWithinFreeFollowUpPercent}}%</td>
+                                <td class="row-click">{{summaryData.consultInWithinFreeFollowUpVat}}</td>
+                                <td class="row-click">{{summaryData.consultInWithinFreeFollowUpVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.management)" routerLinkActive>
                                 <td class="row-click text-primary text-center">9</td>
                                 <td class="row-click text-primary">B.2 Charges / service included, bundled or part of
                                     billed procedure / consultation or management.</td>
-                                <td class="row-click">{{summayData.chargesServicesIncluded}}</td>
-                                <td class="row-click">{{summayData.chargesServicesIncludedPercent}}%</td>
-                                <td class="row-click">{{summayData.chargesServicesIncludedVat}}</td>
-                                <td class="row-click">{{summayData.chargesServicesIncludedVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.chargesServicesIncluded}}</td>
+                                <td class="row-click">{{summaryData.chargesServicesIncludedPercent}}%</td>
+                                <td class="row-click">{{summaryData.chargesServicesIncludedVat}}</td>
+                                <td class="row-click">{{summaryData.chargesServicesIncludedVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.finSettled)" routerLinkActive>
                                 <td class="row-click text-primary text-center">10</td>
                                 <td class="row-click text-primary">B.3 Duplicate / Repeated Billing / Finally Settled
                                 </td>
-                                <td class="row-click">{{summayData.duplicateRepeatedBillingOrFinallySettled}}</td>
-                                <td class="row-click">{{summayData.duplicateRepeatedBillingOrFinallySettledPercent}}%
+                                <td class="row-click">{{summaryData.duplicateRepeatedBillingOrFinallySettled}}</td>
+                                <td class="row-click">{{summaryData.duplicateRepeatedBillingOrFinallySettledPercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.duplicateRepeatedBillingOrFinallySettledVat}}</td>
-                                <td class="row-click">{{summayData.duplicateRepeatedBillingOrFinallySettledVatPercent}}%
-                                </td>
+                                <td class="row-click">{{summaryData.duplicateRepeatedBillingOrFinallySettledVat}}</td>
                                 <td class="row-click">
+                                    {{summaryData.duplicateRepeatedBillingOrFinallySettledVatPercent}}%
+                                </td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.priceShortFall)" routerLinkActive>
                                 <td class="row-click text-primary text-center">11</td>
                                 <td class="row-click semibold text-primary">C- Pricelist Shortfall / Billed<br>Above
                                     Contractual / Agreed Prices</td>
-                                <td class="row-click">{{summayData.priceListShortFallOrBilled}}</td>
-                                <td class="row-click">{{summayData.priceListShortFallOrBilledPercent}}%</td>
-                                <td class="row-click">{{summayData.priceListShortFallOrBilledVat}}</td>
-                                <td class="row-click">{{summayData.priceListShortFallOrBilledVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.priceListShortFallOrBilled}}</td>
+                                <td class="row-click">{{summaryData.priceListShortFallOrBilledPercent}}%</td>
+                                <td class="row-click">{{summaryData.priceListShortFallOrBilledVat}}</td>
+                                <td class="row-click">{{summaryData.priceListShortFallOrBilledVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.poliCompi)" routerLinkActive>
                                 <td class="row-click text-primary text-center">12</td>
                                 <td class="row-click semibold text-primary">D. Policy Compliance</td>
-                                <td class="row-click">{{summayData.policyCompliance}}</td>
-                                <td class="row-click">{{summayData.policyCompliancePercent}}%</td>
-                                <td class="row-click">{{summayData.policyComplianceVat}}</td>
-                                <td class="row-click">{{summayData.policyComplianceVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.policyCompliance}}</td>
+                                <td class="row-click">{{summaryData.policyCompliancePercent}}%</td>
+                                <td class="row-click">{{summaryData.policyComplianceVat}}</td>
+                                <td class="row-click">{{summaryData.policyComplianceVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.waitingPeriod)" routerLinkActive>
                                 <td class="row-click text-primary text-center">13</td>
                                 <td class="row-click text-primary">C.1 Not covered by the effective insurance policy
                                     (condition /service) / within the waiting period</td>
-                                <td class="row-click">{{summayData.notCoveredByEffInsurancePolicy}}</td>
-                                <td class="row-click">{{summayData.notCoveredByEffInsurancePolicyPercent}}%</td>
-                                <td class="row-click">{{summayData.notCoveredByEffInsurancePolicyVat}}</td>
-                                <td class="row-click">{{summayData.notCoveredByEffInsurancePolicyVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.notCoveredByEffInsurancePolicy}}</td>
+                                <td class="row-click">{{summaryData.notCoveredByEffInsurancePolicyPercent}}%</td>
+                                <td class="row-click">{{summaryData.notCoveredByEffInsurancePolicyVat}}</td>
+                                <td class="row-click">{{summaryData.notCoveredByEffInsurancePolicyVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.insPolicy)" routerLinkActive>
                                 <td class="row-click text-primary text-center">14</td>
                                 <td class="row-click text-primary">C.2 Out of validity of effective insurance policy.
                                 </td>
-                                <td class="row-click">{{summayData.outOfValidityByEffInsurancePolicy}}</td>
-                                <td class="row-click">{{summayData.outOfValidityByEffInsurancePolicyPercent}}%</td>
-                                <td class="row-click">{{summayData.outOfValidityByEffInsurancePolicyVat}}</td>
-                                <td class="row-click">{{summayData.outOfValidityByEffInsurancePolicyVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.outOfValidityByEffInsurancePolicy}}</td>
+                                <td class="row-click">{{summaryData.outOfValidityByEffInsurancePolicyPercent}}%</td>
+                                <td class="row-click">{{summaryData.outOfValidityByEffInsurancePolicyVat}}</td>
+                                <td class="row-click">{{summaryData.outOfValidityByEffInsurancePolicyVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.serProvided)" routerLinkActive>
                                 <td class="row-click text-primary text-center">15</td>
                                 <td class="row-click text-primary">C.3 Age / gender not matching with the type of
                                     service provided.</td>
-                                <td class="row-click">{{summayData.ageGenderMismatch}}</td>
-                                <td class="row-click">{{summayData.ageGenderMismatchPercent}}%</td>
-                                <td class="row-click">{{summayData.ageGenderMismatchVat}}</td>
-                                <td class="row-click">{{summayData.ageGenderMismatchVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.ageGenderMismatch}}</td>
+                                <td class="row-click">{{summaryData.ageGenderMismatchPercent}}%</td>
+                                <td class="row-click">{{summaryData.ageGenderMismatchVat}}</td>
+                                <td class="row-click">{{summaryData.ageGenderMismatchVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.preAuth)" routerLinkActive>
                                 <td class="row-click text-primary text-center">16</td>
                                 <td class="row-click semibold text-primary">E. Pre-authorization</td>
-                                <td class="row-click">{{summayData.preAuthorization}}</td>
-                                <td class="row-click">{{summayData.preAuthorizationPercent}}%</td>
-                                <td class="row-click">{{summayData.preAuthorizationVat}}</td>
-                                <td class="row-click">{{summayData.preAuthorizationVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.preAuthorization}}</td>
+                                <td class="row-click">{{summaryData.preAuthorizationPercent}}%</td>
+                                <td class="row-click">{{summaryData.preAuthorizationVat}}</td>
+                                <td class="row-click">{{summaryData.preAuthorizationVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.reqPolicy)" routerLinkActive>
                                 <td class="row-click text-primary text-center">17</td>
                                 <td class="row-click text-primary">D.1 Requires pre-authorisation per policy.</td>
-                                <td class="row-click">{{summayData.requiresPreAuthRequestPerPolicy}}</td>
-                                <td class="row-click">{{summayData.requiresPreAuthRequestPerPolicyPercent}}%</td>
-                                <td class="row-click">{{summayData.requiresPreAuthRequestPerPolicyVat}}</td>
-                                <td class="row-click">{{summayData.requiresPreAuthRequestPerPolicyVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.requiresPreAuthRequestPerPolicy}}</td>
+                                <td class="row-click">{{summaryData.requiresPreAuthRequestPerPolicyPercent}}%</td>
+                                <td class="row-click">{{summaryData.requiresPreAuthRequestPerPolicyVat}}</td>
+                                <td class="row-click">{{summaryData.requiresPreAuthRequestPerPolicyVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.authRequest)" routerLinkActive>
                                 <td class="row-click text-primary text-center">18</td>
                                 <td class="row-click text-primary">D.2 Not part of pre-authorisation request</td>
-                                <td class="row-click">{{summayData.notPartOfPreAuthReq}}</td>
-                                <td class="row-click">{{summayData.notPartOfPreAuthReqPercent}}%</td>
-                                <td class="row-click">{{summayData.notPartOfPreAuthReqVat}}</td>
-                                <td class="row-click">{{summayData.notPartOfPreAuthReqVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.notPartOfPreAuthReq}}</td>
+                                <td class="row-click">{{summaryData.notPartOfPreAuthReqPercent}}%</td>
+                                <td class="row-click">{{summaryData.notPartOfPreAuthReqVat}}</td>
+                                <td class="row-click">{{summaryData.notPartOfPreAuthReqVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.preAuthorization)" routerLinkActive>
                                 <td class="row-click text-primary text-center">19</td>
                                 <td class="row-click text-primary">D.3 Already rejected / Cancelled at pre-authorisation
                                 </td>
-                                <td class="row-click">{{summayData.alreadyRejectedCancelledAtPreAuthRequest}}</td>
-                                <td class="row-click">{{summayData.alreadyRejectedCancelledAtPreAuthRequestPercent}}%
+                                <td class="row-click">{{summaryData.alreadyRejectedCancelledAtPreAuthRequest}}</td>
+                                <td class="row-click">{{summaryData.alreadyRejectedCancelledAtPreAuthRequestPercent}}%
                                 </td>
-                                <td class="row-click">{{summayData.alreadyRejectedCancelledAtPreAuthRequestVat}}</td>
-                                <td class="row-click">{{summayData.alreadyRejectedCancelledAtPreAuthRequestVatPercent}}%
-                                </td>
+                                <td class="row-click">{{summaryData.alreadyRejectedCancelledAtPreAuthRequestVat}}</td>
                                 <td class="row-click">
+                                    {{summaryData.alreadyRejectedCancelledAtPreAuthRequestVatPercent}}%
+                                </td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.unwanTedVar)" routerLinkActive>
                                 <td class="row-click text-primary text-center">20</td>
                                 <td class="row-click semibold text-primary">F. Unwarranted Variations</td>
-                                <td class="row-click">{{summayData.unwarrantedVariations}}</td>
-                                <td class="row-click">{{summayData.unwarrantedVariationsPercent}}%</td>
-                                <td class="row-click">{{summayData.unwarrantedVariationsVat}}</td>
-                                <td class="row-click">{{summayData.unwarrantedVariationsVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.unwarrantedVariations}}</td>
+                                <td class="row-click">{{summaryData.unwarrantedVariationsPercent}}%</td>
+                                <td class="row-click">{{summaryData.unwarrantedVariationsVat}}</td>
+                                <td class="row-click">{{summaryData.unwarrantedVariationsVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.pharmecyBen)" routerLinkActive>
                                 <td class="row-click text-primary text-center">21</td>
                                 <td class="row-click semibold text-primary">G- Pharmacy Benefit Management</td>
-                                <td class="row-click">{{summayData.pharmacyBenefitManagement}}</td>
-                                <td class="row-click">{{summayData.pharmacyBenefitManagementPercent}}%</td>
-                                <td class="row-click">{{summayData.pharmacyBenefitManagementVat}}</td>
-                                <td class="row-click">{{summayData.pharmacyBenefitManagementVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.pharmacyBenefitManagement}}</td>
+                                <td class="row-click">{{summaryData.pharmacyBenefitManagementPercent}}%</td>
+                                <td class="row-click">{{summaryData.pharmacyBenefitManagementVat}}</td>
+                                <td class="row-click">{{summaryData.pharmacyBenefitManagementVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.subTotDed)" routerLinkActive>
                                 <td class="row-click text-primary text-center"></td>
                                 <td class="row-click semibold text-primary">Subtotal deductions</td>
-                                <td class="row-click">{{summayData.subTotalDeductions}}</td>
-                                <td class="row-click">{{summayData.subTotalDeductionsPercent}}%</td>
-                                <td class="row-click">{{summayData.subTotalDeductionsVat}}</td>
-                                <td class="row-click">{{summayData.subTotalDeductionsVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.subTotalDeductions}}</td>
+                                <td class="row-click">{{summaryData.subTotalDeductionsPercent}}%</td>
+                                <td class="row-click">{{summaryData.subTotalDeductionsVat}}</td>
+                                <td class="row-click">{{summaryData.subTotalDeductionsVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr class="seperator-row">
                                 <td colspan="9">Statement Summary</td>
@@ -719,129 +764,129 @@
                                 <th class="header-cell" width="10">%</th>
                                 <th class="header-cell text-nowrap">VAT Amount</th>
                                 <th class="header-cell" width="10">%</th>
-                                <th class="header-cell text-nowrap">Progress Status</th>
+                                <!-- <th class="header-cell text-nowrap">Progress Status</th>
                                 <th class="header-cell text-nowrap">Team Members</th>
-                                <th class="header-cell" width="10"></th>
+                                <th class="header-cell" width="10"></th> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.presentNetBill)" routerLinkActive>
                                 <td class="row-click text-primary text-center">22</td>
                                 <td class="row-click semibold text-primary">Presented Net Billed</td>
-                                <td class="row-click">{{summayData.presentedNetBilled}}</td>
-                                <td class="row-click">{{summayData.presentedNetBilledPercent}}%</td>
-                                <td class="row-click">{{summayData.presentedNetBilledVat}}</td>
-                                <td class="row-click">{{summayData.presentedNetBilledVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.presentedNetBilled}}</td>
+                                <td class="row-click">{{summaryData.presentedNetBilledPercent}}%</td>
+                                <td class="row-click">{{summaryData.presentedNetBilledVat}}</td>
+                                <td class="row-click">{{summaryData.presentedNetBilledVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.batcDiff)" routerLinkActive>
                                 <td class="row-click text-primary text-center">23</td>
                                 <td class="row-click semibold text-primary">Batch Difference</td>
-                                <td class="row-click">{{summayData.batchDifference}}</td>
-                                <td class="row-click">{{summayData.batchDifferencePercent}}%</td>
-                                <td class="row-click">{{summayData.batchDifferenceVat}}</td>
-                                <td class="row-click">{{summayData.batchDifferenceVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.batchDifference}}</td>
+                                <td class="row-click">{{summaryData.batchDifferencePercent}}%</td>
+                                <td class="row-click">{{summaryData.batchDifferenceVat}}</td>
+                                <td class="row-click">{{summaryData.batchDifferenceVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.disDiff)" routerLinkActive>
                                 <td class="row-click text-primary text-center">24</td>
                                 <td class="row-click semibold text-primary">Discount Difference</td>
-                                <td class="row-click">{{summayData.discountDifference}}</td>
-                                <td class="row-click">{{summayData.discountDifferencePercent}}%</td>
-                                <td class="row-click">{{summayData.discountDifferenceVat}}</td>
-                                <td class="row-click">{{summayData.discountDifferenceVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.discountDifference}}</td>
+                                <td class="row-click">{{summaryData.discountDifferencePercent}}%</td>
+                                <td class="row-click">{{summaryData.discountDifferenceVat}}</td>
+                                <td class="row-click">{{summaryData.discountDifferenceVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.dedDiff)" routerLinkActive>
                                 <td class="row-click text-primary text-center">25</td>
                                 <td class="row-click semibold text-primary">Deductible Difference</td>
-                                <td class="row-click">{{summayData.deductibleDifference}}</td>
-                                <td class="row-click">{{summayData.deductibleDifferencePercent}}%</td>
-                                <td class="row-click">{{summayData.deductibleDifferenceVat}}</td>
-                                <td class="row-click">{{summayData.deductibleDifferenceVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.deductibleDifference}}</td>
+                                <td class="row-click">{{summaryData.deductibleDifferencePercent}}%</td>
+                                <td class="row-click">{{summaryData.deductibleDifferenceVat}}</td>
+                                <td class="row-click">{{summaryData.deductibleDifferenceVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.deduct)" routerLinkActive>
                                 <td class="row-click text-primary text-center">26</td>
                                 <td class="row-click semibold text-primary">Deduction</td>
-                                <td class="row-click">{{summayData.deduction}}</td>
-                                <td class="row-click">{{summayData.deductionPercent}}%</td>
-                                <td class="row-click">{{summayData.deductionVat}}</td>
-                                <td class="row-click">{{summayData.deductionVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.deduction}}</td>
+                                <td class="row-click">{{summaryData.deductionPercent}}%</td>
+                                <td class="row-click">{{summaryData.deductionVat}}</td>
+                                <td class="row-click">{{summaryData.deductionVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.pending)" routerLinkActive>
                                 <td class="row-click text-primary text-center">27</td>
                                 <td class="row-click semibold text-primary">Pending</td>
-                                <td class="row-click">{{summayData.pending}}</td>
-                                <td class="row-click">{{summayData.pendingPercent}}%</td>
-                                <td class="row-click">{{summayData.pendingVat}}</td>
-                                <td class="row-click">{{summayData.pendingVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.pending}}</td>
+                                <td class="row-click">{{summaryData.pendingPercent}}%</td>
+                                <td class="row-click">{{summaryData.pendingVat}}</td>
+                                <td class="row-click">{{summaryData.pendingVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.grTotRejAm)" routerLinkActive>
                                 <td class="row-click text-primary text-center"></td>
                                 <td class="row-click semibold text-primary">Grand Total Rejections amounts</td>
-                                <td class="row-click">{{summayData.grandTotalRejection}}</td>
-                                <td class="row-click">{{summayData.grandTotalRejectionPercent}}%</td>
-                                <td class="row-click">{{summayData.grandTotalRejectionVat}}</td>
-                                <td class="row-click">{{summayData.grandTotalRejectionVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.grandTotalRejection}}</td>
+                                <td class="row-click">{{summaryData.grandTotalRejectionPercent}}%</td>
+                                <td class="row-click">{{summaryData.grandTotalRejectionVat}}</td>
+                                <td class="row-click">{{summaryData.grandTotalRejectionVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr (click)="goToSummaryDetailsPage(summType.approPay)" routerLinkActive>
                                 <td class="row-click text-primary text-center"></td>
                                 <td class="row-click semibold text-primary">Approved to pay</td>
-                                <td class="row-click">{{summayData.approvedToPay}}</td>
-                                <td class="row-click">{{summayData.approvedToPayPercent}}%</td>
-                                <td class="row-click">{{summayData.approvedToPayVat}}</td>
-                                <td class="row-click">{{summayData.approvedToPayVatPercent}}%</td>
-                                <td class="row-click">
+                                <td class="row-click">{{summaryData.approvedToPay}}</td>
+                                <td class="row-click">{{summaryData.approvedToPayPercent}}%</td>
+                                <td class="row-click">{{summaryData.approvedToPayVat}}</td>
+                                <td class="row-click">{{summaryData.approvedToPayVatPercent}}%</td>
+                                <!-- <td class="row-click">
                                     <div class="status-text ball-blue">Done</div>
                                 </td>
                                 <td class="row-click">@username</td>
                                 <td>
                                     <a href="#" class="primary-link underlined" title="Edit">Edit</a>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -869,5 +914,8 @@
         <button matRipple type="button" title="Last Page">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
+    </div>
+    <div class="btn-list right-block">
+        <button type="button" color="primary" mat-flat-button>Submit</button>
     </div>
 </div>

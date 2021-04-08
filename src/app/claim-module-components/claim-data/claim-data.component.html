@@ -3,14 +3,16 @@
     <mat-tab-group (selectedTabChange)="changeTab($event)" [dynamicHeight]="true" class="primary-tab claim-view-tabs">
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="genInfoTabHasErrors()" [class.text-danger]="genInfoTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="genInfoTabHasErrors()" [class.text-danger]="genInfoTabHasErrors()">error
+                </mat-icon>
                 <span [class.text-danger]="genInfoTabHasErrors()">General Information</span>
             </ng-template>
             <gen-info [claimType]='claimType'></gen-info>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="diagnosisTabHasErrors()" [class.text-danger]="diagnosisTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="diagnosisTabHasErrors()" [class.text-danger]="diagnosisTabHasErrors()">
+                    error</mat-icon>
                 <span [class.text-danger]="diagnosisTabHasErrors()">Diagnosis</span>
             </ng-template>
             <claim-diagnosis></claim-diagnosis>
@@ -18,12 +20,13 @@
         <mat-tab [label]="'Illness'">
             <claim-illnesses></claim-illnesses>
         </mat-tab>
-        <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'" [label]="'Vital Signs'">
+        <mat-tab [label]="'Vital Signs'">
             <claim-vital-signs></claim-vital-signs>
         </mat-tab>
         <mat-tab *ngIf="isInpatientClaim">
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="admissionTabHasErrors()" [class.text-danger]="admissionTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="admissionTabHasErrors()" [class.text-danger]="admissionTabHasErrors()">
+                    error</mat-icon>
                 <span [class.text-danger]="admissionTabHasErrors()">Admission</span>
             </ng-template>
             <claim-admission></claim-admission>
@@ -33,7 +36,8 @@
         </mat-tab>
         <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'">
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="labResultsTabHasErrors()" [class.text-danger]="labResultsTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="labResultsTabHasErrors()" [class.text-danger]="labResultsTabHasErrors()">
+                    error</mat-icon>
                 <span [class.text-danger]="labResultsTabHasErrors()">LAB Results</span>
             </ng-template>
             <claim-lab-results></claim-lab-results>
@@ -43,7 +47,8 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()" [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()"
+                    [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
                 <span [class.text-danger]="invoiceServicesTabHasErrors()">Invoices & Services</span>
             </ng-template>
             <claim-invoices-services></claim-invoices-services>

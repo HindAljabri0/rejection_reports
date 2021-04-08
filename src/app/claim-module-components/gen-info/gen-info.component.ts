@@ -171,7 +171,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
     this.store.select(getGenInfoErrors).pipe(
       withLatestFrom(this.store.select(getPatientErrors)),
-      map(values => ([...values[0], ...values[1]]))
+      withLatestFrom(this.store.select(getPhysicianErrors)),
+      map(values => ([...values[0][0], ...values[0][1], ...values[1]]))
     ).subscribe(errors => this.errors = errors);
 
 
@@ -207,11 +208,11 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       map(values => ({ departments: values[0], mode: values[1] }))
     ).subscribe(values => {
       if (values.mode.startsWith('CREATE')) {
-        this.isDepartmentDisable = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL' ? true : false;
+        this.isDepartmentDisable = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL_PHARMACY' ? true : false;
         this.departments = values.departments;
         this.isPageModeCreate = true;
       } else {
-        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL' ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical') : values.departments;
+        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL_PHARMACY' ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical' || department.name == 'Pharmacy') : values.departments;
       }
       this.filteredDepartments.next(this.departments.slice());
       this.departmentFilterCtrl.valueChanges
@@ -516,7 +517,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         if ((dental != null && this.selectedDepartment == dental.departmentId)
           || (optical != null && this.selectedDepartment == optical.departmentId)
           || (pharmacy != null && this.selectedDepartment == pharmacy.departmentId)) {
-          this.store.dispatch(updatePageType({ pageType: 'DENTAL_OPTICAL' }));
+          this.store.dispatch(updatePageType({ pageType: 'DENTAL_OPTICAL_PHARMACY' }));
         } else {
           this.store.dispatch(updatePageType({ pageType: 'INPATIENT_OUTPATIENT' }));
         }
