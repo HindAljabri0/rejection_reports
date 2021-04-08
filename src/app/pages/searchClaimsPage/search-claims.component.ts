@@ -244,7 +244,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     this.showValidationTab = false;
     let statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
-    if (statusCode == 200) {
+    if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null) {
       let statuses = this.summaries[0].statuses;
       statuses.sort((s1, s2) => {
         if (this.isReadyForSubmissionStatus(s1) || s1 == 'NotAccepted' || s1 == 'Batched' || this.isUnderProcessingStatus(s1)) {
