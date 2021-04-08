@@ -158,7 +158,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-rejected,.text-light-pink{color: #FF53A3!important;}
 .text-paid,.text-green{color: #1C7C26!important;}
 .text-partially-paid,.text-light-blue{color: #479CC5!important;}
-.text-under-processing,.text-deep-red{color: #7D0202!important;}
+.text-under-processing,.text-deep-red{color: #851111!important;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #909090!important;}
 .text-grey{color: #707070!important;}
@@ -890,6 +890,25 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .aging-indicator-header .chart-wrapper.good .marker{transform: rotate(22.5+45deg);}
 .aging-indicator-header .chart-wrapper.fair .marker{transform: rotate(112.5deg);}
 .aging-indicator-header .chart-wrapper.bad .marker{transform: rotate(157.5deg);}
+
+/* dashboard claim card
+--------------------------------------------------------------------------------------------------------*/
+.dashboard-claim-card{background-color: #fff;padding: 14px;color:#505050;margin-bottom: 14px;height: calc(100% - 14px);}
+.dashboard-claim-card .title{padding-bottom: 6px;color: #898989;}
+.dashboard-claim-card h4{font-weight: 600;padding-bottom: 32px;position: relative;}
+.dashboard-claim-card h4:after{content: '';position: absolute;display: block;height: 1px;width: 24px;background-color: #bebebe;bottom: 18px;left: 0;}
+.dashboard-claim-card h4 small{font-size: 14px;font-weight: 500;opacity: 0.8;}
+.dashboard-claim-card .statistics{font-weight: 600;padding-bottom: 6px;}
+.dashboard-claim-card .statistics:last-child{padding-bottom: 0;}
+.dashboard-claim-card .statistics small{font-size: 12px;font-weight: 500;color: #505050;}
+.dashboard-claim-card .progress-block{border-radius: 2px;height: 4px;display: flex;overflow: hidden;margin-bottom: 12px;background-color: #e8e8e8;}
+.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 100%;flex-grow: 0;flex-shrink:0;}
+.dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;}
+.dashboard-claim-card .loader-wrapper{display: flex;align-items: center;justify-content: center;padding: 53px 0;}
+.dashboard-legend{display: flex;justify-content: flex-end;padding: 0 0 18px;margin-top: -38px;color: #505050;}
+.dashboard-legend>li{display: flex;align-items:center;margin-right: 12px;}
+.dashboard-legend>li:last-child{margin-right: 0;}
+.dashboard-legend>li>span{display: block;height: 8px;width: 8px;border-radius: 50px;margin-right: 6px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

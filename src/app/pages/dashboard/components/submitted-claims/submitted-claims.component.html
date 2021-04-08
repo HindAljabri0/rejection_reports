@@ -1,4 +1,180 @@
+<ul class="dashboard-legend">
+    <li><span class="bg-under-processing"></span>Under Processing</li>
+    <li><span class="bg-paid"></span>Paid</li>
+    <li><span class="bg-partially-paid"></span>Partially Paid</li>
+    <li><span class="bg-rejected"></span>Rejected by Payer</li>
+</ul>
 <div class="row small-gutter">
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <p class="title">Number of Claims</p>
+            <h4>{{summaries.submittedClaims.data.totalClaims}} <small>Claims</small></h4>
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                </canvas>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-under-processing">
+                    {{summaries.processingClaims.data.totalClaims}} <small>Claims</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-under-processing">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-paid">
+                    {{summaries.paidClaims.data.totalClaims}} <small>Claims</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-partially-paid">
+                    {{summaries.partiallyPaidClaims.data.totalClaims}} <small>Claims</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-partially-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-rejected">
+                    {{summaries.rejectedClaims.data.totalClaims}} <small>Claims</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-rejected">
+                    10 <small>%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <p class="title">Gross Amount</p>
+            <h4>{{summaries.submittedClaims.data.gross}} <small>SR</small></h4>
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                </canvas>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-under-processing">
+                    {{summaries.processingClaims.data.gross}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-under-processing">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-paid">
+                    {{summaries.paidClaims.data.gross}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-partially-paid">
+                    {{summaries.partiallyPaidClaims.data.gross}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-partially-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-rejected">
+                    {{summaries.rejectedClaims.data.gross}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-rejected">
+                    10 <small>%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <p class="title">Net Amount</p>
+            <h4>{{summaries.submittedClaims.data.totalNetAmount}} <small>SR</small></h4>
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                </canvas>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-under-processing">
+                    {{summaries.processingClaims.data.totalNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-under-processing">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-paid">
+                    {{summaries.paidClaims.data.totalNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-partially-paid">
+                    {{summaries.partiallyPaidClaims.data.totalNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-partially-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-rejected">
+                    {{summaries.rejectedClaims.data.totalNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-rejected">
+                    10 <small>%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <p class="title">VAT Amount</p>
+            <h4>{{summaries.submittedClaims.data.totalVatNetAmount}} <small>SR</small></h4>
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                </canvas>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-under-processing">
+                    {{summaries.processingClaims.data.totalVatNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-under-processing">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-paid">
+                    {{summaries.paidClaims.data.totalVatNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-partially-paid">
+                    {{summaries.partiallyPaidClaims.data.totalVatNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-partially-paid">
+                    10 <small>%</small>
+                </div>
+            </div>
+            <div class="statistics d-flex">
+                <div class="text-rejected">
+                    {{summaries.rejectedClaims.data.totalVatNetAmount}} <small>SR</small>
+                </div>
+                <div class="ml-auto pl-2 text-right text-rejected">
+                    10 <small>%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="row small-gutter">
     <div class="col-xxl-3 col-xl-4 col-md-6" *ngFor="let item of summaries">
         <app-abstractcard [title]="item.title || getCardName(item.data.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])"
             [clickable]="false" class="primary-card">
@@ -38,4 +214,4 @@
             </ng-container>
         </app-abstractcard>
     </div>
-</div>
+</div> -->
