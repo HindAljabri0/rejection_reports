@@ -250,10 +250,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6" *ngIf="claimType == dentalDepartmentCode">
+                                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                         <div class="form-group" [class.has-error]="fieldHasError('serviceToothNumber:'+i+':'+j)"
                                             [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
-                                            <label class="control-label">Tooth Number<span class="asterisk">*</span></label>
+                                            <label class="control-label">Tooth Number<span class="asterisk" *ngIf="claimType == dentalDepartmentCode">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Select tooth number" type="number" [formControl]="service.toothNumber">
                                                 <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="input-group-append">
