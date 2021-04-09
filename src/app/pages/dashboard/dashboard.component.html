@@ -4,11 +4,11 @@
     <app-search-criteria class="dashboard-filters"></app-search-criteria>
   </div>
   <!-- <div class="dashboardElementList" cdkDropList (cdkDropListDropped)="drop($event)"> -->
-  <section *ngFor="let section of dashboardSections; let i = index;">
+  <ng-container *ngFor="let section of dashboardSections; let i = index;">
     <!-- <section class="dashboardElement" *ngFor="let section of dashboardSections; let i = index;" cdkDrag> -->
     <h5 class="pb-3" [class.pt-3]="i!=0">{{section.label}}</h5>
     <!-- <h5 cdkDragHandle style="cursor: grab;">{{section.label}}</h5> -->
     <!-- <div class="custom-placeholder" *cdkDragPlaceholder></div> -->
     <ng-container *ngComponentOutlet="section.key"></ng-container>
-  </section>
+  </ng-container>
 </div>
