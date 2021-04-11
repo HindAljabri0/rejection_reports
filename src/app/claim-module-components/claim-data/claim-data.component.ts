@@ -54,7 +54,7 @@ export class ClaimDataComponent implements OnInit {
 
   genInfoTabHasErrors() {
     if (this.errors != null) {
-      return this.errors.genInfoErrors.length > 0;
+      return this.errors.genInfoErrors.length > 0 || this.errors.patientInfoErrors.length > 0 || this.errors.physicianErrors.length > 0;
     }
     return false;
   }
