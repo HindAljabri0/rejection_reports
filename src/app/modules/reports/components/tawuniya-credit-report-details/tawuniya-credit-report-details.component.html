@@ -1,11 +1,877 @@
-<div class="animate__animated animate__faster animate__fadeIn">
+<div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
     <div class="block-header has-border">
         <ul class="custom-breadcrumb">
             <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
             <li class="active">Tawuniya</li>
         </ul>
     </div>
-    <div class="credit-report-summary-header">
+    <div class="credit-report-header">
+        <div class="left-block align-items-start">
+            <div class="message">
+                <mat-icon>info</mat-icon>
+                <p>With reference to your Credit Request mentioned above and for a fair, full and final settlement,
+                    please be advised of the following</p>
+            </div>
+        </div>
+        <div class="right-block text-sm">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="row small-gutter">
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Received Date</label>
+                                <p>25-02-2019</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Batch Received Date</label>
+                                <p>February-2017</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Credit Report Status</label>
+                                <p>Under Review</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Policy Name</label>
+                                <p>Al Toga Trading Est 1</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Provider City</label>
+                                <p>DAMMAM</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Batch Reference Number</label>
+                                <p>WP17MDB029134</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Claim Month</label>
+                                <p>December-2016</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Provider</label>
+                                <p>TADAWI GENERAL..</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Plan Number</label>
+                                <p>-</p>
+                            </div>
+                        </div>
+                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
+                            <div class="inline-labelled-text">
+                                <label>Plan Number</label>
+                                <p>13796350</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <h4 class="text-primary semibold">14 Days</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tawuniya-details-subheader">
+        <div class="row small-gutter">
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Requested Amount (Net)</label>
+                    <p>1,919.100</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Difference In Deductible</label>
+                    <p>0.0</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Rejected Claims Amount</label>
+                    <p>1,202.730</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Net Deducted Services</label>
+                    <p>0.0</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Difference In Discounts</label>
+                    <p>9.680</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Transferred Batch Amount</label>
+                    <p>0.0</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Bills Not Recieved</label>
+                    <p>0.0</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="inline-labelled-text horizontal secondary">
+                    <label>Total Payable</label>
+                    <p>630.850</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="tawuniya-tab-action-wrapper">
+            <div class="tawuniya-tab-action">
+                <a href="#" class="primary-link underlined" title="Upload Attachments">Upload Attachments</a>
+                <mat-menu #filterMenu="matMenu" class="primary-menu tawuniya-filter-menu" xPosition="before">
+                    <label class="menu-title">Filter By</label>
+                    <button mat-menu-item>Rejection Reason</button>
+                    <button mat-menu-item>Agree</button>
+                    <button mat-menu-item>Disagree</button>
+                    <button mat-menu-item>None</button>
+                    <label class="menu-title">Sort By</label>
+                    <button mat-menu-item>Received Date</button>
+                    <button mat-menu-item>Claim Month</button>
+                </mat-menu>
+                <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a>
+                <a href="#" class="primary-link underlined" title="Agree">Agree</a>
+                <mat-menu #disagreeMenu="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                    <div (click)="$event.stopPropagation()">
+                        <div class="form-group">
+                            <label>Comment</label>
+                            <textarea rows="4" class="form-control"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="button" mat-flat-button color="primary">Apply For All</button>
+                        </div>
+                    </div>
+                </mat-menu>
+                <a href="#" class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" (click)="$event.preventDefault();" title="Disagree">Disagree</a>
+            </div>
+        </div>
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
+            <mat-tab [label]="'Deducted Services'">
+                <div class="table-responsive">
+                    <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
+                        <thead>
+                            <tr>
+                                <th width="10">
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </th>
+                                <th>Waseel Batch</th>
+                                <th>Doctor Code</th>
+                                <th>Claim No</th>
+                                <th>Provider Ref.</th>
+                                <th>Service Code</th>
+                                <th>Service</th>
+                                <th>Rejection Reason</th>
+                                <th>Comment</th>
+                                <th>Exceed Price</th>
+                                <th>Deducted Amount</th>
+                                <th width="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu2" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu2="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu3" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu3="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu4" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu4="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu5" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu5="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu6" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu6="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu7" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu7="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu8" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu8="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu9" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu9="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu10" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu10="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu11" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu11="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td>313925748</td>
+                                <td>1860365</td>
+                                <td>01002004</td>
+                                <td>CONSULTATION FEE - 3</td>
+                                <td>Out Of Price List</td>
+                                <td>Out Of Price List</td>
+                                <td>1,000 SR</td>
+                                <td>1.0 SR</td>
+                                <td class="actions">
+                                    <button type="button" [matMenuTriggerFor]="editMenu12" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu12="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab [label]="'Rejected Claims Services'">
+
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <!-- <div class="credit-report-header">
         <div class="left-block">
             <div class="content">
                 <p>Total Rejections</p>
@@ -63,7 +929,7 @@
             </div>
         </div>
     </div>
-    <div class="credit-report-summary-body" *ngIf="data != null">
+    <div class="credit-report-body" *ngIf="data != null">
         <div class="left-block">
             <div class="information-block" *ngIf="data.providercreditReportInformation != null">
                 <div class="inline-labelled-text">
@@ -113,11 +979,6 @@
                     <label>Policy Number</label>
                     <p>{{data.providercreditReportInformation.policyno}}</p>
                 </div>
-            </div>
-            <div class="message">
-                <mat-icon>info</mat-icon>
-                <p>With reference to your Credit Request mentioned above and for a fair, full and final settlement,
-                    please be advised of the following</p>
             </div>
             <ul class="information-block no-border" *ngIf="data.providercreditReportInformation != null">
                 <li class="semibold">
@@ -432,7 +1293,7 @@
                 </mat-tab>
             </mat-tab-group>
         </div>
-    </div>
+    </div>-->
     <div class="block-footer sticky-bottom">
         <div class="left-block custom-paginator">
             <button matRipple type="button" title="First Page">
@@ -442,7 +1303,7 @@
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
-                1<small>/10</small>
+                3<small>/9</small>
             </p>
             <button matRipple type="button" title="Next Page">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
@@ -452,7 +1313,7 @@
             </button>
         </div>
         <div class="btn-list right-block">
-            <button type="button" color="primary" mat-flat-button>Submit</button>
+            <button type="button" color="primary" mat-flat-button>Save</button>
         </div>
     </div>
 </div>

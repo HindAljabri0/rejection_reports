@@ -49,6 +49,7 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
 strong,.bold{font-weight: 700;}
 .semibold{font-weight: 600!important;}
 .medium{font-weight: 500!important;}
+.text-sm{font-size: 12px;line-height: 16px;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
@@ -110,6 +111,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;border-color:currentColor;}
 .primary-menu .mat-menu-content,.primary-menu .mat-menu-content:not(:empty){padding: 14px;}
 .primary-menu.mat-menu-panel{min-height: auto;}
+.primary-menu .mat-menu-item{height:auto;line-height: 20px;padding: 8px 16px;}
+.primary-menu .menu-title{color: #707070;padding: 4px 10px;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
 .primary-link{color:#3060AA;text-decoration: none;cursor: pointer;}
 .primary-link:hover,.primary-link:focus,.primary-link:active{color:#3060AA;text-decoration: underline;}
@@ -147,6 +150,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .primary-grid textarea.form-control.comment-box,.comment-box{height:80px;}
 .pl-7{padding-left: 7px !important;}
 .pr-7{padding-right: 7px !important;}
+.p-14{padding: 14px !important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
 
 /* contextual colors
@@ -466,6 +470,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-tab .mat-tab-nav-bar, .primary-tab .mat-tab-header{border-bottom:1px solid rgba(112, 112, 112,0.3);}
 .primary-tab .mat-tab-label.mat-tab-label-active,.primary-tab.mat-tab-group.mat-primary .mat-tab-label.cdk-keyboard-focused:not(.mat-tab-disabled), .primary-tab.mat-tab-group.mat-primary .mat-tab-label.cdk-program-focused:not(.mat-tab-disabled), .primary-tab.mat-tab-group.mat-primary .mat-tab-link.cdk-keyboard-focused:not(.mat-tab-disabled), .primary-tab.mat-tab-group.mat-primary .mat-tab-link.cdk-program-focused:not(.mat-tab-disabled){opacity: 1;color: #3060aa;}
 .primary-tab .mat-tab-body{padding: 14px;}
+.primary-tab.no-body-padding .mat-tab-body{padding: 0;}
 .primary-tab .mat-tab-header-pagination{box-shadow: none;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
 .primary-tab .mat-tab-header-pagination .mat-tab-header-pagination-chevron{display: none;}
 .primary-tab .mat-tab-header-pagination-after,.primary-tab .mat-tab-header-pagination-before{background: url('./assets/ic-page-next.svg') center no-repeat;background-size: 24px 24px;border-left:1px solid rgba(112, 112, 112,0.3);}
@@ -778,63 +783,73 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* credit report summary header
 --------------------------------------------------------------------------------------------------------*/
-.credit-report-summary-header{display: flex;top:68px;position:sticky;z-index:1;}
-.credit-report-summary-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
-.credit-report-summary-header>.left-block .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}
-.credit-report-summary-header>.left-block .chart-block{height: 48px;flex-basis:48px;max-width: 48px;flex-grow:0;flex-shrink:0;border-radius: 500px;background: #FFFFFF;padding: 3px;}
-.credit-report-summary-header>.right-block{background-color: #F4F4F4;border-bottom:1px solid rgba(112, 112, 112,0.3);flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 250px);max-width: calc(100% - 250px);padding: 10px 14px;}
-.credit-report-summary-header>.right-block .content{flex-grow: 0;flex-shrink: 0;flex-basis:280px;max-width:280px;}
-.credit-report-summary-header>.right-block .content small,.credit-report-summary-header>.right-block .content p{color:#3060AA;}
-.credit-report-summary-header>.right-block .content p{font-weight: 700;}
-.credit-report-summary-header>.right-block.filters{background-color: #fff;display: block;padding: 14px 14px 0;}
-.credit-report-summary-header .legend{display: flex;flex-wrap:wrap;color:#505050;font-size: 12px;font-weight: 500;line-height: 16px;}
-.credit-report-summary-header .legend>li{flex-grow: 0;flex-shrink:0;flex-basis: 50%;max-width: 50%; padding-right: 8px;display: flex;align-items:center;padding-bottom: 4px;}
-.credit-report-summary-header .legend>li:last-child{padding-right: 0;}
-.credit-report-summary-header .legend .status-ball{height: 8px;width: 8px;border-radius: 500px;display: block;margin-right: 4px;}
-.credit-report-summary-header .progress-steps{display: flex;color:#505050;padding-bottom: 10px;}
-.credit-report-summary-header .progress-steps>li{flex-grow:1;flex-basis: 0; height: 12px;background: #DCDCDC;border-right:1px solid #B9B4B4;position: relative;}
-.credit-report-summary-header .progress-steps>li>p{font-size: 12px;line-height: 16px;font-weight: 500;position: absolute;text-align: center;left: 50%;top: 12px;width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 100%;}
-.credit-report-summary-header .progress-steps>li:last-child>p{left: 0;right: 0;}
-.credit-report-summary-header .progress-steps>.active{border-right-color:#fff;}
-.credit-report-summary-header .progress-steps>.new,.credit-report-summary-header .legend .status-ball.new{background-color: #FF0000;}
-.credit-report-summary-header .progress-steps>.under-submission,.credit-report-summary-header .legend .status-ball.under-submission{background-color: #FFE190;}
-.credit-report-summary-header .progress-steps>.under-review,.credit-report-summary-header .legend .status-ball.under-review{background-color: #608CEE;}
-.credit-report-summary-header .progress-steps>.submitted,.credit-report-summary-header .legend .status-ball.submitted{background-color: #9DF2BA;}
-.credit-report-summary-header .progress-steps>li:last-child{border-right:0;}
-.credit-report-summary-header .report-progress{color:#3060AA;}
-.credit-report-summary-header .report-progress small{font-size: 12px;font-weight: 500;line-height: 16px;}
-.credit-report-summary-header .report-progress>p{font-weight: 700;}
+.credit-report-header{display: flex;top:68px;position:sticky;z-index:3;}
+.credit-report-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
+.credit-report-header>.left-block .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}
+.credit-report-header>.left-block .chart-block{height: 48px;flex-basis:48px;max-width: 48px;flex-grow:0;flex-shrink:0;border-radius: 500px;background: #FFFFFF;padding: 3px;}
+.credit-report-header>.right-block{background-color: #F4F4F4;border-bottom:1px solid rgba(112, 112, 112,0.3);flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 250px);max-width: calc(100% - 250px);padding: 10px 14px;}
+.credit-report-header>.right-block .content{flex-grow: 0;flex-shrink: 0;flex-basis:280px;max-width:280px;}
+.credit-report-header>.right-block .content small,.credit-report-header>.right-block .content p{color:#3060AA;}
+.credit-report-header>.right-block .content p{font-weight: 700;}
+.credit-report-header>.right-block.filters{background-color: #fff;display: block;padding: 14px 14px 0;}
+.credit-report-header .legend{display: flex;flex-wrap:wrap;color:#505050;font-size: 12px;font-weight: 500;line-height: 16px;}
+.credit-report-header .legend>li{flex-grow: 0;flex-shrink:0;flex-basis: 50%;max-width: 50%; padding-right: 8px;display: flex;align-items:center;padding-bottom: 4px;}
+.credit-report-header .legend>li:last-child{padding-right: 0;}
+.credit-report-header .legend .status-ball{height: 8px;width: 8px;border-radius: 500px;display: block;margin-right: 4px;}
+.credit-report-header .progress-steps{display: flex;color:#505050;padding-bottom: 10px;}
+.credit-report-header .progress-steps>li{flex-grow:1;flex-basis: 0; height: 12px;background: #DCDCDC;border-right:1px solid #B9B4B4;position: relative;}
+.credit-report-header .progress-steps>li>p{font-size: 12px;line-height: 16px;font-weight: 500;position: absolute;text-align: center;left: 50%;top: 12px;width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 100%;}
+.credit-report-header .progress-steps>li:last-child>p{left: 0;right: 0;}
+.credit-report-header .progress-steps>.active{border-right-color:#fff;}
+.credit-report-header .progress-steps>.new,.credit-report-header .legend .status-ball.new{background-color: #FF0000;}
+.credit-report-header .progress-steps>.under-submission,.credit-report-header .legend .status-ball.under-submission{background-color: #FFE190;}
+.credit-report-header .progress-steps>.under-review,.credit-report-header .legend .status-ball.under-review{background-color: #608CEE;}
+.credit-report-header .progress-steps>.submitted,.credit-report-header .legend .status-ball.submitted{background-color: #9DF2BA;}
+.credit-report-header .progress-steps>li:last-child{border-right:0;}
+.credit-report-header .report-progress{color:#3060AA;}
+.credit-report-header .report-progress small{font-size: 12px;font-weight: 500;line-height: 16px;}
+.credit-report-header .report-progress>p{font-weight: 700;}
+.credit-report-header .message{display: flex;font-size: 12px;line-height: 16px;}
+.credit-report-header .message>.mat-icon{flex-grow: 0;flex-shrink: 0;flex-basis: 24px;max-width: 24px;margin-right: 8px;}
+.credit-report-header .message>p{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 32px);max-width: calc(100% - 32px);}
+.tawuniya-report-details .inline-labelled-text{padding-bottom: 8px;}
+.tawuniya-report-details .credit-report-header>.right-block{padding-bottom: 2px;background: #fff;border:0;}
+.tawuniya-details-subheader{padding: 14px 14px 6px;background: #fff;border-bottom:1px solid #e1e1e1;}
+.tawuniya-tab-action{display: inline-flex;justify-content: flex-end;padding-right: 14px;margin-left: auto;position: relative;z-index: 2;top: 14px;}
+.tawuniya-tab-action>.primary-link{padding-right: 14px;}
+.tawuniya-tab-action>.primary-link:last-child{padding-right: 0;}
+.tawuniya-tab-action-wrapper{text-align: right;height: 0;}
+.tawuniya-edit-menu.mat-menu-panel{min-width: 292px;max-width: 292px;}
+.tawuniya-edit-menu .attachment-list{margin-right: -12px;}
+.primary-menu.tawuniya-filter-menu .mat-menu-content, .primary-menu.tawuniya-filter-menu .mat-menu-content:not(:empty){padding: 8px 0;}
 
 /* credit report summary body
 --------------------------------------------------------------------------------------------------------*/
-.credit-report-summary-body{display: flex;background: #fff;position:relative;z-index:0;}
-.credit-report-summary-body>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;border-right:1px solid rgba(112, 112, 112,0.2);}
-.credit-report-summary-body>.right-block{flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 250px);max-width: calc(100% - 250px);}
-.credit-report-summary-body>.right-block .primary-tab .mat-tab-body{padding: 0;}
-.credit-report-summary-body>.left-block .legend-text{color:#707070;display: flex;font-size:13px;padding-bottom: 6px;}
-.credit-report-summary-body>.left-block .legend-text:before{content:'';height:8px;flex-grow:0;flex-basis:8px;flex-shrink:0;max-width:8px; margin-right:6px;border-radius:50px;display:block;margin-top:5px;}
-.credit-report-summary-body>.left-block .information-block{padding: 12px;border-bottom: 1px solid rgba(112, 112, 112,0.2);}
-.credit-report-summary-body>.left-block .information-block.no-border{border:0;}
-.credit-report-summary-body>.left-block .information-block>li{display: flex;padding-bottom: 8px;}
-.credit-report-summary-body>.left-block .information-block>li:last-child{padding-bottom: 0;}
-.credit-report-summary-body>.left-block .information-block>li>span{color:#3060AA;display: block;padding-right: 6px;}
-.credit-report-summary-body>.left-block .information-block>li>p{margin-left: auto;text-align: right;}
-.credit-report-summary-body>.left-block .information-block .inline-labelled-text{padding-bottom: 12px;}
-.credit-report-summary-body>.left-block .information-block .inline-labelled-text>label{padding-bottom: 0;}
-.credit-report-summary-body>.left-block .information-block .inline-labelled-text:last-child{padding-bottom: 0;}
-.credit-report-summary-body>.left-block .message{background-color: #f6f6f6;padding: 12px;display: flex;}
-.credit-report-summary-body>.left-block .message>.mat-icon{flex-grow: 0;flex-shrink: 0;flex-basis: 24px;max-width: 24px;margin-right: 8px;}
-.credit-report-summary-body>.left-block .message>p{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 32px);max-width: calc(100% - 32px);}
-.rejection-reason-chart-block{padding: 12px;border-bottom:1px solid rgba(112, 112, 112,0.2);}
-.rejection-reason-chart-block .legend-text:before{background-color: #2D47D6;}
-.rejection-reason-chart-block .content-wrapper{display: flex;align-items: center;}
-.rejection-reason-chart-block .content-wrapper .chart{flex-grow:0;flex-shrink:0;flex-basis:68px;max-width:68px;}
-.rejection-reason-chart-block .content-wrapper .content{flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 68px);max-width:calc(100% - 68px);padding-left: 14px;color:#505050;}
-.rejection-reason-chart-block .content-wrapper .content label{font-size:13px;line-height: 16px;}
-.rejection-reason-chart-block .content-wrapper .content p{font-weight: 600;}
-.rejection-reason-chart-block .content-wrapper .blue-text{color:#1F78B4;}
-.rejection-reason-chart-block .content-wrapper .purple-text{color:#9765C9;}
-.rejection-reason-chart-block .content-wrapper .green-text{color:#B2DF8A;}
+.credit-report-body{display: flex;background: #fff;position:relative;z-index:0;}
+.credit-report-body>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;border-right:1px solid rgba(112, 112, 112,0.2);}
+.credit-report-body>.right-block{flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 250px);max-width: calc(100% - 250px);}
+.credit-report-body>.right-block .primary-tab .mat-tab-body{padding: 0;}
+.credit-report-body>.left-block .legend-text{color:#707070;display: flex;font-size:13px;padding-bottom: 6px;}
+.credit-report-body>.left-block .legend-text:before{content:'';height:8px;flex-grow:0;flex-basis:8px;flex-shrink:0;max-width:8px; margin-right:6px;border-radius:50px;display:block;margin-top:5px;}
+.credit-report-body>.left-block .information-block{padding: 12px;border-bottom: 1px solid rgba(112, 112, 112,0.2);}
+.credit-report-body>.left-block .information-block.no-border{border:0;}
+.credit-report-body>.left-block .information-block>li{display: flex;padding-bottom: 8px;}
+.credit-report-body>.left-block .information-block>li:last-child{padding-bottom: 0;}
+.credit-report-body>.left-block .information-block>li>span{color:#3060AA;display: block;padding-right: 6px;}
+.credit-report-body>.left-block .information-block>li>p{margin-left: auto;text-align: right;}
+.credit-report-body>.left-block .information-block .inline-labelled-text{padding-bottom: 12px;}
+.credit-report-body>.left-block .information-block .inline-labelled-text>label{padding-bottom: 0;}
+.credit-report-body>.left-block .information-block .inline-labelled-text:last-child{padding-bottom: 0;}
+.rejection-reason-chart{padding: 12px;border-bottom:1px solid rgba(112, 112, 112,0.2);}
+.rejection-reason-chart .legend-text:before{background-color: #2D47D6;}
+.rejection-reason-chart .content-wrapper{display: flex;align-items: center;}
+.rejection-reason-chart .content-wrapper .chart{flex-grow:0;flex-shrink:0;flex-basis:68px;max-width:68px;}
+.rejection-reason-chart .content-wrapper .content{flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 68px);max-width:calc(100% - 68px);padding-left: 14px;color:#505050;}
+.rejection-reason-chart .content-wrapper .content label{font-size:13px;line-height: 16px;}
+.rejection-reason-chart .content-wrapper .content p{font-weight: 600;}
+.rejection-reason-chart .content-wrapper .blue-text{color:#1F78B4;}
+.rejection-reason-chart .content-wrapper .purple-text{color:#9765C9;}
+.rejection-reason-chart .content-wrapper .green-text{color:#B2DF8A;}
 .rejection-reason-progress-block{padding: 12px;}
 .rejection-reason-progress-block .legend-text:before{background-color: #DB53D1;}
 .progress-list{color:#505050;font-size:13px;}
@@ -858,6 +873,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .inline-labelled-text .with-icon>.mat-icon,.inline-labelled-text .with-icon>img{display: block;height:24px;flex-basis:24px;max-width:24px;flex-grow:0;flex-shrink:0;margin-right:4px;}
 .inline-labelled-text p{font-weight: 500;}
 .inline-labelled-text p>span{font-weight:400;}
+.inline-labelled-text.horizontal{display: flex;}
+.inline-labelled-text.horizontal>label{padding-bottom: 0;padding-right: 8px;}
+.inline-labelled-text.horizontal>p{margin-left: auto;text-align: right;font-weight: 600;}
+.inline-labelled-text.secondary>label{color: #707070;}
 
 /* regular payment header
 --------------------------------------------------------------------------------------------------------*/
@@ -963,14 +982,19 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .progress-with-info .progress-bar .active-bar{height: 100%;display: block;border-radius: inherit;}
 .progress-with-info:last-child{margin-bottom: 0;}
 
+/* checkbox
+--------------------------------------------------------------------------------------------------------*/
+.mat-checkbox .mat-checkbox-inner-container{background-color: #fff;}
+.mat-checkbox .mat-checkbox-frame{border-color:#8c8c8c;border-width:1px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
-.col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl,
-.col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
+.col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
 @media (min-width: 1440px) {
     .col-xxl {-ms-flex-preferred-size: 0;flex-basis: 0;-ms-flex-positive: 1;flex-grow: 1;min-width: 0;max-width: 100%;}
     .col-xxl-auto {-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;}
     .col-xxl-1 {-ms-flex: 0 0 8.333333%;flex: 0 0 8.333333%;max-width: 8.333333%;}
+    .col-xxl-1-5 {-ms-flex: 0 0 20%;flex: 0 0 20%;max-width: 20%;}
     .col-xxl-2 {-ms-flex: 0 0 16.666667%;flex: 0 0 16.666667%;max-width: 16.666667%;}
     .col-xxl-3 {-ms-flex: 0 0 25%;flex: 0 0 25%;max-width: 25%;}
     .col-xxl-4 {-ms-flex: 0 0 33.333333%;flex: 0 0 33.333333%;max-width: 33.333333%;}
@@ -1063,11 +1087,11 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .clean-claim-progress-report>.left-block{max-width: 180px;flex-basis:180px;}
     .clean-claim-progress-report>.right-block{max-width: calc(100% - 180px);flex-basis:calc(100% - 180px);}
     .general-info-wrapper>div{flex-basis:33.333333%;max-width: 33.333333%;}
-    .credit-report-summary-header>.left-block,.credit-report-summary-body>.left-block{flex-basis: 210px;max-width: 210px;}
-    .credit-report-summary-header>.right-block,.credit-report-summary-body>.right-block{flex-basis:calc(100% - 210px);max-width: calc(100% - 210px);}
-    .credit-report-summary-header>.right-block{padding-left: 10px;padding-right: 10px;}
-    .credit-report-summary-header>.right-block .content{flex-basis:180px;max-width:180px;}
-    .credit-report-summary-header .progress-steps{flex-basis:calc(100% - 180px);max-width:calc(100% - 180px);}
+    .credit-report-header>.left-block,.credit-report-body>.left-block{flex-basis: 210px;max-width: 210px;}
+    .credit-report-header>.right-block,.credit-report-body>.right-block{flex-basis:calc(100% - 210px);max-width: calc(100% - 210px);}
+    .credit-report-header>.right-block{padding-left: 10px;padding-right: 10px;}
+    .credit-report-header>.right-block .content{flex-basis:180px;max-width:180px;}
+    .credit-report-header .progress-steps{flex-basis:calc(100% - 180px);max-width:calc(100% - 180px);}
     .border-lg-right{border-right:0;}
     .border-lg-left{border-left:0;}
     .border-lg-top{border-top:0;}

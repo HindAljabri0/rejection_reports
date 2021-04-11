@@ -57,12 +57,13 @@ export class ClaimValidationService {
     const approvalNum = this.claim.claimIdentities.approvalNumber;
 
     let fieldErrors: FieldError[] = [];
-    // if (fullName == null || fullName.trim().length == 0) {
-    //   fieldErrors.push({ fieldName: 'fullName' });
-    // } else if (!this.regax.test(fullName)) {
-    //   fieldErrors.push({ fieldName: 'fullName', error: 'Characters allowed: (0-9), (a-z), (A-Z), (SPACE), (-)' });
-    // }
-    if (gender == null || gender + '' == '') {
+    if (visitType == null || visitType.trim().length == 0) {
+      fieldErrors.push({ fieldName: 'visitType' });
+    }
+    if (fullName == null || fullName.trim().length == 0) {
+      fieldErrors.push({ fieldName: 'fullName' });
+    }
+    if (gender == null || (gender as string) == '') {
       fieldErrors.push({ fieldName: 'gender' });
     }
     if (memberId == null || memberId.trim().length == 0) {
@@ -151,11 +152,11 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: 'memberDob', error: message });
       fieldErrors.push({ fieldName: 'age', error: message });
     }
+    if (mainSymptoms == null || mainSymptoms.trim().length == 0) {
+      fieldErrors.push({ fieldName: 'mainSymptoms' });
+    }
 
     if (this.pageType == 'INPATIENT_OUTPATIENT') {
-      if (mainSymptoms == null || mainSymptoms.trim().length == 0) {
-        fieldErrors.push({ fieldName: 'mainSymptoms' });
-      }
       if (this._isInvalidPeriod(illnessDuration)) {
         fieldErrors.push({ fieldName: 'illnessDuration' });
       }
@@ -175,7 +176,7 @@ export class ClaimValidationService {
     let fieldErrors: FieldError[] = [];
 
 
-    if (this.claim.visitInformation.departmentCode != this.opticalDepartmentCode && this.claim.visitInformation.departmentCode != this.dentalDepartmentCode) {
+    if (this.claim.visitInformation.departmentCode != this.opticalDepartmentCode && this.claim.visitInformation.departmentCode != this.pharmacyDepartmentCode && this.claim.visitInformation.departmentCode != this.dentalDepartmentCode) {
 
       if (diagnosis == null || diagnosis.length == 0) {
         fieldErrors.push({ fieldName: 'diagnosis' });
