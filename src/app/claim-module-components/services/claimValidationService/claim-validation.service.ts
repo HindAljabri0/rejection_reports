@@ -152,11 +152,11 @@ export class ClaimValidationService {
       fieldErrors.push({ fieldName: 'memberDob', error: message });
       fieldErrors.push({ fieldName: 'age', error: message });
     }
-    if (mainSymptoms == null || mainSymptoms.trim().length == 0) {
-      fieldErrors.push({ fieldName: 'mainSymptoms' });
-    }
-
+    
     if (this.pageType == 'INPATIENT_OUTPATIENT') {
+      if (mainSymptoms == null || mainSymptoms.trim().length == 0) {
+        fieldErrors.push({ fieldName: 'mainSymptoms' });
+      }
       if (this._isInvalidPeriod(illnessDuration)) {
         fieldErrors.push({ fieldName: 'illnessDuration' });
       }
