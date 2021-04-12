@@ -16,123 +16,117 @@
         <div class="right-block text-sm">
             <div class="row align-items-center">
                 <div class="col">
-                    <div class="row small-gutter">
+                    <div *ngIf="data != null &&  data.providercreditReportInformation != null" class="row small-gutter">
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Received Date</label>
-                                <p>25-02-2019</p>
+                                <p>{{data.providercreditReportInformation.reportdate}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Batch Received Date</label>
-                                <p>February-2017</p>
+                                <p>{{data.providercreditReportInformation.batchreceiveddate}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Credit Report Status</label>
-                                <p>Under Review</p>
+                                <p>{{data.providercreditReportInformation.status}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Policy Name</label>
-                                <p>Al Toga Trading Est 1</p>
+                                <p>{{data.providercreditReportInformation.policyno}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Provider City</label>
-                                <p>DAMMAM</p>
+                                <p>{{data.providercreditReportInformation.providercity}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Batch Reference Number</label>
-                                <p>WP17MDB029134</p>
+                                <p>{{data.providercreditReportInformation.batchreferenceno}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Claim Month</label>
-                                <p>December-2016</p>
+                                <p>{{data.providercreditReportInformation.lossmonth}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Provider</label>
-                                <p>TADAWI GENERAL..</p>
+                                <p>{{data.providercreditReportInformation.providername}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Plan Number</label>
-                                <p>-</p>
-                            </div>
-                        </div>
-                        <div class="col-xxl-1-5 col-xl-3 col-md-4">
-                            <div class="inline-labelled-text">
-                                <label>Plan Number</label>
-                                <p>13796350</p>
+                                <p>{{data.providercreditReportInformation.planno}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <h4 class="text-primary semibold">14 Days</h4>
+                <div *ngIf="data != null &&  data.remainingDays != null" class="col-auto">
+                    <h4 class="text-primary semibold">{{data.remainingDays}} Days</h4>
                 </div>
             </div>
         </div>
     </div>
     <div class="tawuniya-details-subheader">
-        <div class="row small-gutter">
+        <div *ngIf="data != null &&  data.providercreditReportInformation != null" class="row small-gutter">
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Requested Amount (Net)</label>
-                    <p>1,919.100</p>
+                    <p>{{data.providercreditReportInformation.requestedamount | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Difference In Deductible</label>
-                    <p>0.0</p>
+                    <p>{{data.providercreditReportInformation.differenceindeductibles | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Rejected Claims Amount</label>
-                    <p>1,202.730</p>
+                    <p>{{data.providercreditReportInformation.rejectedclaimsamount | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Net Deducted Services</label>
-                    <p>0.0</p>
+                    <p>{{data.providercreditReportInformation.netdeductedservices | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Difference In Discounts</label>
-                    <p>9.680</p>
+                    <p>{{data.providercreditReportInformation.differenceindeductibles | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Transferred Batch Amount</label>
-                    <p>0.0</p>
+                    <p>{{data.providercreditReportInformation.transferredbatchamount | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Bills Not Recieved</label>
-                    <p>0.0</p>
+                    <p>{{data.providercreditReportInformation.billsnotreceived | currency:' '}} SR</p>
                 </div>
             </div>
             <div class="col-3">
                 <div class="inline-labelled-text horizontal secondary">
                     <label>Total Payable</label>
-                    <p>630.850</p>
+                    <p>{{data.providercreditReportInformation.totalamountpayable | currency:' '}} SR</p>
                 </div>
             </div>
         </div>
