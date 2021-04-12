@@ -1073,6 +1073,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .border-xl-top{border-top:0;}
     .border-xl-bottom{border-bottom:0;}
     .revenue-header>.row>div:nth-child(2),.revenue-report-body>.row>div:nth-child(2){border-right: 0;}
+    .tawuniya-report-details .credit-report-header{position: static;}
 }
 @media (max-width:991px) { 
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}
@@ -1096,6 +1097,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .border-lg-left{border-left:0;}
     .border-lg-top{border-top:0;}
     .border-lg-bottom{border-bottom:0;}
+    .tawuniya-tab-action>.primary-link{padding-right: 10px;}
+    .primary-tab .mat-tab-label{padding: 0 10px;}
 }
 
 .mat-grid-tile .mat-figure {

@@ -113,6 +113,13 @@ export const getUnderProcessingClaims = createSelector(dashboardSelector, (state
 export const getRejectionByDepartment = createSelector(dashboardSelector, (state) => state.rejectionByDepartment);
 export const getRejectionByDoctor = createSelector(dashboardSelector, (state) => state.rejectionByDoctor);
 export const getRejectionByService = createSelector(dashboardSelector, (state) => state.rejectionByService);
+export const getAllClaimAfterSubmission = createSelector(dashboardSelector, (state) => ({
+    paidClaims: state.paidClaims,
+    partiallyPaidClaims: state.partiallyPaidClaims,
+    rejectedClaims: state.rejectedClaims,
+    processingClaims: state.underProcessingClaims,
+    submittedClaims: state.submittedClaims
+}));
 
 export const getDepartments = createSelector(dashboardSelector, (state) => state.departmentNames);
 
