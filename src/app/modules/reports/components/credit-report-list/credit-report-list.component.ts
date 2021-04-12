@@ -1,3 +1,5 @@
+import { DatePipe } from '@angular/common';
+import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
@@ -18,24 +20,29 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
   currentFileUpload: File;
   isLoading = false;
 
-  paginationControl = {
-    currentIndex: 0,
-    totalPages: 0
+
+  creditReportSearchModel:{
+    payerId: number,
+    batchId: string,
+    receivedFromDate: Date,
+    receivedToDate: Date,
+    status: 'All' | 'SUBMITTED' | 'UNDERSUBMISSION' | 'UNDERREVIEW' | 'NEW',
+    pageNo: number,
+    pageSize: number
   };
 
-  creditReportSearchModel: any;
-
-  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices) { }
+  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
 
 
   ngOnInit() {
     this.creditReportSearchModel = {
-      "payerId": 102,
-      "batchId": null,
-      "receivedFromDate": null,
-      "receivedToDate": null,
-      "pageNo": 0,
-      "pageSize": 2,
+      payerId: 102,
+      batchId: null,
+      receivedFromDate: null,
+      receivedToDate: null,
+      status: "All",
+      pageNo: 0,
+      pageSize: 2
     }
     this.getCreditReportListData();
   }
@@ -44,7 +51,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
   }
 
   searchCreditReports() {
-    this.paginationControl.currentIndex = 0;
+
     if (this.creditReportSearchModel.payerId == 102) {
       this.tawuniyaCreditReports();
     } else if (this.creditReportSearchModel.payerId = 319) {
@@ -55,7 +62,6 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
   bupaCreditReports() {
     this.sharedServices.loadingChanged.next(true);
 
-    this.creditReportSearchModel.pageNo = this.paginationControl.currentIndex;
     this.creditReportService.listBupaCreditReports(
       this.sharedServices.providerId, this.creditReportSearchModel
     ).subscribe((res: any) => {
@@ -63,9 +69,9 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
         console.log(res.body);
         this.creditReportData = res.body.content;
         if (res.body.content.length == 0) {
-          this.paginationControl.totalPages = 0;
+          this.creditReportSearchModel.pageSize = 0;
         }
-        this.paginationControl.totalPages = res.body.totalPages;
+        this.creditReportSearchModel.pageSize = res.body.totalPages;
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
@@ -76,16 +82,25 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
 
   tawuniyaCreditReports() {
     this.sharedServices.loadingChanged.next(true);
+    let fromDate;
+    let toDate;
+    if (this.creditReportSearchModel.receivedFromDate != null) {
+      fromDate = this.datePipe.transform(this.creditReportSearchModel.receivedFromDate, "yyyy-MM-dd");
+
+    }
+    if (this.creditReportSearchModel.receivedToDate != null) {
+      toDate = this.datePipe.transform(this.creditReportSearchModel.receivedToDate, "yyyy-MM-dd");
+
+    }
 
     this.subscription.add(this.creditReportService.listTawuniyaCreditReports(
-      this.sharedServices.providerId, 0, 10
+      this.sharedServices.providerId, this.creditReportSearchModel.status, fromDate, toDate, this.creditReportSearchModel.batchId, this.creditReportSearchModel.pageNo, 10
     ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
 
-        if (res.body.content.length == 0) {
-          this.paginationControl.totalPages = 0;
-        }
+        this.creditReportSearchModel.pageSize = res.body.totalPages;
+        this.creditReportSearchModel.pageNo = res.body.number;
 
         this.sharedServices.loadingChanged.next(false);
       }
@@ -115,8 +130,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
   }
 
   goToFirstPage() {
-    if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
-      this.paginationControl.currentIndex = 0;
+    if (this.creditReportSearchModel.pageNo != 0) {
+      this.creditReportSearchModel.pageNo = 0;
       if (this.creditReportSearchModel.payerId == 102) {
         this.tawuniyaCreditReports();
       } else {
@@ -125,8 +140,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     }
   }
   goToPrePage() {
-    if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
-      this.paginationControl.currentIndex = this.paginationControl.currentIndex - 1;
+    if (this.creditReportSearchModel.pageNo != 0) {
+      this.creditReportSearchModel.pageNo = this.creditReportSearchModel.pageNo - 1;
       if (this.creditReportSearchModel.payerId == 102) {
         this.tawuniyaCreditReports();
       } else {
@@ -135,8 +150,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     }
   }
   goToNextPage() {
-    if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.totalPages) {
-      this.paginationControl.currentIndex = this.paginationControl.currentIndex + 1;
+    if (this.creditReportSearchModel.pageNo + 1 < this.creditReportSearchModel.pageSize) {
+      this.creditReportSearchModel.pageNo = this.creditReportSearchModel.pageNo + 1;
 
 
       if (this.creditReportSearchModel.payerId == 102) {
@@ -147,8 +162,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     }
   }
   goToLastPage() {
-    if (this.paginationControl != null && this.paginationControl.currentIndex != this.paginationControl.totalPages - 1) {
-      this.paginationControl.currentIndex = this.paginationControl.totalPages - 1;
+    if (this.creditReportSearchModel.pageNo != this.creditReportSearchModel.pageSize - 1) {
+      this.creditReportSearchModel.pageNo = this.creditReportSearchModel.pageSize - 1;
       if (this.creditReportSearchModel.payerId == 102) {
         this.tawuniyaCreditReports();
       } else {
