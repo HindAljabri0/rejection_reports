@@ -439,11 +439,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .delete-btn .mat-icon{display:block;}
 .primary-grid>tbody>.seperator-row,.primary-grid>tbody>.seperator-row:nth-child(even){background: #fafafa;font-weight: 600;}
 .primary-grid>tbody>tr>.form-group{margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
-.primary-grid:not(.invoice-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
-.primary-grid:not(.invoice-table) textarea.form-control{height:auto;padding:8px;}
-.primary-grid:not(.invoice-table) .form-control:focus{border-color:#3060AA;}
-.primary-grid:not(.invoice-table) .has-error .form-control:focus{border-color:#CC2F2F;}
-.primary-grid.invoice-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.invoice-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
+.primary-grid:not(.claim-view-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
+.primary-grid:not(.claim-view-table) textarea.form-control{height:auto;padding:8px;}
+.primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
+.primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
+.primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 

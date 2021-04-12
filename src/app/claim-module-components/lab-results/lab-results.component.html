@@ -1,94 +1,115 @@
-<div class="item-group-panel">
-    <div class="parent-panel">
-        <ul>
-            <li class="title">Results</li>
-            <li *ngFor="let result of resultsControls; let i = index" [class.active]="expandedResult == i">
-                <button type="button" title="Result {{(i+1)}}" class="list-btn" [class.text-danger]="resultHasErrors(i)" (click)="toggleResult(i)">
-                    <p>
-                        Result {{(i+1)}}
-                        <mat-icon *ngIf="resultHasErrors(i)">error</mat-icon>
-                    </p>
-                    <span class="right-block">
-                        <p>{{formatDate(result.testDate.value)}}</p>
-                    </span>
-                </button>
-                <button type="button" class="delete-btn text-danger" (click)="onDeleteResultClick(i)" *ngIf="pageMode == 'EDIT'">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
-            </li>
-        </ul>
-        <app-empty-state *ngIf="resultsControls.length === 0" message='No results found!'></app-empty-state>
-        <button mat-flat-button class="mt-2" *ngIf="pageMode != 'VIEW'" color="primary" (click)="onAddResultClick()">Add Result</button>
-    </div>
-    <ng-container *ngFor="let result of resultsControls; let i = index">
-        <div class="child-panel" *ngIf="expandedResult != -1 && expandedResult == i">
-            <p class="block-title mb-2">Result {{(i+1)}}</p>
-            <div class="row small-gutter">
-                <div class="col-md-6">
-                    <div class="form-group" [matTooltip]="getFieldError('testDate:'+i)" [class.has-error]="fieldHasError('testDate:'+i)">
-                        <label class="control-label">Test Date</label>
-                        <div class="date-picker">
-                            <input [matDatepicker]="testDatePicker" class="form-control" placeholder="Select test date" [formControl]="result.testDate">
-                            <mat-datepicker-toggle [for]="testDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker #testDatePicker></mat-datepicker>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" [class.has-error]="fieldHasError('testCode:'+i)" [matTooltip]="getFieldError('testCode:'+i)">
-                        <label class="control-label">Test Code<span class="asterisk">*</span></label>
-                        <input [formControl]="result.testCode" class="form-control" placeholder="Enter test code">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group" [class.has-error]="fieldHasError('resultDescription:'+i)" [matTooltip]="getFieldError('resultDescription:'+i)">
-                <label class="control-label">Description</label>
-                <textarea rows="4" placeholder="Description" [formControl]="result.resultDescription" class="form-control" placeholder="Enter description"></textarea>
-            </div>
-            <p class="block-title">Components</p>
-            <div class="list-expansion-panel">
-                <mat-expansion-panel *ngFor="let component of result.componentsControls; let j = index" [expanded]="component.isOpen" hideToggle>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <button (click)="toggleComponentExpansion($event,i,j)" [class.text-danger]="componentHasErrors(i, j)" class="toggle-btn">
-                                <span>Component {{(j+1)}}</span>
-                                <mat-icon *ngIf="componentHasErrors(i, j)">error</mat-icon>
-                            </button>
-                            <button (click)="onDeleteComponentClick($event, i, j)" class="text-danger delete-btn" *ngIf="pageMode == 'EDIT'">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="row small-gutter">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="form-group" [class.has-error]="fieldHasError('componentCode:'+i+':'+j)" [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
-                                <label class="control-label">Component Code<span class="asterisk">*</span></label>
-                                <input [formControl]="component.componentCode" class="form-control" placeholder="Enter component code" type="text">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="form-group" [class.has-error]="fieldHasError('componentLabResult:'+i+':'+j)" [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)">
-                                <label class="control-label">LAB Result</label>
-                                <input [formControl]="component.componentLabResult" class="form-control" placeholder="Enter lab result">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group" [class.has-error]="fieldHasError('componentResultUnit:'+i+':'+j)" [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)">
-                                <label class="control-label">Result Unit</label>
-                                <input [formControl]="component.componentResultUnit" class="form-control" placeholder="Enter result unit">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" [class.has-error]="fieldHasError('componentDescription:'+i+':'+j)" [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
-                        <label class="control-label">Description</label>
-                        <textarea placeholder="Description" [formControl]="component.componentDescription" class="form-control" placeholder="Enter description"></textarea>
-                    </div>
-                </mat-expansion-panel>
-            </div>
-            <app-empty-state *ngIf="result.componentsControls.length === 0" message='No components found!'></app-empty-state>
-            <div class="text-right mt-2" *ngIf="pageMode != 'VIEW'">
-                <button mat-flat-button color="primary" (click)="onAddComponentClick(i)">Add Component</button>
-            </div>
-        </div>
-    </ng-container>
+<div class="d-flex mb-3">
+    <h4 class="align-self-center medium">Lab Results</h4>
+    <button *ngIf="pageMode != 'VIEW'" (click)="onAddResultClick()" disableRipple="true" mat-flat-button class="ml-auto px-0 primary-text-btn">
+        <span class="d-flex align-items-center">
+            <mat-icon>add_circle_outline</mat-icon>
+            <span class="pl-1">Add Result</span>
+        </span>
+    </button>
 </div>
+<div class="table-responsive" *ngIf="resultsControls.length !== 0">
+    <table class="primary-grid manual-row-color claim-view-table">
+        <thead>
+            <tr>
+                <th width="10"></th>
+                <th>Serial No.</th>
+                <th>Test Date</th>
+                <th>Test Code</th>
+                <th>Description</th>
+                <th width="10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let result of resultsControls; let i = index">
+                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="resultHasErrors(i)" [class.light-bg-danger]="resultHasErrors(i)">
+                    <td class="row-click" (click)="toggleResult(i)">
+                        <mat-icon *ngIf="resultHasErrors(i)">error</mat-icon>
+                    </td>
+                    <td class="row-click" (click)="toggleResult(i)">{{(i+1)}}</td>
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1" [matTooltip]="getFieldError('testDate:'+i)" [class.has-error]="fieldHasError('testDate:'+i)">
+                            <div class="date-picker">
+                                <input [matDatepicker]="testDatePicker" class="form-control" placeholder="Select test date" [formControl]="result.testDate">
+                                <mat-datepicker-toggle [for]="testDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #testDatePicker></mat-datepicker>
+                            </div>
+                        </div>
+                    </td>
+                    <td width="200">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('testCode:'+i)" [matTooltip]="getFieldError('testCode:'+i)">
+                            <input [formControl]="result.testCode" class="form-control" placeholder="Enter test code">
+                        </div>
+                    </td>
+                    <td width="550">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('resultDescription:'+i)" [matTooltip]="getFieldError('resultDescription:'+i)">
+                            <input [formControl]="result.resultDescription" class="form-control" placeholder="Enter description">
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="delete-btn text-danger" (click)="onDeleteResultClick(i)" *ngIf="pageMode == 'EDIT'">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="expandedResult == i">
+                    <td colspan="6" class="pl-7 pr-7 border-top">
+                        <div class="d-flex mt-n2">
+                            <h5 class="align-self-center medium">Components</h5>
+                            <div class="ml-auto btn-list" *ngIf="pageMode != 'VIEW'">
+                                <button mat-flat-button (click)="onAddComponentClick(i)" class="primary-text-btn px-0" disableRipple="true">
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                    <span class="pl-1">Add Component</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="list-expansion-panel" *ngIf="result.componentsControls.length !== 0">
+                            <mat-expansion-panel *ngFor="let component of result.componentsControls; let j = index" [expanded]="component.isOpen" hideToggle>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <button (click)="toggleComponentExpansion($event,i,j)" [class.text-danger]="componentHasErrors(i, j)" class="toggle-btn">
+                                            <span>Component {{(j+1)}}</span>
+                                            <mat-icon *ngIf="componentHasErrors(i, j)">error</mat-icon>
+                                        </button>
+                                        <button (click)="onDeleteComponentClick($event, i, j)" class="text-danger delete-btn" *ngIf="pageMode == 'EDIT'">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="row small-gutter">
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="form-group" [class.has-error]="fieldHasError('componentCode:'+i+':'+j)" [matTooltip]="getFieldError('componentCode:'+i+':'+j)">
+                                            <label class="control-label">Component Code<span class="asterisk">*</span></label>
+                                            <input [formControl]="component.componentCode" class="form-control" placeholder="Enter component code" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="form-group" [class.has-error]="fieldHasError('componentLabResult:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('componentLabResult:'+i+':'+j)">
+                                            <label class="control-label">LAB Result</label>
+                                            <input [formControl]="component.componentLabResult" class="form-control" placeholder="Enter lab result">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group" [class.has-error]="fieldHasError('componentResultUnit:'+i+':'+j)"
+                                            [matTooltip]="getFieldError('componentResultUnit:'+i+':'+j)">
+                                            <label class="control-label">Result Unit</label>
+                                            <input [formControl]="component.componentResultUnit" class="form-control" placeholder="Enter result unit">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" [class.has-error]="fieldHasError('componentDescription:'+i+':'+j)"
+                                    [matTooltip]="getFieldError('componentDescription:'+i+':'+j)">
+                                    <label class="control-label">Description</label>
+                                    <textarea placeholder="Description" [formControl]="component.componentDescription" class="form-control"
+                                        placeholder="Enter description"></textarea>
+                                </div>
+                            </mat-expansion-panel>
+                        </div>
+                        <app-empty-state *ngIf="result.componentsControls.length === 0" message='No components found!'></app-empty-state>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>
+<app-empty-state *ngIf="resultsControls.length === 0" message='No results found!'></app-empty-state>
