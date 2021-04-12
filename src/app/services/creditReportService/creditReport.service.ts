@@ -83,8 +83,22 @@ export class CreditReportService {
         return this.http.request(req);
     }
 
-    listTawuniyaCreditReports(providerId: string, page: number, pageSize: number) {
-        const requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+    listTawuniyaCreditReports(providerId: string, status:string,fromDate:string,toDate:string,batchId:string,page: number, pageSize: number) {
+        let requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+        if(status!=null&&status!="All"){
+            requestURL += `&status=${status}`;
+        }
+        if(fromDate!=null){
+            requestURL += `&fromDate=${fromDate}`;
+            
+        }
+        if(toDate!=null){
+            requestURL += `&toDate=${toDate}`;
+        }
+        if(batchId!=null){
+            requestURL += `&batchId=${batchId}`;
+        }
+        
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }
