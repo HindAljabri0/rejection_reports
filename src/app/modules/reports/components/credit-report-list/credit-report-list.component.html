@@ -1,13 +1,14 @@
 <div class="block-header has-border">
     <p>Credit Reports</p>
 </div>
-<div class="block-filter-panel">
+<div class="block-filter-panel has-border">
     <div class="row small-gutter">
         <div class="col">
             <div class="form-group">
                 <label class="control-label">Payer</label>
                 <mat-form-field class="form-control custom-select-control">
-                    <mat-select [(ngModel)]='creditReportSearchModel.payerId'>
+                    <mat-select [(ngModel)]='creditReportSearchModel.payerId'
+                        (selectionChange)="checkFileUploadVisible()">
                         <!-- <mat-option value="">Select Payer</mat-option> -->
                         <mat-option [value]="102">Tawuniya</mat-option>
                         <mat-option [value]="319">Bupa</mat-option>
@@ -19,7 +20,8 @@
             <div class="form-group">
                 <label class="control-label">Received Date From</label>
                 <div class="date-picker">
-                    <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" [(ngModel)]='creditReportSearchModel.receivedFromDate' />
+                    <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date"
+                        [(ngModel)]='creditReportSearchModel.receivedFromDate' />
                     <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
                     <mat-datepicker #fromDate></mat-datepicker>
                 </div>
@@ -29,7 +31,8 @@
             <div class="form-group">
                 <label class="control-label">Received Date To</label>
                 <div class="date-picker">
-                    <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" [(ngModel)]='creditReportSearchModel.receivedToDate' />
+                    <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date"
+                        [(ngModel)]='creditReportSearchModel.receivedToDate' />
                     <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                     <mat-datepicker #toDate></mat-datepicker>
                 </div>
@@ -38,7 +41,8 @@
         <div class="col">
             <div class="form-group">
                 <label class="control-label">Batch ID</label>
-                <input class="form-control" placeholder="Enter batch ID" [(ngModel)]='creditReportSearchModel.batchId' />
+                <input class="form-control" placeholder="Enter batch ID"
+                    [(ngModel)]='creditReportSearchModel.batchId' />
             </div>
         </div>
         <div class="col-auto align-self-end">
@@ -48,36 +52,28 @@
         </div>
     </div>
 </div>
-<div class="block-header text-all-claim ng-star-inserted">
-    <button class="title-btn mat-button mat-button-base mat-primary ng-star-inserted active" color="primary" mat-button="" type="button">
-        <span class="mat-button-wrapper"> All </span>
-        <div class="mat-button-ripple mat-ripple" matripple=""></div>
-        <div class="mat-button-focus-overlay"></div>
-    </button>
-
-    <button class="title-btn mat-button mat-button-base mat-primary" color="primary" mat-button="" type="button">
-        <span class="mat-button-wrapper">New</span>
-        <div class="mat-button-ripple mat-ripple" matripple=""></div>
-        <div class="mat-button-focus-overlay"></div>
-    </button>
-    <button class="title-btn mat-button mat-button-base mat-primary" color="primary" mat-button="" type="button">
-        <span class="mat-button-wrapper">Under Review</span>
-        <div class="mat-button-ripple mat-ripple" matripple=""></div>
-        <div class="mat-button-focus-overlay"></div>
-    </button>
-
-    <button class="title-btn mat-button mat-button-base mat-primary" color="primary" mat-button="" type="button">
-        <span class="mat-button-wrapper">Under Submission</span>
-        <div class="mat-button-ripple mat-ripple" matripple=""></div>
-        <div class="mat-button-focus-overlay"></div>
-    </button>
-
-    <button class="title-btn mat-button mat-button-base mat-primary" color="primary" mat-button="" type="button">
-        <span class="mat-button-wrapper">Submitted</span>
-        <div class="mat-button-ripple mat-ripple" matripple=""></div>
-        <div class="mat-button-focus-overlay"></div>
-    </button>
-    </div>
+<ul class="nav nav-tabs" *ngIf="creditReportSearchModel.payerId == 102">
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='All'" (click)="changeTab($event,'All')"
+            title="All">All</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='NEW'" (click)="changeTab($event,'NEW')"
+            title="New">New</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='UNDERREVIEW'"
+            (click)="changeTab($event,'UNDERREVIEW')" title="Under Review">Under Review</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='UNDERSUBMISSION'"
+            (click)="changeTab($event,'UNDERSUBMISSION')" title="Under Submission">Under Submission</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='SUBMITTED'" (click)="changeTab($event,'SUBMITTED')"
+            title="Submitted">Submitted</a>
+    </li>
+</ul>
 <div class="bg-white table-responsive">
     <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
         <thead>
@@ -94,8 +90,8 @@
             </tr>
         </thead>
         <tbody>
-      
-            <tr *ngFor="let item of creditReportData; let i=index" routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}">
+            <!-- routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}" -->
+            <tr *ngFor="let item of creditReportData; let i=index" (click)="goToSummaryPage(item)">
                 <!-- <td class="semibold text-primary row-click">{{item.payerName}}</td> -->
                 <td class="row-click">{{item.receivedDate | date : 'dd/MM/yyyy'}}</td>
                 <td class="row-click">{{item.batchId}}</td>
@@ -104,10 +100,11 @@
                 <td class="row-click">{{item.technicalRejectionRatio}}</td>
 
                 <!-- Tawuniya -->
-                <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">{{item.remainingDays}} Days Remaining</td>
+                <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">{{item.remainingDays}} Days
+                    Remaining</td>
 
                 <!-- Bupa -->
-                <td class="row-click" *ngIf="creditReportSearchModel.payerId == 319">NA</td>
+                <td class="row-click" *ngIf="isBupaRecord">NA</td>
 
                 <!-- Tawuniya -->
                 <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">
@@ -118,23 +115,26 @@
                 </td>
 
                 <!-- Bupa -->
-                <td class="row-click" *ngIf="creditReportSearchModel.payerId == 319">
+                <td class="row-click" *ngIf="isBupaRecord">
                     <div class="status-text ball-red">New</div>
                 </td>
 
                 <!-- Tawuniya -->
-                <td (click)="$event.stopPropagation()" *ngIf="creditReportSearchModel.payerId != 319">
-                    <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==0" title="@Ahmed Al yosif">@Ahmed Al yosif</a>
-                    <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==1" title="Assign To">Assign To</a>
+                <td (click)="$event.stopPropagation()" *ngIf="!isBupaRecord">
+                    <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==0"
+                        title="@Ahmed Al yosif">@Ahmed Al yosif</a>
+                    <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==1"
+                        title="Assign To">Assign To</a>
                 </td>
 
                 <!-- Bupa -->
-                <td (click)="$event.stopPropagation()" *ngIf="creditReportSearchModel.payerId == 319">
+                <td (click)="$event.stopPropagation()" *ngIf="isBupaRecord">
                     NA</td>
             </tr>
             <tr>
                 <td colspan="9" class="p-0">
-                    <app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
+                    <app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0"
+                        class="claim-list-empty-state" message='No reports found!'>
                     </app-empty-state>
                 </td>
             </tr>
@@ -143,34 +143,39 @@
 </div>
 
 <div class="block-footer sticky-bottom" *ngIf="!isLoading">
-    <div class="left-block custom-paginator" *ngIf="creditReportSearchModel.pageSize > 0">
-        <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="creditReportSearchModel.pageNo==0">
+    <div class="left-block custom-paginator" *ngIf="creditReportSearchModel.totalPages > 0">
+        <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
+            [disabled]="creditReportSearchModel.pageNo==0">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="creditReportSearchModel.pageNo==0">
+        <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
+            [disabled]="creditReportSearchModel.pageNo==0">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
         <p class="page-info">
-            {{(creditReportSearchModel.pageNo+1)}}<small>/{{creditReportSearchModel.pageSize }}</small>
+            {{(creditReportSearchModel.pageNo+1)}}<small>/{{creditReportSearchModel.totalPages }}</small>
         </p>
-        <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(creditReportSearchModel.pageNo+1)==creditReportSearchModel.pageSize ">
+        <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
+            [disabled]="(creditReportSearchModel.pageNo+1)==creditReportSearchModel.totalPages ">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(creditReportSearchModel.pageNo+1)==creditReportSearchModel.pageSize ">
+        <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
+            [disabled]="(creditReportSearchModel.pageNo+1)==creditReportSearchModel.totalPages ">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>
 </div>
 
-<div class="file-upload-wrapper page-fab">
-    <div class="content" *ngIf="creditReportSearchModel.payerId != 102">
+<div class="file-upload-wrapper page-fab" *ngIf="isFileUploadVisible">
+    <div class="content">
         <button mat-fab color="primary" class="page-fab">
             <mat-icon>add</mat-icon>
         </button>
     </div>
-    <input type="file" accept=".pdf" class="file-upload-control" (click)="clearFiles($event)" (change)="openPdf($event)" />
+    <input type="file" accept=".pdf" class="file-upload-control" (click)="clearFiles($event)"
+        (change)="openPdf($event)" />
 
-    <div class="custom-paginator ng-star-inserted">
+    <!-- <div class="custom-paginator ng-star-inserted">
         <div class="left-block">
             <div class="custom-paginator ng-star-inserted"  >
     <button class="mat-ripple" matripple="" title="First Page" type="button" disabled="">
@@ -188,6 +193,4 @@
     </button>
     </div>
         </div>
-</div>
-
-       
+    </div> -->
