@@ -32,8 +32,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     pageSize: number,
     totalPages: number
   };
-  isFileUploadVisible: boolean = true;
-  isBupaRecord: boolean = true;
+  isFileUploadVisible: boolean = false;
+  isBupaRecord: boolean = false;
   // paginationControl: any;
 
   constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices, private datePipe: DatePipe, private router: Router) { }
@@ -50,18 +50,14 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       pageSize: 2,
       totalPages: 0
     };
-    this.getCreditReportListData();
-  }
-  getCreditReportListData() {
-    this.bupaCreditReports();
+    this.searchCreditReports();
   }
 
   searchCreditReports() {
     this.isBupaRecord = this.creditReportSearchModel.payerId === 102 ? false : true;
-    // this.paginationControl.currentIndex = 0;
-    if (this.creditReportSearchModel.payerId == 102) {
+    if (!this.isBupaRecord) {
       this.tawuniyaCreditReports();
-    } else if (this.creditReportSearchModel.payerId == 319) {
+    } else if (this.isBupaRecord) {
       this.bupaCreditReports();
     }
   }
@@ -70,7 +66,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     this.sharedServices.loadingChanged.next(true);
 
     this.creditReportService.listBupaCreditReports(
-      this.sharedServices.providerId, this.creditReportSearchModel
+      this.sharedServices.providerId, {...this.creditReportSearchModel, status: null}
     ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;

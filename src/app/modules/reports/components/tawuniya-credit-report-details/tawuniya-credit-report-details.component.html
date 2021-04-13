@@ -199,7 +199,7 @@
                                 <td>{{service.exceedprice | currency:' '}} SR</td>
                                 <td>{{service.deductedamount | currency:' '}} SR</td>
                                 <td class="actions">
-                                    <button type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
@@ -240,12 +240,105 @@
                                     </mat-menu>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="9" class="p-0">
+                                    <app-empty-state *ngIf="deductedServices == null || deductedServices.length == 0"
+                                        class="claim-list-empty-state" message='No reports found!'>
+                                    </app-empty-state>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </mat-tab>
             <mat-tab [label]="'Rejected Claims Services'" (click)="selectedServiceTab = 'rejected-services'">
-
+                <div class="table-responsive">
+                    <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
+                        <thead>
+                            <tr>
+                                <th width="10">
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </th>
+                                <th>Waseel Batch</th>
+                                <th>Doctor Code</th>
+                                <th>Claim No</th>
+                                <th>Provider Ref.</th>
+                                <th>Service Code</th>
+                                <th>Service</th>
+                                <th>Rejection Reason</th>
+                                <th>Comment</th>
+                                <th>Exceed Price</th>
+                                <th>Deducted Amount</th>
+                                <th width="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let service of rejectedServices">
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                </td>
+                                <td>{{service.waseelbatch}}</td>
+                                <td>{{service.physicianid}}</td>
+                                <td>{{service.payerclaimno}}</td>
+                                <td></td>
+                                <td>{{service.servicecode}}</td>
+                                <td>{{service.servicedescription}}</td>
+                                <td>{{service.rejectionreason}}</td>
+                                <td>{{service.comments}}</td>
+                                <td>{{service.exceedprice | currency:' '}} SR</td>
+                                <td>{{service.deductedamount | currency:' '}} SR</td>
+                                <td class="actions">
+                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <div (click)="$event.stopPropagation()">
+                                            <div class="form-group">
+                                                <label>Comments</label>
+                                                <textarea rows="4" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label>Attachments</label>
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                </p>
+                                                <ul class="attachment-list">
+                                                    <li matTooltip="Report-4594.pdf">
+                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                        <span>Report-4594.pdf</span>
+                                                    </li>
+                                                    <li matTooltip="Report-4594.xls">
+                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
+                                                        <span>Report-4594.xls</span>
+                                                    </li>
+                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                        <div class="file-upload-wrapper text-primary">
+                                                            <div class="content">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </div>
+                                                            <input type="file" class="file-upload-control" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" mat-flat-button color="primary">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="12" class="p-0">
+                                    <app-empty-state *ngIf="rejectedServices == null || rejectedServices.length == 0"
+                                        class="claim-list-empty-state" message='No reports found!'>
+                                    </app-empty-state>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </mat-tab>
         </mat-tab-group>
     </div>

@@ -69,7 +69,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.data = event.body as CreditReportSummaryResponse;
         this.fixDataDates();
         this.sharedServices.loadingChanged.next(false);
-        this.fetchServices();
+        this.fetchServices('deducted-services', true)
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -80,24 +80,27 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     })
   }
 
-  fetchServices() {
+  fetchServices(serviceType: 'deducted-services' | 'rejected-services', callAgain?: boolean) {
     if (this.sharedServices.loading) return;
 
     this.sharedServices.loadingChanged.next(true);
     this.creditReportService.getTawuniyaCreditReportServices(
       this.sharedServices.providerId,
       this.batchId,
-      this.selectedServiceTab,
-      this.paginationControl[this.selectedServiceTab].currentPage, 10).subscribe(event => {
+      serviceType,
+      this.paginationControl[serviceType].currentPage, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
-          if (this.selectedServiceTab == 'deducted-services') {
+          if (serviceType == 'deducted-services') {
             this.deductedServices = event.body['content'] as DeductedService[];
           } else {
             this.rejectedServices = event.body['content'] as RejectedService[];
           }
-          this.paginationControl[this.selectedServiceTab].currentPage = event.body['number'];
-          this.paginationControl[this.selectedServiceTab].numberOfPages = event.body['totalPages'];
+          this.paginationControl[serviceType].currentPage = event.body['number'];
+          this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
+          if (callAgain) {
+            this.fetchServices('rejected-services');
+          }
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
@@ -137,27 +140,32 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   goToFirstPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != 0) {
       this.paginationControl[this.selectedServiceTab].currentPage = 0;
-      this.fetchServices();
+      this.fetchServices(this.selectedServiceTab);
     }
   }
   goToPrePage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != 0) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].currentPage - 1;
-      this.fetchServices();
+      this.fetchServices(this.selectedServiceTab);
     }
   }
   goToNextPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage + 1 < this.paginationControl[this.selectedServiceTab].numberOfPages) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].currentPage + 1;
-      this.fetchServices();
+      this.fetchServices(this.selectedServiceTab);
     }
   }
   goToLastPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != this.paginationControl[this.selectedServiceTab].numberOfPages - 1) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].numberOfPages - 1;
-      this.fetchServices();
+      this.fetchServices(this.selectedServiceTab);
 
     }
+  }
+
+  isEditableBatch() {
+    return this.data.providercreditReportInformation.status == 'NEW' ||
+      this.data.providercreditReportInformation.status == 'UNDERREVIEW';
   }
 
 }
