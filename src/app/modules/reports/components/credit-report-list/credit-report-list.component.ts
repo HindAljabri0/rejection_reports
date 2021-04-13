@@ -6,6 +6,7 @@ import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/credit-report-upload-modal.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,15 +29,14 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     receivedToDate: Date,
     status: 'All' | 'SUBMITTED' | 'UNDERSUBMISSION' | 'UNDERREVIEW' | 'NEW',
     pageNo: number,
-    pageSize: number
+    pageSize: number,
+    totalPages: number
   };
+  isFileUploadVisible: boolean = true;
+  isBupaRecord: boolean = true;
+  // paginationControl: any;
 
-  constructor(
-    private dialog: MatDialog,
-    private creditReportService: CreditReportService,
-    private sharedServices: SharedServices,
-    private datePipe: DatePipe
-  ) { }
+  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices, private datePipe: DatePipe, private router: Router) { }
 
 
   ngOnInit() {
@@ -47,7 +47,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       receivedToDate: null,
       status: 'All',
       pageNo: 0,
-      pageSize: 2
+      pageSize: 2,
+      totalPages: 0
     };
     this.getCreditReportListData();
   }
@@ -56,7 +57,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
   }
 
   searchCreditReports() {
-
+    this.isBupaRecord = this.creditReportSearchModel.payerId === 102 ? false : true;
+    // this.paginationControl.currentIndex = 0;
     if (this.creditReportSearchModel.payerId == 102) {
       this.tawuniyaCreditReports();
     } else if (this.creditReportSearchModel.payerId == 319) {
@@ -71,13 +73,13 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       this.sharedServices.providerId, this.creditReportSearchModel
     ).subscribe((res: any) => {
       if (res.body !== undefined) {
-        console.log(res.body);
         this.creditReportData = res.body.content;
         if (res.body.content.length == 0) {
-          this.creditReportSearchModel.pageSize = 0;
+          this.creditReportSearchModel.totalPages = 0;
+        } else {
+          this.creditReportSearchModel.totalPages = res.body.totalPages;
+          this.sharedServices.loadingChanged.next(false);
         }
-        this.creditReportSearchModel.pageSize = res.body.totalPages;
-        this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
       console.log(err);
@@ -110,7 +112,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
 
-        this.creditReportSearchModel.pageSize = res.body.totalPages;
+        this.creditReportSearchModel.totalPages = res.body.totalPages;
         this.creditReportSearchModel.pageNo = res.body.number;
 
         this.sharedServices.loadingChanged.next(false);
@@ -161,7 +163,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     }
   }
   goToNextPage() {
-    if (this.creditReportSearchModel.pageNo + 1 < this.creditReportSearchModel.pageSize) {
+    if ((this.creditReportSearchModel.pageNo + 1) < this.creditReportSearchModel.totalPages) {
       this.creditReportSearchModel.pageNo = this.creditReportSearchModel.pageNo + 1;
 
 
@@ -173,8 +175,8 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     }
   }
   goToLastPage() {
-    if (this.creditReportSearchModel.pageNo != this.creditReportSearchModel.pageSize - 1) {
-      this.creditReportSearchModel.pageNo = this.creditReportSearchModel.pageSize - 1;
+    if (this.creditReportSearchModel.pageNo != (this.creditReportSearchModel.totalPages - 1)) {
+      this.creditReportSearchModel.pageNo = this.creditReportSearchModel.totalPages - 1;
       if (this.creditReportSearchModel.payerId == 102) {
         this.tawuniyaCreditReports();
       } else {
@@ -182,6 +184,14 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       }
 
     }
+  }
+  checkFileUploadVisible() {
+    this.isFileUploadVisible = this.creditReportSearchModel.payerId === 102 ? false : true;
+    this.creditReportData = [];
+    this.creditReportSearchModel.totalPages = 0;
+  }
+  goToSummaryPage(item) {
+    this.isFileUploadVisible ? this.router.navigate(['/reports/creditReportSummary'], { queryParams: { batchId: item.batchId, payerId: item.payerId } }) : this.router.navigateByUrl(`/reports/creditReports/tawuniya/batch/${item.batchId}`);
   }
 
   changeTab(e, status) {
@@ -195,6 +205,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       status,
       pageNo: 0,
       pageSize: 2,
+      totalPages: 0
     };
     this.tawuniyaCreditReports();
   }
