@@ -45,6 +45,14 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       }
     };
 
+  selectedServices: {
+    'deducted-services': string[],
+    'rejected-services': string[]
+  } = {
+    'deducted-services': [],
+    'rejected-services': []
+  }
+
   constructor(
     private dialog: MatDialog,
     private routeActive: ActivatedRoute,
@@ -121,7 +129,25 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     this.data.providercreditReportInformation.batchreceiveddate = this.stringToDate(this.data.providercreditReportInformation.batchreceiveddate);
     this.data.providercreditReportInformation.lossmonth = this.stringToDate(this.data.providercreditReportInformation.lossmonth);
   }
+  submit() {
+    if (this.sharedServices.loading)
+      return;
+    this.sharedServices.loadingChanged.next(true);
+    this.creditReportService.submitTawuniyaCreditReport(this.sharedServices.providerId, this.batchId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.sharedServices.loadingChanged.next(false);
+        location.reload();
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent.error);
+      }
+      this.sharedServices.loadingChanged.next(false);
 
+    }
+    );
+
+  }
   stringToDate(date: any) {
     if (date != null) {
       try {
