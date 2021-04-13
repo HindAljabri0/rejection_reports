@@ -32,7 +32,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     pageSize: number,
     totalPages: number
   };
-  isFileUploadVisible: boolean = true;
+  isFileUploadVisible: boolean = false;
   isBupaRecord: boolean = true;
   // paginationControl: any;
 
