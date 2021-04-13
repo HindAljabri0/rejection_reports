@@ -994,7 +994,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{background:rgba(112, 112, 112,0.1);}
 .nav-tabs .nav-item{margin-bottom: 0;}
 .nav-tabs .nav-item + .nav-item{margin-left: 4px;}
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{color: #fff;background-color: #3060AA;}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active,.nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active:hover{color: #fff;background-color: #3060AA;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
