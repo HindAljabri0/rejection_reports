@@ -1,5 +1,4 @@
 import { DatePipe } from '@angular/common';
-import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
@@ -19,9 +18,10 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
   creditReportData: CreditReportUploadModel[] = [];
   currentFileUpload: File;
   isLoading = false;
+  currentStatus = 'All';
 
 
-  creditReportSearchModel:{
+  creditReportSearchModel: {
     payerId: number,
     batchId: string,
     receivedFromDate: Date,
@@ -31,7 +31,12 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     pageSize: number
   };
 
-  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices, private datePipe: DatePipe) { }
+  constructor(
+    private dialog: MatDialog,
+    private creditReportService: CreditReportService,
+    private sharedServices: SharedServices,
+    private datePipe: DatePipe
+  ) { }
 
 
   ngOnInit() {
@@ -40,10 +45,10 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       batchId: null,
       receivedFromDate: null,
       receivedToDate: null,
-      status: "All",
+      status: 'All',
       pageNo: 0,
       pageSize: 2
-    }
+    };
     this.getCreditReportListData();
   }
   getCreditReportListData() {
@@ -54,7 +59,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
 
     if (this.creditReportSearchModel.payerId == 102) {
       this.tawuniyaCreditReports();
-    } else if (this.creditReportSearchModel.payerId = 319) {
+    } else if (this.creditReportSearchModel.payerId == 319) {
       this.bupaCreditReports();
     }
   }
@@ -85,16 +90,22 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     let fromDate;
     let toDate;
     if (this.creditReportSearchModel.receivedFromDate != null) {
-      fromDate = this.datePipe.transform(this.creditReportSearchModel.receivedFromDate, "yyyy-MM-dd");
+      fromDate = this.datePipe.transform(this.creditReportSearchModel.receivedFromDate, 'yyyy-MM-dd');
 
     }
     if (this.creditReportSearchModel.receivedToDate != null) {
-      toDate = this.datePipe.transform(this.creditReportSearchModel.receivedToDate, "yyyy-MM-dd");
+      toDate = this.datePipe.transform(this.creditReportSearchModel.receivedToDate, 'yyyy-MM-dd');
 
     }
 
     this.subscription.add(this.creditReportService.listTawuniyaCreditReports(
-      this.sharedServices.providerId, this.creditReportSearchModel.status, fromDate, toDate, this.creditReportSearchModel.batchId, this.creditReportSearchModel.pageNo, 10
+      this.sharedServices.providerId,
+      this.creditReportSearchModel.status,
+      fromDate,
+      toDate,
+      this.creditReportSearchModel.batchId,
+      this.creditReportSearchModel.pageNo,
+      10
     ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
@@ -171,6 +182,21 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       }
 
     }
+  }
+
+  changeTab(e, status) {
+    e.preventDefault();
+    this.currentStatus = status;
+    this.creditReportSearchModel = {
+      payerId: 102,
+      batchId: null,
+      receivedFromDate: null,
+      receivedToDate: null,
+      status,
+      pageNo: 0,
+      pageSize: 2,
+    };
+    this.tawuniyaCreditReports();
   }
 
 }
