@@ -127,7 +127,7 @@ export class CreditReportService {
         return this.http.request(request);
     }
 
-    saveTawuniyaCreditReport(providerId: string, batchId: string) {
+    submitTawuniyaCreditReport(providerId: string, batchId: string) {
         const requestURL = `/providers/${providerId}/${batchId}/submit`;
         const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL ,null);
         return this.http.request(request);

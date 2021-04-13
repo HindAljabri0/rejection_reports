@@ -54,28 +54,50 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
 
   openDetailsDialog(event, batchReferenceNumber, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
-    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-md'], data: {batchReferenceNumber, serialNo, serviceType} });
+    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-md'], data: { batchReferenceNumber, serialNo, serviceType } });
   }
 
-  fixDataDates(){
+  fixDataDates() {
     this.data.providercreditReportInformation.receiveddate = this.stringToDate(this.data.providercreditReportInformation.receiveddate);
     this.data.providercreditReportInformation.batchreceiveddate = this.stringToDate(this.data.providercreditReportInformation.batchreceiveddate);
     this.data.providercreditReportInformation.lossmonth = this.stringToDate(this.data.providercreditReportInformation.lossmonth);
   }
+  submit() {
+    if (this.sharedServices.loading)
+      return;
+    this.sharedServices.loadingChanged.next(true);
+    this.creditReportService.submitTawuniyaCreditReport(this.sharedServices.providerId, this.batchId).subscribe(event => {
 
-  stringToDate(date:any){
-    if(date != null){
-      try{
+      if (event instanceof HttpResponse)
+        this.sharedServices.loadingChanged.next(false);
+      location.reload();
+
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        console.log(errorEvent.error);
+
+      }
+      this.sharedServices.loadingChanged.next(false);
+
+    }
+    );
+
+  }
+  stringToDate(date: any) {
+    if (date != null) {
+      try {
         return new Date(date);
-      } catch (e){
-        
+      } catch (e) {
+
       }
     }
     return date;
   }
 
-  isDate(object:any){
+  isDate(object: any) {
     return object != null && object instanceof Date;
   }
+
+
 
 }
