@@ -7,7 +7,8 @@ import {
   getPartiallyPaidClaims,
   getUnderProcessingClaims,
   getRejectedClaims,
-  DashboardCardData
+  DashboardCardData,
+  getAllClaimAfterSubmission
 } from '../../store/dashboard.reducer';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -21,9 +22,38 @@ import { map, withLatestFrom } from 'rxjs/operators';
 export class SubmittedClaimsComponent implements OnInit {
 
   public doughnutChartLabels: Label[] = ['Under Processing', 'Paid', 'Partially Paid', 'Rejected by Payer'];
-  public doughnutChartData: ChartDataSets[] = [
+  public claimsChartData: ChartDataSets[] = [
     {
-      data: [10, 55, 10, 25],
+      backgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      borderColor: ['#fff', '#fff', '#fff', '#fff'],
+      hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
+      borderWidth: 1
+    }
+  ];
+
+  public grossChartData: ChartDataSets[] = [
+    {
+      backgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      borderColor: ['#fff', '#fff', '#fff', '#fff'],
+      hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
+      borderWidth: 1
+    }
+  ];
+
+  public netChartData: ChartDataSets[] = [
+    {
+      backgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
+      borderColor: ['#fff', '#fff', '#fff', '#fff'],
+      hoverBorderColor: ['#fff', '#fff', '#fff', '#fff'],
+      borderWidth: 1
+    }
+  ];
+
+  public vatChartData: ChartDataSets[] = [
+    {
       backgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
       hoverBackgroundColor: ['#851111', '#1C7C26', '#479CC5', '#FF53A3'],
       borderColor: ['#fff', '#fff', '#fff', '#fff'],
@@ -54,24 +84,17 @@ export class SubmittedClaimsComponent implements OnInit {
   constructor(private sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
-    // this.store.select(getSubmittedClaims).subscribe(data => this.summaries[0] = { ...data, title: 'All Claims After Submission' });
-    // this.store.select(getPaidClaims).subscribe(data => this.summaries[1] = data);
-    // this.store.select(getPartiallyPaidClaims).subscribe(data => this.summaries[2] = data);
-    // this.store.select(getRejectedClaims).subscribe(data => this.summaries[3] = data);
-    // this.store.select(getUnderProcessingClaims).subscribe(data => this.summaries[4] = data);
-    this.store.select(getSubmittedClaims).pipe(
-      withLatestFrom(this.store.select(getPaidClaims)),
-      map(values => ({ submittedClaims: values[0], paidClaims: values[1] })),
-      withLatestFrom(this.store.select(getPartiallyPaidClaims)),
-      map(values => ({ ...values[0], partiallyPaidClaims: values[1] })),
-      withLatestFrom(this.store.select(getRejectedClaims)),
-      map(values => ({ ...values[0], rejectedClaims: values[1] })),
-      withLatestFrom(this.store.select(getUnderProcessingClaims)),
-      map(values => ({ ...values[0], processingClaims: values[1] }))
-    ).subscribe(summaries => {
+    this.store.select(getAllClaimAfterSubmission).subscribe(summaries => {
       this.summaries = summaries;
-      console.log(summaries);
+      this.modifyChartData();
     });
+  }
+
+  modifyChartData() {
+    this.claimsChartData[0].data = [this.summaries.processingClaims.data.totalClaims, this.summaries.paidClaims.data.totalClaims, this.summaries.partiallyPaidClaims.data.totalClaims, this.summaries.rejectedClaims.data.totalClaims];
+    this.grossChartData[0].data = [this.summaries.processingClaims.data.gross, this.summaries.paidClaims.data.gross, this.summaries.partiallyPaidClaims.data.gross, this.summaries.rejectedClaims.data.gross];
+    this.netChartData[0].data = [this.summaries.processingClaims.data.totalNetAmount, this.summaries.paidClaims.data.totalNetAmount, this.summaries.partiallyPaidClaims.data.totalNetAmount, this.summaries.rejectedClaims.data.totalNetAmount];
+    this.vatChartData[0].data = [this.summaries.processingClaims.data.totalVatNetAmount, this.summaries.paidClaims.data.totalVatNetAmount, this.summaries.partiallyPaidClaims.data.totalVatNetAmount, this.summaries.rejectedClaims.data.totalVatNetAmount];
   }
 
   getCardName(status: string) {
@@ -80,6 +103,10 @@ export class SubmittedClaimsComponent implements OnInit {
 
   getCardColor(status: string) {
     return this.sharedServices.getCardAccentColor(status);
+  }
+
+  calculatePercetage(first: number, second: number, roundValue: number = 4) {
+    return parseFloat(((first / second) * 100).toFixed(roundValue)).toString();
   }
 
 }

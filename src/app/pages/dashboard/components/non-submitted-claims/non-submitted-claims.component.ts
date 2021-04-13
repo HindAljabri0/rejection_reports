@@ -36,6 +36,6 @@ export class NonSubmittedClaimsComponent implements OnInit {
   }
 
   calculatePercetage(first: number, second: number, roundValue: number = 4) {
-    return ((first / second) * 100).toFixed(roundValue);
+    return parseFloat(((first / second) * 100).toFixed(roundValue)).toString();
   }
 }

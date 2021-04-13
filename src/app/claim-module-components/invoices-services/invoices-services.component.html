@@ -9,7 +9,7 @@
     </button>
 </div>
 <div class="table-responsive">
-    <table class="primary-grid manual-row-color invoice-table">
+    <table class="primary-grid manual-row-color claim-view-table">
         <thead>
             <tr>
                 <th width="10"></th>
@@ -60,7 +60,7 @@
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.services.length}}</td>
                     <td>
-                        <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick($event, i)"
+                        <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick(i)"
                             *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && controllers.length > 1">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
