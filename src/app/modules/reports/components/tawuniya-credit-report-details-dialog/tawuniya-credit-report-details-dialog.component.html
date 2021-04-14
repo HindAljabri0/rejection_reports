@@ -4,9 +4,12 @@
     <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
+    <div class="inline-loader" *ngIf="isLoading">
+        <mat-spinner diameter="48"></mat-spinner>
+    </div>
     <div class="table-responsive">
         <table class="information-table" cellpadding="0" cellspacing="0" border="0">
-            <tbody *ngIf="creditReportDetails !== null">
+            <tbody *ngIf="this.creditReportDetails !== undefined && !isLoading">
                 <tr class="heading-row">
                     <td colspan="2">Batch Information</td>
                 </tr>
@@ -58,19 +61,7 @@
                     <td class="title">Payer Claim No</td>
                     <td class="content">{{this.creditReportDetails?.payerClaimNo}}</td>
                 </tr>
-                <tr class="heading-row">
-                    <td colspan="2">Diagnosis</td>
-                </tr>
-                <tr>
-                    <td class="title">Diagnosis Code</td>
-                    <!-- <td class="td content">L20.8</td> -->
-                    <td class="td content">{{this.creditReportDetails?.diagnosisCode}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Diagnosis Description</td>
-                    <!-- <td class="td content">Other atopic dermatitis</td> -->
-                    <td class="td content">{{this.creditReportDetails?.diagnosisDescription}}</td>
-                </tr>
+
                 <tr class="heading-row">
                     <td colspan="2">Service Information</td>
                 </tr>
@@ -137,8 +128,21 @@
                     <td class="title">Attachment</td>
                     <td class="content">{{this.creditReportDetails?.attachment}}</td>
                 </tr>
+                <tr class="heading-row">
+                    <td colspan="2">Diagnosis</td>
+                </tr>
+                <ng-container *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
+                    <tr>
+                        <td class="title">Diagnosis Code</td>
+                        <td class="td content">{{diagnosis.diagnosisCode}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Diagnosis Description</td>
+                        <td class="td content">{{diagnosis.diagnosisDescription}}</td>
+                    </tr>
+                </ng-container>
             </tbody>
-            <tbody *ngIf="creditReportDetails == null">
+            <tbody *ngIf="this.creditReportDetails == undefined && !isLoading">
                 <tr>
                     <app-empty-state class="claim-list-empty-state" message='No {{title}} services found!'>
                     </app-empty-state>

@@ -5,4 +5,6 @@ export class CreditReportUploadModel {
     totalRejectionsAmount: string;
     medicalRejectionRatio: string;
     technicalRejectionRatio: string;
+    status:string;
+    remainingDays:string;
 }

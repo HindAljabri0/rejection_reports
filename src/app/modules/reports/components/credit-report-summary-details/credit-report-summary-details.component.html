@@ -7,73 +7,70 @@
         <p>Received Date: 2/21/2021</p>
     </div>
 </div>
-<div class="credit-report-summary-header">
+<div class="credit-report-header">
     <div class="left-block">
         <div class="content">
             <p>Total Rejections</p>
             <strong>742,750,000 SR</strong>
         </div>
         <div class="chart-block">
-            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels"
-                [chartType]="chartOneType">
+            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
             </canvas>
         </div>
     </div>
     <div class="right-block">
-        <ul class="progress-steps">
-            <li>
-                <div class="status-ball green"></div>
-                <p>Day 1</p>
-            </li>
-            <li>
-                <div class="status-ball green"></div>
-                <p>Day 22</p>
-            </li>
-            <li>
-                <div class="status-ball yellow"></div>
-                <p>Day 23</p>
-            </li>
-            <li>
-                <div class="status-ball blue"></div>
-                <p>Day 32</p>
-            </li>
-            <li>
-                <div class="status-ball pink"></div>
-                <p>Day 45</p>
-            </li>
-            <li>
-                <div class="status-ball"></div>
-                <p>To Payer</p>
-            </li>
-        </ul>
-        <div class="content">
-            <small>Count Down</small>
-            <p class="pb-1">32 Days Left</p>
-            <ul class="legend">
-                <li>
-                    <span class="status-ball green"></span>
-                    Done
-                </li>
-                <li>
-                    <span class="status-ball blue"></span>
-                    To do
-                </li>
-                <li>
-                    <span class="status-ball yellow"></span>
-                    Pending
-                </li>
-                <li>
-                    <span class="status-ball pink"></span>
-                    Not Complete
-                </li>
-            </ul>
+        <div class="row small-gutter align-items-end">
+            <div class="col-8">
+                <div class="report-progress">
+                    <small>Count Down</small>
+                    <p class="pb-1">6 Days Left</p>
+                    <ul class="progress-steps">
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review">
+                            <p>Day 9</p>
+                        </li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-4">
+                <ul class="legend">
+                    <li>
+                        <span class="status-ball new"></span>
+                        New
+                    </li>
+                    <li>
+                        <span class="status-ball under-submission"></span>
+                        Under Submission
+                    </li>
+                    <li>
+                        <span class="status-ball under-review"></span>
+                        Under Review
+                    </li>
+                    <li>
+                        <span class="status-ball submitted"></span>
+                        Submitted
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 <div class="block-header has-border no-radius">
     <ul class="custom-breadcrumb align-self-center">
-        <li><a routerLink="/reports/creditReportSummary" [queryParams]="{ batchId: batchId, payerId: payerId}"
-                class="primary-link">Bupa Rejections
+        <li><a routerLink="/reports/creditReportSummary" [queryParams]="{ batchId: batchId, payerId: payerId}" class="primary-link">Bupa Rejections
                 Breakdown</a></li>
         <li class="active">{{labelName}}</li>
     </ul>
