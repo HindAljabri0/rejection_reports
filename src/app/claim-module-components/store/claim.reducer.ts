@@ -10,7 +10,7 @@ import { FileType } from '../models/attachmentRequest.model';
 import { SEARCH_TAB_RESULTS_KEY } from 'src/app/pages/searchClaimsPage/search-claims.component';
 
 export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT';
-export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
+export type ClaimPageType = 'DENTAL_OPTICAL_PHARMACY' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
     retrievedClaimId: string;
@@ -67,7 +67,7 @@ const initState: ClaimState = {
     selectedGDPN: {},
     approvalFormLoading: false,
     mode: 'CREATE',
-    type: 'DENTAL_OPTICAL',
+    type: 'DENTAL_OPTICAL_PHARMACY',
     paginationControl: { searchTabCurrentResults: [], currentIndex: -1, size: 0 },
 };
 
@@ -88,7 +88,7 @@ const _claimReducer = createReducer(
         const type: ClaimPageType = caseType == 'OUTPATIENT' &&
             (departmentCode == dentalId ||
                 departmentCode == opticalId ||
-                departmentCode == pharmacyId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
+                departmentCode == pharmacyId) ? 'DENTAL_OPTICAL_PHARMACY' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = {
             errors: body['errors'],
             claimDecisionGDPN: body[''],
@@ -160,7 +160,7 @@ const _claimReducer = createReducer(
             };
         } else {
             const claim = new Claim(data['claimType'], data['providerClaimNumber']);
-            return { ...state, claim: claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT' || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL' };
+            return { ...state, claim: claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT' || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL_PHARMACY' };
         }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),

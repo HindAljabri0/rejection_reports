@@ -4,70 +4,68 @@
         <li class="active">Bupa</li>
     </ul>
 </div>
-<div class="credit-report-summary-header">
+<div class="credit-report-header">
     <div class="left-block">
         <div class="content">
             <p>Total Rejections</p>
             <strong>{{summaryData.grandTotalRejection}} SR</strong>
         </div>
         <div class="chart-block">
-            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels"
-                [chartType]="chartOneType">
+            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
             </canvas>
         </div>
     </div>
     <div class="right-block">
-        <ul class="progress-steps">
-            <li>
-                <div class="status-ball green"></div>
-                <p>Day 1</p>
-            </li>
-            <li>
-                <div class="status-ball green"></div>
-                <p>Day 22</p>
-            </li>
-            <li>
-                <div class="status-ball yellow"></div>
-                <p>Day 23</p>
-            </li>
-            <li>
-                <div class="status-ball blue"></div>
-                <p>Day 32</p>
-            </li>
-            <li>
-                <div class="status-ball pink"></div>
-                <p>Day 45</p>
-            </li>
-            <li>
-                <div class="status-ball"></div>
-                <p>To Payer</p>
-            </li>
-        </ul>
-        <div class="content">
-            <small>Count Down</small>
-            <p class="pb-1">32 Days Left</p>
-            <ul class="legend">
-                <li>
-                    <span class="status-ball green"></span>
-                    Done
-                </li>
-                <li>
-                    <span class="status-ball blue"></span>
-                    To do
-                </li>
-                <li>
-                    <span class="status-ball yellow"></span>
-                    Pending
-                </li>
-                <li>
-                    <span class="status-ball pink"></span>
-                    Not Complete
-                </li>
-            </ul>
+        <div class="row small-gutter align-items-end">
+            <div class="col-8">
+                <div class="report-progress">
+                    <small>Count Down</small>
+                    <p class="pb-1">6 Days Left</p>
+                    <ul class="progress-steps">
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review"></li>
+                        <li class="active under-review">
+                            <p>Day 9</p>
+                        </li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-4">
+                <ul class="legend">
+                    <li>
+                        <span class="status-ball new"></span>
+                        New
+                    </li>
+                    <li>
+                        <span class="status-ball under-submission"></span>
+                        Under Submission
+                    </li>
+                    <li>
+                        <span class="status-ball under-review"></span>
+                        Under Review
+                    </li>
+                    <li>
+                        <span class="status-ball submitted"></span>
+                        Submitted
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
-<div class="credit-report-summary-body">
+<div class="credit-report-body">
     <div class="left-block">
         <ul class="information-block">
             <li>
@@ -103,12 +101,11 @@
                 <p>{{summaryData?.vatAmount}} <span class="currency">SR</span></p>
             </li>
         </ul>
-        <div class="rejection-reason-chart-block">
+        <div class="rejection-reason-chart">
             <span class="legend-text">Rejection Medical Reasons Breakdown</span>
             <div class="content-wrapper">
                 <div class="chart">
-                    <canvas baseChart [datasets]="chartTwoData" [options]="chartTwoOptions" [labels]="chartTwoLabels"
-                        [chartType]="chartTwoType">
+                    <canvas baseChart [datasets]="chartTwoData" [options]="chartTwoOptions" [labels]="chartTwoLabels" [chartType]="chartTwoType">
                     </canvas>
                 </div>
                 <div class="content">
@@ -196,8 +193,7 @@
                     A. Appropriateness of Care
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line"
-                                [ngStyle]="{'width':summaryData.appropriatenessOfCarePercent+'%'}"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.appropriatenessOfCarePercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.appropriatenessOfCarePercent}}%</div>
                     </div>
@@ -206,8 +202,7 @@
                     B. Technical / Contractual
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line"
-                                [ngStyle]="{'width':summaryData.technicalContractualPercent+'%'}">
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.technicalContractualPercent+'%'}">
                             </div>
                         </div>
                         <div class="text">{{summaryData.technicalContractualPercent}}%</div>
@@ -218,8 +213,7 @@
                     Above Contractual / Agreed Prices
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line"
-                                [ngStyle]="{'width':summaryData.priceListShortFallOrBilledPercent+'%'}"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.priceListShortFallOrBilledPercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.priceListShortFallOrBilledPercent}}%</div>
                     </div>
@@ -248,8 +242,7 @@
                     F. Unwarranted Variations
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line"
-                                [ngStyle]="{'width':summaryData.unwarrantedVariationsPercent+'%'}"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.unwarrantedVariationsPercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.unwarrantedVariationsPercent}}%</div>
                     </div>
@@ -258,8 +251,7 @@
                     G- Pharmacy Benefit Management
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line"
-                                [ngStyle]="{'width':summaryData.pharmacyBenefitManagementPercent+'%'}"></div>
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.pharmacyBenefitManagementPercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.pharmacyBenefitManagementPercent}}%</div>
                     </div>
@@ -308,8 +300,7 @@
                     Deductible Difference
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line"
-                                [ngStyle]="{'width':summaryData.deductibleDifferencePercent+'%'}">
+                            <div class="progress-line" [ngStyle]="{'width':summaryData.deductibleDifferencePercent+'%'}">
                             </div>
                         </div>
                         <div class="text">{{summaryData.deductibleDifferencePercent}}%</div>

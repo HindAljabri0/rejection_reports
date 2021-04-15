@@ -1,4 +1,162 @@
+<ul class="dashboard-legend">
+    <li><span class="bg-ready-submission"></span>Ready for Submission</li>
+    <li><span class="bg-rejected-waseel"></span>Rejected By Waseel</li>
+</ul>
 <div class="row small-gutter">
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+                <p class="title">Number of Claims</p>
+                <h4>{{summaries[0].data.totalClaims}} <small>Claims</small></h4>
+                <div class="progress-block">
+                    <div class="ready-submission-bar bg-ready-submission" [style.flexBasis]="calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims) + '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.flexBasis]="calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims) + '%'"></div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims)}} <small>%</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{summaries[1].data.totalClaims}} <small>Claims</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{summaries[2].data.totalClaims}} <small>Claims</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+                <p class="title">Gross Amount</p>
+                <h4>{{summaries[0].data.gross}} <small>SR</small></h4>
+                <div class="progress-block">
+                    <div class="ready-submission-bar bg-ready-submission" [style.flexBasis]="calculatePercetage(summaries[1].data.gross, summaries[0].data.gross) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[1].data.gross, summaries[0].data.gross) + '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.flexBasis]="calculatePercetage(summaries[2].data.gross, summaries[0].data.gross) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[2].data.gross, summaries[0].data.gross) + '%'"></div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{calculatePercetage(summaries[1].data.gross, summaries[0].data.gross)}} <small>%</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{calculatePercetage(summaries[2].data.gross, summaries[0].data.gross)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{summaries[1].data.gross}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{summaries[2].data.gross}} <small>SR</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+                <p class="title">Net Amount</p>
+                <h4>{{summaries[0].data.totalNetAmount}} <small>SR</small></h4>
+                <div class="progress-block">
+                    <div class="ready-submission-bar bg-ready-submission"
+                        [style.flexBasis]="calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel"
+                        [style.flexBasis]="calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount)}} <small>%</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{summaries[1].data.totalNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{summaries[2].data.totalNetAmount}} <small>SR</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+                <p class="title">VAT Amount</p>
+                <h4>{{summaries[0].data.totalVatNetAmount}} <small>SR</small></h4>
+                <div class="progress-block">
+                    <div class="ready-submission-bar bg-ready-submission"
+                        [style.flexBasis]="calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel"
+                        [style.flexBasis]="calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount)}} <small>%</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{summaries[1].data.totalVatNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{summaries[2].data.totalVatNetAmount}} <small>SR</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="row small-gutter">
     <div class="col-xxl-3 col-xl-4 col-md-6" *ngFor="let item of summaries">
         <app-abstractcard [title]="item.title || getCardName(item.data.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])"
             [clickable]="false" class="primary-card">
@@ -38,4 +196,4 @@
             </ng-container>
         </app-abstractcard>
     </div>
-</div>
+</div> -->

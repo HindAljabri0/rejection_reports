@@ -588,8 +588,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
-  onDeleteInvoiceClick(event, i) {
-    event.stopPropagation();
+  onDeleteInvoiceClick(i) {
     this.controllers[i].services.forEach(s => {
       if (s.retrieved) {
         this.store.dispatch(makeRetrievedServiceUnused({ serviceNumber: s.serviceNumber }));
