@@ -996,6 +996,18 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .nav-tabs .nav-item + .nav-item{margin-left: 4px;}
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active,.nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active:hover{color: #fff;background-color: #3060AA;}
 
+/* tawuniya extra details
+--------------------------------------------------------------------------------------------------------*/
+.tawuniya-extra-details{background-color: #f6f6f6;}
+.tawuniya-extra-details .mat-expansion-panel:not([class*=mat-elevation-z]){box-shadow: none;}
+.tawuniya-extra-details .mat-expansion-panel-header{min-height: 48px;max-height: 48px;padding-left: 14px;padding-right: 14px;font-weight: 500;}
+.tawuniya-extra-details .mat-expansion-panel-header .mat-content:after{content:'';background: url('./assets/ic-chevron-down-primary.svg') center no-repeat;background-size: 24px 24px;display: block;height: 24px;width: 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: rotate(0deg);}
+.tawuniya-extra-details .mat-expanded .mat-expansion-panel-header .mat-content:after{transform: rotate(180deg);}
+.tawuniya-extra-details .mat-expansion-panel-body{padding: 14px;border-top: 1px solid #e1e1e1;}
+.tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){background-color: #fff;}
+.tawuniya-extra-details .mat-accordion .mat-expansion-panel:first-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel:last-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel{border-radius: 4px;}
+.tawuniya-extra-details .mat-accordion .mat-expansion-panel+.mat-expansion-panel{margin-top: 10px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
@@ -1052,6 +1064,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(25% - 14px)!important;}
     .bupa-table,.bupa-table .form-control,.bupa-table .form-control.has-error{font-size: 13px;line-height:18px;}
     .general-info-wrapper>div{flex-basis:20%;max-width: 20%;}
+    .tawuniya-report-details .credit-report-header{position: static;}
 }
 @media (max-width:1199px) { 
     .advance-search{padding-left: 10px;width: 430px;}
@@ -1082,7 +1095,6 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .border-xl-top{border-top:0;}
     .border-xl-bottom{border-bottom:0;}
     .revenue-header>.row>div:nth-child(2),.revenue-report-body>.row>div:nth-child(2){border-right: 0;}
-    .tawuniya-report-details .credit-report-header{position: static;}
 }
 @media (max-width:991px) { 
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}

@@ -146,8 +146,9 @@
                     <button mat-menu-item>Claim Month</button>
                 </mat-menu>
                 <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a> -->
-                <a *ngIf="selectedServices[selectedServiceTab].length > 0" class="primary-link underlined" title="Agree">Agree</a>
-                <a *ngIf="selectedServices[selectedServiceTab].length == 0" class="primary-link underlined disabled" title="Agree">Agree</a>
+                <a *ngIf="selectedServices[selectedServiceTab].length > 0" href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree">Agree</a>
+                <a *ngIf="selectedServices[selectedServiceTab].length == 0" href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled"
+                    title="Agree">Agree</a>
                 <mat-menu #disagreeMenu="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
                     <div (click)="$event.stopPropagation()">
                         <div class="form-group">
@@ -159,8 +160,10 @@
                         </div>
                     </div>
                 </mat-menu>
-                <a *ngIf="selectedServices[selectedServiceTab].length > 0" class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
-                <a *ngIf="selectedServices[selectedServiceTab].length == 0" class="primary-link underlined disabled" title="Disagree">Disagree</a>
+                <a *ngIf="selectedServices[selectedServiceTab].length > 0" href="#" (click)="$event.preventDefault()" class="primary-link underlined"
+                    [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
+                <a *ngIf="selectedServices[selectedServiceTab].length == 0" href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled"
+                    title="Disagree">Disagree</a>
             </div>
         </div>
         <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
@@ -201,9 +204,10 @@
                                 <td>{{service.comments}}</td>
                                 <td>{{service.exceedprice | currency:' '}} SR</td>
                                 <td>{{service.deductedamount | currency:' '}} SR</td>
-                                <td><mat-icon *ngIf="service.agree != null"
-                                    [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
-                                    {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon></td>
+                                <td>
+                                    <mat-icon *ngIf="service.agree != null" [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
+                                        {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
+                                </td>
                                 <td class="actions">
                                     <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
@@ -248,8 +252,7 @@
                             </tr>
                             <tr>
                                 <td colspan="13" class="p-0">
-                                    <app-empty-state *ngIf="deductedServices == null || deductedServices.length == 0"
-                                        class="claim-list-empty-state" message='No reports found!'>
+                                    <app-empty-state *ngIf="deductedServices == null || deductedServices.length == 0" class="claim-list-empty-state" message='No reports found!'>
                                     </app-empty-state>
                                 </td>
                             </tr>
@@ -294,9 +297,10 @@
                                 <td>{{service.comments}}</td>
                                 <td>{{service.exceedprice | currency:' '}} SR</td>
                                 <td>{{service.deductedamount | currency:' '}} SR</td>
-                                <td><mat-icon *ngIf="service.agree != null"
-                                    [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
-                                    {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon></td>
+                                <td>
+                                    <mat-icon *ngIf="service.agree != null" [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
+                                        {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
+                                </td>
                                 <td class="actions">
                                     <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
@@ -341,8 +345,7 @@
                             </tr>
                             <tr>
                                 <td colspan="13" class="p-0">
-                                    <app-empty-state *ngIf="rejectedServices == null || rejectedServices.length == 0"
-                                        class="claim-list-empty-state" message='No reports found!'>
+                                    <app-empty-state *ngIf="rejectedServices == null || rejectedServices.length == 0" class="claim-list-empty-state" message='No reports found!'>
                                     </app-empty-state>
                                 </td>
                             </tr>
