@@ -49,9 +49,9 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     'deducted-services': string[],
     'rejected-services': string[]
   } = {
-    'deducted-services': [],
-    'rejected-services': []
-  }
+      'deducted-services': [],
+      'rejected-services': []
+    }
 
   constructor(
     private dialog: MatDialog,
@@ -121,7 +121,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
 
   openDetailsDialog(event, batchReferenceNumber, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
-    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-md'], data: { batchReferenceNumber, serialNo, serviceType } });
+    const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-xl'], data: { batchReferenceNumber, serialNo, serviceType } });
   }
 
   fixDataDates() {
