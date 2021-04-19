@@ -50,6 +50,7 @@ strong,.bold{font-weight: 700;}
 .semibold{font-weight: 600!important;}
 .medium{font-weight: 500!important;}
 .text-sm{font-size: 12px;line-height: 16px;}
+.text-monospace{font-family: 'Courier Prime', monospace!important;font-size: 111%;letter-spacing: -0.6px;line-height: 111%;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
