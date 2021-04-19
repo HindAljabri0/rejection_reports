@@ -9,7 +9,18 @@
                     <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
                 </mat-panel-description>
             </mat-expansion-panel-header>
+            <div _ngcontent-ael-c22="" class="mappedValueInput ng-star-inserted">
+                
+                <input #FileInput type="file"  hidden  accept=".csv" >
+                <input disabled class="ng-pristine ng-valid ng-touched" value="Here you can upload your mapping CSV" >
+
+                <button _ngcontent-ael-c22="" mat-flat-button="" class="mat-flat-button mat-button-base"  (click)="FileInput.click()">
+                    <span class="mat-button-wrapper">Upload</span>
+                    <div class="mat-button-ripple mat-ripple" matripple="" >
+
+                    </div><div class="mat-button-focus-overlay"></div></button></div>
             <div class="bodyOfCodeValueManagement">
+                
                 <div class="cardInCodeValueManagement">
                     <header>
                         Categories
