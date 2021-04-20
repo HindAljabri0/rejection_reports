@@ -877,7 +877,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     });
   }
 
-  claimIsWaitingEligibility(claimId: string) {
+   claimIsWaitingEligibility(claimId: string) {
     return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
   }
   get isWaitingForEligibility() {
