@@ -33,6 +33,7 @@ export class CreditReportUploadModalComponent implements OnInit {
   }
   selectFile(event) {
     this.currentFileUpload = event.target.files[0];
+    this.sizeInMB = this.common.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
       event.target.files = [];
       this.currentFileUpload = undefined;
