@@ -190,7 +190,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let service of deductedServices">
+                            <tr class="row-click" *ngFor="let service of deductedServices" (click)="openDetailsDialog($event, service.id.serialno, 'deducted')">
                                 <td>
                                     <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                                 </td>
@@ -283,7 +283,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let service of rejectedServices">
+                            <tr class="row-click" *ngFor="let service of rejectedServices" (click)="openDetailsDialog($event, service.id.serialno, 'rejected')">
                                 <td>
                                     <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                                 </td>
