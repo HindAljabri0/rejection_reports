@@ -23,6 +23,7 @@ import { CreditReportSummaryComponent } from './components/credit-report-summary
 import { CreditReportUploadModalComponent } from './components/credit-report-upload-modal/credit-report-upload-modal.component';
 import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-submissions.component';
 import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
+import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { RevenueReportComponent } from './components/revenue-report/revenue-repo
     TawuniyaCreditReportDetailsComponent,
     TawuniyaCreditReportDetailsDialogComponent,
     ClaimSubmissionsComponent,
-    RevenueReportComponent
+    RevenueReportComponent,
+    RevenueTrackingReportComponent
   ],
   imports: [
     CommonModule,

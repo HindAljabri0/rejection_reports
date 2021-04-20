@@ -119,8 +119,9 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       });
   }
 
-  openDetailsDialog(event, batchReferenceNumber, serialNo, serviceType: 'rejected' | 'deducted') {
+  openDetailsDialog(event, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
+    const batchReferenceNumber = this.data.providercreditReportInformation.batchreferenceno;
     const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-xl'], data: { batchReferenceNumber, serialNo, serviceType } });
   }
 
@@ -190,8 +191,8 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   }
 
   isEditableBatch() {
-    return this.data.providercreditReportInformation.status == 'NEW' ||
-      this.data.providercreditReportInformation.status == 'UNDERREVIEW';
+    return this.data != null && (this.data.providercreditReportInformation.status == 'NEW' ||
+      this.data.providercreditReportInformation.status == 'UNDERREVIEW');
   }
 
 }

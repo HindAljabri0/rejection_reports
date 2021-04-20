@@ -9,6 +9,7 @@ import { CreditReportSummaryDetailsComponent } from './components/credit-report-
 import { CreditReportSummaryComponent } from './components/credit-report-summary/credit-report-summary.component';
 import { RejectedClaimProgressReportComponent } from './components/rejected-claim-progress-report/rejected-claim-progress-report.component';
 import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
+import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
 import { TawuniyaCreditReportDetailsComponent } from './components/tawuniya-credit-report-details/tawuniya-credit-report-details.component';
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'creditReportSummaryDetails', component: CreditReportSummaryDetailsComponent },
   { path: 'revenue-report', component: RevenueReportComponent },
   { path: 'creditReports/tawuniya/batch/:batchId', component: TawuniyaCreditReportDetailsComponent },
-  { path: 'claim-submissions', component: ClaimSubmissionsComponent }
+  { path: 'claim-submissions', component: ClaimSubmissionsComponent },
+  { path: 'revenue-tracking-report', component: RevenueTrackingReportComponent }
 ];
 
 @NgModule({
