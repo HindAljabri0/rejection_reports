@@ -104,7 +104,7 @@ export class ClaimService {
   }
 
   putAttachmentsOfClaim(providerId: string, claimId: string, attachments: AssignedAttachment[]) {
-    const requestUrl = `/providers/${providerId}/attach/${claimId}`;
+    const requestUrl = `/providers/${providerId}/attachById/${claimId}`;
     const request = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, attachments.map(att =>
       ({
         attachmentid: att.attachmentId,
