@@ -209,7 +209,7 @@
                                         {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                 </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" (click)="$event.stopPropagation()" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
@@ -302,7 +302,7 @@
                                         {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                 </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
