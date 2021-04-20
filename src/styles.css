@@ -685,17 +685,17 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* clean claim progress report
 --------------------------------------------------------------------------------------------------------*/
-.clean-claim-progress-report{background-color: #eff5ff;display: flex;}
-.clean-claim-progress-report .list{position:sticky;top:80px;}
-.clean-claim-progress-report .list>li>button{background: #fff;border:0; border-bottom:1px solid #e1e1e1;color:#3060AA;font-weight: 500;width: 100%;padding: 8px 14px;text-align: left;position: relative;}
-.clean-claim-progress-report .list>li>button:after{display: block;content:'';position: absolute;right: 0;top: 0;bottom: 0;width: 0;background-color: #3060AA;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;}
-.clean-claim-progress-report .list>li>button.active:after{width: 6px;opacity: 1;}
-.clean-claim-progress-report .list>li>button:hover,.clean-claim-progress-report .list>li>button:focus,.clean-claim-progress-report .list>li>button:active{background-color: #f6f6f6;}
-.clean-claim-progress-report .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
-.clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
-.clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
-.clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
-.clean-claim-progress-report>.right-block .rejection-card-head{display: block;min-height: auto;}
+.progress-report-wrapper{background-color: #eff5ff;display: flex;}
+.progress-report-wrapper .list{position:sticky;top:80px;}
+.progress-report-wrapper .list>li>button{background: #fff;border:0; border-bottom:1px solid #e1e1e1;color:#3060AA;font-weight: 500;width: 100%;padding: 8px 14px;text-align: left;position: relative;}
+.progress-report-wrapper .list>li>button:after{display: block;content:'';position: absolute;right: 0;top: 0;bottom: 0;width: 0;background-color: #3060AA;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;}
+.progress-report-wrapper .list>li>button.active:after{width: 6px;opacity: 1;}
+.progress-report-wrapper .list>li>button:hover,.progress-report-wrapper .list>li>button:focus,.progress-report-wrapper .list>li>button:active{background-color: #f6f6f6;}
+.progress-report-wrapper .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
+.progress-report-wrapper>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
+.progress-report-wrapper>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
+.progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 333px);}
+.progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -1088,8 +1088,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .item-group-panel .parent-panel{flex-basis:300px;max-width: 300px;}
     .item-group-panel .child-panel{flex-basis:calc(100% - 300px);max-width: calc(100% - 300px);}
     .bupa-footer .left-block .form-group{margin-right: 12px;}
-    .clean-claim-progress-report>.left-block{max-width: 220px;flex-basis:220px;}
-    .clean-claim-progress-report>.right-block{max-width: calc(100% - 220px);flex-basis:calc(100% - 220px);}
+    .progress-report-wrapper>.left-block{max-width: 220px;flex-basis:220px;}
+    .progress-report-wrapper>.right-block{max-width: calc(100% - 220px);flex-basis:calc(100% - 220px);}
     .general-info-wrapper>div{flex-basis:25%;max-width: 25%;}
     .border-xl-right{border-right:0;}
     .border-xl-left{border-left:0;}
@@ -1107,8 +1107,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .dashboard-header .dashboard-filters{margin-left: 0;}
     .bupa-footer{flex-direction:column;align-items: flex-start;}
     .bupa-footer>.left-block{padding-right: 0;padding-bottom: 16px;padding-left: 0;}
-    .clean-claim-progress-report>.left-block{max-width: 180px;flex-basis:180px;}
-    .clean-claim-progress-report>.right-block{max-width: calc(100% - 180px);flex-basis:calc(100% - 180px);}
+    .progress-report-wrapper>.left-block{max-width: 180px;flex-basis:180px;}
+    .progress-report-wrapper>.right-block{max-width: calc(100% - 180px);flex-basis:calc(100% - 180px);}
     .general-info-wrapper>div{flex-basis:33.333333%;max-width: 33.333333%;}
     .credit-report-header>.left-block,.credit-report-body>.left-block{flex-basis: 210px;max-width: 210px;}
     .credit-report-header>.right-block,.credit-report-body>.right-block{flex-basis:calc(100% - 210px);max-width: calc(100% - 210px);}
