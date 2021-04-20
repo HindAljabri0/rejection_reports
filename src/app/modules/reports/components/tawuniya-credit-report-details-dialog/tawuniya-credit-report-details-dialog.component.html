@@ -219,12 +219,12 @@
                 <div class="col-6">
                     <div class="inline-labelled-text">
                         <label>Attachment</label>
-                        <div class="attachment">
+                        <div class="attachment" *ngIf="creditReportDetails != null && creditReportDetails.attachment != null">
                             <div class="thumbnail">
-                                <img *ngIf="creditReportDetails != null && creditReportDetails.attachment != null && !isPdf()"
+                                <img *ngIf="!isPdf()"
                                     [src]="getImageOfBlob()" [alt]="this.creditReportDetails.attachmentName"
                                     (click)="viewAttachment()" style="cursor: pointer;" />
-                                <img *ngIf="creditReportDetails != null && creditReportDetails.attachment != null && isPdf()"
+                                <img *ngIf="isPdf()"
                                     src="assets/file-types/ic-pdf.svg" [alt]="this.creditReportDetails.attachmentName"
                                     (click)="viewAttachment()" style="cursor: pointer;" />
                             </div>
