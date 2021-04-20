@@ -12,6 +12,8 @@ import {
   setCodeValueManagementLoading
 } from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
+import { MatDialog } from '@angular/material';
+import { ConfiguartionModalComponent } from './configuartion-modal/configuartion-modal.component';
 
 @Component({
   selector: 'app-configurations',
@@ -45,7 +47,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
 
   categoriesStoreSubscription: Subscription;
 
-  constructor(private store: Store, private sharedServices: SharedServices) { }
+  constructor(private store: Store, private sharedServices: SharedServices, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
@@ -193,5 +195,20 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
     this.selectedCategory = '';
     this.store.dispatch(setCodeValueManagementLoading({ isLoading: true }));
     this.store.dispatch(saveChangesOfCodeValueManagement());
+  }
+  openCSV(event) {
+    const dialogRef = this.dialog.open(ConfiguartionModalComponent,
+      { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+      }
+    }, error => {
+
+    });
+
+  }
+  clearFiles(event) {
+    event.target.value = '';
   }
 }
