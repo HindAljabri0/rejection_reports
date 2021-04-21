@@ -27,7 +27,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     batchId: string,
     receivedFromDate: Date,
     receivedToDate: Date,
-    status: 'All' | 'SUBMITTED' | 'UNDERSUBMISSION' | 'UNDERREVIEW' | 'NEW',
+    status: 'All' | 'SUBMITTED' | 'UNDERSUBMISSION' | 'UNDERREVIEW' | 'NEW'|'INVALID'|'FAILED',
     pageNo: number,
     pageSize: number,
     totalPages: number
