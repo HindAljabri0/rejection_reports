@@ -266,7 +266,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           underProcessingIsDone = true;
         } else if (this.isRejectedByPayerStatus(status)) {
           if (!rejectedByPayerIsDone)
-            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'INVALID', 'DUPLICATE']);
+            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
           rejectedByPayerIsDone = true;
         } else if (this.isReadyForSubmissionStatus(status)) {
           if (!readyForSubmissionIsDone)
@@ -276,7 +276,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           if (!paidIsDone)
             await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
           paidIsDone = true;
-        } else {
+        }
+        else if (this.isInvalidStatus(status)) {
+          await this.getSummaryOfStatus([ClaimStatus.INVALID]);
+        }
+        else {
           await this.getSummaryOfStatus([status]);
         }
       }
@@ -286,6 +290,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
+
 
 
 
@@ -355,11 +360,25 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.isSubmit = true;
       } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
         this.isRevalidate = true;
-      } else {
+        this.isSubmit = false;
+      }
+      else if (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) {
+        this.isRevalidate = false;
+        this.isSubmit = false;
+        this.summaries[key].statuses = this.summaries[key].statuses.filter(ele => ele !== 'invalid');
+      }
+      else if (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.INVALID.toLowerCase()) {
+        this.isRevalidate = true;
+        this.isSubmit = false;
+      }
+      else {
         this.isRevalidate = false;
         this.isSubmit = false;
       }
     }
+
+    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLocaleLowerCase()) ? false : true;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -453,9 +472,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         this.commen.loadingChanged.next(false);
       });
-    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
-    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing) ? false : true;
+
     const status = this.routeActive.snapshot.queryParamMap.get('status');
+
+
     this.status = status === null ? this.status : status;
   }
   storeSearchResultsForClaimViewPagination() {
@@ -1086,7 +1106,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isRejectedByPayerStatus(status: string) {
     status = status.toUpperCase();
     return status == ClaimStatus.REJECTED.toUpperCase() ||
-      status == 'INVALID' || status == 'DUPLICATE';
+      status == 'DUPLICATE';
   }
 
   isReadyForSubmissionStatus(status: string) {
@@ -1099,6 +1119,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     status = status.toUpperCase();
     return status == ClaimStatus.PAID.toUpperCase() ||
       status == 'SETTLED';
+  }
+  isInvalidStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.INVALID.toUpperCase();
   }
 }
 
