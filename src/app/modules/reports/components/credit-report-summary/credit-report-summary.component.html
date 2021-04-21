@@ -11,10 +11,12 @@
             <strong>{{summaryData.grandTotalRejection}} SR</strong>
         </div>
         <div class="chart-block">
-            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
+            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels"
+                [chartType]="chartOneType">
             </canvas>
         </div>
     </div>
+
     <div class="right-block">
         <div class="row small-gutter align-items-end">
             <div class="col-8">
@@ -64,6 +66,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <div class="credit-report-body">
     <div class="left-block">
@@ -94,7 +97,7 @@
             </li>
             <li>
                 <span>Net Billed with VAT</span>
-                <p>{{summaryData?.presentedNetBilledVat}} <span class="currency">SR</span></p>
+                <p>{{summaryData?.netBilledVat}} <span class="currency">SR</span></p>
             </li>
             <li>
                 <span>VAT Amount</span>
@@ -105,7 +108,8 @@
             <span class="legend-text">Rejection Medical Reasons Breakdown</span>
             <div class="content-wrapper">
                 <div class="chart">
-                    <canvas baseChart [datasets]="chartTwoData" [options]="chartTwoOptions" [labels]="chartTwoLabels" [chartType]="chartTwoType">
+                    <canvas baseChart [datasets]="chartTwoData" [options]="chartTwoOptions" [labels]="chartTwoLabels"
+                        [chartType]="chartTwoType">
                     </canvas>
                 </div>
                 <div class="content">
@@ -193,7 +197,8 @@
                     A. Appropriateness of Care
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" [ngStyle]="{'width':summaryData.appropriatenessOfCarePercent+'%'}"></div>
+                            <div class="progress-line"
+                                [ngStyle]="{'width':summaryData.appropriatenessOfCarePercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.appropriatenessOfCarePercent}}%</div>
                     </div>
@@ -202,7 +207,8 @@
                     B. Technical / Contractual
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" [ngStyle]="{'width':summaryData.technicalContractualPercent+'%'}">
+                            <div class="progress-line"
+                                [ngStyle]="{'width':summaryData.technicalContractualPercent+'%'}">
                             </div>
                         </div>
                         <div class="text">{{summaryData.technicalContractualPercent}}%</div>
@@ -213,7 +219,8 @@
                     Above Contractual / Agreed Prices
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" [ngStyle]="{'width':summaryData.priceListShortFallOrBilledPercent+'%'}"></div>
+                            <div class="progress-line"
+                                [ngStyle]="{'width':summaryData.priceListShortFallOrBilledPercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.priceListShortFallOrBilledPercent}}%</div>
                     </div>
@@ -242,7 +249,8 @@
                     F. Unwarranted Variations
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" [ngStyle]="{'width':summaryData.unwarrantedVariationsPercent+'%'}"></div>
+                            <div class="progress-line"
+                                [ngStyle]="{'width':summaryData.unwarrantedVariationsPercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.unwarrantedVariationsPercent}}%</div>
                     </div>
@@ -251,7 +259,8 @@
                     G- Pharmacy Benefit Management
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" [ngStyle]="{'width':summaryData.pharmacyBenefitManagementPercent+'%'}"></div>
+                            <div class="progress-line"
+                                [ngStyle]="{'width':summaryData.pharmacyBenefitManagementPercent+'%'}"></div>
                         </div>
                         <div class="text">{{summaryData.pharmacyBenefitManagementPercent}}%</div>
                     </div>
@@ -300,7 +309,8 @@
                     Deductible Difference
                     <div class="progress-block">
                         <div class="bar">
-                            <div class="progress-line" [ngStyle]="{'width':summaryData.deductibleDifferencePercent+'%'}">
+                            <div class="progress-line"
+                                [ngStyle]="{'width':summaryData.deductibleDifferencePercent+'%'}">
                             </div>
                         </div>
                         <div class="text">{{summaryData.deductibleDifferencePercent}}%</div>
@@ -897,7 +907,7 @@
         </mat-tab-group>
     </div>
 </div>
-<div class="block-footer sticky-bottom">
+<!-- <div class="block-footer sticky-bottom">
     <div class="left-block custom-paginator">
         <button (click)="goToFirstPage()" matRipple type="button" title="First Page">
             <img src="./assets/ic-page-first.svg" alt="First" />
@@ -918,4 +928,4 @@
     <div class="btn-list right-block">
         <button type="button" color="primary" mat-flat-button>Submit</button>
     </div>
-</div>
+</div> -->

@@ -47,7 +47,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       receivedToDate: null,
       status: 'All',
       pageNo: 0,
-      pageSize: 2,
+      pageSize: 10,
       totalPages: 0
     };
     this.searchCreditReports();
@@ -66,7 +66,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     this.sharedServices.loadingChanged.next(true);
 
     this.creditReportService.listBupaCreditReports(
-      this.sharedServices.providerId, {...this.creditReportSearchModel, status: null}
+      this.sharedServices.providerId, { ...this.creditReportSearchModel, status: null }
     ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
