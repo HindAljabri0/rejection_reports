@@ -34,7 +34,7 @@
         <mat-tab [label]="'Attachments'">
             <claim-attachments></claim-attachments>
         </mat-tab>
-        <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT'">
+        <mat-tab *ngIf="pageType == 'INPATIENT_OUTPATIENT' || claimHaveLabData()">
             <ng-template mat-tab-label>
                 <mat-icon class="mr-1" *ngIf="labResultsTabHasErrors()" [class.text-danger]="labResultsTabHasErrors()">
                     error</mat-icon>
