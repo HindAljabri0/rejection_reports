@@ -755,6 +755,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .status-text.ball-green:before{background-color: #7DF467;}
 .status-text.ball-brown:before{background-color: #B48A60;}
 .status-text.ball-red:before{background-color: #FF0000;}
+.status-text.ball-yellow:before{background-color: #fbff00;}
+
 
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/

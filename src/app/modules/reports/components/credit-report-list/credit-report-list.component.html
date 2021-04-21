@@ -64,6 +64,14 @@
     <li class="nav-item">
         <a class="nav-link" href="#" [class.active]="currentStatus=='SUBMITTED'" (click)="changeTab($event,'SUBMITTED')" title="Submitted">Submitted</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='INVALID'" (click)="changeTab($event,'INVALID')"
+            title="Invalid">Invalid</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" [class.active]="currentStatus=='FAILED'" (click)="changeTab($event,'FAILED')"
+            title="Failed">Failed</a>
+    </li>
 </ul>
 <div class="bg-white table-responsive">
     <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -103,6 +111,8 @@
                     <div class="status-text ball-blue" *ngIf="item.status=='UNDERREVIEW'">Under Review</div>
                     <div class="status-text ball-brown" *ngIf="item.status=='UNDERSUBMISSION'">Under Submission</div>
                     <div class="status-text ball-green" *ngIf="item.status=='SUBMITTED'">Submitted</div>
+                    <div class="status-text ball-yellow" *ngIf="item.status=='INVALID'">Invalid</div>
+                    <div class="status-text ball-yellow" *ngIf="item.status=='FAILED'">Failed</div>
                 </td>
 
                 <!-- Bupa -->
