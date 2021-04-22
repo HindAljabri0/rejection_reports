@@ -1,9 +1,18 @@
 <div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
-    <div class="block-header has-border">
-        <ul class="custom-breadcrumb">
-            <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
-            <li class="active">Tawuniya</li>
-        </ul>
+    <div class="block-header has-border align-items-center">
+        <div class="left-block">
+            <ul class="custom-breadcrumb">
+                <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
+                <li class="active">Tawuniya</li>
+            </ul>
+        </div>
+        <div class="right-block"
+            *ngIf="(data.providercreditReportInformation.status=='INVALID' || data.providercreditReportInformation.status=='FAILED') && data != null &&  data.providercreditReportInformation != null">
+            <button type="button" class="error-btn" (click)="openErrorsDialog()" matRipple>
+                <mat-icon>error</mat-icon>
+                <span>View Errors</span>
+            </button>
+        </div>
     </div>
     <div class="credit-report-header">
         <div class="left-block align-items-start">
@@ -209,7 +218,8 @@
                                         {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                 </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" (click)="$event.stopPropagation()" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" (click)="$event.stopPropagation()" mat-icon-button
+                                        class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
@@ -302,7 +312,8 @@
                                         {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                 </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1" mat-icon-button
+                                        class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">

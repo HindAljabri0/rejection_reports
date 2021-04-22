@@ -228,6 +228,8 @@ export class SharedServices {
         return 'not-saved';
       case ClaimStatus.Downloadable.toLowerCase():
         return 'ready-submission';
+      case ClaimStatus.INVALID.toLowerCase():
+        return 'invalid';
       default:
         return 'not-saved';
     }

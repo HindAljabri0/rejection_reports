@@ -153,6 +153,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .pr-7{padding-right: 7px !important;}
 .p-14{padding: 14px !important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
+.error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
+.error-btn>span{padding-left: 4px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -169,7 +171,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-medium-grey{color: #909090!important;}
 .text-grey{color: #707070!important;}
 .text-success{color: #29bf24!important;}
-.text-danger{color: #CC2F2F!important;}
+.text-invalid,.text-danger{color: #CC2F2F!important;}
 .text-middle-grey{color:#bebebe!important;}
 .text-normal-color{color:#2d2d2d!important;}
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
@@ -184,7 +186,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .bg-light-grey{background-color: #adadad!important;}
 .bg-middle-grey{color:#bebebe!important;}
 .bg-success{background-color: #29bf24!important;}
-.bg-danger{background-color: #CC2F2F!important;}
+.bg-invalid,.bg-danger{background-color: #CC2F2F!important;}
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
@@ -195,7 +197,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .light-bg-paid,.light-bg-green{background-color: #e3efe5!important;}
 .light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
 .light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
-.light-bg-danger{background-color: #f9e6e6!important;}
+.light-bg-invalid,.light-bg-danger{background-color: #f9e6e6!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
@@ -786,10 +788,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* credit report summary header
 --------------------------------------------------------------------------------------------------------*/
-.credit-report-header{display: flex;top:68px;position:sticky;z-index:3;}
-.credit-report-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
-.credit-report-header>.left-block .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}
-.credit-report-header>.left-block .chart-block{height: 48px;flex-basis:48px;max-width: 48px;flex-grow:0;flex-shrink:0;border-radius: 500px;background: #FFFFFF;padding: 3px;}
+.credit-report-header{display: flex;}
+.credit-report-header,.credit-report-body .section-header{top:68px;position:sticky;z-index:3;}
+.credit-report-header>.left-block,.credit-report-body .section-header{display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
+.credit-report-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;}
+.credit-report-header>.left-block .content,.credit-report-body .section-header .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}
+.credit-report-header>.left-block .chart-block,.credit-report-body .section-header .chart-block{height: 48px;flex-basis:48px;max-width: 48px;flex-grow:0;flex-shrink:0;border-radius: 500px;background: #FFFFFF;padding: 3px;}
 .credit-report-header>.right-block{background-color: #F4F4F4;border-bottom:1px solid rgba(112, 112, 112,0.3);flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 250px);max-width: calc(100% - 250px);padding: 10px 14px;}
 .credit-report-header>.right-block .content{flex-grow: 0;flex-shrink: 0;flex-basis:280px;max-width:280px;}
 .credit-report-header>.right-block .content small,.credit-report-header>.right-block .content p{color:#3060AA;}

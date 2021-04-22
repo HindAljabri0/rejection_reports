@@ -24,6 +24,7 @@ import { CreditReportUploadModalComponent } from './components/credit-report-upl
 import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-submissions.component';
 import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
 import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
+import { TawuniyaCreditReportErrorsDialogComponent } from './components/tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { RevenueTrackingReportComponent } from './components/revenue-tracking-re
     TawuniyaCreditReportDetailsDialogComponent,
     ClaimSubmissionsComponent,
     RevenueReportComponent,
-    RevenueTrackingReportComponent
+    RevenueTrackingReportComponent,
+    TawuniyaCreditReportErrorsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -51,6 +53,11 @@ import { RevenueTrackingReportComponent } from './components/revenue-tracking-re
     ChartsModule
   ],
   providers: [PercentPipe, DatePipe, CreditReportService],
-  entryComponents: [CreditReportCreateConfirmDialogComponent, TawuniyaCreditReportDetailsDialogComponent, CreditReportUploadModalComponent]
+  entryComponents: [
+    CreditReportCreateConfirmDialogComponent,
+    TawuniyaCreditReportDetailsDialogComponent,
+    CreditReportUploadModalComponent,
+    TawuniyaCreditReportErrorsDialogComponent
+  ]
 })
 export class ReportsModule { }
