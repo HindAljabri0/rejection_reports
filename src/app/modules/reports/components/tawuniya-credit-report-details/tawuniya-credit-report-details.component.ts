@@ -119,7 +119,9 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       });
   }
-
+  showClaim(claimno: string) {
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/find?claimno=${claimno}`);
+  }
   openDetailsDialog(event, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
     const batchReferenceNumber = this.data.providercreditReportInformation.batchreferenceno;
