@@ -4,17 +4,7 @@
         <li class="active">Bupa</li>
     </ul>
 </div>
-<div class="credit-report-header">
-    <div class="left-block">
-        <div class="content">
-            <p>Total Rejections</p>
-            <strong>{{summaryData.grandTotalRejection}} SR</strong>
-        </div>
-        <div class="chart-block">
-            <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
-            </canvas>
-        </div>
-    </div>
+<!-- <div class="credit-report-header">
     <div class="right-block">
         <div class="row small-gutter align-items-end">
             <div class="col-8">
@@ -64,9 +54,19 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <div class="credit-report-body">
     <div class="left-block">
+        <div class="section-header">
+            <div class="content">
+                <p>Total Rejections</p>
+                <strong>{{summaryData.grandTotalRejection}} SR</strong>
+            </div>
+            <div class="chart-block">
+                <canvas baseChart [datasets]="chartOneData" [options]="chartOneOptions" [labels]="chartOneLabels" [chartType]="chartOneType">
+                </canvas>
+            </div>
+        </div>
         <ul class="information-block">
             <li>
                 <span>Batch ID</span>
@@ -94,7 +94,7 @@
             </li>
             <li>
                 <span>Net Billed with VAT</span>
-                <p>{{summaryData?.presentedNetBilledVat}} <span class="currency">SR</span></p>
+                <p>{{summaryData?.netBilledVat}} <span class="currency">SR</span></p>
             </li>
             <li>
                 <span>VAT Amount</span>
@@ -892,12 +892,12 @@
                     </table>
                 </div>
             </mat-tab>
-            <mat-tab [label]="'Team Progress'">
-            </mat-tab>
+            <!-- <mat-tab [label]="'Team Progress'">
+            </mat-tab> -->
         </mat-tab-group>
     </div>
 </div>
-<div class="block-footer sticky-bottom">
+<!-- <div class="block-footer sticky-bottom">
     <div class="left-block custom-paginator">
         <button (click)="goToFirstPage()" matRipple type="button" title="First Page">
             <img src="./assets/ic-page-first.svg" alt="First" />
@@ -918,4 +918,4 @@
     <div class="btn-list right-block">
         <button type="button" color="primary" mat-flat-button>Submit</button>
     </div>
-</div>
+</div> -->

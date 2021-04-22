@@ -10,12 +10,14 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { configurationReducer } from 'src/app/pages/configurationsPage/store/configurations.reducer';
 import { ConfigurationsEffects } from 'src/app/pages/configurationsPage/store/configurations.effects';
+import { ConfiguartionModalComponent } from 'src/app/pages/configurationsPage/configuartion-modal/configuartion-modal.component';
 
 
 
 @NgModule({
   declarations: [
-    ConfigurationsComponent
+    ConfigurationsComponent,
+    ConfiguartionModalComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -29,6 +31,7 @@ import { ConfigurationsEffects } from 'src/app/pages/configurationsPage/store/co
     SharedModule,
     HttpClientModule,
     FormsModule,
-  ]
+  ],
+  entryComponents: [ConfiguartionModalComponent]
 })
 export class ConfigurationsModule { }

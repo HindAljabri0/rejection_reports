@@ -1,9 +1,18 @@
 <div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
-    <div class="block-header has-border">
-        <ul class="custom-breadcrumb">
-            <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
-            <li class="active">Tawuniya</li>
-        </ul>
+    <div class="block-header has-border align-items-center">
+        <div class="left-block">
+            <ul class="custom-breadcrumb">
+                <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
+                <li class="active">Tawuniya</li>
+            </ul>
+        </div>
+        <div class="right-block"
+            *ngIf="(data.providercreditReportInformation.status=='INVALID' || data.providercreditReportInformation.status=='FAILED') && data != null &&  data.providercreditReportInformation != null">
+            <button type="button" class="error-btn" (click)="openErrorsDialog()" matRipple>
+                <mat-icon>error</mat-icon>
+                <span>View Errors</span>
+            </button>
+        </div>
     </div>
     <div class="credit-report-header">
         <div class="left-block align-items-start">
@@ -190,13 +199,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let service of deductedServices">
+                            <tr class="row-click" *ngFor="let service of deductedServices" (click)="openDetailsDialog($event, service.id.serialno, 'deducted')">
                                 <td>
                                     <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                                 </td>
                                 <td>{{service.waseelbatch}}</td>
                                 <td>{{service.physicianid}}</td>
-                                <td>{{service.payerclaimno}}</td>
+                                <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)" class="primary-link underlined disabled ng-star-inserted" href="#" title="payerClaimNo">{{service.payerclaimno}}</td>
                                 <td></td>
                                 <td>{{service.servicecode}}</td>
                                 <td>{{service.servicedescription}}</td>
@@ -209,7 +218,8 @@
                                         {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                 </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" (click)="$event.stopPropagation()" mat-icon-button
+                                        class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
@@ -283,13 +293,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let service of rejectedServices">
+                            <tr class="row-click" *ngFor="let service of rejectedServices" (click)="openDetailsDialog($event, service.id.serialno, 'rejected')">
                                 <td>
                                     <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
                                 </td>
                                 <td>{{service.waseelbatch}}</td>
                                 <td>{{service.physicianid}}</td>
-                                <td>{{service.payerclaimno}}</td>
+                                <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)" class="primary-link underlined disabled ng-star-inserted" href="#" title="payerClaimNo">{{service.payerclaimno}}</td>
                                 <td></td>
                                 <td>{{service.servicecode}}</td>
                                 <td>{{service.servicedescription}}</td>
@@ -302,7 +312,8 @@
                                         {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                 </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1" mat-icon-button
+                                        class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">

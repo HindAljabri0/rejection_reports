@@ -1,0 +1,26 @@
+<div class="primary-dialog-header has-border">
+  <h5 class="primary-dialog-title">File Upload</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+  <div class="custom-file-upload">
+    <div class="content" *ngIf="!currentFileUpload">
+      <img src="./assets/ic-upload.svg" alt="Upload" />
+      <p>Drag & drop file here, or click here to upload files</p>
+      <span>Only .PDF files allowed</span>
+    </div>
+    <div class="content" *ngIf="currentFileUpload">
+      <img src="./assets/file-types/ic-csv.svg" alt="CSV File" />
+      <p class="text-normal-color">{{currentFileUpload.name}}</p>
+      <span>File Size: {{sizeInMB}}</span>
+    </div>
+    <input type="file" name="" id="" accept=".csv" class="upload-control" (change)="selectFile($event)" />
+  </div>
+  <p class="error-text pt-3" *ngIf="error">{{error}}</p>
+</div>
+<div class="primary-dialog-footer has-border">
+  <div class="btn-list text-right">
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button [disabled]="common.loading" (click)="upload()" mat-flat-button color="primary">Upload</button>
+  </div>
+</div>

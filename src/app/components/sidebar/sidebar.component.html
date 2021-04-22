@@ -97,13 +97,13 @@
                                 <span class="text">Credit Reports</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectionUpload">
+                        <!-- <li i18n="@@rejectionUpload">
                             <a routerLink="/reports/{{providerId}}/creditReportCreate" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-create.svg" alt="Add File" class="default-icon" />
                                 <img src="assets/ic-credit-report-create-active.svg" alt="Add File" class="active-icon" />
                                 <span class="text">Credit Report Create</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li i18n="@@cleanClaimProgress">
                             <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
@@ -151,9 +151,22 @@
                                 <span class="text">Accounts Receivable</span>
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a routerLink="/reports/revenue-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Revenue Report</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Revenue Report</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li>
+                            <a routerLink="/reports/revenue-tracking-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Revenue Tracking Report</span>
                             </a>
                         </li>
                     </ul>

@@ -9,8 +9,10 @@ import {
   getPageType,
   ClaimPageMode,
   getPageMode,
-  getCaseType
+  getCaseType,
+  getClaim
 } from '../store/claim.reducer';
+import { Claim } from '../models/claim.model';
 
 @Component({
   selector: 'claim-data',
@@ -32,6 +34,7 @@ export class ClaimDataComponent implements OnInit {
 
   isInpatientClaim: boolean;
   @Input() claimType = '';
+  claim: Claim;
 
   constructor(private store: Store) { }
 
@@ -40,6 +43,7 @@ export class ClaimDataComponent implements OnInit {
     this.store.select(getPageType).subscribe(type => this.pageType = type);
     this.store.select(getClaimObjectErrors).subscribe(errors => this.errors = errors);
     this.store.select(getCaseType).subscribe(type => this.isInpatientClaim = (type == 'INPATIENT'));
+    this.store.select(getClaim).subscribe(claim => this.claim = claim);
   }
 
   changeTab(event: MatTabChangeEvent) {
@@ -81,5 +85,13 @@ export class ClaimDataComponent implements OnInit {
       return this.errors.labResultsErrors.length > 0;
     }
     return false;
+  }
+
+  claimHaveLabData() {
+    return this.claim != null
+      && this.claim.caseInformation != null
+      && this.claim.caseInformation.caseDescription != null
+      && this.claim.caseInformation.caseDescription.investigation != null
+      && this.claim.caseInformation.caseDescription.investigation.length > 0;
   }
 }

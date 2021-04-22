@@ -8,6 +8,8 @@ import { RejectedService } from 'src/app/models/tawuniyaCreditReportModels/rejec
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { TawuniyaCreditReportDetailsDialogComponent } from '../tawuniya-credit-report-details-dialog/tawuniya-credit-report-details-dialog.component';
+import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
+import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -118,9 +120,12 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       });
   }
-
-  openDetailsDialog(event, batchReferenceNumber, serialNo, serviceType: 'rejected' | 'deducted') {
+  showClaim(claimno: string) {
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/find?claimno=${claimno}`);
+  }
+  openDetailsDialog(event, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
+    const batchReferenceNumber = this.data.providercreditReportInformation.batchreferenceno;
     const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-xl'], data: { batchReferenceNumber, serialNo, serviceType } });
   }
 
@@ -190,8 +195,14 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   }
 
   isEditableBatch() {
-    return this.data.providercreditReportInformation.status == 'NEW' ||
-      this.data.providercreditReportInformation.status == 'UNDERREVIEW';
+    return this.data != null && (this.data.providercreditReportInformation.status == 'NEW' ||
+      this.data.providercreditReportInformation.status == 'UNDERREVIEW');
+  }
+
+  openErrorsDialog() {
+    const data = new CreditReportUploadModel();
+    data.batchId = this.batchId;
+    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'], data: data });
   }
 
 }

@@ -91,7 +91,7 @@
                         *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
                         <img src="./assets/{{detailTopActionIcon}}" />
                     </button>
-                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                    <!-- <mat-menu #moreMenu="matMenu" xPosition="before">
                         <button mat-menu-item>
                             <span>Menu 1</span>
                         </button>
@@ -104,7 +104,7 @@
                     </mat-menu>
                     <button matRipple type="button" class="action-btn" [matMenuTriggerFor]="moreMenu">
                         <img src="./assets/ic-more.svg" alt="More" />
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -177,17 +177,19 @@
                                         </mat-checkbox>
                                     </td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        {{claim.providerClaimNumber}}</td>
+                                        <span class="text-monospace">{{claim.providerClaimNumber}}</span>
+                                    </td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
                                         {{claim.drName}}</td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        {{claim.memberId}}
+                                        <span class="text-monospace">{{claim.memberId}}</span>
                                     </td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        {{claim.nationalId}}
+                                        <span class="text-monospace">{{claim.nationalId}}</span>
                                     </td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        {{claim.patientFileNumber}}</td>
+                                        <span class="text-monospace">{{claim.patientFileNumber}}</span>
+                                    </td>
                                     <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
                                         {{claim.claimDate}}
                                     </td>

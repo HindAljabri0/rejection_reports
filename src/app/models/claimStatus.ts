@@ -32,5 +32,6 @@ export enum ClaimStatus {
     // NO_APPROVAL_REQUIRED= "No Approva Required",
 
     Downloadable = 'Downloadable',
-    Under_Processing = 'UNDER PROCESSING'
+    Under_Processing = 'UNDER PROCESSING',
+    Under_Submision = 'UNDER SUBMISSION'
 }
