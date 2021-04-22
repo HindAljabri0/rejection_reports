@@ -153,6 +153,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .pr-7{padding-right: 7px !important;}
 .p-14{padding: 14px !important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
+.error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
+.error-btn>span{padding-left: 4px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/

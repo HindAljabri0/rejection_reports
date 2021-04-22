@@ -7,6 +7,7 @@ import { CreditReportService } from 'src/app/services/creditReportService/credit
 import { SharedServices } from 'src/app/services/shared.services';
 import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/credit-report-upload-modal.component';
 import { Router } from '@angular/router';
+import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     batchId: string,
     receivedFromDate: Date,
     receivedToDate: Date,
-    status: 'All' | 'SUBMITTED' | 'UNDERSUBMISSION' | 'UNDERREVIEW' | 'NEW'|'INVALID'|'FAILED',
+    status: 'All' | 'SUBMITTED' | 'UNDERSUBMISSION' | 'UNDERREVIEW' | 'NEW' | 'INVALID' | 'FAILED',
     pageNo: number,
     pageSize: number,
     totalPages: number
@@ -66,7 +67,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     this.sharedServices.loadingChanged.next(true);
 
     this.creditReportService.listBupaCreditReports(
-      this.sharedServices.providerId, {...this.creditReportSearchModel, status: null}
+      this.sharedServices.providerId, { ...this.creditReportSearchModel, status: null }
     ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.creditReportData = res.body.content;
@@ -204,6 +205,11 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       totalPages: 0
     };
     this.tawuniyaCreditReports();
+  }
+
+  openErrorsDialog(e) {
+    e.stopPropagation();
+    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'] });
   }
 
 }

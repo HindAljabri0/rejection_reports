@@ -8,6 +8,7 @@ import { RejectedService } from 'src/app/models/tawuniyaCreditReportModels/rejec
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { TawuniyaCreditReportDetailsDialogComponent } from '../tawuniya-credit-report-details-dialog/tawuniya-credit-report-details-dialog.component';
+import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -193,6 +194,10 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   isEditableBatch() {
     return this.data != null && (this.data.providercreditReportInformation.status == 'NEW' ||
       this.data.providercreditReportInformation.status == 'UNDERREVIEW');
+  }
+
+  openErrorsDialog() {
+    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'] });
   }
 
 }
