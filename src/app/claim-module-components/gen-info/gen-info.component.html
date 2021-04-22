@@ -1,13 +1,13 @@
 <div class="row small-gutter general-info-wrapper">
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('fullName')">
+        <div class="form-group" [class.has-error]="fieldHasError('fullName') || fieldHasError('FirstName')||fieldHasError('LastName')">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
                 <div class="col">
                     <input class="form-control" placeholder="Enter full name" type="text"
-                        [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
+                        [formControl]="fullNameController" (change)="updateClaim('FULLNAME')" required>
                 </div>
-                <div class="col-auto form-group" [class.has-error]="fieldHasError('gender')">
+                <div class="col-auto form-group" [class.has-error]="fieldHasError('GENDER') || fieldHasError('GENDERNULL')">
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select [value]="selectedGender"
                             (selectionChange)="selectedGender = $event.value; updateClaim('gender');"
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
-        <div class="form-group" [class.has-error]="fieldHasError('caseType')">
+        <div class="form-group" [class.has-error]="fieldHasError('casetype')">
             <label class="control-label">Case Type</label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedCaseType"
@@ -114,14 +114,14 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('memberId')">
+        <div class="form-group" [class.has-error]="fieldHasError('MEMID')">
             <label class="control-label">Member ID<span class="asterisk">*</span></label>
             <input class="form-control" placeholder="Enter member ID" type="text" [formControl]="memberIdController"
                 (change)="updateClaim('memberId')" [matTooltip]="getFieldError('memberId')" required>
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('policyNum')">
+        <div class="form-group" [class.has-error]="fieldHasError('POLNO')">
             <label class="control-label">Policy No.<span
                     *ngIf="selectedPayer!==102 && selectedPayer!==207 &&selectedPayer!== 313"
                     class="asterisk">*</span></label>
@@ -145,7 +145,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('age') || fieldHasError('ageUnit')"
+        <div class="form-group" [class.has-error]="fieldHasError('AGE')"
             [matTooltip]="getFieldError('age')">
             <label class="control-label">Age<span *ngIf="isControlNull(memberDobController)"
                     class="asterisk">*</span></label>
@@ -169,7 +169,7 @@
     </div>
     <!-- *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'" -->
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('eligibilityNum')"
+        <div class="form-group" [class.has-error]="fieldHasError('ELGNO')"
             [matTooltip]="getFieldError('eligibilityNum')">
             <label class="control-label">Eligibility Number</label>
             <input type="text" placeholder="Enter eligibility number" [formControl]="eligibilityNumController"
@@ -177,7 +177,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('approvalNum')">
+        <div class="form-group" [class.has-error]="fieldHasError('APPNO') ||fieldHasError('APPREFNO') ">
             <label class="control-label">Approval No.<span
                     *ngIf="departmentCode != '68' && claimPageType == 'DENTAL_OPTICAL_PHARMACY'"
                     class="asterisk">*</span></label>
@@ -186,7 +186,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('physicianCategory')"
+        <div class="form-group" [class.has-error]="fieldHasError('PHYCATEGORY') || fieldHasError('PHYCA')"
             [matTooltip]="getFieldError('physicianCategory')">
             <label class="control-label">Physician Category<span class="asterisk"
                     *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
@@ -205,7 +205,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('physicianName')"
+        <div class="form-group" [class.has-error]="fieldHasError('PHYNAME') || fieldHasError('PHYNA')"
             [matTooltip]="getFieldError('physicianName')">
             <label class="control-label">Physician Name<span class="asterisk"
                     *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
@@ -215,7 +215,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('physicianId')"
+        <div class="form-group" [class.has-error]="fieldHasError('physicianID') || fieldHasError('PHYID') "
             [matTooltip]="getFieldError('physicianId')">
             <label class="control-label">Physician ID<span class="asterisk"
                     *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
@@ -235,7 +235,7 @@
 </div>
 <div class="row small-gutter general-info-wrapper">
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('mainSymptoms')"
+        <div class="form-group" [class.has-error]="fieldHasError('CHECOMP')"
             [matTooltip]="getFieldError('mainSymptoms')">
             <label class="control-label">Chief Complaint Symptoms<span class="asterisk"
                     *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
@@ -252,7 +252,7 @@
     </div>
     <div class="col">
         <div class="form-group"
-            [class.has-error]="fieldHasError('illnessDuration') || fieldHasError('illnessDurationUnit')">
+            [class.has-error]="fieldHasError('IIINESSDURATION') ">
             <label class="control-label">Duration of Illness<span *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'"
                     class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
@@ -275,7 +275,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('visitType')">
+        <div class="form-group" [class.has-error]="fieldHasError('VISITTYPENULL')">
             <label class="control-label">Visit Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType"
@@ -304,7 +304,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [matTooltip]="getFieldError('fileNumber')"
+        <div class="form-group" [matTooltip]="getFieldError('PATFILNO')"
             [class.has-error]="fieldHasError('fileNumber')">
             <label class="control-label">Patient File Number<span class="asterisk">*</span></label>
             <input id="fileNumberInput" type="text" placeholder="Enter patient file number"
