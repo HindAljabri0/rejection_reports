@@ -205,7 +205,7 @@
                                 </td>
                                 <td>{{service.waseelbatch}}</td>
                                 <td>{{service.physicianid}}</td>
-                                <td>{{service.payerclaimno}}</td>
+                                <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)" class="primary-link underlined disabled ng-star-inserted" href="#" title="payerClaimNo">{{service.payerclaimno}}</td>
                                 <td></td>
                                 <td>{{service.servicecode}}</td>
                                 <td>{{service.servicedescription}}</td>
@@ -299,7 +299,7 @@
                                 </td>
                                 <td>{{service.waseelbatch}}</td>
                                 <td>{{service.physicianid}}</td>
-                                <td>{{service.payerclaimno}}</td>
+                                <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)" class="primary-link underlined disabled ng-star-inserted" href="#" title="payerClaimNo">{{service.payerclaimno}}</td>
                                 <td></td>
                                 <td>{{service.servicecode}}</td>
                                 <td>{{service.servicedescription}}</td>
