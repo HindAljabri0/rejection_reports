@@ -47,11 +47,13 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()"
-                    [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()" [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
                 <span [class.text-danger]="invoiceServicesTabHasErrors()">Invoices & Services</span>
             </ng-template>
             <claim-invoices-services></claim-invoices-services>
+        </mat-tab>
+        <mat-tab [label]="'PBM Comments'">
+            <pbm-comments></pbm-comments>
         </mat-tab>
     </mat-tab-group>
 </div>

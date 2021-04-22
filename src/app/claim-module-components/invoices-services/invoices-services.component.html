@@ -68,7 +68,7 @@
                 </tr>
                 <tr *ngIf="expandedInvoice == i">
                     <td colspan="9" class="pl-7 pr-7 border-top">
-                        <div class="d-flex mt-n2">
+                        <div class="d-flex">
                             <h5 class="align-self-center medium">Services</h5>
                             <div class="ml-auto btn-list" *ngIf="pageMode != 'VIEW'">
                                 <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" class="primary-text-btn px-0"
@@ -260,6 +260,21 @@
                                                     <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
                                                 </span>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row small-gutter">
+                                    <div class="col-xxl-4 col-xl-3 col-lg-4">
+                                        <div class="inline-labelled-text">
+                                            <label>PBM Status</label>
+                                            <p>Lorem, ipsum dolor.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-8 col-xl-9 col-lg-8">
+                                        <div class="inline-labelled-text">
+                                            <label>PBM Comments</label>
+                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit doloribus nobis molestias quia quo inventore tempora recusandae
+                                                suscipit distinctio. Assumenda.</p>
                                         </div>
                                     </div>
                                 </div>

@@ -29,6 +29,7 @@ import { AdmissionComponent } from 'src/app/claim-module-components/admission/ad
 import { AttachmentsComponent } from 'src/app/claim-module-components/attachments/attachments.component';
 import { ClaimErrorsComponent } from 'src/app/claim-module-components/claim-errors/claim-errors.component';
 import { LabResultsComponent } from 'src/app/claim-module-components/lab-results/lab-results.component';
+import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-comments/pbm-comments.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { LabResultsComponent } from 'src/app/claim-module-components/lab-results
     AttachmentsComponent,
     ClaimErrorsComponent,
     LabResultsComponent,
+    PbmCommentsComponent
   ],
   imports: [
     RouterModule.forChild([
