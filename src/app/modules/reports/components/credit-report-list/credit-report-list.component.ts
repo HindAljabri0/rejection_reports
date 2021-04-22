@@ -48,7 +48,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
       receivedToDate: null,
       status: 'All',
       pageNo: 0,
-      pageSize: 2,
+      pageSize: 10,
       totalPages: 0
     };
     this.searchCreditReports();
