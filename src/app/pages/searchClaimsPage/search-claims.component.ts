@@ -125,6 +125,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isSubmit = false;
   isDeleteBtnVisible: boolean = true;
   status: any = 1;
+  isAllCards: boolean = false;
 
 
   constructor(
@@ -352,8 +353,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     if (key == 0) {
-      this.isRevalidate = true;
+      this.isRevalidate = false;
       this.isSubmit = false;
+      this.isAllCards = true;
     } else {
       if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
         this.isRevalidate = true;
@@ -375,10 +377,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.isRevalidate = false;
         this.isSubmit = false;
       }
+      this.isAllCards = false;
     }
 
-    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
-    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLocaleLowerCase()) ? false : true;
+    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLowerCase();
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing || name === ClaimStatus.Under_Submision.toLowerCase() || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -897,7 +900,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     });
   }
 
-   claimIsWaitingEligibility(claimId: string) {
+  claimIsWaitingEligibility(claimId: string) {
     return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
   }
   get isWaitingForEligibility() {
@@ -1063,7 +1066,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
-          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+          const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, status, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               const status = event.body['status'];
@@ -1071,6 +1075,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 this.dialogService.openMessageDialog(
                   new MessageDialogData('',
                     `Your claims deleted successfully.`,
+                    false))
+                  .subscribe(afterColse => {
+                    // this.claimService.summaryChange.next(new UploadSummary());
+                    // this.router.navigate(['']);
+                    location.reload();
+                  });
+              }
+              else if (status === "AlreadySumitted") {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
                     false))
                   .subscribe(afterColse => {
                     // this.claimService.summaryChange.next(new UploadSummary());
