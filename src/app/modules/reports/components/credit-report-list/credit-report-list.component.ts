@@ -207,9 +207,9 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     this.tawuniyaCreditReports();
   }
 
-  openErrorsDialog(e) {
+  openErrorsDialog(e, item) {
     e.stopPropagation();
-    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'] });
+    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'], data: item });
   }
 
 }

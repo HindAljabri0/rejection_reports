@@ -12,24 +12,36 @@
                     <th>Description</th>
                 </tr>
             </thead>
+            <tbody>
+                <tr *ngFor="let item of errorDetails.data">
+                    <td>{{item.id.code}}</td>
+                    <td>{{item.id.datetime | date:"dd/MM/yyyy"}}</td>
+                    <td>{{item.id.description}}</td>
+                    <td></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>
 <div class="block-footer">
     <div class="left-block custom-paginator">
-        <button matRipple type="button" title="First Page">
+        <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
+            [disabled]="errorDetails.pageNo==0">
             <img src="./assets/ic-page-first.svg" alt="First" />
         </button>
-        <button matRipple type="button" title="Previous Page">
+        <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
+            [disabled]="errorDetails.pageNo==0">
             <img src="./assets/ic-page-prev.svg" alt="Previous" />
         </button>
         <p class="page-info">
-            1<small>/5</small>
+            {{(errorDetails.pageNo+1)}}<small>/{{errorDetails.totalPages }}</small>
         </p>
-        <button matRipple type="button" title="Next Page">
+        <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
+            [disabled]="(errorDetails.pageNo+1)==errorDetails.totalPages ">
             <img src="./assets/ic-page-next.svg" alt="Next" />
         </button>
-        <button matRipple type="button" title="Last Page">
+        <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
+            [disabled]="(errorDetails.pageNo+1)==errorDetails.totalPages ">
             <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
     </div>

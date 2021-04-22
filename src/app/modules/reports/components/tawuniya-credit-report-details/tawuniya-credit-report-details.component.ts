@@ -9,6 +9,7 @@ import { CreditReportService } from 'src/app/services/creditReportService/credit
 import { SharedServices } from 'src/app/services/shared.services';
 import { TawuniyaCreditReportDetailsDialogComponent } from '../tawuniya-credit-report-details-dialog/tawuniya-credit-report-details-dialog.component';
 import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
+import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -197,7 +198,9 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   }
 
   openErrorsDialog() {
-    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'] });
+    const data = new CreditReportUploadModel();
+    data.batchId = this.batchId;
+    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'], data: data });
   }
 
 }
