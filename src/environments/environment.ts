@@ -12,7 +12,7 @@ export const environment = {
   authenticationHost: "http://localhost:8086",
   adminServiceHost: "http://localhost:8087",
   auditTrailServiceHost: "http://localhost:8089",
-  settingsServiceHost: "http://192.168.1.135:8111",
+  settingsServiceHost: "http://localhost:8111",
   claimInquireServiceHost: "http://localhost:8580",
   validationServiceHost: "http://localhost:8121",
   creditReportService: "http://localhost:8484",
