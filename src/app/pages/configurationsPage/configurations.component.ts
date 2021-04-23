@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -12,8 +13,7 @@ import {
   setCodeValueManagementLoading
 } from './store/configurations.actions';
 import { CategorizedCodeValue, codeValueManagementSelectors } from './store/configurations.reducer';
-import { MatDialog } from '@angular/material';
-import { ConfiguartionModalComponent } from './configuartion-modal/configuartion-modal.component';
+import { ConfiguartionModalComponent } from '../configuartion-modal/configuartion-modal.component';
 
 @Component({
   selector: 'app-configurations',
@@ -198,7 +198,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   }
   openCSV(event) {
     const dialogRef = this.dialog.open(ConfiguartionModalComponent,
-      { panelClass: ['primary-dialog'], autoFocus: false, data: event.target.files[0] });
+      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.sharedServices.providerId } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
@@ -208,6 +208,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
     });
 
   }
+
   clearFiles(event) {
     event.target.value = '';
   }

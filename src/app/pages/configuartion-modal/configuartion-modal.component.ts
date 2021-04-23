@@ -14,10 +14,10 @@ export class ConfiguartionModalComponent implements OnInit {
   currentFileUpload: File;
   error = '';
   sizeInMB: string;
-  constructor(private dialogRef: MatDialogRef<ConfiguartionModalComponent>, @Inject(MAT_DIALOG_DATA) public data: File, public common: SharedServices, private _configurationService: ConfigurationService, private dialogService: DialogService) { }
+  constructor(private dialogRef: MatDialogRef<ConfiguartionModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public common: SharedServices, private _configurationService: ConfigurationService, private dialogService: DialogService) { }
 
   ngOnInit() {
-    this.currentFileUpload = this.data;
+    this.currentFileUpload = this.data.file;
     this.sizeInMB = this.common.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
       this.currentFileUpload = undefined;
@@ -69,7 +69,7 @@ export class ConfiguartionModalComponent implements OnInit {
   }
   startUploading() {
     this.common.loadingChanged.next(true);
-    this._configurationService.uploadCSVFile(this.common.providerId, this.currentFileUpload).subscribe((res: any) => {
+    this._configurationService.uploadCSVFile(this.data.providerId, this.currentFileUpload).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.common.loadingChanged.next(false);
         this.closeDialog();

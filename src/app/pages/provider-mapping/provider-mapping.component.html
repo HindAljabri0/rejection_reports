@@ -1,0 +1,32 @@
+<div class="selectProvider">
+  <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
+    <mat-label>Select Provider</mat-label>
+    <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
+      [readonly]="isLoading">
+    <button mat-button matSuffix mat-icon-button>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-autocomplete autoActiveFirstOption #auto>
+      <mat-option *ngFor="let provider of filteredProviders"
+        [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+        (click)="selectProvider(provider.switchAccountId)">
+        {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
+<div _ngcontent-ael-c22="" class="mappedValueInput ng-star-inserted">
+
+  <input #FileInput type="file" hidden accept=".csv" (change)="openCSV($event)" (click)="clearFiles($event)"
+    (click)="clearFiles($event)">
+  <input disabled class="ng-pristine ng-valid ng-touched" value="Here you can upload your mapping CSV">
+
+  <button _ngcontent-ael-c22="" mat-flat-button="" [disabled]="isLoading" class="mat-flat-button mat-button-base"
+    (click)="FileInput.click()">
+    <span class="mat-button-wrapper">Upload</span>
+    <div class="mat-button-ripple mat-ripple" matripple="">
+
+    </div>
+    <div class="mat-button-focus-overlay"></div>
+  </button></div>
