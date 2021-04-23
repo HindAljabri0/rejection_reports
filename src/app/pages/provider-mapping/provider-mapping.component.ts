@@ -42,7 +42,7 @@ export class ProviderMappingComponent implements OnInit {
 
   openCSV(event) {
     const dialogRef = this.dialog.open(ConfiguartionModalComponent,
-      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.selectedProvider } });
+      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.sharedServices.providerId, selectedProviderId: this.selectedProvider } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
