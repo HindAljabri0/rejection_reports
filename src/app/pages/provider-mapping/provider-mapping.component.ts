@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-provider-mapping',
   templateUrl: './provider-mapping.component.html',
-  styleUrls: ['./provider-mapping.component.css']
+  styles: []
 })
 export class ProviderMappingComponent implements OnInit {
   providerController: FormControl = new FormControl();
