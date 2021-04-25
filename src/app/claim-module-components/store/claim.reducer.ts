@@ -636,6 +636,7 @@ export const getDiagnosisErrors = createSelector(claimSelector, (state) => state
 export const getGenInfoErrors = createSelector(claimSelector, (state) => state.claimErrors.genInfoErrors);
 
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
+export const getAllErrors = createSelector(claimSelector, (state) => state.claimErrors);
 
 export const getLabResultsErrors = createSelector(claimSelector, (state) => state.claimErrors.labResultsErrors);
 export const getUncategorisedErrors = createSelector(claimSelector, (state) => state.claimErrors.uncategorised);

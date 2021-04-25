@@ -31,7 +31,7 @@
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVOICE:'+i)" [matTooltip]="getFieldError('invoiceDate:'+i)">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceDate', invoice.invoiceNumber)" [matTooltip]="getFieldError('invoiceDate', invoice.invoiceNumber)">
                             <div class="date-picker">
                                 <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
                                 <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
@@ -40,13 +40,12 @@
                         </div>
                     </td>
                     <td width="200">
-                        //
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceNumber:'+i)" [matTooltip]="getFieldError('invoiceNumber:'+i)">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceNumber', invoice.invoiceNumber)" [matTooltip]="getFieldError('invoiceNumber', invoice.invoiceNumber)">
                             <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
                         </div>
                     </td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDEP:'+i)" >
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDEP', invoice.invoiceNumber)" >
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
                                     [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
@@ -151,7 +150,7 @@
                                 </div>
                                 <div class="row small-gutter">
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('SERVCOD:'+i+':'+j)" [matTooltip]="getFieldError('serviceCode:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('SERVCOD', service.serviceCode.value)" [matTooltip]="getFieldError('serviceCode', service.serviceCode.value)">
                                             <label class="control-label">Service Code<span class="asterisk">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" type="text" placeholder="Enter service code or select service" [formControl]="service.serviceCode">
@@ -162,7 +161,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('serviceType:'+i+':'+j)" [matTooltip]="getFieldError('serviceType:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceType', service.serviceCode.value)" [matTooltip]="getFieldError('serviceType', service.serviceCode.value)">
                                             <label class="control-label">Service Type</label>
                                             <mat-form-field class="form-control custom-select-control">
                                                 <mat-select [formControl]="service.serviceType">
@@ -173,14 +172,14 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('SERVDES:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('serviceDescription:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('SERVDES', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('serviceDescription', service.serviceCode.value)">
                                             <label class="control-label">Service Description<span class="asterisk">*</span></label>
                                             <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription" type="text">
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('SERVICEDATE:'+i+':'+j)" [matTooltip]="getFieldError('serviceDate:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('SERVICEDATE', service.serviceCode.value)" [matTooltip]="getFieldError('serviceDate', service.serviceCode.value)">
                                             <label class="control-label">Service Date<span class="asterisk">*</span></label>
                                             <div class="date-picker">
                                                 <input [matDatepicker]="picker" class="form-control" placeholder="Select service date" [formControl]="service.serviceDate">
@@ -190,8 +189,8 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('serviceUnitPrice:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('serviceUnitPrice', service.serviceCode.value)">
                                             <label class="control-label">Unit Price<span class="asterisk">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Enter unit price" type="number" [formControl]="service.unitPrice">
@@ -200,15 +199,15 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('serviceQuantity:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('serviceQuantity', service.serviceCode.value)">
                                             <label class="control-label">Quantity<span class="asterisk">*</span></label>
                                             <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVAL:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('servicePatientShare:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVAL', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('INVGDPNPATSHAVAL', service.serviceCode.value)">
                                             <label class="control-label">Patient Share <span class="asterisk">*</span>
                                             </label>
                                             <div class="input-group">
@@ -218,8 +217,8 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNDISCVAL:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('serviceDiscount:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNDISCVAL', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('INVGDPNDISCVAL', service.serviceCode.value)">
                                             <label class="control-label">Service Discount <span class="asterisk">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Enter service discount" type="number" [formControl]="service.serviceDiscount">
@@ -232,8 +231,8 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNNETAMTVAL:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('serviceNetVatRate:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNNETAMTVAL', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('INVGDPNNETAMTVAL', service.serviceCode.value)">
                                             <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Enter net vat rate" type="number" [formControl]="service.netVatRate">
@@ -242,8 +241,8 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVATAMTVAL:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('servicePatientShareVatRate:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVATAMTVAL', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('INVGDPNPATSHAVATAMTVAL', service.serviceCode.value)">
                                             <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Enter patient share vat rate" type="number" [formControl]="service.patientShareVatRate">
@@ -252,8 +251,8 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('TOOTHNO:'+i+':'+j)"
-                                            [matTooltip]="getFieldError('serviceToothNumber:'+i+':'+j)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('TOOTHNO', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('TOOTHNO', service.serviceCode.value)">
                                             <label class="control-label">Tooth Number<span class="asterisk" *ngIf="claimType == dentalDepartmentCode">*</span></label>
                                             <div class="input-group">
                                                 <input class="form-control" placeholder="Select tooth number" type="number" [formControl]="service.toothNumber">

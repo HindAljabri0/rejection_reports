@@ -169,7 +169,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     });
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
-    this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors || []);
 
 
     this.filteredNations.next(this.nationalities.slice());
@@ -556,12 +556,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  fieldHasError(fieldName) {
-    if(fieldName == 'MEMID'){
-
-      console.log(this.errors);
-    }
-    
+  fieldHasError(fieldName) {    
     return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
   }
 
