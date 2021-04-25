@@ -43,10 +43,10 @@ import {
   ClaimPageMode,
   nationalities,
   getVisitType,
-  getPatientErrors,
+  
   getPhysicianCategory,
   getDepartments,
-  getPhysicianErrors
+ 
 } from '../store/claim.reducer';
 import { map, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
@@ -169,11 +169,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     });
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
     this.store.select(getDepartmentCode).subscribe(type => this.departmentCode = type);
-    this.store.select(getGenInfoErrors).pipe(
-      withLatestFrom(this.store.select(getPatientErrors)),
-      withLatestFrom(this.store.select(getPhysicianErrors)),
-      map(values => ([...values[0][0], ...values[0][1], ...values[1]]))
-    ).subscribe(errors => this.errors = errors);
+    this.store.select(getGenInfoErrors).subscribe(errors => this.errors = errors);
 
 
     this.filteredNations.next(this.nationalities.slice());
@@ -187,7 +183,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
 
-    this.store.select(getPatientErrors).subscribe(errors => this.errors = errors);
+  
 
 
     this.store.select(getPageType).subscribe(type => this.pageType = type);
@@ -221,7 +217,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
           this.filterDepartments();
         });
     });
-    this.store.select(getPhysicianErrors).subscribe(errors => this.errors = errors);
+
   }
 
   ngOnDestroy() {
@@ -561,6 +557,11 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   }
 
   fieldHasError(fieldName) {
+    if(fieldName == 'MEMID'){
+
+      console.log(this.errors);
+    }
+    
     return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
   }
 

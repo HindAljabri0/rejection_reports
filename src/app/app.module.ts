@@ -79,6 +79,7 @@ import { ChangeLogDialogComponent } from './components/change-log-dialog/change-
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AttachmentViewDialogComponent } from './components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { ConfiguartionModalComponent } from './pages/configuartion-modal/configuartion-modal.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { AttachmentViewDialogComponent } from './components/dialogs/attachment-v
     GmReportsPageComponent,
     ChangeLogDialogComponent,
     MainLayoutComponent,
-    AttachmentViewDialogComponent
+    AttachmentViewDialogComponent,
+    ConfiguartionModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -190,7 +192,8 @@ import { AttachmentViewDialogComponent } from './components/dialogs/attachment-v
     ImageTooltipComponent,
     UploadSummaryDialogComponent,
     ChangeLogDialogComponent,
-    AttachmentViewDialogComponent
+    AttachmentViewDialogComponent,
+    ConfiguartionModalComponent
   ],
 })
 export class AppModule { }
