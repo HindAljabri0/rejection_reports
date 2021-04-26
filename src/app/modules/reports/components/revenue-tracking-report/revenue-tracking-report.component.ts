@@ -123,7 +123,7 @@ export class RevenueTrackingReportComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Year',
+          labelString: 'Months',
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           fontSize: 18,

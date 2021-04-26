@@ -25,6 +25,7 @@ import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-
 import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
 import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
 import { TawuniyaCreditReportErrorsDialogComponent } from './components/tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
+import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-report/revenue-breakdown-report.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TawuniyaCreditReportErrorsDialogComponent } from './components/tawuniya
     ClaimSubmissionsComponent,
     RevenueReportComponent,
     RevenueTrackingReportComponent,
-    TawuniyaCreditReportErrorsDialogComponent
+    TawuniyaCreditReportErrorsDialogComponent,
+    RevenueBreakdownReportComponent
   ],
   imports: [
     CommonModule,
