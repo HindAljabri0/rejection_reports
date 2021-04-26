@@ -198,7 +198,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   }
   openCSV(event) {
     const dialogRef = this.dialog.open(ConfiguartionModalComponent,
-      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.sharedServices.providerId } });
+      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.sharedServices.providerId, selectedProviderId: this.sharedServices.providerId } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 

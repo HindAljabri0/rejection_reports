@@ -125,7 +125,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.toggleEdit(true);
       }
     });
-    this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors || []);
     this.store.select(getDepartments)
       .subscribe(departments => {
         if (departments != null && departments.length > 0) {
@@ -418,12 +418,12 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
-  fieldHasError(fieldName) {
-    return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  fieldHasError(fieldName, code) {
+    return this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code)) != -1;
   }
 
-  getFieldError(fieldName) {
-    const index = this.errors.findIndex(error => error.fieldName == fieldName);
+  getFieldError(fieldName, code) {
+    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code));
     if (index > -1) {
       return this.errors[index].error || '';
     }
