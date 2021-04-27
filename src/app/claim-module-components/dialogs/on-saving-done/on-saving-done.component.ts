@@ -22,7 +22,12 @@ export class OnSavingDoneComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dialogRef.backdropClick().subscribe(() => this.store.dispatch(cancelClaim()));
+    this.dialogRef.backdropClick().subscribe(() => {
+      if (!this.showViewAllButton)
+        this.onOK()
+      else if(this.data.status != 'Not_Saved')
+        this.store.dispatch(cancelClaim());
+    });
   }
 
   get showViewAllButton() {
@@ -44,7 +49,19 @@ export class OnSavingDoneComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
+  onOK() {
+    let pathSegments = this.location.path().split('/');
+    let oldClaimId = pathSegments.pop();
+    oldClaimId.replace("#edit", '');
+    const paginationIds = localStorage.getItem('search_tab_result');
+    if (paginationIds != null) {
+      let paginationIdsSegments = paginationIds.split(',');
+      localStorage.setItem('search_tab_result', paginationIdsSegments.map(id => { if (id == oldClaimId) return this.data.claimId; else return id; }).join(','));
+    }
+    pathSegments.push(this.data.claimId);
+    this.location.go(pathSegments.join('/'));
+    location.reload();
+  }
 
   get isNotAccepted() {
     return this.data.status.toLowerCase() == 'notaccepted';

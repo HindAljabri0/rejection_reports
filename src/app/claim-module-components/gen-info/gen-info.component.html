@@ -5,7 +5,7 @@
             <div class="row extra-small-gutter">
                 <div class="col">
                     <input class="form-control" placeholder="Enter full name" type="text"
-                        [formControl]="fullNameController" (change)="updateClaim('FULLNAME')" required>
+                        [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                 </div>
                 <div class="col-auto form-group" [class.has-error]="fieldHasError('GENDER') || fieldHasError('GENDERNULL')">
                     <mat-form-field class="form-control custom-select-control">
