@@ -1,7 +1,7 @@
 <div class="d-flex mb-3">
     <h4 class="align-self-center medium">Invoice & Services</h4>
-    <button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" mat-flat-button class="ml-auto px-0 primary-text-btn"
-        (click)="onAddInvoiceClick()">
+    <button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" mat-flat-button
+        class="ml-auto px-0 primary-text-btn" (click)="onAddInvoiceClick()">
         <span class="d-flex align-items-center">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Invoice</span>
@@ -25,31 +25,41 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let invoice of controllers; let i = index">
-                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="invoiceHasErrors(i)" [class.light-bg-danger]="invoiceHasErrors(i)">
+                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="invoiceHasErrors(i)"
+                    [class.light-bg-danger]="invoiceHasErrors(i)">
                     <td class="row-click" (click)="toggleInvoice(i)">
                         <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceDate', invoice.invoiceNumber)" [matTooltip]="getFieldError('invoiceDate', invoice.invoiceNumber)">
+                        <div class="form-group mt-n1 mb-n1"
+                            [class.has-error]="fieldHasError('invoiceDate', invoice.invoiceNumber)"
+                            [matTooltip]="getFieldError('invoiceDate', invoice.invoiceNumber)">
                             <div class="date-picker">
-                                <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
+                                <input [matDatepicker]="invoiceDatePicker" class="form-control"
+                                    placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
                                 <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #invoiceDatePicker></mat-datepicker>
                             </div>
                         </div>
                     </td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('invoiceNumber', invoice.invoiceNumber)" [matTooltip]="getFieldError('invoiceNumber', invoice.invoiceNumber)">
-                            <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
+                        <div class="form-group mt-n1 mb-n1"
+                            [class.has-error]="fieldHasError('invoiceNumber', invoice.invoiceNumber)"
+                            [matTooltip]="getFieldError('invoiceNumber', invoice.invoiceNumber)">
+                            <input class="form-control" placeholder="Enter invoice number" type="text"
+                                [formControl]="invoice.invoiceNumber">
                         </div>
                     </td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDEP', invoice.invoiceNumber)" >
+                        <div class="form-group mt-n1 mb-n1"
+                            [class.has-error]="fieldHasError('INVDEP', invoice.invoiceNumber)">
                             <mat-form-field class="form-control custom-select-control">
-                                <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)" [value]="controllers[i].invoice.invoiceDepartment"
+                                <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)"
+                                    [value]="controllers[i].invoice.invoiceDepartment"
                                     [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
-                                    <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                    <mat-option *ngFor="let department of departments"
+                                        [value]="department.departmentId">
                                         {{department.name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -71,25 +81,29 @@
                         <div class="d-flex">
                             <h5 class="align-self-center medium">Services</h5>
                             <div class="ml-auto btn-list" *ngIf="pageMode != 'VIEW'">
-                                <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" class="primary-text-btn px-0"
-                                    (click)="onAddRetrievedServiceClick(i)">
+                                <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true"
+                                    class="primary-text-btn px-0" (click)="onAddRetrievedServiceClick(i)">
                                     <mat-icon>add_circle_outline</mat-icon>
                                     <span class="pl-1">Add a Retreived Service</span>
                                 </button>
-                                <button mat-flat-button (click)="onAddServiceClick(i)" class="primary-text-btn px-0" disableRipple="true">
+                                <button mat-flat-button (click)="onAddServiceClick(i)" class="primary-text-btn px-0"
+                                    disableRipple="true">
                                     <mat-icon>add_circle_outline</mat-icon>
                                     <span class="pl-1">Add Service</span>
                                 </button>
                             </div>
                         </div>
                         <div class="list-expansion-panel">
-                            <mat-expansion-panel *ngFor="let service of invoice.services; let j = index" hideToggle [expanded]="service.isOpen">
+                            <mat-expansion-panel *ngFor="let service of invoice.services; let j = index" hideToggle
+                                [expanded]="service.isOpen">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        <button (click)="toggleServiceExpansion($event,i,j)" [class.text-danger]="serviceHasErrors(i, j)" class="toggle-btn">
+                                        <button (click)="toggleServiceExpansion($event,i,j)"
+                                            [class.text-danger]="serviceHasErrors(i, j)" class="toggle-btn">
                                             <span>Service {{(j+1)}}</span>
                                             <mat-icon *ngIf="serviceHasErrors(i, j)">error</mat-icon>
-                                            <span class="ml-auto text-right pr-2">{{service.serviceDate.value| date:"dd/MM/yyyy"}}</span>
+                                            <span
+                                                class="ml-auto text-right pr-2">{{service.serviceDate.value| date:"dd/MM/yyyy"}}</span>
                                             <span *ngIf="service.statusCode != null"
                                                 class="ml-auto semibold text-right text-{{getStatusColor(service.statusCode)}}">{{getStatusText(service.statusCode)}}</span>
                                         </button>
@@ -99,7 +113,8 @@
                                                 (click)="onSelectRetrievedServiceClick($event, i, j)">Select a
                                                 retrieved service</a>
                                         </ng-container>
-                                        <button (click)="onDeleteServiceClick($event, i, j)" class="text-danger delete-btn"
+                                        <button (click)="onDeleteServiceClick($event, i, j)"
+                                            class="text-danger delete-btn"
                                             *ngIf="controllers[i].services.length > 1 && pageMode != 'VIEW'">
                                             <mat-icon>delete_outline</mat-icon>
                                         </button>
@@ -134,94 +149,126 @@
                                             <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
                                         </div>
                                     </div>
-                                    <div class="col-auto" *ngIf="service.statusCode != null">
-                                        <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
+                                    <div class="col-auto" *ngIf="statusCode != undefined">
+                                        <div
+                                            class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
                                             <label>Actual Deducted Amount</label>
-                                            <h3>{{service.acutalDeductedAmount}}</h3>
+                                            <h3>{{acutalDeductedAmount}}</h3>
                                         </div>
                                     </div>
-                                    <div class="col-auto" *ngIf="service.statusCode != null">
-                                        <div class="statistic-box text-{{getStatusColor(service.statusCode)}} light-bg-{{getStatusColor(service.statusCode)}}">
+                                    <div class="col-auto" *ngIf="statusCode != undefined">
+                                        <div
+                                            class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
                                             <label>Actual Paid Amount</label>
-                                            <h3>{{calcNet(controllers[i].services[j]) - service.acutalDeductedAmount}}
+                                            <h3>{{calcNet(controllers[i].services[j]) - acutalDeductedAmount}}
                                             </h3>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row small-gutter">
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('SERVCOD', service.serviceCode.value)" [matTooltip]="getFieldError('serviceCode', service.serviceCode.value)">
-                                            <label class="control-label">Service Code<span class="asterisk">*</span></label>
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('SERVCOD', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('serviceCode', service.serviceCode.value)">
+                                            <label class="control-label">Service Code<span
+                                                    class="asterisk">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control" type="text" placeholder="Enter service code or select service" [formControl]="service.serviceCode">
-                                                <span *ngIf="pageMode != 'VIEW' && !service.retrieved" class="input-group-append">
-                                                    <span class="input-group-text clickable medium" [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter service code or select service"
+                                                    [formControl]="service.serviceCode">
+                                                <span *ngIf="pageMode != 'VIEW' && !service.retrieved"
+                                                    class="input-group-append">
+                                                    <span class="input-group-text clickable medium"
+                                                        [matMenuTriggerFor]="editServiceCodeMenu">Select</span>
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('serviceType', service.serviceCode.value)" [matTooltip]="getFieldError('serviceType', service.serviceCode.value)">
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('serviceType', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('serviceType', service.serviceCode.value)">
                                             <label class="control-label">Service Type</label>
                                             <mat-form-field class="form-control custom-select-control">
                                                 <mat-select [formControl]="service.serviceType">
-                                                    <mat-option *ngFor="let service of allServiceTypes" [value]="service.key">
+                                                    <mat-option *ngFor="let service of allServiceTypes"
+                                                        [value]="service.key">
                                                         {{service.value}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('SERVDES', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('SERVDES', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('serviceDescription', service.serviceCode.value)">
-                                            <label class="control-label">Service Description<span class="asterisk">*</span></label>
-                                            <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription" type="text">
+                                            <label class="control-label">Service Description<span
+                                                    class="asterisk">*</span></label>
+                                            <input class="form-control" placeholder="Enter service description"
+                                                [formControl]="service.serviceDescription" type="text">
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('SERVICEDATE', service.serviceCode.value)" [matTooltip]="getFieldError('serviceDate', service.serviceCode.value)">
-                                            <label class="control-label">Service Date<span class="asterisk">*</span></label>
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('SERVICEDATE', service.serviceCode.value)"
+                                            [matTooltip]="getFieldError('serviceDate', service.serviceCode.value)">
+                                            <label class="control-label">Service Date<span
+                                                    class="asterisk">*</span></label>
                                             <div class="date-picker">
-                                                <input [matDatepicker]="picker" class="form-control" placeholder="Select service date" [formControl]="service.serviceDate">
+                                                <input [matDatepicker]="picker" class="form-control"
+                                                    placeholder="Select service date"
+                                                    [formControl]="service.serviceDate">
                                                 <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker></mat-datepicker>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('serviceUnitPrice', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('serviceUnitPrice', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('serviceUnitPrice', service.serviceCode.value)">
-                                            <label class="control-label">Unit Price<span class="asterisk">*</span></label>
+                                            <label class="control-label">Unit Price<span
+                                                    class="asterisk">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Enter unit price" type="number" [formControl]="service.unitPrice">
-                                                <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
+                                                <input class="form-control" placeholder="Enter unit price" type="number"
+                                                    [formControl]="service.unitPrice">
+                                                <span class="input-group-append"><span
+                                                        class="input-group-text medium">SAR</span></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('serviceQuantity', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('serviceQuantity', service.serviceCode.value)">
                                             <label class="control-label">Quantity<span class="asterisk">*</span></label>
-                                            <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
+                                            <input class="form-control" placeholder="Enter quantity" type="text"
+                                                [formControl]="service.quantity">
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVAL', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('INVGDPNPATSHAVAL', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('INVGDPNPATSHAVAL', service.serviceCode.value)">
                                             <label class="control-label">Patient Share <span class="asterisk">*</span>
                                             </label>
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Enter patient share" type="number" [formControl]="service.patientShare">
-                                                <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
+                                                <input class="form-control" placeholder="Enter patient share"
+                                                    type="number" [formControl]="service.patientShare">
+                                                <span class="input-group-append"><span
+                                                        class="input-group-text medium">SAR</span></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNDISCVAL', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('INVGDPNDISCVAL', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('INVGDPNDISCVAL', service.serviceCode.value)">
-                                            <label class="control-label">Service Discount <span class="asterisk">*</span></label>
+                                            <label class="control-label">Service Discount <span
+                                                    class="asterisk">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Enter service discount" type="number" [formControl]="service.serviceDiscount">
+                                                <input class="form-control" placeholder="Enter service discount"
+                                                    type="number" [formControl]="service.serviceDiscount">
                                                 <span class="input-group-append">
                                                     <span class="input-group-text clickable medium"
                                                         (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit
@@ -231,33 +278,46 @@
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNNETAMTVAL', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('INVGDPNNETAMTVAL', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('INVGDPNNETAMTVAL', service.serviceCode.value)">
-                                            <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
+                                            <label class="control-label">Net Vat Rate<span
+                                                    class="asterisk">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Enter net vat rate" type="number" [formControl]="service.netVatRate">
-                                                <span class="input-group-append"><span class="input-group-text medium">%</span></span>
+                                                <input class="form-control" placeholder="Enter net vat rate"
+                                                    type="number" [formControl]="service.netVatRate">
+                                                <span class="input-group-append"><span
+                                                        class="input-group-text medium">%</span></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVATAMTVAL', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('INVGDPNPATSHAVATAMTVAL', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('INVGDPNPATSHAVATAMTVAL', service.serviceCode.value)">
-                                            <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
+                                            <label class="control-label">Patient Share Vat Rate<span
+                                                    class="asterisk">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Enter patient share vat rate" type="number" [formControl]="service.patientShareVatRate">
-                                                <span class="input-group-append"><span class="input-group-text medium">%</span></span>
+                                                <input class="form-control" placeholder="Enter patient share vat rate"
+                                                    type="number" [formControl]="service.patientShareVatRate">
+                                                <span class="input-group-append"><span
+                                                        class="input-group-text medium">%</span></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('TOOTHNO', service.serviceCode.value)"
+                                        <div class="form-group"
+                                            [class.has-error]="fieldHasError('TOOTHNO', service.serviceCode.value)"
                                             [matTooltip]="getFieldError('TOOTHNO', service.serviceCode.value)">
-                                            <label class="control-label">Tooth Number<span class="asterisk" *ngIf="claimType == dentalDepartmentCode">*</span></label>
+                                            <label class="control-label">Tooth Number<span class="asterisk"
+                                                    *ngIf="claimType == dentalDepartmentCode">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Select tooth number" type="number" [formControl]="service.toothNumber">
-                                                <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="input-group-append">
-                                                    <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
+                                                <input class="form-control" placeholder="Select tooth number"
+                                                    type="number" [formControl]="service.toothNumber">
+                                                <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled"
+                                                    class="input-group-append">
+                                                    <span class="input-group-text medium"
+                                                        [matMenuTriggerFor]="SelectToothMenu">Select</span>
                                                 </span>
                                             </div>
                                         </div>
@@ -273,7 +333,8 @@
                                     <div class="col-xxl-8 col-xl-9 col-lg-8">
                                         <div class="inline-labelled-text">
                                             <label>PBM Comments</label>
-                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit doloribus nobis molestias quia quo inventore tempora recusandae
+                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit doloribus
+                                                nobis molestias quia quo inventore tempora recusandae
                                                 suscipit distinctio. Assumenda.</p>
                                         </div>
                                     </div>
@@ -295,8 +356,9 @@
     </p>
     <div class="form-group mb-0" *ngIf="priceListExist">
         <label class="control-label">Search Service Code</label>
-        <input type="text" [formControl]="searchServicesController" [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()" (click)="$event.stopPropagation()"
-            class="form-control" placeholder="Enter service code here...">
+        <input type="text" [formControl]="searchServicesController" [matAutocomplete]="servicesOptionsAutoComplete"
+            (keyup)="searchServices()" (click)="$event.stopPropagation()" class="form-control"
+            placeholder="Enter service code here...">
         <mat-autocomplete #servicesOptionsAutoComplete class="edit-service-code-autocomplete">
             <mat-option *ngFor="let option of servicesOptions" (click)="selectService(option);">
                 {{option}}
@@ -314,109 +376,161 @@
         <h4 class="title">Click on the tooth to select</h4>
         <div class="tooth-btn-wrapper">
             <img src="assets/toothsList.jpg" alt="Tooths" class="image" />
-            <button type="button" class="tooth-btn tooth-11" matTooltip="Select Tooth 11" style="width: 24px;height: 18px;top: 19px;left: 101px;" (click)="selectTooth(11)">
+            <button type="button" class="tooth-btn tooth-11" matTooltip="Select Tooth 11"
+                style="width: 24px;height: 18px;top: 19px;left: 101px;" (click)="selectTooth(11)">
             </button>
-            <button type="button" class="tooth-btn tooth-12" matTooltip="Select Tooth 12" style="width: 22px;height: 19px;top: 25px;left: 81px;" (click)="selectTooth(12)">
+            <button type="button" class="tooth-btn tooth-12" matTooltip="Select Tooth 12"
+                style="width: 22px;height: 19px;top: 25px;left: 81px;" (click)="selectTooth(12)">
             </button>
-            <button type="button" class="tooth-btn tooth-13" matTooltip="Select Tooth 13" style="width: 21px;height: 18px;top: 36px;left: 66px;" (click)="selectTooth(13)">
+            <button type="button" class="tooth-btn tooth-13" matTooltip="Select Tooth 13"
+                style="width: 21px;height: 18px;top: 36px;left: 66px;" (click)="selectTooth(13)">
             </button>
-            <button type="button" class="tooth-btn tooth-14" matTooltip="Select Tooth 14" style="width: 27px;height: 19px;top: 51px;left: 50px;" (click)="selectTooth(14)">
+            <button type="button" class="tooth-btn tooth-14" matTooltip="Select Tooth 14"
+                style="width: 27px;height: 19px;top: 51px;left: 50px;" (click)="selectTooth(14)">
             </button>
-            <button type="button" class="tooth-btn tooth-15" matTooltip="Select Tooth 15" style="width: 29px;height: 22px;top: 67px;left: 38px;" (click)="selectTooth(15)">
+            <button type="button" class="tooth-btn tooth-15" matTooltip="Select Tooth 15"
+                style="width: 29px;height: 22px;top: 67px;left: 38px;" (click)="selectTooth(15)">
             </button>
-            <button type="button" class="tooth-btn tooth-16" matTooltip="Select Tooth 16" style="width: 34px;height: 32px;top: 86px;left: 28px;" (click)="selectTooth(16)">
+            <button type="button" class="tooth-btn tooth-16" matTooltip="Select Tooth 16"
+                style="width: 34px;height: 32px;top: 86px;left: 28px;" (click)="selectTooth(16)">
             </button>
-            <button type="button" class="tooth-btn tooth-17" matTooltip="Select Tooth 17" style="width: 33px;height: 29px;top: 116px;left: 23px;" (click)="selectTooth(17)">
+            <button type="button" class="tooth-btn tooth-17" matTooltip="Select Tooth 17"
+                style="width: 33px;height: 29px;top: 116px;left: 23px;" (click)="selectTooth(17)">
             </button>
-            <button type="button" class="tooth-btn tooth-18" matTooltip="Select Tooth 18" style="width: 35px;height: 28px;top: 143px;left: 17px;" (click)="selectTooth(18)">
+            <button type="button" class="tooth-btn tooth-18" matTooltip="Select Tooth 18"
+                style="width: 35px;height: 28px;top: 143px;left: 17px;" (click)="selectTooth(18)">
             </button>
-            <button type="button" class="tooth-btn tooth-21" matTooltip="Select Tooth 21" style="width: 28px;height: 18px;top: 20px;left: 124px;" (click)="selectTooth(21)">
+            <button type="button" class="tooth-btn tooth-21" matTooltip="Select Tooth 21"
+                style="width: 28px;height: 18px;top: 20px;left: 124px;" (click)="selectTooth(21)">
             </button>
-            <button type="button" class="tooth-btn tooth-22" matTooltip="Select Tooth 22" style="width: 21px;height: 19px;top: 24px;left: 151px;" (click)="selectTooth(22)">
+            <button type="button" class="tooth-btn tooth-22" matTooltip="Select Tooth 22"
+                style="width: 21px;height: 19px;top: 24px;left: 151px;" (click)="selectTooth(22)">
             </button>
-            <button type="button" class="tooth-btn tooth-23" matTooltip="Select Tooth 23" style="width: 22px;height: 19px;top: 34px;left: 168px;" (click)="selectTooth(23)">
+            <button type="button" class="tooth-btn tooth-23" matTooltip="Select Tooth 23"
+                style="width: 22px;height: 19px;top: 34px;left: 168px;" (click)="selectTooth(23)">
             </button>
-            <button type="button" class="tooth-btn tooth-24" matTooltip="Select Tooth 24" style="width: 24px;height: 23px;top: 47px;left: 180px;" (click)="selectTooth(24)">
+            <button type="button" class="tooth-btn tooth-24" matTooltip="Select Tooth 24"
+                style="width: 24px;height: 23px;top: 47px;left: 180px;" (click)="selectTooth(24)">
             </button>
-            <button type="button" class="tooth-btn tooth-25" matTooltip="Select Tooth 25" style="width: 26px;height: 24px;top: 67px;left: 189px;" (click)="selectTooth(25)">
+            <button type="button" class="tooth-btn tooth-25" matTooltip="Select Tooth 25"
+                style="width: 26px;height: 24px;top: 67px;left: 189px;" (click)="selectTooth(25)">
             </button>
-            <button type="button" class="tooth-btn tooth-26" matTooltip="Select Tooth 26" style="width: 36px;height: 35px;top: 88px;left: 192px;" (click)="selectTooth(26)">
+            <button type="button" class="tooth-btn tooth-26" matTooltip="Select Tooth 26"
+                style="width: 36px;height: 35px;top: 88px;left: 192px;" (click)="selectTooth(26)">
             </button>
-            <button type="button" class="tooth-btn tooth-27" matTooltip="Select Tooth 27" style="width: 35px;height: 26px;top: 121px;left: 195px;" (click)="selectTooth(27)">
+            <button type="button" class="tooth-btn tooth-27" matTooltip="Select Tooth 27"
+                style="width: 35px;height: 26px;top: 121px;left: 195px;" (click)="selectTooth(27)">
             </button>
-            <button type="button" class="tooth-btn tooth-28" matTooltip="Select Tooth 28" style="width: 33px;height: 29px;top: 146px;left: 200px;" (click)="selectTooth(28)">
+            <button type="button" class="tooth-btn tooth-28" matTooltip="Select Tooth 28"
+                style="width: 33px;height: 29px;top: 146px;left: 200px;" (click)="selectTooth(28)">
             </button>
-            <button type="button" class="tooth-btn tooth-31" matTooltip="Select Tooth 31" style="width: 19px;height: 20px;top: 368px;left: 126px;" (click)="selectTooth(31)">
+            <button type="button" class="tooth-btn tooth-31" matTooltip="Select Tooth 31"
+                style="width: 19px;height: 20px;top: 368px;left: 126px;" (click)="selectTooth(31)">
             </button>
-            <button type="button" class="tooth-btn tooth-32" matTooltip="Select Tooth 32" style="width: 20px;height: 21px;top: 364px;left: 145px;" (click)="selectTooth(32)">
+            <button type="button" class="tooth-btn tooth-32" matTooltip="Select Tooth 32"
+                style="width: 20px;height: 21px;top: 364px;left: 145px;" (click)="selectTooth(32)">
             </button>
-            <button type="button" class="tooth-btn tooth-33" matTooltip="Select Tooth 33" style="width: 23px;height: 24px;top: 355px;left: 164px;" (click)="selectTooth(33)">
+            <button type="button" class="tooth-btn tooth-33" matTooltip="Select Tooth 33"
+                style="width: 23px;height: 24px;top: 355px;left: 164px;" (click)="selectTooth(33)">
             </button>
-            <button type="button" class="tooth-btn tooth-34" matTooltip="Select Tooth 34" style="width: 26px;height: 24px;top: 340px;left: 180px;" (click)="selectTooth(34)">
+            <button type="button" class="tooth-btn tooth-34" matTooltip="Select Tooth 34"
+                style="width: 26px;height: 24px;top: 340px;left: 180px;" (click)="selectTooth(34)">
             </button>
-            <button type="button" class="tooth-btn tooth-35" matTooltip="Select Tooth 35" style="width: 27px;height: 25px;top: 317px;left: 190px;" (click)="selectTooth(35)">
+            <button type="button" class="tooth-btn tooth-35" matTooltip="Select Tooth 35"
+                style="width: 27px;height: 25px;top: 317px;left: 190px;" (click)="selectTooth(35)">
             </button>
-            <button type="button" class="tooth-btn tooth-36" matTooltip="Select Tooth 36" style="width: 32px;height: 29px;top: 289px;left: 194px;" (click)="selectTooth(36)">
+            <button type="button" class="tooth-btn tooth-36" matTooltip="Select Tooth 36"
+                style="width: 32px;height: 29px;top: 289px;left: 194px;" (click)="selectTooth(36)">
             </button>
-            <button type="button" class="tooth-btn tooth-37" matTooltip="Select Tooth 37" style="width: 30px;height: 26px;top: 263px;left: 198px;" (click)="selectTooth(37)">
+            <button type="button" class="tooth-btn tooth-37" matTooltip="Select Tooth 37"
+                style="width: 30px;height: 26px;top: 263px;left: 198px;" (click)="selectTooth(37)">
             </button>
-            <button type="button" class="tooth-btn tooth-38" matTooltip="Select Tooth 38" style="width: 30px;height: 26px;top: 240px;left: 198px;" (click)="selectTooth(38)">
+            <button type="button" class="tooth-btn tooth-38" matTooltip="Select Tooth 38"
+                style="width: 30px;height: 26px;top: 240px;left: 198px;" (click)="selectTooth(38)">
             </button>
-            <button type="button" class="tooth-btn tooth-41" matTooltip="Select Tooth 41" style="width: 18px;height: 20px;top: 368px;left: 109px;" (click)="selectTooth(41)">
+            <button type="button" class="tooth-btn tooth-41" matTooltip="Select Tooth 41"
+                style="width: 18px;height: 20px;top: 368px;left: 109px;" (click)="selectTooth(41)">
             </button>
-            <button type="button" class="tooth-btn tooth-42" matTooltip="Select Tooth 42" style="width: 20px;height: 21px;top: 364px;left: 90px;" (click)="selectTooth(42)">
+            <button type="button" class="tooth-btn tooth-42" matTooltip="Select Tooth 42"
+                style="width: 20px;height: 21px;top: 364px;left: 90px;" (click)="selectTooth(42)">
             </button>
-            <button type="button" class="tooth-btn tooth-43" matTooltip="Select Tooth 43" style="width: 24px;height: 21px;top: 355px;left: 72px;" (click)="selectTooth(43)">
+            <button type="button" class="tooth-btn tooth-43" matTooltip="Select Tooth 43"
+                style="width: 24px;height: 21px;top: 355px;left: 72px;" (click)="selectTooth(43)">
             </button>
-            <button type="button" class="tooth-btn tooth-44" matTooltip="Select Tooth 44" style="width: 29px;height: 22px;top: 338px;left: 53px;" (click)="selectTooth(44)">
+            <button type="button" class="tooth-btn tooth-44" matTooltip="Select Tooth 44"
+                style="width: 29px;height: 22px;top: 338px;left: 53px;" (click)="selectTooth(44)">
             </button>
-            <button type="button" class="tooth-btn tooth-45" matTooltip="Select Tooth 45" style="width: 29px;height: 24px;top: 319px;left: 45px;" (click)="selectTooth(45)">
+            <button type="button" class="tooth-btn tooth-45" matTooltip="Select Tooth 45"
+                style="width: 29px;height: 24px;top: 319px;left: 45px;" (click)="selectTooth(45)">
             </button>
-            <button type="button" class="tooth-btn tooth-46" matTooltip="Select Tooth 46" style="width: 33px;height: 32px;top: 289px;left: 33px;" (click)="selectTooth(46)">
+            <button type="button" class="tooth-btn tooth-46" matTooltip="Select Tooth 46"
+                style="width: 33px;height: 32px;top: 289px;left: 33px;" (click)="selectTooth(46)">
             </button>
-            <button type="button" class="tooth-btn tooth-47" matTooltip="Select Tooth 47" style="width: 30px;height: 28px;top: 264px;left: 28px;" (click)="selectTooth(47)">
+            <button type="button" class="tooth-btn tooth-47" matTooltip="Select Tooth 47"
+                style="width: 30px;height: 28px;top: 264px;left: 28px;" (click)="selectTooth(47)">
             </button>
-            <button type="button" class="tooth-btn tooth-48" matTooltip="Select Tooth 48" style="width: 30px;height: 28px;top: 238px;left: 25px;" (click)="selectTooth(48)">
+            <button type="button" class="tooth-btn tooth-48" matTooltip="Select Tooth 48"
+                style="width: 30px;height: 28px;top: 238px;left: 25px;" (click)="selectTooth(48)">
             </button>
-            <button type="button" class="tooth-btn tooth-51" matTooltip="Select Tooth 51" style="width: 19px;height: 17px;top: 44px;left: 110px;" (click)="selectTooth(51)">
+            <button type="button" class="tooth-btn tooth-51" matTooltip="Select Tooth 51"
+                style="width: 19px;height: 17px;top: 44px;left: 110px;" (click)="selectTooth(51)">
             </button>
-            <button type="button" class="tooth-btn tooth-52" matTooltip="Select Tooth 52" style="width: 19px;height: 16px;top: 51px;left: 97px;" (click)="selectTooth(52)">
+            <button type="button" class="tooth-btn tooth-52" matTooltip="Select Tooth 52"
+                style="width: 19px;height: 16px;top: 51px;left: 97px;" (click)="selectTooth(52)">
             </button>
-            <button type="button" class="tooth-btn tooth-53" matTooltip="Select Tooth 53" style="width: 20px;height: 16px;top: 62px;left: 86px;" (click)="selectTooth(53)">
+            <button type="button" class="tooth-btn tooth-53" matTooltip="Select Tooth 53"
+                style="width: 20px;height: 16px;top: 62px;left: 86px;" (click)="selectTooth(53)">
             </button>
-            <button type="button" class="tooth-btn tooth-54" matTooltip="Select Tooth 54" style="width: 22px;height: 19px;top: 74px;left: 75px;" (click)="selectTooth(54)">
+            <button type="button" class="tooth-btn tooth-54" matTooltip="Select Tooth 54"
+                style="width: 22px;height: 19px;top: 74px;left: 75px;" (click)="selectTooth(54)">
             </button>
-            <button type="button" class="tooth-btn tooth-55" matTooltip="Select Tooth 55" style="width: 22px;height: 19px;top: 92px;left: 70px;" (click)="selectTooth(55)">
+            <button type="button" class="tooth-btn tooth-55" matTooltip="Select Tooth 55"
+                style="width: 22px;height: 19px;top: 92px;left: 70px;" (click)="selectTooth(55)">
             </button>
-            <button type="button" class="tooth-btn tooth-61" matTooltip="Select Tooth 61" style="width: 19px;height: 16px;top: 45px;left: 129px;" (click)="selectTooth(61)">
+            <button type="button" class="tooth-btn tooth-61" matTooltip="Select Tooth 61"
+                style="width: 19px;height: 16px;top: 45px;left: 129px;" (click)="selectTooth(61)">
             </button>
-            <button type="button" class="tooth-btn tooth-62" matTooltip="Select Tooth 62" style="width: 18px;height: 17px;top: 50px;left: 145px;" (click)="selectTooth(62)">
+            <button type="button" class="tooth-btn tooth-62" matTooltip="Select Tooth 62"
+                style="width: 18px;height: 17px;top: 50px;left: 145px;" (click)="selectTooth(62)">
             </button>
-            <button type="button" class="tooth-btn tooth-63" matTooltip="Select Tooth 63" style="width: 22px;height: 15px;top: 62px;left: 154px;" (click)="selectTooth(63)">
+            <button type="button" class="tooth-btn tooth-63" matTooltip="Select Tooth 63"
+                style="width: 22px;height: 15px;top: 62px;left: 154px;" (click)="selectTooth(63)">
             </button>
-            <button type="button" class="tooth-btn tooth-64" matTooltip="Select Tooth 64" style="width: 20px;height: 18px;top: 73px;left: 163px;" (click)="selectTooth(64)">
+            <button type="button" class="tooth-btn tooth-64" matTooltip="Select Tooth 64"
+                style="width: 20px;height: 18px;top: 73px;left: 163px;" (click)="selectTooth(64)">
             </button>
-            <button type="button" class="tooth-btn tooth-65" matTooltip="Select Tooth 65" style="width: 22px;height: 21px;top: 89px;left: 167px;" (click)="selectTooth(65)">
+            <button type="button" class="tooth-btn tooth-65" matTooltip="Select Tooth 65"
+                style="width: 22px;height: 21px;top: 89px;left: 167px;" (click)="selectTooth(65)">
             </button>
-            <button type="button" class="tooth-btn tooth-71" matTooltip="Select Tooth 71" style="width: 15px;height: 20px;top: 340px;left: 128px;" (click)="selectTooth(71)">
+            <button type="button" class="tooth-btn tooth-71" matTooltip="Select Tooth 71"
+                style="width: 15px;height: 20px;top: 340px;left: 128px;" (click)="selectTooth(71)">
             </button>
-            <button type="button" class="tooth-btn tooth-72" matTooltip="Select Tooth 72" style="width: 18px;height: 17px;top: 339px;left: 142px;" (click)="selectTooth(72)">
+            <button type="button" class="tooth-btn tooth-72" matTooltip="Select Tooth 72"
+                style="width: 18px;height: 17px;top: 339px;left: 142px;" (click)="selectTooth(72)">
             </button>
-            <button type="button" class="tooth-btn tooth-73" matTooltip="Select Tooth 73" style="width: 21px;height: 18px;top: 328px;left: 151px;" (click)="selectTooth(73)">
+            <button type="button" class="tooth-btn tooth-73" matTooltip="Select Tooth 73"
+                style="width: 21px;height: 18px;top: 328px;left: 151px;" (click)="selectTooth(73)">
             </button>
-            <button type="button" class="tooth-btn tooth-74" matTooltip="Select Tooth 74" style="width: 22px;height: 19px;top: 312px;left: 159px;" (click)="selectTooth(74)">
+            <button type="button" class="tooth-btn tooth-74" matTooltip="Select Tooth 74"
+                style="width: 22px;height: 19px;top: 312px;left: 159px;" (click)="selectTooth(74)">
             </button>
-            <button type="button" class="tooth-btn tooth-75" matTooltip="Select Tooth 75" style="width: 20px;height: 21px;top: 292px;left: 166px;" (click)="selectTooth(75)">
+            <button type="button" class="tooth-btn tooth-75" matTooltip="Select Tooth 75"
+                style="width: 20px;height: 21px;top: 292px;left: 166px;" (click)="selectTooth(75)">
             </button>
-            <button type="button" class="tooth-btn tooth-81" matTooltip="Select Tooth 81" style="width: 14px;height: 19px;top: 341px;left: 114px;" (click)="selectTooth(81)">
+            <button type="button" class="tooth-btn tooth-81" matTooltip="Select Tooth 81"
+                style="width: 14px;height: 19px;top: 341px;left: 114px;" (click)="selectTooth(81)">
             </button>
-            <button type="button" class="tooth-btn tooth-82" matTooltip="Select Tooth 82" style="width: 15px;height: 17px;top: 340px;left: 99px;" (click)="selectTooth(82)">
+            <button type="button" class="tooth-btn tooth-82" matTooltip="Select Tooth 82"
+                style="width: 15px;height: 17px;top: 340px;left: 99px;" (click)="selectTooth(82)">
             </button>
-            <button type="button" class="tooth-btn tooth-83" matTooltip="Select Tooth 83" style="width: 20px;height: 17px;top: 328px;left: 88px;" (click)="selectTooth(83)">
+            <button type="button" class="tooth-btn tooth-83" matTooltip="Select Tooth 83"
+                style="width: 20px;height: 17px;top: 328px;left: 88px;" (click)="selectTooth(83)">
             </button>
-            <button type="button" class="tooth-btn tooth-84" matTooltip="Select Tooth 84" style="width: 24px;height: 18px;top: 313px;left: 79px;" (click)="selectTooth(84)">
+            <button type="button" class="tooth-btn tooth-84" matTooltip="Select Tooth 84"
+                style="width: 24px;height: 18px;top: 313px;left: 79px;" (click)="selectTooth(84)">
             </button>
-            <button type="button" class="tooth-btn tooth-85" matTooltip="Select Tooth 85" style="width: 23px;height: 23px;top: 293px;left: 73px;" (click)="selectTooth(85)">
+            <button type="button" class="tooth-btn tooth-85" matTooltip="Select Tooth 85"
+                style="width: 23px;height: 23px;top: 293px;left: 73px;" (click)="selectTooth(85)">
             </button>
         </div>
     </div>
