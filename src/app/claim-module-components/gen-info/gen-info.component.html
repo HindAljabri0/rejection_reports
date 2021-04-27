@@ -1,11 +1,11 @@
 <div class="row small-gutter general-info-wrapper">
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('fullName') || fieldHasError('FirstName')||fieldHasError('LastName')">
+        <div class="form-group" [class.has-error]="fieldHasError('FULLNAME') || fieldHasError('FirstName')||fieldHasError('LastName')">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
                 <div class="col">
                     <input class="form-control" placeholder="Enter full name" type="text"
-                        [formControl]="fullNameController" (change)="updateClaim('FULLNAME')" required>
+                        [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                 </div>
                 <div class="col-auto form-group" [class.has-error]="fieldHasError('GENDER') || fieldHasError('GENDERNULL')">
                     <mat-form-field class="form-control custom-select-control">
