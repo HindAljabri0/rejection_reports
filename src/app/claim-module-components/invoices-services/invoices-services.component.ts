@@ -51,7 +51,7 @@ export class InvoicesServicesComponent implements OnInit {
       retrieved: boolean,
       statusCode?: string,
       statusDescription?: string,
-      acutalDeductedAmount?: number,
+      acutalDeductedAmount?: string,
       serviceNumber: number,
       serviceDate: FormControl,
       serviceCode: FormControl,
@@ -102,6 +102,8 @@ export class InvoicesServicesComponent implements OnInit {
     { key: 'SUPPLY', value: 'SUPPLY' },
     { key: 'RADIOLOGY', value: 'RADIOLOGY' },
   ];
+  acutalDeductedAmount: any;
+  statusCode: any;
 
   constructor(
     private store: Store,
@@ -200,6 +202,10 @@ export class InvoicesServicesComponent implements OnInit {
           this.controllers[index].services[serviceIndex].statusDescription = decision.decisioncomment;
           this.controllers[index].services[serviceIndex].acutalDeductedAmount =
             (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
+          this.acutalDeductedAmount =
+            (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
+          this.statusCode = decision.serviceStatusCode;
+
         }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
@@ -351,7 +357,9 @@ export class InvoicesServicesComponent implements OnInit {
       priceCorrection: 0,
       rejection: 0,
       isOpen: false,
-      serviceType: new FormControl()
+      serviceType: new FormControl(),
+      statusCode: '',
+      acutalDeductedAmount: ''
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
