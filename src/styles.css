@@ -171,7 +171,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-medium-grey{color: #909090!important;}
 .text-grey{color: #707070!important;}
 .text-success{color: #29bf24!important;}
-.text-invalid,.text-danger{color: #CC2F2F!important;}
+.text-danger{color: #CC2F2F!important;}
+.text-invalid{color: #682691!important;}
 .text-middle-grey{color:#bebebe!important;}
 .text-normal-color{color:#2d2d2d!important;}
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
@@ -186,7 +187,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .bg-light-grey{background-color: #adadad!important;}
 .bg-middle-grey{color:#bebebe!important;}
 .bg-success{background-color: #29bf24!important;}
-.bg-invalid,.bg-danger{background-color: #CC2F2F!important;}
+.bg-danger{background-color: #CC2F2F!important;}
+.bg-invalid{background-color: #682691!important;}
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
@@ -197,7 +199,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .light-bg-paid,.light-bg-green{background-color: #e3efe5!important;}
 .light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
 .light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
-.light-bg-invalid,.light-bg-danger{background-color: #f9e6e6!important;}
+.light-bg-danger{background-color: #f9e6e6!important;}
+.light-bg-invalid{background-color: #ede4f2!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
