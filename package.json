@@ -55,6 +55,7 @@
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
+    "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "core-js": "^3.3.4",
     "file-saver": "^2.0.2",
     "hammerjs": "^2.0.8",

@@ -1,9 +1,18 @@
 <div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
-    <div class="block-header has-border">
-        <ul class="custom-breadcrumb">
-            <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
-            <li class="active">Tawuniya</li>
-        </ul>
+    <div class="block-header has-border align-items-center">
+        <div class="left-block">
+            <ul class="custom-breadcrumb">
+                <li><a routerLink="/reports/creditReports" class="primary-link">Credit Reports</a></li>
+                <li class="active">Tawuniya</li>
+            </ul>
+        </div>
+        <div class="right-block"
+            *ngIf="data != null && (data.providercreditReportInformation.status=='INVALID' || data.providercreditReportInformation.status=='FAILED') &&  data.providercreditReportInformation != null">
+            <button type="button" class="error-btn" (click)="openErrorsDialog()" matRipple>
+                <mat-icon>error</mat-icon>
+                <span>View Errors</span>
+            </button>
+        </div>
     </div>
     <div class="credit-report-header">
         <div class="left-block align-items-start">
@@ -146,8 +155,10 @@
                     <button mat-menu-item>Claim Month</button>
                 </mat-menu>
                 <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a> -->
-                <a *ngIf="selectedServices[selectedServiceTab].length > 0" class="primary-link underlined" title="Agree">Agree</a>
-                <a *ngIf="selectedServices[selectedServiceTab].length == 0" class="primary-link underlined disabled" title="Agree">Agree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 0) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)" href="#" (click)="$event.preventDefault()"
+                    class="primary-link underlined" title="Agree">Agree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length == 0) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)" href="#" (click)="$event.preventDefault()"
+                    class="primary-link underlined disabled" title="Agree">Agree</a>
                 <mat-menu #disagreeMenu="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
                     <div (click)="$event.stopPropagation()">
                         <div class="form-group">
@@ -159,18 +170,24 @@
                         </div>
                     </div>
                 </mat-menu>
-                <a *ngIf="selectedServices[selectedServiceTab].length > 0" class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
-                <a *ngIf="selectedServices[selectedServiceTab].length == 0" class="primary-link underlined disabled" title="Disagree">Disagree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 0) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)" href="#" (click)="$event.preventDefault()"
+                    class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length == 0) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)" href="#" (click)="$event.preventDefault()"
+                    class="primary-link underlined disabled" title="Disagree">Disagree</a>
             </div>
         </div>
-        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
-            <mat-tab [label]="'Deducted Services'" (click)="selectedServiceTab = 'deducted-services'">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="onTabChange($event)">
+            <mat-tab [label]="'Deducted Services'">
                 <div class="table-responsive">
                     <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
                         <thead>
                             <tr>
                                 <th width="10">
-                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                    <mat-checkbox class="grid-checkbox" color="primary"
+                                        [(checked)]="selectionControl.deducted.allCheckBoxIsChecked"
+                                        [(indeterminate)]="selectionControl.deducted.allCheckBoxIsIndeterminate"
+                                        (change)="selectAllInPage('deducted')">
+                                    </mat-checkbox>
                                 </th>
                                 <th>Waseel Batch</th>
                                 <th>Doctor Code</th>
@@ -187,13 +204,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let service of deductedServices">
-                                <td>
-                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                            <tr class="row-click" *ngFor="let service of deductedServices"
+                                (click)="openDetailsDialog($event, service.id.serialno, 'deducted')">
+                                <td (click)="$event.stopPropagation();">
+                                    <mat-checkbox class="grid-checkbox" color="primary"
+                                        [checked]="selectionControl.deducted.selections.includes(service.id.serialno)"
+                                        (change)="selectService('deducted', service.id.serialno)">
+                                    </mat-checkbox>
                                 </td>
                                 <td>{{service.waseelbatch}}</td>
                                 <td>{{service.physicianid}}</td>
-                                <td>{{service.payerclaimno}}</td>
+                                <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)"
+                                    class="primary-link underlined disabled ng-star-inserted" href="#"
+                                    title="payerClaimNo">{{service.payerclaimno}}</td>
                                 <td></td>
                                 <td>{{service.servicecode}}</td>
                                 <td>{{service.servicedescription}}</td>
@@ -201,14 +224,18 @@
                                 <td>{{service.comments}}</td>
                                 <td>{{service.exceedprice | currency:' '}} SR</td>
                                 <td>{{service.deductedamount | currency:' '}} SR</td>
-                                <td><mat-icon *ngIf="service.agree != null"
-                                    [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
-                                    {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon></td>
+                                <td>
+                                    <mat-icon *ngIf="service.agree != null"
+                                        [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
+                                        {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
+                                </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1"
+                                        (click)="$event.stopPropagation()" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
-                                    <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                    <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu"
+                                        xPosition="before">
                                         <div (click)="$event.stopPropagation()">
                                             <div class="form-group">
                                                 <label>Comments</label>
@@ -216,7 +243,8 @@
                                             </div>
                                             <div class="form-group mb-0">
                                                 <label>Attachments</label>
-                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF,
+                                                    JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                 </p>
                                                 <ul class="attachment-list">
                                                     <li matTooltip="Report-4594.pdf">
@@ -257,13 +285,17 @@
                     </table>
                 </div>
             </mat-tab>
-            <mat-tab [label]="'Rejected Claims Services'" (click)="selectedServiceTab = 'rejected-services'">
+            <mat-tab [label]="'Rejected Claims Services'">
                 <div class="table-responsive">
                     <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
                         <thead>
                             <tr>
                                 <th width="10">
-                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                                    <mat-checkbox class="grid-checkbox" color="primary"
+                                        [(checked)]="selectionControl.rejected.allCheckBoxIsChecked"
+                                        [(indeterminate)]="selectionControl.rejected.allCheckBoxIsIndeterminate"
+                                        (change)="selectAllInPage('rejected')">
+                                    </mat-checkbox>
                                 </th>
                                 <th>Waseel Batch</th>
                                 <th>Doctor Code</th>
@@ -280,13 +312,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let service of rejectedServices">
-                                <td>
-                                    <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                            <tr class="row-click" *ngFor="let service of rejectedServices"
+                                (click)="openDetailsDialog($event, service.id.serialno, 'rejected')">
+                                <td (click)="$event.stopPropagation()">
+                                    <mat-checkbox class="grid-checkbox" color="primary"
+                                        [checked]="selectionControl.rejected.selections.includes(service.id.serialno)"
+                                        (change)="selectService('rejected', service.id.serialno)">
+                                    </mat-checkbox>
                                 </td>
                                 <td>{{service.waseelbatch}}</td>
                                 <td>{{service.physicianid}}</td>
-                                <td>{{service.payerclaimno}}</td>
+                                <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)"
+                                    class="primary-link underlined disabled ng-star-inserted" href="#"
+                                    title="payerClaimNo">{{service.payerclaimno}}</td>
                                 <td></td>
                                 <td>{{service.servicecode}}</td>
                                 <td>{{service.servicedescription}}</td>
@@ -294,14 +332,18 @@
                                 <td>{{service.comments}}</td>
                                 <td>{{service.exceedprice | currency:' '}} SR</td>
                                 <td>{{service.deductedamount | currency:' '}} SR</td>
-                                <td><mat-icon *ngIf="service.agree != null"
-                                    [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
-                                    {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon></td>
+                                <td>
+                                    <mat-icon *ngIf="service.agree != null"
+                                        [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
+                                        {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
+                                </td>
                                 <td class="actions">
-                                    <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
+                                    <button *ngIf="isEditableBatch()" type="button" (click)="$event.stopPropagation()"
+                                        [matMenuTriggerFor]="editMenu1" mat-icon-button class="text-primary">
                                         <mat-icon>edit</mat-icon>
                                     </button>
-                                    <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                    <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu"
+                                        xPosition="before">
                                         <div (click)="$event.stopPropagation()">
                                             <div class="form-group">
                                                 <label>Comments</label>
@@ -309,7 +351,8 @@
                                             </div>
                                             <div class="form-group mb-0">
                                                 <label>Attachments</label>
-                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF, JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
+                                                <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF,
+                                                    JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                 </p>
                                                 <ul class="attachment-list">
                                                     <li matTooltip="Report-4594.pdf">
@@ -372,7 +415,8 @@
         </div>
 
         <div class="btn-list right-block">
-            <button type="button" *ngIf="isEditableBatch()" (click)="submit()" color="primary" mat-flat-button>Submit</button>
+            <button type="button" *ngIf="isEditableBatch()" (click)="submit()" color="primary"
+                mat-flat-button>Submit</button>
         </div>
     </div>
 </div>

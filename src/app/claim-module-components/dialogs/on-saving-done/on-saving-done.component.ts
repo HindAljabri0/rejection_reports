@@ -22,7 +22,12 @@ export class OnSavingDoneComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dialogRef.backdropClick().subscribe(() => this.store.dispatch(cancelClaim()));
+    this.dialogRef.backdropClick().subscribe(() => {
+      if (!this.showViewAllButton)
+        this.onOK()
+      else if(this.data.status != 'Not_Saved')
+        this.store.dispatch(cancelClaim());
+    });
   }
 
   get showViewAllButton() {

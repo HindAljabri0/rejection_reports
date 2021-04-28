@@ -40,7 +40,8 @@ export class ProvidersConfigComponent implements OnInit {
     payerMappingError?: string,
     payerMappingSaveError?: string,
     providerMappingError?: string,
-    providerMappingSaveError?: string
+    providerMappingSaveError?: string,
+    pbmConfigurationSaveError?: string
   } = {};
   success: {
     serviceCodeSaveSuccess?: string,
@@ -49,7 +50,8 @@ export class ProvidersConfigComponent implements OnInit {
     sfdaSaveSuccess?: string,
     midtableSaveSuccess?: string,
     payerMappingSaveSuccess?: string,
-    providerMappingSaveSuccess?: string
+    providerMappingSaveSuccess?: string,
+    pbmConfigurationSaveSuccess?: string
   } = {};
   componentLoading = {
     serviceCode: true,
@@ -83,7 +85,11 @@ export class ProvidersConfigComponent implements OnInit {
   existingPayers: any[] = [];
   providerMappingController: FormControl = new FormControl('');
   providerMappingValue: string;
+  PBMUserController: FormControl = new FormControl('');
+  PBMPasswordController: FormControl = new FormControl('');
+  PBMCheckValueController: FormControl = new FormControl('');
   payerMappingValue: { [key: number]: string } = {};
+  isPBMLoading: boolean = false;
 
   constructor(
     private superAdmin: SuperAdminService,
@@ -119,6 +125,8 @@ export class ProvidersConfigComponent implements OnInit {
           } else {
             this.sharedServices.loadingChanged.next(false);
           }
+          if (this.selectedProvider !== undefined)
+            this.getThePBMValues();
         }
       }
     }, error => {
@@ -134,7 +142,6 @@ export class ProvidersConfigComponent implements OnInit {
       dbUserName: [''],
       dbPassword: ['']
     });
-    // this.getDatabaseConfig();
   }
 
   updateFilter() {
@@ -148,6 +155,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.location.go(`/administration/config/providers/${providerId}`);
     this.reset();
     this.getAssociatedPayers();
+    this.getThePBMValues();
   }
 
   getAssociatedPayers() {
@@ -228,6 +236,7 @@ export class ProvidersConfigComponent implements OnInit {
     const payerFlag = this.savePayerMapping();
     const providerFlag = this.addProviderMapping();
     // change on 02-01-2021 end
+    this.saveThePBMValue();
     if (portalUserFlag && serviceCodeFlag && icd10Flag && priceUnitFlag && sfdaFlag && dbFlag && payerFlag && providerFlag) {
       this.dialogService.openMessageDialog({
         title: '',
@@ -236,7 +245,6 @@ export class ProvidersConfigComponent implements OnInit {
         isError: false
       });
     }
-
   }
 
   saveSettings(URLKey: string, newSettingValues: { [key: string]: boolean }, settingValues: any[]) {
@@ -934,6 +942,60 @@ export class ProvidersConfigComponent implements OnInit {
     this.addPayerMappingList = [];
     this.addDbConfigForm.reset();
     this.providerMappingController.setValue('');
+    this.resetPbMValue();
+  }
 
+  getThePBMValues() {
+    this.sharedServices.loadingChanged.next(true);
+    this.isPBMLoading = true;
+    this.dbMapping.getPBMMapping(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data = event.body['pbmConfig'];
+        if (data != null) {
+          this.PBMUserController.setValue(data.username);
+          this.PBMPasswordController.setValue(data.password);
+          this.PBMCheckValueController.setValue(data.value === 'true' ? true : false);
+        }
+        else {
+          this.resetPbMValue();
+        }
+        this.sharedServices.loadingChanged.next(false);
+        this.isPBMLoading = false;
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      this.isPBMLoading = false;
+      console.log(error);
+    });
+  }
+
+  resetPbMValue() {
+    this.PBMUserController.setValue(null);
+    this.PBMPasswordController.setValue(null);
+    this.PBMCheckValueController.setValue(false);
+  }
+
+  saveThePBMValue() {
+    const body = {
+      providerId: this.selectedProviderCode,
+      username: this.PBMUserController.value,
+      password: this.PBMPasswordController.value,
+      value: this.PBMCheckValueController.value
+    };
+    this.componentLoading.providerMapping = true;
+    this.dbMapping.setPBMMapping(body, this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event) {
+          this.getThePBMValues();
+          this.success.pbmConfigurationSaveSuccess = 'Settings were saved successfully.';
+        } else {
+          this.errors.pbmConfigurationSaveError = 'Could not save payer mapping details !';
+        }
+        this.componentLoading.providerMapping = false;
+      }
+    }, error => {
+      this.componentLoading.providerMapping = false;
+      console.log(error);
+    });
   }
 }

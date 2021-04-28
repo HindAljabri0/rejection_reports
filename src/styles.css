@@ -50,6 +50,7 @@ strong,.bold{font-weight: 700;}
 .semibold{font-weight: 600!important;}
 .medium{font-weight: 500!important;}
 .text-sm{font-size: 12px;line-height: 16px;}
+.text-monospace{font-family: 'Courier Prime', monospace!important;font-size: 111%;letter-spacing: -0.6px;line-height: 111%;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
@@ -152,6 +153,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .pr-7{padding-right: 7px !important;}
 .p-14{padding: 14px !important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
+.error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
+.error-btn>span{padding-left: 4px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -169,6 +172,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-grey{color: #707070!important;}
 .text-success{color: #29bf24!important;}
 .text-danger{color: #CC2F2F!important;}
+.text-invalid{color: #682691!important;}
 .text-middle-grey{color:#bebebe!important;}
 .text-normal-color{color:#2d2d2d!important;}
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
@@ -184,6 +188,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .bg-middle-grey{color:#bebebe!important;}
 .bg-success{background-color: #29bf24!important;}
 .bg-danger{background-color: #CC2F2F!important;}
+.bg-invalid{background-color: #682691!important;}
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
@@ -195,6 +200,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
 .light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
 .light-bg-danger{background-color: #f9e6e6!important;}
+.light-bg-invalid{background-color: #ede4f2!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
@@ -684,17 +690,17 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* clean claim progress report
 --------------------------------------------------------------------------------------------------------*/
-.clean-claim-progress-report{background-color: #eff5ff;display: flex;}
-.clean-claim-progress-report .list{position:sticky;top:80px;}
-.clean-claim-progress-report .list>li>button{background: #fff;border:0; border-bottom:1px solid #e1e1e1;color:#3060AA;font-weight: 500;width: 100%;padding: 8px 14px;text-align: left;position: relative;}
-.clean-claim-progress-report .list>li>button:after{display: block;content:'';position: absolute;right: 0;top: 0;bottom: 0;width: 0;background-color: #3060AA;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;}
-.clean-claim-progress-report .list>li>button.active:after{width: 6px;opacity: 1;}
-.clean-claim-progress-report .list>li>button:hover,.clean-claim-progress-report .list>li>button:focus,.clean-claim-progress-report .list>li>button:active{background-color: #f6f6f6;}
-.clean-claim-progress-report .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
-.clean-claim-progress-report>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
-.clean-claim-progress-report>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
-.clean-claim-progress-report>.right-block .empty-state{min-height: calc(100vh - 333px);}
-.clean-claim-progress-report>.right-block .rejection-card-head{display: block;min-height: auto;}
+.progress-report-wrapper{background-color: #eff5ff;display: flex;}
+.progress-report-wrapper .list{position:sticky;top:80px;}
+.progress-report-wrapper .list>li>button{background: #fff;border:0; border-bottom:1px solid #e1e1e1;color:#3060AA;font-weight: 500;width: 100%;padding: 8px 14px;text-align: left;position: relative;}
+.progress-report-wrapper .list>li>button:after{display: block;content:'';position: absolute;right: 0;top: 0;bottom: 0;width: 0;background-color: #3060AA;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;}
+.progress-report-wrapper .list>li>button.active:after{width: 6px;opacity: 1;}
+.progress-report-wrapper .list>li>button:hover,.progress-report-wrapper .list>li>button:focus,.progress-report-wrapper .list>li>button:active{background-color: #f6f6f6;}
+.progress-report-wrapper .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
+.progress-report-wrapper>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
+.progress-report-wrapper>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
+.progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 333px);}
+.progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -754,6 +760,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .status-text.ball-green:before{background-color: #7DF467;}
 .status-text.ball-brown:before{background-color: #B48A60;}
 .status-text.ball-red:before{background-color: #FF0000;}
+.status-text.ball-yellow:before{background-color: #fbff00;}
+
 
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/
@@ -783,10 +791,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* credit report summary header
 --------------------------------------------------------------------------------------------------------*/
-.credit-report-header{display: flex;top:68px;position:sticky;z-index:3;}
-.credit-report-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
-.credit-report-header>.left-block .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}
-.credit-report-header>.left-block .chart-block{height: 48px;flex-basis:48px;max-width: 48px;flex-grow:0;flex-shrink:0;border-radius: 500px;background: #FFFFFF;padding: 3px;}
+.credit-report-header{display: flex;}
+.credit-report-header,.credit-report-body .section-header{top:68px;position:sticky;z-index:3;}
+.credit-report-header>.left-block,.credit-report-body .section-header{display: flex;align-items: center;background: #3060AA;padding: 10px 14px;color:#fff;}
+.credit-report-header>.left-block{flex-grow:0;flex-shrink:0;flex-basis:250px;max-width: 250px;}
+.credit-report-header>.left-block .content,.credit-report-body .section-header .content{flex-basis:calc(100% - 48px);max-width: calc(100% - 48px);flex-grow:0;flex-shrink:0;padding-right: 12px;}
+.credit-report-header>.left-block .chart-block,.credit-report-body .section-header .chart-block{height: 48px;flex-basis:48px;max-width: 48px;flex-grow:0;flex-shrink:0;border-radius: 500px;background: #FFFFFF;padding: 3px;}
 .credit-report-header>.right-block{background-color: #F4F4F4;border-bottom:1px solid rgba(112, 112, 112,0.3);flex-grow:0;flex-shrink:0;flex-basis:calc(100% - 250px);max-width: calc(100% - 250px);padding: 10px 14px;}
 .credit-report-header>.right-block .content{flex-grow: 0;flex-shrink: 0;flex-basis:280px;max-width:280px;}
 .credit-report-header>.right-block .content small,.credit-report-header>.right-block .content p{color:#3060AA;}
@@ -996,6 +1006,18 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .nav-tabs .nav-item + .nav-item{margin-left: 4px;}
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active,.nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active:hover{color: #fff;background-color: #3060AA;}
 
+/* tawuniya extra details
+--------------------------------------------------------------------------------------------------------*/
+.tawuniya-extra-details{background-color: #f6f6f6;}
+.tawuniya-extra-details .mat-expansion-panel:not([class*=mat-elevation-z]){box-shadow: none;}
+.tawuniya-extra-details .mat-expansion-panel-header{min-height: 48px;max-height: 48px;padding-left: 14px;padding-right: 14px;font-weight: 500;}
+.tawuniya-extra-details .mat-expansion-panel-header .mat-content:after{content:'';background: url('./assets/ic-chevron-down-primary.svg') center no-repeat;background-size: 24px 24px;display: block;height: 24px;width: 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: rotate(0deg);}
+.tawuniya-extra-details .mat-expanded .mat-expansion-panel-header .mat-content:after{transform: rotate(180deg);}
+.tawuniya-extra-details .mat-expansion-panel-body{padding: 14px;border-top: 1px solid #e1e1e1;}
+.tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){background-color: #fff;}
+.tawuniya-extra-details .mat-accordion .mat-expansion-panel:first-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel:last-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel{border-radius: 4px;}
+.tawuniya-extra-details .mat-accordion .mat-expansion-panel+.mat-expansion-panel{margin-top: 10px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
@@ -1052,6 +1074,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(25% - 14px)!important;}
     .bupa-table,.bupa-table .form-control,.bupa-table .form-control.has-error{font-size: 13px;line-height:18px;}
     .general-info-wrapper>div{flex-basis:20%;max-width: 20%;}
+    .tawuniya-report-details .credit-report-header{position: static;}
 }
 @media (max-width:1199px) { 
     .advance-search{padding-left: 10px;width: 430px;}
@@ -1074,15 +1097,14 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .item-group-panel .parent-panel{flex-basis:300px;max-width: 300px;}
     .item-group-panel .child-panel{flex-basis:calc(100% - 300px);max-width: calc(100% - 300px);}
     .bupa-footer .left-block .form-group{margin-right: 12px;}
-    .clean-claim-progress-report>.left-block{max-width: 220px;flex-basis:220px;}
-    .clean-claim-progress-report>.right-block{max-width: calc(100% - 220px);flex-basis:calc(100% - 220px);}
+    .progress-report-wrapper>.left-block{max-width: 220px;flex-basis:220px;}
+    .progress-report-wrapper>.right-block{max-width: calc(100% - 220px);flex-basis:calc(100% - 220px);}
     .general-info-wrapper>div{flex-basis:25%;max-width: 25%;}
     .border-xl-right{border-right:0;}
     .border-xl-left{border-left:0;}
     .border-xl-top{border-top:0;}
     .border-xl-bottom{border-bottom:0;}
     .revenue-header>.row>div:nth-child(2),.revenue-report-body>.row>div:nth-child(2){border-right: 0;}
-    .tawuniya-report-details .credit-report-header{position: static;}
 }
 @media (max-width:991px) { 
     .file-upload-drag-drop .text-block{flex-direction: column;align-items: center;}
@@ -1094,8 +1116,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .dashboard-header .dashboard-filters{margin-left: 0;}
     .bupa-footer{flex-direction:column;align-items: flex-start;}
     .bupa-footer>.left-block{padding-right: 0;padding-bottom: 16px;padding-left: 0;}
-    .clean-claim-progress-report>.left-block{max-width: 180px;flex-basis:180px;}
-    .clean-claim-progress-report>.right-block{max-width: calc(100% - 180px);flex-basis:calc(100% - 180px);}
+    .progress-report-wrapper>.left-block{max-width: 180px;flex-basis:180px;}
+    .progress-report-wrapper>.right-block{max-width: calc(100% - 180px);flex-basis:calc(100% - 180px);}
     .general-info-wrapper>div{flex-basis:33.333333%;max-width: 33.333333%;}
     .credit-report-header>.left-block,.credit-report-body>.left-block{flex-basis: 210px;max-width: 210px;}
     .credit-report-header>.right-block,.credit-report-body>.right-block{flex-basis:calc(100% - 210px);max-width: calc(100% - 210px);}

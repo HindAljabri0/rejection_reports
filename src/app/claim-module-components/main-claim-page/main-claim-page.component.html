@@ -34,7 +34,7 @@
             </ng-container>
         </ng-template>
 
-        <div class="block-body create-claim-body" *ngIf="!isLoading">
+        <div class="block-body create-claim-body">
             <div class="error-block mb-3"
                 *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">
                 {{getError()}}</div>
