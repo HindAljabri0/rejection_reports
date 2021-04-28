@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
+import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { AttachmentRequest, FileType } from '../models/attachmentRequest.model';
 import { updateCurrentAttachments } from '../store/claim.actions';
 import { ClaimPageMode, getClaim, getPageMode } from '../store/claim.reducer';
@@ -13,7 +16,7 @@ import { ClaimPageMode, getClaim, getPageMode } from '../store/claim.reducer';
 })
 export class AttachmentsComponent implements OnInit {
 
-  constructor(private sanitizer: DomSanitizer, private store: Store) { }
+  constructor(private sanitizer: DomSanitizer, private store: Store, private dialog: MatDialog) { }
 
   attachments: AttachmentRequest[];
   // newAttachmentsPreview: { src: string | ArrayBuffer, name: string, fileType: FileType }[] = [];
@@ -110,6 +113,12 @@ export class AttachmentsComponent implements OnInit {
   editAttachment(type: FileType, index: number) {
     this.attachments[index] = { ...this.attachments[index], fileType: type };
     this.updateCurrentAttachments();
+  }
+
+  viewAttachment(attachment: AttachmentRequest) {
+    this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
+      data: { filename: attachment.fileName, attachment: attachment.attachmentFile }
+    })
   }
 
 }

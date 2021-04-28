@@ -1,0 +1,3 @@
+<img style="max-width: 100%;" *ngIf="!isPdf()" [src]="attachmentSource" [alt]="data.filename" />
+
+<iframe style="width: 100%; height: 99%;" *ngIf="isPdf()" [src]="attachmentSource" ></iframe>

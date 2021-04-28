@@ -1,4 +1,228 @@
+<ul class="dashboard-legend">
+    <li><span class="bg-under-processing"></span>Under Processing</li>
+    <li><span class="bg-paid"></span>Paid</li>
+    <li><span class="bg-partially-paid"></span>Partially Paid</li>
+    <li><span class="bg-rejected"></span>Rejected by Payer</li>
+</ul>
 <div class="row small-gutter">
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container
+                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                <p class="title">Number of Claims</p>
+                <h4>{{summaries.submittedClaims.data.totalClaims}} <small>Claims</small></h4>
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="claimsChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-under-processing">
+                        {{summaries.processingClaims.data.totalClaims}} <small>Claims</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-under-processing">
+                        {{calculatePercetage(summaries.processingClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-paid">
+                        {{summaries.paidClaims.data.totalClaims}} <small>Claims</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-paid">
+                        {{calculatePercetage(summaries.paidClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-partially-paid">
+                        {{summaries.partiallyPaidClaims.data.totalClaims}} <small>Claims</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-partially-paid">
+                        {{calculatePercetage(summaries.partiallyPaidClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-rejected">
+                        {{summaries.rejectedClaims.data.totalClaims}} <small>Claims</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected">
+                        {{calculatePercetage(summaries.rejectedClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper"
+                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error"
+                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container
+                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                <p class="title">Gross Amount</p>
+                <h4>{{summaries.submittedClaims.data.gross}} <small>SR</small></h4>
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="grossChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-under-processing">
+                        {{summaries.processingClaims.data.gross}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-under-processing">
+                        {{calculatePercetage(summaries.processingClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-paid">
+                        {{summaries.paidClaims.data.gross}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-paid">
+                        {{calculatePercetage(summaries.paidClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-partially-paid">
+                        {{summaries.partiallyPaidClaims.data.gross}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-partially-paid">
+                        {{calculatePercetage(summaries.partiallyPaidClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-rejected">
+                        {{summaries.rejectedClaims.data.gross}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected">
+                        {{calculatePercetage(summaries.rejectedClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper"
+                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error"
+                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container
+                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                <p class="title">Net Amount</p>
+                <h4>{{summaries.submittedClaims.data.totalNetAmount}} <small>SR</small></h4>
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="netChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-under-processing">
+                        {{summaries.processingClaims.data.totalNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-under-processing">
+                        {{calculatePercetage(summaries.processingClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-paid">
+                        {{summaries.paidClaims.data.totalNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-paid">
+                        {{calculatePercetage(summaries.paidClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-partially-paid">
+                        {{summaries.partiallyPaidClaims.data.totalNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-partially-paid">
+                        {{calculatePercetage(summaries.partiallyPaidClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-rejected">
+                        {{summaries.rejectedClaims.data.totalNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected">
+                        {{calculatePercetage(summaries.rejectedClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper"
+                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error"
+                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container
+                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                <p class="title">VAT Amount</p>
+                <h4>{{summaries.submittedClaims.data.totalVatNetAmount}} <small>SR</small></h4>
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="vatChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-under-processing">
+                        {{summaries.processingClaims.data.totalVatNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-under-processing">
+                        {{calculatePercetage(summaries.processingClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-paid">
+                        {{summaries.paidClaims.data.totalVatNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-paid">
+                        {{calculatePercetage(summaries.paidClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-partially-paid">
+                        {{summaries.partiallyPaidClaims.data.totalVatNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-partially-paid">
+                        {{calculatePercetage(summaries.partiallyPaidClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-rejected">
+                        {{summaries.rejectedClaims.data.totalVatNetAmount}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected">
+                        {{calculatePercetage(summaries.rejectedClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper"
+                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error"
+                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="row small-gutter">
     <div class="col-xxl-3 col-xl-4 col-md-6" *ngFor="let item of summaries">
         <app-abstractcard [title]="item.title || getCardName(item.data.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])"
             [clickable]="false" class="primary-card">
@@ -38,4 +262,4 @@
             </ng-container>
         </app-abstractcard>
     </div>
-</div>
+</div> -->

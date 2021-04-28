@@ -125,6 +125,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isSubmit = false;
   isDeleteBtnVisible: boolean = true;
   status: any = 1;
+  isAllCards: boolean = false;
 
 
   constructor(
@@ -244,7 +245,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     this.showValidationTab = false;
     let statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
-    if (statusCode == 200) {
+    if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null) {
       let statuses = this.summaries[0].statuses;
       statuses.sort((s1, s2) => {
         if (this.isReadyForSubmissionStatus(s1) || s1 == 'NotAccepted' || s1 == 'Batched' || this.isUnderProcessingStatus(s1)) {
@@ -266,7 +267,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           underProcessingIsDone = true;
         } else if (this.isRejectedByPayerStatus(status)) {
           if (!rejectedByPayerIsDone)
-            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'INVALID', 'DUPLICATE']);
+            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
           rejectedByPayerIsDone = true;
         } else if (this.isReadyForSubmissionStatus(status)) {
           if (!readyForSubmissionIsDone)
@@ -276,7 +277,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           if (!paidIsDone)
             await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
           paidIsDone = true;
-        } else {
+        }
+        else if (this.isInvalidStatus(status)) {
+          await this.getSummaryOfStatus([ClaimStatus.INVALID]);
+        }
+        else {
           await this.getSummaryOfStatus([status]);
         }
       }
@@ -286,6 +291,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
+
 
 
 
@@ -347,19 +353,35 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     if (key == 0) {
-      this.isRevalidate = true;
+      this.isRevalidate = false;
       this.isSubmit = false;
+      this.isAllCards = true;
     } else {
       if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.Accepted.toLowerCase()) {
         this.isRevalidate = true;
         this.isSubmit = true;
       } else if (this.summaries[key].statuses[0].toLowerCase() == ClaimStatus.NotAccepted.toLowerCase()) {
         this.isRevalidate = true;
-      } else {
+        this.isSubmit = false;
+      }
+      else if (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) {
+        this.isRevalidate = false;
+        this.isSubmit = false;
+        this.summaries[key].statuses = this.summaries[key].statuses.filter(ele => ele !== 'invalid');
+      }
+      else if (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.INVALID.toLowerCase()) {
+        this.isRevalidate = true;
+        this.isSubmit = false;
+      }
+      else {
         this.isRevalidate = false;
         this.isSubmit = false;
       }
+      this.isAllCards = false;
     }
+
+    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLowerCase();
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing || name === ClaimStatus.Under_Submision.toLowerCase() || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -453,9 +475,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         this.commen.loadingChanged.next(false);
       });
-    const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLocaleUpperCase();
-    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing) ? false : true;
+
     const status = this.routeActive.snapshot.queryParamMap.get('status');
+
+
     this.status = status === null ? this.status : status;
   }
   storeSearchResultsForClaimViewPagination() {
@@ -1043,7 +1066,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       .subscribe(result => {
         if (result === true) {
           this.commen.loadingChanged.next(true);
-          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, this.summaries[this.selectedCardKey].statuses, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+          const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, status, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               const status = event.body['status'];
@@ -1051,6 +1075,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 this.dialogService.openMessageDialog(
                   new MessageDialogData('',
                     `Your claims deleted successfully.`,
+                    false))
+                  .subscribe(afterColse => {
+                    // this.claimService.summaryChange.next(new UploadSummary());
+                    // this.router.navigate(['']);
+                    location.reload();
+                  });
+              }
+              else if (status === "AlreadySumitted") {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
                     false))
                   .subscribe(afterColse => {
                     // this.claimService.summaryChange.next(new UploadSummary());
@@ -1086,7 +1121,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isRejectedByPayerStatus(status: string) {
     status = status.toUpperCase();
     return status == ClaimStatus.REJECTED.toUpperCase() ||
-      status == 'INVALID' || status == 'DUPLICATE';
+      status == 'DUPLICATE';
   }
 
   isReadyForSubmissionStatus(status: string) {
@@ -1099,6 +1134,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     status = status.toUpperCase();
     return status == ClaimStatus.PAID.toUpperCase() ||
       status == 'SETTLED';
+  }
+  isInvalidStatus(status: string) {
+    status = status.toUpperCase();
+    return status == ClaimStatus.INVALID.toUpperCase();
   }
 }
 

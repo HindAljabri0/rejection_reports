@@ -1,153 +1,249 @@
-<div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">{{this.title}} Services</h5>
-    <p class="ml-auto">Claim No <span class="text-normal-color">{{this.creditReportDetails?.payerClaimNo}}</span></p>
-    <button type="button" (click)="closeDialog()" class="dialog-close ml-2" matRipple></button>
+<div class="primary-dialog-header">
+    <h5 class="primary-dialog-title">Batch Information</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body p-0">
+<div class="primary-dialog-body tawuniya-extra-details">
     <div class="inline-loader" *ngIf="isLoading">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
-    <div class="table-responsive">
-        <table class="information-table" cellpadding="0" cellspacing="0" border="0">
-            <tbody *ngIf="this.creditReportDetails !== undefined && !isLoading">
-                <tr class="heading-row">
-                    <td colspan="2">Batch Information</td>
-                </tr>
-                <tr>
-                    <td class="title">Batch Reference Number</td>
-                    <td class="content">{{this.creditReportDetails?.batchReferenceNumber}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Waseel Batch</td>
-                    <td class="content">{{this.creditReportDetails?.waseelBatch}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Physician Name</td>
-                    <td class="content">{{this.creditReportDetails?.physicianName}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Physician ID</td>
-                    <td class="content">{{this.creditReportDetails?.physicianID}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Member Name</td>
-                    <td class="content">{{this.creditReportDetails?.memberName}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Patient File No</td>
-                    <td class="content">{{this.creditReportDetails?.patientFileNo}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Member ID</td>
-                    <td class="content">{{this.creditReportDetails?.memberID}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Policy No</td>
-                    <td class="content">{{this.creditReportDetails?.policyNo}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Invoice No</td>
-                    <td class="content">{{this.creditReportDetails?.invoiceNo}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Visit Date</td>
-                    <td class="content">{{this.creditReportDetails?.visitDate}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Invoice Date</td>
-                    <td class="content">{{this.creditReportDetails?.invoiceDate}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Payer Claim No</td>
-                    <td class="content">{{this.creditReportDetails?.payerClaimNo}}</td>
-                </tr>
-
-                <tr class="heading-row">
-                    <td colspan="2">Service Information</td>
-                </tr>
-                <tr>
-                    <td class="title">Serial No</td>
-                    <td class="content">{{this.creditReportDetails?.serialNo}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Service Code</td>
-                    <td class="content">{{this.creditReportDetails?.serviceCode}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Service Price</td>
-                    <td class="content">{{this.creditReportDetails?.servicePrice | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Service Description</td>
-                    <td class="content">{{this.creditReportDetails?.serviceDescription}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Exceed Price</td>
-                    <td class="content">{{this.creditReportDetails?.exceedPrice | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Patient Share</td>
-                    <td class="content">{{this.creditReportDetails?.patientShare | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Requested Net Amount</td>
-                    <td class="content">{{this.creditReportDetails?.requestedNetAmount | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Gross Amount</td>
-                    <td class="content">{{this.creditReportDetails?.grossAmount | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Received Gross</td>
-                    <td class="content">{{this.creditReportDetails?.receivedGross | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Deducted Amount</td>
-                    <td class="content">{{this.creditReportDetails?.deductedAmoun | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Received Discount</td>
-                    <td class="content">{{this.creditReportDetails?.receivedDiscount | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Payer Discount</td>
-                    <td class="content">{{this.creditReportDetails?.payerDiscount | currency:' '}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Rejection Reason</td>
-                    <td class="content">{{this.creditReportDetails?.rejectionReason}}</td>
-                </tr>
-                <tr class="heading-row">
-                    <td colspan="2">Provider Comment and Attachment</td>
-                </tr>
-                <tr>
-                    <td class="title">Comment</td>
-                    <td class="content">{{this.creditReportDetails?.comment}}</td>
-                </tr>
-                <tr>
-                    <td class="title">Attachment</td>
-                    <td class="content">{{this.creditReportDetails?.attachment}}</td>
-                </tr>
-                <tr class="heading-row">
-                    <td colspan="2">Diagnosis</td>
-                </tr>
-                <ng-container *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
-                    <tr>
-                        <td class="title">Diagnosis Code</td>
-                        <td class="td content">{{diagnosis.diagnosisCode}}</td>
-                    </tr>
-                    <tr>
-                        <td class="title">Diagnosis Description</td>
-                        <td class="td content">{{diagnosis.diagnosisDescription}}</td>
-                    </tr>
-                </ng-container>
-            </tbody>
-            <tbody *ngIf="this.creditReportDetails == undefined && !isLoading">
-                <tr>
-                    <app-empty-state class="claim-list-empty-state" message='No {{title}} services found!'>
-                    </app-empty-state>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <mat-accordion [displayMode]="'flat'" [hideToggle]="true"
+        *ngIf="this.creditReportDetails != undefined && !isLoading">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Batch Information
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Visit Date</label>
+                        <p>{{this.creditReportDetails?.visitDate}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Waseel Batch</label>
+                        <p>{{this.creditReportDetails?.waseelBatch}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Invoice Date</label>
+                        <p>{{this.creditReportDetails?.invoiceDate}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Batch Reference Number</label>
+                        <p>{{this.creditReportDetails?.batchReferenceNumber}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Payer Claim No.</label>
+                        <p>{{this.creditReportDetails?.payerClaimNo}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Policy No.</label>
+                        <p>{{this.creditReportDetails?.policyNo}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Member ID</label>
+                        <p>{{this.creditReportDetails?.memberID}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Patient File No.</label>
+                        <p>{{this.creditReportDetails?.patientFileNo}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Physician ID</label>
+                        <p>{{this.creditReportDetails?.physicianID}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Physician Name</label>
+                        <p>{{this.creditReportDetails?.physicianName}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Invoice No.</label>
+                        <p>{{this.creditReportDetails?.invoiceNo}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Member Name</label>
+                        <p>{{this.creditReportDetails?.memberName}}</p>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Service Information
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Serial No</label>
+                        <p>{{this.creditReportDetails?.serialNo}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Service Code</label>
+                        <p>{{this.creditReportDetails?.serviceCode}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Service Price</label>
+                        <p>{{this.creditReportDetails?.servicePrice | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Service Description</label>
+                        <p>{{this.creditReportDetails?.serviceDescription}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Exceed Price</label>
+                        <p>{{this.creditReportDetails?.exceedPrice | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Patient Share</label>
+                        <p>{{this.creditReportDetails?.patientShare | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Requested Net Amount</label>
+                        <p>{{this.creditReportDetails?.requestedNetAmount | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Gross Amount</label>
+                        <p>{{this.creditReportDetails?.grossAmount | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Received Gross</label>
+                        <p>{{this.creditReportDetails?.receivedGross | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Deducted Amount</label>
+                        <p>{{this.creditReportDetails?.deductedAmoun | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Received Discount</label>
+                        <p>{{this.creditReportDetails?.receivedDiscount | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Payer Discount</label>
+                        <p>{{this.creditReportDetails?.payerDiscount | currency:' '}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <div class="inline-labelled-text">
+                        <label>Rejection Reason</label>
+                        <p>{{this.creditReportDetails?.rejectionReason}}</p>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Diagnosis
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container
+                *ngIf="creditReportDetails != null && creditReportDetails.creditReportDetailsICD10List != null">
+                <div class="table-responsive"
+                    *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
+                    <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
+                        <thead>
+                            <tr>
+                                <th>Diagnosis Code</th>
+                                <th>Diagnosis Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{diagnosis.diagnosisCode}}</td>
+                                <td>{{diagnosis.diagnosisDescription}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Provider Comment and Attachment
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-6">
+                    <div class="inline-labelled-text">
+                        <label>Comment</label>
+                        <p>{{this.creditReportDetails?.comment}}</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="inline-labelled-text">
+                        <label>Attachment</label>
+                        <div class="attachment" *ngIf="creditReportDetails != null && creditReportDetails.attachment != null">
+                            <div class="thumbnail">
+                                <img *ngIf="!isPdf()"
+                                    [src]="getImageOfBlob()" [alt]="this.creditReportDetails.attachmentName"
+                                    (click)="viewAttachment()" style="cursor: pointer;" />
+                                <img *ngIf="isPdf()"
+                                    src="assets/file-types/ic-pdf.svg" [alt]="this.creditReportDetails.attachmentName"
+                                    (click)="viewAttachment()" style="cursor: pointer;" />
+                            </div>
+                            <div class="content">
+                                <p class="title">{{creditReportDetails.attachmentName}}</p>
+                                <div class="btn-list">
+                                    <a [href]="getImageOfBlob()" [download]="creditReportDetails.attachmentName"
+                                        mat-icon-button class="text-primary mr-0">
+                                        <mat-icon>save_alt</mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <app-empty-state *ngIf="this.creditReportDetails == undefined && !isLoading" class="claim-list-empty-state"
+        message='No {{title}} services found!'>
+    </app-empty-state>
 </div>

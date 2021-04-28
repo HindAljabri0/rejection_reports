@@ -65,6 +65,8 @@ import { ClaimAttachmentsManagementComponent } from './components/claim-attachme
 import { searchReducer } from './pages/searchClaimsPage/store/search.reducer';
 import { SearchEffects } from './pages/searchClaimsPage/store/search.effects';
 import { ImageTooltipComponent, ImageToolTipDirective } from './directives/imageToolTip/image-tool-tip.directive';
+import { ConfigurationsComponent } from './pages/configurationsPage/configurations.component';
+
 import { SummaryComponent } from './pages/reports/globmed/summary/summary.component';
 import { GmReportsPageComponent } from './pages/reports/globmed/gm-reports-page.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -76,6 +78,8 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { ChangeLogDialogComponent } from './components/change-log-dialog/change-log-dialog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { AttachmentViewDialogComponent } from './components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
+import { ConfiguartionModalComponent } from './pages/configuartion-modal/configuartion-modal.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +129,9 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     SummaryComponent,
     GmReportsPageComponent,
     ChangeLogDialogComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    AttachmentViewDialogComponent,
+    ConfiguartionModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -185,7 +191,9 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     TopFiveRejectionsComponent,
     ImageTooltipComponent,
     UploadSummaryDialogComponent,
-    ChangeLogDialogComponent
+    ChangeLogDialogComponent,
+    AttachmentViewDialogComponent,
+    ConfiguartionModalComponent
   ],
 })
 export class AppModule { }

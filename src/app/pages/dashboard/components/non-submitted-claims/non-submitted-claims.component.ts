@@ -34,4 +34,8 @@ export class NonSubmittedClaimsComponent implements OnInit {
   getCardColor(status: string) {
     return this.sharedServices.getCardAccentColor(status);
   }
+
+  calculatePercetage(first: number, second: number, roundValue: number = 4) {
+    return parseFloat(((first / second) * 100).toFixed(roundValue)).toString();
+  }
 }

@@ -1,14 +1,18 @@
 <div class="dialog-body">
-    <h3 class="dialog-title pb-2 text-primary">Claim was Saved with status: <span class="text-{{getStatusColor()}}">{{getStatusText()}}</span><span *ngIf="isNotAccepted">
+    <h3 class="dialog-title pb-2 text-primary">Claim was Saved with status: <span
+            class="text-{{getStatusColor()}}">{{getStatusText()}}</span><span *ngIf="isNotAccepted">
             because</span></h3>
     <ng-container *ngIf="isNotAccepted">
         <p *ngFor="let error of errors" class="error-text">{{error}}</p>
     </ng-container>
     <div class="btn-list text-right pt-4">
-        <button class="formElement" *ngIf="showViewAllButton" mat-button color="primary" (click)="onViewAllClaimsClicked()">View All Claims</button>
-        <button class="formElement" *ngIf="showViewAllButton" mat-flat-button color="primary" style="margin-left: auto;" (click)="onCreateAnotherClaimClicked()">Create Another
+        <button class="formElement" *ngIf="showViewAllButton" mat-button color="primary"
+            (click)="onViewAllClaimsClicked()">View All Claims</button>
+        <button class="formElement" *ngIf="showViewAllButton" mat-flat-button color="primary" style="margin-left: auto;"
+            (click)="onCreateAnotherClaimClicked()">Create Another
             Claim</button>
-        <button class="formElement" *ngIf="showViewAllButton" mat-flat-button color="primary" (click)="onViewClaimClicked()">{{isNotAccepted? 'Edit':'View'}} Claim</button>
-        <button class="formElement" mat-flat-button color="primary" (click)="onOK()">OK</button>
+        <button class="formElement" *ngIf="showViewAllButton" mat-flat-button color="primary"
+            (click)="onViewClaimClicked()">{{isNotAccepted? 'Edit':'View'}} Claim</button>
+
     </div>
 </div>

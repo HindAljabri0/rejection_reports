@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfigurationsComponent } from 'src/app/pages/configurationsPage/configurations.component';
-import { MaterialModule } from '../material/material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../shared.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { configurationReducer } from 'src/app/pages/configurationsPage/store/configurations.reducer';
+import { StoreModule } from '@ngrx/store';
+import { ConfigurationsComponent } from 'src/app/pages/configurationsPage/configurations.component';
 import { ConfigurationsEffects } from 'src/app/pages/configurationsPage/store/configurations.effects';
+import { configurationReducer } from 'src/app/pages/configurationsPage/store/configurations.reducer';
+import { MaterialModule } from '../material/material.module';
+import { SharedModule } from '../shared.module';
 
 
 
@@ -29,6 +29,7 @@ import { ConfigurationsEffects } from 'src/app/pages/configurationsPage/store/co
     SharedModule,
     HttpClientModule,
     FormsModule,
-  ]
+  ],
+
 })
 export class ConfigurationsModule { }

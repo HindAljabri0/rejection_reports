@@ -10,7 +10,7 @@ import { FileType } from '../models/attachmentRequest.model';
 import { SEARCH_TAB_RESULTS_KEY } from 'src/app/pages/searchClaimsPage/search-claims.component';
 
 export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT';
-export type ClaimPageType = 'DENTAL_OPTICAL' | 'INPATIENT_OUTPATIENT';
+export type ClaimPageType = 'DENTAL_OPTICAL_PHARMACY' | 'INPATIENT_OUTPATIENT';
 export interface ClaimState {
     claim: Claim;
     retrievedClaimId: string;
@@ -20,14 +20,11 @@ export interface ClaimState {
     claimPropsBeforeEdit: RetrievedClaimProps;
     retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
     claimErrors: {
-        claimGDPN: FieldError[],
-        patientInfoErrors: FieldError[],
-        physicianErrors: FieldError[],
+        uncategorised: FieldError[],
+
         genInfoErrors: FieldError[],
         diagnosisErrors: FieldError[],
         invoicesErrors: FieldError[],
-        admissionErrors: FieldError[],
-        vitalSignError: FieldError[],
         labResultsErrors: FieldError[]
     };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
@@ -50,14 +47,10 @@ const initState: ClaimState = {
     claimPropsBeforeEdit: null,
     retrievedServices: [],
     claimErrors: {
-        claimGDPN: [],
-        patientInfoErrors: [],
         diagnosisErrors: [],
         genInfoErrors: [],
-        physicianErrors: [],
         invoicesErrors: [],
-        admissionErrors: [],
-        vitalSignError: [],
+        uncategorised: [],
         labResultsErrors: []
     },
     LOVs: { Departments: [], IllnessCode: [], VisitType: [], PhysicianCategory: [] },
@@ -67,7 +60,7 @@ const initState: ClaimState = {
     selectedGDPN: {},
     approvalFormLoading: false,
     mode: 'CREATE',
-    type: 'DENTAL_OPTICAL',
+    type: 'DENTAL_OPTICAL_PHARMACY',
     paginationControl: { searchTabCurrentResults: [], currentIndex: -1, size: 0 },
 };
 
@@ -88,9 +81,9 @@ const _claimReducer = createReducer(
         const type: ClaimPageType = caseType == 'OUTPATIENT' &&
             (departmentCode == dentalId ||
                 departmentCode == opticalId ||
-                departmentCode == pharmacyId) ? 'DENTAL_OPTICAL' : 'INPATIENT_OUTPATIENT';
+                departmentCode == pharmacyId) ? 'DENTAL_OPTICAL_PHARMACY' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = {
-            errors: body['errors'],
+
             claimDecisionGDPN: body[''],
             eligibilityCheck: body['eligibilityCheck'],
             lastSubmissionDate: body['lastSubmissionDate'],
@@ -131,7 +124,8 @@ const _claimReducer = createReducer(
                 searchTabCurrentResults: searchTabResults,
                 currentIndex: currentIndex,
                 size: searchTabResults.length
-            }
+            },
+            claimErrors:body['errors']
         });
     }),
     on(actions.toEditMode, (state) => ({
@@ -160,7 +154,7 @@ const _claimReducer = createReducer(
             };
         } else {
             const claim = new Claim(data['claimType'], data['providerClaimNumber']);
-            return { ...state, claim: claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT' || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL' };
+            return { ...state, claim: claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT' || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL_PHARMACY' };
         }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
@@ -182,39 +176,7 @@ const _claimReducer = createReducer(
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs, paginationControl: state.paginationControl })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
-    on(actions.addClaimErrors, (state, { module, errors }) => {
-        let claimErrors = initState.claimErrors;
-        switch (module) {
-            case 'patientInfoErrors':
-                claimErrors = { ...state.claimErrors, patientInfoErrors: errors };
-                break;
-            case 'diagnosisErrors':
-                claimErrors = { ...state.claimErrors, diagnosisErrors: errors };
-                break;
-            case 'genInfoErrors':
-                claimErrors = { ...state.claimErrors, genInfoErrors: errors };
-                break;
-            case 'physicianErrors':
-                claimErrors = { ...state.claimErrors, physicianErrors: errors };
-                break;
-            case 'invoiceErrors':
-                claimErrors = { ...state.claimErrors, invoicesErrors: errors };
-                break;
-            case 'claimGDPN':
-                claimErrors = { ...state.claimErrors, claimGDPN: errors };
-                break;
-            case 'admissionErrors':
-                claimErrors = { ...state.claimErrors, admissionErrors: errors };
-                break;
-            case 'vitalSignError':
-                claimErrors = { ...state.claimErrors, vitalSignError: errors };
-                break;
-            case 'labResultError':
-                claimErrors = { ...state.claimErrors, labResultsErrors: errors };
-                break;
-        }
-        return { ...state, claimErrors: claimErrors };
-    }),
+
 
     on(actions.updatePatientName, (state, { name }) => ({
         ...state, claim: {
@@ -669,21 +631,22 @@ export const getPhysicianCategory = createSelector(claimSelector, (state) => sta
 export const getClaimModuleError = createSelector(claimSelector, (state) => state.error);
 export const getClaimModuleIsLoading = createSelector(claimSelector, (state) => state.loading);
 export const getClaimObjectErrors = createSelector(claimSelector, (state) => state.claimErrors);
-export const getPatientErrors = createSelector(claimSelector, (state) => state.claimErrors.patientInfoErrors);
+
 export const getDiagnosisErrors = createSelector(claimSelector, (state) => state.claimErrors.diagnosisErrors);
 export const getGenInfoErrors = createSelector(claimSelector, (state) => state.claimErrors.genInfoErrors);
-export const getPhysicianErrors = createSelector(claimSelector, (state) => state.claimErrors.physicianErrors);
+
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
-export const getClaimGDPNErrors = createSelector(claimSelector, (state) => state.claimErrors.claimGDPN);
-export const getAdmissionErrors = createSelector(claimSelector, (state) => state.claimErrors.admissionErrors);
-export const getVitalSignError = createSelector(claimSelector, (state) => state.claimErrors.vitalSignError);
+export const getAllErrors = createSelector(claimSelector, (state) => state.claimErrors);
+
 export const getLabResultsErrors = createSelector(claimSelector, (state) => state.claimErrors.labResultsErrors);
+export const getUncategorisedErrors = createSelector(claimSelector, (state) => state.claimErrors.uncategorised);
 export const getSelectedGDPN = createSelector(claimSelector, (state) => state.selectedGDPN);
 export const getRetrievedServices = createSelector(claimSelector, (state) => state.retrievedServices);
 export const getPageMode = createSelector(claimSelector, (state) => state.mode);
 export const getPageType = createSelector(claimSelector, (state) => state.type);
 export const getRetrievedClaimId = createSelector(claimSelector, (state) => state.retrievedClaimId);
 export const getRetrievedClaimProps = createSelector(claimSelector, (state) => state.retrievedClaimProps);
+
 
 
 

@@ -44,7 +44,7 @@ export class ClaimDiagnosisComponent implements OnInit {
         this.toggleEdit(false, true);
       }
     });
-    this.store.select(getDiagnosisErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getDiagnosisErrors).subscribe(errors => this.errors = errors || []);
   }
 
   setData(claim: Claim) {

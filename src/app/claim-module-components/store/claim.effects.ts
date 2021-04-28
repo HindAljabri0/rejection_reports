@@ -152,12 +152,8 @@ export class ClaimEffects {
         map(values => {
             if (values.errors.diagnosisErrors.length == 0
                 && values.errors.genInfoErrors.length == 0
-                && values.errors.patientInfoErrors.length == 0
-                && values.errors.physicianErrors.length == 0
-                && values.errors.claimGDPN.length == 0
                 && values.errors.invoicesErrors.length == 0
-                && values.errors.admissionErrors.length == 0
-                && values.errors.vitalSignError.length == 0
+                && values.errors.uncategorised.length == 0
                 && values.errors.labResultsErrors.length == 0
             ) {
                 if (values.pageMode == 'CREATE') {
@@ -165,14 +161,10 @@ export class ClaimEffects {
                 } else {
                     return saveClaimChanges();
                 }
-            } else if (values.errors.claimGDPN.length > 0
-                && values.errors.diagnosisErrors.length == 0
-                && values.errors.genInfoErrors.length == 0
-                && values.errors.patientInfoErrors.length == 0
-                && values.errors.physicianErrors.length == 0
+            } else if ( values.errors.diagnosisErrors.length == 0
+                && values.errors.genInfoErrors.length == 0  
                 && values.errors.invoicesErrors.length == 0
-                && values.errors.admissionErrors.length == 0
-                && values.errors.vitalSignError.length == 0
+                && values.errors.uncategorised.length == 0
                 && values.errors.labResultsErrors.length == 0) {
                 this.dialogService.openMessageDialog({
                     title: '',

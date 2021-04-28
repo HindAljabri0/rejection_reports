@@ -157,7 +157,6 @@ export class Claim {
         }
         const attachments = claim.attachment.map(att => ({ ...att, fileType: Claim.convertFileType(att.fileType) }));
         let physicianCategory = claim.caseInformation.physician.physicianCategory;
-        if (physicianCategory != null) { physicianCategory = physicianCategory.replace(' ', '_'); }
         claim = {
             ...claim,
             attachment: attachments,

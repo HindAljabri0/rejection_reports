@@ -3,15 +3,13 @@
         <thead class="header-primary">
             <tr>
                 <th>Field Name</th>
-                <th>Error Code</th>
                 <th>Error Description</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let error of errors" class="text-rejected-waseel">
                 <td>{{error.fieldName}}</td>
-                <td>{{error.code}}</td>
-                <td>{{error.description}}</td>
+                <td>{{error.error}}</td>
             </tr>
         </tbody>
     </table>

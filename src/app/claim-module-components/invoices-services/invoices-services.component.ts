@@ -51,7 +51,7 @@ export class InvoicesServicesComponent implements OnInit {
       retrieved: boolean,
       statusCode?: string,
       statusDescription?: string,
-      acutalDeductedAmount?: number,
+      acutalDeductedAmount?: string,
       serviceNumber: number,
       serviceDate: FormControl,
       serviceCode: FormControl,
@@ -102,6 +102,8 @@ export class InvoicesServicesComponent implements OnInit {
     { key: 'SUPPLY', value: 'SUPPLY' },
     { key: 'RADIOLOGY', value: 'RADIOLOGY' },
   ];
+  acutalDeductedAmount: any;
+  statusCode: any;
 
   constructor(
     private store: Store,
@@ -125,7 +127,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.toggleEdit(true);
       }
     });
-    this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors);
+    this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors || []);
     this.store.select(getDepartments)
       .subscribe(departments => {
         if (departments != null && departments.length > 0) {
@@ -200,6 +202,10 @@ export class InvoicesServicesComponent implements OnInit {
           this.controllers[index].services[serviceIndex].statusDescription = decision.decisioncomment;
           this.controllers[index].services[serviceIndex].acutalDeductedAmount =
             (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
+          this.acutalDeductedAmount =
+            (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
+          this.statusCode = decision.serviceStatusCode;
+
         }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
@@ -351,7 +357,9 @@ export class InvoicesServicesComponent implements OnInit {
       priceCorrection: 0,
       rejection: 0,
       isOpen: false,
-      serviceType: new FormControl()
+      serviceType: new FormControl(),
+      statusCode: '',
+      acutalDeductedAmount: ''
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
@@ -418,12 +426,12 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
-  fieldHasError(fieldName) {
-    return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  fieldHasError(fieldName, code) {
+    return this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code)) != -1;
   }
 
-  getFieldError(fieldName) {
-    const index = this.errors.findIndex(error => error.fieldName == fieldName);
+  getFieldError(fieldName, code) {
+    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code));
     if (index > -1) {
       return this.errors[index].error || '';
     }
@@ -588,8 +596,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
-  onDeleteInvoiceClick(event, i) {
-    event.stopPropagation();
+  onDeleteInvoiceClick(i) {
     this.controllers[i].services.forEach(s => {
       if (s.retrieved) {
         this.store.dispatch(makeRetrievedServiceUnused({ serviceNumber: s.serviceNumber }));

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getRetrievedClaimProps } from '../store/claim.reducer';
+import { FieldError, getRetrievedClaimProps, getUncategorisedErrors, getGenInfoErrors, getDiagnosisErrors, getInvoicesErrors, getLabResultsErrors, getAllErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-errors',
@@ -9,20 +9,20 @@ import { getRetrievedClaimProps } from '../store/claim.reducer';
 })
 export class ClaimErrorsComponent implements OnInit {
 
-  errors: {
-    code: string,
-    description: string,
-    fieldName: string
-  }[];
+  errors: FieldError[] = [];
 
   constructor(private store: Store) { }
 
+
   ngOnInit() {
-    this.store.select(getRetrievedClaimProps).subscribe(props => {
-      // tslint:disable-next-line: curly
-      if (props != null) {
-        this.errors = props.errors;
-      }
+    this.store.select(getAllErrors).subscribe(error => {
+      this.errors = [
+        ...error.diagnosisErrors,
+        ...error.genInfoErrors,
+        ...error.invoicesErrors,
+        ...error.labResultsErrors,
+        ...error.uncategorised
+      ];
     });
   }
 
