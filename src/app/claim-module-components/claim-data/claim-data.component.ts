@@ -36,8 +36,6 @@ export class ClaimDataComponent implements OnInit {
   @Input() claimType = '';
   claim: Claim;
 
-  claim:Claim;
-
   constructor(private store: Store) { }
 
   ngOnInit() {
