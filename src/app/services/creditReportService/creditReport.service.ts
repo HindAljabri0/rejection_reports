@@ -82,7 +82,7 @@ export class CreditReportService {
         const req = new HttpRequest('POST', environment.creditReportService + `/providers/${batchId}/report/rejected/upload`, formdata);
         return this.http.request(req);
     }
-    
+
     listBupaCreditReports(providerId: string, data: any) {
         if (data.receivedFromDate != null)
             data.receivedFromDate = data.receivedFromDate.format("YYYY-MM-DD");
@@ -95,22 +95,22 @@ export class CreditReportService {
         return this.http.request(request);
     }
 
-    listTawuniyaCreditReports(providerId: string, status:string,fromDate:string,toDate:string,batchId:string,page: number, pageSize: number) {
+    listTawuniyaCreditReports(providerId: string, status: string, fromDate: string, toDate: string, batchId: string, page: number, pageSize: number) {
         let requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
-        if(status!=null&&status!="All"){
+        if (status != null && status != "All") {
             requestURL += `&status=${status}`;
         }
-        if(fromDate!=null){
+        if (fromDate != null) {
             requestURL += `&fromDate=${fromDate}`;
-            
+
         }
-        if(toDate!=null){
+        if (toDate != null) {
             requestURL += `&toDate=${toDate}`;
         }
-        if(batchId!=null){
+        if (batchId != null) {
             requestURL += `&batchId=${batchId}`;
         }
-        
+
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }
@@ -122,7 +122,7 @@ export class CreditReportService {
         return this.http.request(request);
     }
 
-    getTawuniyaCreditReportServices(providerId:string, batchId:string, serviceType:'deducted-services'|'rejected-services', page: number, size:number){
+    getTawuniyaCreditReportServices(providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services', page: number, size: number) {
         const requestURL = `/providers/${providerId}/batches/${batchId}/${serviceType}?page=${page}&size=${size}`;
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
@@ -136,7 +136,12 @@ export class CreditReportService {
 
     submitTawuniyaCreditReport(providerId: string, batchId: string) {
         const requestURL = `/providers/${providerId}/${batchId}/submit`;
-        const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL ,null);
+        const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL, null);
+        return this.http.request(request);
+    }
+    showsTwaniyaReportsError(providerId: string, batchId: string, page: Number, pageSize: number) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}/errors?page=${page}&size=${pageSize}`;
+        const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL, null);
         return this.http.request(request);
     }
 }

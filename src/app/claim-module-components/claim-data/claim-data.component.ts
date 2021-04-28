@@ -22,14 +22,10 @@ import { Claim } from '../models/claim.model';
 export class ClaimDataComponent implements OnInit {
 
   errors: {
-    claimGDPN: FieldError[],
-    patientInfoErrors: FieldError[],
-    physicianErrors: FieldError[],
     genInfoErrors: FieldError[],
     diagnosisErrors: FieldError[],
     invoicesErrors: FieldError[],
-    admissionErrors: FieldError[],
-    vitalSignError: FieldError[],
+    uncategorised: FieldError[],
     labResultsErrors: FieldError[]
   };
 
@@ -38,6 +34,7 @@ export class ClaimDataComponent implements OnInit {
 
   isInpatientClaim: boolean;
   @Input() claimType = '';
+  claim: Claim;
 
   claim:Claim;
 
@@ -58,35 +55,35 @@ export class ClaimDataComponent implements OnInit {
   }
 
   genInfoTabHasErrors() {
-    if (this.errors != null) {
-      return this.errors.genInfoErrors.length > 0 || this.errors.patientInfoErrors.length > 0 || this.errors.physicianErrors.length > 0;
+    if (this.errors != null && this.errors.genInfoErrors != null) {
+      return this.errors.genInfoErrors.length > 0 ;
     }
     return false;
   }
 
   diagnosisTabHasErrors() {
-    if (this.errors != null) {
+    if (this.errors != null && this.errors.diagnosisErrors != null) {
       return this.errors.diagnosisErrors.length > 0;
     }
     return false;
   }
 
   invoiceServicesTabHasErrors() {
-    if (this.errors != null) {
+    if (this.errors != null && this.errors.invoicesErrors != null) {
       return this.errors.invoicesErrors.length > 0;
     }
     return false;
   }
 
   admissionTabHasErrors() {
-    if (this.errors != null) {
-      return this.errors.admissionErrors.length > 0;
-    }
+    //if (this.errors != null) {
+    //  return this.errors.admissionErrors.length > 0;
+  //  }
     return false;
   }
 
   labResultsTabHasErrors() {
-    if (this.errors != null) {
+    if (this.errors != null && this.errors.labResultsErrors != null) {
       return this.errors.labResultsErrors.length > 0;
     }
     return false;

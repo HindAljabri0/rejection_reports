@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { CreditReportSummaryResponse } from 'src/app/models/tawuniyaCreditReportModels/creditReportSummaryResponse';
 import { DeductedService } from 'src/app/models/tawuniyaCreditReportModels/detuctedServices';
@@ -8,6 +8,8 @@ import { RejectedService } from 'src/app/models/tawuniyaCreditReportModels/rejec
 import { CreditReportService } from 'src/app/services/creditReportService/creditReport.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { TawuniyaCreditReportDetailsDialogComponent } from '../tawuniya-credit-report-details-dialog/tawuniya-credit-report-details-dialog.component';
+import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
+import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -45,12 +47,32 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       }
     };
 
-  selectedServices: {
-    'deducted-services': string[],
-    'rejected-services': string[]
+  selectionControl: {
+    deducted: {
+      selections: string[],
+      countInCurrentPage: number,
+      allCheckBoxIsChecked: boolean,
+      allCheckBoxIsIndeterminate: boolean
+    },
+    rejected: {
+      selections: string[],
+      countInCurrentPage: number,
+      allCheckBoxIsChecked: boolean,
+      allCheckBoxIsIndeterminate: boolean
+    }
   } = {
-      'deducted-services': [],
-      'rejected-services': []
+      deducted: {
+        selections: [],
+        countInCurrentPage: 0,
+        allCheckBoxIsChecked: false,
+        allCheckBoxIsIndeterminate: false
+      },
+      rejected: {
+        selections: [],
+        countInCurrentPage: 0,
+        allCheckBoxIsChecked: false,
+        allCheckBoxIsIndeterminate: false
+      }
     }
 
   constructor(
@@ -101,11 +123,16 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
           this.sharedServices.loadingChanged.next(false);
           if (serviceType == 'deducted-services') {
             this.deductedServices = event.body['content'] as DeductedService[];
+            this.selectionControl.deducted.countInCurrentPage = this.deductedServices.filter(service => this.selectionControl.deducted.selections.includes(service.id.serialno)).length;
+            this.setAllCheckBoxIsIndeterminate('deducted');
           } else {
             this.rejectedServices = event.body['content'] as RejectedService[];
+            this.selectionControl.rejected.countInCurrentPage = this.rejectedServices.filter(service => this.selectionControl.rejected.selections.includes(service.id.serialno)).length;
+            this.setAllCheckBoxIsIndeterminate('rejected');
           }
           this.paginationControl[serviceType].currentPage = event.body['number'];
           this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
+          
           if (callAgain) {
             this.fetchServices('rejected-services');
           }
@@ -118,9 +145,12 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
       });
   }
-
-  openDetailsDialog(event, batchReferenceNumber, serialNo, serviceType: 'rejected' | 'deducted') {
+  showClaim(claimno: string) {
+    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/find?claimno=${claimno}`);
+  }
+  openDetailsDialog(event, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
+    const batchReferenceNumber = this.data.providercreditReportInformation.batchreferenceno;
     const dialogRef = this.dialog.open(TawuniyaCreditReportDetailsDialogComponent, { panelClass: ['primary-dialog', 'dialog-xl'], data: { batchReferenceNumber, serialNo, serviceType } });
   }
 
@@ -190,8 +220,85 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   }
 
   isEditableBatch() {
-    return this.data.providercreditReportInformation.status == 'NEW' ||
-      this.data.providercreditReportInformation.status == 'UNDERREVIEW';
+    return this.data != null && (this.data.providercreditReportInformation.status == 'NEW' ||
+      this.data.providercreditReportInformation.status == 'UNDERREVIEW');
   }
 
+  openErrorsDialog() {
+    const data = new CreditReportUploadModel();
+    data.batchId = this.batchId;
+    const dialogRef = this.dialog.open(TawuniyaCreditReportErrorsDialogComponent, { panelClass: ['primary-dialog'], data: data });
+  }
+
+  selectAllInPage(type: 'deducted' | 'rejected') {
+    if (type == 'deducted') {
+      if (this.selectionControl.deducted.countInCurrentPage != this.deductedServices.length) {
+        for (const service of this.deductedServices) {
+          if (!this.selectionControl.deducted.selections.includes(service.id.serialno)) {
+            this.selectService('deducted', service.id.serialno);
+          }
+        }
+      } else {
+        for (const service of this.deductedServices) {
+          this.selectService('deducted', service.id.serialno);
+        }
+      }
+    } else {
+      if (this.selectionControl.rejected.countInCurrentPage != this.rejectedServices.length) {
+        for (const service of this.rejectedServices) {
+          if (!this.selectionControl.rejected.selections.includes(service.id.serialno)) {
+            this.selectService('rejected', service.id.serialno);
+          }
+        }
+      } else {
+        for (const service of this.rejectedServices) {
+          this.selectService('rejected', service.id.serialno);
+        }
+      }
+    }
+  }
+  setAllCheckBoxIsIndeterminate(type: 'deducted' | 'rejected') {
+    if (type == 'deducted') {
+      if (this.deductedServices != null) {
+        this.selectionControl.deducted.allCheckBoxIsIndeterminate = this.selectionControl.deducted.countInCurrentPage != this.deductedServices.length && this.selectionControl.deducted.countInCurrentPage != 0;
+      } else { this.selectionControl.deducted.allCheckBoxIsIndeterminate = false; }
+      this.setAllCheckBoxIsChecked(type);
+    } else {
+      if (this.rejectedServices != null) {
+        this.selectionControl.rejected.allCheckBoxIsIndeterminate = this.selectionControl.rejected.countInCurrentPage != this.rejectedServices.length && this.selectionControl.rejected.countInCurrentPage != 0;
+      } else { this.selectionControl.rejected.allCheckBoxIsIndeterminate = false; }
+      this.setAllCheckBoxIsChecked(type);
+    }
+  }
+  setAllCheckBoxIsChecked(type: 'deducted' | 'rejected') {
+    if (type == 'deducted') {
+      if (this.deductedServices != null) {
+        this.selectionControl.deducted.allCheckBoxIsChecked = this.selectionControl.deducted.countInCurrentPage == this.deductedServices.length;
+      } else { this.selectionControl.deducted.allCheckBoxIsChecked = false; }
+    } else {
+      if (this.rejectedServices != null) {
+        this.selectionControl.rejected.allCheckBoxIsChecked = this.selectionControl.rejected.countInCurrentPage == this.rejectedServices.length;
+      } else { this.selectionControl.rejected.allCheckBoxIsChecked = false; }
+    }
+  }
+  selectService(type: 'deducted' | 'rejected', serialNo: string) {
+    let control = type == 'deducted' ? this.selectionControl.deducted : this.selectionControl.rejected;
+    if (!control.selections.includes(serialNo)) {
+      control.selections.push(serialNo);
+      control.countInCurrentPage++;
+    } else {
+      control.selections.splice(control.selections.indexOf(serialNo), 1);
+      control.countInCurrentPage--
+    }
+    if (type == 'deducted') {
+      this.selectionControl.deducted = control;
+    } else {
+      this.selectionControl.rejected = control;
+    }
+    this.setAllCheckBoxIsIndeterminate(type);
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    this.selectedServiceTab = event.index == 0 ? 'deducted-services' : 'rejected-services';
+  }
 }
