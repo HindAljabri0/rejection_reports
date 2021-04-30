@@ -113,22 +113,146 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Claim Ref. No.</th>
+                                        <div class="column-header-action">
+                                            <span>Claim Ref. No.</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimRefFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Provider Claim Ref. No.</label>
+                                                            <input class="form-control" placeholder="Search Provider Claim Ref. No.">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Dr. Name</th>
+                                        <div class="column-header-action">
+                                            <span>Dr. Name</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="drNameFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #drNameFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Dr. Name</label>
+                                                            <input class="form-control" placeholder="Search Dr. Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Member ID</th>
+                                        <div class="column-header-action">
+                                            <span>Member ID</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="memberIDFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #memberIDFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Member ID</label>
+                                                            <input class="form-control" placeholder="Search Member ID">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        National ID</th>
+                                        <div class="column-header-action">
+                                            <span>National ID</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="nationalIDFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #nationalIDFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">National ID</label>
+                                                            <input class="form-control" placeholder="Search National ID">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Patient File No.</th>
+                                        <div class="column-header-action">
+                                            <span>Patient File No.</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="patientFileNoFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #patientFileNoFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Patient File No.</label>
+                                                            <input class="form-control" placeholder="Search Patient File No.">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Claim Date</th>
+                                        <div class="column-header-action">
+                                            <span>Claim Date</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimDateFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #claimDateFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Claim Date</label>
+                                                            <div class="date-picker">
+                                                                <input class="form-control" placeholder="Search Claim Date" [matDatepicker]="claimDatePicker">
+                                                                <mat-datepicker-toggle [for]="claimDatePicker"></mat-datepicker-toggle>
+                                                                <mat-datepicker #claimDatePicker></mat-datepicker>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Amount</th>
@@ -280,23 +404,25 @@
         </mat-tab-group>
         <div class="block-footer sticky-bottom">
             <div class="left-block">
-                <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
-                    <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="searchResult.number==0">
-                        <img src="./assets/ic-page-first.svg" alt="First" />
-                    </button>
-                    <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="searchResult.number==0">
-                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
-                    </button>
-                    <p class="page-info">
-                        {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
-                    </p>
-                    <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
-                        <img src="./assets/ic-page-next.svg" alt="Next" />
-                    </button>
-                    <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
-                        <img src="./assets/ic-page-last.svg" alt="Last" />
-                    </button>
-                </div>
+                <!-- <div class="custom-paginator" *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
+                                    <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="searchResult.number==0">
+                                        <img src="./assets/ic-page-first.svg" alt="First" />
+                                    </button>
+                                    <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="searchResult.number==0">
+                                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                                    </button>
+                                    <p class="page-info">
+                                        {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
+                                    </p>
+                                    <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                                        <img src="./assets/ic-page-next.svg" alt="Next" />
+                                    </button>
+                                    <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                                        <img src="./assets/ic-page-last.svg" alt="Last" />
+                                    </button>
+                                </div> -->
+                <mat-paginator [length]="600" class="primary-paginator" [pageSize]="10" [pageSizeOptions]="[10,50,100]">
+                </mat-paginator>
             </div>
             <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
                 <button mat-button *ngIf="isDeleteBtnVisible" (click)="deleteClaimByUploadid()">Delete

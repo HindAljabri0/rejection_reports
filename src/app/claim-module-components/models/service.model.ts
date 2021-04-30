@@ -14,6 +14,7 @@ export class Service {
     requestedQuantity: number;
     unitPrice: Amount;
     serviceGDPN: GDPN;
+    daysOfSupply: number;
     drugUse?: {
         dosage: { value: number, unit: string },
         doseTimes: { value: number, qualifier: string },
