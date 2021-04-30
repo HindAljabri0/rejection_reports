@@ -450,6 +450,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
 .primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
 .primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
+.primary-grid .column-header-action{display: flex;align-items:flex-start;}
+.primary-grid .column-header-action>span{display: block;padding-right: 6px;}
+.primary-grid .column-header-action .action-btn{display: block;color:inherit;padding: 6px;background: none;border:0;margin: -6px -6px -6px auto;border-radius: 50px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;flex-basis: 30px;flex-grow: 0;flex-shrink: 0;max-width: 30px;}
+.primary-grid>thead>tr>th:hover .column-header-action .action-btn, .primary-grid>thead>tr>td:hover .column-header-action .action-btn, .primary-grid .header-cell:hover .column-header-action .action-btn, .primary-grid>thead>tr>th.mat-header-cell:hover .column-header-action .action-btn, .primary-grid>thead>tr>td.mat-header-cell:hover .column-header-action .action-btn,.primary-grid .column-header-action .action-btn:hover,.primary-grid .column-header-action .action-btn:focus,.primary-grid .column-header-action .action-btn:active{opacity: 1;}
+.primary-grid .column-header-action .action-btn .mat-icon{font-size:18px;line-height: 18px;height: 18px;width: 18px;display: block;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
@@ -1017,6 +1022,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){background-color: #fff;}
 .tawuniya-extra-details .mat-accordion .mat-expansion-panel:first-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel:last-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel{border-radius: 4px;}
 .tawuniya-extra-details .mat-accordion .mat-expansion-panel+.mat-expansion-panel{margin-top: 10px;}
+
+/* primary-paginator
+--------------------------------------------------------------------------------------------------------*/
+.primary-paginator .mat-paginator-container{min-height: auto;justify-content: flex-start;padding: 0;}
+.primary-paginator .mat-paginator-page-size-select{margin-top: 0;}
+.primary-paginator .mat-form-field-infix{border-top-width: 1.5px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

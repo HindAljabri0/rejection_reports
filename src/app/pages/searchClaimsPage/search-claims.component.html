@@ -113,22 +113,146 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Claim Ref. No.</th>
+                                        <div class="column-header-action">
+                                            <span>Claim Ref. No.</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimRefFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Provider Claim Ref. No.</label>
+                                                            <input class="form-control" placeholder="Search Provider Claim Ref. No.">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Dr. Name</th>
+                                        <div class="column-header-action">
+                                            <span>Dr. Name</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="drNameFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #drNameFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Dr. Name</label>
+                                                            <input class="form-control" placeholder="Search Dr. Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Member ID</th>
+                                        <div class="column-header-action">
+                                            <span>Member ID</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="memberIDFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #memberIDFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Member ID</label>
+                                                            <input class="form-control" placeholder="Search Member ID">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        National ID</th>
+                                        <div class="column-header-action">
+                                            <span>National ID</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="nationalIDFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #nationalIDFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">National ID</label>
+                                                            <input class="form-control" placeholder="Search National ID">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Patient File No.</th>
+                                        <div class="column-header-action">
+                                            <span>Patient File No.</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="patientFileNoFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #patientFileNoFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Patient File No.</label>
+                                                            <input class="form-control" placeholder="Search Patient File No.">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Claim Date</th>
+                                        <div class="column-header-action">
+                                            <span>Claim Date</span>
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimDateFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #claimDateFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Claim Date</label>
+                                                            <div class="date-picker">
+                                                                <input class="form-control" placeholder="Search Claim Date" [matDatepicker]="claimDatePicker">
+                                                                <mat-datepicker-toggle [for]="claimDatePicker"></mat-datepicker-toggle>
+                                                                <mat-datepicker #claimDatePicker></mat-datepicker>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button>Clear</button>
+                                                        <button mat-flat-button color="primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Amount</th>
