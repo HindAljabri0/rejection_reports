@@ -1025,8 +1025,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* primary-paginator
 --------------------------------------------------------------------------------------------------------*/
+.primary-paginator.mat-paginator{font-size: inherit;line-height: inherit;color:#505050;}
 .primary-paginator .mat-paginator-container{min-height: auto;justify-content: flex-start;padding: 0;}
-.primary-paginator .mat-paginator-page-size-select{margin-top: 0;}
+.primary-paginator .mat-paginator-range-label{margin: 0 12px;}
+.primary-paginator .mat-paginator-page-size-select{margin-top: 0;margin-bottom: -15px;}
 .primary-paginator .mat-form-field-infix{border-top-width: 1.5px;}
 
 /* custom grid
