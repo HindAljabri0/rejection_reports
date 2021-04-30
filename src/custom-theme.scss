@@ -1,46 +1,78 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 // Plus imports for other components in your app.
-@import './font-awesome.css';
-@import './font-awesome.min.css';
-@import '~@angular/cdk/overlay-prebuilt.css';
+@import "./font-awesome.css";
+@import "./font-awesome.min.css";
+@import "~@angular/cdk/overlay-prebuilt.css";
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 $mat-waseel: (
-  50: #7eacf0,
-  100: #6398e7,
-  200: #568fe4,
-  300: #4c84d8,
-  400: #376ec2,
-  500: #3060AA,
-  600: #295494,
-  700: #1e4174,
-  800: #18478d,
-  900: #002050,
-  A100: #cfd8dc,
-  A200: #b0bec5,
-  A400: #78909c,
-  A700: #455a64,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $dark-primary-text,
-    400: $light-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-    A100: $dark-primary-text,
-    A200: $dark-primary-text,
-    A400: $light-primary-text,
-    A700: $light-primary-text,
-  )
+    50: #7eacf0,
+    100: #6398e7,
+    200: #568fe4,
+    300: #4c84d8,
+    400: #376ec2,
+    500: #3060aa,
+    600: #295494,
+    700: #1e4174,
+    800: #18478d,
+    900: #002050,
+    A100: #cfd8dc,
+    A200: #b0bec5,
+    A400: #78909c,
+    A700: #455a64,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $light-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $dark-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text,
+    ),
+);
+
+$mat-error: (
+    50: #faeaea,
+    100: #f5d5d5,
+    200: #ebacac,
+    300: #e08282,
+    400: #d65959,
+    500: #cc2f2f,
+    600: #7a1c1c,
+    700: #7a1c1c,
+    800: #521313,
+    900: #290909,
+    A100: #e08282,
+    A200: #cc2f2f,
+    A400: #7a1c1c,
+    A700: #290909,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    ),
 );
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -49,7 +81,7 @@ $waseele-gui-primary: mat-palette($mat-waseel);
 $waseele-gui-accent: mat-palette($mat-waseel, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$waseele-gui-warn: mat-palette($mat-red);
+$waseele-gui-warn: mat-palette($mat-error);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $waseele-gui-theme: mat-light-theme($waseele-gui-primary, $waseele-gui-accent, $waseele-gui-warn);
@@ -58,4 +90,3 @@ $waseele-gui-theme: mat-light-theme($waseele-gui-primary, $waseele-gui-accent, $
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($waseele-gui-theme);
-

@@ -1,3 +1,12 @@
+<div class="error-card">
+    <p class="pb-2">
+        [ AMBULANCE, DIALYSIS, CHECKUP, CHRONIC, CIRCUMCISION, CLEANING, CONGENITAL, INFERTILITY, MATERNITY COMPLICATIONS, PREEXISTING, NA, ORTHODONTICS, PREGNANCY,
+        PSYCHIATRY, RTA, SPORTS, VACCINATION, WRA, REGULAR DENTAL TREATMENT, EMERGENCY RESUSCITATION, EMERGENCY, EMERGENCY URGENT, EMERGENCY LESS URGENT, EMERGENCY NOT URGENT ].
+        Your
+        input was: OTHERS
+    </p>
+    <button color="warn" type="button" mat-flat-button>Clear Errors</button>
+</div>
 <ng-container *ngIf="illnessOptionsList.length > 0 || pageMode != 'VIEW'">
     <div class="primary-button-toggle inline">
         <mat-button-toggle [disabled]="!enableEdit" value="NA" (change)="updateIllnesses($event)" [checked]="selectedIllnesses.includes('NA')">N/A
