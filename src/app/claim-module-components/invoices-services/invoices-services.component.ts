@@ -67,7 +67,8 @@ export class InvoicesServicesComponent implements OnInit {
       priceCorrection: number,
       rejection: number,
       isOpen: boolean,
-      serviceType: FormControl
+      serviceType: FormControl,
+      daysOfSupply: FormControl
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -212,6 +213,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
         this.controllers[index].services[serviceIndex].serviceType.setValue(service.serviceType);
+        this.controllers[index].services[serviceIndex].daysOfSupply.setValue(service.daysOfSupply);
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
         if (service.unitPrice != null)
           this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
@@ -273,6 +275,7 @@ export class InvoicesServicesComponent implements OnInit {
           servicesControllers.serviceDate.enable();
           servicesControllers.serviceDescription.enable();
           servicesControllers.serviceType.enable();
+          servicesControllers.daysOfSupply.enable();
           servicesControllers.serviceDiscount.enable();
           servicesControllers.toothNumber.enable();
           servicesControllers.unitPrice.enable();
@@ -285,6 +288,7 @@ export class InvoicesServicesComponent implements OnInit {
           servicesControllers.serviceDate.disable();
           servicesControllers.serviceDescription.disable();
           servicesControllers.serviceType.disable();
+          servicesControllers.daysOfSupply.disable();
           servicesControllers.serviceDiscount.disable();
           servicesControllers.toothNumber.disable();
           servicesControllers.unitPrice.disable();
@@ -324,6 +328,9 @@ export class InvoicesServicesComponent implements OnInit {
           if (this.isControlNull(servicesControllers.unitPrice)) {
             servicesControllers.unitPrice.enable();
           }
+          if (this.isControlNull(servicesControllers.daysOfSupply)) {
+            servicesControllers.daysOfSupply.enable();
+          }
         }
       });
     });
@@ -359,7 +366,8 @@ export class InvoicesServicesComponent implements OnInit {
       isOpen: false,
       serviceType: new FormControl(),
       statusCode: '',
-      acutalDeductedAmount: ''
+      acutalDeductedAmount: '',
+      daysOfSupply: new FormControl(0)
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
@@ -385,6 +393,8 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
     this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
+    this.controllers[i].services[j].daysOfSupply.setValue(service.daysOfSupply);
+    this.controllers[i].services[j].daysOfSupply.disable();
     if (service.toothNumber != null) {
       this.controllers[i].services[j].toothNumber.disable();
     }
@@ -487,6 +497,7 @@ export class InvoicesServicesComponent implements OnInit {
       unitPrice: { value: service.unitPrice.value, type: 'SAR' },
       requestedQuantity: service.quantity.value,
       toothNumber: service.toothNumber.value,
+      daysOfSupply: service.daysOfSupply.value,
       serviceGDPN: {
         patientShare: { value: service.patientShare.value, type: 'SAR' },
         discount: { value: service.serviceDiscount.value, type: service.serviceDiscountUnit },
