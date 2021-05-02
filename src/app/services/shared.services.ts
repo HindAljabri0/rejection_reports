@@ -319,7 +319,7 @@ export class SharedServices {
       case '314':
         return 'GlobMed';
       default:
-        return '';
+        return payerId;
     }
   }
 
