@@ -88,11 +88,7 @@ export class AdmissionComponent implements OnInit {
 
   toggleEdit(allowEdit: boolean, mode: ClaimPageMode, enableForNulls?: boolean) {
     if (allowEdit) {
-      if (mode != 'EDIT') {
-        this.admissionDateController.enable();
-      } else {
-        this.admissionDateController.disable();
-      }
+      this.admissionDateController.enable();
       this.dischargeDateController.enable();
       this.lengthOfStayController.enable();
       this.roomNumberController.enable();
