@@ -455,6 +455,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .column-header-action .action-btn{display: block;color:inherit;padding: 6px;background: none;border:0;margin: -6px -6px -6px auto;border-radius: 50px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;flex-basis: 30px;flex-grow: 0;flex-shrink: 0;max-width: 30px;}
 .primary-grid>thead>tr>th:hover .column-header-action .action-btn, .primary-grid>thead>tr>td:hover .column-header-action .action-btn, .primary-grid .header-cell:hover .column-header-action .action-btn, .primary-grid>thead>tr>th.mat-header-cell:hover .column-header-action .action-btn, .primary-grid>thead>tr>td.mat-header-cell:hover .column-header-action .action-btn,.primary-grid .column-header-action .action-btn:hover,.primary-grid .column-header-action .action-btn:focus,.primary-grid .column-header-action .action-btn:active{opacity: 1;}
 .primary-grid .column-header-action .action-btn .mat-icon{font-size:18px;line-height: 18px;height: 18px;width: 18px;display: block;}
+.primary-grid .column-header-action.action-active .action-btn{opacity: 1;background: rgba(48, 96, 170,0.1);}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
