@@ -24,6 +24,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ClaimError } from 'src/app/models/claimError';
 import { ValidationService } from 'src/app/services/validationService/validation.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-search-claims',
@@ -100,12 +101,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   paginatorPagesNumbers: number[];
   // @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
 
 
   selectedCardKey: number;
-  selectedPage: number;
 
   errorMessage: string;
 
@@ -126,6 +125,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isDeleteBtnVisible: boolean = true;
   status: any = 1;
   isAllCards: boolean = false;
+
+  length = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [10, 50, 100];
+  showFirstLastButtons = true;
 
 
   constructor(
@@ -165,24 +170,24 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.resetURL();
     });
     this.submittionErrors = new Map();
-    this.actions$.pipe(
-      ofType(requestClaimsPage),
-    ).subscribe(data => {
-      switch (data.action) {
-        case SearchPaginationAction.firstPage:
-          this.goToFirstPage();
-          break;
-        case SearchPaginationAction.previousPage:
-          this.goToPrePage();
-          break;
-        case SearchPaginationAction.nextPage:
-          this.goToNextPage();
-          break;
-        case SearchPaginationAction.lastPage:
-          this.goToLastPage();
-          break;
-      }
-    });
+    // this.actions$.pipe(
+    //   ofType(requestClaimsPage),
+    // ).subscribe(data => {
+    //   switch (data.action) {
+    //     case SearchPaginationAction.firstPage:
+    //       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
+    //       break;
+    //     case SearchPaginationAction.previousPage:
+    //       this.goToPrePage();
+    //       break;
+    //     case SearchPaginationAction.nextPage:
+    //       this.goToNextPage();
+    //       break;
+    //     case SearchPaginationAction.lastPage:
+    //       this.goToLastPage();
+    //       break;
+    //   }
+    // });
   }
 
   ngAfterViewChecked() {
@@ -348,7 +353,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.setAllCheckBoxIsIndeterminate();
     }
     this.selectedCardKey = key;
-    this.selectedPage = page;
     this.resetURL();
 
 
@@ -412,6 +416,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);
             this.claims = this.searchResult.content;
+            this.length = this.searchResult.totalElements;
+            this.pageSize = this.searchResult.size;
+            this.pageIndex = this.searchResult.number;
+            console.log("this.length:" + this.length + "this.pageSize:" + this.pageSize +"this.pageIndex:"+this.pageIndex);
             this.storeSearchResultsForClaimViewPagination();
             this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
             this.store.dispatch(storeClaims({
@@ -649,23 +657,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     } else { return 0; }
   }
 
-
-  paginatorAction(event) {
-    this.manualPage = event['pageIndex'];
-    if (this.summaries[this.selectedCardKey] != null) {
-      this.getResultsOfStatus(this.selectedCardKey, event['pageIndex'], event['pageSize']);
-    }
-  }
-  updateManualPage(index) {
-    this.manualPage = index;
-    this.paginatorAction({
-      previousPageIndex: this.searchResult.number,
-      pageIndex: index,
-      pageSize: this.searchResult.numberOfElements,
-      length: this.searchResult.size
-    });
-  }
-
   setAllCheckBoxIsIndeterminate() {
     if (this.claims != null) {
       this.allCheckBoxIsIndeterminate = this.selectedClaimsCountOfPage != this.claims.length && this.selectedClaimsCountOfPage != 0;
@@ -746,8 +737,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.selectedCardKey != 0) {
       path += `&status=${this.selectedCardKey}`
     }
-    if (this.selectedPage != null && this.selectedPage > 0) {
-      path += `&page=${(this.selectedPage + 1)}`
+    if (this.pageIndex != null && this.pageIndex > 0) {
+      path += `&page=${(this.pageIndex)}`
     }
     if (path !== '')
       this.location.go(path);
@@ -1020,22 +1011,22 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     return this.commen.getCardAccentColor(status);
   }
 
-  goToFirstPage() {
-    this.paginatorAction({ pageIndex: 0, pageSize: 10 });
-  }
-  goToPrePage() {
-    if (this.searchResult.number != 0) {
-      this.paginatorAction({ pageIndex: this.searchResult.number - 1, pageSize: 10 });
-    }
-  }
-  goToNextPage() {
-    if (this.searchResult.number + 1 < this.searchResult.totalPages) {
-      this.paginatorAction({ pageIndex: this.searchResult.number + 1, pageSize: 10 });
-    }
-  }
-  goToLastPage() {
-    this.paginatorAction({ pageIndex: this.searchResult.totalPages - 1, pageSize: 10 });
-  }
+  // goToFirstPage() {
+  //   this.paginatorAction({ pageIndex: 0, pageSize: 10 });
+  // }
+  // goToPrePage() {
+  //   if (this.searchResult.number != 0) {
+  //     this.paginatorAction({ pageIndex: this.searchResult.number - 1, pageSize: 10 });
+  //   }
+  // }
+  // goToNextPage() {
+  //   if (this.searchResult.number + 1 < this.searchResult.totalPages) {
+  //     this.paginatorAction({ pageIndex: this.searchResult.number + 1, pageSize: this.pageSize });
+  //   }
+  // }
+  // goToLastPage() {
+  //   this.paginatorAction({ pageIndex: this.searchResult.totalPages - 1, pageSize: this.pageSize });
+  // }
 
   nextSummary() {
     if (this.currentSummariesPage + 1 < this.summaries.length) {
@@ -1138,6 +1129,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isInvalidStatus(status: string) {
     status = status.toUpperCase();
     return status == ClaimStatus.INVALID.toUpperCase();
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.length = event.length;
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    console.log(event);
+    if (this.summaries[this.selectedCardKey] != null) {
+      this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
+    }
   }
 }
 
