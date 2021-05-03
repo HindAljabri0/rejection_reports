@@ -77,7 +77,7 @@ export class ConfiguartionModalComponent implements OnInit {
       }
     }, err => {
       this.common.loadingChanged.next(false);
-      this.error = err.error;
+      this.error = err.error.message;
       console.log(err);
     });
   }

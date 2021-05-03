@@ -11,21 +11,24 @@
         <div class="block-body bg-white">
             <div class="form-group">
                 <label class="control-label">Provider</label>
-                <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()" />
+                <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="auto"
+                    [formControl]="providerController" (input)="updateFilter()" />
                 <mat-autocomplete autoActiveFirstOption #auto>
-                    <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                    <mat-option *ngFor="let provider of filteredProviders"
+                        [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                         (click)="selectProvider(provider.switchAccountId)">
                         {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                     </mat-option>
                 </mat-autocomplete>
             </div>
-            <div class="custom-file-upload">
+            <div class="custom-file-upload" [class.disabled]="selectedProvider!==undefined">
                 <div class="content">
                     <img src="./assets/ic-upload.svg" alt="Upload" />
                     <p>Drag & drop CSV file here, or click here to upload files</p>
                     <span>Only .CSV files allowed</span>
                 </div>
-                <input type="file" accept=".csv" (change)="openCSV($event)" (click)="clearFiles($event)" class="upload-control" (click)="clearFiles($event)">
+                <input type="file" accept=".csv" [disabled]="selectedProvider===undefined" (change)="openCSV($event)"
+                    (click)="clearFiles($event)" class="upload-control" (click)="clearFiles($event)">
             </div>
         </div>
     </ng-container>
