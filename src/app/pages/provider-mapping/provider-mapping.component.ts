@@ -64,6 +64,7 @@ export class ProviderMappingComponent implements OnInit {
     this.filteredProviders = this.providers.filter(provider =>
       `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
     );
+    this.selectedProvider = this.providerController.value === "" ? undefined : this.selectedProvider;
   }
 
 }

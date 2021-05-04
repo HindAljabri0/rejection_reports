@@ -213,7 +213,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
         this.controllers[index].services[serviceIndex].serviceType.setValue(service.serviceType);
-        this.controllers[index].services[serviceIndex].daysOfSupply.setValue(service.daysOfSupply);
+        this.controllers[index].services[serviceIndex].daysOfSupply.setValue(service.daysOfSupply === null ? 0 : service.daysOfSupply);
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
         if (service.unitPrice != null)
           this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
