@@ -1,20 +1,20 @@
 <div class="row">
     <div class="col-md-6 col-lg-4 col-xxl-3">
-        <div class="form-group" [class.has-error]="fieldHasError('ADMDT')" [matTooltip]="getFieldError('admissionDate')">
+        <div class="form-group" [class.has-error]="fieldHasError('ADMDT')" [matTooltip]="getFieldError('ADMDT')">
             <label class="control-label">Admission Date & Time<span class="asterisk">*</span></label>
             <input type="datetime-local" class="form-control" placeholder="Select addmission date & time" [formControl]="admissionDateController"
                 (change)="updateClaim('admissionDate')">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
-        <div class="form-group" [class.has-error]="fieldHasError('DISCHARGEDT')" [matTooltip]="getFieldError('respiratoryRate')">
+        <div class="form-group" [class.has-error]="fieldHasError('DISCHARGEDT')" [matTooltip]="getFieldError('DISCHARGEDT')">
             <label class="control-label">Discharge Date & Time<span class="asterisk">*</span></label>
             <input type="datetime-local" placeholder="Select discharge date & time" [formControl]="dischargeDateController" (change)="updateClaim('dischargeDate')"
                 class="form-control">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
-        <div class="form-group" [class.has-error]="fieldHasError('ESTLENSTAY')" [matTooltip]="getFieldError('lengthOfStay')">
+        <div class="form-group" [class.has-error]="fieldHasError('ESTLENSTAY')" [matTooltip]="getFieldError('ESTLENSTAY')">
             <label class="control-label">Length of Stay<span class="asterisk">*</span></label>
             <input type="number" placeholder="Enter length of stay" [formControl]="lengthOfStayController" (change)="updateClaim('lengthOfStay')" class="form-control">
         </div>

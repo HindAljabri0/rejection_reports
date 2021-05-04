@@ -13,7 +13,7 @@ import {
   updateTemperature,
   updateWeight
 } from '../store/claim.actions';
-import { FieldError, getClaim, getPageMode } from '../store/claim.reducer';
+import { FieldError, getClaim, getPageMode, getVitalSignsErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-vital-signs',
@@ -51,6 +51,7 @@ export class VitalSignsComponent implements OnInit {
         this.toggleEdit(false, true);
       }
     });
+    this.store.select(getVitalSignsErrors).subscribe(errors => this.errors =errors);
   }
 
   setData(claim: Claim) {
