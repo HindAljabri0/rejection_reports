@@ -52,3 +52,4 @@ export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';
 export const VALIDATE_RESTRICT_PRICE_UNIT = 'validateOrRestrictUnitPrice';
 export const ICD10_RESTRICTION_KEY = 'ICD10Validation';
 export const SFDA_RESTRICTION_KEY = 'sfdaRestriction';
+export const PBM_RESTRICTION_KEY = 'pbmValidation';

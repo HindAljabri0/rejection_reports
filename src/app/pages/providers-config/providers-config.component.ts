@@ -4,7 +4,8 @@ import {
   SERVICE_CODE_RESTRICTION_KEY,
   ICD10_RESTRICTION_KEY,
   VALIDATE_RESTRICT_PRICE_UNIT,
-  SFDA_RESTRICTION_KEY
+  SFDA_RESTRICTION_KEY,
+  PBM_RESTRICTION_KEY
 } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -41,6 +42,7 @@ export class ProvidersConfigComponent implements OnInit {
     payerMappingSaveError?: string,
     providerMappingError?: string,
     providerMappingSaveError?: string,
+    pbmConfigurationError?: string,
     pbmConfigurationSaveError?: string
   } = {};
   success: {
@@ -58,6 +60,7 @@ export class ProvidersConfigComponent implements OnInit {
     portalUser: true,
     ICD10Validation: true,
     sfda: true,
+    pbmConfiguration: true,
     midtable: true,
     payerMapping: true,
     providerMapping: true
@@ -69,10 +72,12 @@ export class ProvidersConfigComponent implements OnInit {
   priceUnitSettings: any[] = [];
   ICD10ValidationSettings: any[] = [];
   sfdaValidationSettings: any[] = [];
+  pbmValidationSettings: any[] = [];
   newServiceValidationSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
   newICD10ValidationSettings: { [key: string]: boolean } = {};
   newSFDAValidationSettings: { [key: string]: boolean } = {};
+  newPBMValidationSettings: { [key: string]: boolean } = {};
   portalUserSettings: any;
   portalUsernameController: FormControl = new FormControl('');
   portalPasswordController: FormControl = new FormControl('');
@@ -125,8 +130,6 @@ export class ProvidersConfigComponent implements OnInit {
           } else {
             this.sharedServices.loadingChanged.next(false);
           }
-          if (this.selectedProvider !== undefined)
-            this.getThePBMValues();
         }
       }
     }, error => {
@@ -155,7 +158,6 @@ export class ProvidersConfigComponent implements OnInit {
     this.location.go(`/administration/config/providers/${providerId}`);
     this.reset();
     this.getAssociatedPayers();
-    this.getThePBMValues();
   }
 
   getAssociatedPayers() {
@@ -164,6 +166,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
+          this.newPBMValidationSettings["101"] = false;
           this.associatedPayers = event.body;
           this.associatedPayers.forEach(payer => {
             this.newServiceValidationSettings[payer.switchAccountId] = false;
@@ -206,6 +209,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.getSetting(VALIDATE_RESTRICT_PRICE_UNIT, this.priceUnitSettings, this.newPriceUnitSettings, false);
     this.getSetting(ICD10_RESTRICTION_KEY, this.ICD10ValidationSettings, this.newICD10ValidationSettings, false);
     this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings, false);
+    this.getSetting(PBM_RESTRICTION_KEY, this.pbmValidationSettings, this.newPBMValidationSettings, false);
     this.getPortalUserSettings();
     // ####### Chages on 02-01-2021 start
     this.getDatabaseConfig();
@@ -220,6 +224,7 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.portalUser ||
       this.componentLoading.ICD10Validation ||
       this.componentLoading.sfda ||
+      this.componentLoading.pbmConfiguration ||
       this.componentLoading.midtable ||
       this.componentLoading.payerMapping ||
       this.componentLoading.providerMapping) {
@@ -231,13 +236,14 @@ export class ProvidersConfigComponent implements OnInit {
     const icd10Flag = this.saveSettings(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings, this.ICD10ValidationSettings);
     const priceUnitFlag = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings, this.priceUnitSettings);
     const sfdaFlag = this.saveSettings(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings, this.sfdaValidationSettings);
+    const pbmFlag = this.saveSettings(PBM_RESTRICTION_KEY, this.newPBMValidationSettings, this.pbmValidationSettings);
     // change on 02-01-2021 start
     const dbFlag = this.addDatabaseConfig();
     const payerFlag = this.savePayerMapping();
     const providerFlag = this.addProviderMapping();
     // change on 02-01-2021 end
-    this.saveThePBMValue();
-    if (portalUserFlag && serviceCodeFlag && icd10Flag && priceUnitFlag && sfdaFlag && dbFlag && payerFlag && providerFlag) {
+    if (portalUserFlag && serviceCodeFlag && icd10Flag && priceUnitFlag && sfdaFlag && dbFlag
+      && payerFlag && providerFlag && pbmFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -322,6 +328,14 @@ export class ProvidersConfigComponent implements OnInit {
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
         break;
+      case PBM_RESTRICTION_KEY:
+        this.pbmValidationSettings.push({
+          providerId: this.selectedProvider,
+          payerId: payerId,
+          key: URLKey,
+          value: (newSettingValues[payerId]) ? '1' : '0'
+        });
+        break;
     }
   }
   setSettingIndexed(URLKey: string, index: number, value: string) {
@@ -337,6 +351,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case SFDA_RESTRICTION_KEY:
         this.sfdaValidationSettings[index].value = value;
+        break;
+      case PBM_RESTRICTION_KEY:
+        this.pbmValidationSettings[index].value = value;
         break;
     }
   }
@@ -386,6 +403,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.resetSection(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings);
     this.resetSection(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings);
     this.resetSection(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings);
+    this.resetSection(PBM_RESTRICTION_KEY, this.newPBMValidationSettings);
     this.resetDbAndMapping();
     this.resetUserMessages();
   }
@@ -409,6 +427,10 @@ export class ProvidersConfigComponent implements OnInit {
         case SFDA_RESTRICTION_KEY:
           setTimeout(() => this.componentLoading.sfda = false, 100);
           this.newSFDAValidationSettings = {};
+          break;
+        case PBM_RESTRICTION_KEY:
+          setTimeout(() => this.componentLoading.pbmConfiguration = false, 100);
+          this.newPBMValidationSettings = {};
           break;
       }
     }
@@ -476,6 +498,9 @@ export class ProvidersConfigComponent implements OnInit {
       case SFDA_RESTRICTION_KEY:
         this.errors.sfdaError = message;
         break;
+      case PBM_RESTRICTION_KEY:
+        this.errors.pbmConfigurationError = message;
+        break;
     }
   }
 
@@ -490,6 +515,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case SFDA_RESTRICTION_KEY:
         this.componentLoading.sfda = componentLoading;
+        break;
+      case PBM_RESTRICTION_KEY:
+        this.componentLoading.pbmConfiguration = componentLoading;
         break;
     }
   }
@@ -506,6 +534,9 @@ export class ProvidersConfigComponent implements OnInit {
       case SFDA_RESTRICTION_KEY:
         this.errors.sfdaSaveError = value;
         break;
+      case PBM_RESTRICTION_KEY:
+        this.errors.pbmConfigurationSaveError = value;
+        break;
     }
 
   }
@@ -521,6 +552,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case SFDA_RESTRICTION_KEY:
         this.success.sfdaSaveSuccess = value;
+        break;
+      case PBM_RESTRICTION_KEY:
+        this.success.pbmConfigurationSaveSuccess = value;
         break;
     }
   }
@@ -942,60 +976,5 @@ export class ProvidersConfigComponent implements OnInit {
     this.addPayerMappingList = [];
     this.addDbConfigForm.reset();
     this.providerMappingController.setValue('');
-    this.resetPbMValue();
-  }
-
-  getThePBMValues() {
-    this.sharedServices.loadingChanged.next(true);
-    this.isPBMLoading = true;
-    this.dbMapping.getPBMMapping(this.selectedProvider).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const data = event.body['pbmConfig'];
-        if (data != null) {
-          this.PBMUserController.setValue(data.username);
-          this.PBMPasswordController.setValue(data.password);
-          this.PBMCheckValueController.setValue(data.value === 'true' ? true : false);
-        }
-        else {
-          this.resetPbMValue();
-        }
-        this.sharedServices.loadingChanged.next(false);
-        this.isPBMLoading = false;
-      }
-    }, error => {
-      this.sharedServices.loadingChanged.next(false);
-      this.isPBMLoading = false;
-      console.log(error);
-    });
-  }
-
-  resetPbMValue() {
-    this.PBMUserController.setValue(null);
-    this.PBMPasswordController.setValue(null);
-    this.PBMCheckValueController.setValue(false);
-  }
-
-  saveThePBMValue() {
-    const body = {
-      providerId: this.selectedProviderCode,
-      username: this.PBMUserController.value,
-      password: this.PBMPasswordController.value,
-      value: this.PBMCheckValueController.value
-    };
-    this.componentLoading.providerMapping = true;
-    this.dbMapping.setPBMMapping(body, this.selectedProvider).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event) {
-          this.getThePBMValues();
-          this.success.pbmConfigurationSaveSuccess = 'Settings were saved successfully.';
-        } else {
-          this.errors.pbmConfigurationSaveError = 'Could not save payer mapping details !';
-        }
-        this.componentLoading.providerMapping = false;
-      }
-    }, error => {
-      this.componentLoading.providerMapping = false;
-      console.log(error);
-    });
   }
 }
