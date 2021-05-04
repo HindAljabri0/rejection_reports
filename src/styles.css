@@ -772,7 +772,9 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/
 .custom-file-upload{position: relative;}
+.custom-file-upload.disabled{cursor: not-allowed;opacity: 0.5;}
 .custom-file-upload>.upload-control{position: absolute;top: 0;left: 0;height: 100%;width: 100%;opacity: 0;display: block;z-index: 1;cursor: pointer;}
+.custom-file-upload>.upload-control[disabled]{cursor: not-allowed;}
 .custom-file-upload>.content{position: relative;z-index: 0;padding: 32px 16px;border:2px dashed #b9b9b9;text-align: center;}
 .custom-file-upload>.content>img{display: block;margin: 0 auto 12px;height: 56px;width: 56px;}
 .custom-file-upload>.content>p{font-weight: 600;padding: 0 0 2px;color:#3060AA;}
