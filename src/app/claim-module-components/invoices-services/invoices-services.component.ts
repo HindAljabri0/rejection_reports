@@ -53,6 +53,7 @@ export class InvoicesServicesComponent implements OnInit {
       statusDescription?: string,
       acutalDeductedAmount?: string,
       serviceNumber: number,
+      serviceId?:number,
       serviceDate: FormControl,
       serviceCode: FormControl,
       serviceDescription: FormControl,
@@ -209,6 +210,7 @@ export class InvoicesServicesComponent implements OnInit {
 
         }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
+        this.controllers[index].services[serviceIndex].serviceId = service.serviceId;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
@@ -377,6 +379,7 @@ export class InvoicesServicesComponent implements OnInit {
   editService(service: Service, decision: ServiceDecision, i: number, j: number) {
     this.controllers[i].services[j].retrieved = true;
     this.controllers[i].services[j].serviceNumber = service.serviceNumber;
+    this.controllers[i].services[j].serviceId = service.serviceId;
     this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
     this.controllers[i].services[j].serviceDate.disable();
     this.controllers[i].services[j].serviceCode.setValue(service.serviceCode);
@@ -437,11 +440,11 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   fieldHasError(fieldName, code) {
-    return this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code)) != -1;
+    return this.errors.findIndex(error => error.fieldName == fieldName && error.code == code) != -1;
   }
 
   getFieldError(fieldName, code) {
-    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code));
+    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.code == code);
     if (index > -1) {
       return this.errors[index].error || '';
     }
