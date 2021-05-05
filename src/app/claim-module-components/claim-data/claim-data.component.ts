@@ -22,11 +22,14 @@ import { Claim } from '../models/claim.model';
 export class ClaimDataComponent implements OnInit {
 
   errors: {
-    genInfoErrors: FieldError[],
-    diagnosisErrors: FieldError[],
-    invoicesErrors: FieldError[],
     uncategorised: FieldError[],
-    labResultsErrors: FieldError[]
+        genInfoErrors: FieldError[],
+        admissionErrors: FieldError[],
+        invoicesErrors: FieldError[],
+        vitalSignsErrors: FieldError[],
+        diagnosisErrors: FieldError[],
+        illnessErrors: FieldError[],
+        labResultsErrors: FieldError[]
   };
 
   pageMode: ClaimPageMode;
@@ -74,9 +77,9 @@ export class ClaimDataComponent implements OnInit {
   }
 
   admissionTabHasErrors() {
-    //if (this.errors != null) {
-    //  return this.errors.admissionErrors.length > 0;
-  //  }
+    if (this.errors != null) {
+     return this.errors.admissionErrors.length > 0;
+   }
     return false;
   }
 

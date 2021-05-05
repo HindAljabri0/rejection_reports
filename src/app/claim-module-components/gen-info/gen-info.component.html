@@ -1,11 +1,11 @@
 <div class="row small-gutter general-info-wrapper">
     <div class="col">
         <div class="form-group"
-            [class.has-error]="fieldHasError('FULLNAME') || fieldHasError('FirstName')||fieldHasError('LastName')">
+            [class.has-error]="fieldHasError('FULLNAME') || fieldHasError('FN')||fieldHasError('LN')">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
                 <div class="col"
-                    [matTooltip]="getFieldError('FULLNAME') || getFieldError('FirstName') || getFieldError('LastName')">
+                    [matTooltip]="getFieldError('FULLNAME') || getFieldError('FN') || getFieldError('LN')">
                     <input class="form-control" placeholder="Enter full name" type="text"
                         [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                 </div>
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
-        <div class="form-group" [class.has-error]="fieldHasError('casetype')" [matTooltip]="getFieldError('caseType')">
+        <div class="form-group" [class.has-error]="fieldHasError('CASETYP')" [matTooltip]="getFieldError('CASETYP')">
             <label class="control-label">Case Type</label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedCaseType"
@@ -135,8 +135,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('memberDob')"
-            [matTooltip]="getFieldError('memberDob')">
+        <div class="form-group" [class.has-error]="fieldHasError('DOB_AGE')"
+            [matTooltip]="getFieldError('DOB_AGE')">
             <label class="control-label">Date of Birth<span *ngIf="isControlNull(ageController)"
                     class="asterisk">*</span></label>
             <div class="date-picker">
@@ -178,8 +178,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('APPNO') ||fieldHasError('APPREFNO') "
-            [matTooltip]="getFieldError('APPNO') || getFieldError('APPREFNO')">
+        <div class="form-group" [class.has-error]="fieldHasError('APPNO')"
+            [matTooltip]="getFieldError('APPNO')">
             <label class="control-label">Approval No.<span
                     *ngIf="departmentCode != '68' && claimPageType == 'DENTAL_OPTICAL_PHARMACY'"
                     class="asterisk">*</span></label>
@@ -188,8 +188,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('PHYCATEGORY') || fieldHasError('PHYCA')"
-            [matTooltip]="getFieldError('PHYCATEGORY') || getFieldError('PHYCA')">
+        <div class="form-group" [class.has-error]="fieldHasError('PHYCA')"
+            [matTooltip]="getFieldError('PHYCA')">
             <label class="control-label">Physician Category<span class="asterisk"
                     *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
             <mat-form-field class="form-control custom-select-control">
@@ -207,8 +207,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('PHYNAME') || fieldHasError('PHYNA')"
-            [matTooltip]="getFieldError('PHYNAME') || getFieldError('PHYNA')">
+        <div class="form-group" [class.has-error]="fieldHasError('PHYNA')"
+            [matTooltip]="getFieldError('PHYNA')">
             <label class="control-label">Physician Name<span class="asterisk"
                     *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
             <input class="form-control" placeholder="Enter physician name" type="text"
@@ -217,8 +217,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('physicianID') || fieldHasError('PHYID') "
-            [matTooltip]="getFieldError('physicianID') || getFieldError('PHYID')">
+        <div class="form-group" [class.has-error]=" fieldHasError('PHYID') "
+            [matTooltip]="getFieldError('PHYID')">
             <label class="control-label">Physician ID<span class="asterisk"
                     *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
             <input class="form-control" placeholder="Enter physician ID" type="text"
@@ -276,8 +276,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('VISITTYPENULL')"
-            [matTooltip]="getFieldError('VISITTYPENULL')">
+        <div class="form-group" [class.has-error]="fieldHasError('VISITTYP')"
+            [matTooltip]="getFieldError('VISITTYP')">
             <label class="control-label">Visit Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType"

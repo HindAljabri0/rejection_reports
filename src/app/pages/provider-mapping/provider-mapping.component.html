@@ -9,6 +9,7 @@
     </div>
     <ng-container *ngIf="!isLoading">
         <div class="block-body bg-white">
+            <h5 class="medium pb-2">Step 1: Select Provider</h5>
             <div class="form-group">
                 <label class="control-label">Provider</label>
                 <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="auto"
@@ -21,6 +22,7 @@
                     </mat-option>
                 </mat-autocomplete>
             </div>
+            <h5 class="medium pb-2 pt-2">Step 2: Upload CSV File</h5>
             <div class="custom-file-upload" [class.disabled]="selectedProvider!==undefined">
                 <div class="content">
                     <img src="./assets/ic-upload.svg" alt="Upload" />

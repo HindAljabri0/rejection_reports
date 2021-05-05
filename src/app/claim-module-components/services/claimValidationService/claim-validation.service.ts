@@ -43,8 +43,19 @@ export class ClaimValidationService {
     this.validateClaimNetAmount();
     this.validateAdmission();
     this.validateLabResults();
+    this.validateRequires();
   }
 
+
+  validateRequires(){
+    const claimDate = this.claim.visitInformation.visitDate;
+    
+    let fieldErrors: FieldError[] = [];
+    if (claimDate == null) {
+      fieldErrors.push({ fieldName: 'visitType', error:'' });
+    }
+
+  }
   validatePatientInfo() {
     const fullName = this.claim.caseInformation.patient.fullName;
     const gender = this.claim.caseInformation.patient.gender;
@@ -58,7 +69,7 @@ export class ClaimValidationService {
 
     let fieldErrors: FieldError[] = [];
     if (visitType == null || visitType.trim().length == 0) {
-      fieldErrors.push({ fieldName: 'visitType' });
+      fieldErrors.push({ fieldName: 'visitType', error:'' });
     }
     if (fullName == null || fullName.trim().length == 0) {
       fieldErrors.push({ fieldName: 'fullName' });

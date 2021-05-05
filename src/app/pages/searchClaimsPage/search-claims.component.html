@@ -84,6 +84,9 @@
                         class="action-btn">
                         <img src="./assets/ic-refresh.svg" alt="Refresh" />
                     </button> -->
+                    <button *ngIf="appliedFilters.length>0" (click)="clearFilters('',true)" class="primary-text-btn"
+                        mat-flat-button type="button">Clear
+                        Filter</button>
                     <button mat-flat-button class="primary-text-btn" *ngIf="isRevalidate"
                         (click)="reValidateClaims()">Re-Validate
                         {{selectedClaims.length==0?" All":"Selection"}}</button>
@@ -126,9 +129,11 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action">
+
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('claimRefNos')">
                                             <span>Claim Ref. No.</span>
-                                            <button type="button" class="action-btn" matRipple
+                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                                type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="claimRefFilter">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -138,12 +143,15 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Provider Claim Ref. No.</label>
                                                             <input class="form-control"
-                                                                placeholder="Search Provider Claim Ref. No.">
+                                                                placeholder="Search Provider Claim Ref. No."
+                                                                #claimRefNos>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button>Clear</button>
-                                                        <button mat-flat-button color="primary">Search</button>
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('claimRefNos')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Search</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -151,9 +159,10 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action">
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('drName')">
                                             <span>Dr. Name</span>
-                                            <button type="button" class="action-btn" matRipple
+                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                                type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="drNameFilter">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -162,12 +171,15 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Dr. Name</label>
-                                                            <input class="form-control" placeholder="Search Dr. Name">
+                                                            <input class="form-control" placeholder="Search Dr. Name"
+                                                                #drName>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button>Clear</button>
-                                                        <button mat-flat-button color="primary">Search</button>
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('drName')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.DR_NAME)">Search</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -175,9 +187,10 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action">
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('memberID')">
                                             <span>Member ID</span>
-                                            <button type="button" class="action-btn" matRipple
+                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                                type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="memberIDFilter">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -186,12 +199,15 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Member ID</label>
-                                                            <input class="form-control" placeholder="Search Member ID">
+                                                            <input class="form-control" placeholder="Search Member ID"
+                                                                #memberID>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button>Clear</button>
-                                                        <button mat-flat-button color="primary">Search</button>
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('memberID')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.MEMBERID)">Search</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -199,9 +215,10 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action">
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('nationalId')">
                                             <span>National ID</span>
-                                            <button type="button" class="action-btn" matRipple
+                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                                type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="nationalIDFilter">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -211,13 +228,16 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">National ID</label>
-                                                            <input class="form-control"
-                                                                placeholder="Search National ID">
+
+                                                            <input class="form-control" placeholder="Search National ID"
+                                                                #nationalId>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button>Clear</button>
-                                                        <button mat-flat-button color="primary">Search</button>
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('nationalId')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.NATIONALID)">Search</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -225,9 +245,11 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action">
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter('patientFileNos')">
                                             <span>Patient File No.</span>
-                                            <button type="button" class="action-btn" matRipple
+                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                                type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="patientFileNoFilter">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -238,12 +260,14 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Patient File No.</label>
                                                             <input class="form-control"
-                                                                placeholder="Search Patient File No.">
+                                                                placeholder="Search Patient File No." #patientFileNos>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button>Clear</button>
-                                                        <button mat-flat-button color="primary">Search</button>
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('patientFileNos')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.PATIENTFILENO)">Search</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -251,9 +275,10 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action">
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('claimDate')">
                                             <span>Claim Date</span>
-                                            <button type="button" class="action-btn" matRipple
+                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                                type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="claimDateFilter">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -263,7 +288,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Claim Date</label>
                                                             <div class="date-picker">
-                                                                <input class="form-control"
+                                                                <input #claimDate class="form-control"
                                                                     placeholder="Search Claim Date"
                                                                     [matDatepicker]="claimDatePicker">
                                                                 <mat-datepicker-toggle [for]="claimDatePicker">
@@ -273,8 +298,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button>Clear</button>
-                                                        <button mat-flat-button color="primary">Search</button>
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('claimDate')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMDATE)">Search</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -447,6 +474,33 @@
                     [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons"
                     [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
                 </mat-paginator>
+                <!-- <div class="custom-paginator"
+                    *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
+                    <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
+                        [disabled]="searchResult.number==0">
+                        <img src="./assets/ic-page-first.svg" alt="First" />
+                    </button>
+                    <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
+                        [disabled]="searchResult.number==0">
+                        <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                    </button>
+                    <p class="page-info">
+                        {{(searchResult.number+1)}}<small>/{{searchResult.totalPages}}</small>
+                    </p>
+                    <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
+                        [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                        <img src="./assets/ic-page-next.svg" alt="Next" />
+                    </button>
+                    <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
+                        [disabled]="(searchResult.number+1)==searchResult.totalPages">
+                        <img src="./assets/ic-page-last.svg" alt="Last" />
+                    </button>
+                </div> -->
+                <!-- <mat-paginator (page)="goToNextPage()" (hasPreviousPage)="goToPrePage()"
+                    (lastPage)="goFilterToLastPage()" (firstPage)="goFilterToFirstPage()"
+                    [length]="searchResult?.totalElements" class="primary-paginator" [pageSize]="10"
+                    [pageSizeOptions]="[10,50,100]" #paginator>
+                </mat-paginator> -->
             </div>
             <div class="right-block btn-list" *ngIf="currentSelectedTab==0">
                 <button mat-button *ngIf="isDeleteBtnVisible" (click)="deleteClaimByUploadid()">Delete
