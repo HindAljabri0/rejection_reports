@@ -4,6 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ServiceDecision } from './serviceDecision.model';
 
 export class Service {
+    serviceId?:number;
     serviceNumber?: number;
     serviceDate: Date;
     serviceType: string;
