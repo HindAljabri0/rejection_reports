@@ -23,16 +23,20 @@ export class SearchService {
     memberId?: string,
     invoiceNo?: string,
     patientFileNo?: string,
-    policyNo?: string) {
+    policyNo?: string,
+    drname?: string,
+    nationalId?: string,
+    claimDate?: string
+  ) {
     let requestURL = `/providers/${providerId}/claims?`;
-    if (fromDate != null && toDate != null && payerId != null) {
+    if (fromDate != null && toDate != null && payerId != null && uploadId === null) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
         + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&status=' + statuses.toString();
       if (casetype != null) {
         requestURL += '&casetype=' + casetype;
       }
     }
-    if (batchId != null) {
+    if (batchId != null && uploadId === null) {
       if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
@@ -40,22 +44,41 @@ export class SearchService {
     }
     if (uploadId != null) {
       requestURL += 'uploadId=' + uploadId + '&status=' + statuses.toString();
+      if (drname != null && drname !== '' && drname !== undefined) {
+        requestURL += `&drname=${drname}`;
+      }
+      if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+        requestURL += `&nationalId=${nationalId}`;
+      }
+      if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+        requestURL += `&claimDate=${claimDate}`;
+      }
+      if (claimRefNo != null && claimRefNo !== '' && claimRefNo !== undefined) {
+        requestURL += `&claimRefNo=${claimRefNo}`;
+      }
+      if (memberId != null && memberId !== '' && memberId !== undefined) {
+        requestURL += `&memberId=${memberId}`;
+      }
+      if (patientFileNo != null && patientFileNo !== '' && patientFileNo !== undefined) {
+        requestURL += `&patientFileNo=${patientFileNo}`;
+      }
     }
-    if (claimRefNo != null) {
+    if (claimRefNo != null && uploadId === null) {
       requestURL += `claimRefNo=${claimRefNo}` + '&status=' + statuses.toString();
     }
-    if (memberId != null) {
+    if (memberId != null && uploadId === null) {
       requestURL += `memberId=${memberId}` + '&status=' + statuses.toString();
     }
     if (invoiceNo != null) {
       requestURL += `invoiceNo=${invoiceNo}&status=${statuses.toString()}`;
     }
-    if (patientFileNo != null) {
+    if (patientFileNo != null && uploadId === null) {
       requestURL += `patientFileNo=${patientFileNo}&status=${statuses.toString()}`;
     }
     if (policyNo != null) {
       requestURL += `policyNo=${policyNo}&status=${statuses.toString()}`;
     }
+
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
@@ -132,26 +155,48 @@ export class SearchService {
     memberId?: string,
     invoiceNo?: string,
     patientFileNo?: string,
-    policyNo?: string) {
+    policyNo?: string,
+    drname?: string,
+    nationalId?: string,
+    claimDate?: string) {
     let requestURL = `/providers/${providerId}/claims/download?status=${statuses.toString()}`;
-    if (fromDate != null && toDate != null && payerId != null) {
+    if (fromDate != null && toDate != null && payerId != null && uploadId === null) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
-    } else if (batchId != null) {
+    } else if (batchId != null && uploadId === null) {
       if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
       requestURL += `&batchId=${batchId}`;
     } else if (uploadId != null) {
       requestURL += `&uploadId=${uploadId}`;
-    } else if (claimRefNo != null) {
+      if (drname != null && drname !== '' && drname !== undefined) {
+        requestURL += `&drname=${drname}`;
+      }
+      if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+        requestURL += `&nationalId=${nationalId}`;
+      }
+      if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+        requestURL += `&claimDate=${claimDate}`;
+      }
+      if (claimRefNo != null && claimRefNo !== '' && claimRefNo !== undefined) {
+        requestURL += `&claimRefNo=${claimRefNo}`;
+      }
+      if (memberId != null && memberId !== '' && memberId !== undefined) {
+        requestURL += `&memberId=${memberId}`;
+      }
+      if (patientFileNo != null && patientFileNo !== '' && patientFileNo !== undefined) {
+        requestURL += `&patientFileNo=${patientFileNo}`;
+      }
+
+    } else if (claimRefNo != null && uploadId === null) {
       requestURL += `&claimRefNo=${claimRefNo}`;
-    } else if (memberId != null) {
+    } else if (memberId != null && uploadId === null) {
       requestURL += `&memberId=${memberId}`;
-    } else if (invoiceNo != null) {
+    } else if (invoiceNo != null && uploadId === null) {
       requestURL += `&invoiceNo=${invoiceNo}`;
-    } else if (patientFileNo != null) {
+    } else if (patientFileNo != null && uploadId === null) {
       requestURL += `&patientFileNo=${patientFileNo}`;
-    } else if (policyNo != null) {
+    } else if (policyNo != null && uploadId === null) {
       requestURL += `&policyNo=${policyNo}`;
     }
 
@@ -181,6 +226,26 @@ export class SearchService {
     }
     const requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+    return this.http.request(request);
+  }
+
+  getFilterSummaryValues(providerId: string, status: string, fromDate: string, toDate: string, batchId: string, page: number, pageSize: number) {
+    let requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+    if (status != null && status != "All") {
+      requestURL += `&status=${status}`;
+    }
+    if (fromDate != null) {
+      requestURL += `&fromDate=${fromDate}`;
+
+    }
+    if (toDate != null) {
+      requestURL += `&toDate=${toDate}`;
+    }
+    if (batchId != null) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
     return this.http.request(request);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, OnDestroy, ViewChild } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -25,6 +25,8 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ClaimError } from 'src/app/models/claimError';
 import { ValidationService } from 'src/app/services/validationService/validation.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ClaimListFilterSelection } from 'src/app/models/claimListSearch';
+import { AdminService } from 'src/app/services/adminService/admin.service';
 
 @Component({
   selector: 'app-search-claims',
@@ -132,7 +134,24 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   pageSizeOptions = [10, 50, 100];
   showFirstLastButtons = true;
 
-
+  @ViewChild('claimRefNos', { static: false }) claimRefNos;
+  @ViewChild('drName', { static: false }) drName;
+  @ViewChild('memberID', { static: false }) memberID;
+  @ViewChild('nationalId', { static: false }) nationalId;
+  @ViewChild('patientFileNos', { static: false }) patientFileNos;
+  @ViewChild('claimDate', { static: false }) claimDate;
+  allFilters: any = [
+    { key: 'CLAIMDATE', value: 'claimDate' },
+    { key: 'CLAIMREFNO', value: 'claimRefNos' },
+    { key: 'DR_NAME', value: 'drName' },
+    { key: 'MEMBERID', value: 'memberID' },
+    { key: 'NATIONALID', value: 'nationalId' },
+    { key: 'PATIENTFILENO', value: 'patientFileNos' },
+  ];
+  appliedFilters: any = [];
+  fdrname: string = "";
+  fnationalid: string = "";
+  fclaimdate: string = "";
   constructor(
     public location: Location,
     public submittionService: ClaimSubmittionService,
@@ -146,6 +165,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private notificationService: NotificationsService,
     private validationService: ValidationService,
     private store: Store,
+    private adminService: AdminService,
     private actions$: Actions) { }
 
   ngOnDestroy(): void {
@@ -223,6 +243,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.patientFileNo = value.patientFileNo;
       this.policyNo = value.policyNo;
       this.editMode = value.editMode;
+      this.fdrname = value.drname;
+      this.fnationalid = value.nationalId;
+      this.fclaimdate = value.claimDate;
       this.store.dispatch(setSearchCriteria({
         batchId: this.batchId,
         fromDate: this.from,
@@ -316,7 +339,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.memberId,
       this.invoiceNo,
       this.patientFileNo,
-      this.policyNo).toPromise().catch(error => {
+      this.policyNo,
+      this.fdrname,
+      this.fnationalid,
+      this.fclaimdate).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == '4') {
@@ -385,7 +411,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
     const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLowerCase();
-    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID || name === ClaimStatus.PAID || name === ClaimStatus.Under_Processing || name === ClaimStatus.Under_Submision.toLowerCase() || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
+    this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID.toLowerCase() || name === ClaimStatus.PAID.toLowerCase() || name === ClaimStatus.Under_Processing.toLowerCase() || name === ClaimStatus.Under_Submision.toLowerCase() || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -419,7 +445,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             this.length = this.searchResult.totalElements;
             this.pageSize = this.searchResult.size;
             this.pageIndex = this.searchResult.number;
-            console.log("this.length:" + this.length + "this.pageSize:" + this.pageSize +"this.pageIndex:"+this.pageIndex);
+            console.log("this.length:" + this.length + "this.pageSize:" + this.pageSize + "this.pageIndex:" + this.pageIndex);
             this.storeSearchResultsForClaimViewPagination();
             this.store.dispatch(setSearchCriteria({ statuses: this.summaries[key].statuses }));
             this.store.dispatch(storeClaims({
@@ -715,23 +741,51 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.editMode != null) {
       claimInfo += `&editMode=${this.editMode}`;
     }
-    if (this.from != null && this.to != null && this.payerId != null) {
+    if (this.from != null && this.to != null && this.payerId != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
         + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo;
 
-    } else if (this.batchId != null) {
+    } else if (this.batchId != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo;
-    } else if (this.uploadId != null) {
+    }
+
+    else if (this.uploadId != null) {
       path = `/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo;
-    } else if (this.claimRefNo != null) {
+
+      if (this.fdrname != null && this.fdrname !== '' && this.fdrname !== undefined) {
+        path += `&drname=${this.fdrname}`;
+      }
+      if (this.fnationalid != null && this.fnationalid !== '' && this.fnationalid !== undefined) {
+        path += `&nationalId=${this.fnationalid}`;
+      }
+      if (this.fclaimdate != null && this.fclaimdate !== '' && this.fclaimdate !== undefined) {
+        path += `&claimDate=${this.fclaimdate}`;
+      }
+      if (this.claimRefNo != null && this.claimRefNo !== '' && this.claimRefNo !== undefined) {
+        path += `&claimRefNo=${this.claimRefNo}`;
+      }
+      if (this.memberId != null && this.memberId !== '' && this.memberId !== undefined) {
+        path += `&memberId=${this.memberId}`;
+      }
+      if (this.patientFileNo != null && this.patientFileNo !== '' && this.patientFileNo !== undefined) {
+        path += `&patientFileNo=${this.patientFileNo}`;
+      }
+      if (this.selectedCardKey != 0) {
+        path += `&status=${this.selectedCardKey}`
+      }
+      if (this.pageIndex != null && this.pageIndex > 0) {
+        path += `&page=${(this.pageIndex)}`
+      }
+
+    } else if (this.claimRefNo != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?claimRefNo=${this.claimRefNo}` + claimInfo;
-    } else if (this.memberId != null) {
+    } else if (this.memberId != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?memberId=${this.memberId}` + claimInfo;
-    } else if (this.invoiceNo != null) {
+    } else if (this.invoiceNo != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?invoiceNo=${this.invoiceNo}` + claimInfo;
-    } else if (this.patientFileNo != null) {
+    } else if (this.patientFileNo != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?patientFileNo=${this.patientFileNo}` + claimInfo;
-    } else if (this.policyNo != null) {
+    } else if (this.policyNo != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?policyNo=${this.policyNo}` + claimInfo;
     }
     if (this.selectedCardKey != 0) {
@@ -790,8 +844,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.claims[index].memberId = claim.memberid;
         this.claims[index].policyNumber = claim.policynumber;
         this.claims[index].nationalId = claim.nationalId;
-        this.claims[index].numOfPriceListErrors = claim.errors.filter(error => 
-          error.code.startsWith('SERVCOD-RESTRICT') ).length;
+        this.claims[index].numOfPriceListErrors = claim.errors.filter(error =>
+          error.code.startsWith('SERVCOD-RESTRICT')).length;
         this.claims[index].numOfAttachments = claim.attachments.length;
         this.claims[index].eligibilitycheck = null;
       }
@@ -940,7 +994,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.memberId,
       this.invoiceNo,
       this.patientFileNo,
-      this.policyNo).toPromise().catch(error => {
+      this.policyNo,
+      this.fdrname,
+      this.fnationalid,
+      this.fclaimdate).toPromise().catch(error => {
         if (error instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog(new MessageDialogData('',
             'Could not reach the server at the moment. Please try again later.',
@@ -1139,6 +1196,48 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.summaries[this.selectedCardKey] != null) {
       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
     }
+  }
+  searchClaimBased(key: string) {
+    const filterKey = this.allFilters.find(ele => ele.key === key);
+    const data = {
+      key: filterKey.value,
+    }
+    this.setParamsValueSummary(key);
+    this.appliedFilters.push(data);
+    this.resetURL();
+    this.getSummaryOfStatus(this.summaries[0].statuses);
+  }
+  setParamsValueSummary(key: string) {
+    this.memberId = key === ClaimListFilterSelection.MEMBERID ? this.memberID.nativeElement.value : this.memberId;
+    this.patientFileNo = key === ClaimListFilterSelection.PATIENTFILENO ? this.patientFileNos.nativeElement.value : this.patientFileNo;
+    this.claimRefNo = key === ClaimListFilterSelection.CLAIMREFNO ? this.claimRefNos.nativeElement.value : this.claimRefNo;
+
+    this.fdrname = this.drName.nativeElement.value;
+    this.fnationalid = this.nationalId.nativeElement.value;
+    this.fclaimdate = this.claimDate.nativeElement.value;
+  }
+
+  clearFilters(name: string, key = false) {
+    if (this.appliedFilters.length > 0) {
+      const keys = key ? ['claimRefNos', 'drName', 'memberID', 'nationalId', 'patientFileNos', 'claimDate'] : [name];
+      keys.map((ele) => {
+        this[ele].nativeElement.value = "";
+        this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== ele);
+        const findKey = this.allFilters.find(subele => subele.value === ele);
+        this.setParamsValueSummary(findKey.key);
+      })
+    }
+    this.resetURL();
+    this.getSummaryOfStatus(this.summaries[0].statuses);
+  }
+
+  checkAppliedFilter(name: string) {
+    const data = this.appliedFilters.find(ele => ele.key === name);
+    return data !== null && data !== undefined && this.appliedFilters.length > 0 ? 'action-active' : '';
+  }
+
+  get claimSearchSelection() {
+    return ClaimListFilterSelection;
   }
 }
 
