@@ -181,8 +181,18 @@ const _claimReducer = createReducer(
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs, paginationControl: state.paginationControl })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
-
-
+    on(actions.addClaimErrors, (state, { module, errors }) => {
+        let claimErrors = initState.claimErrors;
+        switch (module) {
+            case 'genInfoErrors':
+                claimErrors = { ...state.claimErrors, genInfoErrors: errors };
+                break;
+            case 'invoiceErrors':
+                claimErrors = { ...state.claimErrors, invoicesErrors: errors };
+                break;
+        }
+        return { ...state, claimErrors: claimErrors };
+    }),
     on(actions.updatePatientName, (state, { name }) => ({
         ...state, claim: {
             ...state.claim,

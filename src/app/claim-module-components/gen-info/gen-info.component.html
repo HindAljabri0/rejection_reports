@@ -10,7 +10,7 @@
                         [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                 </div>
                 <div class="col-auto form-group" [matTooltip]="getFieldError('GENDER')"
-                    [class.has-error]="fieldHasError('GENDER') || fieldHasError('GENDERNULL')">
+                    [class.has-error]="fieldHasError('GENDER')">
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select [value]="selectedGender"
                             (selectionChange)="selectedGender = $event.value; updateClaim('gender');"
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group">
+        <div class="form-group" [class.has-error]="fieldHasError('DPARCODE')" [matTooltip]="getFieldError('DPARCODE')">
             <label class="control-label">Department<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedDepartment" [disabled]="!departmentEditable || isDepartmentDisable"
@@ -78,8 +78,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('claimDate')"
-            [matTooltip]="getFieldError('claimDate')">
+        <div class="form-group" [class.has-error]="fieldHasError('VSITDATE')"
+            [matTooltip]="getFieldError('VSITDATE')">
             <label class="control-label">Claim Date<span class="asterisk">*</span></label>
             <div class="date-picker">
                 <input id="claimDateInput" [matDatepicker]="claimDatePicker" class="form-control"
