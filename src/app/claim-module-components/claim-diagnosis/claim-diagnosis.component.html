@@ -1,9 +1,8 @@
-<div class="form-group" *ngIf="pageMode != 'VIEW'" [class.has-error]="fieldHasError('diagnosis')">
+<div class="form-group" *ngIf="pageMode != 'VIEW'">
     <label class="control-label">Add Diagnosis</label>
     <input type="text" class="form-control" placeholder="Search diagnosis code here..." [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()"
         [readonly]="diagnosisList.length >= 14">
     <p class="control-hint" *ngIf="diagnosisList.length >= 14">You've reached maximum number of allowed diagnosis 14/14</p>
-    <p class="error-text control-error" *ngIf="fieldHasError('diagnosis') && diagnosisList.length == 0">There must be at least one diagnosis.</p>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
             {{option.diagnosisCode}} | {{option.diagnosisDescription}}
@@ -26,9 +25,14 @@
                 <td>
                     <div class="d-flex">
                         {{diagnosis.diagnosisDescription}}
-                        <button class="text-danger delete-btn ml-auto" *ngIf="!diagnosisController.disabled" (click)="removeDiagnosis(diagnosis)" matTooltip="Remove">
-                            <mat-icon>delete_outline</mat-icon>
-                        </button>
+                        <div class="ml-auto d-flex">
+                            <button class="text-danger delete-btn" *ngIf="diagnosisHasError(diagnosis.diagnosisId)"  [matTooltip]="getDiagnosisError(diagnosis.diagnosisId)">
+                                <mat-icon>error</mat-icon>
+                            </button>
+                            <button class="text-danger delete-btn" *ngIf="!diagnosisController.disabled" (click)="removeDiagnosis(diagnosis)" matTooltip="Remove">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </div>
                     </div>
                 </td>
             </tr>
