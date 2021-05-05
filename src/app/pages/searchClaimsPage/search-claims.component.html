@@ -134,7 +134,7 @@
                                             <span>Claim Ref. No.</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="claimRefFilter">
+                                                [matMenuTriggerFor]="claimRefFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #claimRefFilter="matMenu" xPosition="before" class="filter-menu">
@@ -163,7 +163,7 @@
                                             <span>Dr. Name</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="drNameFilter">
+                                                [matMenuTriggerFor]="drNameFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #drNameFilter="matMenu" xPosition="before" class="filter-menu">
@@ -191,7 +191,7 @@
                                             <span>Member ID</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="memberIDFilter">
+                                                [matMenuTriggerFor]="memberIDFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #memberIDFilter="matMenu" xPosition="before" class="filter-menu">
@@ -219,7 +219,7 @@
                                             <span>National ID</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="nationalIDFilter">
+                                                [matMenuTriggerFor]="nationalIDFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #nationalIDFilter="matMenu" xPosition="before"
@@ -250,7 +250,8 @@
                                             <span>Patient File No.</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="patientFileNoFilter">
+                                                [matMenuTriggerFor]="patientFileNoFilter"
+                                                (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #patientFileNoFilter="matMenu" xPosition="before"
@@ -279,7 +280,7 @@
                                             <span>Claim Date</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="claimDateFilter">
+                                                [matMenuTriggerFor]="claimDateFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #claimDateFilter="matMenu" xPosition="before" class="filter-menu">
@@ -334,85 +335,99 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let claim of claims">
-                                    <td>
-                                        <mat-checkbox class="grid-checkbox" color="primary"
-                                            [checked]="selectedClaims.includes(claim.claimId)"
-                                            (change)="selectClaim(claim.claimId)">
-                                        </mat-checkbox>
+                                <ng-container *ngIf='claims.length > 0'>
+                                    <tr *ngFor="let claim of claims">
+                                        <td>
+                                            <mat-checkbox class="grid-checkbox" color="primary"
+                                                [checked]="selectedClaims.includes(claim.claimId)"
+                                                (change)="selectClaim(claim.claimId)">
+                                            </mat-checkbox>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                            <span class="text-monospace">{{claim.providerClaimNumber}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                            {{claim.drName}}</td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                            <span class="text-monospace">{{claim.memberId}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                            <span class="text-monospace">{{claim.nationalId}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
+                                            <span class="text-monospace">{{claim.patientFileNumber}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                            class="row-click text-nowrap">
+                                            {{claim.claimDate}}
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                            class="row-click text-nowrap">
+                                            {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                            class="row-click text-nowrap">
+                                            {{claim.netVatAmount}}<span class="currency">
+                                                {{claim.unitOfNetVatAmount}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                            class="text-center row-click">
+                                            <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
+                                        </td>
+                                        <td class="actions">
+                                            <button [disabled]="!(claim.numOfPriceListErrors > 0)" class="text-orange"
+                                                *ngIf="claim.numOfPriceListErrors > 0" mat-icon-button
+                                                [matTooltip]="claim.numOfPriceListErrors + ' service(s) out of price list'">
+                                                <mat-icon>error</mat-icon>
+                                            </button>
+                                            <button [disabled]="!(claim.numOfAttachments > 0)"
+                                                *ngIf="claim.numOfAttachments > 0" mat-icon-button
+                                                [matTooltip]="claim.numOfAttachments + ' attachments'"
+                                                class="text-primary">
+                                                <mat-icon>attach_file</mat-icon>
+                                            </button>
+                                            <button mat-icon-button
+                                                *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
+                                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                                                (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit"
+                                                class="text-primary">
+                                                <mat-icon>create</mat-icon>
+                                            </button>
+                                            <button mat-icon-button
+                                                *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
+                                                [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
+                                                (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)"
+                                                matTooltip="Delete" class="text-primary">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                            <button class="text-light-grey" mat-icon-button
+                                                (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility"
+                                                *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
+                                                <mat-icon>check_circle_outline</mat-icon>
+                                            </button>
+                                            <button class="text-parrot" mat-icon-button matTooltip="Eligible"
+                                                *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
+                                                <mat-icon>check_circle_outline</mat-icon>
+                                            </button>
+                                            <button class="text-light-pink" mat-icon-button
+                                                [matTooltip]="claim.eligibilitycheck"
+                                                *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
+                                                <mat-icon>error_outline</mat-icon>
+                                            </button>
+                                            <div class="mat-spinner-wrapper"
+                                                *ngIf="claimIsWaitingEligibility(claim.claimId)">
+                                                <mat-spinner diameter="20"></mat-spinner>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf='claims.length===0 && !commen.loading'>
+                                    <td [colSpan]='11' class="p-0">
+                                        <app-empty-state class="claim-list-empty-state" message='No records found!'>
+                                        </app-empty-state>
                                     </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        <span class="text-monospace">{{claim.providerClaimNumber}}</span>
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        {{claim.drName}}</td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        <span class="text-monospace">{{claim.memberId}}</span>
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        <span class="text-monospace">{{claim.nationalId}}</span>
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click">
-                                        <span class="text-monospace">{{claim.patientFileNumber}}</span>
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
-                                        {{claim.claimDate}}
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
-                                        {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
-                                        {{claim.netVatAmount}}<span class="currency">
-                                            {{claim.unitOfNetVatAmount}}</span>
-                                    </td>
-                                    <td (click)="showClaim(claim.status, claim.claimId)" class="text-center row-click">
-                                        <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
-                                    </td>
-                                    <td class="actions">
-                                        <button [disabled]="!(claim.numOfPriceListErrors > 0)" class="text-orange"
-                                            *ngIf="claim.numOfPriceListErrors > 0" mat-icon-button
-                                            [matTooltip]="claim.numOfPriceListErrors + ' service(s) out of price list'">
-                                            <mat-icon>error</mat-icon>
-                                        </button>
-                                        <button [disabled]="!(claim.numOfAttachments > 0)"
-                                            *ngIf="claim.numOfAttachments > 0" mat-icon-button
-                                            [matTooltip]="claim.numOfAttachments + ' attachments'" class="text-primary">
-                                            <mat-icon>attach_file</mat-icon>
-                                        </button>
-                                        <button mat-icon-button
-                                            *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
-                                            [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                            (click)="showClaim(claim.status, claim.claimId, true)" matTooltip="Edit"
-                                            class="text-primary">
-                                            <mat-icon>create</mat-icon>
-                                        </button>
-                                        <button mat-icon-button
-                                            *ngIf="claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed' || claim.status == 'INVALID'"
-                                            [disabled]="!((claim.status == 'Downloadable' || claim.status == 'Accepted' || claim.status == 'NotAccepted' || claim.status == 'Failed'  || claim.status == 'INVALID') && true)"
-                                            (click)="deleteClaim(claim.claimId, claim.providerClaimNumber)"
-                                            matTooltip="Delete" class="text-primary">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                        <button class="text-light-grey" mat-icon-button
-                                            (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility"
-                                            *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
-                                            <mat-icon>check_circle_outline</mat-icon>
-                                        </button>
-                                        <button class="text-parrot" mat-icon-button matTooltip="Eligible"
-                                            *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                                            <mat-icon>check_circle_outline</mat-icon>
-                                        </button>
-                                        <button class="text-light-pink" mat-icon-button
-                                            [matTooltip]="claim.eligibilitycheck"
-                                            *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                                            <mat-icon>error_outline</mat-icon>
-                                        </button>
-                                        <div class="mat-spinner-wrapper"
-                                            *ngIf="claimIsWaitingEligibility(claim.claimId)">
-                                            <mat-spinner diameter="20"></mat-spinner>
-                                        </div>
-                                    </td>
-                                </tr>
+                                </ng-container>
+
                             </tbody>
                         </table>
                     </div>
@@ -468,7 +483,7 @@
                 </ng-scrollbar>
             </mat-tab>
         </mat-tab-group>
-        <div class="block-footer sticky-bottom">
+        <div class="block-footer sticky-bottom" *ngIf="claims.length > 0">
             <div class="left-block">
                 <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length"
                     [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons"
