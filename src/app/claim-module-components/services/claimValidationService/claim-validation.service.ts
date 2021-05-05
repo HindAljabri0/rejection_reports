@@ -49,12 +49,26 @@ export class ClaimValidationService {
 
   validateRequires(){
     const claimDate = this.claim.visitInformation.visitDate;
+    const invoiceNumber = this.claim.invoice;
+    const patientFileNumber = this.claim.caseInformation.patient.patientFileNumber;
     
     let fieldErrors: FieldError[] = [];
-    if (claimDate == null) {
-      fieldErrors.push({ fieldName: 'visitType', error:'' });
-    }
 
+    invoiceNumber.forEach((invoice, index) => {
+      if (invoice.invoiceNumber == null || invoice.invoiceNumber.trim().length == 0) {
+        fieldErrors.push({ fieldName: `INVOICENUM`,code:`${index}` , error:'Invoice Number must be specified'});
+      }else if(invoice.invoiceNumber.trim().length > 30){
+        fieldErrors.push({ fieldName: `INVOICENUM`,code:`${index}` , error:' Invoice Number must be less than 30 characters'}); 
+      }
+    });
+    if (claimDate == null || Number.isNaN(claimDate.getTime())) {
+      fieldErrors.push({ fieldName: 'VSITDATE', error:'Visit Date must be specified' });
+    }
+    if (patientFileNumber == null || patientFileNumber.trim().length == 0) {
+      fieldErrors.push({ fieldName: 'PATFILNO', error:'Patient File Number must be specified' });
+    }else if( patientFileNumber.trim().length > 60){
+      fieldErrors.push({ fieldName: 'PATFILNO', error:'Patient File Number must be less than 60 characters ' });
+    }
   }
   validatePatientInfo() {
     const fullName = this.claim.caseInformation.patient.fullName;
