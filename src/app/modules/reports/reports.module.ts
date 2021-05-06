@@ -26,6 +26,7 @@ import { RevenueReportComponent } from './components/revenue-report/revenue-repo
 import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
 import { TawuniyaCreditReportErrorsDialogComponent } from './components/tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-report/revenue-breakdown-report.component';
+import { RevenueComparativeReportComponent } from './components/revenue-comparative-report/revenue-comparative-report.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-
     RevenueReportComponent,
     RevenueTrackingReportComponent,
     TawuniyaCreditReportErrorsDialogComponent,
-    RevenueBreakdownReportComponent
+    RevenueBreakdownReportComponent,
+    RevenueComparativeReportComponent
   ],
   imports: [
     CommonModule,
