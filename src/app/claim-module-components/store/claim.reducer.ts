@@ -130,7 +130,7 @@ const _claimReducer = createReducer(
                 currentIndex: currentIndex,
                 size: searchTabResults.length
             },
-            claimErrors:body['errors']
+            claimErrors: body['errors']
         });
     }),
     on(actions.toEditMode, (state) => ({
@@ -189,6 +189,9 @@ const _claimReducer = createReducer(
                 break;
             case 'invoiceErrors':
                 claimErrors = { ...state.claimErrors, invoicesErrors: errors };
+                break;
+            case 'illnessErrors':
+                claimErrors = { ...state.claimErrors, illnessErrors: errors };
                 break;
         }
         return { ...state, claimErrors: claimErrors };
@@ -927,4 +930,4 @@ export const nationalities: { Code: string, Name: string }[] = [
     { Code: 'ZM', Name: 'Zambia' },
     { Code: 'ZW', Name: 'Zimbabwe' }
 ];
-export type FieldError = { fieldName: string, code?: string ,error?: string };
+export type FieldError = { fieldName: string, code?: string, error?: string };

@@ -1,11 +1,9 @@
-<div class="error-card">
+<div class="error-card" *ngIf="getWrongCodes() != ''">
     <p class="pb-2">
-        [ AMBULANCE, DIALYSIS, CHECKUP, CHRONIC, CIRCUMCISION, CLEANING, CONGENITAL, INFERTILITY, MATERNITY COMPLICATIONS, PREEXISTING, NA, ORTHODONTICS, PREGNANCY,
-        PSYCHIATRY, RTA, SPORTS, VACCINATION, WRA, REGULAR DENTAL TREATMENT, EMERGENCY RESUSCITATION, EMERGENCY, EMERGENCY URGENT, EMERGENCY LESS URGENT, EMERGENCY NOT URGENT ].
-        Your
-        input was: OTHERS
+        The provided illness codes are wrong. Please clear them and select the correct codes from below.
+        Your codes are: {{getWrongCodes()}}
     </p>
-    <button color="warn" type="button" mat-flat-button>Clear Errors</button>
+    <button *ngIf="enableEdit" color="warn" type="button" mat-flat-button (click)="clearErrors()">Clear Errors</button>
 </div>
 <ng-container *ngIf="illnessOptionsList.length > 0 || pageMode != 'VIEW'">
     <div class="primary-button-toggle inline">

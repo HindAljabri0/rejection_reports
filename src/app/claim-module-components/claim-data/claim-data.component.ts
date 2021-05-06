@@ -23,13 +23,13 @@ export class ClaimDataComponent implements OnInit {
 
   errors: {
     uncategorised: FieldError[],
-        genInfoErrors: FieldError[],
-        admissionErrors: FieldError[],
-        invoicesErrors: FieldError[],
-        vitalSignsErrors: FieldError[],
-        diagnosisErrors: FieldError[],
-        illnessErrors: FieldError[],
-        labResultsErrors: FieldError[]
+    genInfoErrors: FieldError[],
+    admissionErrors: FieldError[],
+    invoicesErrors: FieldError[],
+    vitalSignsErrors: FieldError[],
+    diagnosisErrors: FieldError[],
+    illnessErrors: FieldError[],
+    labResultsErrors: FieldError[]
   };
 
   pageMode: ClaimPageMode;
@@ -57,7 +57,7 @@ export class ClaimDataComponent implements OnInit {
 
   genInfoTabHasErrors() {
     if (this.errors != null && this.errors.genInfoErrors != null) {
-      return this.errors.genInfoErrors.length > 0 ;
+      return this.errors.genInfoErrors.length > 0;
     }
     return false;
   }
@@ -78,8 +78,8 @@ export class ClaimDataComponent implements OnInit {
 
   admissionTabHasErrors() {
     if (this.errors != null) {
-     return this.errors.admissionErrors.length > 0;
-   }
+      return this.errors.admissionErrors.length > 0;
+    }
     return false;
   }
 
@@ -90,6 +90,20 @@ export class ClaimDataComponent implements OnInit {
     return false;
   }
 
+  illnessTabHasErrors() {
+    if (this.errors != null && this.errors.illnessErrors != null) {
+      return this.errors.illnessErrors.length > 0;
+    }
+    return false;
+  }
+
+  vitalSignsTabHasErrors() {
+    if (this.errors != null && this.errors.vitalSignsErrors != null) {
+      return this.errors.vitalSignsErrors.length > 0;
+    }
+    return false;
+  }
+  
   claimHaveLabData() {
     return this.claim != null
       && this.claim.caseInformation != null
