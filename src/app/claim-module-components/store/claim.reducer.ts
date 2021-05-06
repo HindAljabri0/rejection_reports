@@ -21,10 +21,12 @@ export interface ClaimState {
     retrievedServices: { service: Service, decision: ServiceDecision, used: boolean }[];
     claimErrors: {
         uncategorised: FieldError[],
-
         genInfoErrors: FieldError[],
-        diagnosisErrors: FieldError[],
+        admissionErrors: FieldError[],
         invoicesErrors: FieldError[],
+        vitalSignsErrors: FieldError[],
+        diagnosisErrors: FieldError[],
+        illnessErrors: FieldError[],
         labResultsErrors: FieldError[]
     };
     LOVs: { Departments: any[], IllnessCode: any[], VisitType: any[], PhysicianCategory: any[] };
@@ -50,6 +52,9 @@ const initState: ClaimState = {
         diagnosisErrors: [],
         genInfoErrors: [],
         invoicesErrors: [],
+        admissionErrors: [],
+        vitalSignsErrors: [],
+        illnessErrors: [],
         uncategorised: [],
         labResultsErrors: []
     },
@@ -176,8 +181,18 @@ const _claimReducer = createReducer(
     on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs, paginationControl: state.paginationControl })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
-
-
+    on(actions.addClaimErrors, (state, { module, errors }) => {
+        let claimErrors = initState.claimErrors;
+        switch (module) {
+            case 'genInfoErrors':
+                claimErrors = { ...state.claimErrors, genInfoErrors: errors };
+                break;
+            case 'invoiceErrors':
+                claimErrors = { ...state.claimErrors, invoicesErrors: errors };
+                break;
+        }
+        return { ...state, claimErrors: claimErrors };
+    }),
     on(actions.updatePatientName, (state, { name }) => ({
         ...state, claim: {
             ...state.claim,
@@ -634,6 +649,10 @@ export const getClaimObjectErrors = createSelector(claimSelector, (state) => sta
 
 export const getDiagnosisErrors = createSelector(claimSelector, (state) => state.claimErrors.diagnosisErrors);
 export const getGenInfoErrors = createSelector(claimSelector, (state) => state.claimErrors.genInfoErrors);
+export const getAdmissionErrors = createSelector(claimSelector, (state) => state.claimErrors.admissionErrors);
+export const getIllnessErrors = createSelector(claimSelector, (state) => state.claimErrors.illnessErrors);
+export const getVitalSignsErrors = createSelector(claimSelector, (state) => state.claimErrors.vitalSignsErrors);
+
 
 export const getInvoicesErrors = createSelector(claimSelector, (state) => state.claimErrors.invoicesErrors);
 export const getAllErrors = createSelector(claimSelector, (state) => state.claimErrors);
@@ -908,4 +927,4 @@ export const nationalities: { Code: string, Name: string }[] = [
     { Code: 'ZM', Name: 'Zambia' },
     { Code: 'ZW', Name: 'Zimbabwe' }
 ];
-export type FieldError = { fieldName: string, error?: string };
+export type FieldError = { fieldName: string, code?: string ,error?: string };

@@ -191,11 +191,12 @@ export class MainClaimPageComponent implements OnInit {
     this.store.dispatch(saveLabResults());
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
-    if (this.pageMode == 'CREATE') {
-      this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }))
-    } else {
-      this.store.dispatch(saveClaimChanges());
-    }
+    this.store.dispatch(startValidatingClaim());
+    // if (this.pageMode == 'CREATE') {
+    //   this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }))
+    // } else {
+    //   this.store.dispatch(saveClaimChanges());
+    // }
   }
 
   getClaimStatusLabel(status: string) {

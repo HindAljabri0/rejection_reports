@@ -50,7 +50,7 @@ export class ClaimDiagnosisComponent implements OnInit {
   setData(claim: Claim) {
     if (claim.caseInformation.caseDescription.diagnosis != null) {
       this.diagnosisList = claim.caseInformation.caseDescription.diagnosis.map(dia =>
-        new ICDDiagnosis(null, dia.diagnosisCode, dia.diagnosisDescription)
+        new ICDDiagnosis(dia.diagnosisId, dia.diagnosisCode, dia.diagnosisDescription)
       );
     }
   }
@@ -112,8 +112,12 @@ export class ClaimDiagnosisComponent implements OnInit {
     }
   }
 
-  fieldHasError(fieldName) {
-    const temp = this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  diagnosisHasError(diagnosisId) {
+    const temp = this.errors.findIndex(error => error.code == `${diagnosisId}`) != -1;
     return temp;
+  }
+
+  getDiagnosisError(diagnosisId) {
+    return this.errors.filter(error => error.code == `${diagnosisId}`).map(error => error.error).reduce((e1, e2) => `${e1}\n${e2}`);
   }
 }
