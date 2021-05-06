@@ -155,6 +155,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   fnationalid: string = "";
   fclaimdate: string = "";
   isPBMValidationVisible: boolean = false;
+  apiPBMValidationEnabled: any;
   constructor(
     public location: Location,
     public submittionService: ClaimSubmittionService,
@@ -211,7 +212,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     //       break;
     //   }
     // });
-    this.getPBMValidation();
   }
 
   ngAfterViewChecked() {
@@ -411,6 +411,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     const name = this.commen.statusToName(this.summaries[this.selectedCardKey].statuses[0]).toLowerCase();
     this.isDeleteBtnVisible = (name === ClaimStatus.PARTIALLY_PAID.toLowerCase() || name === ClaimStatus.PAID.toLowerCase() || name === ClaimStatus.Under_Processing.toLowerCase() || name === ClaimStatus.Under_Submision.toLowerCase() || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
+    this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -523,6 +524,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     this.status = status === null ? this.status : status;
+    this.getPBMValidation();
   }
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
@@ -1219,8 +1221,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.fdrname = this.drName.nativeElement.value;
     this.fnationalid = this.nationalId.nativeElement.value;
-    // this.fclaimdate = moment(this.claimDate.nativeElement.value).format('DD-MM-yyyy');
-    this.fclaimdate = this.claimDate.nativeElement.value;
+    this.fclaimdate = this.claimDate.nativeElement.value.replaceAll('/', '-');
   }
 
   clearFilters(name: string, key = false) {
@@ -1307,14 +1308,37 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.adminService.checkIfPBMValidationIsEnabled(this.commen.providerId, "101").subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event['body'];
-        this.isPBMValidationVisible = body.value === "1" ? true : false;
-        console.log(event);
+        this.apiPBMValidationEnabled = body.value === "1" ? true : false;
+        this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
       }
+    }, err => {
+      console.log(err);
     });
 
   }
   applyPBMValidation() {
-
+    // this.dialogService.openMessageDialog(
+    //   new MessageDialogData('Delete Upload?',
+    //     `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+    //     false,
+    //     true))
+    //   .subscribe(result => {
+    // if (result === true) {
+    this.commen.loadingChanged.next(true);
+    const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+    this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, status, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.commen.loadingChanged.next(false);
+        console.log(event);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.commen.loadingChanged.next(false);
+        this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+      }
+    });
+    // }
+    // });
   }
 }
 

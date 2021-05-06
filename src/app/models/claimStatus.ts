@@ -33,5 +33,5 @@ export enum ClaimStatus {
 
     Downloadable = 'Downloadable',
     Under_Processing = 'UNDER PROCESSING',
-    Under_Submision = 'UNDER SUBMISSION'
+    Under_Submision = 'UNDER SUBMISSION',
 }
