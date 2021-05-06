@@ -5,6 +5,7 @@ import { getClaim, FieldError, getDepartments, ClaimPageType, getPageType } from
 import { addClaimErrors } from '../../store/claim.actions';
 import { Service } from '../../models/service.model';
 import { Period } from '../../models/period.type';
+import { C } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class ClaimValidationService {
         invoiceErrors.push({ fieldName: `INVOICENUM`,code:`${index}` , error:' Invoice Number must be less than 30 characters'}); 
       }
     });
-    if (claimDate == null || Number.isNaN(claimDate.getTime())) {
+    if (this._isInvalidDate(claimDate)) {
       genInfoErrors.push({ fieldName: 'VSITDATE', error:'Claim Date must be specified' });
     }
     if (patientFileNumber == null || patientFileNumber.trim().length == 0) {
