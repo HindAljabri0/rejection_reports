@@ -428,9 +428,11 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.errors = this.errors.filter(error => error.fieldName == field);
     switch (field) {
       case ('claimDate'):
+        
         if (this.claimDateController.value != null)
           this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value ) }));
         else
+
           this.store.dispatch(updateClaimDate({ claimDate: null }));
         break;
       case ('caseType'):
