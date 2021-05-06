@@ -10,6 +10,8 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { TawuniyaCreditReportDetailsDialogComponent } from '../tawuniya-credit-report-details-dialog/tawuniya-credit-report-details-dialog.component';
 import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
+import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -75,11 +77,14 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       }
     }
 
+  disagreeComment: string = '';
+
   constructor(
     private dialog: MatDialog,
     private routeActive: ActivatedRoute,
     private creditReportService: CreditReportService,
     private sharedServices: SharedServices,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -123,16 +128,18 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
           this.sharedServices.loadingChanged.next(false);
           if (serviceType == 'deducted-services') {
             this.deductedServices = event.body['content'] as DeductedService[];
+            this.deductedServices.forEach(service => service.newComments = service.comments);
             this.selectionControl.deducted.countInCurrentPage = this.deductedServices.filter(service => this.selectionControl.deducted.selections.includes(service.id.serialno)).length;
             this.setAllCheckBoxIsIndeterminate('deducted');
           } else {
             this.rejectedServices = event.body['content'] as RejectedService[];
+            this.rejectedServices.forEach(service => service.newComments = service.comments);
             this.selectionControl.rejected.countInCurrentPage = this.rejectedServices.filter(service => this.selectionControl.rejected.selections.includes(service.id.serialno)).length;
             this.setAllCheckBoxIsIndeterminate('rejected');
           }
           this.paginationControl[serviceType].currentPage = event.body['number'];
           this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
-          
+
           if (callAgain) {
             this.fetchServices('rejected-services');
           }
@@ -300,5 +307,79 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
 
   onTabChange(event: MatTabChangeEvent) {
     this.selectedServiceTab = event.index == 0 ? 'deducted-services' : 'rejected-services';
+  }
+
+  agreeOnSelectedServices() {
+    if (this.sharedServices.loading) return;
+    this.sharedServices.loadingChanged.next(true);
+    let control = this.selectedServiceTab == 'deducted-services' ? this.selectionControl.deducted : this.selectionControl.rejected;
+    let services = this.selectedServiceTab == 'deducted-services' ? this.deductedServices : this.rejectedServices;
+    this.creditReportService.sendTwaniyaReportsFeedbacks(
+      this.sharedServices.providerId,
+      this.data.providercreditReportInformation.batchreferenceno,
+      this.selectedServiceTab == 'deducted-services' ? 'deducted' : 'rejected',
+      {
+        agree: true,
+        serialNumbers: control.selections
+      }
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.sharedServices.loadingChanged.next(false);
+        control.selections.forEach(serial => {
+          services.find(service => service.id.serialno == serial).agree = 'Y';
+        });
+      }
+    }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: 'Colud not handle request. Please try again later.',
+          isError: true
+        });
+      }
+    });
+  }
+
+  disagreeOnSelectedServices() {
+    if (this.sharedServices.loading) return;
+    if (this.disagreeComment.trim().length == 0) {
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: 'Please enter a comment.',
+        isError: true
+      })
+      return;
+    }
+    this.sharedServices.loadingChanged.next(true);
+    let control = this.selectedServiceTab == 'deducted-services' ? this.selectionControl.deducted : this.selectionControl.rejected;
+    let services = this.selectedServiceTab == 'deducted-services' ? this.deductedServices : this.rejectedServices;
+    this.creditReportService.sendTwaniyaReportsFeedbacks(
+      this.sharedServices.providerId,
+      this.data.providercreditReportInformation.batchreferenceno,
+      this.selectedServiceTab == 'deducted-services' ? 'deducted' : 'rejected',
+      {
+        agree: false,
+        serialNumbers: control.selections,
+        comment: this.disagreeComment
+      }
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.sharedServices.loadingChanged.next(false);
+        control.selections.forEach(serial => {
+          services.find(service => service.id.serialno == serial).agree = 'N';
+          services.find(service => service.id.serialno == serial).comments = this.disagreeComment;
+        });
+      }
+    }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: 'Colud not handle request. Please try again later.',
+          isError: true
+        });
+      }
+    });
   }
 }

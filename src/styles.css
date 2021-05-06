@@ -116,7 +116,9 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .primary-menu .menu-title{color: #707070;padding: 4px 10px;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
 .primary-link{color:#3060AA;text-decoration: none;cursor: pointer;}
+.primary-link.disabled{color:#8d8d8d;text-decoration: none;cursor: unset;}
 .primary-link:hover,.primary-link:focus,.primary-link:active{color:#3060AA;text-decoration: underline;}
+.primary-link.disabled:hover,.primary-link.disabled:focus,.primary-link.disabled:active{color:#8d8d8d;text-decoration: underline;}
 .primary-link.underlined,.primary-link.underlined:hover,.primary-link.underlined:focus,.primary-link.underlined:active{text-decoration: underline;}
 .hide-tab-header.mat-tab-group .mat-tab-header{display: none;}
 .spinner-progress.mat-progress-spinner circle, .spinner-progress.mat-spinner circle{stroke:currentColor;stroke-width:3px !important;}
