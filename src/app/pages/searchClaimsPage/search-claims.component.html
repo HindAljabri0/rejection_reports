@@ -527,8 +527,8 @@
                     {{selectedClaims.length==0?" All":"Selection"}}</button>
                 <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
                     {{selectedClaims.length==0?" All":"Selection"}}</button>
-                <!-- <button *ngIf="isPBMValidationVisible" (click)="applyPBMValidation()" mat-flat-button
-                    color="primary">PBM Validate {{selectedClaims.length==0?" All":"Selection"}}</button> -->
+                <button *ngIf="isPBMValidationVisible" (click)="applyPBMValidation()" mat-flat-button
+                    color="primary">PBM Validate {{selectedClaims.length==0?" All":"Selection"}}</button>
             </div>
         </div>
     </ng-container>
