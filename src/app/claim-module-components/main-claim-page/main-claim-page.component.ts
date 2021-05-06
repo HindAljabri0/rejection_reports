@@ -194,7 +194,7 @@ export class MainClaimPageComponent implements OnInit {
     this.store.dispatch(startValidatingClaim());
      if (this.pageMode == 'CREATE') {
        this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }))
-     } else {
+     } else  {
       this.store.dispatch(saveClaimChanges());
      }
   }
@@ -207,7 +207,7 @@ export class MainClaimPageComponent implements OnInit {
     if (status != null) {
       return this.sharedService.getCardAccentColor(status);
     }
-    return 'all-claim';
+     return 'all-claim';
   }
 
   edit() {
