@@ -17,10 +17,20 @@
             </ng-template>
             <claim-diagnosis></claim-diagnosis>
         </mat-tab>
-        <mat-tab [label]="'Illness'">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="illnessTabHasErrors()" [class.text-danger]="illnessTabHasErrors()">
+                    error</mat-icon>
+                <span [class.text-danger]="illnessTabHasErrors()">Illness</span>
+            </ng-template>
             <claim-illnesses></claim-illnesses>
         </mat-tab>
-        <mat-tab [label]="'Vital Signs'">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="vitalSignsTabHasErrors()" [class.text-danger]="vitalSignsTabHasErrors()">
+                    error</mat-icon>
+                <span [class.text-danger]="vitalSignsTabHasErrors()">Vital Signs</span>
+            </ng-template>
             <claim-vital-signs></claim-vital-signs>
         </mat-tab>
         <mat-tab *ngIf="isInpatientClaim">

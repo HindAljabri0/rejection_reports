@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getIllnessCode, getClaim, getPageMode, ClaimPageMode } from '../store/claim.reducer';
-import { MatButtonToggleChange } from '@angular/material';
-import { updateIllnesses } from '../store/claim.actions';
+import { getIllnessCode, getClaim, getPageMode, ClaimPageMode, FieldError, getIllnessErrors } from '../store/claim.reducer';
+import { MatButtonToggle, MatButtonToggleChange } from '@angular/material';
+import { addClaimErrors, updateIllnesses } from '../store/claim.actions';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { Claim } from '../models/claim.model';
@@ -23,6 +23,8 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   pageMode: ClaimPageMode;
+
+  errors: FieldError[];
 
   constructor(private store: Store) { }
 
@@ -48,6 +50,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.store.select(getIllnessCode).subscribe(codes =>
       this.illnessOptionsList = codes.filter(code => code != 'NA')
     ));
+    this.store.select(getIllnessErrors).subscribe(errors => this.errors = errors);
   }
 
   setData(claim: Claim) {
@@ -78,7 +81,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
     return str;
   }
 
-  updateIllnesses(event: MatButtonToggleChange) {
+  updateIllnesses(event: MatButtonToggleChange | { source: { checked: boolean }, value: string }) {
     if (event.value == 'NA' && event.source.checked) {
       this.selectedIllnesses = ['NA'];
     } else if (event.source.checked) {
@@ -94,5 +97,13 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
       this.selectedIllnesses = ['NA'];
     }
     this.store.dispatch(updateIllnesses({ list: this.selectedIllnesses }));
+  }
+
+  getWrongCodes() {
+    return this.selectedIllnesses.filter(code => !this.illnessOptionsList.includes(code) && code != 'NA').join(',');
+  }
+
+  clearErrors() {
+    this.updateIllnesses({ source: { checked: true }, value: 'NA' })
   }
 }
