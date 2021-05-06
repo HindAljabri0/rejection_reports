@@ -195,7 +195,7 @@ export class MainClaimPageComponent implements OnInit {
     // if (this.pageMode == 'CREATE') {
     //   this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }))
     // } else {
-    //   this.store.dispatch(saveClaimChanges());
+      this.store.dispatch(saveClaimChanges());
     // }
   }
 
