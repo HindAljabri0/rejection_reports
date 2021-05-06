@@ -13,5 +13,6 @@ export const environment = {
   claimInquireServiceHost: `${host}/claim-inquiry`,
   validationServiceHost: `${host}/validate`,
   creditReportService: `${host}/reports`,
-  tawuniyaCreditReportService: `${host}/credit-report`
+  tawuniyaCreditReportService: `${host}/credit-report`,
+  pbmValidationService: `${host}`,
 };

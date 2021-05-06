@@ -130,7 +130,8 @@
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
 
-                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('claimRefNos')">
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMREFNO)">
                                             <span>Claim Ref. No.</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
@@ -159,7 +160,8 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('drName')">
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.DR_NAME)">
                                             <span>Dr. Name</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
@@ -187,7 +189,8 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('memberID')">
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.MEMBERID)">
                                             <span>Member ID</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
@@ -215,7 +218,8 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('nationalId')">
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.NATIONALID)">
                                             <span>National ID</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
@@ -246,7 +250,7 @@
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <div class="column-header-action"
-                                            [ngClass]="checkAppliedFilter('patientFileNos')">
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.PATIENTFILENO)">
                                             <span>Patient File No.</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
@@ -276,7 +280,8 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action" [ngClass]="checkAppliedFilter('claimDate')">
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMDATE)">
                                             <span>Claim Date</span>
                                             <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
                                                 type="button" class="action-btn" matRipple
@@ -522,6 +527,8 @@
                     {{selectedClaims.length==0?" All":"Selection"}}</button>
                 <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
                     {{selectedClaims.length==0?" All":"Selection"}}</button>
+                <button *ngIf="isPBMValidationVisible" (click)="applyPBMValidation()" mat-flat-button
+                    color="primary">PBM Validate {{selectedClaims.length==0?" All":"Selection"}}</button>
             </div>
         </div>
     </ng-container>
