@@ -19,6 +19,7 @@ export class LabResultsComponent implements OnInit {
 
   results: Investigation[];
   resultsControls: {
+    results: Investigation,
     testDate: FormControl,
     testCode: FormControl,
     resultDescription: FormControl,
@@ -135,6 +136,7 @@ export class LabResultsComponent implements OnInit {
 
   createEmptyResultControls() {
     return {
+      results: new  Investigation(),
       testDate: new FormControl(),
       testCode: new FormControl(),
       testSerial: new FormControl(),
@@ -202,12 +204,12 @@ export class LabResultsComponent implements OnInit {
     }
   }
 
-  fieldHasError(fieldName) {
-    return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
+  fieldHasError(fieldName , code) {
+    return this.errors.findIndex(error => error.fieldName == fieldName && error.code == code) != -1;
   }
 
-  getFieldError(fieldName) {
-    const index = this.errors.findIndex(error => error.fieldName == fieldName);
+  getFieldError(fieldName ,code) {
+    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.code == code);
     if (index > -1) {
       return this.errors[index].error || '';
     }
