@@ -1203,7 +1203,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   searchClaimBased(key: string) {
     const filterKey = this.allFilters.find(ele => ele.key === key);
     const data = {
-      key: filterKey.value,
+      key: filterKey.key,
     }
     this.setParamsValueSummary(key);
     this.appliedFilters.push(data);
@@ -1228,9 +1228,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       const keys = key ? ['claimRefNos', 'drName', 'memberID', 'nationalId', 'patientFileNos', 'claimDate'] : [name];
       keys.map((ele) => {
         this[ele].nativeElement.value = "";
-        this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== ele);
         const findKey = this.allFilters.find(subele => subele.value === ele);
         this.setParamsValueSummary(findKey.key);
+        this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
       })
     }
     this.pageIndex = 0;
