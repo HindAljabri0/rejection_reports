@@ -147,6 +147,7 @@ export class LabResultsComponent implements OnInit {
 
   createEmptyComponentControls() {
     return {
+      
       componentCode: new FormControl(),
       componentSerial: new FormControl(),
       componentDescription: new FormControl(),
