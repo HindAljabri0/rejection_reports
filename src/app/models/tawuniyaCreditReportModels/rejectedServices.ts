@@ -4,6 +4,7 @@ export class RejectedService {
     attachmentrefno: string;
     attachmenturl: string;
     comments: string;
+    newComments?: string;
     deductedamount: number;
     deductedservicesIcd10s: { id: number, diagnosiscode: string, diagnosisdescription: string }[];
     exceedprice: number;

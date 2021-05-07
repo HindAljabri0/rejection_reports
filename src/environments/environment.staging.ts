@@ -14,5 +14,5 @@ export const environment = {
   validationServiceHost: `${host}/validate`,
   creditReportService: `${host}/reports`,
   tawuniyaCreditReportService: `${host}/credit-report`,
-  pbmValidationService: `${host}`
+  pbmValidationService: `${host}/pbm`
 };

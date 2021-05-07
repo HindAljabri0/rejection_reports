@@ -96,7 +96,10 @@ const _claimReducer = createReducer(
             paymentDate: body['paymentDate'],
             paymentReference: body['paymentReference'],
             statusCode: body['statusCode'],
-            statusDetail: body['statusDetail']
+            statusDetail: body['statusDetail'],
+            pbmClaimError: body['pbmClaimError'],
+            pbmClaimStatus: body['pbmClaimStatus']
+
         };
         const editable = state.mode == 'EDIT' &&
             ['Downloadable', 'Accepted', 'NotAccepted', 'Failed', 'INVALID'].includes(props.statusCode);

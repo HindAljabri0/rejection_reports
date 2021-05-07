@@ -1,3 +1,4 @@
+<div>PBM Status: {{claimProps.pbmClaimStatus}}</div>
 <div class="table-responsive">
     <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
         <thead class="header-primary">
@@ -6,25 +7,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
+            <tr *ngFor="let item of pbmClaimError">
+                <td>{{item}}</td>
             </tr>
         </tbody>
     </table>
 </div>
-<!-- <app-empty-state message='No comments found!'></app-empty-state> -->
+<app-empty-state *ngIf="pbmClaimError.length===0" message='No comments found!'></app-empty-state>

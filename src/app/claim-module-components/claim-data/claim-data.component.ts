@@ -10,9 +10,15 @@ import {
   ClaimPageMode,
   getPageMode,
   getCaseType,
-  getClaim
+  getClaim,
+  getRetrievedClaimProps
 } from '../store/claim.reducer';
 import { Claim } from '../models/claim.model';
+import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
+import { HttpResponse } from '@angular/common/http';
+import { ClaimStatus } from 'src/app/models/claimStatus';
+import { AdminService } from 'src/app/services/adminService/admin.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'claim-data',
@@ -38,8 +44,10 @@ export class ClaimDataComponent implements OnInit {
   isInpatientClaim: boolean;
   @Input() claimType = '';
   claim: Claim;
+  claimProps: RetrievedClaimProps;
+  isPBMValidationVisible: boolean = false;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private adminService: AdminService, private commen: SharedServices) { }
 
   ngOnInit() {
     this.store.select(getPageMode).subscribe(mode => this.pageMode = mode);
@@ -47,6 +55,8 @@ export class ClaimDataComponent implements OnInit {
     this.store.select(getClaimObjectErrors).subscribe(errors => this.errors = errors);
     this.store.select(getCaseType).subscribe(type => this.isInpatientClaim = (type == 'INPATIENT'));
     this.store.select(getClaim).subscribe(claim => this.claim = claim);
+    this.store.select(getRetrievedClaimProps).subscribe(props => this.claimProps = props);
+    this.getPBMValidation();
   }
 
   changeTab(event: MatTabChangeEvent) {
@@ -110,5 +120,17 @@ export class ClaimDataComponent implements OnInit {
       && this.claim.caseInformation.caseDescription != null
       && this.claim.caseInformation.caseDescription.investigation != null
       && this.claim.caseInformation.caseDescription.investigation.length > 0;
+  }
+
+  getPBMValidation() {
+    this.adminService.checkIfPBMValidationIsEnabled(this.commen.providerId, "101").subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isPBMValidationVisible = body.value === "1" && this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase() ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
   }
 }

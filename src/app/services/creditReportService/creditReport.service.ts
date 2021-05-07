@@ -144,4 +144,21 @@ export class CreditReportService {
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL, null);
         return this.http.request(request);
     }
+
+    sendTwaniyaReportsFeedback(providerId: string, batchId: string, serialNo: string, serviceType: 'deducted' | 'rejected', agree:boolean, comment:string, attachment) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}/${serialNo}/feedback/${serviceType}`;
+        let formData: FormData = new FormData();
+        formData.append('rejectionType', serviceType);
+        formData.append('agree', `${agree}`);
+        formData.append('comment', comment);
+        formData.append('file', attachment);
+        const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL, formData);
+        return this.http.request(request);
+    }
+
+    sendTwaniyaReportsFeedbacks(providerId: string, batchId: string, serviceType: 'deducted' | 'rejected', body: { agree: true, serialNumbers: string[] } | { comment: string, agree: false, serialNumbers: string[] }) {
+        const requestURL = `/providers/${providerId}/batches/${batchId}/feedback/${serviceType}`;
+        const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL, body);
+        return this.http.request(request);
+    }
 }

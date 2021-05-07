@@ -331,17 +331,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row small-gutter" *ngIf="pageMode != 'CREATE' && false">
+                                <div class="row small-gutter" *ngIf="pageMode != 'CREATE' && isPBMValidationVisible">
                                     <div class="col-xxl-4 col-xl-3 col-lg-4">
                                         <div class="inline-labelled-text">
                                             <label>PBM Status</label>
-                                            <p></p>
+                                            <p>{{service.pbmServiceStatus}}</p>
                                         </div>
                                     </div>
                                     <div class="col-xxl-8 col-xl-9 col-lg-8">
                                         <div class="inline-labelled-text">
                                             <label>PBM Comments</label>
-                                            <p></p>
+                                            <p *ngFor="let item of service.pbmServiceError">{{item.errorCode}} :
+                                                {{item.errorDescription}}</p>
                                         </div>
                                     </div>
                                 </div>
