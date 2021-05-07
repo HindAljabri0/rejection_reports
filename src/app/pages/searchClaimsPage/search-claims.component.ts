@@ -1325,10 +1325,30 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     //   .subscribe(result => {
     // if (result === true) {
     this.commen.loadingChanged.next(true);
-    const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+    // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+    const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
+
     this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, status, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
+        if (event.body['response']) {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('',
+              event.body['message'],
+              false))
+            .subscribe(afterColse => {
+              location.reload();
+            });
+        }
+        else {
+          this.dialogService.openMessageDialog(
+            new MessageDialogData('',
+              event.body['message'],
+              true))
+            .subscribe(afterColse => {
+              location.reload();
+            });
+        }
         console.log(event);
       }
     }, errorEvent => {

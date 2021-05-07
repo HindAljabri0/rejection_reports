@@ -17,7 +17,7 @@ export const viewRetrievedClaim = createAction('[ Claim ] view retrieved claim',
 export const openCreateByApprovalDialog = createAction('[ Claim ] open a dialog retrieve claim data by approval number',
   props<ApprovalFormData>());
 
- 
+
 export const getClaimDataByApproval = createAction('[ Claim ] start retrieving claim data', props<{
   approvalNumber: string,
   payerId: string,
@@ -135,3 +135,4 @@ export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] 
   props<{ serviceNumber: number }>());
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number }>());
+// export const PBMErrorWithStatus = createAction('[ Auto Calc ] Claim Error with status', props<{ invoiceIndex?: number }>());

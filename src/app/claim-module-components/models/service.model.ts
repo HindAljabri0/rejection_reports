@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ServiceDecision } from './serviceDecision.model';
 
 export class Service {
-    serviceId?:number;
+    serviceId?: number;
     serviceNumber?: number;
     serviceDate: Date;
     serviceType: string;
@@ -16,6 +16,8 @@ export class Service {
     unitPrice: Amount;
     serviceGDPN: GDPN;
     daysOfSupply: number;
+    pbmServiceError: PbmServiceError[];
+    pbmServiceStatus: string;
     drugUse?: {
         dosage: { value: number, unit: string },
         doseTimes: { value: number, qualifier: string },
@@ -75,4 +77,9 @@ export class Service {
         }
         return services;
     }
+}
+
+export class PbmServiceError {
+    errorCode: string;
+    errorDescription: string;
 }
