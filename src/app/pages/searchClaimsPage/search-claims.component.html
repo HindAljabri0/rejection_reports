@@ -144,15 +144,14 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Provider Claim Ref. No.</label>
                                                             <input class="form-control"
-                                                                placeholder="Search Provider Claim Ref. No."
-                                                                #claimRefNos>
+                                                                placeholder="Provider Claim Ref. No." #claimRefNos>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
                                                             (click)="clearFilters('claimRefNos')">Clear</button>
                                                         <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Search</button>
+                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -173,15 +172,14 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Dr. Name</label>
-                                                            <input class="form-control" placeholder="Search Dr. Name"
-                                                                #drName>
+                                                            <input class="form-control" placeholder="Dr. Name" #drName>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
                                                             (click)="clearFilters('drName')">Clear</button>
                                                         <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.DR_NAME)">Search</button>
+                                                            (click)="searchClaimBased(claimSearchSelection.DR_NAME)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -202,7 +200,7 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Member ID</label>
-                                                            <input class="form-control" placeholder="Search Member ID"
+                                                            <input class="form-control" placeholder="Member ID"
                                                                 #memberID>
                                                         </div>
                                                     </div>
@@ -210,7 +208,7 @@
                                                         <button mat-flat-button
                                                             (click)="clearFilters('memberID')">Clear</button>
                                                         <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.MEMBERID)">Search</button>
+                                                            (click)="searchClaimBased(claimSearchSelection.MEMBERID)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -233,7 +231,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">National ID</label>
 
-                                                            <input class="form-control" placeholder="Search National ID"
+                                                            <input class="form-control" placeholder="National ID"
                                                                 #nationalId>
                                                         </div>
                                                     </div>
@@ -241,7 +239,7 @@
                                                         <button mat-flat-button
                                                             (click)="clearFilters('nationalId')">Clear</button>
                                                         <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.NATIONALID)">Search</button>
+                                                            (click)="searchClaimBased(claimSearchSelection.NATIONALID)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -264,15 +262,15 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Patient File No.</label>
-                                                            <input class="form-control"
-                                                                placeholder="Search Patient File No." #patientFileNos>
+                                                            <input class="form-control" placeholder="Patient File No."
+                                                                #patientFileNos>
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
                                                             (click)="clearFilters('patientFileNos')">Clear</button>
                                                         <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.PATIENTFILENO)">Search</button>
+                                                            (click)="searchClaimBased(claimSearchSelection.PATIENTFILENO)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -295,7 +293,7 @@
                                                             <label class="control-label">Claim Date</label>
                                                             <div class="date-picker">
                                                                 <input #claimDate class="form-control"
-                                                                    placeholder="Search Claim Date"
+                                                                    placeholder="Claim Date"
                                                                     [matDatepicker]="claimDatePicker">
                                                                 <mat-datepicker-toggle [for]="claimDatePicker">
                                                                 </mat-datepicker-toggle>
@@ -307,7 +305,7 @@
                                                         <button mat-flat-button
                                                             (click)="clearFilters('claimDate')">Clear</button>
                                                         <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMDATE)">Search</button>
+                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMDATE)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -415,7 +413,7 @@
                                                 <mat-icon>check_circle_outline</mat-icon>
                                             </button>
                                             <button class="text-light-pink" mat-icon-button
-                                                [matTooltip]="claim.eligibilitycheck"
+                                                matTooltip="{{claim.eligibilitycheck}} : {{claim.eligibilityDescription}}"
                                                 *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
                                                 <mat-icon>error_outline</mat-icon>
                                             </button>
