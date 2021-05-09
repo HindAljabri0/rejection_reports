@@ -155,10 +155,11 @@
                     <button mat-menu-item>Claim Month</button>
                 </mat-menu>
                 <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a> -->
-                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)" href="#" (click)="$event.preventDefault()"
-                    class="primary-link underlined" title="Agree" (click)="agreeOnSelectedServices()">Agree</a>
-                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)" href="#" (click)="$event.preventDefault()"
-                    class="primary-link underlined disabled">Agree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree"
+                    (click)="agreeOnSelectedServices()">Agree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)"
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled">Agree</a>
                 <mat-menu #disagreeMenu="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
                     <div (click)="$event.stopPropagation()">
                         <div class="form-group">
@@ -166,17 +167,20 @@
                             <textarea rows="4" class="form-control" [(ngModel)]="disagreeComment"></textarea>
                         </div>
                         <div class="text-right">
-                            <button type="button" mat-flat-button color="primary" (click)="disagreeOnSelectedServices()">Apply</button>
+                            <button type="button" mat-flat-button color="primary"
+                                (click)="disagreeOnSelectedServices()">Apply</button>
                         </div>
                     </div>
                 </mat-menu>
-                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)" href="#" (click)="$event.preventDefault()"
-                    class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
-                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)" href="#" (click)="$event.preventDefault()"
-                    class="primary-link underlined disabled">Disagree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined"
+                    [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
+                <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)"
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled">Disagree</a>
             </div>
         </div>
-        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="onTabChange($event)">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding"
+            (selectedTabChange)="onTabChange($event)">
             <mat-tab [label]="'Deducted Services'">
                 <div class="table-responsive">
                     <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
@@ -239,7 +243,8 @@
                                         <div (click)="$event.stopPropagation()">
                                             <div class="form-group">
                                                 <label>Comments</label>
-                                                <textarea rows="4" class="form-control" [(ngModel)]="service.newComments"></textarea>
+                                                <textarea rows="4" class="form-control"
+                                                    [(ngModel)]="service.newComments"></textarea>
                                             </div>
                                             <div class="form-group mb-0">
                                                 <label>Attachments</label>
@@ -247,26 +252,26 @@
                                                     JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                 </p>
                                                 <ul class="attachment-list">
-                                                    <li matTooltip="Report-4594.pdf">
-                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                                        <span>Report-4594.pdf</span>
+                                                    <li *ngIf="service.newAttachment != null"
+                                                        [matTooltip]="service.newAttachment.name"
+                                                        (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
+                                                        <img [src]="getImageOfBlob(service)"
+                                                            [alt]="service.newAttachment.name" />
                                                     </li>
-                                                    <li matTooltip="Report-4594.xls">
-                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
-                                                        <span>Report-4594.xls</span>
-                                                    </li>
-                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                    <li *ngIf="service.newAttachment == null"
+                                                        matTooltip="Add Attachments" class="add-block">
                                                         <div class="file-upload-wrapper text-primary">
-                                                            <div class="content">
+                                                            <div class="content"
+                                                                (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
                                                                 <mat-icon>add_circle</mat-icon>
                                                             </div>
-                                                            <input type="file" class="file-upload-control" />
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="text-right">
-                                                <button type="button" mat-flat-button color="primary">
+                                                <button type="button" (click)="disagreeOnService(service)"
+                                                    mat-flat-button color="primary">
                                                     Apply
                                                 </button>
                                             </div>
@@ -347,7 +352,8 @@
                                         <div (click)="$event.stopPropagation()">
                                             <div class="form-group">
                                                 <label>Comments</label>
-                                                <textarea rows="4" class="form-control" [(ngModel)]="service.newComments"></textarea>
+                                                <textarea rows="4" class="form-control"
+                                                    [(ngModel)]="service.newComments"></textarea>
                                             </div>
                                             <div class="form-group mb-0">
                                                 <label>Attachments</label>
@@ -355,26 +361,26 @@
                                                     JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                 </p>
                                                 <ul class="attachment-list">
-                                                    <li matTooltip="Report-4594.pdf">
-                                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                                        <span>Report-4594.pdf</span>
+                                                    <li *ngIf="service.newAttachment != null"
+                                                        [matTooltip]="service.newAttachment.name"
+                                                        (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
+                                                        <img [src]="getImageOfBlob(service)"
+                                                            [alt]="service.newAttachment.name" />
                                                     </li>
-                                                    <li matTooltip="Report-4594.xls">
-                                                        <img src="./assets/file-types/ic-xls.svg" alt="xls" />
-                                                        <span>Report-4594.xls</span>
-                                                    </li>
-                                                    <li matTooltip="Add Attachments" class="add-block">
+                                                    <li *ngIf="service.newAttachment == null"
+                                                        matTooltip="Add Attachments" class="add-block">
                                                         <div class="file-upload-wrapper text-primary">
-                                                            <div class="content">
+                                                            <div class="content"
+                                                                (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
                                                                 <mat-icon>add_circle</mat-icon>
                                                             </div>
-                                                            <input type="file" class="file-upload-control" />
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="text-right">
-                                                <button type="button" mat-flat-button color="primary">
+                                                <button type="button" (click)="disagreeOnService(service)"
+                                                    mat-flat-button color="primary">
                                                     Apply
                                                 </button>
                                             </div>
@@ -420,3 +426,5 @@
         </div>
     </div>
 </div>
+<input hidden type="file" #fileInput onclick="this.value = null" (change)="selectFile($event.target.files)"
+    accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
