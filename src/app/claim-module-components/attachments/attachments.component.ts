@@ -54,7 +54,6 @@ export class AttachmentsComponent implements OnInit {
       const objectURL = `data:image/${fileExt};base64,` + attachment.attachmentFile;
       return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
-
   }
 
   selectFile(event) {
