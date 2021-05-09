@@ -192,11 +192,6 @@ export class MainClaimPageComponent implements OnInit {
     this.store.dispatch(saveInvoices_Services());
     this.store.dispatch(setLoading({ loading: true }));
     this.store.dispatch(startValidatingClaim());
-     if (this.pageMode == 'CREATE') {
-       this.store.dispatch(getUploadId({ providerId: this.sharedService.providerId }))
-     } else  {
-      this.store.dispatch(saveClaimChanges());
-     }
   }
 
   getClaimStatusLabel(status: string) {
