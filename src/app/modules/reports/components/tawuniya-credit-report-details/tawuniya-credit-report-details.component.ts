@@ -12,6 +12,7 @@ import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-re
 import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ClaimService } from 'src/app/services/claimService/claim.service';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -87,7 +88,8 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     private creditReportService: CreditReportService,
     private sharedServices: SharedServices,
     private dialogService: DialogService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private claimService: ClaimService
   ) { }
 
   ngOnInit() {
@@ -156,7 +158,34 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       });
   }
   showClaim(claimno: string) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/find?claimno=${claimno}`);
+    if (this.sharedServices.loading) return;
+    this.sharedServices.loadingChanged.next(true);
+    this.claimService.getClaimIdByPayerRefNo(this.sharedServices.providerId, claimno).subscribe(
+      event => {
+        if(event instanceof HttpResponse){
+          this.sharedServices.loadingChanged.next(false);
+          window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${event.body}`);
+        }
+      },
+      errorEvent => {
+        this.sharedServices.loadingChanged.next(false);
+        if(errorEvent instanceof HttpErrorResponse){
+          if(errorEvent.status == 404){
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: `Claim with provided payer ref number [${claimno}] was not found.`,
+              isError: true
+            });
+          } else {
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: 'Colud not handle request. Please try again later.',
+              isError: true
+            });
+          }
+        }
+      }
+    )
   }
   openDetailsDialog(event, serialNo, serviceType: 'rejected' | 'deducted') {
     event.preventDefault();
@@ -414,11 +443,19 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog({
-          title: '',
-          message: 'Colud not handle request. Please try again later.',
-          isError: true
-        });
+        if(errorEvent.status == 400){
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: errorEvent.error.message,
+            isError: true
+          });
+        } else {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: 'Colud not handle request. Please try again later.',
+            isError: true
+          });
+        }
       }
     });
   }
