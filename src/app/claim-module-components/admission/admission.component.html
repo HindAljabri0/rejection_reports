@@ -36,13 +36,13 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
-        <div class="form-group" [class.has-error]="fieldHasError('roomNumber')" [matTooltip]="getFieldError('roomNumber')">
+        <div class="form-group" [class.has-error]="fieldHasError('RoomNo')" [matTooltip]="getFieldError('RoomNo')">
             <label class="control-label">Room Number<span class="asterisk">*</span></label>
             <input placeholder="Enter room number" [formControl]="roomNumberController" (change)="updateClaim('roomNumber')" class="form-control">
         </div>
     </div>
     <div class="col-md-6 col-lg-4 col-xxl-3">
-        <div class="form-group" [class.has-error]="fieldHasError('bedNumber')" [matTooltip]="getFieldError('bedNumber')">
+        <div class="form-group" [class.has-error]="fieldHasError('BedNo')" [matTooltip]="getFieldError('BedNo')">
             <label class="control-label">Bed Number<span class="asterisk">*</span></label>
             <input placeholder="Enter bed number" [formControl]="bedNumberController" (change)="updateClaim('bedNumber')" class="form-control">
         </div>
