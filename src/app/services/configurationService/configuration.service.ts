@@ -10,11 +10,9 @@ export class ConfigurationService {
 
   constructor(private http: HttpClient) { }
 
-  uploadCSVFile(providerId: any, selectedProviderId: any, file: File): Observable<any> {
+  uploadCSVFile(providerId: any, file: File): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('file', file, file.name);
-    formdata.append('providerId', providerId);
-    formdata.append('selectedProviderId', selectedProviderId);
     const req = new HttpRequest('POST', environment.settingsServiceHost + `/providers/${providerId}/map-values/csv`, formdata);
     return this.http.request(req);
   }

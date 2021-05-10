@@ -17,10 +17,20 @@
             </ng-template>
             <claim-diagnosis></claim-diagnosis>
         </mat-tab>
-        <mat-tab [label]="'Illness'">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="illnessTabHasErrors()" [class.text-danger]="illnessTabHasErrors()">
+                    error</mat-icon>
+                <span [class.text-danger]="illnessTabHasErrors()">Illness</span>
+            </ng-template>
             <claim-illnesses></claim-illnesses>
         </mat-tab>
-        <mat-tab [label]="'Vital Signs'">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="mr-1" *ngIf="vitalSignsTabHasErrors()" [class.text-danger]="vitalSignsTabHasErrors()">
+                    error</mat-icon>
+                <span [class.text-danger]="vitalSignsTabHasErrors()">Vital Signs</span>
+            </ng-template>
             <claim-vital-signs></claim-vital-signs>
         </mat-tab>
         <mat-tab *ngIf="isInpatientClaim">
@@ -47,12 +57,13 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()" [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()"
+                    [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
                 <span [class.text-danger]="invoiceServicesTabHasErrors()">Invoices & Services</span>
             </ng-template>
             <claim-invoices-services></claim-invoices-services>
         </mat-tab>
-        <mat-tab *ngIf="pageMode != 'CREATE' && false" [label]="'PBM Comments'">
+        <mat-tab *ngIf="pageMode != 'CREATE' && isPBMValidationVisible" [label]="'PBM Comments'">
             <pbm-comments></pbm-comments>
         </mat-tab>
     </mat-tab-group>

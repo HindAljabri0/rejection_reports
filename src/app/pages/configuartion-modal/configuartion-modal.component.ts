@@ -69,7 +69,7 @@ export class ConfiguartionModalComponent implements OnInit {
   }
   startUploading() {
     this.common.loadingChanged.next(true);
-    this._configurationService.uploadCSVFile(this.data.providerId, this.data.selectedProviderId, this.currentFileUpload).subscribe((res: any) => {
+    this._configurationService.uploadCSVFile(this.data.selectedProviderId, this.currentFileUpload).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.common.loadingChanged.next(false);
         this.closeDialog();
@@ -77,7 +77,7 @@ export class ConfiguartionModalComponent implements OnInit {
       }
     }, err => {
       this.common.loadingChanged.next(false);
-      this.error = err.error;
+      this.error = err.error.message;
       console.log(err);
     });
   }

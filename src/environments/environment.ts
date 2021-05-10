@@ -16,7 +16,8 @@ export const environment = {
   claimInquireServiceHost: "http://localhost:8580",
   validationServiceHost: "http://localhost:8121",
   creditReportService: "http://localhost:8484",
-  tawuniyaCreditReportService: "http://localhost:8491"
+  tawuniyaCreditReportService: "http://localhost:8491",
+  pbmValidationService: "http://localhost:8099"
 };
 
 /*
