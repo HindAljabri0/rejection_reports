@@ -16,8 +16,8 @@ export class Service {
     unitPrice: Amount;
     serviceGDPN: GDPN;
     daysOfSupply: number;
-    pbmServiceError: PbmServiceError[];
-    pbmServiceStatus: string;
+    pbmServiceError?: PbmServiceError[];
+    pbmServiceStatus?: string;
     drugUse?: {
         dosage: { value: number, unit: string },
         doseTimes: { value: number, qualifier: string },
