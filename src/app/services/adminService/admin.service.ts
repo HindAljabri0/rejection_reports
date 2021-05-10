@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { SERVICE_CODE_RESTRICTION_KEY } from '../administration/superAdminService/super-admin.service';
+import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY } from '../administration/superAdminService/super-admin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,11 @@ export class AdminService {
 
   checkIfServiceCodeRestrictionIsEnabled(providerId: string, payerId: string) {
     const requestURL = `/providers/${providerId}/config/${SERVICE_CODE_RESTRICTION_KEY}/payers/${payerId}`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  checkIfPBMValidationIsEnabled(providerId: string, payerId: string) {
+    const requestURL = `/providers/${providerId}/config/${PBM_RESTRICTION_KEY}/payers/${payerId}`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }

@@ -21,7 +21,10 @@ export class ClaimErrorsComponent implements OnInit {
         ...error.genInfoErrors,
         ...error.invoicesErrors,
         ...error.labResultsErrors,
-        ...error.uncategorised
+        ...error.uncategorised, 
+        ...error.admissionErrors,
+        ...error.illnessErrors,
+        ...error.vitalSignsErrors,
       ];
     });
   }

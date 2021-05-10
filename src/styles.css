@@ -116,7 +116,9 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .primary-menu .menu-title{color: #707070;padding: 4px 10px;}
 .edit-service-code-autocomplete.mat-autocomplete-panel{width: 480px;max-width: none;min-width: 480px;}
 .primary-link{color:#3060AA;text-decoration: none;cursor: pointer;}
+.primary-link.disabled{color:#8d8d8d;text-decoration: none;cursor: unset;}
 .primary-link:hover,.primary-link:focus,.primary-link:active{color:#3060AA;text-decoration: underline;}
+.primary-link.disabled:hover,.primary-link.disabled:focus,.primary-link.disabled:active{color:#8d8d8d;text-decoration: underline;}
 .primary-link.underlined,.primary-link.underlined:hover,.primary-link.underlined:focus,.primary-link.underlined:active{text-decoration: underline;}
 .hide-tab-header.mat-tab-group .mat-tab-header{display: none;}
 .spinner-progress.mat-progress-spinner circle, .spinner-progress.mat-spinner circle{stroke:currentColor;stroke-width:3px !important;}
@@ -155,6 +157,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
 .error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
 .error-btn>span{padding-left: 4px;}
+.status{display: inline-block;vertical-align: middle;background: #3060AA;color: #fff;padding: 6px 12px;border-radius: 6px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -450,6 +453,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
 .primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
 .primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
+.primary-grid .column-header-action{display: flex;align-items:flex-start;}
+.primary-grid .column-header-action>span{display: block;padding-right: 6px;}
+.primary-grid .column-header-action .action-btn{display: block;color:inherit;padding: 6px;background: none;border:0;margin: -6px -6px -6px auto;border-radius: 50px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);flex-basis: 30px;flex-grow: 0;flex-shrink: 0;max-width: 30px;}
+.primary-grid .column-header-action .action-btn .mat-icon{font-size:18px;line-height: 18px;height: 18px;width: 18px;display: block;}
+.primary-grid .column-header-action.action-active .action-btn{opacity: 1;background: rgba(48, 96, 170,0.16);}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
@@ -701,6 +709,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .progress-report-wrapper>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
 .progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 333px);}
 .progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
+.progress-report-wrapper>.right-block.full-width{flex-basis: 100%;max-width:100%;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -766,7 +775,9 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/
 .custom-file-upload{position: relative;}
+.custom-file-upload.disabled{cursor: not-allowed;opacity: 0.5;}
 .custom-file-upload>.upload-control{position: absolute;top: 0;left: 0;height: 100%;width: 100%;opacity: 0;display: block;z-index: 1;cursor: pointer;}
+.custom-file-upload>.upload-control[disabled]{cursor: not-allowed;}
 .custom-file-upload>.content{position: relative;z-index: 0;padding: 32px 16px;border:2px dashed #b9b9b9;text-align: center;}
 .custom-file-upload>.content>img{display: block;margin: 0 auto 12px;height: 56px;width: 56px;}
 .custom-file-upload>.content>p{font-weight: 600;padding: 0 0 2px;color:#3060AA;}
@@ -1017,6 +1028,14 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){background-color: #fff;}
 .tawuniya-extra-details .mat-accordion .mat-expansion-panel:first-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel:last-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel{border-radius: 4px;}
 .tawuniya-extra-details .mat-accordion .mat-expansion-panel+.mat-expansion-panel{margin-top: 10px;}
+
+/* primary-paginator
+--------------------------------------------------------------------------------------------------------*/
+.primary-paginator.mat-paginator{font-size: inherit;line-height: inherit;color:#505050;}
+.primary-paginator .mat-paginator-container{min-height: auto;justify-content: flex-start;padding: 0;}
+.primary-paginator .mat-paginator-range-label{margin: 0 12px;}
+.primary-paginator .mat-paginator-page-size-select{margin-top: 0;margin-bottom: -15px;}
+.primary-paginator .mat-form-field-infix{border-top-width: 1.5px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

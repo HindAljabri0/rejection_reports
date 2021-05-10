@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
 import {
   FieldError,
@@ -22,8 +22,8 @@ import {
   addRetrievedServices,
   makeRetrievedServiceUnused
 } from '../store/claim.actions';
-import { FormControl } from '@angular/forms';
-import { Service } from '../models/service.model';
+import { FormControl, FormArray } from '@angular/forms';
+import { Service, PbmServiceError } from '../models/service.model';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -33,6 +33,7 @@ import { ServiceDecision } from '../models/serviceDecision.model';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
+import { ClaimStatus } from 'src/app/models/claimStatus';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -53,6 +54,7 @@ export class InvoicesServicesComponent implements OnInit {
       statusDescription?: string,
       acutalDeductedAmount?: string,
       serviceNumber: number,
+      serviceId?: number,
       serviceDate: FormControl,
       serviceCode: FormControl,
       serviceDescription: FormControl,
@@ -67,7 +69,10 @@ export class InvoicesServicesComponent implements OnInit {
       priceCorrection: number,
       rejection: number,
       isOpen: boolean,
-      serviceType: FormControl
+      serviceType: FormControl,
+      daysOfSupply: FormControl,
+      pbmServiceError: PbmServiceError[],
+      pbmServiceStatus: string
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -104,7 +109,8 @@ export class InvoicesServicesComponent implements OnInit {
   ];
   acutalDeductedAmount: any;
   statusCode: any;
-
+  claimProps: RetrievedClaimProps;
+  isPBMValidationVisible: boolean = false;
   constructor(
     private store: Store,
     private actions: Actions,
@@ -126,6 +132,8 @@ export class InvoicesServicesComponent implements OnInit {
         this.setData(claim, claimProps);
         this.toggleEdit(true);
       }
+      this.claimProps = claimProps;
+      this.getPBMValidation();
     });
     this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors || []);
     this.store.select(getDepartments)
@@ -208,10 +216,14 @@ export class InvoicesServicesComponent implements OnInit {
 
         }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;
+        this.controllers[index].services[serviceIndex].serviceId = service.serviceId;
         this.controllers[index].services[serviceIndex].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
         this.controllers[index].services[serviceIndex].serviceCode.setValue(service.serviceCode);
         this.controllers[index].services[serviceIndex].serviceDescription.setValue(service.serviceDescription);
         this.controllers[index].services[serviceIndex].serviceType.setValue(service.serviceType);
+        this.controllers[index].services[serviceIndex].daysOfSupply.setValue(service.daysOfSupply === null ? 0 : service.daysOfSupply);
+        this.controllers[index].services[serviceIndex].pbmServiceError = service.pbmServiceError;
+        this.controllers[index].services[serviceIndex].pbmServiceStatus = service.pbmServiceStatus;
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
         if (service.unitPrice != null)
           this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
@@ -273,6 +285,7 @@ export class InvoicesServicesComponent implements OnInit {
           servicesControllers.serviceDate.enable();
           servicesControllers.serviceDescription.enable();
           servicesControllers.serviceType.enable();
+          servicesControllers.daysOfSupply.enable();
           servicesControllers.serviceDiscount.enable();
           servicesControllers.toothNumber.enable();
           servicesControllers.unitPrice.enable();
@@ -285,6 +298,7 @@ export class InvoicesServicesComponent implements OnInit {
           servicesControllers.serviceDate.disable();
           servicesControllers.serviceDescription.disable();
           servicesControllers.serviceType.disable();
+          servicesControllers.daysOfSupply.disable();
           servicesControllers.serviceDiscount.disable();
           servicesControllers.toothNumber.disable();
           servicesControllers.unitPrice.disable();
@@ -324,6 +338,9 @@ export class InvoicesServicesComponent implements OnInit {
           if (this.isControlNull(servicesControllers.unitPrice)) {
             servicesControllers.unitPrice.enable();
           }
+          if (this.isControlNull(servicesControllers.daysOfSupply)) {
+            servicesControllers.daysOfSupply.enable();
+          }
         }
       });
     });
@@ -359,7 +376,10 @@ export class InvoicesServicesComponent implements OnInit {
       isOpen: false,
       serviceType: new FormControl(),
       statusCode: '',
-      acutalDeductedAmount: ''
+      acutalDeductedAmount: '',
+      daysOfSupply: new FormControl(0),
+      pbmServiceError: [],
+      pbmServiceStatus: ''
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
@@ -369,6 +389,7 @@ export class InvoicesServicesComponent implements OnInit {
   editService(service: Service, decision: ServiceDecision, i: number, j: number) {
     this.controllers[i].services[j].retrieved = true;
     this.controllers[i].services[j].serviceNumber = service.serviceNumber;
+    this.controllers[i].services[j].serviceId = service.serviceId;
     this.controllers[i].services[j].serviceDate.setValue(this.datePipe.transform(service.serviceDate, 'yyyy-MM-dd'));
     this.controllers[i].services[j].serviceDate.disable();
     this.controllers[i].services[j].serviceCode.setValue(service.serviceCode);
@@ -385,6 +406,10 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
     this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
+    this.controllers[i].services[j].daysOfSupply.setValue(service.daysOfSupply);
+    this.controllers[i].services[j].daysOfSupply.disable();
+    this.controllers[i].services[j].pbmServiceError = service.pbmServiceError;
+    this.controllers[i].services[j].pbmServiceStatus = service.pbmServiceStatus;
     if (service.toothNumber != null) {
       this.controllers[i].services[j].toothNumber.disable();
     }
@@ -427,11 +452,11 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   fieldHasError(fieldName, code) {
-    return this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code)) != -1;
+    return this.errors.findIndex(error => error.fieldName == fieldName && error.code == code) != -1;
   }
 
   getFieldError(fieldName, code) {
-    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.error.includes(code));
+    const index = this.errors.findIndex(error => error.fieldName == fieldName && error.code == code);
     if (index > -1) {
       return this.errors[index].error || '';
     }
@@ -487,6 +512,7 @@ export class InvoicesServicesComponent implements OnInit {
       unitPrice: { value: service.unitPrice.value, type: 'SAR' },
       requestedQuantity: service.quantity.value,
       toothNumber: service.toothNumber.value,
+      daysOfSupply: service.daysOfSupply.value,
       serviceGDPN: {
         patientShare: { value: service.patientShare.value, type: 'SAR' },
         discount: { value: service.serviceDiscount.value, type: service.serviceDiscountUnit },
@@ -695,5 +721,16 @@ export class InvoicesServicesComponent implements OnInit {
   }
   getStatusText(status: string) {
     return this.sharedServices.statusToName(status);
+  }
+  getPBMValidation() {
+    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, "101").subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isPBMValidationVisible = body.value === "1" && this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase() ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
   }
 }

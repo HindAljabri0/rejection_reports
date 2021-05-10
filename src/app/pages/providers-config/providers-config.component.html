@@ -366,30 +366,26 @@
                 <mat-panel-description *ngIf="success.pbmConfigurationSaveSuccess != null">
                     <span style="color: #40ac60;">{{success.pbmConfigurationSaveSuccess}}</span>
                 </mat-panel-description>
-
             </mat-expansion-panel-header>
-            <div class="mt-4 table-responsive" *ngIf="!isPBMLoading">
-                <table style="width: 100%">
+            <div
+                *ngIf="(errors.pbmConfigurationError == null || errors.pbmConfigurationError == '') && !componentLoading.pbmConfiguration">
+                <table style="width: 100%; margin: 10px">
                     <thead>
-                        <th class="pb-2" width="33%">User name</th>
-                        <th class="pb-2" width="33%">Password</th>
-                        <th class="text-center pb-2" width="33%">Enable/Disable</th>
+                        <th>Provider</th>
+                        <th style="text-align: center">Enable/Disable</th>
                     </thead>
                     <tr>
-                        <td class="pr-2"> <input placeholder="Username" [formControl]="PBMUserController"
-                                class="form-control"></td>
-                        <td class="pr-2"> <input placeholder="Password" [formControl]="PBMPasswordController"
-                                class="form-control">
-                        </td>
+                        <td>{{selectedProviderName}}</td>
                         <td class="text-center">
-                            <mat-slide-toggle color="primary" [formControl]="PBMCheckValueController">
+                            <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
+                            width: 15%" color="primary" [(ngModel)]="newPBMValidationSettings['101']">
                             </mat-slide-toggle>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="inline-loader" *ngIf="isPBMLoading">
-                <mat-spinner diameter="48"></mat-spinner>
+            <div *ngIf="componentLoading.pbmConfiguration" style="width: 100%; padding: 10px;">
+                <mat-spinner style="margin: 0px auto;"></mat-spinner>
             </div>
         </mat-expansion-panel>
 

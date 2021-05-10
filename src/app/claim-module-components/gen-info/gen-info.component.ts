@@ -43,10 +43,10 @@ import {
   ClaimPageMode,
   nationalities,
   getVisitType,
-  
+
   getPhysicianCategory,
   getDepartments,
- 
+
 } from '../store/claim.reducer';
 import { map, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
@@ -183,7 +183,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.store.select(getVisitType).subscribe(visitTypes => this.visitTypes = visitTypes || []);
     this.store.select(getPageType).subscribe(type => this.claimPageType = type);
 
-  
+
 
 
     this.store.select(getPageType).subscribe(type => this.pageType = type);
@@ -423,12 +423,15 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.physicianIdController.disable();
     }
   }
-
+  //this.claimDateController.value
   updateClaim(field: string) {
     this.errors = this.errors.filter(error => error.fieldName == field);
     switch (field) {
       case ('claimDate'):
-        this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
+        if (this.claimDateController.value != null)
+          this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value ) }));
+        else
+          this.store.dispatch(updateClaimDate({ claimDate: null }));
         break;
       case ('caseType'):
         this.store.dispatch(updateCaseType({ caseType: this.selectedCaseType }));
@@ -556,7 +559,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  fieldHasError(fieldName) {    
+  fieldHasError(fieldName) {
     return this.errors.findIndex(error => error.fieldName == fieldName) != -1;
   }
 
