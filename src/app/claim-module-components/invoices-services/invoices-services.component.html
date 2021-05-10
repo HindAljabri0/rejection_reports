@@ -331,7 +331,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row small-gutter" *ngIf="pageMode != 'CREATE' && isPBMValidationVisible">
+                                <div class="row small-gutter"
+                                    *ngIf="pageMode != 'CREATE' && isPBMValidationVisible && (service.serviceType.value==='MEDICATION' || service.serviceType.value==='SUPPLY')">
                                     <div class="col-xxl-4 col-xl-3 col-lg-4">
                                         <div class="inline-labelled-text">
                                             <label>PBM Status</label>

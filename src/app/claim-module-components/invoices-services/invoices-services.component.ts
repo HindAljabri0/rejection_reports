@@ -513,8 +513,8 @@ export class InvoicesServicesComponent implements OnInit {
       requestedQuantity: service.quantity.value,
       toothNumber: service.toothNumber.value,
       daysOfSupply: service.daysOfSupply.value,
-      pbmServiceError: service.pbmServiceError.value,
-      pbmServiceStatus: service.pbmServiceStatus.value,
+      pbmServiceError: service.pbmServiceError,
+      pbmServiceStatus: service.pbmServiceStatus,
       serviceGDPN: {
         patientShare: { value: service.patientShare.value, type: 'SAR' },
         discount: { value: service.serviceDiscount.value, type: service.serviceDiscountUnit },
