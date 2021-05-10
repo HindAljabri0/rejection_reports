@@ -413,7 +413,7 @@
                                                 <mat-icon>check_circle_outline</mat-icon>
                                             </button>
                                             <button class="text-light-pink" mat-icon-button
-                                                matTooltip="{{claim.eligibilitycheck}} : {{claim.eligibilityDescription}}"
+                                                matTooltip="{{claim.eligibilitycheck}} {{claim.eligibilityStatusDesc!==null && claim.eligibilityStatusDesc!==undefined ? ': '+ claim.eligibilityStatusDesc:'' }}"
                                                 *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
                                                 <mat-icon>error_outline</mat-icon>
                                             </button>
