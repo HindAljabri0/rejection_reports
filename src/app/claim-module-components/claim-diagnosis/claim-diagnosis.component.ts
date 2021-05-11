@@ -4,7 +4,7 @@ import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { HttpResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { Store } from '@ngrx/store';
-import { updateDiagnosisList } from '../store/claim.actions';
+import { updateDiagnosisList, removeDiagonsisError } from '../store/claim.actions';
 import { FieldError, getDiagnosisErrors, getClaim, ClaimPageMode, getPageMode } from '../store/claim.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
@@ -98,6 +98,7 @@ export class ClaimDiagnosisComponent implements OnInit {
       }));
       this.icedOptions = [];
     }
+    this.store.dispatch(removeDiagonsisError({ errors: this.diagnosisList.length > 0 ? [] : this.errors }));
   }
 
   removeDiagnosis(diag: ICDDiagnosis) {
