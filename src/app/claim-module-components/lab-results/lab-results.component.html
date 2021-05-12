@@ -77,28 +77,28 @@
                                 </mat-expansion-panel-header>
                                 <div class="row small-gutter">
                                     <div class="col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('LabCompCode',result.results.investigationId)" [matTooltip]="getFieldError('LabCompCode' ,result.results.investigationId)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('LabCompCode',component.components.observationId)" [matTooltip]="getFieldError('LabCompCode' ,component.components.observationId)">
                                             <label class="control-label">Component Code<span class="asterisk">*</span></label>
                                             <input [formControl]="component.componentCode" class="form-control" placeholder="Enter component code" type="text">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <div class="form-group" [class.has-error]="fieldHasError('LabResult',result.results.investigationId)"
-                                            [matTooltip]="getFieldError('LabResult',result.results.investigationId)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('LabResult',component.components.observationId)"
+                                            [matTooltip]="getFieldError('LabResult',component.components.observationId)">
                                             <label class="control-label">LAB Result</label>
                                             <input [formControl]="component.componentLabResult" class="form-control" placeholder="Enter lab result">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <div class="form-group" [class.has-error]="fieldHasError('LabCompUnit',result.results.investigationId)"
-                                            [matTooltip]="getFieldError('LabCompUnit',result.results.investigationId)">
+                                        <div class="form-group" [class.has-error]="fieldHasError('LabCompUnit',component.components.observationId)"
+                                            [matTooltip]="getFieldError('LabCompUnit',component.components.observationId)">
                                             <label class="control-label">Result Unit</label>
                                             <input [formControl]="component.componentResultUnit" class="form-control" placeholder="Enter result unit">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" [class.has-error]="fieldHasError('LabCompDesc',result.results.investigationId)"
-                                    [matTooltip]="getFieldError('LabCompDesc',result.results.investigationId)">
+                                <div class="form-group" [class.has-error]="fieldHasError('LabCompDesc',component.components.observationId)"
+                                    [matTooltip]="getFieldError('LabCompDesc',component.components.observationId)">
                                     <label class="control-label">Description</label>
                                     <textarea placeholder="Description" [formControl]="component.componentDescription" class="form-control"
                                         placeholder="Enter description"></textarea>
