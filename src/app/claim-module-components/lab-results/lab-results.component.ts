@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Claim } from '../models/claim.model';
 import { saveLabResults, updateLabResults } from '../store/claim.actions';
 import { Actions, ofType } from '@ngrx/effects';
+import { Observation } from '../models/observation.model';
 
 @Component({
   selector: 'claim-lab-results',
@@ -81,12 +82,14 @@ export class LabResultsComponent implements OnInit {
           } else {
             controls.testDate.setValue('');
           }
+          controls.results = investigation;
           controls.testCode.setValue(investigation.investigationCode);
           controls.testSerial.setValue(investigation.investigationType);
           controls.resultDescription.setValue(investigation.investigationDescription);
 
           investigation.observation.forEach(observation => {
             const componentControls = this.createEmptyComponentControls();
+            componentControls.components = observation;
             componentControls.componentCode.setValue(observation.observationCode);
 
             componentControls.componentDescription.setValue(observation.observationDescription);
@@ -147,7 +150,7 @@ export class LabResultsComponent implements OnInit {
 
   createEmptyComponentControls() {
     return {
-      
+      components : new Observation(),
       componentCode: new FormControl(),
       componentSerial: new FormControl(),
       componentDescription: new FormControl(),
