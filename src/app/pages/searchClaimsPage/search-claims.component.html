@@ -119,6 +119,7 @@
                     <div class="fixed-height">
                         <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
                             <thead>
+                                <!-- <form #claimListForm='ngForm'> -->
                                 <tr *ngIf="summaries != null && summaries[selectedCardKey] != null">
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
@@ -133,7 +134,8 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMREFNO)">
                                             <span>Claim Ref. No.</span>
-                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                            <button
+                                                *ngIf="claimRefNo===undefined || claimRefNo==='' || claimRefNo===null"
                                                 type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="claimRefFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
@@ -142,14 +144,16 @@
                                                 <div class="menu-body">
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
-                                                            <label class="control-label">Provider Claim Ref. No.</label>
+                                                            <label class="control-label">Provider Claim Ref.
+                                                                No.</label>
                                                             <input class="form-control"
-                                                                placeholder="Provider Claim Ref. No." #claimRefNos>
+                                                                [(ngModel)]="claimList.claimRefNO" #claimRefNO="ngModel"
+                                                                name="claimRefNO" placeholder="Provider Claim Ref. No.">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="clearFilters('claimRefNos')">Clear</button>
+                                                            (click)="clearFilters('claimRefNO')">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="searchClaimBased(claimSearchSelection.CLAIMREFNO)">Filter</button>
                                                     </div>
@@ -162,8 +166,7 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.DR_NAME)">
                                             <span>Dr. Name</span>
-                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
-                                                type="button" class="action-btn" matRipple
+                                            <button type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="drNameFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -172,7 +175,9 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Dr. Name</label>
-                                                            <input class="form-control" placeholder="Dr. Name" #drName>
+                                                            <input class="form-control" placeholder="Dr. Name"
+                                                                [(ngModel)]="claimList.drName" #drName="ngModel"
+                                                                name="drName">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
@@ -190,7 +195,7 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.MEMBERID)">
                                             <span>Member ID</span>
-                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                            <button *ngIf="memberId===undefined || memberId==='' || memberId===null"
                                                 type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="memberIDFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
@@ -201,7 +206,8 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Member ID</label>
                                                             <input class="form-control" placeholder="Member ID"
-                                                                #memberID>
+                                                                [(ngModel)]="claimList.memberID" #memberID="ngModel"
+                                                                name="memberID">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
@@ -219,8 +225,7 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.NATIONALID)">
                                             <span>National ID</span>
-                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
-                                                type="button" class="action-btn" matRipple
+                                            <button type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="nationalIDFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -232,7 +237,8 @@
                                                             <label class="control-label">National ID</label>
 
                                                             <input class="form-control" placeholder="National ID"
-                                                                #nationalId>
+                                                                [(ngModel)]="claimList.nationalId" #nationalId="ngModel"
+                                                                name="nationalId">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
@@ -250,7 +256,8 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.PATIENTFILENO)">
                                             <span>Patient File No.</span>
-                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
+                                            <button
+                                                *ngIf="patientFileNo===undefined || patientFileNo==='' || patientFileNo===null"
                                                 type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="patientFileNoFilter"
                                                 (click)="checkReloadedFilter()">
@@ -263,12 +270,13 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Patient File No.</label>
                                                             <input class="form-control" placeholder="Patient File No."
-                                                                #patientFileNos>
+                                                                [(ngModel)]="claimList.patientFileNO"
+                                                                #patientFileNO="ngModel" name="patientFileNO">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="clearFilters('patientFileNos')">Clear</button>
+                                                            (click)="clearFilters('patientFileNO')">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="searchClaimBased(claimSearchSelection.PATIENTFILENO)">Filter</button>
                                                     </div>
@@ -281,8 +289,7 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMDATE)">
                                             <span>Claim Date</span>
-                                            <button *ngIf="uploadId!==undefined && uploadId!=='' && uploadId!==null"
-                                                type="button" class="action-btn" matRipple
+                                            <button type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="claimDateFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
@@ -292,8 +299,9 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Claim Date</label>
                                                             <div class="date-picker">
-                                                                <input #claimDate class="form-control"
-                                                                    placeholder="Claim Date"
+                                                                <input [(ngModel)]="claimList.claimDate"
+                                                                    #claimDate="ngModel" name="claimDate"
+                                                                    class="form-control" placeholder="Claim Date"
                                                                     [matDatepicker]="claimDatePicker">
                                                                 <mat-datepicker-toggle [for]="claimDatePicker">
                                                                 </mat-datepicker-toggle>
@@ -336,6 +344,7 @@
                                             diameter="20"></mat-spinner>
                                     </th>
                                 </tr>
+                                <!-- </form> -->
                             </thead>
                             <tbody>
                                 <ng-container *ngIf='claims.length > 0'>
