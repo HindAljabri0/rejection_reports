@@ -135,7 +135,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .rejection-card-head>.right-block{flex-grow:0;flex-shrink:0;flex-basis:120px;max-width:120px;}
 .mat-flat-button.input-group-append{border-radius: 0;}
 .mat-flat-button.input-group-append:last-child{border-radius: 0 6px 6px 0;}
-.overlay-backdrop{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,0.6);display: block;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;z-index: 8;}
+.overlay-backdrop{position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,0.6);display: block;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;z-index: 8;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);}
 .overlay-backdrop.show{opacity: 1;visibility: visible;}
 .overlay-backdrop>button{display: block;height: 100%;width: 100%;background: none;border:0;}
 .small-label{font-size:13px;color:#585858;}
@@ -164,7 +164,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-all-claim,.text-primary{color: #3060AA!important;}
 .text-ready-submission,.text-parrot{color: #67CD23!important;}
 .text-rejected-waseel,.text-magenta{color: #FF144D!important;}
-.text-not-saved,.text-orange{color: #E6AE24!important;}
+.text-not-saved,.text-orange,.text-warning{color: #E6AE24!important;}
 .text-under-submission,.text-cyan{color: #00D8E7!important;}
 .text-rejected,.text-light-pink{color: #FF53A3!important;}
 .text-paid,.text-green{color: #1C7C26!important;}
@@ -181,7 +181,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
 .bg-ready-submission,.bg-parrot{background-color: #67CD23!important;}
 .bg-rejected-waseel,.bg-magenta{background-color: #FF144D!important;}
-.bg-not-saved,.bg-orange{background-color: #E6AE24!important;}
+.bg-not-saved,.bg-orange,.bg-warning{background-color: #E6AE24!important;}
 .bg-under-submission,.bg-cyan{background-color: #00D8E7!important;}
 .bg-rejected,.bg-light-pink{background-color: #FF53A3!important;}
 .bg-paid,.bg-green{background-color: #1C7C26!important;}
@@ -196,7 +196,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
 .light-bg-rejected-waseel,.light-bg-magenta{background-color: #ffe2e9!important;}
-.light-bg-not-saved,.light-bg-orange{background-color: #fcf5e4!important;}
+.light-bg-not-saved,.light-bg-orange,.light-bg-warning{background-color: #fcf5e4!important;}
 .light-bg-under-submission,.light-bg-cyan{background-color: #e0fafc!important;}
 .light-bg-rejected,.light-bg-light-pink{background-color: #ffeaf4!important;}
 .light-bg-paid,.light-bg-green{background-color: #e3efe5!important;}
@@ -635,7 +635,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* aside panel
 --------------------------------------------------------------------------------------------------------*/
-.aside-panel{background-color: #fff;top: 68px;z-index: 8;position: fixed;right: -320px;width: 320px;box-shadow: 0 5px 10px rgba(0,0,0,0.16);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom:0;}
+.aside-panel{background-color: rgba(255, 255, 255, 0.85);top: 68px;z-index: 8;position: fixed;right: -320px;width: 320px;box-shadow: 0 5px 10px rgba(0,0,0,0.16);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom:0;-webkit-backdrop-filter: blur(2px);backdrop-filter: blur(2px);}
 .aside-panel.show{right: 0;opacity: 1;visibility: visible;}
 
 /* uploaded card
@@ -1036,6 +1036,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .primary-paginator .mat-paginator-range-label{margin: 0 12px;}
 .primary-paginator .mat-paginator-page-size-select{margin-top: 0;margin-bottom: -15px;}
 .primary-paginator .mat-form-field-infix{border-top-width: 1.5px;}
+
+/* tooltip
+--------------------------------------------------------------------------------------------------------*/
+.mat-tooltip-panel .mat-tooltip{margin: 8px;font-size: 14px;line-height: 20px;background: rgba(48, 96, 170, 0.85);-webkit-backdrop-filter: blur(2px);backdrop-filter: blur(2px);}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
