@@ -136,3 +136,4 @@ export const makeRetrievedServiceUnused = createAction('[ Invoices & Services ] 
 
 export const selectGDPN = createAction('[ Auto Calc ] switch between claim, invoice & service calc', props<{ invoiceIndex?: number }>());
 // export const PBMErrorWithStatus = createAction('[ Auto Calc ] Claim Error with status', props<{ invoiceIndex?: number }>());
+export const removeDiagonsisError = createAction('[ Claim ] remove diagonsis errors', props<{ errors: FieldError[] }>());

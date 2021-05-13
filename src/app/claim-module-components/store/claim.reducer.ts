@@ -38,6 +38,9 @@ export interface ClaimState {
     mode: ClaimPageMode;
     type: ClaimPageType;
     paginationControl: { currentIndex: number, size: number, searchTabCurrentResults: number[]; };
+    pbmClaimError: [],
+    pbmClaimStatus: string
+
 }
 
 const initState: ClaimState = {
@@ -67,6 +70,8 @@ const initState: ClaimState = {
     mode: 'CREATE',
     type: 'DENTAL_OPTICAL_PHARMACY',
     paginationControl: { searchTabCurrentResults: [], currentIndex: -1, size: 0 },
+    pbmClaimError: [],
+    pbmClaimStatus: ''
 };
 
 const _claimReducer = createReducer(
@@ -97,8 +102,7 @@ const _claimReducer = createReducer(
             paymentReference: body['paymentReference'],
             statusCode: body['statusCode'],
             statusDetail: body['statusDetail'],
-            pbmClaimError: body['pbmClaimError'],
-            pbmClaimStatus: body['pbmClaimStatus']
+
 
         };
         const editable = state.mode == 'EDIT' &&
@@ -133,7 +137,9 @@ const _claimReducer = createReducer(
                 currentIndex: currentIndex,
                 size: searchTabResults.length
             },
-            claimErrors: body['errors']
+            claimErrors: body['errors'],
+            pbmClaimError: body['pbmClaimError'],
+            pbmClaimStatus: body['pbmClaimStatus']
         });
     }),
     on(actions.toEditMode, (state) => ({
@@ -626,6 +632,11 @@ const _claimReducer = createReducer(
             } : s)
         })),
     on(actions.selectGDPN, (state, { invoiceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex } })),
+    on(actions.removeDiagonsisError, (state, { errors }) => {
+        let claimErrors = initState.claimErrors;
+        claimErrors = { ...state.claimErrors, diagnosisErrors: errors };
+        return { ...state, claimErrors: claimErrors };
+    }),
 );
 
 export function claimReducer(state, action) {
@@ -671,6 +682,8 @@ export const getPageMode = createSelector(claimSelector, (state) => state.mode);
 export const getPageType = createSelector(claimSelector, (state) => state.type);
 export const getRetrievedClaimId = createSelector(claimSelector, (state) => state.retrievedClaimId);
 export const getRetrievedClaimProps = createSelector(claimSelector, (state) => state.retrievedClaimProps);
+export const getPBMClaimError = createSelector(claimSelector, (state) => state.pbmClaimError);
+export const getPBMClaimStatus = createSelector(claimSelector, (state) => state.pbmClaimStatus);
 
 
 
