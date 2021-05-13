@@ -12,7 +12,5 @@ export class RetrievedClaimProps {
     paymentReference: string;
     claimDecisionGDPN: GDPN;
     eligibilityCheck: string;
-    pbmClaimError: any[];
-    pbmClaimStatus: string;
 
 }
