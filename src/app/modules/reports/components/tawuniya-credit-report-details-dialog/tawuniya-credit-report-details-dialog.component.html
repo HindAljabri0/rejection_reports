@@ -6,9 +6,9 @@
     <div class="inline-loader" *ngIf="isLoading">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
-    <mat-accordion [displayMode]="'flat'" [hideToggle]="true"
-        *ngIf="this.creditReportDetails != undefined && !isLoading">
-        <mat-expansion-panel>
+    <!-- <mat-accordion [displayMode]="'flat'"  *ngIf="this.creditReportDetails != undefined && !isLoading"> -->
+    <ng-container *ngIf="this.creditReportDetails != undefined && !isLoading">
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Batch Information
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Service Information
@@ -176,16 +176,14 @@
                 </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Diagnosis
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <ng-container
-                *ngIf="creditReportDetails != null && creditReportDetails.creditReportDetailsICD10List != null">
-                <div class="table-responsive"
-                    *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
+            <ng-container *ngIf="creditReportDetails != null && creditReportDetails.creditReportDetailsICD10List != null">
+                <div class="table-responsive" *ngFor="let diagnosis of creditReportDetails.creditReportDetailsICD10List">
                     <table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
                         <thead>
                             <tr>
@@ -203,7 +201,7 @@
                 </div>
             </ng-container>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Provider Comment and Attachment
@@ -221,18 +219,15 @@
                         <label>Attachment</label>
                         <div class="attachment" *ngIf="creditReportDetails != null && creditReportDetails.attachment != null">
                             <div class="thumbnail">
-                                <img *ngIf="!isPdf()"
-                                    [src]="getImageOfBlob()" [alt]="this.creditReportDetails.attachmentName"
-                                    (click)="viewAttachment()" style="cursor: pointer;" />
-                                <img *ngIf="isPdf()"
-                                    src="assets/file-types/ic-pdf.svg" [alt]="this.creditReportDetails.attachmentName"
-                                    (click)="viewAttachment()" style="cursor: pointer;" />
+                                <img *ngIf="!isPdf()" [src]="getImageOfBlob()" [alt]="this.creditReportDetails.attachmentName" (click)="viewAttachment()"
+                                    style="cursor: pointer;" />
+                                <img *ngIf="isPdf()" src="assets/file-types/ic-pdf.svg" [alt]="this.creditReportDetails.attachmentName" (click)="viewAttachment()"
+                                    style="cursor: pointer;" />
                             </div>
                             <div class="content">
                                 <p class="title">{{creditReportDetails.attachmentName}}</p>
                                 <div class="btn-list">
-                                    <a [href]="getImageOfBlob()" [download]="creditReportDetails.attachmentName"
-                                        mat-icon-button class="text-primary mr-0">
+                                    <a [href]="getImageOfBlob()" [download]="creditReportDetails.attachmentName" mat-icon-button class="text-primary mr-0">
                                         <mat-icon>save_alt</mat-icon>
                                     </a>
                                 </div>
@@ -242,8 +237,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-    </mat-accordion>
-    <app-empty-state *ngIf="this.creditReportDetails == undefined && !isLoading" class="claim-list-empty-state"
-        message='No {{title}} services found!'>
+    </ng-container>
+    <app-empty-state *ngIf="this.creditReportDetails == undefined && !isLoading" class="claim-list-empty-state" message='No {{title}} services found!'>
     </app-empty-state>
 </div>

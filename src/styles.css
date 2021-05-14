@@ -158,6 +158,9 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
 .error-btn>span{padding-left: 4px;}
 .status{display: inline-block;vertical-align: middle;background: #3060AA;color: #fff;padding: 6px 12px;border-radius: 6px;}
+.mat-select-panel-wrap .mat-select-panel,.cdk-overlay-pane .mat-menu-panel,.mat-datepicker-popup .mat-datepicker-content{background: rgba(255,255,255,0.85);-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
+.mat-select-panel .mat-option:hover:not(.mat-option-disabled), .mat-select-panel .mat-option:focus:not(.mat-option-disabled){background-color: rgba(0,0,0,0.06);}
+.cdk-overlay-container .cdk-overlay-backdrop.cdk-overlay-dark-backdrop{-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -228,7 +231,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 /* language-picker
 --------------------------------------------------------------------------------------------------------*/
 .language-picker-panel .menuItem {padding: 10px 16px;display: block;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
-.language-picker-panel .menuItem:hover {text-decoration: none;background-color: #e6e6e6;}
+.language-picker-panel .menuItem:hover {text-decoration: none;background-color: rgba(0,0,0,0.06);}
 .language-picker .text{padding-left: 6px;}
 .language-picker.mat-button{font-weight: 400;padding: 0 8px;}
 
@@ -1026,8 +1029,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .tawuniya-extra-details .mat-expanded .mat-expansion-panel-header .mat-content:after{transform: rotate(180deg);}
 .tawuniya-extra-details .mat-expansion-panel-body{padding: 14px;border-top: 1px solid #e1e1e1;}
 .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .tawuniya-extra-details .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){background-color: #fff;}
-.tawuniya-extra-details .mat-accordion .mat-expansion-panel:first-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel:last-of-type,.tawuniya-extra-details .mat-accordion .mat-expansion-panel{border-radius: 4px;}
-.tawuniya-extra-details .mat-accordion .mat-expansion-panel+.mat-expansion-panel{margin-top: 10px;}
+.tawuniya-extra-details .mat-expansion-panel:first-of-type,.tawuniya-extra-details .mat-expansion-panel:last-of-type,.tawuniya-extra-details .mat-expansion-panel{border-radius: 4px;}
+.tawuniya-extra-details .mat-expansion-panel+.mat-expansion-panel{margin-top: 10px;}
 
 /* primary-paginator
 --------------------------------------------------------------------------------------------------------*/
