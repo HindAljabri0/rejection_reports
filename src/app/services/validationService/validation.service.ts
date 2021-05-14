@@ -9,9 +9,9 @@ export class ValidationService {
 
   constructor(private httpClint: HttpClient) { }
 
-  reValidateClaims(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string) {
+  reValidateClaims(providerID: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string) {
 
-    let requestURL = `/providers/${providerId}/claims/cratieria?`;
+    let requestURL = `/providers/${providerID}/re-validate/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
       requestURL += `claimIDs=${claimIDs}&`
     } else {
@@ -44,7 +44,7 @@ export class ValidationService {
       }
     }
 
-    const httpRequest = new HttpRequest('PATCH', environment.validationServiceHost + requestURL, null);
+    const httpRequest = new HttpRequest('PATCH', environment.claimServiceHost + requestURL, null);
 
     return this.httpClint.request(httpRequest);
   }
