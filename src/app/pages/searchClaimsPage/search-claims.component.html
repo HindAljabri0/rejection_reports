@@ -119,7 +119,6 @@
                     <div class="fixed-height">
                         <table class="primary-grid contextful sticky-header" cellpadding="0" cellspacing="0" border="0">
                             <thead>
-                                <!-- <form #claimListForm='ngForm'> -->
                                 <tr *ngIf="summaries != null && summaries[selectedCardKey] != null">
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
@@ -328,6 +327,9 @@
                                     <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
+                                    <th class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}"
+                                        *ngIf="isPBMValidationVisible">
+                                        PBM Status</th>
                                     <th
                                         class="text-right text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <button mat-icon-button (click)="checkAllClaims()"
@@ -344,7 +346,7 @@
                                             diameter="20"></mat-spinner>
                                     </th>
                                 </tr>
-                                <!-- </form> -->
+
                             </thead>
                             <tbody>
                                 <ng-container *ngIf='claims.length > 0'>
@@ -385,6 +387,23 @@
                                         <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="text-center row-click">
                                             <span class="status-dot bg-{{accentColor(claim.status)}}"></span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                            class="text-center row-click" *ngIf="isPBMValidationVisible">
+                                            <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='approved'"
+                                                class="material-icons-outlined size-21 text-success"
+                                                matTooltip="Approved">check_circle</mat-icon>
+                                            <mat-icon
+                                                *ngIf="(claim.body.pbmClaimStatus | lowercase)==='partial_approved'"
+                                                class="material-icons-outlined size-21 text-warning"
+                                                matTooltip="Partially Approved">report
+                                            </mat-icon>
+                                            <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='invalid'"
+                                                class="material-icons-outlined size-21 text-danger"
+                                                matTooltip="Invalid">dangerous</mat-icon>
+                                            <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='rejected'"
+                                                class="material-icons-outlined size-21 text-danger"
+                                                matTooltip="Rejected">dangerous</mat-icon>
                                         </td>
                                         <td class="actions">
                                             <button [disabled]="!(claim.numOfPriceListErrors > 0)" class="text-orange"
@@ -535,7 +554,8 @@
                 <button *ngIf="isSubmit" (click)="submitAll()" mat-flat-button color="primary">Submit
                     {{selectedClaims.length==0?" All":"Selection"}}</button>
                 <button *ngIf="isPBMValidationVisible" (click)="applyPBMValidation()" mat-flat-button
-                    color="primary">PBM Validate {{selectedClaims.length==0?" All":"Selection"}}</button>
+                    color="primary">PBM Validate {{selectedClaims.length==0?"
+                    All":"Selection"}}</button>
             </div>
         </div>
     </ng-container>

@@ -594,7 +594,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.commen.loadingChanged.next(true);
     this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype,
-      this.claimRefNo, this.memberId, this.invoiceNo, this.patientFileNo, this.policyNo).subscribe((event) => {
+      this.fclaimRefNo, this.fmemberId, this.invoiceNo, this.fpatientFileNo, this.policyNo, this.fdrname, this.fnationalid, this.fclaimdate).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
           if (event.body['queuedStatus'] == 'QUEUED') {
@@ -635,14 +635,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.batchId,
       this.uploadId,
       null,
-      this.claimRefNo,
-      this.patientFileNo,
+      this.fclaimRefNo,
+      this.fpatientFileNo,
       this.invoiceNo,
       this.policyNo,
       this.summaries[this.selectedCardKey].statuses,
-      this.memberId,
+      this.fmemberId,
       this.selectedClaims,
-      this.from, this.to)
+      this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           const numberOfClaims = event.body['numberOfClaims'];
@@ -884,12 +884,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.to,
       this.uploadId,
       this.batchId,
-      this.claimRefNo,
-      this.memberId,
+      this.fclaimRefNo,
+      this.fmemberId,
       this.invoiceNo,
-      this.patientFileNo,
+      this.fpatientFileNo,
       this.policyNo,
-      this.casetype));
+      this.casetype,
+      this.fdrname,
+      this.fnationalid,
+      this.fclaimdate
+    ));
   }
   /*checkAllClaims() {
     this.waitingEligibilityCheck = true;
@@ -1124,7 +1128,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         if (result === true) {
           this.commen.loadingChanged.next(true);
           const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, status, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               const status = event.body['status'];
@@ -1376,7 +1380,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.commen.loadingChanged.next(true);
     // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
     const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
-    this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.claimRefNo, this.patientFileNo, this.invoiceNo, this.policyNo, status, this.memberId, this.selectedClaims, this.from, this.to).subscribe(event => {
+    this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fpatientFileNo).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
         if (event.body['response']) {
