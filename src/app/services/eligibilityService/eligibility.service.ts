@@ -27,26 +27,41 @@ export class EligibilityService {
     invoiceNo: string,
     patientFileNo: string,
     policyNo: string,
-    casetype?: string) {
-    let requestUrl = `/providers/${providerId}/eligibility/criteria`;
+    casetype?: string, drname?: string,
+    nationalId?: string,
+    claimDate?: string) {
+    let requestUrl = `/providers/${providerId}/eligibility/criteria?`;
     if (uploadId != null) {
-      requestUrl += `?payerId=${payerId}&uploadId=${uploadId}`;
+      requestUrl += `payerId=${payerId}&uploadId=${uploadId}`;
     } else if (payerId != null && from != null && to != null) {
-      requestUrl += `?payerId=${payerId}&fromDate=${from}&toDate=${to}`;
+      requestUrl += `payerId=${payerId}&fromDate=${from}&toDate=${to}`;
     } else if (batchId != null) {
-      requestUrl += `?batchId=${batchId}`;
-    } else if (claimRefNo != null) {
-      requestUrl += `?claimRefNo=${claimRefNo}`;
-    } else if (memberId != null) {
-      requestUrl += `?memberId=${memberId}`;
+      requestUrl += `batchId=${batchId}`;
     } else if (invoiceNo != null) {
-      requestUrl += `?invoiceNo=${invoiceNo}`;
-    } else if (patientFileNo != null) {
-      requestUrl += `?patientFileNo=${patientFileNo}`;
+      requestUrl += `invoiceNo=${invoiceNo}`;
     } else if (policyNo != null) {
-      requestUrl += `?policyNo=${policyNo}`;
+      requestUrl += `policyNo=${policyNo}`;
     } else if (casetype != null) {
-      requestUrl += `?casetype=${casetype}`;
+      requestUrl += `casetype=${casetype}`;
+    }
+    if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
+      requestUrl += `claimRefNo=${claimRefNo}&`;
+    }
+    if (memberId != null && memberId !== undefined && memberId !== '') {
+      requestUrl += `memberId=${memberId}&`;
+    }
+
+    if (patientFileNo != null && patientFileNo !== undefined && patientFileNo !== '') {
+      requestUrl += `patientFileNo=${patientFileNo}&`;
+    }
+    if (drname != null && drname !== '' && drname !== undefined) {
+      requestUrl += `drname=${drname}&`;
+    }
+    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+      requestUrl += `nationalId=${nationalId}&`;
+    }
+    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+      requestUrl += `claimDate=${claimDate}`;
     }
     const request = new HttpRequest('POST', environment.claimServiceHost + requestUrl, '');
     return this.http.request(request);

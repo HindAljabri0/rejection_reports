@@ -188,7 +188,9 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  PBMValidation(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string) {
+  PBMValidation(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string, drname?: string,
+    nationalId?: string,
+    claimDate?: string) {
 
     let requestURL = `/providers/${providerId}/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
@@ -204,22 +206,35 @@ export class ClaimService {
         requestURL += `uploadId=${uploadId}&`
       } if (caseTypes != null) {
         requestURL += `caseTypes=${caseTypes}&`
-      } if (claimRefNo != null) {
-        requestURL += `claimRefNo=${claimRefNo}&`
-      } if (patientFileNo != null) {
-        requestURL += `patientFileNo=${patientFileNo}&`
       } if (invoiceNo != null) {
         requestURL += `invoiceNo=${invoiceNo}&`
       } if (policyNo != null) {
         requestURL += `policyNo=${policyNo}&`
       } if (statuses != null) {
         requestURL += `statuses=${statuses}&`
-      } if (memberId != null) {
-        requestURL += `memberId=${memberId}&`
       } if (fromDate != null) {
         requestURL += `fromDate=${fromDate}&`
       } if (toDate != null) {
         requestURL += `toDate=${toDate}&`
+      }
+      if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
+        requestURL += `claimRefNo=${claimRefNo}&`;
+      }
+      if (memberId != null && memberId !== undefined && memberId !== '') {
+        requestURL += `memberId=${memberId}&`;
+      }
+
+      if (patientFileNo != null && patientFileNo !== undefined && patientFileNo !== '') {
+        requestURL += `patientFileNo=${patientFileNo}&`;
+      }
+      if (drname != null && drname !== '' && drname !== undefined) {
+        requestURL += `drname=${drname}&`;
+      }
+      if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+        requestURL += `nationalId=${nationalId}&`;
+      }
+      if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+        requestURL += `claimDate=${claimDate}`;
       }
     }
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
