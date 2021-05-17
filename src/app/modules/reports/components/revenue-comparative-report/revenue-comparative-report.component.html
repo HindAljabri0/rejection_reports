@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
     <div class="block-header has-border">
-        <p>Revenue Comparative Report (Avg. Cost per Claim)</p>
+        <p>Revenue Comparative Report</p>
     </div>
     <div class="block-filter-panel has-border">
         <div class="row small-gutter align-items-end">
@@ -47,8 +47,71 @@
     </div>
     <div class="progress-report-wrapper">
         <div class="right-block full-width">
-            <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-                [chartType]="lineChartType"></canvas>
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                [chartType]="barChartType">
+            </canvas>
+            <div class="table-responsive pt-2">
+                <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Months</th>
+                            <th>JAN</th>
+                            <th>FEB</th>
+                            <th>MAR</th>
+                            <th>APR</th>
+                            <th>MAY</th>
+                            <th>JUN</th>
+                            <th>JUL</th>
+                            <th>AUG</th>
+                            <th>SEP</th>
+                            <th>OCT</th>
+                            <th>NOV</th>
+                            <th>DEC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="align-middle medium">
+                            <th class="header-cell">Difference</th>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>10%
+                            </td>
+                            <td class="text-danger">
+                                <mat-icon>trending_down</mat-icon><br>5%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>25%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>65%
+                            </td>
+                            <td class="text-danger">
+                                <mat-icon>trending_down</mat-icon><br>23%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>34%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>11%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>5%
+                            </td>
+                            <td class="text-danger">
+                                <mat-icon>trending_down</mat-icon><br>50%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>10%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>10%
+                            </td>
+                            <td class="text-success">
+                                <mat-icon>trending_up</mat-icon><br>40%
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="block-footer sticky-bottom">
