@@ -330,6 +330,10 @@ const _claimReducer = createReducer(
                 ...state.claim.visitInformation,
                 departmentCode: department
             }
+        },
+        claimErrors: {
+            ...state.claimErrors,
+            genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'DPARCODE')]
         }
     })),
     on(actions.updatePageType, (state, { pageType }) => ({ ...state, type: pageType })),
@@ -364,6 +368,10 @@ const _claimReducer = createReducer(
                 ...state.claim.visitInformation,
                 visitDate: claimDate
             }
+        },
+        claimErrors: {
+            ...state.claimErrors,
+            genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'VSITDATE')]
         }
     })),
     on(actions.updateCaseType, (state, { caseType }) => ({
@@ -382,6 +390,10 @@ const _claimReducer = createReducer(
                 ...state.claim.caseInformation,
                 patient: { ...state.claim.caseInformation.patient, patientFileNumber: fileNumber }
             }
+        },
+        claimErrors: {
+            ...state.claimErrors,
+            genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'PATFILNO')]
         }
     })),
     on(actions.updateMemberDob, (state, { memberDob }) => ({
@@ -611,7 +623,13 @@ const _claimReducer = createReducer(
             },
             patientShareVATrate: null,
         };
-        return ({ ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN } });
+        return ({
+            ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN },
+            claimErrors: {
+                ...state.claimErrors,
+                invoicesErrors: [...state.claimErrors.invoicesErrors.filter(error => error.fieldName != 'INVOICENUM')]
+            }
+        });
     }),
     on(actions.addRetrievedServices, (state, { services }) => ({
         ...state,
