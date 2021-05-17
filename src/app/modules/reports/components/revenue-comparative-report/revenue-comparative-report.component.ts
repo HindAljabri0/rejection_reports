@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-revenue-comparative-report',
@@ -12,7 +11,19 @@ export class RevenueComparativeReportComponent implements OnInit {
 
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
-  public barChartOptions: ChartOptions = {
+  public lineChartData: ChartDataSets[] = [
+    {
+      data: [200000, 300000, 400000, 600000, 500000, 500000, 400000, 600000, 300000, 400000, 800000, 500000],
+      label: 'Medgulf',
+      lineTension: 0,
+      borderWidth: 2,
+      datalabels: {
+        display: false
+      }
+    }
+  ];
+  public lineChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  public lineChartOptions: ChartOptions = {
     responsive: true,
     aspectRatio: 1.6 / 1,
     scales: {
@@ -26,7 +37,7 @@ export class RevenueComparativeReportComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Months',
+          labelString: 'Year',
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           fontSize: 18,
@@ -44,7 +55,7 @@ export class RevenueComparativeReportComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Claims',
+          labelString: 'Amount',
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           fontSize: 18,
@@ -54,12 +65,6 @@ export class RevenueComparativeReportComponent implements OnInit {
           }
         }
       }]
-    },
-    plugins: {
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      },
     },
     legend: {
       labels: {
@@ -71,57 +76,20 @@ export class RevenueComparativeReportComponent implements OnInit {
       bodyFontFamily: this.chartFontFamily,
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily,
-    }
+    },
   };
-  public barChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [{
-    beforeInit: (chart, options) => {
-      chart.legend.afterFit = function () {
-        this.height += 10;
-      };
-    }
-  }, pluginDataLabels];
-  public barChartData: ChartDataSets[] = [
+  public lineChartColors: Color[] = [
     {
-      data: [1000, 1750, 2250, 1000, 4750, 1000, 750, 1500, 3000, 1250, 1000, 250],
-      label: 'Avg. Cost 2018',
-      categoryPercentage: 0.85,
-      barPercentage: 0.85,
-      backgroundColor: '#3366cc',
-      hoverBackgroundColor: '#3366cc',
-      datalabels: {
-        color: this.chartFontColor,
-        padding: {
-          bottom: 10
-        },
-        font: {
-          weight: 600,
-          size: 11,
-          family: this.chartFontFamily
-        }
-      }
-    }, {
-      data: [1500, 1500, 3000, 2750, 500, 2750, 1500, 2250, 500, 2250, 1500, 2000],
-      label: 'Avg. Cost 2019',
-      categoryPercentage: 0.85,
-      barPercentage: 0.85,
-      backgroundColor: '#ff9900',
-      hoverBackgroundColor: '#ff9900',
-      datalabels: {
-        color: this.chartFontColor,
-        padding: {
-          bottom: -5
-        },
-        font: {
-          weight: 600,
-          size: 11,
-          family: this.chartFontFamily
-        }
-      }
+      backgroundColor: 'rgba(0,0,0,0)',
+      borderColor: '#39E6BE',
+      pointBackgroundColor: 'rgba(0,0,0,0)',
+      pointBorderColor: 'rgba(0,0,0,0)',
+      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
+      pointHoverBorderColor: 'rgba(0,0,0,0)',
     }
   ];
+  public lineChartLegend = true;
+  public lineChartType: ChartType = 'line';
   constructor() { }
 
   ngOnInit() {
