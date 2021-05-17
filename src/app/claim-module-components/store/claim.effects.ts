@@ -68,13 +68,13 @@ export class ClaimEffects {
                 if (departments != null && departments.length > 0) {
                     this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
                     this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
-                   
+
                 }
             });
     }
 
 
-    
+
     openApprovalFormDialog$ = createEffect(() => this.actions$.pipe(
         ofType(openCreateByApprovalDialog),
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
@@ -150,27 +150,14 @@ export class ClaimEffects {
         withLatestFrom(this.store.select(getPageMode)),
         map(values => ({ errors: values[0][1], pageMode: values[1] })),
         map(values => {
-            if (values.errors.diagnosisErrors.length == 0
-                && values.errors.genInfoErrors.length == 0
-                && values.errors.invoicesErrors.length == 0
-                && values.errors.uncategorised.length == 0
-                && values.errors.labResultsErrors.length == 0
+            if ((values.errors.genInfoErrors.length == 0 || values.errors.genInfoErrors.every(error => !['VSITDATE', 'PATFILNO', 'DPARCODE'].includes(error.fieldName)))
+                && (values.errors.invoicesErrors.length == 0 || values.errors.invoicesErrors.every(error => error.fieldName != 'INVOICENUM'))
             ) {
                 if (values.pageMode == 'CREATE') {
                     return getUploadId({ providerId: this.sharedServices.providerId });
                 } else {
                     return saveClaimChanges();
                 }
-            } else if ( values.errors.diagnosisErrors.length == 0
-                && values.errors.genInfoErrors.length == 0  
-                && values.errors.invoicesErrors.length == 0
-                && values.errors.uncategorised.length == 0
-                && values.errors.labResultsErrors.length == 0) {
-                this.dialogService.openMessageDialog({
-                    title: '',
-                    message: 'Claim net amount cannot be zero. At least one invoice should have non-zero net amount.',
-                    isError: true
-                });
             }
             return setLoading({ loading: false });
         })
