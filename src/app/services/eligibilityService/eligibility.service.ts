@@ -45,20 +45,20 @@ export class EligibilityService {
       requestUrl += `casetype=${casetype}`;
     }
     if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
-      requestUrl += `claimRefNo=${claimRefNo}&`;
+      requestUrl += `&claimRefNo=${claimRefNo}`;
     }
     if (memberId != null && memberId !== undefined && memberId !== '') {
-      requestUrl += `memberId=${memberId}&`;
+      requestUrl += `&memberId=${memberId}`;
     }
 
     if (patientFileNo != null && patientFileNo !== undefined && patientFileNo !== '') {
-      requestUrl += `patientFileNo=${patientFileNo}&`;
+      requestUrl += `&patientFileNo=${patientFileNo}`;
     }
     if (drname != null && drname !== '' && drname !== undefined) {
-      requestUrl += `drname=${drname}&`;
+      requestUrl += `&drname=${drname}`;
     }
     if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-      requestUrl += `nationalId=${nationalId}&`;
+      requestUrl += `&nationalId=${nationalId}`;
     }
     if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestUrl += `claimDate=${claimDate}`;

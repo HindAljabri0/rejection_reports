@@ -940,10 +940,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.notificationService._messageWatchSources['eligibility'].subscribe(value => {
       value = value.replace(`"`, '').replace(`"`, '');
       const splitedValue: string[] = value.split(':');
-      if (splitedValue.length == 2) {
+      
+      if (splitedValue.length >= 2) {
         const index = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
-        if (index > -1) {
+        if (index > -1) { 
           this.claims[index].eligibilitycheck = splitedValue[1];
+          if(splitedValue[2] != undefined){
+            this.claims[index].eligibilityStatusDesc = splitedValue[2];
+          }
         }
         if (this.eligibilityWaitingList[splitedValue[0]] != null) {
           this.eligibilityWaitingList[splitedValue[0]].result = splitedValue[1];

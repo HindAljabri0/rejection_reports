@@ -50,23 +50,23 @@ export class ClaimSubmittionService {
     }
 
     if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
-      requestURL += `claimRefNo=${claimRefNo}&`;
+      requestURL += `&claimRefNo=${claimRefNo}`;
     }
     if (memberId != null && memberId !== undefined && memberId !== '') {
-      requestURL += `memberId=${memberId}&`;
+      requestURL += `&memberId=${memberId}`;
     }
 
     if (patientFileNo != null && patientFileNo !== undefined && patientFileNo !== '') {
-      requestURL += `patientFileNo=${patientFileNo}&`;
+      requestURL += `&patientFileNo=${patientFileNo}`;
     }
     if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `drname=${drname}&`;
+      requestURL += `&drname=${drname}`;
     }
     if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-      requestURL += `nationalId=${nationalId}&`;
+      requestURL += `&nationalId=${nationalId}`;
     }
     if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
-      requestURL += `claimDate=${claimDate}`;
+      requestURL += `&claimDate=${claimDate}`;
     }
 
     const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {});
