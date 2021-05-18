@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatTabChangeEvent } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatTabChangeEvent, MatMenu, MatMenuTrigger } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { CreditReportSummaryResponse } from 'src/app/models/tawuniyaCreditReportModels/creditReportSummaryResponse';
 import { DeductedService } from 'src/app/models/tawuniyaCreditReportModels/detuctedServices';
@@ -81,6 +81,8 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   disagreeComment: string = '';
 
   serviceBeingAttachedFileTo: DeductedService | RejectedService = null;
+  selectedDisagreeId: any;
+  @ViewChild('clickMenuTrigger', { static: false }) clickMenuTrigger: MatMenuTrigger;
 
   constructor(
     private dialog: MatDialog,
@@ -162,15 +164,15 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.claimService.getClaimIdByPayerRefNo(this.sharedServices.providerId, claimno).subscribe(
       event => {
-        if(event instanceof HttpResponse){
+        if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
           window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${event.body}`);
         }
       },
       errorEvent => {
         this.sharedServices.loadingChanged.next(false);
-        if(errorEvent instanceof HttpErrorResponse){
-          if(errorEvent.status == 404){
+        if (errorEvent instanceof HttpErrorResponse) {
+          if (errorEvent.status == 404) {
             this.dialogService.openMessageDialog({
               title: '',
               message: `Claim with provided payer ref number [${claimno}] was not found.`,
@@ -341,7 +343,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     this.selectedServiceTab = event.index == 0 ? 'deducted-services' : 'rejected-services';
   }
 
-  agreeOnSelectedServices() {
+  agreeOnSelectedServices(id = null) {
     if (this.sharedServices.loading) return;
     this.sharedServices.loadingChanged.next(true);
     let control = this.selectedServiceTab == 'deducted-services' ? this.selectionControl.deducted : this.selectionControl.rejected;
@@ -352,14 +354,19 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       this.selectedServiceTab == 'deducted-services' ? 'deducted' : 'rejected',
       {
         agree: true,
-        serialNumbers: control.selections
+        serialNumbers: id === null ? control.selections : [id]
       }
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
-        control.selections.forEach(serial => {
-          services.find(service => service.id.serialno == serial).agree = 'Y';
-        });
+        if (id !== null) {
+          services.find(service => service.id.serialno == id).agree = 'Y';
+        }
+        else {
+          control.selections.forEach(serial => {
+            services.find(service => service.id.serialno == serial).agree = 'Y';
+          });
+        }
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -438,12 +445,13 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
         service.comments = service.newComments;
-        service.agree = 'N'
+        service.agree = 'N';
+        this.clickMenuTrigger.closeMenu();
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-        if(errorEvent.status == 400){
+        if (errorEvent.status == 400) {
           this.dialogService.openMessageDialog({
             title: '',
             message: errorEvent.error.message,
@@ -504,5 +512,8 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       return false;
     }
     return true;
+  }
+  selectionDisagreement(id: string) {
+    this.selectedDisagreeId = id;
   }
 }
