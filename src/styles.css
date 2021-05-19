@@ -443,6 +443,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.manual-row-color)>tbody>tr:nth-child(even),.primary-grid.manual-row-color>tbody>.even{background-color: #EDF4FF;}
 .primary-grid .actions{text-align: right;white-space: nowrap;}
 .primary-grid .actions .mat-icon-button{width: 30px;height: 30px;line-height: 30px;margin:-5px 0;display: inline-block;vertical-align: middle;}
+.primary-grid .actions .mat-icon-button.disabled,.primary-grid .actions .mat-icon-button:disabled{opacity: 0.5;cursor: not-allowed;}
 .primary-grid .actions .mat-icon-button .mat-button-wrapper{display: block;}
 .primary-grid .actions .mat-icon-button .mat-icon{font-size: 20px;line-height: 20px;height: 20px;width: 20px;}
 .primary-grid .actions .mat-spinner-wrapper{display: inline-flex;vertical-align: middle;align-items: center;justify-content: center;height: 32px;width: 32px;}
