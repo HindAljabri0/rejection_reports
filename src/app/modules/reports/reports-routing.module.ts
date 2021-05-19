@@ -9,7 +9,6 @@ import { CreditReportSummaryDetailsComponent } from './components/credit-report-
 import { CreditReportSummaryComponent } from './components/credit-report-summary/credit-report-summary.component';
 import { RejectedClaimProgressReportComponent } from './components/rejected-claim-progress-report/rejected-claim-progress-report.component';
 import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-report/revenue-breakdown-report.component';
-import { RevenueComparativeReportCostClaimComponent } from './components/revenue-comparative-report-cost-claim/revenue-comparative-report-cost-claim.component';
 import { RevenueComparativeReportComponent } from './components/revenue-comparative-report/revenue-comparative-report.component';
 import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
 import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
@@ -27,8 +26,7 @@ const routes: Routes = [
   { path: 'claim-submissions', component: ClaimSubmissionsComponent },
   { path: 'revenue-tracking-report', component: RevenueTrackingReportComponent },
   { path: 'revenue-report-breakdown', component: RevenueBreakdownReportComponent },
-  { path: 'revenue-comparative-report', component: RevenueComparativeReportComponent },
-  { path: 'revenue-comparative-report-cost-claim', component: RevenueComparativeReportCostClaimComponent }
+  { path: 'revenue-comparative-report', component: RevenueComparativeReportComponent }
 ];
 
 @NgModule({
