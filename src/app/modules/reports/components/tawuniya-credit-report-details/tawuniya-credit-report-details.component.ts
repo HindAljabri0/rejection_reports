@@ -13,6 +13,7 @@ import { CreditReportUploadModel } from 'src/app/models/creditReportUpload';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
+import { ClaimStatus } from 'src/app/models/claimStatus';
 
 @Component({
   selector: 'app-tawuniya-credit-report-details',
@@ -361,10 +362,12 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.sharedServices.loadingChanged.next(false);
         if (id !== null) {
           services.find(service => service.id.serialno == id).agree = 'Y';
+          services.find(service => service.id.serialno == id).comments = '';
         }
         else {
           control.selections.forEach(serial => {
             services.find(service => service.id.serialno == serial).agree = 'Y';
+            services.find(service => service.id.serialno == id).comments = '';
           });
         }
       }
@@ -515,5 +518,13 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   }
   selectionDisagreement(id: string) {
     this.selectedDisagreeId = id;
+  }
+  disabledButton() {
+    const status = this.data.providercreditReportInformation.status;
+    return status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Under_Submision.toLowerCase() || status.toLowerCase() === ClaimStatus.INVALID.toLowerCase() || status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Submitted.toLowerCase() ? true : false;
+  }
+  disabledButtonClass() {
+    const status = this.data.providercreditReportInformation.status;
+    return status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Under_Submision.toLowerCase() || status.toLowerCase() === ClaimStatus.INVALID.toLowerCase() || status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Submitted.toLowerCase() ? 'disabled' : '';
   }
 }

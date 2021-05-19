@@ -168,7 +168,7 @@
                         </div>
                         <div class="text-right">
                             <button type="button" mat-flat-button color="primary"
-                                (click)="disagreeOnSelectedServices()">Apply</button>
+                                (click)="disagreeOnSelectedServices()">Disagree All</button>
                         </div>
                     </div>
                 </mat-menu>
@@ -237,12 +237,16 @@
                                     </td>
                                     <td class="actions" (click)="$event.stopPropagation()">
                                         <button type="button" mat-icon-button class="text-success" matTooltip="Agree"
-                                            (click)="agreeOnSelectedServices(service.id.serialno)">
+                                            [ngClass]="disabledButtonClass()"
+                                            (click)="agreeOnSelectedServices(service.id.serialno)"
+                                            [disabled]="disabledButton()">
                                             <mat-icon class="material-icons-outlined">check_circle</mat-icon>
                                         </button>
                                         <button type="button" mat-icon-button class="text-danger" matTooltip="Disagree"
-                                            [matMenuTriggerFor]="editMenu1" #clickMenuTrigger="matMenuTrigger"
-                                            (click)="selectionDisagreement(service.id.serialno)">
+                                            [ngClass]="disabledButtonClass()" [matMenuTriggerFor]="editMenu1"
+                                            #clickMenuTrigger="matMenuTrigger"
+                                            (click)="selectionDisagreement(service.id.serialno)"
+                                            [disabled]="disabledButton()">
                                             <mat-icon class="material-icons-outlined">cancel</mat-icon>
                                         </button>
                                         <!-- <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1"
@@ -378,6 +382,7 @@
                                                         (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
                                                         <img [src]="getImageOfBlob(service)"
                                                             [alt]="service.newAttachment.name" />
+                                                        <!-- <img src="./assets/ic-pdf-lg.svg" [alt]="service.newAttachment.name" /> -->
                                                     </li>
                                                     <li *ngIf="service.newAttachment == null"
                                                         matTooltip="Add Attachments" class="add-block">

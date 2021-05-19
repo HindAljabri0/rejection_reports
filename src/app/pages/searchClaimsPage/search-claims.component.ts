@@ -935,6 +935,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.watchingEligibility) { return; }
 
     this.watchingEligibility = true;
+    if (this.eligibilityWaitingList.length === 0)
+      this.waitingEligibilityCheck = false;
 
     this.notificationService.startWatchingMessages(this.providerId, 'eligibility');
     this.notificationService._messageWatchSources['eligibility'].subscribe(value => {
@@ -995,6 +997,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         // this.notificationService.stopWatchingMessages('eligibility');
         this.waitingEligibilityCheck = false;
       }
+
     });
   }
 
@@ -1427,7 +1430,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           this.dialogService.openMessageDialog(
             new MessageDialogData('',
               event.body['message'],
-              false))
+              true))
             .subscribe(afterColse => {
               location.reload();
             });
@@ -1436,7 +1439,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           this.dialogService.openMessageDialog(
             new MessageDialogData('',
               event.body['message'],
-              true))
+              false))
             .subscribe(afterColse => {
               location.reload();
             });
