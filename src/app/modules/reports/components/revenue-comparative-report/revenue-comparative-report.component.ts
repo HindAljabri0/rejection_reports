@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-
 @Component({
   selector: 'app-revenue-comparative-report',
   templateUrl: './revenue-comparative-report.component.html',

@@ -332,14 +332,14 @@
                                     </div>
                                 </div>
                                 <div class="row small-gutter"
-                                    *ngIf="pageMode != 'CREATE' && isPBMValidationVisible && (service.serviceType.value==='MEDICATION' || service.serviceType.value==='SUPPLY')">
-                                    <div class="col-xxl-4 col-xl-3 col-lg-4">
+                                    *ngIf="pageMode != 'CREATE' && isPBMValidationVisible && (service.serviceType.value==='MEDICATION')">
+                                    <div class="col-xxl-4 col-xl-3 col-lg-4" *ngIf="service.pbmServiceStatus!==null">
                                         <div class="inline-labelled-text">
                                             <label>PBM Status</label>
                                             <p>{{service.pbmServiceStatus}}</p>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-8 col-xl-9 col-lg-8">
+                                    <div class="col-xxl-8 col-xl-9 col-lg-8" *ngIf="service.pbmServiceError!==null">
                                         <div class="inline-labelled-text">
                                             <label>PBM Comments</label>
                                             <p *ngFor="let item of service.pbmServiceError">{{item.errorCode}} :

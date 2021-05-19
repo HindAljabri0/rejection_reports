@@ -6,9 +6,9 @@
     <div class="inline-loader" *ngIf="isLoading">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
-    <mat-accordion [displayMode]="'flat'" [hideToggle]="true"
-        *ngIf="this.creditReportDetails != undefined && !isLoading">
-        <mat-expansion-panel>
+    <!-- <mat-accordion [displayMode]="'flat'"  *ngIf="this.creditReportDetails != undefined && !isLoading"> -->
+    <ng-container *ngIf="this.creditReportDetails != undefined && !isLoading">
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Batch Information
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Service Information
@@ -176,7 +176,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Diagnosis
@@ -203,30 +203,33 @@
                 </div>
             </ng-container>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded="true" [hideToggle]="true"
+            *ngIf="creditReportDetails.comment!==null || creditReportDetails.attachmentName!==null">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Provider Comment and Attachment
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="row">
-                <div class="col-6">
+                <div class="col-6" *ngIf="creditReportDetails.comment!==null && creditReportDetails.comment!==''">
                     <div class="inline-labelled-text">
                         <label>Comment</label>
                         <p>{{this.creditReportDetails?.comment}}</p>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-6"
+                    *ngIf="creditReportDetails.attachmentName!==undefined && creditReportDetails.attachmentName!==null">
                     <div class="inline-labelled-text">
                         <label>Attachment</label>
-                        <div class="attachment" *ngIf="creditReportDetails != null && creditReportDetails.attachment != null">
+                        <div class="attachment"
+                            *ngIf="creditReportDetails != null && creditReportDetails.attachment != null">
                             <div class="thumbnail">
-                                <img *ngIf="!isPdf()"
-                                    [src]="getImageOfBlob()" [alt]="this.creditReportDetails.attachmentName"
-                                    (click)="viewAttachment()" style="cursor: pointer;" />
-                                <img *ngIf="isPdf()"
-                                    src="assets/file-types/ic-pdf.svg" [alt]="this.creditReportDetails.attachmentName"
-                                    (click)="viewAttachment()" style="cursor: pointer;" />
+                                <img *ngIf="!isPdf()" [src]="getImageOfBlob()"
+                                    [alt]="this.creditReportDetails.attachmentName" (click)="viewAttachment()"
+                                    style="cursor: pointer;" />
+                                <img *ngIf="isPdf()" src="assets/file-types/ic-pdf.svg"
+                                    [alt]="this.creditReportDetails.attachmentName" (click)="viewAttachment()"
+                                    style="cursor: pointer;" />
                             </div>
                             <div class="content">
                                 <p class="title">{{creditReportDetails.attachmentName}}</p>
@@ -242,7 +245,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-    </mat-accordion>
+    </ng-container>
     <app-empty-state *ngIf="this.creditReportDetails == undefined && !isLoading" class="claim-list-empty-state"
         message='No {{title}} services found!'>
     </app-empty-state>

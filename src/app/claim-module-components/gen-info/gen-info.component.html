@@ -110,8 +110,8 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('nationalId')"
-            [matTooltip]="getFieldError('nationalId')">
+        <div class="form-group" [class.has-error]="fieldHasError('NATID')"
+            [matTooltip]="getFieldError('NATID')">
             <label class="control-label">National / Iqama ID</label>
             <input class="form-control" placeholder="Enter national / iqama ID" type="number"
                 [formControl]="nationalIdController" (change)="updateClaim('nationalId')">
