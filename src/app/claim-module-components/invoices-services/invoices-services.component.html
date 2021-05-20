@@ -1,7 +1,7 @@
 <div class="d-flex mb-3">
     <h4 class="align-self-center medium">Invoice & Services</h4>
-    <button *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" disableRipple="true" mat-flat-button
-        class="ml-auto px-0 primary-text-btn" (click)="onAddInvoiceClick()">
+    <!-- *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" -->
+    <button disableRipple="true" mat-flat-button class="ml-auto px-0 primary-text-btn" (click)="onAddInvoiceClick()">
         <span class="d-flex align-items-center">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="pl-1">Add Invoice</span>
@@ -58,7 +58,8 @@
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)"
                                     [value]="controllers[i].invoice.invoiceDepartment"
-                                    [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" required>
+                                    [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED' && pageMode !== 'EDIT'"
+                                    required>
                                     <mat-option *ngFor="let department of departments"
                                         [value]="department.departmentId">
                                         {{department.name}}</mat-option>
@@ -71,8 +72,9 @@
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.services.length}}</td>
                     <td>
+                        <!-- (pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') &&  -->
                         <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick(i)"
-                            *ngIf="(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') && controllers.length > 1">
+                            *ngIf="controllers.length > 1">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                     </td>
