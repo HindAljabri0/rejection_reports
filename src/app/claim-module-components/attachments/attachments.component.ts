@@ -116,7 +116,8 @@ export class AttachmentsComponent implements OnInit {
 
   viewAttachment(attachment: AttachmentRequest) {
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
-      data: { filename: attachment.fileName, attachment: attachment.attachmentFile }
+      data: { filename: attachment.fileName, attachment: attachment.attachmentFile },
+      panelClass: ['primary-dialog', 'dialog-xl']
     })
   }
 

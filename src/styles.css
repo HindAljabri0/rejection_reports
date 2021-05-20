@@ -161,6 +161,9 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .mat-select-panel-wrap .mat-select-panel,.cdk-overlay-pane .mat-menu-panel,.mat-datepicker-popup .mat-datepicker-content{background: rgba(255,255,255,0.85);-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
 .mat-select-panel .mat-option:hover:not(.mat-option-disabled), .mat-select-panel .mat-option:focus:not(.mat-option-disabled){background-color: rgba(0,0,0,0.06);}
 .cdk-overlay-container .cdk-overlay-backdrop.cdk-overlay-dark-backdrop{-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
+.attachment-view-img{display: block;max-width: 100%;margin: 0 auto;}
+.attachment-view-frame{display: block;width: 100%;height: 100%;}
+.attachment-view-body{height: calc(100vh - 119px);overflow: auto;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -598,7 +601,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .attachment.add-block{padding: 0;}
 .attachment.add-block>button{display: block;width: 100%;border:0;background: none;color:inherit;height: 100%;}
 .attachment.add-block>button .mat-icon{display: block;margin: 0 auto;}
-.attachment .thumbnail{height: 60px;flex-basis: 60px;flex-grow: 0;flex-shrink: 0;max-width:60px;border-radius: 6px;overflow: hidden;}
+.attachment .thumbnail{height: 60px;flex-basis: 60px;flex-grow: 0;flex-shrink: 0;max-width:60px;border-radius: 6px;overflow: hidden;display: block;border:0;padding: 0;margin: 0;background: none;}
 .attachment .thumbnail>img{height: 100%;width: 100%;}
 .attachment .content{flex-basis: calc(100% - 60px);flex-grow: 0;flex-shrink: 0;max-width:calc(100% - 60px);padding-left: 12px;}
 
