@@ -273,8 +273,14 @@ export class InvoicesServicesComponent implements OnInit {
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.controllers.forEach(invoiceControllers => {
-      invoiceControllers.invoiceDate.disable();
-      invoiceControllers.invoiceNumber.disable();
+      if (this.pageMode === "EDIT") {
+        invoiceControllers.invoiceDate.enable();
+        invoiceControllers.invoiceNumber.enable();
+      }
+      else {
+        invoiceControllers.invoiceDate.disable();
+        invoiceControllers.invoiceNumber.disable();
+      }
       invoiceControllers.services.forEach(servicesControllers => {
         if (allowEdit) {
           servicesControllers.netVatRate.enable();
