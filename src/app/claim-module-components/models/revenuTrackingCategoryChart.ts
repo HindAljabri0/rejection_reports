@@ -1,9 +1,8 @@
 export enum RevenuTrackingReportChart {
-    Service = 'SERVICE',
-    Department = 'DEPARTMENT',
-    Doctor = 'DOCTOR',
-    Service_type = 'SERVICE_TYPE',
-    Category = 'CATEGORY',
-    AvgCost = 'AVGCOST',
-    All = 'ALL'
+    Service = 'service',
+    Department = 'department',
+    Doctor = 'doctor',
+    Service_type = 'servicetype',
+    AvgCost = 'avgcost',
+    All = 'all'
 }

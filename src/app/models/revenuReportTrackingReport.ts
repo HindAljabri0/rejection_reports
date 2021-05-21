@@ -1,5 +1,6 @@
 export class RevenuTrackingReport {
-    payerId = '0';
-    beforeDate = '';
-    afterDate = '';
+    payer = '0';
+    from = '';
+    to = '';
+    subcategory = '';
 }
