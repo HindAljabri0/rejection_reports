@@ -32,8 +32,7 @@ export class RevenueTrackingReportComponent implements OnInit {
   ];
   public lineChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   public lineChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         gridLines: {
@@ -109,8 +108,7 @@ export class RevenueTrackingReportComponent implements OnInit {
 
 
   public barChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         stacked: true,

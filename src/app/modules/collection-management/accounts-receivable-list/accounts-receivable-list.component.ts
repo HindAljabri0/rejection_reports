@@ -55,15 +55,7 @@ export class AccountsReceivableListComponent implements OnInit {
             backgroundColor: '#3060AA',
             hoverBackgroundColor: '#3060AA',
             datalabels: {
-                color: this.chartFontColor,
-                padding: {
-                    bottom: -5
-                },
-                font: {
-                    weight: 600,
-                    size: 11,
-                    family: this.chartFontFamily
-                }
+                display: false
             }
         }
     ];

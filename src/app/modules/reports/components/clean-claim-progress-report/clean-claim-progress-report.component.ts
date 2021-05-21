@@ -16,8 +16,7 @@ export class CleanClaimProgressReportComponent implements OnInit {
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
   public barChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         gridLines: {

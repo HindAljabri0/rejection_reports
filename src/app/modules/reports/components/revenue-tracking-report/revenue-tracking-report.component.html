@@ -68,11 +68,13 @@
             </ul>
         </div>
         <div class="right-block">
-            <canvas *ngIf="allChart" baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
-            <canvas *ngIf="serviceChart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-                [chartType]="barChartType">
-            </canvas>
+            <div class="chart-wrapper">
+                <canvas *ngIf="allChart" baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                    [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+                <canvas *ngIf="serviceChart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                    [chartType]="barChartType">
+                </canvas>
+            </div>
         </div>
     </div>
     <div class="block-footer sticky-bottom">
