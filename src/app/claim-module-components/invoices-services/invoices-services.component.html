@@ -1,4 +1,4 @@
-<div class="d-flex mb-3">
+<div class="d-flex mb-3" *ngIf="pageMode != 'VIEW'">
     <h4 class="align-self-center medium">Invoice & Services</h4>
     <!-- *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'" -->
     <button disableRipple="true" mat-flat-button class="ml-auto px-0 primary-text-btn" (click)="onAddInvoiceClick()">

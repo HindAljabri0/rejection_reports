@@ -2,15 +2,16 @@
     <div class="block-header has-border">
         <p>Revenue Tracking Report</p>
     </div>
-    <form #revenuTrackingReportForm='ngForm' (ngSubmit)='revenuTrackingReportForm.valid'>
+    <form #revenuTrackingReportForm='ngForm' (ngSubmit)='revenuTrackingReportForm.valid && generate()'>
         <div class="block-filter-panel has-border">
             <div class="row small-gutter align-items-end">
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && !revenuTrackingReport.payer}">
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="revenuTrackingReport.payerId" #payerId name="payer"
-                                (selectionChange)="selectRevenu($event)">
+                            <mat-select [(ngModel)]="revenuTrackingReport.payer" #payerId name="payer"
+                                (selectionChange)="selectRevenu($event)" required>
                                 <mat-option value="0">All</mat-option>
                                 <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
@@ -19,24 +20,29 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && from.invalid}">
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
-                            <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date"
-                                [(ngModel)]='revenuTrackingReport.beforeDate' #beforeDate='ngModel' name="beforeDate" />
-                            <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
-                            <mat-datepicker #fromDate></mat-datepicker>
+                            <!-- [matDatepicker]="fromDate"  -->
+                            <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                                (onShown)="onOpenCalendar($event)" placeholder="Select from date"
+                                [(ngModel)]='revenuTrackingReport.from' #from='ngModel' name="from" required />
+                            <!-- <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDate></mat-datepicker> -->
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && to.invalid}">
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
-                            <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date"
-                                [(ngModel)]='revenuTrackingReport.afterDate' #afterDate='ngModel' name="afterDate" />
-                            <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
-                            <mat-datepicker #toDate></mat-datepicker>
+                            <input class="form-control date-picker" placeholder="Select to date" bsDatepicker
+                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                [(ngModel)]='revenuTrackingReport.to' #to='ngModel' name="to" required />
+                            <!-- <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                            <mat-datepicker #toDate></mat-datepicker> -->
                         </div>
                     </div>
                 </div>
