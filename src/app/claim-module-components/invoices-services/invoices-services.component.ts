@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
 import {
   FieldError,
@@ -273,8 +273,14 @@ export class InvoicesServicesComponent implements OnInit {
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.controllers.forEach(invoiceControllers => {
-      invoiceControllers.invoiceDate.disable();
-      invoiceControllers.invoiceNumber.disable();
+      if (this.pageMode === "EDIT") {
+        invoiceControllers.invoiceDate.enable();
+        invoiceControllers.invoiceNumber.enable();
+      }
+      else {
+        invoiceControllers.invoiceDate.disable();
+        invoiceControllers.invoiceNumber.disable();
+      }
       invoiceControllers.services.forEach(servicesControllers => {
         if (allowEdit) {
           servicesControllers.netVatRate.enable();
@@ -632,6 +638,8 @@ export class InvoicesServicesComponent implements OnInit {
     this.updateClaim();
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
+    this.expandedInvoice = -1;
+    this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
   }
 
   onDeleteServiceClick(event, i, j) {

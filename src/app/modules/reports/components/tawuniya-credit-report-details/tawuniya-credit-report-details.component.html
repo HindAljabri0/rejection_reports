@@ -156,9 +156,10 @@
                 </mat-menu>
                 <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a> -->
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree" (click)="agreeOnSelectedServices()">Agree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree" (click)="agreeOnSelectedServices()"
+                    [ngClass]="disabledButtonClass()">Agree</a>
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled">Agree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled" [ngClass]="disabledButtonClass()">Agree</a>
                 <mat-menu #disagreeMenu="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
                     <div (click)="$event.stopPropagation()">
                         <div class="form-group">
@@ -171,9 +172,10 @@
                     </div>
                 </mat-menu>
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree">Disagree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree"
+                    [ngClass]="disabledButtonClass()">Disagree</a>
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled">Disagree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled" [ngClass]="disabledButtonClass()">Disagree</a>
             </div>
         </div>
         <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="onTabChange($event)">
