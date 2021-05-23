@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchService } from 'src/app/services/serchService/search.service';
 
 @Component({
   selector: 'app-uploads-page',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadsPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private searchService:SearchService) { }
 
   ngOnInit() {
   }
