@@ -80,6 +80,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AttachmentViewDialogComponent } from './components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { ConfiguartionModalComponent } from './pages/configuartion-modal/configuartion-modal.component';
+import { UploadsPageComponent } from './pages/uploads-page/uploads-page.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +132,8 @@ import { ConfiguartionModalComponent } from './pages/configuartion-modal/configu
     ChangeLogDialogComponent,
     MainLayoutComponent,
     AttachmentViewDialogComponent,
-    ConfiguartionModalComponent
+    ConfiguartionModalComponent,
+    UploadsPageComponent
   ],
   imports: [
     AppRoutingModule,
