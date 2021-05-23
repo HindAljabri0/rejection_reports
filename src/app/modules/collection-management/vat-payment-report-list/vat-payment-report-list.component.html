@@ -46,34 +46,55 @@
             </div>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Payer Name</th>
-                    <th>Grand Total Payment Amount</th>
-                    <th>Grand Total Amount</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">Bupa</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">1,000,000</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">800,000</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">JAN 2018</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">DEC 2019</td>
-                </tr>
-                <tr>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">MedGulf</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">1,000,000</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">800,000</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">JAN 2018</td>
-                    <td class="row-click" routerLink="/collection-management/vat-payment-details">DEC 2019</td>
-                </tr>
-            </tbody>
-        </table>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Payer Name</th>
+                        <th>Grand Total Payment Amount</th>
+                        <th>Grand Total Amount</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">Bupa</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">1,000,000</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">800,000</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">JAN 2018</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">DEC 2019</td>
+                    </tr>
+                    <tr>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">MedGulf</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">1,000,000</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">800,000</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">JAN 2018</td>
+                        <td class="row-click" routerLink="/collection-management/vat-payment-details">DEC 2019</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
     </div>
     <div class="file-upload-wrapper page-fab">
         <div class="content">

@@ -882,8 +882,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.payerId,
       this.from,
       this.to,
-      this.uploadId,
       this.batchId,
+      this.uploadId,
       this.fclaimRefNo,
       this.fmemberId,
       this.invoiceNo,
@@ -905,6 +905,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }*/
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
+    // if (this.eligibilityWaitingList.length === 0)
+    //   this.waitingEligibilityCheck = false;
     this.watchEligibilityChanges();
     request.subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -935,8 +937,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.watchingEligibility) { return; }
 
     this.watchingEligibility = true;
-    if (this.eligibilityWaitingList.length === 0)
-      this.waitingEligibilityCheck = false;
+
 
     this.notificationService.startWatchingMessages(this.providerId, 'eligibility');
     this.notificationService._messageWatchSources['eligibility'].subscribe(value => {

@@ -105,8 +105,9 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .page-fab .page-fab.mat-fab{position: static;}
 .menu-label{font-size: 12px;padding: 4px 16px;color: #3060AA;font-weight: 600;display: block;}
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
-.fixed-height{max-height: calc(100vh - 170px);}
-.primary-dialog .fixed-height{max-height: calc(100vh - 200px);}
+.fixed-height{height: calc(100vh - 256px);}
+.fixed-height.fixed-height-sm{height: calc(100vh - 362px);}
+.primary-dialog .fixed-height{height: calc(100vh - 200px);}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
 .block-title.sm{font-size: 16px;line-height: 22px;}
 .service-status-description {border-radius: 6px;margin: 0 0 14px;padding: 10px 14px;border-color:currentColor;}
@@ -717,6 +718,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 333px);}
 .progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
 .progress-report-wrapper>.right-block.full-width{flex-basis: 100%;max-width:100%;}
+.progress-report-wrapper>.right-block .chart-wrapper{height: calc(100vh - 333px);position: relative;width: 100%;min-height: 380px;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/

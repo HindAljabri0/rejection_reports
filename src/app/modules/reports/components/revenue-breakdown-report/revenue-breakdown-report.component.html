@@ -68,21 +68,23 @@
             </ul>
         </div>
         <div class="right-block">
-            <canvas baseChart [datasets]="pieChartData" *ngIf="chartMode===0" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions"
-                [plugins]="pieChartPlugins" [legend]="pieChartLegend">
-            </canvas>
-            <canvas *ngIf="chartMode===1" baseChart [datasets]="serviceChartData" [labels]="serviceChartLabels" [options]="serviceChartOptions" [legend]="serviceChartLegend"
-                [chartType]="serviceChartType">
-            </canvas>
-            <canvas *ngIf="chartMode===2" baseChart [datasets]="departmentChartData" [labels]="departmentChartLabels" [options]="departmentChartOptions"
-                [legend]="departmentChartLegend" [chartType]="departmentChartType">
-            </canvas>
-            <canvas *ngIf="chartMode===3" baseChart [datasets]="doctorChartData" [labels]="doctorChartLabels" [options]="doctorChartOptions" [legend]="doctorChartLegend"
-                [chartType]="doctorChartType">
-            </canvas>
-            <canvas baseChart [datasets]="serviceTypeChartData" *ngIf="chartMode===4" [labels]="serviceTypeChartLabels" [chartType]="serviceTypeChartType"
-                [options]="serviceTypeChartOptions" [plugins]="serviceTypeChartPlugins" [legend]="serviceTypeChartLegend">
-            </canvas>
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="pieChartData" *ngIf="chartMode===0" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions"
+                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                </canvas>
+                <canvas *ngIf="chartMode===1" baseChart [datasets]="serviceChartData" [labels]="serviceChartLabels" [options]="serviceChartOptions" [legend]="serviceChartLegend"
+                    [chartType]="serviceChartType">
+                </canvas>
+                <canvas *ngIf="chartMode===2" baseChart [datasets]="departmentChartData" [labels]="departmentChartLabels" [options]="departmentChartOptions"
+                    [legend]="departmentChartLegend" [chartType]="departmentChartType">
+                </canvas>
+                <canvas *ngIf="chartMode===3" baseChart [datasets]="doctorChartData" [labels]="doctorChartLabels" [options]="doctorChartOptions" [legend]="doctorChartLegend"
+                    [chartType]="doctorChartType">
+                </canvas>
+                <canvas baseChart [datasets]="serviceTypeChartData" *ngIf="chartMode===4" [labels]="serviceTypeChartLabels" [chartType]="serviceTypeChartType"
+                    [options]="serviceTypeChartOptions" [plugins]="serviceTypeChartPlugins" [legend]="serviceTypeChartLegend">
+                </canvas>
+            </div>
         </div>
     </div>
     <div class="block-footer sticky-bottom">

@@ -14,7 +14,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
     public chartFontFamily = '"Poppins", sans-serif';
     public chartFontColor = '#2d2d2d';
     public pieChartOptions: ChartOptions = {
-        responsive: true,
+        maintainAspectRatio: false,
         layout: {
             padding: 50
         },
@@ -59,8 +59,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
     public pieChartPlugins = [pluginOutLabels];
 
     public serviceChartOptions: ChartOptions = {
-        responsive: true,
-        aspectRatio: 1.6 / 1,
+        maintainAspectRatio: false,
         scales: {
             xAxes: [{
                 stacked: true,
@@ -248,8 +247,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
 
 
     public departmentChartOptions: ChartOptions = {
-        responsive: true,
-        aspectRatio: 1.6 / 1,
+        maintainAspectRatio: false,
         scales: {
             xAxes: [{
                 stacked: true,
@@ -438,8 +436,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
 
 
     public doctorChartOptions: ChartOptions = {
-        responsive: true,
-        aspectRatio: 1.6 / 1,
+        maintainAspectRatio: false,
         scales: {
             xAxes: [{
                 stacked: true,
@@ -627,7 +624,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
 
 
     public serviceTypeChartOptions: ChartOptions = {
-        responsive: true,
+        maintainAspectRatio: false,
         layout: {
             padding: 50
         },

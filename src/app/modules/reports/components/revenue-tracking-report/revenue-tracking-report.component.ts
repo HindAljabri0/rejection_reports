@@ -4,7 +4,9 @@ import { Color, Label } from 'ng2-charts';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { SharedServices } from 'src/app/services/shared.services';
 import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
-import { RevenuTrackingReportService } from 'src/app/services/revenuTrackingReportService/revenu-tracking-report.service';
+import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
+import { BsDatepickerConfig } from 'ngx-bootstrap';
+
 
 @Component({
   selector: 'app-revenue-tracking-report',
@@ -36,8 +38,7 @@ export class RevenueTrackingReportComponent implements OnInit {
   ];
   public lineChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   public lineChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         gridLines: {
@@ -113,8 +114,7 @@ export class RevenueTrackingReportComponent implements OnInit {
 
 
   public barChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         stacked: true,
@@ -215,7 +215,8 @@ export class RevenueTrackingReportComponent implements OnInit {
   selectedPayerName: string = "All";
   isServiceVisible: boolean = false;
   serviceOrPayerType: string;
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuTrackingReportService) { }
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'YYYY' };
+  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) { }
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
@@ -230,19 +231,22 @@ export class RevenueTrackingReportComponent implements OnInit {
     this.allChart = false;
     this.serviceChart = true;
     this.serviceOrPayerType = categoryType;
+    this.revenuTrackingReport.subcategory = categoryType;
   }
   selectRevenu(event) {
     if (event.value !== '0') {
-      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId));
+      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payer));
       this.selectedPayerName = data.name + ' ' + data.arName;
       this.isServiceVisible = true;
     }
     else {
       this.selectedPayerName = "All";
       this.isServiceVisible = false;
+      this.serviceOrPayerType = RevenuTrackingReportChart.All;
     }
     this.allChart = true;
     this.serviceOrPayerType = RevenuTrackingReportChart.All;
+    this.revenuTrackingReport.subcategory = '';
   }
   get revenuTrackingEnum() {
     return RevenuTrackingReportChart;
@@ -255,7 +259,7 @@ export class RevenueTrackingReportComponent implements OnInit {
   }
   generate() {
 
-    this.reportSerice.generateCleanClaimProgressReport(this.providerId, this.revenuTrackingReport).subscribe(event => {
+    this.reportSerice.generateRevenuTrackingReport(this.providerId, this.revenuTrackingReport).subscribe(event => {
       // if (event.body !== undefined) {
 
       //   this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = this.generateReport.comparisionCriteria;
@@ -304,6 +308,12 @@ export class RevenueTrackingReportComponent implements OnInit {
       // }
 
     });
+  }
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
   }
 
 

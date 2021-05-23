@@ -32,7 +32,7 @@ export class EligibilityService {
     claimDate?: string) {
     let requestUrl = `/providers/${providerId}/eligibility/criteria?`;
     if (uploadId != null) {
-      requestUrl += `payerId=${payerId}&uploadId=${uploadId}`;
+      requestUrl += `uploadId=${uploadId}`;
     } else if (payerId != null && from != null && to != null) {
       requestUrl += `payerId=${payerId}&fromDate=${from}&toDate=${to}`;
     } else if (batchId != null) {
