@@ -47,8 +47,18 @@ export class SharedServices {
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
-  uploadHistoryList: UploadSummary[];
-  uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
+  uploadHistoryList: {
+    totalClaims: number,
+    uploadDate: Date,
+    uploadId: number,
+    uploadName: string
+  }[];
+  uploadHistoryListChange: Subject<{
+    totalClaims: number,
+    uploadDate: Date,
+    uploadId: number,
+    uploadName: string
+  }[]> = new Subject();
   getUploadId: any;
 
   constructor(
@@ -103,8 +113,7 @@ export class SharedServices {
     });
     this.uploadHistoryListChange.subscribe(value => {
       this.uploadHistoryList = value.map(upload => {
-        // upload.uploaddate = new Date(upload.uploaddate);
-        return new UploadSummary(upload);
+        return {totalClaims: upload.totalClaims, uploadDate: upload.uploadDate, uploadId: upload.uploadId, uploadName: upload.uploadName}
       });
     });
     this.router.events.pipe(
@@ -177,6 +186,7 @@ export class SharedServices {
 
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
+        debugger;
         this.uploadHistoryListChange.next(event.body['content']);
       }
     }, errorEvent => {

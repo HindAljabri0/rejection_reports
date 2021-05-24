@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
-  selector: 'app-upload-history-center',
-  templateUrl: './upload-history-center.component.html',
+  selector: 'app-uploads-center',
+  templateUrl: './uploads-center.component.html',
   styles: []
 })
-export class UploadHistoryCenterComponent implements OnInit {
+export class UploadsCenterComponent implements OnInit {
 
   inCenter = true;
 
@@ -23,6 +23,10 @@ export class UploadHistoryCenterComponent implements OnInit {
 
   get dataList() {
     return this.commen.uploadHistoryList;
+  }
+
+  get providerId() {
+    return this.commen.providerId;
   }
 
   hideCenter() {

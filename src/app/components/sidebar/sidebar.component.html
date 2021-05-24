@@ -85,7 +85,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd">
+                <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@denialManagement">Denial Management</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -104,7 +104,7 @@
                                 <span class="text">Credit Report Create</span>
                             </a>
                         </li> -->
-                        <li i18n="@@cleanClaimProgress">
+                        <li i18n="@@cleanClaimProgress" *ngIf="!envProd">
                             <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />

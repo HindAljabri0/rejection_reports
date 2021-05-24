@@ -71,81 +71,83 @@
         <a class="nav-link" href="#" [class.active]="currentStatus=='FAILED'" (click)="changeTab($event,'FAILED')" title="Failed">Failed</a>
     </li>
 </ul>
-<div class="bg-white table-responsive">
-    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-            <tr>
-                <!-- <th>Payer Name</th> -->
-                <th>Received Date</th>
-                <th>Batch Id</th>
-                <th>Total Rejections Amount</th>
-                <th>Medical Rejection ratio</th>
-                <th>Technical Rejection ratio</th>
-                <th>Remaining Days</th>
-                <th>Progress Status</th>
-                <!-- <th>Team Members</th> -->
-                <th width="10" *ngIf="!isBupaRecord"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}" -->
-            <tr *ngFor="let item of creditReportData; let i=index" (click)="goToSummaryPage(item)">
-                <!-- <td class="semibold text-primary row-click">{{item.payerName}}</td> -->
-                <td class="row-click">{{item.receivedDate | date : 'dd/MM/yyyy'}}</td>
-                <td class="row-click">{{item.batchId}}</td>
-                <td class="row-click">{{item.totalRejectionsAmount}}</td>
-                <td class="row-click">{{item.medicalRejectionRatio}}</td>
-                <td class="row-click">{{item.technicalRejectionRatio}}</td>
+<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+    <div class="fixed-height fixed-height-sm">
+        <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <!-- <th>Payer Name</th> -->
+                    <th>Received Date</th>
+                    <th>Batch Id</th>
+                    <th>Total Rejections Amount</th>
+                    <th>Medical Rejection ratio</th>
+                    <th>Technical Rejection ratio</th>
+                    <th>Remaining Days</th>
+                    <th>Progress Status</th>
+                    <!-- <th>Team Members</th> -->
+                    <th width="10" *ngIf="!isBupaRecord"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- routerLink="/reports/creditReports/tawuniya/batch//{{item.batchId}}" -->
+                <tr *ngFor="let item of creditReportData; let i=index" (click)="goToSummaryPage(item)">
+                    <!-- <td class="semibold text-primary row-click">{{item.payerName}}</td> -->
+                    <td class="row-click">{{item.receivedDate | date : 'dd/MM/yyyy'}}</td>
+                    <td class="row-click">{{item.batchId}}</td>
+                    <td class="row-click">{{item.totalRejectionsAmount}}</td>
+                    <td class="row-click">{{item.medicalRejectionRatio}}</td>
+                    <td class="row-click">{{item.technicalRejectionRatio}}</td>
 
-                <!-- Tawuniya -->
-                <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">{{item.remainingDays}} Days
-                    Remaining</td>
+                    <!-- Tawuniya -->
+                    <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">{{item.remainingDays}} Days
+                        Remaining</td>
 
-                <!-- Bupa -->
-                <td class="row-click" *ngIf="isBupaRecord">NA</td>
+                    <!-- Bupa -->
+                    <td class="row-click" *ngIf="isBupaRecord">NA</td>
 
-                <!-- Tawuniya -->
-                <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">
-                    <div class="status-text ball-red" *ngIf="item.status=='NEW'">New</div>
-                    <div class="status-text ball-blue" *ngIf="item.status=='UNDERREVIEW'">Under Review</div>
-                    <div class="status-text ball-brown" *ngIf="item.status=='UNDERSUBMISSION'">Under Submission</div>
-                    <div class="status-text ball-green" *ngIf="item.status=='SUBMITTED'">Submitted</div>
-                    <div class="status-text ball-red" *ngIf="item.status=='INVALID'">Invalid</div>
-                    <div class="status-text ball-red" *ngIf="item.status=='FAILED'">Failed</div>
-                </td>
+                    <!-- Tawuniya -->
+                    <td class="row-click" *ngIf="creditReportSearchModel.payerId != 319">
+                        <div class="status-text ball-red" *ngIf="item.status=='NEW'">New</div>
+                        <div class="status-text ball-blue" *ngIf="item.status=='UNDERREVIEW'">Under Review</div>
+                        <div class="status-text ball-brown" *ngIf="item.status=='UNDERSUBMISSION'">Under Submission</div>
+                        <div class="status-text ball-green" *ngIf="item.status=='SUBMITTED'">Submitted</div>
+                        <div class="status-text ball-red" *ngIf="item.status=='INVALID'">Invalid</div>
+                        <div class="status-text ball-red" *ngIf="item.status=='FAILED'">Failed</div>
+                    </td>
 
-                <!-- Bupa -->
-                <td class="row-click" *ngIf="isBupaRecord">
-                    <div class="status-text ball-red">New</div>
-                </td>
+                    <!-- Bupa -->
+                    <td class="row-click" *ngIf="isBupaRecord">
+                        <div class="status-text ball-red">New</div>
+                    </td>
 
-                <!-- Tawuniya -->
-                <!-- <td (click)="$event.stopPropagation()" *ngIf="!isBupaRecord">
+                    <!-- Tawuniya -->
+                    <!-- <td (click)="$event.stopPropagation()" *ngIf="!isBupaRecord">
                     <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==0"
                         title="@Ahmed Al yosif">@Ahmed Al yosif</a>
                     <a href="#" (click)="$event.preventDefault()" class="primary-link" *ngIf="i==1"
                         title="Assign To">Assign To</a>
                 </td> -->
 
-                <!-- Bupa -->
-                <!-- <td (click)="$event.stopPropagation()" *ngIf="isBupaRecord">
+                    <!-- Bupa -->
+                    <!-- <td (click)="$event.stopPropagation()" *ngIf="isBupaRecord">
                     NA</td> -->
 
-                <td width="10" class="actions" *ngIf="!isBupaRecord">
-                    <button type="button" mat-icon-button class="text-danger" *ngIf="item.status=='INVALID'||item.status=='FAILED'" (click)="openErrorsDialog($event,item)">
-                        <mat-icon>error</mat-icon>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="9" class="p-0">
-                    <app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
-                    </app-empty-state>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <td width="10" class="actions" *ngIf="!isBupaRecord">
+                        <button type="button" mat-icon-button class="text-danger" *ngIf="item.status=='INVALID'||item.status=='FAILED'" (click)="openErrorsDialog($event,item)">
+                            <mat-icon>error</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="p-0">
+                        <app-empty-state *ngIf="creditReportData == null || creditReportData.length == 0" class="claim-list-empty-state" message='No reports found!'>
+                        </app-empty-state>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-scrollbar>
 
 <div class="block-footer sticky-bottom" *ngIf="!isLoading">
     <div class="left-block custom-paginator" *ngIf="creditReportSearchModel.totalPages > 0">

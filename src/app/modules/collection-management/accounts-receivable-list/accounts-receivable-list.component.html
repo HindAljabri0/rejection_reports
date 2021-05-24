@@ -46,169 +46,190 @@
             </div>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="primary-grid manual-row-color" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th colspan="2">Payer Name</th>
-                    <th>Invoice Date</th>
-                    <th>Invoice Number</th>
-                    <th>Total Amount</th>
-                    <th>Deviating Term</th>
-                    <th>Due Date</th>
-                    <th>Amount Outstanding</th>
-                    <th>Days Overdue</th>
-                    <th class="text-center">Aging Indicator</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-primary text-center row-click" (click)="recordOneOpen=!recordOneOpen" width="10">
-                        <mat-icon *ngIf="!recordOneOpen" class="size-21">add_circle_outline</mat-icon>
-                        <mat-icon *ngIf="recordOneOpen" class="size-21">remove_circle_outline</mat-icon>
-                    </td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">Bupa</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7/1/2017</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">F12346-1</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1000</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7/8/17</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">500.00</td>
-                    <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1,347</td>
-                    <td class="text-center row-click" (click)="recordOneOpen=!recordOneOpen"><span class="status-dot account-receivable-green"></span></td>
-                    <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
-                </tr>
-                <tr *ngIf="recordOneOpen">
-                    <td colspan="11" class="pt-0">
-                        <div class="row small-gutter">
-                            <div class="col-7">
-                                <div class="account-receivable-card">
-                                    <p class="title">Payment Graph</p>
-                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-                                        [chartType]="barChartType">
-                                    </canvas>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th colspan="2">Payer Name</th>
+                        <th>Invoice Date</th>
+                        <th>Invoice Number</th>
+                        <th>Total Amount</th>
+                        <th>Deviating Term</th>
+                        <th>Due Date</th>
+                        <th>Amount Outstanding</th>
+                        <th>Days Overdue</th>
+                        <th class="text-center">Aging Indicator</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="recordOneOpen=!recordOneOpen" width="10">
+                            <mat-icon *ngIf="!recordOneOpen" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="recordOneOpen" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">Bupa</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7/1/2017</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">F12346-1</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1000</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7/8/17</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">500.00</td>
+                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1,347</td>
+                        <td class="text-center row-click" (click)="recordOneOpen=!recordOneOpen"><span class="status-dot account-receivable-green"></span></td>
+                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                    </tr>
+                    <tr *ngIf="recordOneOpen">
+                        <td colspan="11" class="pt-0">
+                            <div class="row small-gutter">
+                                <div class="col-7">
+                                    <div class="account-receivable-card">
+                                        <p class="title">Payment Graph</p>
+                                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                            [chartType]="barChartType">
+                                        </canvas>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-5">
-                                <div class="account-receivable-card">
-                                    <p class="title">Aging Indicator</p>
-                                    <div class="row align-items-center aging-indicator-header">
-                                        <div class="col-8">
-                                            <div class="chart-wrapper excellent">
-                                                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
-                                                    [chartType]="doughnutChartType">
-                                                </canvas>
-                                                <div class="marker"></div>
+                                <div class="col-5">
+                                    <div class="account-receivable-card">
+                                        <p class="title">Aging Indicator</p>
+                                        <div class="row align-items-center aging-indicator-header">
+                                            <div class="col-8">
+                                                <div class="chart-wrapper excellent">
+                                                    <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
+                                                        [chartType]="doughnutChartType">
+                                                    </canvas>
+                                                    <div class="marker"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <ul class="legend">
+                                                    <li class="green">Excellent</li>
+                                                    <li class="yellow">Good</li>
+                                                    <li class="orange">Fair</li>
+                                                    <li class="red">Bad</li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="col-4">
-                                            <ul class="legend">
-                                                <li class="green">Excellent</li>
-                                                <li class="yellow">Good</li>
-                                                <li class="orange">Fair</li>
-                                                <li class="red">Bad</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="aging-indicator-body">
-                                        <div class="inline-labelled-text">
-                                            <label>1-30</label>
-                                            <p>0,000,000</p>
-                                        </div>
-                                        <div class="inline-labelled-text">
-                                            <label>31-60</label>
-                                            <p>0,000,000</p>
-                                        </div>
-                                        <div class="inline-labelled-text">
-                                            <label>61-90</label>
-                                            <p>0,000,000</p>
-                                        </div>
-                                        <div class="inline-labelled-text">
-                                            <label>Aged > 91</label>
-                                            <p>0,000,000</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="even">
-                    <td class="text-primary text-center row-click" (click)="recordTwoOpen=!recordTwoOpen" width="10">
-                        <mat-icon *ngIf="!recordTwoOpen" class="size-21">add_circle_outline</mat-icon>
-                        <mat-icon *ngIf="recordTwoOpen" class="size-21">remove_circle_outline</mat-icon>
-                    </td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">MedGulf</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7/1/2017</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">F12346-1</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1000</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7/8/17</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">500.00</td>
-                    <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1,347</td>
-                    <td class="text-center row-click" (click)="recordTwoOpen=!recordTwoOpen"><span class="status-dot account-receivable-orange"></span></td>
-                    <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
-                </tr>
-                <tr class="even" *ngIf="recordTwoOpen">
-                    <td colspan="11" class="pt-0">
-                        <div class="row small-gutter">
-                            <div class="col-7">
-                                <div class="account-receivable-card">
-                                    <p class="title">Payment Graph</p>
-                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-                                        [chartType]="barChartType">
-                                    </canvas>
-                                </div>
-                            </div>
-                            <div class="col-5">
-                                <div class="account-receivable-card">
-                                    <p class="title">Aging Indicator</p>
-                                    <div class="row align-items-center aging-indicator-header">
-                                        <div class="col-8">
-                                            <div class="chart-wrapper fair">
-                                                <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
-                                                    [chartType]="doughnutChartType">
-                                                </canvas>
-                                                <div class="marker"></div>
+                                        <hr>
+                                        <div class="aging-indicator-body">
+                                            <div class="inline-labelled-text">
+                                                <label>1-30</label>
+                                                <p>0,000,000</p>
+                                            </div>
+                                            <div class="inline-labelled-text">
+                                                <label>31-60</label>
+                                                <p>0,000,000</p>
+                                            </div>
+                                            <div class="inline-labelled-text">
+                                                <label>61-90</label>
+                                                <p>0,000,000</p>
+                                            </div>
+                                            <div class="inline-labelled-text">
+                                                <label>Aged > 91</label>
+                                                <p>0,000,000</p>
                                             </div>
                                         </div>
-                                        <div class="col-4">
-                                            <ul class="legend">
-                                                <li class="green">Excellent</li>
-                                                <li class="yellow">Good</li>
-                                                <li class="orange">Fair</li>
-                                                <li class="red">Bad</li>
-                                            </ul>
-                                        </div>
                                     </div>
-                                    <hr>
-                                    <div class="aging-indicator-body">
-                                        <div class="inline-labelled-text">
-                                            <label>1-30</label>
-                                            <p>0,000,000</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td class="text-primary text-center row-click" (click)="recordTwoOpen=!recordTwoOpen" width="10">
+                            <mat-icon *ngIf="!recordTwoOpen" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="recordTwoOpen" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">MedGulf</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7/1/2017</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">F12346-1</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1000</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">7/8/17</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">500.00</td>
+                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1,347</td>
+                        <td class="text-center row-click" (click)="recordTwoOpen=!recordTwoOpen"><span class="status-dot account-receivable-orange"></span></td>
+                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                    </tr>
+                    <tr class="even" *ngIf="recordTwoOpen">
+                        <td colspan="11" class="pt-0">
+                            <div class="row small-gutter">
+                                <div class="col-7">
+                                    <div class="account-receivable-card">
+                                        <p class="title">Payment Graph</p>
+                                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                            [chartType]="barChartType">
+                                        </canvas>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="account-receivable-card">
+                                        <p class="title">Aging Indicator</p>
+                                        <div class="row align-items-center aging-indicator-header">
+                                            <div class="col-8">
+                                                <div class="chart-wrapper fair">
+                                                    <canvas baseChart [datasets]="doughnutChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels"
+                                                        [chartType]="doughnutChartType">
+                                                    </canvas>
+                                                    <div class="marker"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <ul class="legend">
+                                                    <li class="green">Excellent</li>
+                                                    <li class="yellow">Good</li>
+                                                    <li class="orange">Fair</li>
+                                                    <li class="red">Bad</li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="inline-labelled-text">
-                                            <label>31-60</label>
-                                            <p>0,000,000</p>
-                                        </div>
-                                        <div class="inline-labelled-text">
-                                            <label>61-90</label>
-                                            <p>0,000,000</p>
-                                        </div>
-                                        <div class="inline-labelled-text">
-                                            <label>Aged > 91</label>
-                                            <p>0,000,000</p>
+                                        <hr>
+                                        <div class="aging-indicator-body">
+                                            <div class="inline-labelled-text">
+                                                <label>1-30</label>
+                                                <p>0,000,000</p>
+                                            </div>
+                                            <div class="inline-labelled-text">
+                                                <label>31-60</label>
+                                                <p>0,000,000</p>
+                                            </div>
+                                            <div class="inline-labelled-text">
+                                                <label>61-90</label>
+                                                <p>0,000,000</p>
+                                            </div>
+                                            <div class="inline-labelled-text">
+                                                <label>Aged > 91</label>
+                                                <p>0,000,000</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
     </div>
     <div class="file-upload-wrapper page-fab">
         <div class="content">

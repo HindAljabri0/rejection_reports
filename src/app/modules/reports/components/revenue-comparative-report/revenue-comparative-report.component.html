@@ -19,15 +19,12 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group"
-                        [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && beforeDate.invalid}">
+                    <div class="form-group" [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && beforeDate.invalid}">
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate" -->
-                            <input [(ngModel)]='revenuComparativeReport.beforeDate' #beforeDate='ngModel'
-                                name="beforeDate" class="form-control date-picker" placeholder="Select from date"
-                                bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="datePickerConfig"
-                                required />
+                            <input [(ngModel)]='revenuComparativeReport.beforeDate' #beforeDate='ngModel' name="beforeDate" class="form-control date-picker"
+                                placeholder="Select from date" bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="datePickerConfig" required />
                             <!-- <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
                             <mat-datepicker #fromDate></mat-datepicker> -->
 
@@ -35,14 +32,11 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group"
-                        [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && afterDate.invalid}">
+                    <div class="form-group" [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && afterDate.invalid}">
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
-                            <input bsDatepicker [bsConfig]="datePickerConfig"
-                                [(ngModel)]='revenuComparativeReport.afterDate' #afterDate='ngModel' name="afterDate"
-                                class="form-control date-picker" (onShown)="onOpenCalendar($event)" required
-                                placeholder="Select to date" />
+                            <input bsDatepicker [bsConfig]="datePickerConfig" [(ngModel)]='revenuComparativeReport.afterDate' #afterDate='ngModel' name="afterDate"
+                                class="form-control date-picker" (onShown)="onOpenCalendar($event)" required placeholder="Select to date" />
                             <!-- <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker> -->
                         </div>
@@ -77,9 +71,11 @@
             </ul>
         </div>
         <div class="right-block">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
-            </canvas>
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                    [chartType]="barChartType">
+                </canvas>
+            </div>
             <div class="table-responsive pt-2">
                 <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
                     <thead>

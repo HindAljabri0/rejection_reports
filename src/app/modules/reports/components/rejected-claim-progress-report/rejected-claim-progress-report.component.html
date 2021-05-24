@@ -96,9 +96,11 @@
         </ul>
     </div>
     <div class="right-block" *ngIf="percenatgeChartData.length > 0">
-        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-            [chartType]="barChartType">
-        </canvas>
+        <div class="chart-wrapper">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                [chartType]="barChartType">
+            </canvas>
+        </div>
         <div class="table-responsive pt-2">
             <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
                 <thead>
