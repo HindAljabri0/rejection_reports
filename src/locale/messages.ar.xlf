@@ -14,7 +14,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						8
+						18
 					</context>
 				</context-group>
 			</trans-unit>
@@ -42,7 +42,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						11
+						6
 					</context>
 				</context-group>
 			</trans-unit>
@@ -70,7 +70,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						18
+						26
 					</context>
 				</context-group>
 			</trans-unit>
@@ -98,7 +98,35 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						25
+						34
+					</context>
+				</context-group>
+			</trans-unit>
+			<trans-unit id="uploads" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					Uploads
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					المرفوعات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						37
 					</context>
 				</context-group>
 			</trans-unit>
@@ -126,7 +154,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						32
+						45
 					</context>
 				</context-group>
 			</trans-unit>
@@ -154,7 +182,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						39
+						54
 					</context>
 				</context-group>
 			</trans-unit>
@@ -182,7 +210,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						46
+						62
 					</context>
 				</context-group>
 			</trans-unit>
@@ -198,7 +226,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						58
+						76
 					</context>
 				</context-group>
 			</trans-unit>

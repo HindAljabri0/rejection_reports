@@ -186,7 +186,6 @@ export class SharedServices {
 
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
-        debugger;
         this.uploadHistoryListChange.next(event.body['content']);
       }
     }, errorEvent => {
