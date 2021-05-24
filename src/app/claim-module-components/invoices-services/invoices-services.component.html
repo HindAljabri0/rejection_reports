@@ -56,10 +56,10 @@
                             [class.has-error]="fieldHasError('INVDEP', invoice.invoice.invoiceId)"
                             [matTooltip]="getFieldError('INVDEP', invoice.invoice.invoiceId)">
                             <mat-form-field class="form-control custom-select-control">
+                                <!-- [value]="controllers[i].invoice.invoiceDepartment" -->
+                                <!-- [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED' && pageMode !== 'EDIT'" -->
                                 <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)"
-                                    [value]="controllers[i].invoice.invoiceDepartment"
-                                    [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED' && pageMode !== 'EDIT'"
-                                    required>
+                                    [formControl]="invoice.invoiceDepartment" required>
                                     <mat-option *ngFor="let department of departments"
                                         [value]="department.departmentId">
                                         {{department.name}}</mat-option>

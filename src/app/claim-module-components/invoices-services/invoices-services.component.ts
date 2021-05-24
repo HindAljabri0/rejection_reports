@@ -34,6 +34,7 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { ClaimStatus } from 'src/app/models/claimStatus';
+import { parse } from 'querystring';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -48,6 +49,7 @@ export class InvoicesServicesComponent implements OnInit {
     invoice: Invoice,
     invoiceNumber: FormControl,
     invoiceDate: FormControl,
+    invoiceDepartment: FormControl,
     services: {
       retrieved: boolean,
       statusCode?: string,
@@ -166,6 +168,12 @@ export class InvoicesServicesComponent implements OnInit {
 
     this.store.select(getDepartments).subscribe(departments => {
       this.departments = departments;
+      this.store.select(getClaim).subscribe(claim => {
+        claim.invoice.map((invoice, index) => {
+          this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
+        });
+      });
+
       if (this.controllers.length == 0) {
         this.addInvoice();
       }
@@ -201,6 +209,7 @@ export class InvoicesServicesComponent implements OnInit {
       this.controllers[index].invoice = invoice;
       this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
       this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
+      this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
       invoice.service.forEach(service => {
         this.addService(index, false);
         const serviceIndex = this.controllers[index].services.length - 1;
@@ -276,10 +285,12 @@ export class InvoicesServicesComponent implements OnInit {
       if (this.pageMode === "EDIT") {
         invoiceControllers.invoiceDate.enable();
         invoiceControllers.invoiceNumber.enable();
+        invoiceControllers.invoiceDepartment.enable();
       }
       else {
         invoiceControllers.invoiceDate.disable();
         invoiceControllers.invoiceNumber.disable();
+        invoiceControllers.invoiceDepartment.disable();
       }
       invoiceControllers.services.forEach(servicesControllers => {
         if (allowEdit) {
@@ -353,7 +364,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   addInvoice(withService?: boolean) {
-    this.controllers.push({ invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(), services: [] });
+    this.controllers.push({ invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(), services: [], invoiceDepartment: new FormControl() });
     if (this.departments.length > 0) {
       this.controllers[this.controllers.length - 1].invoice.invoiceDepartment = `${this.departments[0].departmentId}`;
     }
