@@ -2,77 +2,101 @@
     <div class="block-header has-border">
         <p>Revenue Report Breakdown</p>
     </div>
-    <div class="block-filter-panel has-border">
-        <div class="row small-gutter align-items-end">
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Payer</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
-                            <mat-option value="Payer 5">Payer 5</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Date From</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
-                        <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #fromDate></mat-datepicker>
+    <form #revenuBreakingReportForm='ngForm' (ngSubmit)='revenuBreakingReportForm.valid && generate()'>
+        <div class="block-filter-panel has-border">
+            <div class="row small-gutter align-items-end">
+                <div class="col">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : revenuBreakingReportForm.submitted && !revenuBreakingReport.payerId}">
+                        <label class="control-label">Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [(ngModel)]="revenuBreakingReport.payerId" #payerId name="payerId"
+                                (selectionChange)="selectRevenu($event)" required>
+                                <mat-option value="0">All</mat-option>
+                                <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                    ({{payer.arName}})</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Date To</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
-                        <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
-                        <mat-datepicker #toDate></mat-datepicker>
+                <div class="col">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : revenuBreakingReportForm.submitted && fromDate.invalid}">
+                        <label class="control-label">Date From</label>
+                        <div class="date-picker">
+                            <!-- [matDatepicker]="fromDate"  -->
+                            <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
+                                [(ngModel)]='revenuBreakingReport.fromDate' #fromDate='ngModel' name="fromDate"
+                                required />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-auto">
-                <div class="form-group">
-                    <button mat-flat-button color="primary" type="submit">Generate</button>
+                <div class="col">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : revenuBreakingReportForm.submitted && toDate.invalid}">
+                        <label class="control-label">Date To</label>
+                        <div class="date-picker">
+                            <!-- [minDate]="minDate" -->
+                            <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
+                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                [(ngModel)]='revenuBreakingReport.toDate' #toDate='ngModel' name="toDate" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-auto">
+                    <div class="form-group">
+                        <button mat-flat-button color="primary" type="submit">Generate</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <div class="progress-report-wrapper">
         <div class="left-block">
             <ul class="list">
                 <li class="title">Payer</li>
                 <li>
-                    <button type="button" matRipple (click)="chartMode=0" [class.active]="chartMode==0">All</button>
+                    <button type="button" (click)="showAllChart()" matRipple
+                        [ngClass]="{'active': allChart}">{{selectedPayerName}}</button>
                 </li>
                 <li class="title">By Category</li>
-                <li>
-                    <button type="button" matRipple (click)="chartMode=1" [class.active]="chartMode==1">Service</button>
-                </li>
-                <li>
-                    <button type="button" matRipple (click)="chartMode=2" [class.active]="chartMode==2">Department</button>
-                </li>
-                <li>
-                    <button type="button" matRipple (click)="chartMode=3" [class.active]="chartMode==3">Doctor</button>
-                </li>
-                <li>
-                    <button type="button" matRipple (click)="chartMode=4" [class.active]="chartMode==4">Service Type</button>
-                </li>
+                <ng-container>
+
+                    <li>
+                        <button type="button" matRipple (click)="showServiceChart(revenuBreakingEnum.Service)"
+                            [class.active]="isActiveService(revenuBreakingEnum.Service)">Service</button>
+                    </li>
+                    <li>
+                        <button type="button" [class.active]="isActiveService(revenuBreakingEnum.Department)"
+                            (click)="showServiceChart(revenuBreakingEnum.Department)" matRipple>Department</button>
+                    </li>
+                    <li>
+                        <button type="button" (click)="showServiceChart(revenuBreakingEnum.Doctor)"
+                            [class.active]="isActiveService(revenuBreakingEnum.Doctor)" matRipple>Doctor</button>
+                    </li>
+                    <li>
+                        <button type="button" (click)="showServiceChart(revenuBreakingEnum.Service_type)"
+                            [class.active]="isActiveService(revenuBreakingEnum.Service_type)" matRipple>Service
+                            Type</button>
+                    </li>
+                </ng-container>
+                <ng-container *ngIf="!isServiceVisible">
+                    <li>
+                        <button type="button" (click)="showServiceChart(revenuBreakingEnum.AvgCost)"
+                            [class.active]="isActiveService(revenuBreakingEnum.AvgCost)" matRipple>Average
+                            Cost</button>
+                    </li>
+                </ng-container>
+
             </ul>
         </div>
-        <div class="right-block">
+        <div class="right-block" *ngIf="pieChartData.length>0">
             <div class="chart-wrapper">
-                <canvas baseChart [datasets]="pieChartData" *ngIf="chartMode===0" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions"
-                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                    [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
                 </canvas>
-                <canvas *ngIf="chartMode===1" baseChart [datasets]="serviceChartData" [labels]="serviceChartLabels" [options]="serviceChartOptions" [legend]="serviceChartLegend"
+                <!-- <canvas *ngIf="chartMode===1" baseChart [datasets]="serviceChartData" [labels]="serviceChartLabels" [options]="serviceChartOptions" [legend]="serviceChartLegend"
                     [chartType]="serviceChartType">
                 </canvas>
                 <canvas *ngIf="chartMode===2" baseChart [datasets]="departmentChartData" [labels]="departmentChartLabels" [options]="departmentChartOptions"
@@ -83,8 +107,12 @@
                 </canvas>
                 <canvas baseChart [datasets]="serviceTypeChartData" *ngIf="chartMode===4" [labels]="serviceTypeChartLabels" [chartType]="serviceTypeChartType"
                     [options]="serviceTypeChartOptions" [plugins]="serviceTypeChartPlugins" [legend]="serviceTypeChartLegend">
-                </canvas>
+                </canvas> -->
             </div>
+        </div>
+        <div class="right-block" *ngIf="pieChartData.length===0">
+            <app-empty-state message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
+            </app-empty-state>
         </div>
     </div>
     <div class="block-footer sticky-bottom">
