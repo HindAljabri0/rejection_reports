@@ -278,6 +278,9 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].toothNumber.setValue(service.toothNumber);
       });
     });
+    if (this.controllers.length > 0 && this.expandedInvoice == -1) {
+      this.toggleInvoice(0);
+    }
   }
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
