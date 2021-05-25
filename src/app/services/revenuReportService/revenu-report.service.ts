@@ -29,4 +29,16 @@ export class RevenuReportService {
     const request = new HttpRequest('POST', environment.uploaderHost + requestURL, data, { responseType: 'text' });
     return this.http.request(request);
   }
+  generateRevenuBreakingReport(providerId: string, data: RevenuTrackingReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/revenue-breakthrough/${data.subcategory}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'subcategory') { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
+    return this.http.request(request);
+  }
 }
