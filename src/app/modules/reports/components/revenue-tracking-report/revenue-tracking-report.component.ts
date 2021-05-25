@@ -7,6 +7,7 @@ import { RevenuTrackingReportChart } from 'src/app/claim-module-components/model
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import * as moment from 'moment';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-revenue-tracking-report',
@@ -203,9 +204,16 @@ export class RevenueTrackingReportComponent implements OnInit {
     return this.sharedService.providerId;
   }
   generate() {
-    this.revenuTrackingReport.fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
-    this.revenuTrackingReport.toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
-    this.reportSerice.generateRevenuTrackingReport(this.providerId, this.revenuTrackingReport).subscribe(event => {
+    const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
+    const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
+    const obj: RevenuTrackingReport = {
+      payerId: this.revenuTrackingReport.payerId,
+      fromDate: fromDate,
+      toDate: toDate,
+      subcategory: this.revenuTrackingReport.subcategory,
+    }
+
+    this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
       if (event.body !== undefined) {
         const data = JSON.parse(event.body);
         // this.lineChartLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -221,7 +229,11 @@ export class RevenueTrackingReportComponent implements OnInit {
         //   {
         //     data: [200000, 400000, 425000, 225000, 225000, 200000, 175000, 400000, 425000, 225000, 225000, 200000],
         //     label: 'Ed-01'
-        //   }
+        //   },
+        //   {
+        //     data: [200000, 400000, 425000, 225000, 225000, 200000, 175000, 400000, 425000, 225000, 225000, 200000],
+        //     label: 'Bd-01'
+        //   },
         // ];
         this.lineChartLabels = data.labels;
         this.lineChartData = data.values;
