@@ -61,7 +61,7 @@
                         [ngClass]="{'active': allChart}">{{selectedPayerName}}</button>
                 </li>
                 <li class="title">By Category</li>
-                <ng-container *ngIf="isServiceVisible">
+                <ng-container>
 
                     <li>
                         <button type="button" matRipple (click)="showServiceChart(revenuTrackingEnum.Service)"
