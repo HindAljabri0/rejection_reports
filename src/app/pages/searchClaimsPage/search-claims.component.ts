@@ -505,6 +505,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             const index = this.claims.findIndex(claim => claim.claimId == this.claimId);
             if (index != -1) {
               this.showClaim(this.claims[index].status, this.claimId, (this.editMode != null && this.editMode == 'true'));
+              this.claimId = null;
+              this.editMode = null;
             }
           }
           this.commen.loadingChanged.next(false);
