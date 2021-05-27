@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleUploadHistoryCenter() {
-    this.commen.showUploadHistoryCenterChange.next(!this.commen.showUploadHistoryCenter);
+    this.commen.showUploadsCenterChange.next(!this.commen.showUploadsCenter);
   }
 
   logout() {

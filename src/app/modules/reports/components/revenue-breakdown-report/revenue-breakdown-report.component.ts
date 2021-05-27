@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginOutLabels from 'chartjs-plugin-piechart-outlabels';
 import * as moment from 'moment';
@@ -8,6 +8,10 @@ import { Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-revenue-breakdown-report',
@@ -54,6 +58,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
     selectedPayerName: string = "All";
 
     payersList: { id: number, name: string, arName: string }[] = [];
+    departments;
     selectedPayerId: string = 'All';
     selectedCategory: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers' = 'Payers';
     fromDateControl = '';
@@ -66,13 +71,24 @@ export class RevenueBreakdownReportComponent implements OnInit {
 
     datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
 
-    constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) {
-    }
+    constructor(
+        private sharedService: SharedServices,
+        private reportService: RevenuReportService,
+        private store: Store,
+        private location: Location,
+        private routeActive: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.payersList = this.sharedService.getPayersList();
-
-
+        this.store.dispatch(getDepartmentNames());
+        this.store.select(getDepartments).subscribe(departments => this.departments = departments);
+        this.routeActive.queryParams.subscribe(params => {
+            if (params.payerId != null) this.selectedPayerId = params.payerId;
+            if (params.category != null) this.selectedCategory = params.category;
+            if (params.fromDate != null) this.fromDateControl = params.fromDate;
+            if (params.toDate != null) this.toDateControl = params.toDate;
+            if (this.fromDateControl != null && this.toDateControl != null) this.generate();
+        }).unsubscribe();
     }
 
     get providerId(): string {
@@ -108,7 +124,8 @@ export class RevenueBreakdownReportComponent implements OnInit {
         this.fromDateError = null;
         const toDate = moment(this.toDateControl).format('YYYY-MM-DD');
         this.toDateError = null;
-        this.reportSerice.generateRevenuReportBreakdown(this.providerId, this.selectedPayerId, fromDate, toDate, this.selectedCategory).subscribe(event => {
+        this.editURL(fromDate, toDate);
+        this.reportService.generateRevenuReportBreakdown(this.providerId, this.selectedPayerId, fromDate, toDate, this.selectedCategory).subscribe(event => {
             if (event instanceof HttpResponse) {
                 this.noOfGeneratedData++;
                 this.sharedService.loadingChanged.next(false);
@@ -119,6 +136,8 @@ export class RevenueBreakdownReportComponent implements OnInit {
                         if (index != -1) {
                             return `${this.payersList[index].name}`
                         }
+                    } else if (this.selectedCategory == 'Department') {
+                        return this.getDepartmentName(set.label);
                     }
                     return set.label;
                 });
@@ -143,6 +162,25 @@ export class RevenueBreakdownReportComponent implements OnInit {
             }
         });
     }
+    editURL(fromDate?: string, toDate?: string) {
+        let path = '/reports/revenue-report-breakdown?';
+        if (this.selectedPayerId != 'All') {
+            path += `payerId=${this.selectedPayerId}&`;
+        }
+        if (this.selectedCategory != 'Payers') {
+            path += `category=${this.selectedCategory}&`;
+        }
+        if (fromDate != null) {
+            path += `fromDate=${fromDate}&`
+        }
+        if (toDate != null) {
+            path += `toDate=${toDate}`
+        }
+        if (path.endsWith('?') || path.endsWith('&')) {
+            path = path.substr(0, path.length - 2)
+        }
+        this.location.go(path);
+    }
     onOpenCalendar(container) {
         container.monthSelectHandler = (event: any): void => {
             container._store.dispatch(container._actions.select(event.date));
@@ -163,5 +201,14 @@ export class RevenueBreakdownReportComponent implements OnInit {
         return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
     }
 
+    getDepartmentName(code: string) {
+        if (this.departments != null) {
+            const index = this.departments.findIndex(department => department.departmentId + '' == code);
+            if (index != -1) {
+                return this.departments[index].name;
+            }
+        }
+        return code;
+    }
 
 }

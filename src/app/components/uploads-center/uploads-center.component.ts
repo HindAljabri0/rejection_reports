@@ -13,7 +13,7 @@ export class UploadsCenterComponent implements OnInit {
   showCenter = false;
 
   constructor(private commen: SharedServices) {
-    this.commen.showUploadHistoryCenterChange.subscribe(value => {
+    this.commen.showUploadsCenterChange.subscribe(value => {
       this.showCenter = value;
     });
   }
@@ -22,7 +22,7 @@ export class UploadsCenterComponent implements OnInit {
   }
 
   get dataList() {
-    return this.commen.uploadHistoryList;
+    return this.commen.uploadsList;
   }
 
   get providerId() {
@@ -30,7 +30,7 @@ export class UploadsCenterComponent implements OnInit {
   }
 
   hideCenter() {
-    this.commen.showUploadHistoryCenterChange.next(false);
+    this.commen.showUploadsCenterChange.next(false);
   }
 
 }
