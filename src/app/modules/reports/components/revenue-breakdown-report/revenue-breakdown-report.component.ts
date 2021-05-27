@@ -87,7 +87,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
             if (params.category != null) this.selectedCategory = params.category;
             if (params.fromDate != null) this.fromDateControl = params.fromDate;
             if (params.toDate != null) this.toDateControl = params.toDate;
-            if (this.fromDateControl != null && this.toDateControl != null) this.generate();
+            if (this.isValidDate(this.fromDateControl) && this.isValidDate(this.toDateControl)) this.generate();
         }).unsubscribe();
     }
 
