@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit {
   envStaging = false;
   isAdmin = false;
   isProviderAdmin = false;
+  isRevenueVisible: boolean = false;
 
   constructor(private auth: AuthService, private uploadService: UploadService) {
     this.auth.isUserNameUpdated.subscribe(updated => {
@@ -36,6 +37,7 @@ export class SidebarComponent implements OnInit {
       const providerId = localStorage.getItem('provider_id');
       const userPrivileges = localStorage.getItem(`${providerId}101`);
       this.isProviderAdmin = userPrivileges.split('|').includes('3.0');
+      this.isRevenueVisible = userPrivileges.split('|').includes('24.0') || userPrivileges.split('|').includes('24.1');
     } catch (error) {
       this.isProviderAdmin = false;
     }

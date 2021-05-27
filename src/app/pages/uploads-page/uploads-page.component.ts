@@ -8,7 +8,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-uploads-page',
   templateUrl: './uploads-page.component.html',
-  styleUrls: ['./uploads-page.component.css']
+  styles: []
 })
 export class UploadsPageComponent implements OnInit {
 

@@ -10,7 +10,6 @@ import { Notification } from '../models/notification';
 import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
-import { UploadSummary } from '../models/uploadSummary';
 import { UploadService } from './claimfileuploadservice/upload.service';
 import { SearchService } from './serchService/search.service';
 
@@ -32,33 +31,33 @@ export class SharedServices {
   showAnnouncementCenter: boolean;
   showAnnouncementCenterChange: Subject<boolean> = new Subject();
 
-  // unReadAnnouncementsCount: number = 0;
-  // unReadAnnouncementsCountChange: Subject<number> = new Subject();
   announcementsCount = 0;
   announcementsCountChange: Subject<number> = new Subject();
   announcementsList: Announcement[];
   announcementsListChange: Subject<Announcement[]> = new Subject();
 
-  showUploadHistoryCenter: boolean;
-  showUploadHistoryCenterChange: Subject<boolean> = new Subject();
+  showUploadsCenter: boolean;
+  showUploadsCenterChange: Subject<boolean> = new Subject();
 
   unReadNotificationsCount = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
-  uploadHistoryList: {
+  uploadsList: {
     totalClaims: number,
     uploadDate: Date,
     uploadId: number,
     uploadName: string
   }[];
-  uploadHistoryListChange: Subject<{
+  uploadsListChange: Subject<{
     totalClaims: number,
     uploadDate: Date,
     uploadId: number,
     uploadName: string
   }[]> = new Subject();
+
+
   getUploadId: any;
 
   constructor(
@@ -81,7 +80,7 @@ export class SharedServices {
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
       if (value) {
-        this.showUploadHistoryCenterChange.next(false);
+        this.showUploadsCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
       }
     });
@@ -94,12 +93,12 @@ export class SharedServices {
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
       if (value) {
-        this.showUploadHistoryCenterChange.next(false);
+        this.showUploadsCenterChange.next(false);
         this.showNotificationCenterChange.next(false);
       }
     });
-    this.showUploadHistoryCenterChange.subscribe(value => {
-      this.showUploadHistoryCenter = value;
+    this.showUploadsCenterChange.subscribe(value => {
+      this.showUploadsCenter = value;
       if (value) {
         this.showNotificationCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
@@ -111,8 +110,8 @@ export class SharedServices {
     this.announcementsListChange.subscribe(value => {
       this.announcementsList = value;
     });
-    this.uploadHistoryListChange.subscribe(value => {
-      this.uploadHistoryList = value.map(upload => {
+    this.uploadsListChange.subscribe(value => {
+      this.uploadsList = value.map(upload => {
         return {totalClaims: upload.totalClaims, uploadDate: upload.uploadDate, uploadId: upload.uploadId, uploadName: upload.uploadName}
       });
     });
@@ -186,11 +185,11 @@ export class SharedServices {
 
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.uploadHistoryListChange.next(event.body['content']);
+        this.uploadsListChange.next(event.body['content']);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.uploadHistoryListChange.next([]);
+        this.uploadsListChange.next([]);
       }
     });
   }
