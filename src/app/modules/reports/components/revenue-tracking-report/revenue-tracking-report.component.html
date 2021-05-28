@@ -28,7 +28,7 @@
                             <input autocomplete="off" class="form-control date-picker" bsDatepicker
                                 [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 placeholder="Select from month" [(ngModel)]='revenuTrackingReport.fromDate'
-                                #fromDate='ngModel' name="fromDate" required (bsValueChange)="change($event)" />
+                                #fromDate='ngModel' name="fromDate" required (bsValueChange)="dateValidation($event)" />
                         </div>
                     </div>
                 </div>
@@ -65,26 +65,31 @@
                 <ng-container>
 
                     <li>
-                        <button type="button" matRipple (click)="showServiceChart(revenuTrackingEnum.Service)"
+                        <button type="button" matRipple
+                            (click)="showServiceChart(revenuTrackingEnum.Service,revenuTrackingReportForm)"
                             [class.active]="isActiveService(revenuTrackingEnum.Service)">Service</button>
                     </li>
                     <li>
                         <button type="button" [class.active]="isActiveService(revenuTrackingEnum.Department)"
-                            (click)="showServiceChart(revenuTrackingEnum.Department)" matRipple>Department</button>
+                            (click)="showServiceChart(revenuTrackingEnum.Department,revenuTrackingReportForm)"
+                            matRipple>Department</button>
                     </li>
                     <li>
-                        <button type="button" (click)="showServiceChart(revenuTrackingEnum.Doctor)"
+                        <button type="button"
+                            (click)="showServiceChart(revenuTrackingEnum.Doctor,revenuTrackingReportForm)"
                             [class.active]="isActiveService(revenuTrackingEnum.Doctor)" matRipple>Doctor</button>
                     </li>
                     <li>
-                        <button type="button" (click)="showServiceChart(revenuTrackingEnum.Service_type)"
+                        <button type="button"
+                            (click)="showServiceChart(revenuTrackingEnum.Service_type,revenuTrackingReportForm)"
                             [class.active]="isActiveService(revenuTrackingEnum.Service_type)" matRipple>Service
                             Type</button>
                     </li>
                 </ng-container>
                 <ng-container *ngIf="!isServiceVisible">
                     <li>
-                        <button type="button" (click)="showServiceChart(revenuTrackingEnum.AvgCost)"
+                        <button type="button"
+                            (click)="showServiceChart(revenuTrackingEnum.AvgCost,revenuTrackingReportForm)"
                             [class.active]="isActiveService(revenuTrackingEnum.AvgCost)" matRipple>Average
                             Cost</button>
                     </li>
@@ -103,7 +108,7 @@
             </div>
         </div>
         <div class="right-block" *ngIf="lineChartData.length===0">
-            <app-empty-state message="Please apply the filter and generate the report." icon="ic-empty-chart.svg">
+            <app-empty-state [message]="getEmptyStateMessage()" icon="ic-empty-chart.svg">
             </app-empty-state>
         </div>
     </div>
