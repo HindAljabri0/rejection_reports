@@ -8,6 +8,7 @@ import { RevenuReportService } from 'src/app/services/revenuReportService/revenu
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import * as moment from 'moment';
 import { from } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-revenue-tracking-report',
@@ -142,6 +143,8 @@ export class RevenueTrackingReportComponent implements OnInit {
   serviceOrPayerType: string;
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: any;
+  error: string;
+  isGenerateData: boolean = false;
   constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) {
   }
 
@@ -153,11 +156,17 @@ export class RevenueTrackingReportComponent implements OnInit {
     this.allChart = true;
     this.serviceOrPayerType = RevenuTrackingReportChart.All;
     this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
+    this.generate();
   }
-  showServiceChart(categoryType) {
+  showServiceChart(categoryType, form) {
+    form.submitted = true;
+    if (form.invalid)
+      return
+
     this.allChart = false;
     this.serviceOrPayerType = categoryType;
     this.revenuTrackingReport.subcategory = categoryType;
+    this.generate();
   }
   selectRevenu(event) {
     if (event.value !== '0') {
@@ -185,6 +194,7 @@ export class RevenueTrackingReportComponent implements OnInit {
     return this.sharedService.providerId;
   }
   generate() {
+    this.isGenerateData = true;
     const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
     const obj: RevenuTrackingReport = {
@@ -194,9 +204,13 @@ export class RevenueTrackingReportComponent implements OnInit {
       subcategory: this.revenuTrackingReport.subcategory,
     };
 
+    this.sharedService.loadingChanged.next(true);
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
-      if (event.body !== undefined) {
+
+      if (event.body !== undefined && event.body !== '' && event.body !== null) {
+        this.error = null;
         const data = JSON.parse(event.body);
+
         // this.lineChartLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
         // this.lineChartData = [
         //   {
@@ -237,9 +251,21 @@ export class RevenueTrackingReportComponent implements OnInit {
           });
         }
       }
+      this.sharedService.loadingChanged.next(false);
+
 
     }, err => {
-      console.log(err);
+      this.sharedService.loadingChanged.next(false);
+      this.lineChartLabels = [];
+      this.lineChartData = [];
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 404) {
+          this.error = 'No data found.';
+        }
+      } else {
+        console.log(err);
+        this.error = 'Could not load data at the moment. Please try again later.';
+      }
     });
   }
   onOpenCalendar(container) {
@@ -248,7 +274,7 @@ export class RevenueTrackingReportComponent implements OnInit {
     };
     container.setViewMode('month');
   }
-  change(event: any) {
+  dateValidation(event: any) {
     if (event !== null) {
       const startDate = moment(event).format('YYYY-MM-DD');
       const endDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
@@ -257,6 +283,13 @@ export class RevenueTrackingReportComponent implements OnInit {
     }
     this.minDate = new Date(event);
 
+  }
+  getEmptyStateMessage() {
+    if (!this.isGenerateData && (this.error == null || this.error === undefined)) {
+      return 'Please apply the filter and generate the report.';
+    } else {
+      return this.error;
+    }
   }
 }
 
