@@ -73,24 +73,7 @@ export class RevenueTrackingReportComponent implements OnInit {
       footerFontFamily: this.chartFontFamily,
     },
   };
-  public lineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: '#39E6BE',
-      pointBackgroundColor: 'rgba(0,0,0,0)',
-      pointBorderColor: 'rgba(0,0,0,0)',
-      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-      pointHoverBorderColor: 'rgba(0,0,0,0)',
-    },
-    {
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: '#6495E2',
-      pointBackgroundColor: 'rgba(0,0,0,0)',
-      pointBorderColor: 'rgba(0,0,0,0)',
-      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-      pointHoverBorderColor: 'rgba(0,0,0,0)',
-    }
-  ];
+  public lineChartColors: Color[] = [];
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
 
@@ -154,8 +137,8 @@ export class RevenueTrackingReportComponent implements OnInit {
   allChart = true;
   revenuTrackingReport: RevenuTrackingReport = new RevenuTrackingReport();
   payersList: { id: number, name: string, arName: string }[] = [];
-  selectedPayerName: string = "All";
-  isServiceVisible: boolean = false;
+  selectedPayerName = 'All';
+  isServiceVisible = false;
   serviceOrPayerType: string;
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: Date;
@@ -179,15 +162,14 @@ export class RevenueTrackingReportComponent implements OnInit {
   }
   selectRevenu(event) {
     if (event.value !== '0') {
-      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId));
+      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
       this.selectedPayerName = data.name + ' ' + data.arName;
       this.isServiceVisible = true;
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.Service;
       this.serviceOrPayerType = RevenuTrackingReportChart.Service;
       this.allChart = false;
-    }
-    else {
-      this.selectedPayerName = "All";
+    } else {
+      this.selectedPayerName = 'All';
       this.isServiceVisible = false;
       this.serviceOrPayerType = RevenuTrackingReportChart.All;
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
@@ -198,7 +180,7 @@ export class RevenueTrackingReportComponent implements OnInit {
     return RevenuTrackingReportChart;
   }
   isActiveService(categoryType: string) {
-    return this.serviceOrPayerType === categoryType ? true : false
+    return this.serviceOrPayerType === categoryType ? true : false;
   }
   get providerId(): string {
     return this.sharedService.providerId;
@@ -211,7 +193,7 @@ export class RevenueTrackingReportComponent implements OnInit {
       fromDate: fromDate,
       toDate: toDate,
       subcategory: this.revenuTrackingReport.subcategory,
-    }
+    };
 
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
       if (event.body !== undefined) {
@@ -237,6 +219,24 @@ export class RevenueTrackingReportComponent implements OnInit {
         // ];
         this.lineChartLabels = data.labels;
         this.lineChartData = data.values;
+        this.lineChartData.forEach((l) => {
+          l.lineTension = 0;
+          l.borderWidth = 2;
+          l.datalabels = {
+            display: false
+          };
+        });
+        const colors = this.sharedService.getAnalogousColor(this.lineChartData.length);
+        for (let i = 0; i < this.lineChartData.length; i++) {
+          this.lineChartColors.push({
+            backgroundColor: 'rgba(0,0,0,0)',
+            borderColor: colors[i],
+            pointBackgroundColor: 'rgba(0,0,0,0)',
+            pointBorderColor: 'rgba(0,0,0,0)',
+            pointHoverBackgroundColor: 'rgba(0,0,0,0)',
+            pointHoverBorderColor: 'rgba(0,0,0,0)',
+          });
+        }
       }
 
     }, err => {
