@@ -144,52 +144,52 @@ export class RevenueComparativeReportComponent implements OnInit {
   generate() {
 
     this.reportSerice.generateRevenuComparativeProgressReport(this.providerId, this.revenuComparativeReport).subscribe(event => {
-      // if (event.body !== undefined) {
+      if (event.body !== undefined) {
+        const data = JSON.parse(event.body);
 
-      //   this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = this.generateReport.comparisionCriteria;
-      //   const data = JSON.parse(event.body);
-      //   this.barChartData[0].label = data[0].label;
-      //   this.barChartData[1].label = data[1].label;
-      //   this.barChartData[0].data = data[0].totalNetAmount;
-      //   this.barChartData[1].data = data[1].totalNetAmount;
+        //   this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = this.generateReport.comparisionCriteria;
+        //   this.barChartData[0].label = data[0].label;
+        //   this.barChartData[1].label = data[1].label;
+        //   this.barChartData[0].data = data[0].totalNetAmount;
+        //   this.barChartData[1].data = data[1].totalNetAmount;
 
-      //   this.percenatgeChartData = [];
-      //   const firstYearData = data[0].totalNetAmount;
-      //   const secondYearData = data[1].totalNetAmount;
-      //   const percentageConfig = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria);
-      //   const percentageLabelData = percentageConfig.value;
-      //   this.diffrenceLableName = percentageConfig.label;
-      //   firstYearData.map((ele, index) => {
-      //     let value = 0;
-      //     if (ele === 0 && secondYearData[index] > ele) {
-      //       value = 100;
-      //     } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
-      //       value = 100;
-      //     }
-      //     const finalValue = ele !== 0 && secondYearData[index] !== 0
-      //       ? ele > secondYearData[index]
-      //         ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
-      //       : value;
-      //     if (this.generateReport.comparisionCriteria === 'Month') {
-      //       percentageLabelData[index] = 'WEEK ' + (index + 1);
-      //     }
+        //   this.percenatgeChartData = [];
+        //   const firstYearData = data[0].totalNetAmount;
+        //   const secondYearData = data[1].totalNetAmount;
+        //   const percentageConfig = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria);
+        //   const percentageLabelData = percentageConfig.value;
+        //   this.diffrenceLableName = percentageConfig.label;
+        //   firstYearData.map((ele, index) => {
+        //     let value = 0;
+        //     if (ele === 0 && secondYearData[index] > ele) {
+        //       value = 100;
+        //     } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
+        //       value = 100;
+        //     }
+        //     const finalValue = ele !== 0 && secondYearData[index] !== 0
+        //       ? ele > secondYearData[index]
+        //         ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
+        //       : value;
+        //     if (this.generateReport.comparisionCriteria === 'Month') {
+        //       percentageLabelData[index] = 'WEEK ' + (index + 1);
+        //     }
 
-      //     const obj = {
-      //       label: percentageLabelData[index],
-      //       value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
-      //       data: Number(finalValue.toFixed(2))
-      //     };
-      //     this.percenatgeChartData.push(obj);
-      //   });
-      //   this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
-      //   const chartLableName = this.labelConfig.find(ele => ele.type === this.generateReport.comparisionType).value;
-      //   this.barChartOptions.title.text = chartLableName;
+        //     const obj = {
+        //       label: percentageLabelData[index],
+        //       value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
+        //       data: Number(finalValue.toFixed(2))
+        //     };
+        //     this.percenatgeChartData.push(obj);
+        //   });
+        //   this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
+        //   const chartLableName = this.labelConfig.find(ele => ele.type === this.generateReport.comparisionType).value;
+        //   this.barChartOptions.title.text = chartLableName;
 
-      //   if (this.chart) {
-      //     this.chart.ngOnChanges({});
-      //   }
+        //   if (this.chart) {
+        //     this.chart.ngOnChanges({});
+        //   }
 
-      // }
+      }
 
     });
   }

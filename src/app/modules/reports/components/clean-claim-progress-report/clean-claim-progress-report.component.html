@@ -11,7 +11,8 @@
                 <div class="form-group" [ngClass]="{'has-error' : cleanClaimForm.submitted && !generateReport.payerId}">
                     <label class="control-label">Payer</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select [(ngModel)]="generateReport.payerId" #payerId name="payer" required (selectionChange)="generateReport.payerId = $event.value;">
+                        <mat-select [(ngModel)]="generateReport.payerId" #payerId name="payer" required
+                            (selectionChange)="generateReport.payerId = $event.value;">
                             <mat-option value=""> Select Payer</mat-option>
                             <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                                 ({{payer.arName}})</mat-option>
@@ -23,8 +24,8 @@
                 <div class="form-group">
                     <label class="control-label">Comparison Criteria</label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select [(ngModel)]="generateReport.comparisionCriteria" #comparisionCriteria='ngModel' name="comparisionCriteria"
-                            (selectionChange)="comparisionCriteriaChange($event)" required>
+                        <mat-select [(ngModel)]="generateReport.comparisionCriteria" #comparisionCriteria='ngModel'
+                            name="comparisionCriteria" (selectionChange)="comparisionCriteriaChange($event)" required>
                             <mat-option value="Year">Year</mat-option>
                             <mat-option value="Month">Month</mat-option>
                             <mat-option value="Week">Week</mat-option>
@@ -37,9 +38,11 @@
                 <div class="form-group" [ngClass]="{'has-error' : cleanClaimForm.submitted && beforeDate.invalid}">
                     <label class="control-label">Before
                         {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria}}</label>
-                    <input autocomplete="off" [(ngModel)]='generateReport.beforeDate' #beforeDate='ngModel' name="beforeDate"
+                    <input autocomplete="off" [(ngModel)]='generateReport.beforeDate' #beforeDate='ngModel'
+                        name="beforeDate"
                         placeholder="Select before {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase }}"
-                        class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" required>
+                        class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                        (onShown)="onOpenCalendar($event)" required>
                     <!-- <input autocomplete="off" placeholder="Select before date" class="form-control date-picker" bsDatepicker [bsConfig]="{dateInputFormat: 'MMM YYYY'}"
                         (onShown)="onOpenCalendar($event)" *ngIf='generateReport.comparisonCriteria === "Month"'>
                     <input autocomplete="off" placeholder="Select before date" class="form-control date-picker" bsDatepicker
@@ -51,9 +54,11 @@
                 <div class="form-group" [ngClass]="{'has-error' : cleanClaimForm.submitted && afterDate.invalid}">
                     <label class="control-label">After
                         {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria}}</label>
-                    <input autocomplete="off" placeholder="Select after {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase}}"
-                        required class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                        [(ngModel)]='generateReport.afterDate' #afterDate='ngModel' name="afterDate">
+                    <input autocomplete="off"
+                        placeholder="Select after {{generateReport.comparisionCriteria==='Day' ? 'Date' : generateReport.comparisionCriteria | lowercase}}"
+                        required class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                        (onShown)="onOpenCalendar($event)" [(ngModel)]='generateReport.afterDate' #afterDate='ngModel'
+                        name="afterDate">
                     <!-- <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{dateInputFormat: 'MMM YYYY'}" (onShown)="onOpenCalendar($event)" *ngIf='generateReport.comparisonCriteria === "Month"'>
                     <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{ selectWeek: true, selectFromOtherMonth: true,dateInputFormat: 'DD/MM/YYYY'}" *ngIf='generateReport.comparisonCriteria === "Week"'>
                     <input autocomplete="off" placeholder="Select after date" class="form-control date-picker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" *ngIf='generateReport.comparisonCriteria === "Day"'> -->
@@ -77,12 +82,14 @@
                     Amount</button>
             </li>
             <li>
-                <button (click)="selectComparisionType(cptype.VATAmount,cleanClaimForm)" [ngClass]="{'active': cptype.VATAmount===generateReport.comparisionType}" type="button"
+                <button (click)="selectComparisionType(cptype.VATAmount,cleanClaimForm)"
+                    [ngClass]="{'active': cptype.VATAmount===generateReport.comparisionType}" type="button"
                     matRipple>VAT
                     Amount</button>
             </li>
             <li>
-                <button (click)="selectComparisionType(cptype.CleanClaims,cleanClaimForm)" [ngClass]="{'active': cptype.CleanClaims===generateReport.comparisionType}" type="button"
+                <button (click)="selectComparisionType(cptype.CleanClaims,cleanClaimForm)"
+                    [ngClass]="{'active': cptype.CleanClaims===generateReport.comparisionType}" type="button"
                     matRipple>Clean
                     Claims</button>
             </li>
@@ -100,8 +107,8 @@
     </div>
     <div class="right-block" *ngIf="percenatgeChartData.length > 0">
         <div class="chart-wrapper">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                [chartType]="barChartType">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
             </canvas>
         </div>
         <div class="table-responsive pt-2">
@@ -136,8 +143,8 @@
     </div>
 </div>
 
-<div class="block-footer has-border">
+<!-- <div class="block-footer has-border">
     <div class="right-block btn-list">
         <button mat-flat-button color="primary">Print</button>
     </div>
-</div>
+</div> -->
