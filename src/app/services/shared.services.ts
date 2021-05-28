@@ -112,7 +112,9 @@ export class SharedServices {
     });
     this.uploadsListChange.subscribe(value => {
       this.uploadsList = value.map(upload => {
-        return {totalClaims: upload.totalClaims, uploadDate: upload.uploadDate, uploadId: upload.uploadId, uploadName: upload.uploadName}
+        return {
+          totalClaims: upload.totalClaims, uploadDate: upload.uploadDate, uploadId: upload.uploadId, uploadName: upload.uploadName
+        };
       });
     });
     this.router.events.pipe(
@@ -429,15 +431,16 @@ export class SharedServices {
       if (incrementedHue > 360) {
         incrementedHue %= 360;
       }
-      const derivedHSL = { h: incrementedHue, s: baseColorHSL.s, l: baseColorHSL.l };
+      const derivedHSL = { h: incrementedHue, s: baseColorHSL.s, l: 55 };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
-      const derivedHex = this.RGBToHex(derivedRGB.r, derivedRGB.g, derivedRGB.b);
-      returnArray.push(derivedHex);
+      returnArray.push(`rgba(${derivedRGB.r},${derivedRGB.g},${derivedRGB.b},1)`);
     }
     return returnArray;
   }
   formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
