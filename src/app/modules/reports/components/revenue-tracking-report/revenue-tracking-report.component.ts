@@ -141,9 +141,8 @@ export class RevenueTrackingReportComponent implements OnInit {
   isServiceVisible = false;
   serviceOrPayerType: string;
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
-  minDate: Date;
+  minDate: any;
   constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) {
-    this.minDate = new Date();
   }
 
   ngOnInit(): void {
@@ -249,6 +248,16 @@ export class RevenueTrackingReportComponent implements OnInit {
     };
     container.setViewMode('month');
   }
+  change(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
+      if (startDate > endDate)
+        this.revenuTrackingReport.toDate = '';
+    }
+    this.minDate = new Date(event);
 
-
+  }
 }
+
+
