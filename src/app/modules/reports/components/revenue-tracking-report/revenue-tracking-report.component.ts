@@ -152,7 +152,10 @@ export class RevenueTrackingReportComponent implements OnInit {
     this.payersList = this.sharedService.getPayersList();
   }
 
-  showAllChart() {
+  showAllChart(form) {
+    form.submitted = true;
+    if (form.invalid)
+      return
     this.allChart = true;
     this.serviceOrPayerType = RevenuTrackingReportChart.All;
     this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
