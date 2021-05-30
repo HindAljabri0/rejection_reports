@@ -55,11 +55,11 @@ export class RevenueBreakdownReportComponent implements OnInit {
     public pieChartLegend = true;
     public pieChartPlugins = [pluginOutLabels];
 
-    selectedPayerName: string = "All";
+    selectedPayerName = 'All';
 
     payersList: { id: number, name: string, arName: string }[] = [];
     departments;
-    selectedPayerId: string = 'All';
+    selectedPayerId = 'All';
     selectedCategory: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers' = 'Payers';
     fromDateControl = '';
     fromDateError: string;
@@ -83,11 +83,21 @@ export class RevenueBreakdownReportComponent implements OnInit {
         this.store.dispatch(getDepartmentNames());
         this.store.select(getDepartments).subscribe(departments => this.departments = departments);
         this.routeActive.queryParams.subscribe(params => {
-            if (params.payerId != null) this.selectedPayerId = params.payerId;
-            if (params.category != null) this.selectedCategory = params.category;
-            if (params.fromDate != null) this.fromDateControl = params.fromDate;
-            if (params.toDate != null) this.toDateControl = params.toDate;
-            if (this.isValidDate(this.fromDateControl) && this.isValidDate(this.toDateControl)) this.generate();
+            if (params.payerId != null) {
+                this.selectedPayerId = params.payerId;
+            }
+            if (params.category != null) {
+                this.selectedCategory = params.category;
+            }
+            if (params.fromDate != null) {
+                this.fromDateControl = params.fromDate;
+            }
+            if (params.toDate != null) {
+                this.toDateControl = params.toDate;
+            }
+            if (this.isValidDate(this.fromDateControl) && this.isValidDate(this.toDateControl)) {
+                this.generate();
+            }
         }).unsubscribe();
     }
 
@@ -99,18 +109,24 @@ export class RevenueBreakdownReportComponent implements OnInit {
         if (this.selectedPayerId != 'All' && this.selectedCategory == 'Payers') {
             this.selectedCategory = 'ServiceCode';
         }
-        this.selectedPayerName = this.selectedPayerId == 'All' ? 'All' : this.payersList.find(payer => payer.id == Number.parseInt(this.selectedPayerId)).name;
+        this.selectedPayerName = this.selectedPayerId == 'All'
+            ? 'All'
+            : this.payersList.find(payer => payer.id == Number.parseInt(this.selectedPayerId, 10)).name;
         this.generate();
     }
 
-    onCategoryChanged(category: "Doctor" | "Department" | "ServiceCode" | "ServiceType" | "Payers") {
-        if (this.sharedService.loading) return;
+    onCategoryChanged(category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers') {
+        if (this.sharedService.loading) {
+            return;
+        }
         this.selectedCategory = category;
         this.generate();
     }
 
     generate() {
-        if (this.sharedService.loading) return;
+        if (this.sharedService.loading) {
+            return;
+        }
         if (!this.isValidDate(this.fromDateControl)) {
             this.fromDateError = 'Please select a valid date.';
             return;
@@ -125,42 +141,53 @@ export class RevenueBreakdownReportComponent implements OnInit {
         const toDate = moment(this.toDateControl).format('YYYY-MM-DD');
         this.toDateError = null;
         this.editURL(fromDate, toDate);
-        this.reportService.generateRevenuReportBreakdown(this.providerId, this.selectedPayerId, fromDate, toDate, this.selectedCategory).subscribe(event => {
-            if (event instanceof HttpResponse) {
-                this.noOfGeneratedData++;
-                this.sharedService.loadingChanged.next(false);
-                this.error = null;
-                this.pieChartLabels = event.body.map(set => {
-                    if (this.selectedCategory == 'Payers') {
-                        const index = this.payersList.findIndex(payer => payer.id == set.label);
-                        if (index != -1) {
-                            return `${this.payersList[index].name}`
+        this.reportService.generateRevenuReportBreakdown(
+            this.providerId,
+            this.selectedPayerId,
+            fromDate,
+            toDate,
+            this.selectedCategory).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    this.noOfGeneratedData++;
+                    this.sharedService.loadingChanged.next(false);
+                    this.error = null;
+                    this.pieChartLabels = event.body.map(set => {
+                        if (this.selectedCategory == 'Payers') {
+                            const index = this.payersList.findIndex(payer => payer.id == set.label);
+                            if (index != -1) {
+                                return `${this.payersList[index].name}`;
+                            }
+                        } else if (this.selectedCategory == 'Department') {
+                            return this.getDepartmentName(set.label);
                         }
-                    } else if (this.selectedCategory == 'Department') {
-                        return this.getDepartmentName(set.label);
-                    }
-                    return set.label;
-                });
-                this.pieChartData = [
-                    {
-                        data: event.body.map(set => set.ratio.toFixed(2))
-                    },
-                ];
-            }
-
-        }, err => {
-            this.sharedService.loadingChanged.next(false);
-            this.pieChartLabels = [];
-            this.pieChartData = [];
-            if (err instanceof HttpErrorResponse) {
-                if (err.status == 404) {
-                    this.error = "No data found."
+                        return set.label;
+                    });
+                    this.pieChartData = [
+                        {
+                            data: event.body.map(set => set.ratio.toFixed(2)),
+                            datalabels: {
+                                display: false
+                            },
+                            backgroundColor: this.sharedService.getAnalogousColor(event.body.length),
+                            hoverBackgroundColor: this.sharedService.getAnalogousColor(event.body.length),
+                            borderWidth: 0,
+                        },
+                    ];
                 }
-            } else {
-                console.log(err);
-                this.error = "Could not load data at the moment. Please try again later.";
-            }
-        });
+
+            }, err => {
+                this.sharedService.loadingChanged.next(false);
+                this.pieChartLabels = [];
+                this.pieChartData = [];
+                if (err instanceof HttpErrorResponse) {
+                    if (err.status == 404) {
+                        this.error = 'No data found.';
+                    }
+                } else {
+                    console.log(err);
+                    this.error = 'Could not load data at the moment. Please try again later.';
+                }
+            });
     }
     editURL(fromDate?: string, toDate?: string) {
         let path = '/reports/revenue-report-breakdown?';
@@ -171,13 +198,13 @@ export class RevenueBreakdownReportComponent implements OnInit {
             path += `category=${this.selectedCategory}&`;
         }
         if (fromDate != null) {
-            path += `fromDate=${fromDate}&`
+            path += `fromDate=${fromDate}&`;
         }
         if (toDate != null) {
-            path += `toDate=${toDate}`
+            path += `toDate=${toDate}`;
         }
         if (path.endsWith('?') || path.endsWith('&')) {
-            path = path.substr(0, path.length - 2)
+            path = path.substr(0, path.length - 2);
         }
         this.location.go(path);
     }
@@ -191,7 +218,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
 
     getEmptyStateMessage() {
         if (this.noOfGeneratedData == 0 && this.error == null) {
-            return 'Please apply the filter and generate the report.'
+            return 'Please apply the filter and generate the report.';
         } else {
             return this.error;
         }

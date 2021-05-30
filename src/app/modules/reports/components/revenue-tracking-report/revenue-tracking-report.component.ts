@@ -8,6 +8,7 @@ import { RevenuReportService } from 'src/app/services/revenuReportService/revenu
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import * as moment from 'moment';
 import { from } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-revenue-tracking-report',
@@ -73,24 +74,7 @@ export class RevenueTrackingReportComponent implements OnInit {
       footerFontFamily: this.chartFontFamily,
     },
   };
-  public lineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: '#39E6BE',
-      pointBackgroundColor: 'rgba(0,0,0,0)',
-      pointBorderColor: 'rgba(0,0,0,0)',
-      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-      pointHoverBorderColor: 'rgba(0,0,0,0)',
-    },
-    {
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: '#6495E2',
-      pointBackgroundColor: 'rgba(0,0,0,0)',
-      pointBorderColor: 'rgba(0,0,0,0)',
-      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-      pointHoverBorderColor: 'rgba(0,0,0,0)',
-    }
-  ];
+  public lineChartColors: Color[] = [];
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
 
@@ -154,40 +138,49 @@ export class RevenueTrackingReportComponent implements OnInit {
   allChart = true;
   revenuTrackingReport: RevenuTrackingReport = new RevenuTrackingReport();
   payersList: { id: number, name: string, arName: string }[] = [];
-  selectedPayerName: string = "All";
-  isServiceVisible: boolean = false;
+  selectedPayerName = 'All';
+  isServiceVisible = false;
   serviceOrPayerType: string;
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
-  minDate: Date;
+  minDate: any;
+  error: string;
+  isGenerateData: boolean = false;
   constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) {
-    this.minDate = new Date();
   }
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
   }
 
-  showAllChart() {
+  showAllChart(form) {
+    form.submitted = true;
+    if (form.invalid)
+      return
     this.allChart = true;
     this.serviceOrPayerType = RevenuTrackingReportChart.All;
     this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
+    this.generate();
   }
-  showServiceChart(categoryType) {
+  showServiceChart(categoryType, form) {
+    form.submitted = true;
+    if (form.invalid)
+      return
+
     this.allChart = false;
     this.serviceOrPayerType = categoryType;
     this.revenuTrackingReport.subcategory = categoryType;
+    this.generate();
   }
   selectRevenu(event) {
     if (event.value !== '0') {
-      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId));
+      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
       this.selectedPayerName = data.name + ' ' + data.arName;
       this.isServiceVisible = true;
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.Service;
       this.serviceOrPayerType = RevenuTrackingReportChart.Service;
       this.allChart = false;
-    }
-    else {
-      this.selectedPayerName = "All";
+    } else {
+      this.selectedPayerName = 'All';
       this.isServiceVisible = false;
       this.serviceOrPayerType = RevenuTrackingReportChart.All;
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
@@ -198,12 +191,13 @@ export class RevenueTrackingReportComponent implements OnInit {
     return RevenuTrackingReportChart;
   }
   isActiveService(categoryType: string) {
-    return this.serviceOrPayerType === categoryType ? true : false
+    return this.serviceOrPayerType === categoryType ? true : false;
   }
   get providerId(): string {
     return this.sharedService.providerId;
   }
   generate() {
+    this.isGenerateData = true;
     const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
     const obj: RevenuTrackingReport = {
@@ -211,11 +205,15 @@ export class RevenueTrackingReportComponent implements OnInit {
       fromDate: fromDate,
       toDate: toDate,
       subcategory: this.revenuTrackingReport.subcategory,
-    }
+    };
 
+    this.sharedService.loadingChanged.next(true);
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
-      if (event.body !== undefined) {
+
+      if (event.body !== undefined && event.body !== '' && event.body !== null) {
+        this.error = null;
         const data = JSON.parse(event.body);
+
         // this.lineChartLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
         // this.lineChartData = [
         //   {
@@ -237,10 +235,40 @@ export class RevenueTrackingReportComponent implements OnInit {
         // ];
         this.lineChartLabels = data.labels;
         this.lineChartData = data.values;
+        this.lineChartData.forEach((l) => {
+          l.lineTension = 0;
+          l.borderWidth = 2;
+          l.datalabels = {
+            display: false
+          };
+        });
+        const colors = this.sharedService.getAnalogousColor(this.lineChartData.length);
+        for (let i = 0; i < this.lineChartData.length; i++) {
+          this.lineChartColors.push({
+            backgroundColor: 'rgba(0,0,0,0)',
+            borderColor: colors[i],
+            pointBackgroundColor: 'rgba(0,0,0,0)',
+            pointBorderColor: 'rgba(0,0,0,0)',
+            pointHoverBackgroundColor: 'rgba(0,0,0,0)',
+            pointHoverBorderColor: 'rgba(0,0,0,0)',
+          });
+        }
       }
+      this.sharedService.loadingChanged.next(false);
+
 
     }, err => {
-      console.log(err);
+      this.sharedService.loadingChanged.next(false);
+      this.lineChartLabels = [];
+      this.lineChartData = [];
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 404) {
+          this.error = 'No data found.';
+        }
+      } else {
+        console.log(err);
+        this.error = 'Could not load data at the moment. Please try again later.';
+      }
     });
   }
   onOpenCalendar(container) {
@@ -249,6 +277,23 @@ export class RevenueTrackingReportComponent implements OnInit {
     };
     container.setViewMode('month');
   }
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
+      if (startDate > endDate)
+        this.revenuTrackingReport.toDate = '';
+    }
+    this.minDate = new Date(event);
 
-
+  }
+  getEmptyStateMessage() {
+    if (!this.isGenerateData && (this.error == null || this.error === undefined)) {
+      return 'Please apply the filter and generate the report.';
+    } else {
+      return this.error;
+    }
+  }
 }
+
+
