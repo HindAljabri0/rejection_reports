@@ -163,7 +163,9 @@ export class RevenueTrackingReportComponent implements OnInit {
         this.revenuTrackingReport.toDate = params.toDate;
       }
       if (params.payerId != null) {
-        this.revenuTrackingReport.payerId = this.allChart ? '0' : parseInt(params.payerId);
+        this.revenuTrackingReport.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId);
+        const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
+        this.selectedPayerName = data.name + ' ' + data.arName;
       }
       if (params.fromDate != null && params.toDate != null) {
         this.generate();
