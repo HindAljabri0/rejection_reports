@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
-import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
-import { SharedServices } from 'src/app/services/shared.services';
-import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
-import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
-import * as moment from 'moment';
-import { from } from 'rxjs';
+import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import * as moment from 'moment';
+import { Color, Label } from 'ng2-charts';
+import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
+import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
+import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
+import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-revenue-tracking-report',
   templateUrl: './revenue-tracking-report.component.html',
@@ -145,11 +145,30 @@ export class RevenueTrackingReportComponent implements OnInit {
   minDate: any;
   error: string;
   isGenerateData: boolean = false;
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) {
+  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location) {
   }
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
+    this.routeActive.queryParams.subscribe(params => {
+      if (params.payerId != null) {
+        this.revenuTrackingReport.payerId = parseInt(params.payerId);
+      }
+      if (params.category != null) {
+        this.revenuTrackingReport.subcategory = params.category;
+        this.serviceOrPayerType = params.category;
+        this.allChart = RevenuTrackingReportChart.All === params.category ? true : false;
+      }
+      if (params.fromDate != null) {
+        this.revenuTrackingReport.fromDate = params.fromDate;
+      }
+      if (params.toDate != null) {
+        this.revenuTrackingReport.toDate = params.toDate;
+      }
+      if (params.fromDate != null && params.toDate != null) {
+        this.generate();
+      }
+    });
   }
 
   showAllChart(form) {
@@ -186,6 +205,7 @@ export class RevenueTrackingReportComponent implements OnInit {
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
       this.allChart = true;
     }
+    this.generate();
   }
   get revenuTrackingEnum() {
     return RevenuTrackingReportChart;
@@ -200,12 +220,14 @@ export class RevenueTrackingReportComponent implements OnInit {
     this.isGenerateData = true;
     const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
+    this.editURL(fromDate, toDate);
     const obj: RevenuTrackingReport = {
       payerId: this.revenuTrackingReport.payerId,
       fromDate: fromDate,
       toDate: toDate,
       subcategory: this.revenuTrackingReport.subcategory,
     };
+
 
     this.sharedService.loadingChanged.next(true);
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
@@ -253,6 +275,7 @@ export class RevenueTrackingReportComponent implements OnInit {
             pointHoverBorderColor: 'rgba(0,0,0,0)',
           });
         }
+        // this.router.navigateByUrl('/reports/revenue-report-breakdown', { queryParams: { payerId: this.revenuTrackingReport.payerId, fromDate: this.revenuTrackingReport.fromDate, toDate: this.revenuTrackingReport.toDate, category: this.revenuTrackingReport.subcategory } });
       }
       this.sharedService.loadingChanged.next(false);
 
@@ -293,6 +316,25 @@ export class RevenueTrackingReportComponent implements OnInit {
     } else {
       return this.error;
     }
+  }
+  editURL(fromDate?: string, toDate?: string) {
+    let path = '/reports/revenue-tracking-report?';
+    if (this.revenuTrackingReport.subcategory != null) {
+      path += `payerId=${this.revenuTrackingReport.payerId}&`;
+    }
+    if (this.revenuTrackingReport.subcategory != null) {
+      path += `category=${this.revenuTrackingReport.subcategory}&`;
+    }
+    if (fromDate != null) {
+      path += `fromDate=${fromDate}&`;
+    }
+    if (toDate != null) {
+      path += `toDate=${toDate}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 2);
+    }
+    this.location.go(path);
   }
 }
 

@@ -99,9 +99,8 @@
         </div>
         <div class="right-block" *ngIf="lineChartData.length>0">
             <div class="chart-wrapper">
-                <canvas *ngIf="allChart" baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
-                    [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-                    [chartType]="lineChartType"></canvas>
+                <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                    [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
                 <!-- <canvas *ngIf="serviceChart" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                 [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"> -->
                 <!-- </canvas> -->
