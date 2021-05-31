@@ -151,9 +151,6 @@ export class RevenueTrackingReportComponent implements OnInit {
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
     this.routeActive.queryParams.subscribe(params => {
-      if (params.payerId != null) {
-        this.revenuTrackingReport.payerId = parseInt(params.payerId);
-      }
       if (params.category != null) {
         this.revenuTrackingReport.subcategory = params.category;
         this.serviceOrPayerType = params.category;
@@ -164,6 +161,9 @@ export class RevenueTrackingReportComponent implements OnInit {
       }
       if (params.toDate != null) {
         this.revenuTrackingReport.toDate = params.toDate;
+      }
+      if (params.payerId != null) {
+        this.revenuTrackingReport.payerId = this.allChart ? '0' : parseInt(params.payerId);
       }
       if (params.fromDate != null && params.toDate != null) {
         this.generate();

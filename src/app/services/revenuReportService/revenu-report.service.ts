@@ -25,8 +25,15 @@ export class RevenuReportService {
     return this.http.request(request);
   }
   generateRevenuComparativeProgressReport(providerId: string, data: RevenuComparativeReport): Observable<any> {
-    const requestURL = `/providers/${providerId}/charts`;
-    const request = new HttpRequest('POST', environment.uploaderHost + requestURL, data, { responseType: 'text' });
+    const requestURL = `/providers/${providerId}/revenue-comparative/payerId/${data.payerId}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'payerId') { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
   generateRevenuReportBreakdown(providerId: string, payerId: string, fromDate: string, toDate: string, category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers'): Observable<any> {
