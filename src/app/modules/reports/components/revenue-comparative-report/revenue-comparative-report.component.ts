@@ -235,7 +235,8 @@ export class RevenueComparativeReportComponent implements OnInit {
         ele.data = [];
         ele.label = '';
         return ele;
-      })
+      });
+      this.percenatgeChartData = [];
       if (err instanceof HttpErrorResponse) {
         if (err.status == 404) {
           this.error = 'No data found.';
