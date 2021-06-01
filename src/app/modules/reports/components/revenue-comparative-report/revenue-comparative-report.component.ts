@@ -231,7 +231,11 @@ export class RevenueComparativeReportComponent implements OnInit {
 
     }, err => {
       this.sharedService.loadingChanged.next(false);
-      this.barChartData = [];
+      this.barChartData.map((ele) => {
+        ele.data = [];
+        ele.label = '';
+        return ele;
+      })
       if (err instanceof HttpErrorResponse) {
         if (err.status == 404) {
           this.error = 'No data found.';

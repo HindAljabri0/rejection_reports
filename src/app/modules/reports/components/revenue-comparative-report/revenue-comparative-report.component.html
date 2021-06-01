@@ -21,11 +21,11 @@
                 <div class="col">
                     <div class="form-group"
                         [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && fromDate.invalid}">
-                        <label class="control-label">Date From</label>
+                        <label class="control-label">Before Year</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate" -->
                             <input [(ngModel)]='revenuComparativeReport.fromDate' #fromDate='ngModel' name="fromDate"
-                                class="form-control date-picker" placeholder="Select from date" bsDatepicker
+                                class="form-control date-picker" placeholder="Select before year" bsDatepicker
                                 (onShown)="onOpenCalendar($event)" [bsConfig]="datePickerConfig" required
                                 (bsValueChange)="dateValidation($event)" autocomplete="off" />
                             <!-- <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
@@ -37,12 +37,12 @@
                 <div class="col">
                     <div class="form-group"
                         [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && toDate.invalid}">
-                        <label class="control-label">Date To</label>
+                        <label class="control-label">After Year</label>
                         <div class="date-picker">
                             <input bsDatepicker [minDate]="minDate" [bsConfig]="datePickerConfig"
                                 [(ngModel)]='revenuComparativeReport.toDate' #toDate='ngModel' name="toDate"
                                 class="form-control date-picker" (onShown)="onOpenCalendar($event)" required
-                                placeholder="Select to date" autocomplete="off" />
+                                placeholder="Select after year" autocomplete="off" />
                             <!-- <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker> -->
                         </div>
