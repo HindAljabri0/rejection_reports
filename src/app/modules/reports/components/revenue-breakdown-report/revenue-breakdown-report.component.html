@@ -12,7 +12,7 @@
                             <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId"
                                 (selectionChange)="onPayerChanged()" required>
                                 <mat-option value="All">All</mat-option>
-                                <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                <mat-option *ngFor="let payer of payersList" [value]="payer.id+''">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -25,7 +25,7 @@
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
                             <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
+                                autocomplete="off" (onShown)="onOpenCalendar($event)" placeholder="Select from month"
                                 [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
-                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                autocomplete="off" [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required />
                         </div>
                     </div>
