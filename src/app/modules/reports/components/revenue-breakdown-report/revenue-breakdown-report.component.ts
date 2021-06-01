@@ -1,8 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {  AfterViewInit, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import * as pluginOutLabels from 'chartjs-plugin-piechart-outlabels';
 import * as moment from 'moment';
 import { Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
@@ -19,30 +18,17 @@ import { NgForm } from '@angular/forms';
     templateUrl: './revenue-breakdown-report.component.html',
     styles: []
 })
-export class RevenueBreakdownReportComponent implements OnInit {
+export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     chartMode = 0;
     public chartFontFamily = '"Poppins", sans-serif';
     public chartFontColor = '#2d2d2d';
     public pieChartOptions: ChartOptions = {
         maintainAspectRatio: false,
         layout: {
-            padding: 50
+            padding: 32
         },
         plugins: {
-            legend: false,
-            outlabels: {
-                text: ' %l %p ',
-                stretch: 45,
-                color: this.chartFontColor,
-                backgroundColor: '#fff',
-                valuePrecision: 5,
-                font: {
-                    resizable: true,
-                    minSize: 12,
-                    family: this.chartFontFamily,
-                    maxSize: 18
-                },
-            }
+            legend: false
         },
         tooltips: {
             bodyFontFamily: this.chartFontFamily,
@@ -54,7 +40,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
     public pieChartData: ChartDataSets[] = [];
     public pieChartType: ChartType = 'pie';
     public pieChartLegend = true;
-    public pieChartPlugins = [pluginOutLabels];
+    public pieChartPlugins = [];
 
     selectedPayerName = 'All';
 
@@ -83,9 +69,14 @@ export class RevenueBreakdownReportComponent implements OnInit {
         this.payersList = this.sharedService.getPayersList();
         this.store.dispatch(getDepartmentNames());
         this.store.select(getDepartments).subscribe(departments => this.departments = departments);
+        
+    }
+
+    ngAfterViewInit(){
         this.routeActive.queryParams.subscribe(params => {
             if (params.payerId != null) {
                 this.selectedPayerId = params.payerId;
+                this.onPayerChanged();
             }
             if (params.category != null) {
                 this.selectedCategory = params.category;
@@ -113,7 +104,6 @@ export class RevenueBreakdownReportComponent implements OnInit {
         this.selectedPayerName = this.selectedPayerId == 'All'
             ? 'All'
             : this.payersList.find(payer => payer.id == Number.parseInt(this.selectedPayerId, 10)).name;
-        this.generate();
     }
 
     onCategoryChanged(category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers', form: NgForm) {
@@ -139,11 +129,16 @@ export class RevenueBreakdownReportComponent implements OnInit {
             this.toDateError = 'Please select a valid date.';
             return;
         }
-        this.sharedService.loadingChanged.next(true);
+        if(!this.isDateBeforeDate(this.fromDateControl, this.toDateControl)){
+            this.fromDateError = 'This date should be before the to-date';
+            this.toDateError = 'This date should be after the from-date';
+            return;
+        }
         const fromDate = moment(this.fromDateControl).format('YYYY-MM-DD');
-        this.fromDateError = null;
         const toDate = moment(this.toDateControl).format('YYYY-MM-DD');
+        this.fromDateError = null;
         this.toDateError = null;
+        this.sharedService.loadingChanged.next(true);
         this.editURL(fromDate, toDate);
         this.reportService.generateRevenuReportBreakdown(
             this.providerId,
@@ -166,14 +161,15 @@ export class RevenueBreakdownReportComponent implements OnInit {
                         }
                         return set.label;
                     });
+                    const colors = this.sharedService.getAnalogousColor(event.body.length);
                     this.pieChartData = [
                         {
                             data: event.body.map(set => set.ratio.toFixed(2)),
                             datalabels: {
                                 display: false
                             },
-                            backgroundColor: this.sharedService.getAnalogousColor(event.body.length),
-                            hoverBackgroundColor: this.sharedService.getAnalogousColor(event.body.length),
+                            backgroundColor: colors,
+                            hoverBackgroundColor: colors,
                             borderWidth: 0,
                         },
                     ];
@@ -230,6 +226,10 @@ export class RevenueBreakdownReportComponent implements OnInit {
 
     isValidDate(date): boolean {
         return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
+    }
+
+    isDateBeforeDate(date1, date2) {
+        return new Date(moment(date1).format('YYYY-MM-DD')).getTime() <= new Date(moment(date2).format('YYYY-MM-DD')).getTime()
     }
 
     getDepartmentName(code: string) {

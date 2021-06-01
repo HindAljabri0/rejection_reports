@@ -312,6 +312,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-group .control-hint{padding-top: 4px;color: #909090;font-weight: 600;}
 .form-group-static .control-label{color:#707070;}
 .form-control-static{font-size:16px;line-height:22px;color:#3060AA;font-weight: 600;}
+.form-group .block-slide-toggle.mat-slide-toggle{padding: 12px 0;height: auto;}
 
 /* select control
 --------------------------------------------------------------------------------------------------------*/
@@ -717,6 +718,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
 .progress-report-wrapper>.right-block.full-width{flex-basis: 100%;max-width:100%;}
 .progress-report-wrapper>.right-block .chart-wrapper{height: calc(100vh - 333px);position: relative;width: 100%;min-height: 380px;}
+.progress-report-wrapper .custom-legend-wrapper{display: flex;height: calc(100vh - 333px);min-height: 380px;margin: -14px;}
+.progress-report-wrapper .custom-legend-wrapper .chart-wrapper{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 320px);max-width: calc(100% - 320px);}
+.progress-report-wrapper .custom-legend-wrapper .custom-legend{flex-grow: 0;flex-shrink: 0;flex-basis: 320px;max-width: 320px;max-height: 100%;overflow: auto;padding: 14px;border-left: 1px solid #e1e1e1;}
+.progress-report-wrapper .custom-legend-wrapper .custom-legend>li{display: flex;padding-bottom: 12px;}
+.progress-report-wrapper .custom-legend-wrapper .custom-legend .color{flex-grow: 0;flex-shrink: 0;flex-basis: 16px;width: 16px;height: 16px;display: block;}
+.progress-report-wrapper .custom-legend-wrapper .custom-legend .text{align-self: center;-ms-flex-item-align: center;padding-left: 8px;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -1160,6 +1167,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .border-lg-bottom{border-bottom:0;}
     .tawuniya-tab-action>.primary-link{padding-right: 10px;}
     .primary-tab .mat-tab-label{padding: 0 10px;}
+    .progress-report-wrapper .custom-legend-wrapper .chart-wrapper{flex-basis: calc(100% - 280px);max-width: calc(100% - 280px);}
+    .progress-report-wrapper .custom-legend-wrapper .custom-legend{flex-basis: 280px;max-width: 280px;}
 }
 
 .mat-grid-tile .mat-figure {

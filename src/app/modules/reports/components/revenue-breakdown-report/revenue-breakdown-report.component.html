@@ -9,23 +9,21 @@
                     <div class="form-group">
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId"
-                                (selectionChange)="onPayerChanged()" required>
+                            <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId" (selectionChange)="onPayerChanged()" required>
                                 <mat-option value="All">All</mat-option>
-                                <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                <mat-option *ngFor="let payer of payersList" [value]="payer.id+''">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group" [matTooltip]="fromDateError"
-                        [ngClass]="{'has-error' : fromDateError!=null}">
+                    <div class="form-group" [matTooltip]="fromDateError" [ngClass]="{'has-error' : fromDateError!=null}">
                         <label class="control-label">Date From</label>
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
                             <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
+                                autocomplete="off" (onShown)="onOpenCalendar($event)" placeholder="Select from month"
                                 [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
                         </div>
                     </div>
@@ -35,7 +33,7 @@
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
-                                [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                autocomplete="off" [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                 [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required />
                         </div>
                     </div>
@@ -53,41 +51,43 @@
             <ul class="list">
                 <li class="title">Payer</li>
                 <li>
-                    <button type="button"
-                        (click)="selectedPayerId=='All'? onCategoryChanged('Payers',revenuBreakingReportForm):null"
-                        matRipple
+                    <button type="button" (click)="selectedPayerId=='All'? onCategoryChanged('Payers',revenuBreakingReportForm):null" matRipple
                         [ngClass]="{'active': selectedCategory== 'Payers' && selectedPayerId == 'All'}">{{selectedPayerName}}</button>
                 </li>
                 <li class="title">By Category</li>
                 <ng-container>
 
                     <li>
-                        <button type="button" matRipple
-                            (click)="onCategoryChanged('ServiceCode',revenuBreakingReportForm)"
+                        <button type="button" matRipple (click)="onCategoryChanged('ServiceCode',revenuBreakingReportForm)"
                             [class.active]="selectedCategory=='ServiceCode'">Service</button>
                     </li>
                     <li>
-                        <button type="button" [class.active]="selectedCategory=='Department'"
-                            (click)="onCategoryChanged('Department',revenuBreakingReportForm)"
+                        <button type="button" [class.active]="selectedCategory=='Department'" (click)="onCategoryChanged('Department',revenuBreakingReportForm)"
                             matRipple>Department</button>
                     </li>
                     <li>
-                        <button type="button" (click)="onCategoryChanged('Doctor',revenuBreakingReportForm)"
-                            [class.active]="selectedCategory=='Doctor'" matRipple>Doctor</button>
+                        <button type="button" (click)="onCategoryChanged('Doctor',revenuBreakingReportForm)" [class.active]="selectedCategory=='Doctor'" matRipple>Doctor</button>
                     </li>
                     <li>
-                        <button type="button" (click)="onCategoryChanged('ServiceType',revenuBreakingReportForm)"
-                            [class.active]="selectedCategory=='ServiceType'" matRipple>Service
+                        <button type="button" (click)="onCategoryChanged('ServiceType',revenuBreakingReportForm)" [class.active]="selectedCategory=='ServiceType'" matRipple>Service
                             Type</button>
                     </li>
                 </ng-container>
             </ul>
         </div>
         <div class="right-block" *ngIf="pieChartData.length>0">
-            <div class="chart-wrapper">
-                <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
-                    [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
-                </canvas>
+            <div class="custom-legend-wrapper">
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins"
+                        [legend]="pieChartLegend">
+                    </canvas>
+                </div>
+                <ul class="custom-legend">
+                    <li *ngFor="let data of pieChartLabels;let i=index">
+                        <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
+                        <span class="text">{{data}} - {{pieChartData[0].data[i]}}%</span>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="right-block" *ngIf="pieChartData.length===0">
