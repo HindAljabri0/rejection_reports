@@ -10,6 +10,7 @@ import { RevenuTrackingReportChart } from 'src/app/claim-module-components/model
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-revenue-tracking-report',
   templateUrl: './revenue-tracking-report.component.html',
@@ -197,7 +198,8 @@ export class RevenueTrackingReportComponent implements OnInit {
     this.revenuTrackingReport.subcategory = categoryType;
     this.generate();
   }
-  selectRevenu(event) {
+  selectRevenu(event, form: NgForm) {
+
     if (event.value !== '0') {
       const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
       this.selectedPayerName = data.name + ' ' + data.arName;
@@ -212,7 +214,8 @@ export class RevenueTrackingReportComponent implements OnInit {
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
       this.allChart = true;
     }
-    this.generate();
+    if (!form.invalid)
+      this.generate();
   }
   get revenuTrackingEnum() {
     return RevenuTrackingReportChart;
@@ -242,26 +245,6 @@ export class RevenueTrackingReportComponent implements OnInit {
       if (event.body !== undefined && event.body !== '' && event.body !== null) {
         this.error = null;
         const data = JSON.parse(event.body);
-
-        // this.lineChartLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-        // this.lineChartData = [
-        //   {
-        //     data: [200000, 200000, 75000, 500000, 350000, 75000, 200000, 200000, 75000, 500000, 350000, 75000],
-        //     label: 'ED-o1',
-        //   },
-        //   {
-        //     data: [100000, 150000, 225000, 100000, 150000, 600000, 100000, 150000, 225000, 100000, 150000, 600000],
-        //     label: 'Cons'
-        //   },
-        //   {
-        //     data: [200000, 400000, 425000, 225000, 225000, 200000, 175000, 400000, 425000, 225000, 225000, 200000],
-        //     label: 'Ed-01'
-        //   },
-        //   {
-        //     data: [200000, 400000, 425000, 225000, 225000, 200000, 175000, 400000, 425000, 225000, 225000, 200000],
-        //     label: 'Bd-01'
-        //   },
-        // ];
         this.lineChartLabels = data.labels;
         this.lineChartData = data.values;
         this.lineChartData.forEach((l) => {
