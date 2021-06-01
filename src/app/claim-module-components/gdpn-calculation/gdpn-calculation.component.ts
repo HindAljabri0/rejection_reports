@@ -30,7 +30,8 @@ export class GdpnCalculationComponent implements OnInit {
       this.claim.invoice[this.selectedInvoice].service.some(service => service.hasOwnProperty('serviceDecision') &&
         service['serviceDecision'] != null)) {
       return this.claim.invoice[this.selectedInvoice].service
-        .filter(service => service.hasOwnProperty('serviceDecision'))
+        .filter(service => service.hasOwnProperty('serviceDecision') &&
+          service['serviceDecision'] != null)
         .map(service => service['serviceDecision'].gdpn.rejection != null ? service['serviceDecision'].gdpn.rejection.value : 0)
         .reduce((amount1, amount2) => amount1 + amount2);
     } else {

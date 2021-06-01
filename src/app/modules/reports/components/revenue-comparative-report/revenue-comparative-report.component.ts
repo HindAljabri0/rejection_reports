@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -6,6 +7,10 @@ import { RevenuReportService } from 'src/app/services/revenuReportService/revenu
 import { RevenuComparativeReport } from 'src/app/models/revenuComparativeReport';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { BaseChartDirective, Label } from 'ng2-charts';
+import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
 @Component({
   selector: 'app-revenue-comparative-report',
   templateUrl: './revenue-comparative-report.component.html',
@@ -87,8 +92,8 @@ export class RevenueComparativeReportComponent implements OnInit {
   }, pluginDataLabels];
   public barChartData: ChartDataSets[] = [
     {
-      data: [1000, 1750, 2250, 1000, 4750, 1000, 750, 1500, 3000, 1250, 1000, 250],
-      label: 'Avg. Cost 2018',
+      data: [],
+      label: '',
       categoryPercentage: 0.85,
       barPercentage: 0.85,
       backgroundColor: '#3366cc',
@@ -105,8 +110,8 @@ export class RevenueComparativeReportComponent implements OnInit {
         }
       }
     }, {
-      data: [1500, 1500, 3000, 2750, 500, 2750, 1500, 2250, 500, 2250, 1500, 2000],
-      label: 'Avg. Cost 2019',
+      data: [],
+      label: '',
       categoryPercentage: 0.85,
       barPercentage: 0.85,
       backgroundColor: '#ff9900',
@@ -126,71 +131,159 @@ export class RevenueComparativeReportComponent implements OnInit {
   ];
   payersList: { id: number, name: string, arName: string }[] = [];
   revenuComparativeReport: RevenuComparativeReport = new RevenuComparativeReport();
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) { }
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'YYYY' };
+  minDate: any;
+  error: string;
+  isGenerateData: boolean = false;
+  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  diffrenceLableName: any;
+  percenatgeChartData: any = [];
+  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location) { }
 
   ngOnInit() {
     this.payersList = this.sharedService.getPayersList();
+    this.routeActive.queryParams.subscribe(params => {
+      if (params.payerId != null) {
+        this.revenuComparativeReport.payerId = params.payerId;
+      }
+      if (params.isAvgCost != null) {
+        this.revenuComparativeReport.isAvgCost = params.isAvgCost === 'true' ? true : false;
+      }
+      if (params.fromDate != null) {
+        this.revenuComparativeReport.fromDate = params.fromDate;
+      }
+      if (params.toDate != null) {
+        this.revenuComparativeReport.toDate = params.toDate;
+      }
+      if (params.fromDate != null && params.toDate != null) {
+        this.generate();
+      }
+    });
   }
   onOpenCalendar(container) {
-    container.monthSelectHandler = (event: any): void => {
+    container.yearSelectHandler = (event: any): void => {
       container._store.dispatch(container._actions.select(event.date));
     };
-    container.setViewMode('month');
+    container.setViewMode('year');
   }
   get providerId(): string {
     return this.sharedService.providerId;
   }
   generate() {
+    this.isGenerateData = true;
+    this.sharedService.loadingChanged.next(true);
+    const fromDate = moment(this.revenuComparativeReport.fromDate).format('YYYY-MM-DD');
+    const toDate = moment(this.revenuComparativeReport.toDate).format('YYYY-MM-DD');
+    this.editURL(fromDate, toDate);
+    const obj: RevenuComparativeReport = {
+      payerId: this.revenuComparativeReport.payerId,
+      fromDate: fromDate,
+      toDate: toDate,
+      isAvgCost: this.revenuComparativeReport.isAvgCost,
+    };
 
-    this.reportSerice.generateRevenuComparativeProgressReport(this.providerId, this.revenuComparativeReport).subscribe(event => {
-      // if (event.body !== undefined) {
 
-      //   this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = this.generateReport.comparisionCriteria;
-      //   const data = JSON.parse(event.body);
-      //   this.barChartData[0].label = data[0].label;
-      //   this.barChartData[1].label = data[1].label;
-      //   this.barChartData[0].data = data[0].totalNetAmount;
-      //   this.barChartData[1].data = data[1].totalNetAmount;
+    this.reportSerice.generateRevenuComparativeProgressReport(this.providerId, obj).subscribe(event => {
+      if (event.body !== undefined) {
+        this.error = null;
+        const datas = JSON.parse(event.body);
 
-      //   this.percenatgeChartData = [];
-      //   const firstYearData = data[0].totalNetAmount;
-      //   const secondYearData = data[1].totalNetAmount;
-      //   const percentageConfig = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria);
-      //   const percentageLabelData = percentageConfig.value;
-      //   this.diffrenceLableName = percentageConfig.label;
-      //   firstYearData.map((ele, index) => {
-      //     let value = 0;
-      //     if (ele === 0 && secondYearData[index] > ele) {
-      //       value = 100;
-      //     } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
-      //       value = 100;
-      //     }
-      //     const finalValue = ele !== 0 && secondYearData[index] !== 0
-      //       ? ele > secondYearData[index]
-      //         ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
-      //       : value;
-      //     if (this.generateReport.comparisionCriteria === 'Month') {
-      //       percentageLabelData[index] = 'WEEK ' + (index + 1);
-      //     }
+        this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = 'Year';
+        this.barChartData[0].label = datas[0].label;
+        this.barChartData[1].label = datas[1].label;
+        this.barChartData[0].data = datas[0].data;
+        this.barChartData[1].data = datas[1].data;
 
-      //     const obj = {
-      //       label: percentageLabelData[index],
-      //       value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
-      //       data: Number(finalValue.toFixed(2))
-      //     };
-      //     this.percenatgeChartData.push(obj);
-      //   });
-      //   this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
-      //   const chartLableName = this.labelConfig.find(ele => ele.type === this.generateReport.comparisionType).value;
-      //   this.barChartOptions.title.text = chartLableName;
+        this.percenatgeChartData = [];
+        const firstYearData = datas[0].data;
+        const secondYearData = datas[1].data;
+        const percentageLabelData = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        this.diffrenceLableName = 'Months';
+        firstYearData.map((ele, index) => {
+          let value = 0;
+          if (ele === 0 && secondYearData[index] > ele) {
+            value = 100;
+          } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
+            value = 100;
+          }
+          const finalValue = ele !== 0 && secondYearData[index] !== 0
+            ? ele > secondYearData[index]
+              ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
+            : value;
 
-      //   if (this.chart) {
-      //     this.chart.ngOnChanges({});
-      //   }
+          const obj = {
+            label: percentageLabelData[index],
+            value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
+            data: Number(finalValue.toFixed(2))
+          };
+          this.percenatgeChartData.push(obj);
+        });
+        this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
+        // this.barChartOptions.title.text = 'All';
 
-      // }
+        if (this.chart) {
+          this.chart.ngOnChanges({});
+        }
 
+
+      }
+      this.sharedService.loadingChanged.next(false);
+
+    }, err => {
+      this.sharedService.loadingChanged.next(false);
+      this.barChartData.map((ele) => {
+        ele.data = [];
+        ele.label = '';
+        return ele;
+      });
+      this.percenatgeChartData = [];
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 404) {
+          this.error = 'No data found.';
+        }
+      } else {
+        console.log(err);
+        this.error = 'Could not load data at the moment. Please try again later.';
+      }
     });
+  }
+  editURL(fromDate?: string, toDate?: string) {
+    let path = '/reports/revenue-comparative-report?';
+    if (this.revenuComparativeReport.payerId != null) {
+      path += `payerId=${this.revenuComparativeReport.payerId}&`;
+    }
+    if (this.revenuComparativeReport.isAvgCost != null) {
+      path += `isAvgCost=${this.revenuComparativeReport.isAvgCost}&`;
+    }
+    if (fromDate != null) {
+      path += `fromDate=${fromDate}&`;
+    }
+    if (toDate != null) {
+      path += `toDate=${toDate}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 1);
+    }
+    this.location.go(path);
+  }
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.revenuComparativeReport.toDate).format('YYYY-MM-DD');
+      if (startDate > endDate)
+        this.revenuComparativeReport.toDate = '';
+    }
+    this.minDate = new Date(event);
+
+  }
+  getEmptyStateMessage() {
+    if (!this.isGenerateData && (this.error == null || this.error === undefined)) {
+      return 'Please apply the filter and generate the report.';
+    } else {
+      return this.error;
+    }
+  }
+  get Rate() {
+    return GrowthRate;
   }
 }

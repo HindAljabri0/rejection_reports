@@ -11,6 +11,7 @@ import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer'
 import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-revenue-breakdown-report',
@@ -101,11 +102,14 @@ export class RevenueBreakdownReportComponent implements OnInit {
         this.generate();
     }
 
-    onCategoryChanged(category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers') {
+    onCategoryChanged(category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers', form: NgForm) {
+
         if (this.sharedService.loading) {
             return;
         }
-        this.selectedCategory = category;
+        if (!form.invalid)
+            this.selectedCategory = category;
+
         this.generate();
     }
 
