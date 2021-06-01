@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
     <div class="block-header has-border">
-        <p>Revenue Comparative Report</p>
+        <p>Revenue Comparison Report</p>
     </div>
     <form #revenuComparativeReportForm='ngForm' (ngSubmit)='revenuComparativeReportForm.valid && generate()'>
         <div class="block-filter-panel has-border">
@@ -51,13 +51,9 @@
                 <div class="col-auto">
                     <div class="form-group">
                         <label class="control-label">Avg. Cost per Claim</label>
-                        <mat-radio-group class="radio-group inline" [(ngModel)]='revenuComparativeReport.isAvgCost'
-                            #isAvgCost='ngModel' name="isAvgCost">
-                            <mat-radio-button color="primary" [value]="true">Yes
-                            </mat-radio-button>
-                            <mat-radio-button color="primary" [value]="false">No
-                            </mat-radio-button>
-                        </mat-radio-group>
+                        <mat-slide-toggle color="primary" class="block-slide-toggle"
+                            [(ngModel)]='revenuComparativeReport.isAvgCost' #isAvgCost='ngModel' name="isAvgCost">
+                        </mat-slide-toggle>
                     </div>
                 </div>
                 <div class="col-lg-auto">

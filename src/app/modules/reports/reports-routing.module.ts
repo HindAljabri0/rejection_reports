@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'claim-submissions', component: ClaimSubmissionsComponent },
   { path: 'revenue-tracking-report', component: RevenueTrackingReportComponent },
   { path: 'revenue-report-breakdown', component: RevenueBreakdownReportComponent },
-  { path: 'revenue-comparative-report', component: RevenueComparativeReportComponent }
+  { path: 'revenue-comparison-report', component: RevenueComparativeReportComponent }
 ];
 
 @NgModule({
