@@ -11,7 +11,7 @@
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [(ngModel)]="revenuTrackingReport.payerId" #payerId name="payerId"
-                                (selectionChange)="selectRevenu($event)" required>
+                                (selectionChange)="selectRevenu($event,revenuTrackingReportForm)" required>
                                 <mat-option value="0">All</mat-option>
                                 <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                                     ({{payer.arName}})</mat-option>

@@ -26,14 +26,12 @@
                             <!-- [matDatepicker]="fromDate"  -->
                             <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
                                 (onShown)="onOpenCalendar($event)" placeholder="Select from month"
-                                [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate"
-                                required />
+                                [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group"  [matTooltip]="toDateError"
-                        [ngClass]="{'has-error' : toDateError!=null}">
+                    <div class="form-group" [matTooltip]="toDateError" [ngClass]="{'has-error' : toDateError!=null}">
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
@@ -55,26 +53,30 @@
             <ul class="list">
                 <li class="title">Payer</li>
                 <li>
-                    <button type="button" (click)="selectedPayerId=='All'? onCategoryChanged('Payers'):null" matRipple
+                    <button type="button"
+                        (click)="selectedPayerId=='All'? onCategoryChanged('Payers',revenuBreakingReportForm):null"
+                        matRipple
                         [ngClass]="{'active': selectedCategory== 'Payers' && selectedPayerId == 'All'}">{{selectedPayerName}}</button>
                 </li>
                 <li class="title">By Category</li>
                 <ng-container>
 
                     <li>
-                        <button type="button" matRipple (click)="onCategoryChanged('ServiceCode')"
+                        <button type="button" matRipple
+                            (click)="onCategoryChanged('ServiceCode',revenuBreakingReportForm)"
                             [class.active]="selectedCategory=='ServiceCode'">Service</button>
                     </li>
                     <li>
                         <button type="button" [class.active]="selectedCategory=='Department'"
-                            (click)="onCategoryChanged('Department')" matRipple>Department</button>
+                            (click)="onCategoryChanged('Department',revenuBreakingReportForm)"
+                            matRipple>Department</button>
                     </li>
                     <li>
-                        <button type="button" (click)="onCategoryChanged('Doctor')"
+                        <button type="button" (click)="onCategoryChanged('Doctor',revenuBreakingReportForm)"
                             [class.active]="selectedCategory=='Doctor'" matRipple>Doctor</button>
                     </li>
                     <li>
-                        <button type="button" (click)="onCategoryChanged('ServiceType')"
+                        <button type="button" (click)="onCategoryChanged('ServiceType',revenuBreakingReportForm)"
                             [class.active]="selectedCategory=='ServiceType'" matRipple>Service
                             Type</button>
                     </li>
