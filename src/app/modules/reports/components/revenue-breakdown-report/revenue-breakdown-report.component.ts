@@ -2,7 +2,6 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import * as pluginOutLabels from 'chartjs-plugin-piechart-outlabels';
 import * as moment from 'moment';
 import { Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
@@ -25,23 +24,10 @@ export class RevenueBreakdownReportComponent implements OnInit {
     public pieChartOptions: ChartOptions = {
         maintainAspectRatio: false,
         layout: {
-            padding: 50
+            padding: 32
         },
         plugins: {
-            legend: false,
-            outlabels: {
-                text: ' %l %p ',
-                stretch: 45,
-                color: this.chartFontColor,
-                backgroundColor: '#fff',
-                valuePrecision: 5,
-                font: {
-                    resizable: true,
-                    minSize: 12,
-                    family: this.chartFontFamily,
-                    maxSize: 18
-                },
-            }
+            legend: false
         },
         tooltips: {
             bodyFontFamily: this.chartFontFamily,
@@ -53,7 +39,7 @@ export class RevenueBreakdownReportComponent implements OnInit {
     public pieChartData: ChartDataSets[] = [];
     public pieChartType: ChartType = 'pie';
     public pieChartLegend = true;
-    public pieChartPlugins = [pluginOutLabels];
+    public pieChartPlugins = [];
 
     selectedPayerName = 'All';
 
@@ -162,14 +148,15 @@ export class RevenueBreakdownReportComponent implements OnInit {
                         }
                         return set.label;
                     });
+                    const colors = this.sharedService.getAnalogousColor(event.body.length);
                     this.pieChartData = [
                         {
                             data: event.body.map(set => set.ratio.toFixed(2)),
                             datalabels: {
                                 display: false
                             },
-                            backgroundColor: this.sharedService.getAnalogousColor(event.body.length),
-                            hoverBackgroundColor: this.sharedService.getAnalogousColor(event.body.length),
+                            backgroundColor: colors,
+                            hoverBackgroundColor: colors,
                             borderWidth: 0,
                         },
                     ];
