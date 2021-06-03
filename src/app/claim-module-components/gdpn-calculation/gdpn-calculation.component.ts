@@ -26,7 +26,7 @@ export class GdpnCalculationComponent implements OnInit {
   }
 
   getSelectedInvoiceActualDeductedAmount() {
-    if (this.selectedInvoice != -1 &&
+    if (this.selectedInvoice != -1 && this.claim.invoice[this.selectedInvoice] !== undefined &&
       this.claim.invoice[this.selectedInvoice].service.some(service => service.hasOwnProperty('serviceDecision') &&
         service['serviceDecision'] != null)) {
       return this.claim.invoice[this.selectedInvoice].service

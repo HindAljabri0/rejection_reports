@@ -367,7 +367,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         else {
           control.selections.forEach(serial => {
             services.find(service => service.id.serialno == serial).agree = 'Y';
-            services.find(service => service.id.serialno == id).comments = '';
+            services.find(service => service.id.serialno == serial).comments = '';
           });
         }
       }
