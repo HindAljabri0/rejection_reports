@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, PercentPipe } from '@angular/common';
+import { CommonModule, DatePipe, PercentPipe, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
@@ -59,7 +59,7 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
     NgScrollbarModule,
     SmoothScrollModule
   ],
-  providers: [PercentPipe, DatePipe, CreditReportService],
+  providers: [PercentPipe, DatePipe, CreditReportService, CurrencyPipe],
   entryComponents: [
     CreditReportCreateConfirmDialogComponent,
     TawuniyaCreditReportDetailsDialogComponent,
