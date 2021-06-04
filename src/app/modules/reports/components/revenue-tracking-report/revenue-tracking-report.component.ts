@@ -192,9 +192,11 @@ export class RevenueTrackingReportComponent implements OnInit {
         if (this.revenuTrackingReport.payerId !== '0') {
           const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
           this.selectedPayerName = data.name + ' ' + data.arName;
+          this.isServiceVisible = true;
         }
         else {
           this.selectedPayerName = 'All';
+          this.isServiceVisible = false;
         }
       }
       if (params.fromDate != null && params.toDate != null) {
