@@ -251,7 +251,12 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].netVatRate.setValue('');
         }
-        this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
+        if (service.serviceGDPN.patientShare != null) {
+          this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
+        } else {
+          service = { ...service, serviceGDPN: { ...service.serviceGDPN, patientShare: { value: 0, type: 'SAR' } } };
+          this.controllers[index].services[serviceIndex].patientShare.setValue('');
+        }
 
         if (service.serviceGDPN.patientShareVATrate != null) {
           this.controllers[index].services[serviceIndex].patientShareVatRate.setValue(service.serviceGDPN.patientShareVATrate.value);
