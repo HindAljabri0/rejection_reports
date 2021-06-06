@@ -505,6 +505,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             const index = this.claims.findIndex(claim => claim.claimId == this.claimId);
             if (index != -1) {
               this.showClaim(this.claims[index].status, this.claimId, (this.editMode != null && this.editMode == 'true'));
+              this.claimId = null;
+              this.editMode = null;
             }
           }
           this.commen.loadingChanged.next(false);
@@ -547,7 +549,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       return;
     }
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitClaims(this.selectedClaims, this.providerId, this.payerId).subscribe((event) => {
+    this.submittionService.submitAllClaims(this.providerId, null, null, null, null, null, null, this.selectedClaims).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['queuedStatus'] == 'QUEUED') {
           this.dialogService.openMessageDialog(
@@ -593,7 +595,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, this.casetype,
+    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, [this.casetype], null,
       this.fclaimRefNo, this.fmemberId, this.invoiceNo, this.fpatientFileNo, this.policyNo, this.fdrname, this.fnationalid, this.fclaimdate).subscribe((event) => {
 
         if (event instanceof HttpResponse) {

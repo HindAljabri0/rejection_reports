@@ -10,7 +10,6 @@ import { Notification } from '../models/notification';
 import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
-import { UploadSummary } from '../models/uploadSummary';
 import { UploadService } from './claimfileuploadservice/upload.service';
 import { SearchService } from './serchService/search.service';
 
@@ -32,23 +31,33 @@ export class SharedServices {
   showAnnouncementCenter: boolean;
   showAnnouncementCenterChange: Subject<boolean> = new Subject();
 
-  // unReadAnnouncementsCount: number = 0;
-  // unReadAnnouncementsCountChange: Subject<number> = new Subject();
   announcementsCount = 0;
   announcementsCountChange: Subject<number> = new Subject();
   announcementsList: Announcement[];
   announcementsListChange: Subject<Announcement[]> = new Subject();
 
-  showUploadHistoryCenter: boolean;
-  showUploadHistoryCenterChange: Subject<boolean> = new Subject();
+  showUploadsCenter: boolean;
+  showUploadsCenterChange: Subject<boolean> = new Subject();
 
   unReadNotificationsCount = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
-  uploadHistoryList: UploadSummary[];
-  uploadHistoryListChange: Subject<UploadSummary[]> = new Subject();
+  uploadsList: {
+    totalClaims: number,
+    uploadDate: Date,
+    uploadId: number,
+    uploadName: string
+  }[];
+  uploadsListChange: Subject<{
+    totalClaims: number,
+    uploadDate: Date,
+    uploadId: number,
+    uploadName: string
+  }[]> = new Subject();
+
+
   getUploadId: any;
 
   constructor(
@@ -71,7 +80,7 @@ export class SharedServices {
     this.showNotificationCenterChange.subscribe(value => {
       this.showNotificationCenter = value;
       if (value) {
-        this.showUploadHistoryCenterChange.next(false);
+        this.showUploadsCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
       }
     });
@@ -84,12 +93,12 @@ export class SharedServices {
     this.showAnnouncementCenterChange.subscribe(value => {
       this.showAnnouncementCenter = value;
       if (value) {
-        this.showUploadHistoryCenterChange.next(false);
+        this.showUploadsCenterChange.next(false);
         this.showNotificationCenterChange.next(false);
       }
     });
-    this.showUploadHistoryCenterChange.subscribe(value => {
-      this.showUploadHistoryCenter = value;
+    this.showUploadsCenterChange.subscribe(value => {
+      this.showUploadsCenter = value;
       if (value) {
         this.showNotificationCenterChange.next(false);
         this.showAnnouncementCenterChange.next(false);
@@ -101,10 +110,11 @@ export class SharedServices {
     this.announcementsListChange.subscribe(value => {
       this.announcementsList = value;
     });
-    this.uploadHistoryListChange.subscribe(value => {
-      this.uploadHistoryList = value.map(upload => {
-        // upload.uploaddate = new Date(upload.uploaddate);
-        return new UploadSummary(upload);
+    this.uploadsListChange.subscribe(value => {
+      this.uploadsList = value.map(upload => {
+        return {
+          totalClaims: upload.totalClaims, uploadDate: upload.uploadDate, uploadId: upload.uploadId, uploadName: upload.uploadName
+        };
       });
     });
     this.router.events.pipe(
@@ -177,11 +187,11 @@ export class SharedServices {
 
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.uploadHistoryListChange.next(event.body['content']);
+        this.uploadsListChange.next(event.body['content']);
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.uploadHistoryListChange.next([]);
+        this.uploadsListChange.next([]);
       }
     });
   }
@@ -421,15 +431,16 @@ export class SharedServices {
       if (incrementedHue > 360) {
         incrementedHue %= 360;
       }
-      const derivedHSL = { h: incrementedHue, s: baseColorHSL.s, l: baseColorHSL.l };
+      const derivedHSL = { h: incrementedHue, s: baseColorHSL.s, l: 55 };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
-      const derivedHex = this.RGBToHex(derivedRGB.r, derivedRGB.g, derivedRGB.b);
-      returnArray.push(derivedHex);
+      returnArray.push(`rgba(${derivedRGB.r},${derivedRGB.g},${derivedRGB.b},1)`);
     }
     return returnArray;
   }
   formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];

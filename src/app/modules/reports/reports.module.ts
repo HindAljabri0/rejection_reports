@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, PercentPipe } from '@angular/common';
+import { CommonModule, DatePipe, PercentPipe, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
@@ -27,6 +27,7 @@ import { RevenueTrackingReportComponent } from './components/revenue-tracking-re
 import { TawuniyaCreditReportErrorsDialogComponent } from './components/tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-report/revenue-breakdown-report.component';
 import { RevenueComparativeReportComponent } from './components/revenue-comparative-report/revenue-comparative-report.component';
+import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [
@@ -54,9 +55,11 @@ import { RevenueComparativeReportComponent } from './components/revenue-comparat
     MaterialModule,
     FormsModule,
     BsDatepickerModule,
-    ChartsModule
+    ChartsModule,
+    NgScrollbarModule,
+    SmoothScrollModule
   ],
-  providers: [PercentPipe, DatePipe, CreditReportService],
+  providers: [PercentPipe, DatePipe, CreditReportService, CurrencyPipe],
   entryComponents: [
     CreditReportCreateConfirmDialogComponent,
     TawuniyaCreditReportDetailsDialogComponent,

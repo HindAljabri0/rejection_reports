@@ -36,7 +36,7 @@ import { SubmittedInvoicesComponent } from './pages/reports/submitted-invoices/s
 import {
   RejectionReportClaimDialogComponent
 } from './components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
-import { UploadHistoryCenterComponent } from './components/upload-history-center/upload-history-center.component';
+import { UploadsCenterComponent } from './components/uploads-center/uploads-center.component';
 import { UploadHistoryCardComponent } from './components/reusables/upload-history-card/upload-history-card.component';
 import { UploadsHistoryComponent } from './pages/uploads-history/uploads-history.component';
 import { ScrollableDirective } from './directives/scrollable/scrollable.directive';
@@ -80,6 +80,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AttachmentViewDialogComponent } from './components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { ConfiguartionModalComponent } from './pages/configuartion-modal/configuartion-modal.component';
+import { UploadsPageComponent } from './pages/uploads-page/uploads-page.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,7 @@ import { ConfiguartionModalComponent } from './pages/configuartion-modal/configu
     PaymentClaimSummaryReportComponent,
     SubmittedInvoicesComponent,
     RejectionReportClaimDialogComponent,
-    UploadHistoryCenterComponent,
+    UploadsCenterComponent,
     UploadHistoryCardComponent,
     UploadsHistoryComponent,
     ScrollableDirective,
@@ -131,7 +132,8 @@ import { ConfiguartionModalComponent } from './pages/configuartion-modal/configu
     ChangeLogDialogComponent,
     MainLayoutComponent,
     AttachmentViewDialogComponent,
-    ConfiguartionModalComponent
+    ConfiguartionModalComponent,
+    UploadsPageComponent
   ],
   imports: [
     AppRoutingModule,

@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
     completeCallback: () => {
       document.body.classList.remove('guided-tour-active');
       document.getElementsByTagName('html')[0].classList.remove('guided-tour-active');
-      this.commen.showUploadHistoryCenterChange.next(false);
+      this.commen.showUploadsCenterChange.next(false);
       this.commen.showNotificationCenterChange.next(false);
       this.commen.showAnnouncementCenterChange.next(false);
       window.localStorage.setItem('onboarding-demo-done', 'true');
@@ -81,11 +81,11 @@ export class DashboardComponent implements OnInit {
         content: 'You can get list of your uploads over here.',
         orientation: 'left',
         action: () => {
-          this.commen.showUploadHistoryCenterChange.next(true);
+          this.commen.showUploadsCenterChange.next(true);
           this.viewportScroller.scrollToPosition([0, 0]);
         },
         closeAction: () => {
-          this.commen.showUploadHistoryCenterChange.next(false);
+          this.commen.showUploadsCenterChange.next(false);
         }
       },
       {

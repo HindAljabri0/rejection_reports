@@ -23,7 +23,8 @@ export class ClaimSubmittionService {
     payerId?: string,
     batchId?: string,
     uploadId?: string,
-    casetype?: string,
+    casetype?: string[],
+    claimIds?: string[],
     claimRefNo?: string,
     memberId?: string,
     invoiceNo?: string,
@@ -33,7 +34,7 @@ export class ClaimSubmittionService {
     nationalId?: string,
     claimDate?: string) {
     let requestURL: string;
-    // debugger;
+
     requestURL = `/providers/${providerId}/submit/criteria?`;
     if (uploadId != null) {
       requestURL += `uploadId=${uploadId}`;
@@ -64,6 +65,12 @@ export class ClaimSubmittionService {
     }
     if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
       requestURL += `&nationalId=${nationalId}`;
+    }
+    if (casetype != null && casetype.length > 0) {
+      requestURL += `&casetype=${casetype.join(',')}`;
+    }
+    if (claimIds != null && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
     }
     if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestURL += `&claimDate=${claimDate}`;

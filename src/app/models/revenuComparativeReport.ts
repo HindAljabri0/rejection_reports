@@ -1,6 +1,6 @@
 export class RevenuComparativeReport {
-    payer = '0';
-    beforeDate = '';
-    afterDate = '';
-    avgConstPerclaim = null;
+    payerId: any = '0';
+    fromDate = '';
+    toDate = '';
+    isAvgCost = false
 }

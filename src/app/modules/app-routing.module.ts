@@ -17,6 +17,7 @@ import { FinalSettlementReportListComponent } from './collection-management/fina
 import {
   FinalSettlementReportDetailsComponent
 } from './collection-management/final-settlement-report-details/final-settlement-report-details.component';
+import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import {
           { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/announcements', component: AnnouncementsPageComponent, canActivate: [RouteCanActiveService] },
           { path: 'upload', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
+          { path: 'uploads', component: UploadsPageComponent, canActivate: [RouteCanActiveService] },
           { path: 'upload/history', component: UploadsHistoryComponent, canActivate: [RouteCanActiveService] },
           { path: 'summary', component: ClaimpageComponent, canActivate: [RouteCanActiveService] },
           { path: ':providerId/reports', component: ReportsComponent, canActivate: [RouteCanActiveService] },

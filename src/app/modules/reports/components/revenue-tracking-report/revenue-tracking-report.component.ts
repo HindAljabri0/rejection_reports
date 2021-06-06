@@ -1,13 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Location, CurrencyPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
-import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
-import { SharedServices } from 'src/app/services/shared.services';
-import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
-import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
+import * as moment from 'moment';
+import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
-
-
+import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
+import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
+import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
+import { SharedServices } from 'src/app/services/shared.services';
+import { NgForm } from '@angular/forms';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { Store } from '@ngrx/store';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { ReportsService } from 'src/app/services/reportsService/reports.service';
 @Component({
   selector: 'app-revenue-tracking-report',
   templateUrl: './revenue-tracking-report.component.html',
@@ -16,30 +24,10 @@ import { BsDatepickerConfig } from 'ngx-bootstrap';
 export class RevenueTrackingReportComponent implements OnInit {
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
-  public lineChartData: ChartDataSets[] = [
-    {
-      data: [200000, 300000, 400000, 600000, 500000, 500000, 400000, 600000, 300000, 400000, 800000, 500000],
-      label: 'Medgulf',
-      lineTension: 0,
-      borderWidth: 2,
-      datalabels: {
-        display: false
-      }
-    },
-    {
-      data: [300000, 400000, 450000, 500000, 450000, 450000, 400000, 500000, 400000, 450000, 600000, 500000],
-      label: 'Rajhi',
-      lineTension: 0,
-      borderWidth: 2,
-      datalabels: {
-        display: false
-      }
-    },
-  ];
-  public lineChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  public lineChartData: ChartDataSets[] = [];
+  public lineChartLabels: Label[] = [];
   public lineChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         gridLines: {
@@ -47,7 +35,8 @@ export class RevenueTrackingReportComponent implements OnInit {
         },
         ticks: {
           fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
+          fontColor: this.chartFontColor,
+
         },
         scaleLabel: {
           display: true,
@@ -65,7 +54,7 @@ export class RevenueTrackingReportComponent implements OnInit {
         ticks: {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
-          beginAtZero: true
+          beginAtZero: true,
         },
         scaleLabel: {
           display: true,
@@ -84,231 +73,241 @@ export class RevenueTrackingReportComponent implements OnInit {
       labels: {
         fontFamily: this.chartFontFamily,
         fontColor: this.chartFontColor
+      },
+      onClick: function (e, legendItem) {
+        var isAvgCost = document.getElementById('avgCost');
+        var chartName = document.getElementById('chartName');
+        if ((chartName.textContent.toLowerCase() === "all" && chartName.classList.contains('active')) || (isAvgCost !== null && isAvgCost.classList.contains('active')))
+          return;
+
+        var index = legendItem.datasetIndex;
+        var ci = this.chart;
+        var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
+
+        ci.data.datasets.forEach(function (e, i) {
+          var meta = ci.getDatasetMeta(i);
+
+          if (i !== index) {
+            if (!alreadyHidden) {
+              meta.hidden = meta.hidden === null ? !meta.hidden : null;
+            } else if (meta.hidden === null) {
+              meta.hidden = true;
+            }
+          } else if (i === index) {
+            meta.hidden = null;
+          }
+        });
+
+        ci.update();
       }
     },
     tooltips: {
       bodyFontFamily: this.chartFontFamily,
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily,
+      callbacks: {
+        // label: (tooltipItem, data) => {
+        //   return tooltipItem.label;
+        // },
+        label: (data) => {
+          data.value = this.currencyPipe.transform(
+            data.value,
+            'number',
+            '',
+            '1.2-2'
+          );
+          return data.value;
+        },
+        // afterLabel: (data, value) => {
+        //   data.value = this.currencyPipe.transform(
+        //     data.value,
+        //     'number',
+        //     '',
+        //     '1.2-2'
+        //   );
+        //   return data.value;
+        // }
+      }
     },
   };
-  public lineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: '#39E6BE',
-      pointBackgroundColor: 'rgba(0,0,0,0)',
-      pointBorderColor: 'rgba(0,0,0,0)',
-      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-      pointHoverBorderColor: 'rgba(0,0,0,0)',
-    },
-    {
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: '#6495E2',
-      pointBackgroundColor: 'rgba(0,0,0,0)',
-      pointBorderColor: 'rgba(0,0,0,0)',
-      pointHoverBackgroundColor: 'rgba(0,0,0,0)',
-      pointHoverBorderColor: 'rgba(0,0,0,0)',
-    }
-  ];
+
+  public lineChartColors: Color[] = [];
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
 
-
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    aspectRatio: 1.6 / 1,
-    scales: {
-      xAxes: [{
-        stacked: true,
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Months',
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor,
-          fontSize: 18,
-          lineHeight: '24px',
-          padding: {
-            top: 8
-          }
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-        ticks: {
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor,
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Amount',
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor,
-          fontSize: 18,
-          lineHeight: '24px',
-          padding: {
-            bottom: 8
-          }
-        }
-      }]
-    },
-    legend: {
-      labels: {
-        fontFamily: this.chartFontFamily,
-        fontColor: this.chartFontColor
-      }
-    },
-    tooltips: {
-      bodyFontFamily: this.chartFontFamily,
-      titleFontFamily: this.chartFontFamily,
-      footerFontFamily: this.chartFontFamily,
-    },
-  };
-  public barChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-
-  public barChartData: ChartDataSets[] = [
-    {
-      data: [200000, 200000, 75000, 500000, 350000, 75000, 200000, 200000, 75000, 500000, 350000, 75000],
-      label: 'ED-o1',
-      datalabels: {
-        display: false
-      },
-      barPercentage: 0.65,
-      backgroundColor: '#3060AA',
-      hoverBackgroundColor: '#3060AA',
-      borderWidth: 0
-    },
-    {
-      data: [100000, 150000, 225000, 100000, 150000, 600000, 100000, 150000, 225000, 100000, 150000, 600000],
-      label: 'Cons',
-      datalabels: {
-        display: false
-      },
-      barPercentage: 0.65,
-      backgroundColor: '#6495E2',
-      hoverBackgroundColor: '#6495E2',
-      borderWidth: 0
-    },
-    {
-      data: [200000, 400000, 425000, 225000, 225000, 200000, 175000, 400000, 425000, 225000, 225000, 200000],
-      label: 'Ed-01',
-      datalabels: {
-        display: false
-      },
-      barPercentage: 0.65,
-      backgroundColor: '#ADCDFF',
-      hoverBackgroundColor: '#ADCDFF',
-      borderWidth: 0
-    }
-  ];
   allChart = true;
-  serviceChart = false;
   revenuTrackingReport: RevenuTrackingReport = new RevenuTrackingReport();
   payersList: { id: number, name: string, arName: string }[] = [];
-  selectedPayerName: string = "All";
-  isServiceVisible: boolean = false;
+  selectedPayerName = 'All';
+  isServiceVisible = false;
   serviceOrPayerType: string;
-  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'YYYY' };
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService) { }
+  datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
+  minDate: any;
+  error: string;
+  isGenerateData: boolean = false;
+  public lineChartPlugins = [{
+    afterInit: (chart, options) => {
+      chart.legend.afterFit = () => {
+        chart.legend.legendItems.map((label) => {
+          if (this.payersList.length > 0 && this.allChart) {
+            let value = this.payersList.find(ele => ele.id === parseInt(label.text));
+            label.text = value.name + ' ' + value.arName;
+          }
+          if (this.revenuTrackingReport.subcategory.toLowerCase() === RevenuTrackingReportChart.Department.toLowerCase()) {
+
+            if (this.departments != null && this.departments.length > 0) {
+              let value = this.departments.find(ele => ele.departmentId === parseInt(label.text));
+              label.text = value.name;
+            }
+          }
+
+          return label;
+        })
+      };
+    }
+  }, pluginDataLabels];
+  departments: any;
+  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private store: Store, private currencyPipe: CurrencyPipe) {
+  }
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
+    this.store.dispatch(getDepartmentNames());
+    this.store.select(getDepartments).subscribe(departments => this.departments = departments);
+    this.routeActive.queryParams.subscribe(params => {
+      if (params.category != null) {
+        this.revenuTrackingReport.subcategory = params.category;
+        this.serviceOrPayerType = params.category;
+        this.allChart = RevenuTrackingReportChart.All === params.category ? true : false;
+      }
+      if (params.fromDate != null) {
+        this.revenuTrackingReport.fromDate = params.fromDate;
+      }
+      if (params.toDate != null) {
+        this.revenuTrackingReport.toDate = params.toDate;
+      }
+      if (params.payerId != null) {
+        this.revenuTrackingReport.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId);
+        if (this.revenuTrackingReport.payerId !== '0') {
+          const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
+          this.selectedPayerName = data.name + ' ' + data.arName;
+          this.isServiceVisible = true;
+        }
+        else {
+          this.selectedPayerName = 'All';
+          this.isServiceVisible = false;
+        }
+      }
+      if (params.fromDate != null && params.toDate != null) {
+        this.generate();
+      }
+    });
   }
 
-  showAllChart() {
+  showAllChart(form) {
+    form.submitted = true;
+    if (form.invalid)
+      return
     this.allChart = true;
-    this.serviceChart = false;
     this.serviceOrPayerType = RevenuTrackingReportChart.All;
+    this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
+    this.generate();
   }
-  showServiceChart(categoryType) {
+  showServiceChart(categoryType, form) {
+    form.submitted = true;
+    if (form.invalid)
+      return
+
     this.allChart = false;
-    this.serviceChart = true;
     this.serviceOrPayerType = categoryType;
     this.revenuTrackingReport.subcategory = categoryType;
+    this.generate();
   }
-  selectRevenu(event) {
+  selectRevenu(event, form: NgForm) {
+
     if (event.value !== '0') {
-      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payer));
+      const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
       this.selectedPayerName = data.name + ' ' + data.arName;
       this.isServiceVisible = true;
-    }
-    else {
-      this.selectedPayerName = "All";
+      this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.Service;
+      this.serviceOrPayerType = RevenuTrackingReportChart.Service;
+      this.allChart = false;
+    } else {
+      this.selectedPayerName = 'All';
       this.isServiceVisible = false;
       this.serviceOrPayerType = RevenuTrackingReportChart.All;
+      this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
+      this.allChart = true;
     }
-    this.allChart = true;
-    this.serviceOrPayerType = RevenuTrackingReportChart.All;
-    this.revenuTrackingReport.subcategory = '';
+    if (!form.invalid)
+      this.generate();
   }
   get revenuTrackingEnum() {
     return RevenuTrackingReportChart;
   }
   isActiveService(categoryType: string) {
-    return this.serviceOrPayerType === categoryType ? true : false
+    return this.serviceOrPayerType === categoryType ? true : false;
   }
   get providerId(): string {
     return this.sharedService.providerId;
   }
   generate() {
+    this.isGenerateData = true;
+    const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
+    const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
+    this.editURL(fromDate, toDate);
+    const obj: RevenuTrackingReport = {
+      payerId: this.revenuTrackingReport.payerId,
+      fromDate: fromDate,
+      toDate: toDate,
+      subcategory: this.revenuTrackingReport.subcategory,
+    };
 
-    this.reportSerice.generateRevenuTrackingReport(this.providerId, this.revenuTrackingReport).subscribe(event => {
-      // if (event.body !== undefined) {
 
-      //   this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = this.generateReport.comparisionCriteria;
-      //   const data = JSON.parse(event.body);
-      //   this.barChartData[0].label = data[0].label;
-      //   this.barChartData[1].label = data[1].label;
-      //   this.barChartData[0].data = data[0].totalNetAmount;
-      //   this.barChartData[1].data = data[1].totalNetAmount;
+    this.sharedService.loadingChanged.next(true);
+    this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
 
-      //   this.percenatgeChartData = [];
-      //   const firstYearData = data[0].totalNetAmount;
-      //   const secondYearData = data[1].totalNetAmount;
-      //   const percentageConfig = this.percentageConfig.find(ele => ele.key === this.generateReport.comparisionCriteria);
-      //   const percentageLabelData = percentageConfig.value;
-      //   this.diffrenceLableName = percentageConfig.label;
-      //   firstYearData.map((ele, index) => {
-      //     let value = 0;
-      //     if (ele === 0 && secondYearData[index] > ele) {
-      //       value = 100;
-      //     } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
-      //       value = 100;
-      //     }
-      //     const finalValue = ele !== 0 && secondYearData[index] !== 0
-      //       ? ele > secondYearData[index]
-      //         ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
-      //       : value;
-      //     if (this.generateReport.comparisionCriteria === 'Month') {
-      //       percentageLabelData[index] = 'WEEK ' + (index + 1);
-      //     }
+      if (event.body !== undefined && event.body !== '' && event.body !== null) {
+        this.error = null;
+        const data = JSON.parse(event.body);
+        this.lineChartLabels = data.labels;
+        this.lineChartData = data.values;
+        this.lineChartData.forEach((l) => {
+          l.lineTension = 0;
+          l.borderWidth = 2;
+          l.datalabels = {
+            display: false
+          };
+        });
+        const colors = this.sharedService.getAnalogousColor(this.lineChartData.length);
+        for (let i = 0; i < this.lineChartData.length; i++) {
+          this.lineChartColors.push({
+            backgroundColor: 'rgba(0,0,0,0)',
+            borderColor: colors[i],
+            pointBackgroundColor: 'rgba(0,0,0,0)',
+            pointBorderColor: 'rgba(0,0,0,0)',
+            pointHoverBackgroundColor: 'rgba(0,0,0,0)',
+            pointHoverBorderColor: 'rgba(0,0,0,0)',
+          });
+        }
+        // this.router.navigateByUrl('/reports/revenue-report-breakdown', { queryParams: { payerId: this.revenuTrackingReport.payerId, fromDate: this.revenuTrackingReport.fromDate, toDate: this.revenuTrackingReport.toDate, category: this.revenuTrackingReport.subcategory } });
+      }
+      this.sharedService.loadingChanged.next(false);
 
-      //     const obj = {
-      //       label: percentageLabelData[index],
-      //       value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
-      //       data: Number(finalValue.toFixed(2))
-      //     };
-      //     this.percenatgeChartData.push(obj);
-      //   });
-      //   this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
-      //   const chartLableName = this.labelConfig.find(ele => ele.type === this.generateReport.comparisionType).value;
-      //   this.barChartOptions.title.text = chartLableName;
 
-      //   if (this.chart) {
-      //     this.chart.ngOnChanges({});
-      //   }
-
-      // }
-
+    }, err => {
+      this.sharedService.loadingChanged.next(false);
+      this.lineChartLabels = [];
+      this.lineChartData = [];
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 404) {
+          this.error = 'No data found.';
+        }
+      } else {
+        console.log(err);
+        this.error = 'Could not load data at the moment. Please try again later.';
+      }
     });
   }
   onOpenCalendar(container) {
@@ -317,6 +316,42 @@ export class RevenueTrackingReportComponent implements OnInit {
     };
     container.setViewMode('month');
   }
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
+      if (startDate > endDate)
+        this.revenuTrackingReport.toDate = '';
+    }
+    this.minDate = new Date(event);
 
-
+  }
+  getEmptyStateMessage() {
+    if (!this.isGenerateData && (this.error == null || this.error === undefined)) {
+      return 'Please apply the filter and generate the report.';
+    } else {
+      return this.error;
+    }
+  }
+  editURL(fromDate?: string, toDate?: string) {
+    let path = '/reports/revenue-tracking-report?';
+    if (this.revenuTrackingReport.subcategory != null) {
+      path += `payerId=${this.revenuTrackingReport.payerId}&`;
+    }
+    if (this.revenuTrackingReport.subcategory != null) {
+      path += `category=${this.revenuTrackingReport.subcategory}&`;
+    }
+    if (fromDate != null) {
+      path += `fromDate=${fromDate}&`;
+    }
+    if (toDate != null) {
+      path += `toDate=${toDate}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 2);
+    }
+    this.location.go(path);
+  }
 }
+
+

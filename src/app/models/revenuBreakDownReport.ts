@@ -1,5 +1,5 @@
-export class RevenuTrackingReport {
-    payerId: any = '0';
+export class RevenuBreakDownReport {
+    payerId = '0';
     fromDate = '';
     toDate = '';
     subcategory = 'all';
