@@ -105,6 +105,9 @@ export class LabResultsComponent implements OnInit {
           this.resultsControls.push(controls);
         }
       );
+      if(this.resultsControls.length > 0 && this.expandedResult == -1){
+        this.toggleResult(0);
+      }
     }
   }
 

@@ -114,100 +114,121 @@
             </div>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Billing Month</th>
-                    <th>Net Without VAT</th>
-                    <th class="text-nowrap">Payment-1</th>
-                    <th class="text-nowrap">Payment-2</th>
-                    <th class="text-nowrap">Payment-3</th>
-                    <th class="text-nowrap">Payment-4</th>
-                    <th>Total Collected Without Paid VAT</th>
-                    <th>Unpaid Remaining Net Collected</th>
-                    <th>Collection Net Ratio</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Jul-19</td>
-                    <td class="text-nowrap">427,332.8 SR</td>
-                    <td class="text-nowrap">95,813.1 SR</td>
-                    <td class="text-nowrap">7,336.0 SR</td>
-                    <td class="text-nowrap">193,702.0 SR</td>
-                    <td>0.0</td>
-                    <td class="text-nowrap">296,851.1 SR</td>
-                    <td class="text-nowrap">130,481.7 SR</td>
-                    <td>69.5%</td>
-                </tr>
-                <tr>
-                    <td>Aug-19</td>
-                    <td class="text-nowrap">427,332.8 SR</td>
-                    <td class="text-nowrap">95,813.1 SR</td>
-                    <td class="text-nowrap">7,336.0 SR</td>
-                    <td class="text-nowrap">193,702.0 SR</td>
-                    <td>0.0</td>
-                    <td class="text-nowrap">296,851.1 SR</td>
-                    <td class="text-nowrap">130,481.7 SR</td>
-                    <td>69.5%</td>
-                </tr>
-                <tr>
-                    <td>Sep-19</td>
-                    <td class="text-nowrap">427,332.8 SR</td>
-                    <td class="text-nowrap">95,813.1 SR</td>
-                    <td class="text-nowrap">7,336.0 SR</td>
-                    <td class="text-nowrap">193,702.0 SR</td>
-                    <td>0.0</td>
-                    <td class="text-nowrap">296,851.1 SR</td>
-                    <td class="text-nowrap">130,481.7 SR</td>
-                    <td>69.5%</td>
-                </tr>
-                <tr>
-                    <td>Oct-19</td>
-                    <td class="text-nowrap">427,332.8 SR</td>
-                    <td class="text-nowrap">95,813.1 SR</td>
-                    <td class="text-nowrap">7,336.0 SR</td>
-                    <td class="text-nowrap">193,702.0 SR</td>
-                    <td>0.0</td>
-                    <td class="text-nowrap">296,851.1 SR</td>
-                    <td class="text-nowrap">130,481.7 SR</td>
-                    <td>69.5%</td>
-                </tr>
-                <tr>
-                    <td>Nov-19</td>
-                    <td class="text-nowrap">427,332.8 SR</td>
-                    <td class="text-nowrap">95,813.1 SR</td>
-                    <td class="text-nowrap">7,336.0 SR</td>
-                    <td class="text-nowrap">193,702.0 SR</td>
-                    <td>0.0</td>
-                    <td class="text-nowrap">296,851.1 SR</td>
-                    <td class="text-nowrap">130,481.7 SR</td>
-                    <td>69.5%</td>
-                </tr>
-                <tr>
-                    <td>Dec-19</td>
-                    <td class="text-nowrap">427,332.8 SR</td>
-                    <td class="text-nowrap">95,813.1 SR</td>
-                    <td class="text-nowrap">7,336.0 SR</td>
-                    <td class="text-nowrap">193,702.0 SR</td>
-                    <td>0.0</td>
-                    <td class="text-nowrap">296,851.1 SR</td>
-                    <td class="text-nowrap">130,481.7 SR</td>
-                    <td>69.5%</td>
-                </tr>
-                <tr>
-                    <td class="header-cell text-nowrap">Grand Total</td>
-                    <td class="header-cell text-nowrap">427,332.8 SR</td>
-                    <td class="header-cell text-nowrap">95,813.1 SR</td>
-                    <td class="header-cell text-nowrap">7,336.0 SR</td>
-                    <td class="header-cell text-nowrap">193,702.0 SR</td>
-                    <td class="header-cell">0.0</td>
-                    <td class="header-cell text-nowrap">296,851.1 SR</td>
-                    <td class="header-cell text-nowrap">130,481.7 SR</td>
-                    <td class="header-cell">69.5%</td>
-                </tr>
-            </tbody>
-        </table>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Billing Month</th>
+                        <th>Net Without VAT</th>
+                        <th class="text-nowrap">Payment-1</th>
+                        <th class="text-nowrap">Payment-2</th>
+                        <th class="text-nowrap">Payment-3</th>
+                        <th class="text-nowrap">Payment-4</th>
+                        <th>Total Collected Without Paid VAT</th>
+                        <th>Unpaid Remaining Net Collected</th>
+                        <th>Collection Net Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jul-19</td>
+                        <td class="text-nowrap">427,332.8 SR</td>
+                        <td class="text-nowrap">95,813.1 SR</td>
+                        <td class="text-nowrap">7,336.0 SR</td>
+                        <td class="text-nowrap">193,702.0 SR</td>
+                        <td>0.0</td>
+                        <td class="text-nowrap">296,851.1 SR</td>
+                        <td class="text-nowrap">130,481.7 SR</td>
+                        <td>69.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Aug-19</td>
+                        <td class="text-nowrap">427,332.8 SR</td>
+                        <td class="text-nowrap">95,813.1 SR</td>
+                        <td class="text-nowrap">7,336.0 SR</td>
+                        <td class="text-nowrap">193,702.0 SR</td>
+                        <td>0.0</td>
+                        <td class="text-nowrap">296,851.1 SR</td>
+                        <td class="text-nowrap">130,481.7 SR</td>
+                        <td>69.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Sep-19</td>
+                        <td class="text-nowrap">427,332.8 SR</td>
+                        <td class="text-nowrap">95,813.1 SR</td>
+                        <td class="text-nowrap">7,336.0 SR</td>
+                        <td class="text-nowrap">193,702.0 SR</td>
+                        <td>0.0</td>
+                        <td class="text-nowrap">296,851.1 SR</td>
+                        <td class="text-nowrap">130,481.7 SR</td>
+                        <td>69.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Oct-19</td>
+                        <td class="text-nowrap">427,332.8 SR</td>
+                        <td class="text-nowrap">95,813.1 SR</td>
+                        <td class="text-nowrap">7,336.0 SR</td>
+                        <td class="text-nowrap">193,702.0 SR</td>
+                        <td>0.0</td>
+                        <td class="text-nowrap">296,851.1 SR</td>
+                        <td class="text-nowrap">130,481.7 SR</td>
+                        <td>69.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Nov-19</td>
+                        <td class="text-nowrap">427,332.8 SR</td>
+                        <td class="text-nowrap">95,813.1 SR</td>
+                        <td class="text-nowrap">7,336.0 SR</td>
+                        <td class="text-nowrap">193,702.0 SR</td>
+                        <td>0.0</td>
+                        <td class="text-nowrap">296,851.1 SR</td>
+                        <td class="text-nowrap">130,481.7 SR</td>
+                        <td>69.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Dec-19</td>
+                        <td class="text-nowrap">427,332.8 SR</td>
+                        <td class="text-nowrap">95,813.1 SR</td>
+                        <td class="text-nowrap">7,336.0 SR</td>
+                        <td class="text-nowrap">193,702.0 SR</td>
+                        <td>0.0</td>
+                        <td class="text-nowrap">296,851.1 SR</td>
+                        <td class="text-nowrap">130,481.7 SR</td>
+                        <td>69.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="header-cell text-nowrap">Grand Total</td>
+                        <td class="header-cell text-nowrap">427,332.8 SR</td>
+                        <td class="header-cell text-nowrap">95,813.1 SR</td>
+                        <td class="header-cell text-nowrap">7,336.0 SR</td>
+                        <td class="header-cell text-nowrap">193,702.0 SR</td>
+                        <td class="header-cell">0.0</td>
+                        <td class="header-cell text-nowrap">296,851.1 SR</td>
+                        <td class="header-cell text-nowrap">130,481.7 SR</td>
+                        <td class="header-cell">69.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
     </div>
 </div>

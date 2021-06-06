@@ -24,7 +24,7 @@ export class UploadHistoryCardComponent implements OnInit {
   }
 
   hideCenter() {
-    this.commen.showUploadHistoryCenterChange.next(false);
+    this.commen.showUploadsCenterChange.next(false);
     if (this.fromRightSideBar) {
       this.router.navigateByUrl(this.providerId + '/claims?uploadId=' + this.data.uploadSummaryID);
     } else {

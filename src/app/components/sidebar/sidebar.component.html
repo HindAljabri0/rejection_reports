@@ -2,19 +2,21 @@
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
         <div class="list-container" *ngIf="!isAdmin">
             <mat-accordion displayMode="flat">
+                <ul class="nav-list">
+                    <li i18n="@@dashboard">
+                        <a routerLink="/" routerLinkActive="is-active" #dashboard="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
+                            <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                </ul>
                 <mat-expansion-panel hideToggle
-                    [expanded]="dashboard.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive">
+                    [expanded]="dashboard.isActive || uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@claims">Claims</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
-                        <li i18n="@@dashboard">
-                            <a routerLink="/" routerLinkActive="is-active" #dashboard="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
-                                <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
-                                <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
-                                <span class="text">Dashboard</span>
-                            </a>
-                        </li>
                         <li i18n="@@uploadclaims">
                             <a routerLink="/upload" routerLinkActive="is-active" #uploadClaim="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
@@ -24,9 +26,16 @@
                         </li>
                         <li i18n="@@createclaim">
                             <a routerLink="/claims/add" routerLinkActive="is-active" #createClaim="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
-                                <img src="assets/ic-create-claim.svg" alt="Create Claim" class="default-icon" />
-                                <img src="assets/ic-create-claim-active.svg" alt="Create Claim" class="active-icon" />
+                                <img src="assets/ic-create-claim.svg" alt="Uploads" class="default-icon" />
+                                <img src="assets/ic-create-claim-active.svg" alt="Uploads" class="active-icon" />
                                 <span class="text">Create Claim</span>
+                            </a>
+                        </li>
+                        <li i18n="@@uploads">
+                            <a routerLink="/uploads" routerLinkActive="is-active" #uploads="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                                <img src="assets/ic-cloud.svg" alt="Create Claim" class="default-icon" />
+                                <img src="assets/ic-cloud-active.svg" alt="Create Claim" class="active-icon" />
+                                <span class="text">Uploads</span>
                             </a>
                         </li>
                         <li i18n="@@claimhistory">
@@ -159,7 +168,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
+                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && isRevenueVisible">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Revenue Report</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -175,8 +184,8 @@
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/reports/revenue-comparative-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Revenue Comparative Report</span>
+                            <a routerLink="/reports/revenue-comparison-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Revenue Comparison Report</span>
                             </a>
                         </li>
                     </ul>

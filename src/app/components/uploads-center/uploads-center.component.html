@@ -1,0 +1,14 @@
+<div class="overlay-backdrop" [ngClass]="{'show':showCenter}">
+    <button type="button" (click)="hideCenter()"></button>
+</div>
+<div class="aside-panel upload-history-list" [ngClass]="{'show':showCenter}">
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
+        <div *ngFor="let data of dataList">
+            <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadId}" (click)="hideCenter()">
+                <p class="medium text-primary">{{data.uploadName}}</p>
+                <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</span>
+            </div>
+        </div>
+      <div class="seeAll" style="text-align: right;"><a routerLink="/uploads" style="color: blue;  text-decoration: underline; margin-right: 10px;"  (click)="hideCenter()">See All</a></div>
+    </ng-scrollbar>
+</div>

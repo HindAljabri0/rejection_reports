@@ -17,6 +17,7 @@ import { VatPaymentReportListComponent } from './vat-payment-report-list/vat-pay
 import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/vat-payment-report-details.component';
 import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
 import { AccountReceivableAddPaymentComponent } from './account-receivable-add-payment/account-receivable-add-payment.component';
+import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { AccountReceivableAddPaymentComponent } from './account-receivable-add-p
     MaterialModule,
     FormsModule,
     ChartsModule,
-    CollectionManagementRoutingModule
+    CollectionManagementRoutingModule,
+    NgScrollbarModule,
+    SmoothScrollModule
   ],
   entryComponents: [FileUploadDialogComponent, AccountReceivableAddPaymentComponent]
 })

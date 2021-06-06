@@ -2,68 +2,89 @@
     <div class="block-header has-border">
         <p>VAT Payment Reports</p>
     </div>
-    <div class="table-responsive">
-        <table class="primary-grid" cellspacing="0" cellpadding="0" border="0">
-            <thead>
-                <tr>
-                    <th>Doc Num</th>
-                    <th>Payment Date</th>
-                    <th>Payment Amount</th>
-                    <th>Amount</th>
-                    <th>Loss Month</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>8100126593</td>
-                    <td>7/15/2019</td>
-                    <td>14089.2</td>
-                    <td>14089.2</td>
-                    <td>Apr-19</td>
-                </tr>
-                <tr>
-                    <td>8100126593</td>
-                    <td>7/15/2019</td>
-                    <td>14089.2</td>
-                    <td>14089.2</td>
-                    <td>Apr-19</td>
-                </tr>
-                <tr>
-                    <td>8100126593</td>
-                    <td>7/15/2019</td>
-                    <td>14089.2</td>
-                    <td>14089.2</td>
-                    <td>Apr-19</td>
-                </tr>
-                <tr>
-                    <td>8100126593</td>
-                    <td>7/15/2019</td>
-                    <td>14089.2</td>
-                    <td>14089.2</td>
-                    <td>Apr-19</td>
-                </tr>
-                <tr>
-                    <td>8100126593</td>
-                    <td>7/15/2019</td>
-                    <td>14089.2</td>
-                    <td>14089.2</td>
-                    <td>Apr-19</td>
-                </tr>
-                <tr>
-                    <td>8100126593</td>
-                    <td>7/15/2019</td>
-                    <td>14089.2</td>
-                    <td>14089.2</td>
-                    <td>Apr-19</td>
-                </tr>
-                <tr>
-                    <td class="header-cell">Grand Total</td>
-                    <td class="header-cell"></td>
-                    <td class="header-cell">14089.2</td>
-                    <td class="header-cell">14089.2</td>
-                    <td class="header-cell"></td>
-                </tr>
-            </tbody>
-        </table>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Doc Num</th>
+                        <th>Payment Date</th>
+                        <th>Payment Amount</th>
+                        <th>Amount</th>
+                        <th>Loss Month</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8100126593</td>
+                        <td>7/15/2019</td>
+                        <td>14089.2</td>
+                        <td>14089.2</td>
+                        <td>Apr-19</td>
+                    </tr>
+                    <tr>
+                        <td>8100126593</td>
+                        <td>7/15/2019</td>
+                        <td>14089.2</td>
+                        <td>14089.2</td>
+                        <td>Apr-19</td>
+                    </tr>
+                    <tr>
+                        <td>8100126593</td>
+                        <td>7/15/2019</td>
+                        <td>14089.2</td>
+                        <td>14089.2</td>
+                        <td>Apr-19</td>
+                    </tr>
+                    <tr>
+                        <td>8100126593</td>
+                        <td>7/15/2019</td>
+                        <td>14089.2</td>
+                        <td>14089.2</td>
+                        <td>Apr-19</td>
+                    </tr>
+                    <tr>
+                        <td>8100126593</td>
+                        <td>7/15/2019</td>
+                        <td>14089.2</td>
+                        <td>14089.2</td>
+                        <td>Apr-19</td>
+                    </tr>
+                    <tr>
+                        <td>8100126593</td>
+                        <td>7/15/2019</td>
+                        <td>14089.2</td>
+                        <td>14089.2</td>
+                        <td>Apr-19</td>
+                    </tr>
+                    <tr>
+                        <td class="header-cell">Grand Total</td>
+                        <td class="header-cell"></td>
+                        <td class="header-cell">14089.2</td>
+                        <td class="header-cell">14089.2</td>
+                        <td class="header-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
     </div>
 </div>
