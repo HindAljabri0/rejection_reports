@@ -1,35 +1,35 @@
 <ul class="claim-totals">
     <li>
         Claim Amount:
-        <span class="value">{{claim.claimGDPN.net.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.net?.value}} SR</span>
     </li>
     <li>
         VAT Amount:
-        <span class="value">{{claim.claimGDPN.netVATamount.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.netVATamount?.value}} SR</span>
     </li>
     <li>
         Gross Amount:
-        <span class="value">{{claim.claimGDPN.gross.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.gross?.value}} SR</span>
     </li>
     <li>
         Discount:
-        <span class="value">{{claim.claimGDPN.discount.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.discount?.value}} SR</span>
     </li>
     <li>
         Patient Share:
-        <span class="value">{{claim.claimGDPN.patientShare.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.patientShare?.value}} SR</span>
     </li>
     <li>
         Net Amount:
-        <span class="value">{{claim.claimGDPN.net.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.net?.value}} SR</span>
     </li>
     <li>
         Net VAT Amount:
-        <span class="value">{{claim.claimGDPN.netVATamount.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.netVATamount?.value}} SR</span>
     </li>
     <li>
         PSh VAT Amount:
-        <span class="value">{{claim.claimGDPN.patientShareVATamount.value}} SR</span>
+        <span class="value">{{claim.claimGDPN.patientShareVATamount?.value}} SR</span>
     </li>
     <li *ngIf="getClaimActualDeductedAmount() != -1" class="text-{{getStatusColorOfClaim()}}">
         Actual Deducted Amount:
@@ -43,27 +43,27 @@
         <li class="title">Invoice {{selectedInvoice+1}}</li>
         <li>
             Gross Amount:
-            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.gross.value}} SR</span>
+            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.gross?.value}} SR</span>
         </li>
         <li>
             Discount:
-            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.discount.value}} SR</span>
+            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.discount?.value}} SR</span>
         </li>
         <li>
             Patient Share:
-            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.patientShare.value}} SR</span>
+            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.patientShare?.value}} SR</span>
         </li>
         <li>
             Net Amount:
-            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.net.value}} SR</span>
+            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.net?.value}} SR</span>
         </li>
         <li>
             Net VAT Amount:
-            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.netVATamount.value}} SR</span>
+            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.netVATamount?.value}} SR</span>
         </li>
         <li>
             PSh VAT Amount:
-            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.patientShareVATamount.value}} SR</span>
+            <span class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.patientShareVATamount?.value}} SR</span>
         </li>
         <li *ngIf="getSelectedInvoiceActualDeductedAmount() != -1" class="text-{{getStatusColorOfSelectedInvoice()}}">
             Actual Deducted Amount:
@@ -72,7 +72,7 @@
         <li *ngIf="getSelectedInvoiceActualDeductedAmount() != -1" class="text-{{getStatusColorOfSelectedInvoice()}}">
             Actual Paid Amount:
             <span
-                class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.net.value - getSelectedInvoiceActualDeductedAmount()}}
+                class="value">{{claim.invoice[selectedInvoice]?.invoiceGDPN.net?.value - getSelectedInvoiceActualDeductedAmount()}}
                 SR</span>
         </li>
     </ng-container>
