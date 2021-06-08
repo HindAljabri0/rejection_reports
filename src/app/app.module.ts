@@ -81,6 +81,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AttachmentViewDialogComponent } from './components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { ConfiguartionModalComponent } from './pages/configuartion-modal/configuartion-modal.component';
 import { UploadsPageComponent } from './pages/uploads-page/uploads-page.component';
+import { UploadCardComponent } from './pages/uploads-page/components/upload-card/upload-card.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { UploadsPageComponent } from './pages/uploads-page/uploads-page.componen
     MainLayoutComponent,
     AttachmentViewDialogComponent,
     ConfiguartionModalComponent,
-    UploadsPageComponent
+    UploadsPageComponent,
+    UploadCardComponent
   ],
   imports: [
     AppRoutingModule,

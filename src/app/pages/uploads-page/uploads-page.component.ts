@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
+import { UploadCardData } from 'src/app/models/UploadCardData';
 import { SearchService } from 'src/app/services/serchService/search.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -13,17 +14,11 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class UploadsPageComponent implements OnInit {
 
   errorMessage: string;
-  uploads: {
-    totalClaims: number;
-    uploadDate: Date;
-    uploadId: number;
-    uploadName: string;
-  }[] = [];
-
-  length = 0;
-  pageSize = 20;
+  uploads: UploadCardData[] = [];
+  MAX = Number.MAX_VALUE;
+  length = Number.MAX_VALUE;
+  pageSize = 10;
   pageIndex = 0;
-  pageSizeOptions = [10, 20, 50, 100];
 
   constructor(private searchService: SearchService, private sharedService: SharedServices, private router: Router) { }
 
@@ -32,7 +27,10 @@ export class UploadsPageComponent implements OnInit {
   }
 
   fetchData() {
-    if (this.isLoadaing) {
+    if (this.isLoading) {
+      return;
+    }
+    if(this.uploads.length >= this.length){
       return;
     }
     this.sharedService.loadingChanged.next(true);
@@ -40,8 +38,9 @@ export class UploadsPageComponent implements OnInit {
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           this.sharedService.loadingChanged.next(false);
-          this.uploads = event.body['content'];
+          this.uploads = this.uploads.concat(event.body['content']);
           this.length = event.body['totalElements'];
+          this.pageIndex++;
         }
       }, errorEvent => {
         this.sharedService.loadingChanged.next(false);
@@ -57,6 +56,12 @@ export class UploadsPageComponent implements OnInit {
     });
   }
 
+  scrollHandler(e) {
+    if (e === 'bottom') {
+      this.fetchData();
+    }
+  }
+
   handlePageEvent(event: PageEvent) {
     this.length = event.length;
     this.pageSize = event.pageSize;
@@ -64,7 +69,7 @@ export class UploadsPageComponent implements OnInit {
     this.fetchData();
   }
 
-  get isLoadaing() {
+  get isLoading() {
     return this.sharedService.loading;
   }
 
