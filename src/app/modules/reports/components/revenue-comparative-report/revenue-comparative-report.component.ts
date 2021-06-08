@@ -30,6 +30,9 @@ export class RevenueComparativeReportComponent implements OnInit {
         ticks: {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
+          // callback: function (value, index, values) {
+          //   return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+          // }
         },
         scaleLabel: {
           display: true,
@@ -47,7 +50,7 @@ export class RevenueComparativeReportComponent implements OnInit {
         ticks: {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
-          beginAtZero: true
+          beginAtZero: true,
         },
         scaleLabel: {
           display: true,
@@ -66,6 +69,14 @@ export class RevenueComparativeReportComponent implements OnInit {
       datalabels: {
         anchor: 'end',
         align: 'end',
+        formatter: (context) => {
+          return this.currencyPipe.transform(
+            context.toString(),
+            'number',
+            '',
+            '1.2-2'
+          );
+        },
       },
     },
     legend: {
