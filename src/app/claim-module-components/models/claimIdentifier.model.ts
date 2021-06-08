@@ -4,7 +4,7 @@ export class ClaimIdentifier {
   providerClaimNumber: string;
   providerParentClaimNumber: string;
   providerBatchID: string;
-  payerBatchID: string;
+  Payerbatchrefno: string;
   payerClaimNumber: string;
   approvalNumber: string;
   eligibilityNumber: string;

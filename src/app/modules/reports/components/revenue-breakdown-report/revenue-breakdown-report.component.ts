@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import {  AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
@@ -9,7 +9,7 @@ import { RevenuReportService } from 'src/app/services/revenuReportService/revenu
 import { SharedServices } from 'src/app/services/shared.services';
 import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { Location } from '@angular/common';
+import { Location, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -34,6 +34,27 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             bodyFontFamily: this.chartFontFamily,
             titleFontFamily: this.chartFontFamily,
             footerFontFamily: this.chartFontFamily,
+            // callbacks: {
+            //     beforeLabel: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         const amount = this.currencyPipe.transform(
+            //             selectedData.amount.toString(),
+            //             'number',
+            //             '',
+            //             '1.2-2'
+            //         );
+            //         return amount;
+            //     },
+            //     label: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         return selectedData.ratio.toFixed(2);
+            //     },
+            //     afterLabel: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         return selectedData.description;
+            //     }
+
+            // }
         },
     };
     public pieChartLabels: Label[] = [];
@@ -57,22 +78,23 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     noOfGeneratedData = 0;
 
     datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
+    tempPieChartData: any = [];
 
     constructor(
         private sharedService: SharedServices,
         private reportService: RevenuReportService,
         private store: Store,
         private location: Location,
-        private routeActive: ActivatedRoute) { }
+        private routeActive: ActivatedRoute, private currencyPipe: CurrencyPipe) { }
 
     ngOnInit(): void {
         this.payersList = this.sharedService.getPayersList();
         this.store.dispatch(getDepartmentNames());
         this.store.select(getDepartments).subscribe(departments => this.departments = departments);
-        
+
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.routeActive.queryParams.subscribe(params => {
             if (params.payerId != null) {
                 this.selectedPayerId = params.payerId;
@@ -129,7 +151,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             this.toDateError = 'Please select a valid date.';
             return;
         }
-        if(!this.isDateBeforeDate(this.fromDateControl, this.toDateControl)){
+        if (!this.isDateBeforeDate(this.fromDateControl, this.toDateControl)) {
             this.fromDateError = 'This date should be before the to-date';
             this.toDateError = 'This date should be after the from-date';
             return;
@@ -173,6 +195,10 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                             borderWidth: 0,
                         },
                     ];
+                    this.tempPieChartData = event.body.map((ele) => {
+                        ele.ratio = ele.ratio.toFixed(2);
+                        return ele;
+                    });
                 }
 
             }, err => {
@@ -240,6 +266,9 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             }
         }
         return code;
+    }
+    setTooltipe(i) {
+        return encodeURIComponent("Amount: 2300 &#13; Percentage: 23% &#13; Description: Demo");
     }
 
 }

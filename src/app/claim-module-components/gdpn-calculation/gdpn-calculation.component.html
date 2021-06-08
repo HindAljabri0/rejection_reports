@@ -37,7 +37,7 @@
     </li>
     <li *ngIf="getClaimActualDeductedAmount() != -1" class="text-{{getStatusColorOfClaim()}}">
         Actual Paid Amount:
-        <span class="value">{{claim.claimGDPN.net.value - getClaimActualDeductedAmount()}} SR</span>
+        <span class="value">{{getActualPaidAmount()}} SR</span>
     </li>
     <ng-container *ngIf="selectedInvoice != -1">
         <li class="title">Invoice {{selectedInvoice+1}}</li>
