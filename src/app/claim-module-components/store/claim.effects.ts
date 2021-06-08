@@ -68,13 +68,13 @@ export class ClaimEffects {
                 if (departments != null && departments.length > 0) {
                     this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
                     this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
-                   
+
                 }
             });
     }
 
 
-    
+
     openApprovalFormDialog$ = createEffect(() => this.actions$.pipe(
         ofType(openCreateByApprovalDialog),
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
