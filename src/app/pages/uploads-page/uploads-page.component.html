@@ -1,44 +1,16 @@
-<div *ngIf="errorMessage != null  && !isLoadaing" class="p-3 bg-white">
+<div *ngIf="errorMessage != null  && !isLoading" class="p-3 bg-white">
     <p class="error-card mb-0">{{errorMessage}}</p>
 </div>
 
-<ng-container *ngIf="errorMessage == null && !isLoadaing">
-    <div class="block-header">
-        <p>Uploads</p>
-    </div>
-    <div class="bg-white">
-        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-            <div class="fixed-height">
-                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                    <thead>
-                        <tr>
-                            <th>Upload Name</th>
-                            <th>Upload Date</th>
-                            <th>Number Of Claims</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let upload of uploads">
-                            <td (click)="openUpload(upload.uploadId)" class="row-click">
-                                {{upload.uploadName}}
-                            </td>
-                            <td (click)="openUpload(upload.uploadId)" class="row-click">
-                                {{upload.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}
-                            </td>
-                            <td (click)="openUpload(upload.uploadId)" class="row-click">
-                                {{upload.totalClaims}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </ng-scrollbar>
-    </div>
-    <div class="block-footer sticky-bottom">
-        <div class="left-block">
-            <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [showFirstLastButtons]="true"
-                [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex">
-            </mat-paginator>
+<div class="uploads-body scroll-block" *ngIf="errorMessage == null" scrollable (scrollPosition)="scrollHandler($event)">
+    <div class="row small-gutter">
+        <div class="col-6 pb-3" *ngFor="let upload of uploads">
+            <app-upload-card [data]="upload" (click)="openUpload(upload.uploadId)"></app-upload-card>
         </div>
+        <p class="info-block col-12" *ngIf="isLoading && length != MAX">Loading more data...</p>
+        <p class="info-block col-12"
+            *ngIf="!isLoading && errorMessage == null && uploads.length != 0 && uploads.length >= length">
+            There is no more data</p>
+        <app-empty-state class="col-12" *ngIf="!isLoading && errorMessage == null && uploads.length == 0"></app-empty-state>
     </div>
-</ng-container>
+</div>
