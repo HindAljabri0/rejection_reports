@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 })
 export class ClaimFilesValidationService {
 
-  private regex: RegExp = /^[A-Z]+$/;
+  private regex: RegExp = /^[A-Z0-9\-]+$/;
 
   constructor() { }
   wrongFormattedHeaders: string[];
@@ -144,8 +144,8 @@ const AllowedHeaders: string[] = [
   'HEIGHT',
   'COMMREPORT',
   'RADIOLOGYREPORT',
-  'DIAGNOSISCODE',
-  'DIAGNOSISDESC',
+  // 'DIAGNOSISCODE',
+  // 'DIAGNOSISDESC',
   'INVOICENO',
   'SERVICECODE',
   'SERVICEDESC',

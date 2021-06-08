@@ -79,4 +79,13 @@ export class GdpnCalculationComponent implements OnInit {
     }
   }
 
+  getActualPaidAmount(){
+
+   let actualPaidAmount =this.claim.claimGDPN.net.value - this.getClaimActualDeductedAmount();
+   let actualPaidAmountAfterTwoNumberAfterComma = actualPaidAmount.toFixed(2);
+   return actualPaidAmountAfterTwoNumberAfterComma;
+
+
+  }
+
 }
