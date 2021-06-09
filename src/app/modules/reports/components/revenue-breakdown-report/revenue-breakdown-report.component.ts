@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
@@ -9,7 +9,7 @@ import { RevenuReportService } from 'src/app/services/revenuReportService/revenu
 import { SharedServices } from 'src/app/services/shared.services';
 import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { Location } from '@angular/common';
+import { Location, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -18,7 +18,7 @@ import { NgForm } from '@angular/forms';
     templateUrl: './revenue-breakdown-report.component.html',
     styles: []
 })
-export class RevenueBreakdownReportComponent implements OnInit {
+export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     chartMode = 0;
     public chartFontFamily = '"Poppins", sans-serif';
     public chartFontColor = '#2d2d2d';
@@ -34,6 +34,27 @@ export class RevenueBreakdownReportComponent implements OnInit {
             bodyFontFamily: this.chartFontFamily,
             titleFontFamily: this.chartFontFamily,
             footerFontFamily: this.chartFontFamily,
+            // callbacks: {
+            //     beforeLabel: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         const amount = this.currencyPipe.transform(
+            //             selectedData.amount.toString(),
+            //             'number',
+            //             '',
+            //             '1.2-2'
+            //         );
+            //         return amount;
+            //     },
+            //     label: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         return selectedData.ratio.toFixed(2);
+            //     },
+            //     afterLabel: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         return selectedData.description;
+            //     }
+
+            // }
         },
     };
     public pieChartLabels: Label[] = [];
@@ -57,21 +78,27 @@ export class RevenueBreakdownReportComponent implements OnInit {
     noOfGeneratedData = 0;
 
     datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
+    tempPieChartData: any = [];
 
     constructor(
         private sharedService: SharedServices,
         private reportService: RevenuReportService,
         private store: Store,
         private location: Location,
-        private routeActive: ActivatedRoute) { }
+        private routeActive: ActivatedRoute, private currencyPipe: CurrencyPipe) { }
 
     ngOnInit(): void {
         this.payersList = this.sharedService.getPayersList();
         this.store.dispatch(getDepartmentNames());
         this.store.select(getDepartments).subscribe(departments => this.departments = departments);
+
+    }
+
+    ngAfterViewInit() {
         this.routeActive.queryParams.subscribe(params => {
             if (params.payerId != null) {
                 this.selectedPayerId = params.payerId;
+                this.onPayerChanged();
             }
             if (params.category != null) {
                 this.selectedCategory = params.category;
@@ -99,7 +126,6 @@ export class RevenueBreakdownReportComponent implements OnInit {
         this.selectedPayerName = this.selectedPayerId == 'All'
             ? 'All'
             : this.payersList.find(payer => payer.id == Number.parseInt(this.selectedPayerId, 10)).name;
-        this.generate();
     }
 
     onCategoryChanged(category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers', form: NgForm) {
@@ -125,11 +151,16 @@ export class RevenueBreakdownReportComponent implements OnInit {
             this.toDateError = 'Please select a valid date.';
             return;
         }
-        this.sharedService.loadingChanged.next(true);
+        if (!this.isDateBeforeDate(this.fromDateControl, this.toDateControl)) {
+            this.fromDateError = 'This date should be before the to-date';
+            this.toDateError = 'This date should be after the from-date';
+            return;
+        }
         const fromDate = moment(this.fromDateControl).format('YYYY-MM-DD');
-        this.fromDateError = null;
         const toDate = moment(this.toDateControl).format('YYYY-MM-DD');
+        this.fromDateError = null;
         this.toDateError = null;
+        this.sharedService.loadingChanged.next(true);
         this.editURL(fromDate, toDate);
         this.reportService.generateRevenuReportBreakdown(
             this.providerId,
@@ -164,6 +195,10 @@ export class RevenueBreakdownReportComponent implements OnInit {
                             borderWidth: 0,
                         },
                     ];
+                    this.tempPieChartData = event.body.map((ele) => {
+                        ele.ratio = ele.ratio.toFixed(2);
+                        return ele;
+                    });
                 }
 
             }, err => {
@@ -219,6 +254,10 @@ export class RevenueBreakdownReportComponent implements OnInit {
         return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
     }
 
+    isDateBeforeDate(date1, date2) {
+        return new Date(moment(date1).format('YYYY-MM-DD')).getTime() <= new Date(moment(date2).format('YYYY-MM-DD')).getTime()
+    }
+
     getDepartmentName(code: string) {
         if (this.departments != null) {
             const index = this.departments.findIndex(department => department.departmentId + '' == code);
@@ -227,6 +266,9 @@ export class RevenueBreakdownReportComponent implements OnInit {
             }
         }
         return code;
+    }
+    setTooltipe(i) {
+        return encodeURIComponent("Amount: 2300 &#13; Percentage: 23% &#13; Description: Demo");
     }
 
 }

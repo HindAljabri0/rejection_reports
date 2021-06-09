@@ -59,7 +59,7 @@
                 <li class="title">Payer</li>
                 <li>
                     <button type="button" (click)="showAllChart(revenuTrackingReportForm)" matRipple
-                        [ngClass]="{'active': allChart}">{{selectedPayerName}}</button>
+                        [ngClass]="{'active': allChart}" id="chartName">{{selectedPayerName}}</button>
                 </li>
                 <li class="title">By Category</li>
                 <ng-container>
@@ -90,7 +90,7 @@
                     <li>
                         <button type="button"
                             (click)="showServiceChart(revenuTrackingEnum.AvgCost,revenuTrackingReportForm)"
-                            [class.active]="isActiveService(revenuTrackingEnum.AvgCost)" matRipple>Average
+                            [class.active]="isActiveService(revenuTrackingEnum.AvgCost)" id="avgCost" matRipple>Average
                             Cost</button>
                     </li>
                 </ng-container>
@@ -100,7 +100,8 @@
         <div class="right-block" *ngIf="lineChartData.length>0">
             <div class="chart-wrapper">
                 <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-                    [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+                    [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins"></canvas>
                 <!-- <canvas *ngIf="serviceChart" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                 [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"> -->
                 <!-- </canvas> -->

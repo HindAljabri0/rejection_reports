@@ -1,16 +1,21 @@
-import { Location } from '@angular/common';
+import { Location, CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
-import { Color, Label } from 'ng2-charts';
+import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { NgForm } from '@angular/forms';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { Store } from '@ngrx/store';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { ReportsService } from 'src/app/services/reportsService/reports.service';
 @Component({
   selector: 'app-revenue-tracking-report',
   templateUrl: './revenue-tracking-report.component.html',
@@ -30,7 +35,8 @@ export class RevenueTrackingReportComponent implements OnInit {
         },
         ticks: {
           fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
+          fontColor: this.chartFontColor,
+
         },
         scaleLabel: {
           display: true,
@@ -48,7 +54,7 @@ export class RevenueTrackingReportComponent implements OnInit {
         ticks: {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
-          beginAtZero: true
+          beginAtZero: true,
         },
         scaleLabel: {
           display: true,
@@ -67,75 +73,68 @@ export class RevenueTrackingReportComponent implements OnInit {
       labels: {
         fontFamily: this.chartFontFamily,
         fontColor: this.chartFontColor
+      },
+      onClick: function (e, legendItem) {
+        var isAvgCost = document.getElementById('avgCost');
+        var chartName = document.getElementById('chartName');
+        if ((chartName.textContent.toLowerCase() === "all" && chartName.classList.contains('active')) || (isAvgCost !== null && isAvgCost.classList.contains('active')))
+          return;
+
+        var index = legendItem.datasetIndex;
+        var ci = this.chart;
+        var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
+
+        ci.data.datasets.forEach(function (e, i) {
+          var meta = ci.getDatasetMeta(i);
+
+          if (i !== index) {
+            if (!alreadyHidden) {
+              meta.hidden = meta.hidden === null ? !meta.hidden : null;
+            } else if (meta.hidden === null) {
+              meta.hidden = true;
+            }
+          } else if (i === index) {
+            meta.hidden = null;
+          }
+        });
+
+        ci.update();
       }
     },
     tooltips: {
       bodyFontFamily: this.chartFontFamily,
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily,
+      callbacks: {
+        // label: (tooltipItem, data) => {
+        //   return tooltipItem.label;
+        // },
+        label: (data) => {
+          data.value = this.currencyPipe.transform(
+            data.value,
+            'number',
+            '',
+            '1.2-2'
+          );
+          return data.value;
+        },
+        // afterLabel: (data, value) => {
+        //   data.value = this.currencyPipe.transform(
+        //     data.value,
+        //     'number',
+        //     '',
+        //     '1.2-2'
+        //   );
+        //   return data.value;
+        // }
+      }
     },
   };
+
   public lineChartColors: Color[] = [];
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
 
-
-  public barChartOptions: ChartOptions = {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        stacked: true,
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Months',
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor,
-          fontSize: 18,
-          lineHeight: '24px',
-          padding: {
-            top: 8
-          }
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-        ticks: {
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor,
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Amount',
-          fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor,
-          fontSize: 18,
-          lineHeight: '24px',
-          padding: {
-            bottom: 8
-          }
-        }
-      }]
-    },
-    legend: {
-      labels: {
-        fontFamily: this.chartFontFamily,
-        fontColor: this.chartFontColor
-      }
-    },
-    tooltips: {
-      bodyFontFamily: this.chartFontFamily,
-      titleFontFamily: this.chartFontFamily,
-      footerFontFamily: this.chartFontFamily,
-    },
-  };
   allChart = true;
   revenuTrackingReport: RevenuTrackingReport = new RevenuTrackingReport();
   payersList: { id: number, name: string, arName: string }[] = [];
@@ -146,11 +145,36 @@ export class RevenueTrackingReportComponent implements OnInit {
   minDate: any;
   error: string;
   isGenerateData: boolean = false;
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location) {
+  public lineChartPlugins = [{
+    afterInit: (chart, options) => {
+      chart.legend.afterFit = () => {
+        chart.legend.legendItems.map((label) => {
+          if (this.payersList.length > 0 && this.allChart) {
+            let value = this.payersList.find(ele => ele.id === parseInt(label.text));
+            label.text = value.name + ' ' + value.arName;
+          }
+          if (this.revenuTrackingReport.subcategory.toLowerCase() === RevenuTrackingReportChart.Department.toLowerCase()) {
+
+            if (this.departments != null && this.departments.length > 0) {
+              let value = this.departments.find(ele => ele.departmentId === parseInt(label.text));
+              label.text = value.name;
+            }
+          }
+
+          return label;
+        })
+      };
+    }
+  }, pluginDataLabels];
+  departments: any;
+  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private store: Store, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
+    this.store.dispatch(getDepartmentNames());
+    this.store.select(getDepartments).subscribe(departments => this.departments = departments);
     this.routeActive.queryParams.subscribe(params => {
       if (params.category != null) {
         this.revenuTrackingReport.subcategory = params.category;
@@ -168,9 +192,11 @@ export class RevenueTrackingReportComponent implements OnInit {
         if (this.revenuTrackingReport.payerId !== '0') {
           const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
           this.selectedPayerName = data.name + ' ' + data.arName;
+          this.isServiceVisible = true;
         }
         else {
           this.selectedPayerName = 'All';
+          this.isServiceVisible = false;
         }
       }
       if (params.fromDate != null && params.toDate != null) {

@@ -140,6 +140,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .overlay-backdrop.show{opacity: 1;visibility: visible;}
 .overlay-backdrop>button{display: block;height: 100%;width: 100%;background: none;border:0;}
 .small-label{font-size:13px;color:#585858;}
+.smaller-label{font-size:11px;color:#585858;}
 .unordered-list{padding-left: 20px;}
 .unordered-list>li{list-style:disc;}
 .unordered-list.change-log-list>li{font-size:16px;line-height:22px;padding-bottom: 8px;}
@@ -165,6 +166,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .attachment-view-img{display: block;max-width: 100%;margin: 0 auto;}
 .attachment-view-frame{display: block;width: 100%;height: 100%;}
 .attachment-view-body{height: calc(100vh - 119px);overflow: auto;}
+.multiline-tooltip{white-space: pre;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -652,6 +654,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .upload-history-list .uplaoded-card{border-bottom: 1px solid #e1e1e1;}
 .uploaded-card-all .uplaoded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:6px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
 .uploaded-card-all .scroll-block{max-height: calc(100vh - 174px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
+.uploads-body.scroll-block{max-height: calc(100vh - 70px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
 .uploaded-card-all .scroll-block + .info-block{margin-top: 28px;}
 
@@ -985,6 +988,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .dashboard-legend>li{display: flex;align-items:center;margin-right: 12px;}
 .dashboard-legend>li:last-child{margin-right: 0;}
 .dashboard-legend>li>span{display: block;height: 8px;width: 8px;border-radius: 50px;margin-right: 6px;}
+.smaller-label>span{display: inline-block;height: 5px;width: 5px;border-radius: 50px;margin-right: 5px;}
 
 /* information table
 --------------------------------------------------------------------------------------------------------*/
@@ -1196,3 +1200,4 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     position: relative;
     overflow: hidden;
 }
+

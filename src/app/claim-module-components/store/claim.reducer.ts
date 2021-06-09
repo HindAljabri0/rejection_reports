@@ -102,6 +102,7 @@ const _claimReducer = createReducer(
             paymentReference: body['paymentReference'],
             statusCode: body['statusCode'],
             statusDetail: body['statusDetail'],
+            payerbatchrefno:body['payerbatchrefno'],
 
 
         };

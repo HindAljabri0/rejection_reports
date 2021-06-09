@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, CurrencyPipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
@@ -25,11 +25,14 @@ export class RevenueComparativeReportComponent implements OnInit {
     scales: {
       xAxes: [{
         gridLines: {
-          display: false
+          display: false,
         },
         ticks: {
           fontFamily: this.chartFontFamily,
-          fontColor: this.chartFontColor
+          fontColor: this.chartFontColor,
+          // callback: function (value, index, values) {
+          //   return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+          // }
         },
         scaleLabel: {
           display: true,
@@ -47,7 +50,7 @@ export class RevenueComparativeReportComponent implements OnInit {
         ticks: {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
-          beginAtZero: true
+          beginAtZero: true,
         },
         scaleLabel: {
           display: true,
@@ -66,18 +69,44 @@ export class RevenueComparativeReportComponent implements OnInit {
       datalabels: {
         anchor: 'end',
         align: 'end',
+        formatter: (context) => {
+          return this.currencyPipe.transform(
+            context.toString(),
+            'number',
+            '',
+            '1.2-2'
+          );
+        },
       },
     },
     legend: {
       labels: {
         fontFamily: this.chartFontFamily,
         fontColor: this.chartFontColor
-      }
+      },
+
     },
     tooltips: {
       bodyFontFamily: this.chartFontFamily,
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily,
+      callbacks: {
+        // label: (tooltipItem, data) => {
+        //   return tooltipItem.label;
+        // },
+        label: (data) => {
+          data.value = this.currencyPipe.transform(
+            data.value,
+            'number',
+            '',
+            '1.2-2'
+          );
+          return data.value;
+        },
+        afterLabel: (data) => {
+          return data.label;
+        }
+      }
     }
   };
   public barChartLabels: Label[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -107,7 +136,7 @@ export class RevenueComparativeReportComponent implements OnInit {
           weight: 600,
           size: 11,
           family: this.chartFontFamily
-        }
+        },
       }
     }, {
       data: [],
@@ -138,7 +167,8 @@ export class RevenueComparativeReportComponent implements OnInit {
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   diffrenceLableName: any;
   percenatgeChartData: any = [];
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location) { }
+  quarterData: { firstQuarter: any[]; firstQuaterSumOfTotal: any; secondQuarter: any[], secondQuaterSumOfTotal: any; };
+  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private currencyPipe: CurrencyPipe) { }
 
   ngOnInit() {
     this.payersList = this.sharedService.getPayersList();
@@ -199,6 +229,13 @@ export class RevenueComparativeReportComponent implements OnInit {
         const secondYearData = datas[1].data;
         const percentageLabelData = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
         this.diffrenceLableName = 'Months';
+        this.quarterData = {
+          firstQuarter: [],
+          firstQuaterSumOfTotal: 0,
+          secondQuarter: [],
+          secondQuaterSumOfTotal: 0
+        };
+        // let firstQuarterTotal = 0, secondQuarterTotal = 0;
         firstYearData.map((ele, index) => {
           let value = 0;
           if (ele === 0 && secondYearData[index] > ele) {
@@ -217,14 +254,49 @@ export class RevenueComparativeReportComponent implements OnInit {
             data: Number(finalValue.toFixed(2))
           };
           this.percenatgeChartData.push(obj);
+          this.quarterData.firstQuaterSumOfTotal += ele;
+          this.quarterData.secondQuaterSumOfTotal += secondYearData[index];
         });
+
+        const firstQuarterTotal = firstYearData.reduce((acc, n, i) => {
+          const curr = acc.pop();
+          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n]
+        }, [0]);
+        const secondQuarterTotal = secondYearData.reduce((acc, n, i) => {
+          const curr = acc.pop();
+          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n]
+        }, [0]);
+        this.quarterData.secondQuarter = secondQuarterTotal.map((ele) => this.currencyPipe.transform(
+          ele.toString(),
+          'number',
+          '',
+          '1.2-2'
+        ));
+        this.quarterData.firstQuarter = firstQuarterTotal.map((ele) => this.currencyPipe.transform(
+          ele.toString(),
+          'number',
+          '',
+          '1.2-2'
+        ));
+
+        this.quarterData.firstQuaterSumOfTotal = this.currencyPipe.transform(
+          this.quarterData.firstQuaterSumOfTotal.toString(),
+          'number',
+          '',
+          '1.2-2'
+        );
+        this.quarterData.secondQuaterSumOfTotal = this.currencyPipe.transform(
+          this.quarterData.secondQuaterSumOfTotal.toString(),
+          'number',
+          '',
+          '1.2-2'
+        );
         this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
         // this.barChartOptions.title.text = 'All';
 
         if (this.chart) {
           this.chart.ngOnChanges({});
         }
-
 
       }
       this.sharedService.loadingChanged.next(false);
@@ -248,7 +320,7 @@ export class RevenueComparativeReportComponent implements OnInit {
     });
   }
   editURL(fromDate?: string, toDate?: string) {
-    let path = '/reports/revenue-comparative-report?';
+    let path = '/reports/revenue-comparison-report?';
     if (this.revenuComparativeReport.payerId != null) {
       path += `payerId=${this.revenuComparativeReport.payerId}&`;
     }
