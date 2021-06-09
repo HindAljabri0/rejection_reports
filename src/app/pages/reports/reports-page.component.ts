@@ -161,7 +161,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (this.rejectionCriteriaControl.invalid) {
+    if (this.reportTypeControl.value == 3 && this.rejectionCriteriaControl.invalid) {
       this.rejectionCriteriaHasError = true;
       return;
     }
