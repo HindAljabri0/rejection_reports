@@ -11,6 +11,7 @@ import { PaymentReferenceReportComponent } from './payment-reference-report/paym
 import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MatMenuTrigger } from '@angular/material';
+import { RejectionReportComponent } from './rejection-report/rejection-report.component';
 
 
 @Component({
@@ -20,7 +21,6 @@ import { MatMenuTrigger } from '@angular/material';
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
-  isValidFormSubmitted = false;
   payers: { id: string[] | string, name: string }[];
   reports: { id: number, name: string }[] = [
     { id: 1, name: 'Payment Report' },
@@ -61,7 +61,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
-  @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: SubmittedInvoicesComponent;
+  @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: RejectionReportComponent;
   @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
   payerId: number[];
@@ -128,52 +128,46 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       } else {
         this.pageSize = 10;
       }
-    });
+    }).unsubscribe();
 
   }
 
   ngAfterViewInit() {
-    if (this.paymentReference == null) {
-      //  this.search();
-    } else {
-      this.paymentClaimSummaryReport.fetchData(this.paymentReference);
-    }
+    this.search();
   }
 
   search() {
-    // debugger;
     this.fromDateHasError = false;
-    this.toDateHasError = true;
+    this.toDateHasError = false;
     this.payerIdHasError = false;
-    this.rejectionCriteriaHasError = true;
+    this.rejectionCriteriaHasError = false;
 
-    this.isValidFormSubmitted = false;
-    if (this.paymentReference != null ||
-      this.reportTypeControl.invalid ||
-      this.payerIdControl.invalid ||
-      this.fromDateControl.invalid ||
-      this.toDateControl.invalid ||
-      this.fromDateControl.value == null ||
-      this.toDateControl.value == null ||
-      this.rejectionCriteriaControl.invalid) {
-      this.toDateHasError = true;
-      this.fromDateHasError = true;
-      this.payerIdHasError = true;
-      this.rejectionCriteriaHasError = true;
-
-      /*if (this.fromDateControl.invalid || this.fromDateControl.value == null) {
-        this.trigger.openMenu();
-        this.fromDateHasError = true;
-      }
-      else if (this.toDateControl.invalid || this.toDateControl.value == null) {
-        this.trigger.openMenu();
-        this.toDateHasError = true;
-      } else if (this.payerIdControl.invalid || this.payerIdControl.value == null) {
-      this.trigger.openMenu();
-      this.payerIdHasError = true;
-      }*/
-      // return;
+    if (this.reportTypeControl.invalid) {
+      return;
     }
+
+    if (this.payerIdControl.invalid) {
+      this.payerIdHasError = true;
+      return;
+    }
+
+    if (this.fromDateControl.invalid) {
+      this.fromDateHasError = true;
+      return;
+    }
+
+    if (this.toDateControl.invalid) {
+      this.toDateHasError = true;
+      return;
+    }
+
+    if (this.rejectionCriteriaControl.invalid) {
+      this.rejectionCriteriaHasError = true;
+      return;
+    }
+
+
+
     const queryParams: Params = {};
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);
@@ -200,10 +194,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.reportTypeControl.value == 3) {
       this.rejectionReportComponent.fetchData();
     }
-    // else {
-    // this.trigger.openMenu();
-    // }
-    this.isValidFormSubmitted = true;
+
   }
   searchSelect(event) {
     this.search();

@@ -55,6 +55,9 @@ export class RejectionReportComponent implements OnInit {
   }
 
   async fetchData() {
+    if(this.commen.loading){
+      return;
+    }
     if (this.providerId == null || this.from == null || this.to == null || this.payerId == null || this.criteriaType == null) {
       return;
     }
@@ -80,8 +83,8 @@ export class RejectionReportComponent implements OnInit {
           if (this.rejectedClaims.length == 0) {
             this.errorMessage = 'No Results Found';
           }
+          this.commen.loadingChanged.next(false);
         }
-        this.commen.loadingChanged.next(false);
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == '4') {
