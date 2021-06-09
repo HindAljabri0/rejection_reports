@@ -1458,6 +1458,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     // }
     // });
   }
+  get statusSelected() {
+    return ClaimStatus;
+  }
 }
 
 
