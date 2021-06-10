@@ -102,7 +102,11 @@ export class AuthService {
   setTokens(body: {}) {
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
-    localStorage.setItem('expires_in', body['expires_in']);
+    if(Date.now() < new Date(body['expires_in']).getTime()){
+      localStorage.setItem('expires_in', body['expires_in']);
+    } else {
+      localStorage.setItem('expires_in', new Date(Date.now() + (59*60*1000)).toString())
+    }
     localStorage.setItem('src', body['src']);
     this.getCurrentUserToken().subscribe(event => {
       if (event instanceof HttpResponse) {
