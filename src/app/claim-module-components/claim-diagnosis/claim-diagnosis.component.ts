@@ -121,4 +121,19 @@ export class ClaimDiagnosisComponent implements OnInit {
   getDiagnosisError(diagnosisId) {
     return this.errors.filter(error => error.code == `${diagnosisId}`).map(error => error.error).reduce((e1, e2) => `${e1}\n${e2}`);
   }
+
+  diagnosisHasErrorForAllList() {
+    const temp = this.errors.findIndex(error => error.fieldName == 'DIAGNOSIS_LIST') != -1;
+    return temp;
+  }
+
+  getDiagnosisErrorForAllList() {
+
+    const index = this.errors.findIndex(error => error.fieldName == 'DIAGNOSIS_LIST');
+    if (index > -1) {
+      return this.errors[index].error || '';
+    }
+    return '';
+   // return this.errors.filter(error => error.fieldName == `${diagnosisFile}`).map(error => error.error).reduce((e1, e2) => `${e1}\n${e2}`);
+  }
 }
