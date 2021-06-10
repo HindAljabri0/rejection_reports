@@ -131,7 +131,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isAllCards: boolean = false;
 
   length = 0;
-  pageSize = 10;
+  pageSize = 100;
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100];
   showFirstLastButtons = true;
@@ -177,6 +177,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    this.pageSize = localStorage.getItem("pagesize") !=null ?Number.parseInt(localStorage.getItem("pagesize")) :10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add'))
@@ -371,7 +372,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     return event.status;
   }
 
-  getResultsOfStatus(key: number, page?: number, pageSize?: number) {
+  getResultsOfStatus(key: number, page?: number) {
     if (this.summaries[key] == null) { return; }
     if (this.summaries.length == 0) { return; }
     this.commen.loadingChanged.next(true);
@@ -423,7 +424,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       claims: this.claims,
       currentPage: page,
       maxPages: this.searchResult != null ? this.searchResult.totalPages : 0,
-      pageSize: pageSize
+      pageSize: this.pageSize
     }));
     this.searchResult = null;
     this.currentSelectedTab = 0;
@@ -434,7 +435,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.payerId,
       this.summaries[key].statuses,
       page,
-      pageSize,
+      this.pageSize,
       this.batchId,
       this.uploadId,
       this.casetype,
@@ -1251,9 +1252,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.length = event.length;
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
+    localStorage.setItem("pagesize", event.pageSize+'');
     console.log(event);
     if (this.summaries[this.selectedCardKey] != null) {
-      this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
+      this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
     }
   }
   searchClaimBased(key: string) {
@@ -1286,7 +1288,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.appliedFilters.push(data);
     this.pageIndex = 0;
-    this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
+    this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
   }
 
 
@@ -1336,7 +1338,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }
     }
     this.pageIndex = 0;
-    this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
+    this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);
   }
 
   checkAppliedFilter(name: string) {
