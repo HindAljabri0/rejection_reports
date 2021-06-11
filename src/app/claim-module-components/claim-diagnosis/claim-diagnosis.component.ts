@@ -89,7 +89,7 @@ export class ClaimDiagnosisComponent implements OnInit {
   }
 
   addICDDiagnosis(diag: ICDDiagnosis) {
-    if (this.diagnosisList.length < 14) {
+    
       this.diagnosisList.push(diag);
       this.store.dispatch(updateDiagnosisList({
         list: this.diagnosisList.map(diag =>
@@ -97,8 +97,8 @@ export class ClaimDiagnosisComponent implements OnInit {
         )
       }));
       this.icedOptions = [];
-    }
-    this.store.dispatch(removeDiagonsisError({ errors: this.diagnosisList.length > 0 ? [] : this.errors }));
+    
+    
   }
 
   removeDiagnosis(diag: ICDDiagnosis) {
@@ -120,5 +120,20 @@ export class ClaimDiagnosisComponent implements OnInit {
 
   getDiagnosisError(diagnosisId) {
     return this.errors.filter(error => error.code == `${diagnosisId}`).map(error => error.error).reduce((e1, e2) => `${e1}\n${e2}`);
+  }
+
+  diagnosisHasErrorForAllList() {
+    const temp = this.errors.findIndex(error => error.fieldName == 'DIAGNOSIS_LIST') != -1;
+    return temp;
+  }
+
+  getDiagnosisErrorForAllList() {
+
+    const index = this.errors.findIndex(error => error.fieldName == 'DIAGNOSIS_LIST');
+    if (index > -1) {
+      return this.errors[index].error || '';
+    }
+    return '';
+   
   }
 }

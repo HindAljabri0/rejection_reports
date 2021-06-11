@@ -1,0 +1,58 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: DR - Angular Build
+
+on:
+  push:
+    branches:
+      - qa
+      
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and npm run build
+      run: |
+        npm install -s
+        npm run buildDR
+
+    - name: Docker Build
+      run: docker build . -t registry.waseel.com:5000/dr/gui:latest -t registry.waseel.com:5000/dr/gui:${{ github.sha }}
+
+    - name: Docker Push
+      run: docker push --all-tags registry.waseel.com:5000/dr/gui
+
+    - name: Deploy to K8S
+      uses: waseel-asp/kubectl@v1.17.9
+      env:
+        KUBE_CONFIG: ${{ secrets.PARVEZ_KUBE_CONFIG_DATA }}
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      with:
+        args: set image --record deployment/gui gui=registry.waseel.com:5000/dr/gui:${{ github.sha }} -n priya
+
+    - name: Verify Deployment
+      uses: waseel-asp/kubectl@v1.17.9
+      env:
+        KUBE_CONFIG: ${{ secrets.PARVEZ_KUBE_CONFIG_DATA }}
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      with:
+        args: '"rollout status deployment/gui -n priya"'
