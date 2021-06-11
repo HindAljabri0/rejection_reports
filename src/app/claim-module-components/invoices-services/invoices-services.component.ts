@@ -113,6 +113,7 @@ export class InvoicesServicesComponent implements OnInit {
   statusCode: any;
   claimProps: RetrievedClaimProps;
   isPBMValidationVisible: boolean = false;
+  selectedInvoiceIndex: any;
   constructor(
     private store: Store,
     private actions: Actions,
@@ -182,9 +183,9 @@ export class InvoicesServicesComponent implements OnInit {
     this.actions.pipe(
       ofType(saveInvoices_Services)
     ).subscribe(() => {
-      if (this.expandedInvoice != -1) {
-        this.createInvoiceFromControl(this.expandedInvoice);
-      }
+      // if (this.expandedInvoice != -1) {
+      this.createInvoiceFromControl(this.selectedInvoiceIndex);
+      // }
     });
 
     this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
@@ -459,6 +460,11 @@ export class InvoicesServicesComponent implements OnInit {
       this.createInvoiceFromControl(i);
       this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
     }
+
+    if (this.selectedInvoiceIndex !== undefined && this.selectedInvoiceIndex < this.controllers.length)
+      this.createInvoiceFromControl(this.selectedInvoiceIndex);
+
+    this.selectedInvoiceIndex = i;
   }
 
   toggleServiceExpansion(event, i, j) {

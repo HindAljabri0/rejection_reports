@@ -1,51 +1,49 @@
-<div class="uplaoded-card clickable bg-white">
+<div class="uplaoded-card clickable">
     <p class="medium text-primary">{{data.uploadName}}</p>
     <hr class="hr separator">
     <p class="small-label">Total Claims</p>
-    <h4 style="font-weight: 600;">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
-    <br>
-    <div class="row small-gutter">
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-ready-submission"></span>Ready for Submission</p>
+    <h4 class="semibold">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
+    <div class="row small-gutter pt-3">
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Ready for Submission</p>
             <p class="dashboard-numbers">&ensp;{{data.ready_for_submission}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-under-submission"></span>Under Submission</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-under-submission"></span>Under Submission</p>
             <p class="dashboard-numbers">&ensp;{{data.undersubmission}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-paid"></span>Paid</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-paid"></span>Paid</p>
             <p class="dashboard-numbers">&ensp;{{data.paid}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-rejected"></span>Rejected By Payer</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-rejected"></span>Rejected By Payer</p>
             <p class="dashboard-numbers">&ensp;{{data.rejected_by_payer}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-rejected-waseel"></span>Rejected By Waseel</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Rejected By Waseel</p>
             <p class="dashboard-numbers">&ensp;{{data.rejected_by_waseel}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-under-processing"></span>Under Processing</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-under-processing"></span>Under Processing</p>
             <p class="dashboard-numbers">&ensp;{{data.underprocessing}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-partially-paid"></span>Partially Paid</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-partially-paid"></span>Partially Paid</p>
             <p class="dashboard-numbers">&ensp;{{data.partially_paid}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-invalid"></span>Invalid</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-invalid"></span>Invalid</p>
             <p class="dashboard-numbers">&ensp;{{data.invalid}}</p>
         </div>
-        <div class="col-6 col-md-3 col-lg-3 col-xl-3 pb-2">
-            <p class="smaller-label"><span class="bg-ready-submission"></span>Downloadable</p>
+        <div class="col-6 col-lg-4 col-xl-3 pb-2">
+            <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Downloadable</p>
             <p class="dashboard-numbers">&ensp;{{data.downloadable}}</p>
         </div>
     </div>
     <hr class="hr separator">
-    <div style="display: flex;">
+    <div class="d-flex">
         <span class="text-medium-grey">Date: {{data.uploadDate | date : 'EEEE, d MMMM, y'}}</span>
-        <span class="spacer"></span>
-        <span class="text-medium-grey">Time: {{data.uploadDate | date : 'hh:mm a'}}</span>
+        <span class="text-medium-grey ml-auto text-right">Time: {{data.uploadDate | date : 'hh:mm a'}}</span>
     </div>
 </div>
