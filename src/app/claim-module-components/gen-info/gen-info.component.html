@@ -1,20 +1,14 @@
 <div class="row small-gutter general-info-wrapper">
     <div class="col">
-        <div class="form-group"
-            [class.has-error]="fieldHasError('FULLNAME') || fieldHasError('FN')||fieldHasError('LN')">
+        <div class="form-group" [class.has-error]="fieldHasError('FULLNAME') || fieldHasError('FN')||fieldHasError('LN')">
             <label class="control-label">Full Name<span class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
-                <div class="col"
-                    [matTooltip]="getFieldError('FULLNAME') || getFieldError('FN') || getFieldError('LN')">
-                    <input class="form-control" placeholder="Enter full name" type="text"
-                        [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
+                <div class="col" [matTooltip]="getFieldError('FULLNAME') || getFieldError('FN') || getFieldError('LN')">
+                    <input class="form-control" placeholder="Enter full name" type="text" [formControl]="fullNameController" (change)="updateClaim('fullName')" required>
                 </div>
-                <div class="col-auto form-group" [matTooltip]="getFieldError('GENDER')"
-                    [class.has-error]="fieldHasError('GENDER')">
+                <div class="col-auto form-group mb-0" [matTooltip]="getFieldError('GENDER')" [class.has-error]="fieldHasError('GENDER')">
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select [value]="selectedGender"
-                            (selectionChange)="selectedGender = $event.value; updateClaim('gender');"
-                            [disabled]="!editableFields.gender">
+                        <mat-select [value]="selectedGender" (selectionChange)="selectedGender = $event.value; updateClaim('gender');" [disabled]="!editableFields.gender">
                             <mat-option value="M">Male</mat-option>
                             <mat-option value="F">Female</mat-option>
                         </mat-select>
@@ -23,42 +17,21 @@
             </div>
         </div>
     </div>
-    <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
-        <div class="form-group" [class.has-error]="fieldHasError('CASETYP')" [matTooltip]="getFieldError('CASETYP')">
-            <label class="control-label">Case Type</label>
-            <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCaseType"
-                    (selectionChange)="selectedCaseType = $event.value; updateClaim('caseType');"
-                    [disabled]="!isCaceTypeEnabled">
-                    <mat-option value="INPATIENT">Inpatient</mat-option>
-                    <mat-option value="OUTPATIENT">Outpatient</mat-option>
-                    <mat-option value="DENTAL">Dental</mat-option>
-                    <mat-option value="DELIVERY">Delivery</mat-option>
-                    <mat-option value="OPTICAL">Optical</mat-option>
-                    <mat-option value="PHARMACY">Pharmacy</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-    </div>
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('DPARCODE')" [matTooltip]="getFieldError('DPARCODE')">
             <label class="control-label">Department<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedDepartment" [disabled]="!departmentEditable || isDepartmentDisable"
-                    (selectionChange)="selectedDepartment = $event.value; updateClaim('department');" required
-                    #departmentSelect>
+                    (selectionChange)="selectedDepartment = $event.value; updateClaim('department');" required #departmentSelect>
                     <mat-option>
-                        <ngx-mat-select-search placeholderLabel="Search Department"
-                            noEntriesFoundLabel="No departments found" [formControl]="departmentFilterCtrl"
+                        <ngx-mat-select-search placeholderLabel="Search Department" noEntriesFoundLabel="No departments found" [formControl]="departmentFilterCtrl"
                             name='selectedDepartment'></ngx-mat-select-search>
                     </mat-option>
                     <mat-option value="">Select Department</mat-option>
-                    <mat-option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'"
-                        [value]="selectedDepartment">{{selectedDepartment}}</mat-option>
+                    <mat-option *ngIf="!departmentsHasCode(selectedDepartment) && pageMode == 'VIEW'" [value]="selectedDepartment">{{selectedDepartment}}</mat-option>
                     <!-- <mat-option *ngFor="let department of filteredDepartments | async" [value]="department.Name">
-                        {{department.Name}}</mat-option> -->
-                    <mat-option *ngFor="let department of filteredDepartments | async"
-                        [value]="department.departmentId">
+                            {{department.Name}}</mat-option> -->
+                    <mat-option *ngFor="let department of filteredDepartments | async" [value]="department.departmentId">
                         {{department.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -68,8 +41,7 @@
         <div class="form-group">
             <label class="control-label">Payer<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-                <mat-select [disabled]="!editableFields.payer" [value]="selectedPayer"
-                    (selectionChange)="selectedPayer = $event.value; updateClaim('payer');" required>
+                <mat-select [disabled]="!editableFields.payer" [value]="selectedPayer" (selectionChange)="selectedPayer = $event.value; updateClaim('payer');" required>
                     <mat-option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
                         {{selectedPayer}}</mat-option>
                     <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}</mat-option>
@@ -78,12 +50,10 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('VSITDATE')"
-            [matTooltip]="getFieldError('VSITDATE')">
+        <div class="form-group" [class.has-error]="fieldHasError('VSITDATE')" [matTooltip]="getFieldError('VSITDATE')">
             <label class="control-label">Claim Date<span class="asterisk">*</span></label>
             <div class="date-picker">
-                <input id="claimDateInput" [matDatepicker]="claimDatePicker" class="form-control"
-                    placeholder="Select claim date" [formControl]="claimDateController"
+                <input id="claimDateInput" [matDatepicker]="claimDatePicker" class="form-control" placeholder="Select claim date" [formControl]="claimDateController"
                     (dateChange)="updateClaim('claimDate')">
                 <mat-datepicker-toggle [for]="claimDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #claimDatePicker></mat-datepicker>
@@ -95,11 +65,9 @@
             <label class="control-label">Nationality</label>
             <mat-form-field class="form-control custom-select-control">
                 <mat-select [value]="selectedNationality" [disabled]="!editableFields.nationality"
-                    (selectionChange)="selectedNationality = $event.value; updateClaim('nationality');" required
-                    #nationalitySelect>
+                    (selectionChange)="selectedNationality = $event.value; updateClaim('nationality');" required #nationalitySelect>
                     <mat-option>
-                        <ngx-mat-select-search placeholderLabel="Search Nationality"
-                            noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                        <ngx-mat-select-search placeholderLabel="Search Nationality" noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
                             name='searchedNationality'></ngx-mat-select-search>
                     </mat-option>
                     <mat-option value="">Select Nationality</mat-option>
@@ -110,38 +78,30 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('NATID')"
-            [matTooltip]="getFieldError('NATID')">
+        <div class="form-group" [class.has-error]="fieldHasError('NATID')" [matTooltip]="getFieldError('NATID')">
             <label class="control-label">National / Iqama ID</label>
-            <input class="form-control" placeholder="Enter national / iqama ID" type="number"
-                [formControl]="nationalIdController" (change)="updateClaim('nationalId')">
+            <input class="form-control" placeholder="Enter national / iqama ID" type="number" [formControl]="nationalIdController" (change)="updateClaim('nationalId')">
         </div>
     </div>
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('MEMID')" [matTooltip]="getFieldError('MEMID')">
             <label class="control-label">Member ID<span class="asterisk">*</span></label>
-            <input class="form-control" placeholder="Enter member ID" type="text" [formControl]="memberIdController"
-                (change)="updateClaim('memberId')" required>
+            <input class="form-control" placeholder="Enter member ID" type="text" [formControl]="memberIdController" (change)="updateClaim('memberId')" required>
         </div>
     </div>
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('POLNO')" [matTooltip]="getFieldError('POLNO')">
-            <label class="control-label">Policy No.<span
-                    *ngIf="selectedPayer!==102 && selectedPayer!==207 &&selectedPayer!== 313"
-                    class="asterisk">*</span></label>
-            <input class="form-control" type="text" placeholder="Enter policy number"
-                [formControl]="policyNumController" (change)="updateClaim('policyNum')"
+            <label class="control-label">Policy No.<span *ngIf="selectedPayer!==102 && selectedPayer!==207 &&selectedPayer!== 313" class="asterisk">*</span></label>
+            <input class="form-control" type="text" placeholder="Enter policy number" [formControl]="policyNumController" (change)="updateClaim('policyNum')"
                 [required]="selectedPayer !== 102 && selectedPayer !== 207 &&selectedPayer !==313 ">
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('DOB_AGE')"
-            [matTooltip]="getFieldError('DOB_AGE')">
-            <label class="control-label">Date of Birth<span *ngIf="isControlNull(ageController)"
-                    class="asterisk">*</span></label>
+        <div class="form-group" [class.has-error]="fieldHasError('DOB_AGE')" [matTooltip]="getFieldError('DOB_AGE')">
+            <label class="control-label">Date of Birth<span *ngIf="isControlNull(ageController)" class="asterisk">*</span></label>
             <div class="date-picker">
-                <input id="memberDobInput" [matDatepicker]="memberDobDatePicker" placeholder="Select date of birth"
-                    class="form-control" [formControl]="memberDobController" (dateChange)="updateClaim('memberDob')">
+                <input id="memberDobInput" [matDatepicker]="memberDobDatePicker" placeholder="Select date of birth" class="form-control" [formControl]="memberDobController"
+                    (dateChange)="updateClaim('memberDob')">
                 <mat-datepicker-toggle [for]="memberDobDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #memberDobDatePicker></mat-datepicker>
             </div>
@@ -149,17 +109,14 @@
     </div>
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('AGE')" [matTooltip]="getFieldError('AGE')">
-            <label class="control-label">Age<span *ngIf="isControlNull(memberDobController)"
-                    class="asterisk">*</span></label>
+            <label class="control-label">Age<span *ngIf="isControlNull(memberDobController)" class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
                 <div class="col">
-                    <input id="ageInput" type="number" placeholder="Enter age" [formControl]="ageController"
-                        (change)="updateClaim('age')" class="form-control">
+                    <input id="ageInput" type="number" placeholder="Enter age" [formControl]="ageController" (change)="updateClaim('age')" class="form-control">
                 </div>
                 <div class="col-auto">
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select [value]="unitAge" (selectionChange)="updateClaimUnit('ageUnit',$event)"
-                            [disabled]="ageController.disabled">
+                        <mat-select [value]="unitAge" (selectionChange)="updateClaimUnit('ageUnit',$event)" [disabled]="ageController.disabled">
                             <mat-option value="Day">Day</mat-option>
                             <mat-option value="Month">Month</mat-option>
                             <mat-option value="Year">Year</mat-option>
@@ -173,32 +130,23 @@
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('ELGNO')" [matTooltip]="getFieldError('ELGNO')">
             <label class="control-label">Eligibility Number</label>
-            <input type="text" placeholder="Enter eligibility number" [formControl]="eligibilityNumController"
-                (change)="updateClaim('eligibilityNum')" class="form-control">
+            <input type="text" placeholder="Enter eligibility number" [formControl]="eligibilityNumController" (change)="updateClaim('eligibilityNum')" class="form-control">
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('APPNO')"
-            [matTooltip]="getFieldError('APPNO')">
-            <label class="control-label">Approval No.<span
-                    *ngIf="departmentCode != '68' && claimPageType == 'DENTAL_OPTICAL_PHARMACY'"
-                    class="asterisk">*</span></label>
-            <input class="form-control" placeholder="Enter approval number" type="text"
-                [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required>
+        <div class="form-group" [class.has-error]="fieldHasError('APPNO')" [matTooltip]="getFieldError('APPNO')">
+            <label class="control-label">Approval No.<span *ngIf="departmentCode != '68' && claimPageType == 'DENTAL_OPTICAL_PHARMACY'" class="asterisk">*</span></label>
+            <input class="form-control" placeholder="Enter approval number" type="text" [formControl]="approvalNumController" (change)="updateClaim('approvalNum')" required>
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('PHYCA')"
-            [matTooltip]="getFieldError('PHYCA')">
-            <label class="control-label">Physician Category<span class="asterisk"
-                    *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+        <div class="form-group" [class.has-error]="fieldHasError('PHYCA')" [matTooltip]="getFieldError('PHYCA')">
+            <label class="control-label">Physician Category<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedCategory" [disabled]="!categoryEditable"
-                    [required]="pageType == 'INPATIENT_OUTPATIENT'"
+                <mat-select [value]="selectedCategory" [disabled]="!categoryEditable" [required]="pageType == 'INPATIENT_OUTPATIENT'"
                     (selectionChange)="selectedCategory = $event.value; updateClaim('physicianCategory');">
                     <mat-option value="">Select Category</mat-option>
-                    <mat-option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'"
-                        [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}
+                    <mat-option *ngIf="!categories.includes(selectedCategory) && pageMode == 'VIEW'" [value]="selectedCategory">{{beautifyCategory(selectedCategory)}}
                     </mat-option>
                     <mat-option *ngFor="let category of categories" [value]="category">{{beautifyCategory(category)}}
                     </mat-option>
@@ -207,65 +155,37 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('PHYNA')"
-            [matTooltip]="getFieldError('PHYNA')">
-            <label class="control-label">Physician Name<span class="asterisk"
-                    *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
-            <input class="form-control" placeholder="Enter physician name" type="text"
-                [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianNameController"
+        <div class="form-group" [class.has-error]="fieldHasError('PHYNA')" [matTooltip]="getFieldError('PHYNA')">
+            <label class="control-label">Physician Name<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+            <input class="form-control" placeholder="Enter physician name" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianNameController"
                 (change)="updateClaim('physicianName')">
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]=" fieldHasError('PHYID') "
-            [matTooltip]="getFieldError('PHYID')">
-            <label class="control-label">Physician ID<span class="asterisk"
-                    *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
-            <input class="form-control" placeholder="Enter physician ID" type="text"
-                [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
+        <div class="form-group" [class.has-error]=" fieldHasError('PHYID') " [matTooltip]="getFieldError('PHYID')">
+            <label class="control-label">Physician ID<span class="asterisk" *ngIf="pageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+            <input class="form-control" placeholder="Enter physician ID" type="text" [required]="pageType == 'INPATIENT_OUTPATIENT'" [formControl]="physicianIdController"
                 (change)="updateClaim('physicianId')">
         </div>
     </div>
-    <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
-        <div class="form-group" [class.has-error]="fieldHasError('otherCondition')"
-            [matTooltip]="getFieldError('otherCondition')">
-            <label class="control-label">Other Condition</label>
-            <input class="form-control" placeholder="Enter other condition" [formControl]="otherConditionController"
-                (change)="updateClaim('otherCondition')">
-        </div>
-    </div>
-</div>
-<div class="row small-gutter general-info-wrapper">
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('CHECOMP')" [matTooltip]="getFieldError('CHECOMP')">
-            <label class="control-label">Chief Complaint Symptoms<span class="asterisk"
-                    *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
-            <textarea class="form-control" placeholder="Enter chief complaint symptoms"
-                [formControl]="mainSymptomsController" (change)="updateClaim('mainSymptoms')" rows="6"></textarea>
-        </div>
-    </div>
-    <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
-        <div class="form-group" [class.has-error]="fieldHasError('radiologyReport')">
-            <label class="control-label">Radiology Report</label>
-            <textarea class="form-control" [formControl]="radiologyReportController"
-                placeholder="Enter radiology report" (change)="updateClaim('radiologyReport')" rows="6"></textarea>
+            <label class="control-label">Chief Complaint Symptoms<span class="asterisk" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+            <textarea class="form-control" placeholder="Enter chief complaint symptoms" [formControl]="mainSymptomsController" (change)="updateClaim('mainSymptoms')"
+                rows="2"></textarea>
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('IIINESSDURATION')"
-            [matTooltip]="getFieldError('IIINESSDURATION')">
-            <label class="control-label">Duration of Illness<span *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'"
-                    class="asterisk">*</span></label>
+        <div class="form-group" [class.has-error]="fieldHasError('IIINESSDURATION')" [matTooltip]="getFieldError('IIINESSDURATION')">
+            <label class="control-label">Duration of Illness<span *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'" class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
                 <div class="col">
-                    <input class="form-control" type="number" [formControl]="illnessDurationController"
-                        placeholder="Enter duration of illness" (change)="updateClaim('illnessDuration')">
+                    <input class="form-control" type="number" [formControl]="illnessDurationController" placeholder="Enter duration of illness"
+                        (change)="updateClaim('illnessDuration')">
                 </div>
                 <div class="col-auto" [matTooltip]="getFieldError('illnessDurationUnit')">
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select [value]="unitIllness"
-                            (selectionChange)="updateClaimUnit('illnessDurationUnit',$event)"
-                            [disabled]="illnessDurationController.disabled">
+                        <mat-select [value]="unitIllness" (selectionChange)="updateClaimUnit('illnessDurationUnit',$event)" [disabled]="illnessDurationController.disabled">
                             <mat-option value="Day">Day</mat-option>
                             <mat-option value="Month">Month</mat-option>
                             <mat-option value="Year">Year</mat-option>
@@ -276,14 +196,12 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('VISITTYP')"
-            [matTooltip]="getFieldError('VISITTYP')">
+        <div class="form-group" [class.has-error]="fieldHasError('VISITTYP')" [matTooltip]="getFieldError('VISITTYP')">
             <label class="control-label">Visit Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType"
-                    (selectionChange)="selectedVisitType = $event.value; updateClaim('visitType');" required>
-                    <mat-option *ngIf="!visitTypes.includes(selectedVisitType) && pageMode == 'VIEW'"
-                        [value]="selectedVisitType">
+                <mat-select [value]="selectedVisitType" [disabled]="!editableFields.visitType" (selectionChange)="selectedVisitType = $event.value; updateClaim('visitType');"
+                    required>
+                    <mat-option *ngIf="!visitTypes.includes(selectedVisitType) && pageMode == 'VIEW'" [value]="selectedVisitType">
                         {{beautifyVisitType(selectedVisitType)}}</mat-option>
                     <mat-option *ngFor="let visitType of visitTypes" [value]="visitType">
                         {{beautifyVisitType(visitType)}}</mat-option>
@@ -291,33 +209,58 @@
             </mat-form-field>
         </div>
     </div>
+    <div class="col">
+        <div class="form-group" [matTooltip]="getFieldError('PATFILNO')" [class.has-error]="fieldHasError('PATFILNO')">
+            <label class="control-label">Patient File Number<span class="asterisk">*</span></label>
+            <input id="fileNumberInput" type="text" placeholder="Enter patient file number" [formControl]="fileNumberController" (change)="updateClaim('fileNumber')"
+                class="form-control">
+        </div>
+    </div>
+    <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
+        <div class="form-group" [class.has-error]="fieldHasError('CASETYP')" [matTooltip]="getFieldError('CASETYP')">
+            <label class="control-label">Case Type</label>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select [value]="selectedCaseType" (selectionChange)="selectedCaseType = $event.value; updateClaim('caseType');" [disabled]="!isCaceTypeEnabled">
+                    <mat-option value="INPATIENT">Inpatient</mat-option>
+                    <mat-option value="OUTPATIENT">Outpatient</mat-option>
+                    <mat-option value="DENTAL">Dental</mat-option>
+                    <mat-option value="DELIVERY">Delivery</mat-option>
+                    <mat-option value="OPTICAL">Optical</mat-option>
+                    <mat-option value="PHARMACY">Pharmacy</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
+        <div class="form-group" [class.has-error]="fieldHasError('otherCondition')" [matTooltip]="getFieldError('otherCondition')">
+            <label class="control-label">Other Condition</label>
+            <input class="form-control" placeholder="Enter other condition" [formControl]="otherConditionController" (change)="updateClaim('otherCondition')">
+        </div>
+    </div>
+    <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
+        <div class="form-group" [class.has-error]="fieldHasError('radiologyReport')">
+            <label class="control-label">Radiology Report</label>
+            <textarea class="form-control" [formControl]="radiologyReportController" placeholder="Enter radiology report" (change)="updateClaim('radiologyReport')"
+                rows="2"></textarea>
+        </div>
+    </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
         <div class="form-group" [class.has-error]="fieldHasError('planType')" [matTooltip]="getFieldError('planType')">
             <label class="control-label">Plan Type</label>
-            <input class="form-control" placeholder="Enter plan type" type="text" [formControl]="planTypeController"
-                (change)="updateClaim('planType')">
+            <input class="form-control" placeholder="Enter plan type" type="text" [formControl]="planTypeController" (change)="updateClaim('planType')">
         </div>
     </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
         <div class="form-group" [class.has-error]="fieldHasError('commReport')">
             <label class="control-label">Comment Report</label>
-            <input [formControl]="commReportController" placeholder="Enter comment report"
-                (change)="updateClaim('commReport')" class="form-control">
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-group" [matTooltip]="getFieldError('PATFILNO')" [class.has-error]="fieldHasError('PATFILNO')">
-            <label class="control-label">Patient File Number<span class="asterisk">*</span></label>
-            <input id="fileNumberInput" type="text" placeholder="Enter patient file number"
-                [formControl]="fileNumberController" (change)="updateClaim('fileNumber')" class="form-control">
+            <input [formControl]="commReportController" placeholder="Enter comment report" (change)="updateClaim('commReport')" class="form-control">
         </div>
     </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">
-        <div class="form-group" [class.has-error]="fieldHasError('significantSign')"
-            [matTooltip]="getFieldError('significantSign')">
+        <div class="form-group" [class.has-error]="fieldHasError('significantSign')" [matTooltip]="getFieldError('significantSign')">
             <label class="control-label">Significant Sign</label>
-            <textarea class="form-control" [formControl]="significantSignController"
-                placeholder="Enter significant sign" (change)="updateClaim('significantSign')" rows="2"></textarea>
+            <textarea class="form-control" [formControl]="significantSignController" placeholder="Enter significant sign" (change)="updateClaim('significantSign')"
+                rows="2"></textarea>
         </div>
     </div>
 </div>
