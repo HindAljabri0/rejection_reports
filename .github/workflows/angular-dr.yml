@@ -45,15 +45,15 @@ jobs:
     - name: Deploy to K8S
       uses: waseel-asp/kubectl@v1.17.9
       env:
-        KUBE_CONFIG: ${{ secrets.PARVEZ_KUBE_CONFIG_DATA }}
+        KUBE_CONFIG: ${{ secrets.DR_KUBE_CONFIG_DATA }}
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       with:
-        args: set image --record deployment/gui gui=registry.waseel.com:5000/dr/gui:${{ github.sha }} -n priya
+        args: set image --record deployment/gui gui=registry.waseel.com:5000/dr/gui:${{ github.sha }} -n dr
 
     - name: Verify Deployment
       uses: waseel-asp/kubectl@v1.17.9
       env:
-        KUBE_CONFIG: ${{ secrets.PARVEZ_KUBE_CONFIG_DATA }}
+        KUBE_CONFIG: ${{ secrets.DR_KUBE_CONFIG_DATA }}
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       with:
-        args: '"rollout status deployment/gui -n priya"'
+        args: '"rollout status deployment/gui -n dr"'
