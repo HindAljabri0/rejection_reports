@@ -1,0 +1,57 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add Batch</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Batch No.</label>
+                <input type="text" class="form-control" placeholder="Enter batch no." />
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Batch Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="batchDatePicker" class="form-control" placeholder="Select batch date">
+                    <mat-datepicker-toggle [for]="batchDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #batchDatePicker></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Payer</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Payer</mat-option>
+                        <mat-option value="Payer 1">Payer 1</mat-option>
+                        <mat-option value="Payer 2">Payer 2</mat-option>
+                        <mat-option value="Payer 3">Payer 3</mat-option>
+                        <mat-option value="Payer 4">Payer 4</mat-option>
+                        <mat-option value="Payer 5">Payer 5</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Total Amount</label>
+                <input type="text" class="form-control" placeholder="Enter total amount" />
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Deviating Term</label>
+                <input type="text" class="form-control" placeholder="Enter deviating term" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="primary">Add Month</button>
+    </div>
+</div>

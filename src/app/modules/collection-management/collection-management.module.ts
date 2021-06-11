@@ -18,6 +18,11 @@ import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/v
 import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
 import { AccountReceivableAddPaymentComponent } from './account-receivable-add-payment/account-receivable-add-payment.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
+import { AccountReceivableDetailsComponent } from './account-receivable-details/account-receivable-details.component';
+import { AccountReceivableAddMonthComponent } from './account-receivable-add-month/account-receivable-add-month.component';
+import { BsDatepickerModule } from 'ngx-bootstrap';
+import { AccountReceivableAddBatchComponent } from './account-receivable-add-batch/account-receivable-add-batch.component';
+import { AgingReportComponent } from './aging-report/aging-report.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +37,11 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
     VatPaymentReportListComponent,
     VatPaymentReportDetailsComponent,
     AccountsReceivableListComponent,
-    AccountReceivableAddPaymentComponent
+    AccountReceivableAddPaymentComponent,
+    AccountReceivableDetailsComponent,
+    AccountReceivableAddMonthComponent,
+    AccountReceivableAddBatchComponent,
+    AgingReportComponent
   ],
   imports: [
     CommonModule,
@@ -42,8 +51,14 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
     ChartsModule,
     CollectionManagementRoutingModule,
     NgScrollbarModule,
-    SmoothScrollModule
+    SmoothScrollModule,
+    BsDatepickerModule
   ],
-  entryComponents: [FileUploadDialogComponent, AccountReceivableAddPaymentComponent]
+  entryComponents: [
+    FileUploadDialogComponent,
+    AccountReceivableAddPaymentComponent,
+    AccountReceivableAddMonthComponent,
+    AccountReceivableAddBatchComponent
+  ]
 })
 export class CollectionManagementModule { }

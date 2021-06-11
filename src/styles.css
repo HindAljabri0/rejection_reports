@@ -166,7 +166,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .attachment-view-img{display: block;max-width: 100%;margin: 0 auto;}
 .attachment-view-frame{display: block;width: 100%;height: 100%;}
 .attachment-view-body{height: calc(100vh - 119px);overflow: auto;}
-.multiline-tooltip{white-space: pre;}
+.text-muted{color: #909090;display: block;font-size: 90%;line-height: 1.2;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/

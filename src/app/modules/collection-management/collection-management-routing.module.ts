@@ -10,6 +10,8 @@ import { CollectionSummaryDetailsComponent } from './collection-summary-details/
 import { VatPaymentReportListComponent } from './vat-payment-report-list/vat-payment-report-list.component';
 import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/vat-payment-report-details.component';
 import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
+import { AccountReceivableDetailsComponent } from './account-receivable-details/account-receivable-details.component';
+import { AgingReportComponent } from './aging-report/aging-report.component';
 
 const routes: Routes = [
   { path: 'regular-payment-list', component: RegularPaymentListComponent },
@@ -21,7 +23,9 @@ const routes: Routes = [
   { path: 'collection-summary-create', component: CollectionSummaryCreateComponent },
   { path: 'vat-payment-list', component: VatPaymentReportListComponent },
   { path: 'vat-payment-details', component: VatPaymentReportDetailsComponent },
-  { path: 'accounts-receivable-list', component: AccountsReceivableListComponent }
+  { path: 'accounts-receivable-list', component: AccountsReceivableListComponent },
+  { path: 'accounts-receivable-details', component: AccountReceivableDetailsComponent },
+  { path: 'aging-report', component: AgingReportComponent }
 ];
 
 @NgModule({
