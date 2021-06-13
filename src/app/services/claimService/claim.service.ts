@@ -137,7 +137,7 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  deleteClaimByUploadid(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string, drname?: string,
+  deleteClaimByCriteria(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string, drname?: string,
     nationalId?: string,
     claimDate?: string) {
 

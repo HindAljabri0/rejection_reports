@@ -1175,7 +1175,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         if (result === true) {
           this.commen.loadingChanged.next(true);
           const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-          this.claimService.deleteClaimByUploadid(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+          this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
             if (event instanceof HttpResponse) {
               this.commen.loadingChanged.next(false);
               const status = event.body['status'];
