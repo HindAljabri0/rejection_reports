@@ -1027,7 +1027,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
               this.dialogService.openMessageDialog(new MessageDialogData('',
                 `Claim with reference ${refNumber} was deleted successfully.`,
                 false))
-                .subscribe(afterColse => this.fetchData());
+                
             }
           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
