@@ -35,7 +35,6 @@ import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { parse } from 'querystring';
-import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
 
 @Component({
   selector: 'claim-invoices-services',
@@ -167,7 +166,6 @@ export class InvoicesServicesComponent implements OnInit {
         this.store.dispatch(selectGDPN({}));
       }
     });
-    this.store.dispatch(getDepartmentNames());
     this.store.select(getDepartments).subscribe(departments => {
       this.departments = departments;
       this.store.select(getClaim).subscribe(claim => {
