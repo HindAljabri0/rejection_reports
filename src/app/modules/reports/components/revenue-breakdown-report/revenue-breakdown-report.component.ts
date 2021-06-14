@@ -80,6 +80,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
     tempPieChartData: any = [];
 
+    selectedDoctor = -1;
+
     constructor(
         private sharedService: SharedServices,
         private reportService: RevenuReportService,
@@ -133,8 +135,10 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         if (this.sharedService.loading) {
             return;
         }
-        if (!form.invalid)
+        if (!form.invalid) {
             this.selectedCategory = category;
+        }
+        this.selectedDoctor = -1;
 
         this.generate();
     }
@@ -255,7 +259,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     }
 
     isDateBeforeDate(date1, date2) {
-        return new Date(moment(date1).format('YYYY-MM-DD')).getTime() <= new Date(moment(date2).format('YYYY-MM-DD')).getTime()
+        return new Date(moment(date1).format('YYYY-MM-DD')).getTime() <= new Date(moment(date2).format('YYYY-MM-DD')).getTime();
     }
 
     getDepartmentName(code: string) {
@@ -267,8 +271,14 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         }
         return code;
     }
-    setTooltipe(i) {
-        return encodeURIComponent("Amount: 2300 &#13; Percentage: 23% &#13; Description: Demo");
+
+    selectDoctor(index) {
+        if (this.selectedDoctor == index) {
+            this.selectedDoctor = -1;
+        } else {
+            this.selectedDoctor = index;
+        }
+
     }
 
 }
