@@ -80,13 +80,37 @@
                         [legend]="pieChartLegend">
                     </canvas>
                 </div>
-                <ul class="custom-legend">
-                    <li *ngFor="let data of pieChartLabels;let i=index">
-                        <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
-                        <span class="text">
-                            {{data}}<ng-container *ngIf="tempPieChartData[i].description"> - {{tempPieChartData[i].description}}</ng-container>
-                            <span class="text-muted">Amount - {{tempPieChartData[i].amount | number : "1.2-2"}} ({{tempPieChartData[i].ratio}}%)</span>
-                        </span>
+                <ul class="custom-legend" [class.child-active]="selectedDoctor!=-1">
+                    <li *ngFor="let data of pieChartLabels;let i=index" [class.open]="i==selectedDoctor"
+                        [class.expandable]="selectedCategory== 'Doctor' && i!=pieChartLabels.length-1">
+                        <ng-container *ngIf="selectedCategory== 'Doctor' && i!=pieChartLabels.length-1">
+                            <button type="button" (click)="selectDoctor(i)" [title]="data">
+                                <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
+                                <span class="text">
+                                    {{data}}<ng-container *ngIf="tempPieChartData[i].description"> - {{tempPieChartData[i].description}}</ng-container>
+                                    <span class="text-muted">Amount - {{tempPieChartData[i].amount | number : "1.2-2"}} ({{tempPieChartData[i].ratio}}%)</span>
+                                </span>
+                            </button>
+                            <ul>
+                                <li class="list-title">
+                                    Services of {{data}}
+                                </li>
+                                <li *ngFor="let data1 of pieChartLabels;let j=index">
+                                    <span class="color" [style.background-color]="pieChartData[0].backgroundColor[j]"></span>
+                                    <span class="text">
+                                        {{data1}}<ng-container *ngIf="tempPieChartData[j].description"> - {{tempPieChartData[j].description}}</ng-container>
+                                        <span class="text-muted">Amount - {{tempPieChartData[j].amount | number : "1.2-2"}} ({{tempPieChartData[j].ratio}}%)</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </ng-container>
+                        <ng-container *ngIf="(selectedCategory== 'Doctor' && i==pieChartLabels.length-1) || selectedCategory!= 'Doctor'">
+                            <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
+                            <span class="text">
+                                {{data}}<ng-container *ngIf="tempPieChartData[i].description"> - {{tempPieChartData[i].description}}</ng-container>
+                                <span class="text-muted">Amount - {{tempPieChartData[i].amount | number : "1.2-2"}} ({{tempPieChartData[i].ratio}}%)</span>
+                            </span>
+                        </ng-container>
                     </li>
                 </ul>
             </div>
