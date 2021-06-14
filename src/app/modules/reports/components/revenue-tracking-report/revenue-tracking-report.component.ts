@@ -55,6 +55,12 @@ export class RevenueTrackingReportComponent implements OnInit {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           beginAtZero: true,
+          callback: (value, index, values) => {
+            if (this.yaxisMaxValue === null) {
+              this.yaxisMaxValue = value;
+            }
+            return value;
+          }
         },
         scaleLabel: {
           display: true,
@@ -97,6 +103,14 @@ export class RevenueTrackingReportComponent implements OnInit {
             meta.hidden = null;
           }
         });
+        let maxValue: any = document.getElementById('yaxisMaxValue');
+        // let multipleData = [];
+        // ci.data.datasets.map((ele) => {
+        //   multipleData.push(ele.data);
+        // });
+        // var maxValue = Math.max(...[].concat(...multipleData));
+
+        ci.options.scales.yAxes[0].ticks.max = parseInt(maxValue.value);
 
         ci.update();
       }
@@ -109,24 +123,19 @@ export class RevenueTrackingReportComponent implements OnInit {
         // label: (tooltipItem, data) => {
         //   return tooltipItem.label;
         // },
-        label: (data) => {
+        label: (data, values) => {
+          data.value = values.datasets[data.datasetIndex].label;
+          return data.value;
+        },
+        afterLabel: (data, values) => {
           data.value = this.currencyPipe.transform(
-            data.value,
+            data.yLabel.toString(),
             'number',
             '',
             '1.2-2'
           );
-          return data.value;
-        },
-        // afterLabel: (data, value) => {
-        //   data.value = this.currencyPipe.transform(
-        //     data.value,
-        //     'number',
-        //     '',
-        //     '1.2-2'
-        //   );
-        //   return data.value;
-        // }
+          return "Amount - " + data.value + ' SR';
+        }
       }
     },
   };
@@ -168,6 +177,7 @@ export class RevenueTrackingReportComponent implements OnInit {
   }, pluginDataLabels];
   departments: any;
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  yaxisMaxValue: any = null;
   constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private store: Store, private currencyPipe: CurrencyPipe) {
   }
 
@@ -270,6 +280,9 @@ export class RevenueTrackingReportComponent implements OnInit {
 
       if (event.body !== undefined && event.body !== '' && event.body !== null) {
         this.error = null;
+
+
+        this.yaxisMaxValue = null;
         const data = JSON.parse(event.body);
         this.lineChartLabels = data.labels;
         this.lineChartData = data.values;

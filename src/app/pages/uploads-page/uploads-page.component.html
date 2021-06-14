@@ -5,7 +5,7 @@
 <div class="uploads-body scroll-block" *ngIf="errorMessage == null" scrollable (scrollPosition)="scrollHandler($event)">
     <div class="row small-gutter">
         <div class="col-6 pb-3" *ngFor="let upload of uploads">
-            <app-upload-card [data]="upload" (click)="openUpload(upload.uploadId)"></app-upload-card>
+            <app-upload-card [data]="upload" (click)="upload.uploadName.endsWith('[DELETED]')? null:openUpload(upload.uploadId)"></app-upload-card>
         </div>
     </div>
     <p class="info-block" *ngIf="isLoading && length != MAX">Loading more data...</p>
