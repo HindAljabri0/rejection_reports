@@ -1,7 +1,7 @@
 <div class="uplaoded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
     <div class="d-flex">
         <span class="medium text-primary">{{data.uploadName}}</span>
-        <span class="text-medium-grey ml-auto text-right" *ngIf="!data.uploadName.endsWith('[DELETED]')"
+        <span class="text-medium-grey ml-auto text-right" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
         (click)="$event.stopPropagation(); deleteUpload()"
         matTooltip="Delete All Not Submitted Claims (Ready For Submission, Rejected By Waseel, Downloadable, and Invalid)"><mat-icon>delete</mat-icon></span>
     </div>
