@@ -173,6 +173,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 --------------------------------------------------------------------------------------------------------*/
 .text-all-claim,.text-primary{color: #3060AA!important;}
 .text-ready-submission,.text-parrot{color: #67CD23!important;}
+.text-downloadable,.text-light-parrot{color: #95dc65!important;}
 .text-rejected-waseel,.text-magenta{color: #FF144D!important;}
 .text-not-saved,.text-orange,.text-warning{color: #E6AE24!important;}
 .text-under-submission,.text-cyan{color: #00D8E7!important;}
@@ -190,6 +191,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-normal-color{color:#2d2d2d!important;}
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
 .bg-ready-submission,.bg-parrot{background-color: #67CD23!important;}
+.bg-downloadable,.bg-light-parrot{background-color: #95dc65!important;}
 .bg-rejected-waseel,.bg-magenta{background-color: #FF144D!important;}
 .bg-not-saved,.bg-orange,.bg-warning{background-color: #E6AE24!important;}
 .bg-under-submission,.bg-cyan{background-color: #00D8E7!important;}
@@ -205,6 +207,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
+.light-bg-downloadable,.light-bg-light-parrot{background-color: #eef9e6!important;}
 .light-bg-rejected-waseel,.light-bg-magenta{background-color: #ffe2e9!important;}
 .light-bg-not-saved,.light-bg-orange,.light-bg-warning{background-color: #fcf5e4!important;}
 .light-bg-under-submission,.light-bg-cyan{background-color: #e0fafc!important;}
