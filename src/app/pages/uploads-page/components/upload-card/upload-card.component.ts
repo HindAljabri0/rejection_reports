@@ -28,6 +28,10 @@ export class UploadCardComponent implements OnInit {
       + this.data.invalid + this.data.downloadable;
   }
 
+  get canBeDeleted() {
+    return (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
+  }
+
   deleteUpload() {
     if (this.sharedServices.loading) {
       return;
