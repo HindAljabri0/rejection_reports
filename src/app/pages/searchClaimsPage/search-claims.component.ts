@@ -1028,6 +1028,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 `Claim with reference ${refNumber} was deleted successfully.`,
                 false))
                 .subscribe(afterColse => this.fetchData());
+                
             }
           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
@@ -1185,10 +1186,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     `Your claims deleted successfully.`,
                     false))
                   .subscribe(afterColse => {
+                 //  this.commen.showUploadsCenterChange.next(false);
                     // this.claimService.summaryChange.next(new UploadSummary());
-                    // this.router.navigate(['']);
-                    location.reload();
-                  });
+                    this.router.navigate(['/uploads']);
+                    // location.reload();
+                    });
               }
               else if (status === "AlreadySumitted") {
                 this.dialogService.openMessageDialog(
@@ -1197,9 +1199,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     false))
                   .subscribe(afterColse => {
                     // this.claimService.summaryChange.next(new UploadSummary());
-                    // this.router.navigate(['']);
-                    location.reload();
+                    
+                    //location.reload();
+                    
+                   this.router.navigate(['/uploads']);
                   });
+                 
               }
               else {
                 const error = event.body['errors'];
