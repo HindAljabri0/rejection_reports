@@ -70,12 +70,13 @@ export class RevenueComparativeReportComponent implements OnInit {
         anchor: 'end',
         align: 'end',
         formatter: (context) => {
-          return this.currencyPipe.transform(
+          let amount = this.currencyPipe.transform(
             context.toString(),
             'number',
             '',
             '1.2-2'
           );
+          return amount + ' SR';
         },
       },
     },
