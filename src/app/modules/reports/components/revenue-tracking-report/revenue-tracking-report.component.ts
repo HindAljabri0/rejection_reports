@@ -288,8 +288,6 @@ export class RevenueTrackingReportComponent implements OnInit {
 
 
     this.sharedService.loadingChanged.next(true);
-    this.chart.options.scales.yAxes[0].ticks.max = null;
-    this.chart.ngOnChanges({});
 
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
 
