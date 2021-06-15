@@ -104,9 +104,9 @@ export class RevenueComparativeReportComponent implements OnInit {
           );
           return data.value;
         },
-        afterLabel: (data) => {
-          return data.label;
-        }
+        // afterLabel: (data) => {
+        //   return data.label;
+        // }
       }
     }
   };
@@ -169,6 +169,8 @@ export class RevenueComparativeReportComponent implements OnInit {
   diffrenceLableName: any;
   percenatgeChartData: any = [];
   quarterData: { firstQuarter: any[]; firstQuaterSumOfTotal: any; secondQuarter: any[], secondQuaterSumOfTotal: any; };
+  firstYear: string;
+  secondYear: string;
   constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private currencyPipe: CurrencyPipe) { }
 
   ngOnInit() {
@@ -182,9 +184,11 @@ export class RevenueComparativeReportComponent implements OnInit {
       }
       if (params.fromDate != null) {
         this.revenuComparativeReport.fromDate = params.fromDate;
+        this.firstYear = moment(this.revenuComparativeReport.fromDate).format('YYYY');
       }
       if (params.toDate != null) {
         this.revenuComparativeReport.toDate = params.toDate;
+        this.secondYear = moment(this.revenuComparativeReport.toDate).format('YYYY');
       }
       if (params.fromDate != null && params.toDate != null) {
         this.generate();
@@ -204,6 +208,8 @@ export class RevenueComparativeReportComponent implements OnInit {
     this.isGenerateData = true;
     this.sharedService.loadingChanged.next(true);
     const fromDate = moment(this.revenuComparativeReport.fromDate).format('YYYY-MM-DD');
+    this.firstYear = moment(this.revenuComparativeReport.fromDate).format('YYYY');
+    this.secondYear = moment(this.revenuComparativeReport.toDate).format('YYYY');
     const toDate = moment(this.revenuComparativeReport.toDate).format('YYYY-MM-DD');
     this.editURL(fromDate, toDate);
     const obj: RevenuComparativeReport = {
