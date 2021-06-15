@@ -59,11 +59,18 @@ export class ClaimFilesValidationService {
   }
 
   private checkAllHeaders(headers: string[]) {
+    var flag = false;
     headers.forEach(header => {
       if (header.length > 0 && !this.regex.test(header)) {
         this.wrongFormattedHeaders.push(header);
       }
+      if (header.startsWith("ICD") || header.startsWith("DIAGNOSISCODE")) {
+        flag = true;
+      }
     });
+    if (!flag) {
+      AllowedHeaders.push("DIAGNOSISCODE");
+    }
     AllowedHeaders.forEach(header => this.checkIfSheetIsMissingHeader(headers, undefined, header));
   }
 
@@ -93,7 +100,14 @@ export class ClaimFilesValidationService {
     }
     if (this.missingHeaders.length > 0) {
       str += '- The following headers are missing: [';
-      this.missingHeaders.forEach(header => str += header.header + (header.sheet != null ? `(sheet: ${header.sheet}), ` : ', '));
+      this.missingHeaders.forEach(header => {
+        if (header.header == "DIAGNOSISCODE") {
+          str += header.header + '/ICD10' + (header.sheet != null ? `(sheet: ${header.sheet}), ` : ', ')
+          AllowedHeaders.pop();
+        } else {
+          str += header.header + (header.sheet != null ? `(sheet: ${header.sheet}), ` : ', ')
+        }
+      });
       str = str.substr(0, str.length - 2) + ']';
     }
     return str;

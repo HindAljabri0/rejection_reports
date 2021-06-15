@@ -81,6 +81,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     tempPieChartData: any = [];
 
     selectedDoctor = -1;
+    servicePerDoctorData: any[] = [];
 
     constructor(
         private sharedService: SharedServices,
@@ -166,6 +167,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         this.toDateError = null;
         this.sharedService.loadingChanged.next(true);
         this.editURL(fromDate, toDate);
+
+
         this.reportService.generateRevenuReportBreakdown(
             this.providerId,
             this.selectedPayerId,
@@ -203,6 +206,12 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                         ele.ratio = ele.ratio.toFixed(2);
                         return ele;
                     });
+                    if (this.selectedCategory == 'Doctor')
+                        this.pieChartLabels.map((ele) => {
+                            this.getServicesPerDoctorData(ele);
+
+                        });
+
                 }
 
             }, err => {
@@ -279,6 +288,39 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             this.selectedDoctor = index;
         }
 
+    }
+
+    getServicesPerDoctorData(drName) {
+        this.sharedService.loadingChanged.next(true);
+        const obj = {
+            fromDate: moment(this.fromDateControl).format('YYYY-MM-DD'),
+            toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
+            drname: drName
+        }
+        this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
+            if (event instanceof HttpResponse) {
+                let body = event['body'];
+                body = JSON.parse(body);
+                if (body !== undefined && body !== null && body.length > 0) {
+                    const data = {
+                        drName: drName,
+                        data: body
+                    }
+                    this.servicePerDoctorData.push(data);
+                }
+                this.sharedService.loadingChanged.next(false);
+            }
+        }, err => {
+            console.log(err);
+            this.sharedService.loadingChanged.next(false);
+            this.servicePerDoctorData = [];
+        });
+
+
+    }
+    serviceDoctorData(drName) {
+        let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
+        return serviceData === null || serviceData === undefined ? [] : serviceData.data;
     }
 
 }
