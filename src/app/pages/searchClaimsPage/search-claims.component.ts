@@ -5,6 +5,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import * as JSZip from 'jszip';
 import * as moment from 'moment';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -29,6 +30,7 @@ import { ClaimSubmittionService } from '../../services/claimSubmittionService/cl
 import { SearchService } from '../../services/serchService/search.service';
 import { SharedServices } from '../../services/shared.services';
 import { setSearchCriteria, storeClaims } from './store/search.actions';
+
 
 @Component({
   selector: 'app-search-claims',
@@ -177,7 +179,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
-    this.pageSize = localStorage.getItem("pagesize") !=null ?Number.parseInt(localStorage.getItem("pagesize")) :10;
+    this.pageSize = localStorage.getItem("pagesize") != null ? Number.parseInt(localStorage.getItem("pagesize")) : 10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add'))
@@ -1028,7 +1030,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 `Claim with reference ${refNumber} was deleted successfully.`,
                 false))
                 .subscribe(afterColse => this.fetchData());
-                
+
             }
           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
@@ -1044,28 +1046,56 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
     this.commen.loadingChanged.next(true);
     let event;
-    event = await this.searchService.downloadSummaries(this.providerId,
-      this.summaries[this.selectedCardKey].statuses,
-      this.from,
-      this.to,
-      this.payerId,
-      this.batchId,
-      this.uploadId,
-      this.fclaimRefNo,
-      this.memberId,
-      this.invoiceNo,
-      this.fpatientFileNo,
-      this.policyNo,
-      this.fdrname,
-      this.fnationalid,
-      this.fclaimdate).toPromise().catch(error => {
-        if (error instanceof HttpErrorResponse) {
-          this.dialogService.openMessageDialog(new MessageDialogData('',
-            'Could not reach the server at the moment. Please try again later.',
-            true));
-        }
-        this.commen.loadingChanged.next(false);
-      });
+    let excel = false;
+    console.log(this.summaries[this.selectedCardKey].statuses);
+    if (this.summaries[this.selectedCardKey].statuses.length == 1 && (this.summaries[this.selectedCardKey].statuses.includes("Downloadable".toLowerCase()))) {
+      event = await this.searchService.downloadExcelSummaries(this.providerId,
+        this.summaries[this.selectedCardKey].statuses,
+        this.from,
+        this.to,
+        this.payerId,
+        this.batchId,
+        this.uploadId,
+        this.fclaimRefNo,
+        this.memberId,
+        this.invoiceNo,
+        this.fpatientFileNo,
+        this.policyNo,
+        this.fdrname,
+        this.fnationalid,
+        this.fclaimdate).toPromise().catch(error => {
+          if (error instanceof HttpErrorResponse) {
+            this.dialogService.openMessageDialog(new MessageDialogData('',
+              'Could not reach the server at the moment. Please try again later.',
+              true));
+          }
+          this.commen.loadingChanged.next(false);
+        });
+      excel = true;
+    } else {
+      event = await this.searchService.downloadSummaries(this.providerId,
+        this.summaries[this.selectedCardKey].statuses,
+        this.from,
+        this.to,
+        this.payerId,
+        this.batchId,
+        this.uploadId,
+        this.fclaimRefNo,
+        this.memberId,
+        this.invoiceNo,
+        this.fpatientFileNo,
+        this.policyNo,
+        this.fdrname,
+        this.fnationalid,
+        this.fclaimdate).toPromise().catch(error => {
+          if (error instanceof HttpErrorResponse) {
+            this.dialogService.openMessageDialog(new MessageDialogData('',
+              'Could not reach the server at the moment. Please try again later.',
+              true));
+          }
+          this.commen.loadingChanged.next(false);
+        });
+    }
 
     if (event instanceof HttpResponse) {
       if (navigator.msSaveBlob) { // IE 10+
@@ -1075,26 +1105,36 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       } else {
         const a = document.createElement('a');
         const excelData = event.body + '';
-        a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURIComponent(excelData);
-        a.target = '_blank';
-        if (this.from != null) {
-          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-        } else if (this.batchId != null) {
-          a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-        } else if (this.uploadId != null) {
-          a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
-        } else if (this.claimRefNo != null) {
-          a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
-        } else if (this.memberId != null) {
-          a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
-        } else if (this.invoiceNo != null) {
-          a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
-        } else if (this.patientFileNo != null) {
-          a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
-        } else if (this.policyNo != null) {
-          a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
-        }
 
+        if (excel) {
+          let zip = new JSZip();
+          zip.generateAsync({ type: "blob" }).then(function (blob) {
+            var FileSaver = require('file-saver');
+            FileSaver.saveAs(event.body, "waseel-eclaims.zip");
+          }, function (err) {
+            console.log('err: ' + err);
+          });
+        } else {
+          a.href = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(excelData);
+          a.target = '_blank';
+          if (this.from != null) {
+            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
+          } else if (this.batchId != null) {
+            a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
+          } else if (this.uploadId != null) {
+            a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
+          } else if (this.claimRefNo != null) {
+            a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
+          } else if (this.memberId != null) {
+            a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
+          } else if (this.invoiceNo != null) {
+            a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
+          } else if (this.patientFileNo != null) {
+            a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
+          } else if (this.policyNo != null) {
+            a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
+          }
+        }
         a.click();
         this.detailTopActionIcon = 'ic-check-circle.svg';
         this.commen.loadingChanged.next(false);
@@ -1186,11 +1226,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     `Your claims deleted successfully.`,
                     false))
                   .subscribe(afterColse => {
-                 //  this.commen.showUploadsCenterChange.next(false);
+                    //  this.commen.showUploadsCenterChange.next(false);
                     // this.claimService.summaryChange.next(new UploadSummary());
                     this.router.navigate(['/uploads']);
                     // location.reload();
-                    });
+                  });
               }
               else if (status === "AlreadySumitted") {
                 this.dialogService.openMessageDialog(
@@ -1199,12 +1239,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     false))
                   .subscribe(afterColse => {
                     // this.claimService.summaryChange.next(new UploadSummary());
-                    
+
                     //location.reload();
-                    
-                   this.router.navigate(['/uploads']);
+
+                    this.router.navigate(['/uploads']);
                   });
-                 
+
               }
               else {
                 const error = event.body['errors'];
@@ -1257,7 +1297,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.length = event.length;
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
-    localStorage.setItem("pagesize", event.pageSize+'');
+    localStorage.setItem("pagesize", event.pageSize + '');
     console.log(event);
     if (this.summaries[this.selectedCardKey] != null) {
       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex);

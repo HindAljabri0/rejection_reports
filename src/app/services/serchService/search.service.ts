@@ -198,6 +198,56 @@ export class SearchService {
     return this.http.request(request);
   }
 
+  downloadExcelSummaries(
+    providerId: string,
+    statuses: string[],
+    fromDate?: string,
+    toDate?: string,
+    payerId?: string,
+    batchId?: string,
+    uploadId?: string,
+    claimRefNo?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    policyNo?: string,
+    drname?: string,
+    nationalId?: string,
+    claimDate?: string) {
+    let requestURL = `/providers/${providerId}/claims/download/excel?status=${statuses.toString()}`;
+    if (fromDate != null && toDate != null && payerId != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
+    } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
+      if (batchId.includes('-')) {
+        batchId = batchId.split('-')[1];
+      }
+      requestURL += `&batchId=${batchId}`;
+    } else if (uploadId != null) {
+      requestURL += `&uploadId=${uploadId}`;
+    } else if (claimRefNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&claimRefNo=${claimRefNo}`;
+    } else if (memberId != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&memberId=${memberId}`;
+    } else if (invoiceNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    } else if (patientFileNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    } else if (policyNo != null && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&policyNo=${policyNo}`;
+    }
+    else if (drname != null && drname !== '' && drname !== undefined) {
+      requestURL += `&drname=${drname}`;
+    }
+    else if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+      requestURL += `&nationalId=${nationalId}`;
+    }
+    else if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+      requestURL += `&claimDate=${claimDate}`;
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'blob' });
+    return this.http.request(request);
+  }
+
   getClaim(providerId: string, claimId: string) {
     const requestURL = `/providers/${providerId}/claims/${claimId}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
