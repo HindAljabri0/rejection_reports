@@ -1,21 +1,20 @@
-import { Location, CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as moment from 'moment';
-import { Color, Label, BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { NgForm } from '@angular/forms';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { Store } from '@ngrx/store';
-import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
-import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { ReportsService } from 'src/app/services/reportsService/reports.service';
 @Component({
   selector: 'app-revenue-tracking-report',
   templateUrl: './revenue-tracking-report.component.html',
@@ -185,7 +184,7 @@ export class RevenueTrackingReportComponent implements OnInit {
           return label;
         })
       };
-    }
+    },
   }, pluginDataLabels];
   departments: any;
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
@@ -195,6 +194,8 @@ export class RevenueTrackingReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
+
+
     this.store.dispatch(getDepartmentNames());
     this.store.select(getDepartments).subscribe(departments => this.departments = departments);
     this.routeActive.queryParams.subscribe(params => {
@@ -276,6 +277,9 @@ export class RevenueTrackingReportComponent implements OnInit {
   }
   generate() {
     this.isGenerateData = true;
+    if (this.chart !== undefined && this.chart !== null)
+      this.chart.chart.options.scales.yAxes[0].ticks.max = undefined;
+
     const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
     this.editURL(fromDate, toDate);
