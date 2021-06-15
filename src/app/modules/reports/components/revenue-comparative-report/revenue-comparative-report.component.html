@@ -94,15 +94,15 @@
                     <tbody>
 
                         <tr class="align-middle medium">
-                            <th class="header-cell">First Year</th>
+                            <th class="header-cell">{{firstYear}}</th>
                             <td *ngFor="let item of quarterData.firstQuarter">{{item}} SR</td>
-                            <td>{{quarterData.firstQuaterSumOfTotal}}</td>
+                            <td>{{quarterData.firstQuaterSumOfTotal}} SR</td>
                         </tr>
 
                         <tr class="align-middle medium">
-                            <th class="header-cell">Second Year</th>
+                            <th class="header-cell">{{secondYear}}</th>
                             <td *ngFor="let item of quarterData.secondQuarter">{{item}} SR</td>
-                            <td>{{quarterData.secondQuaterSumOfTotal}}</td>
+                            <td>{{quarterData.secondQuaterSumOfTotal}} SR</td>
                         </tr>
                     </tbody>
                 </table>

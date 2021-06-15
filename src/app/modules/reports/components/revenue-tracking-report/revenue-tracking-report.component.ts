@@ -120,11 +120,23 @@ export class RevenueTrackingReportComponent implements OnInit {
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily,
       callbacks: {
-        // label: (tooltipItem, data) => {
-        //   return tooltipItem.label;
-        // },
         label: (data, values) => {
-          data.value = values.datasets[data.datasetIndex].label;
+          if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.All) {
+            const payerId = parseInt(values.datasets[data.datasetIndex].label);
+            if (payerId !== undefined && !isNaN(payerId)) {
+              const payerData = this.payersList.find(ele => ele.id === payerId);
+              data.value = payerData.name + ' ' + payerData.arName;
+            }
+          }
+          else if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.Department) {
+            const departmentId = parseInt(values.datasets[data.datasetIndex].label);
+            if (departmentId !== undefined && !isNaN(departmentId)) {
+              data.value = this.departments.find((ele) => ele.departmentId === departmentId).name;
+            }
+          }
+          else {
+            data.value = values.datasets[data.datasetIndex].label;
+          }
           return data.value;
         },
         afterLabel: (data, values) => {
@@ -276,6 +288,9 @@ export class RevenueTrackingReportComponent implements OnInit {
 
 
     this.sharedService.loadingChanged.next(true);
+    this.chart.options.scales.yAxes[0].ticks.max = null;
+    this.chart.ngOnChanges({});
+
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
 
       if (event.body !== undefined && event.body !== '' && event.body !== null) {
