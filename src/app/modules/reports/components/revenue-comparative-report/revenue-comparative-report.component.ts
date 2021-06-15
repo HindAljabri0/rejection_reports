@@ -102,7 +102,7 @@ export class RevenueComparativeReportComponent implements OnInit {
             '',
             '1.2-2'
           );
-          return data.value;
+          return data.value + ' SR';
         },
         // afterLabel: (data) => {
         //   return data.label;
