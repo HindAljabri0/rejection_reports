@@ -140,6 +140,8 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .overlay-backdrop.show{opacity: 1;visibility: visible;}
 .overlay-backdrop>button{display: block;height: 100%;width: 100%;background: none;border:0;}
 .small-label{font-size:13px;color:#585858;}
+.smaller-label{font-size:11px;color:#585858;}
+.short-text-height{line-height: 16px;}
 .unordered-list{padding-left: 20px;}
 .unordered-list>li{list-style:disc;}
 .unordered-list.change-log-list>li{font-size:16px;line-height:22px;padding-bottom: 8px;}
@@ -165,11 +167,13 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .attachment-view-img{display: block;max-width: 100%;margin: 0 auto;}
 .attachment-view-frame{display: block;width: 100%;height: 100%;}
 .attachment-view-body{height: calc(100vh - 119px);overflow: auto;}
+.text-muted{color: #909090;display: block;font-size: 90%;line-height: 1.2;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
 .text-all-claim,.text-primary{color: #3060AA!important;}
 .text-ready-submission,.text-parrot{color: #67CD23!important;}
+.text-downloadable,.text-light-parrot{color: #95dc65!important;}
 .text-rejected-waseel,.text-magenta{color: #FF144D!important;}
 .text-not-saved,.text-orange,.text-warning{color: #E6AE24!important;}
 .text-under-submission,.text-cyan{color: #00D8E7!important;}
@@ -187,6 +191,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .text-normal-color{color:#2d2d2d!important;}
 .bg-all-claim,.bg-primary{background-color: #3060AA!important;}
 .bg-ready-submission,.bg-parrot{background-color: #67CD23!important;}
+.bg-downloadable,.bg-light-parrot{background-color: #95dc65!important;}
 .bg-rejected-waseel,.bg-magenta{background-color: #FF144D!important;}
 .bg-not-saved,.bg-orange,.bg-warning{background-color: #E6AE24!important;}
 .bg-under-submission,.bg-cyan{background-color: #00D8E7!important;}
@@ -202,6 +207,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-st
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
+.light-bg-downloadable,.light-bg-light-parrot{background-color: #eef9e6!important;}
 .light-bg-rejected-waseel,.light-bg-magenta{background-color: #ffe2e9!important;}
 .light-bg-not-saved,.light-bg-orange,.light-bg-warning{background-color: #fcf5e4!important;}
 .light-bg-under-submission,.light-bg-cyan{background-color: #e0fafc!important;}
@@ -647,11 +653,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* uploaded card
 --------------------------------------------------------------------------------------------------------*/
-.uplaoded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;}
-.uplaoded-card:hover,.uplaoded-card:focus,.uplaoded-card:active{background-color: #f4f4f4;}
+.uplaoded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;background: #fff;}
+.uplaoded-card:hover,.uplaoded-card:focus,.uplaoded-card:active{background-color: #f8f8f8;}
 .upload-history-list .uplaoded-card{border-bottom: 1px solid #e1e1e1;}
 .uploaded-card-all .uplaoded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:6px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
 .uploaded-card-all .scroll-block{max-height: calc(100vh - 174px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
+.uploads-body.scroll-block{max-height: calc(100vh - 70px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
 .uploaded-card-all .scroll-block + .info-block{margin-top: 28px;}
 
@@ -720,10 +727,19 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .progress-report-wrapper>.right-block .chart-wrapper{height: calc(100vh - 333px);position: relative;width: 100%;min-height: 380px;}
 .progress-report-wrapper .custom-legend-wrapper{display: flex;height: calc(100vh - 333px);min-height: 380px;margin: -14px;}
 .progress-report-wrapper .custom-legend-wrapper .chart-wrapper{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 320px);max-width: calc(100% - 320px);}
-.progress-report-wrapper .custom-legend-wrapper .custom-legend{flex-grow: 0;flex-shrink: 0;flex-basis: 320px;max-width: 320px;max-height: 100%;overflow: auto;padding: 14px;border-left: 1px solid #e1e1e1;}
-.progress-report-wrapper .custom-legend-wrapper .custom-legend>li{display: flex;padding-bottom: 12px;}
-.progress-report-wrapper .custom-legend-wrapper .custom-legend .color{flex-grow: 0;flex-shrink: 0;flex-basis: 16px;width: 16px;height: 16px;display: block;}
-.progress-report-wrapper .custom-legend-wrapper .custom-legend .text{align-self: center;-ms-flex-item-align: center;padding-left: 8px;}
+.progress-report-wrapper .custom-legend{flex-grow: 0;flex-shrink: 0;flex-basis: 320px;max-width: 320px;max-height: 100%;overflow: auto;padding: 14px;border-left: 1px solid #e1e1e1;}
+.progress-report-wrapper .custom-legend li{display: flex;padding-bottom: 12px;}
+.progress-report-wrapper .custom-legend .color{flex-grow: 0;flex-shrink: 0;flex-basis: 16px;width: 16px;height: 16px;display: block;position: relative;top: 2px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 1;transform: scale(1);}
+.progress-report-wrapper .custom-legend .text{align-self: center;-ms-flex-item-align: center;padding-left: 8px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.progress-report-wrapper .custom-legend .expandable{display: block;padding: 0;}
+.progress-report-wrapper .custom-legend li>button{padding: 0;margin: 0;text-align: left;background: none;border:0; display: flex;padding-bottom: 12px;width: 100%;}
+.progress-report-wrapper .custom-legend li>button:after{display: block;height: 16px;width: 16px;background: url('./assets/ic-chevron-down.svg') center no-repeat;background-size: 20px 20px;content:'';max-width: 16px;flex-grow: 0;flex-shrink: 0;flex-basis: 16px;margin-left: auto;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);transform: rotate(0deg);}
+.progress-report-wrapper .custom-legend li>ul{padding:10px 12px 0;display: none;border:0;background: #f6f6f6;border-radius: 8px;margin-bottom: 12px;border:1px solid #ececec;}
+.progress-report-wrapper .custom-legend li>ul .list-title{color: #3060aa;padding-bottom: 8px;text-transform: uppercase;font-size: 12px;font-weight: 600;letter-spacing: 1px;}
+.progress-report-wrapper .custom-legend .open>ul{display: block;}
+.progress-report-wrapper .custom-legend .open>button:after{transform: rotate(180deg);}
+.progress-report-wrapper .custom-legend.child-active>li>button .color,.progress-report-wrapper .custom-legend.child-active>li>.color{opacity: 0;transform: scale(0.2);}
+.progress-report-wrapper .custom-legend.child-active>li>button .text,.progress-report-wrapper .custom-legend.child-active>li>.text{margin-left: -16px;padding-left: 0;}
 
 /* ngx bootstrap datepicker
 --------------------------------------------------------------------------------------------------------*/
@@ -985,6 +1001,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .dashboard-legend>li{display: flex;align-items:center;margin-right: 12px;}
 .dashboard-legend>li:last-child{margin-right: 0;}
 .dashboard-legend>li>span{display: block;height: 8px;width: 8px;border-radius: 50px;margin-right: 6px;}
+.smaller-label>span{display: inline-block;height: 5px;width: 5px;border-radius: 50px;margin-right: 5px;position: relative;top: -2px;}
 
 /* information table
 --------------------------------------------------------------------------------------------------------*/
@@ -1054,6 +1071,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* tooltip
 --------------------------------------------------------------------------------------------------------*/
 .mat-tooltip-panel .mat-tooltip{margin: 8px;font-size: 14px;line-height: 20px;background: rgba(48, 96, 170, 0.85);-webkit-backdrop-filter: blur(2px);backdrop-filter: blur(2px);}
+
+/* box
+--------------------------------------------------------------------------------------------------------*/
+.box{padding: 14px;border:1px solid #bebebe;border-radius: 6px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
@@ -1168,7 +1189,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     .tawuniya-tab-action>.primary-link{padding-right: 10px;}
     .primary-tab .mat-tab-label{padding: 0 10px;}
     .progress-report-wrapper .custom-legend-wrapper .chart-wrapper{flex-basis: calc(100% - 280px);max-width: calc(100% - 280px);}
-    .progress-report-wrapper .custom-legend-wrapper .custom-legend{flex-basis: 280px;max-width: 280px;}
+    .progress-report-wrapper .custom-legend{flex-basis: 280px;max-width: 280px;}
 }
 
 .mat-grid-tile .mat-figure {
@@ -1192,3 +1213,4 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     position: relative;
     overflow: hidden;
 }
+

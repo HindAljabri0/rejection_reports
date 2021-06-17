@@ -1,21 +1,20 @@
-import { Location, CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as moment from 'moment';
-import { Color, Label, BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { NgForm } from '@angular/forms';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { Store } from '@ngrx/store';
-import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
-import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { ReportsService } from 'src/app/services/reportsService/reports.service';
 @Component({
   selector: 'app-revenue-tracking-report',
   templateUrl: './revenue-tracking-report.component.html',
@@ -55,6 +54,12 @@ export class RevenueTrackingReportComponent implements OnInit {
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           beginAtZero: true,
+          callback: (value, index, values) => {
+            if (this.yaxisMaxValue === null) {
+              this.yaxisMaxValue = value;
+            }
+            return value;
+          }
         },
         scaleLabel: {
           display: true,
@@ -97,6 +102,14 @@ export class RevenueTrackingReportComponent implements OnInit {
             meta.hidden = null;
           }
         });
+        let maxValue: any = document.getElementById('yaxisMaxValue');
+        // let multipleData = [];
+        // ci.data.datasets.map((ele) => {
+        //   multipleData.push(ele.data);
+        // });
+        // var maxValue = Math.max(...[].concat(...multipleData));
+
+        ci.options.scales.yAxes[0].ticks.max = parseInt(maxValue.value);
 
         ci.update();
       }
@@ -106,27 +119,34 @@ export class RevenueTrackingReportComponent implements OnInit {
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily,
       callbacks: {
-        // label: (tooltipItem, data) => {
-        //   return tooltipItem.label;
-        // },
-        label: (data) => {
+        label: (data, values) => {
+          if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.All) {
+            const payerId = parseInt(values.datasets[data.datasetIndex].label);
+            if (payerId !== undefined && !isNaN(payerId)) {
+              const payerData = this.payersList.find(ele => ele.id === payerId);
+              data.value = payerData.name + ' ' + payerData.arName;
+            }
+          }
+          else if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.Department) {
+            const departmentId = parseInt(values.datasets[data.datasetIndex].label);
+            if (departmentId !== undefined && !isNaN(departmentId)) {
+              data.value = this.departments.find((ele) => ele.departmentId === departmentId).name;
+            }
+          }
+          else {
+            data.value = values.datasets[data.datasetIndex].label;
+          }
+          return data.value;
+        },
+        afterLabel: (data, values) => {
           data.value = this.currencyPipe.transform(
-            data.value,
+            data.yLabel.toString(),
             'number',
             '',
             '1.2-2'
           );
-          return data.value;
-        },
-        // afterLabel: (data, value) => {
-        //   data.value = this.currencyPipe.transform(
-        //     data.value,
-        //     'number',
-        //     '',
-        //     '1.2-2'
-        //   );
-        //   return data.value;
-        // }
+          return "Amount - " + data.value + ' SR';
+        }
       }
     },
   };
@@ -164,15 +184,18 @@ export class RevenueTrackingReportComponent implements OnInit {
           return label;
         })
       };
-    }
+    },
   }, pluginDataLabels];
   departments: any;
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
+  yaxisMaxValue: any = null;
   constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private store: Store, private currencyPipe: CurrencyPipe) {
   }
 
   ngOnInit(): void {
     this.payersList = this.sharedService.getPayersList();
+
+
     this.store.dispatch(getDepartmentNames());
     this.store.select(getDepartments).subscribe(departments => this.departments = departments);
     this.routeActive.queryParams.subscribe(params => {
@@ -254,6 +277,9 @@ export class RevenueTrackingReportComponent implements OnInit {
   }
   generate() {
     this.isGenerateData = true;
+    if (this.chart !== undefined && this.chart !== null)
+      this.chart.chart.options.scales.yAxes[0].ticks.max = undefined;
+
     const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
     this.editURL(fromDate, toDate);
@@ -266,10 +292,14 @@ export class RevenueTrackingReportComponent implements OnInit {
 
 
     this.sharedService.loadingChanged.next(true);
+
     this.reportSerice.generateRevenuTrackingReport(this.providerId, obj).subscribe(event => {
 
       if (event.body !== undefined && event.body !== '' && event.body !== null) {
         this.error = null;
+
+
+        this.yaxisMaxValue = null;
         const data = JSON.parse(event.body);
         this.lineChartLabels = data.labels;
         this.lineChartData = data.values;

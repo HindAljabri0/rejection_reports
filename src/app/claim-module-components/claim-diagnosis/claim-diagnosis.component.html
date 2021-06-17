@@ -1,8 +1,8 @@
 <div class="form-group" *ngIf="pageMode != 'VIEW'">
     <label class="control-label">Add Diagnosis</label>
     <input type="text" class="form-control" placeholder="Search diagnosis code here..." [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()"
-        [readonly]="diagnosisList.length >= 14">
-    <p class="control-hint" *ngIf="diagnosisList.length >= 14">You've reached maximum number of allowed diagnosis 14/14</p>
+        >
+    <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
             {{option.diagnosisCode}} | {{option.diagnosisDescription}}

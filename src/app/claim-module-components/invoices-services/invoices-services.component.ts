@@ -113,6 +113,7 @@ export class InvoicesServicesComponent implements OnInit {
   statusCode: any;
   claimProps: RetrievedClaimProps;
   isPBMValidationVisible: boolean = false;
+  selectedInvoiceIndex: any;
   constructor(
     private store: Store,
     private actions: Actions,
@@ -165,7 +166,6 @@ export class InvoicesServicesComponent implements OnInit {
         this.store.dispatch(selectGDPN({}));
       }
     });
-
     this.store.select(getDepartments).subscribe(departments => {
       this.departments = departments;
       this.store.select(getClaim).subscribe(claim => {
@@ -182,9 +182,9 @@ export class InvoicesServicesComponent implements OnInit {
     this.actions.pipe(
       ofType(saveInvoices_Services)
     ).subscribe(() => {
-      if (this.expandedInvoice != -1) {
-        this.createInvoiceFromControl(this.expandedInvoice);
-      }
+      // if (this.expandedInvoice != -1) {
+      this.createInvoiceFromControl(this.selectedInvoiceIndex);
+      // }
     });
 
     this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
@@ -459,6 +459,11 @@ export class InvoicesServicesComponent implements OnInit {
       this.createInvoiceFromControl(i);
       this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
     }
+
+    if (this.selectedInvoiceIndex !== undefined && this.selectedInvoiceIndex < this.controllers.length)
+      this.createInvoiceFromControl(this.selectedInvoiceIndex);
+
+    this.selectedInvoiceIndex = i;
   }
 
   toggleServiceExpansion(event, i, j) {
@@ -685,6 +690,7 @@ export class InvoicesServicesComponent implements OnInit {
             if (event.body instanceof Object) {
               // this.priceListExist = event.body['content'].length > 0;
               this.emptyOptions = event.body['empty'];
+              this.servicesOptions = [];
               Object.keys(event.body['content']).forEach(key => {
                 this.servicesOptions.push(
                   `${event.body['content'][key]['code']} | ${event.body['content'][key]['description']}`.toUpperCase()

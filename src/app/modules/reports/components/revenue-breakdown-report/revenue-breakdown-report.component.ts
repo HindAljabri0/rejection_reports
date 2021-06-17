@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import {  AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
@@ -9,7 +9,7 @@ import { RevenuReportService } from 'src/app/services/revenuReportService/revenu
 import { SharedServices } from 'src/app/services/shared.services';
 import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { Location } from '@angular/common';
+import { Location, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -34,6 +34,27 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             bodyFontFamily: this.chartFontFamily,
             titleFontFamily: this.chartFontFamily,
             footerFontFamily: this.chartFontFamily,
+            // callbacks: {
+            //     beforeLabel: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         const amount = this.currencyPipe.transform(
+            //             selectedData.amount.toString(),
+            //             'number',
+            //             '',
+            //             '1.2-2'
+            //         );
+            //         return amount;
+            //     },
+            //     label: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         return selectedData.ratio.toFixed(2);
+            //     },
+            //     afterLabel: (tooltipItem) => {
+            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
+            //         return selectedData.description;
+            //     }
+
+            // }
         },
     };
     public pieChartLabels: Label[] = [];
@@ -57,22 +78,26 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     noOfGeneratedData = 0;
 
     datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
+    tempPieChartData: any = [];
+
+    selectedDoctor = -1;
+    servicePerDoctorData: any[] = [];
 
     constructor(
         private sharedService: SharedServices,
         private reportService: RevenuReportService,
         private store: Store,
         private location: Location,
-        private routeActive: ActivatedRoute) { }
+        private routeActive: ActivatedRoute, private currencyPipe: CurrencyPipe) { }
 
     ngOnInit(): void {
         this.payersList = this.sharedService.getPayersList();
         this.store.dispatch(getDepartmentNames());
         this.store.select(getDepartments).subscribe(departments => this.departments = departments);
-        
+
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.routeActive.queryParams.subscribe(params => {
             if (params.payerId != null) {
                 this.selectedPayerId = params.payerId;
@@ -111,8 +136,10 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         if (this.sharedService.loading) {
             return;
         }
-        if (!form.invalid)
+        if (!form.invalid) {
             this.selectedCategory = category;
+        }
+        this.selectedDoctor = -1;
 
         this.generate();
     }
@@ -129,7 +156,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             this.toDateError = 'Please select a valid date.';
             return;
         }
-        if(!this.isDateBeforeDate(this.fromDateControl, this.toDateControl)){
+        if (!this.isDateBeforeDate(this.fromDateControl, this.toDateControl)) {
             this.fromDateError = 'This date should be before the to-date';
             this.toDateError = 'This date should be after the from-date';
             return;
@@ -140,6 +167,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         this.toDateError = null;
         this.sharedService.loadingChanged.next(true);
         this.editURL(fromDate, toDate);
+
+
         this.reportService.generateRevenuReportBreakdown(
             this.providerId,
             this.selectedPayerId,
@@ -173,6 +202,16 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                             borderWidth: 0,
                         },
                     ];
+                    this.tempPieChartData = event.body.map((ele) => {
+                        ele.ratio = ele.ratio.toFixed(2);
+                        return ele;
+                    });
+                    if (this.selectedCategory == 'Doctor')
+                        this.pieChartLabels.map((ele) => {
+                            this.getServicesPerDoctorData(ele);
+
+                        });
+
                 }
 
             }, err => {
@@ -229,7 +268,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     }
 
     isDateBeforeDate(date1, date2) {
-        return new Date(moment(date1).format('YYYY-MM-DD')).getTime() <= new Date(moment(date2).format('YYYY-MM-DD')).getTime()
+        return new Date(moment(date1).format('YYYY-MM-DD')).getTime() <= new Date(moment(date2).format('YYYY-MM-DD')).getTime();
     }
 
     getDepartmentName(code: string) {
@@ -240,6 +279,48 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             }
         }
         return code;
+    }
+
+    selectDoctor(index) {
+        if (this.selectedDoctor == index) {
+            this.selectedDoctor = -1;
+        } else {
+            this.selectedDoctor = index;
+        }
+
+    }
+
+    getServicesPerDoctorData(drName) {
+        this.sharedService.loadingChanged.next(true);
+        const obj = {
+            fromDate: moment(this.fromDateControl).format('YYYY-MM-DD'),
+            toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
+            drname: drName
+        }
+        this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
+            if (event instanceof HttpResponse) {
+                let body = event['body'];
+                body = JSON.parse(body);
+                if (body !== undefined && body !== null && body.length > 0) {
+                    const data = {
+                        drName: drName,
+                        data: body
+                    }
+                    this.servicePerDoctorData.push(data);
+                }
+                this.sharedService.loadingChanged.next(false);
+            }
+        }, err => {
+            console.log(err);
+            this.sharedService.loadingChanged.next(false);
+            this.servicePerDoctorData = [];
+        });
+
+
+    }
+    serviceDoctorData(drName) {
+        let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
+        return serviceData === null || serviceData === undefined ? [] : serviceData.data;
     }
 
 }
