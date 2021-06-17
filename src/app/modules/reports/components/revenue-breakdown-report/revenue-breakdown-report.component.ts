@@ -12,6 +12,8 @@ import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.acti
 import { Location, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { RevenuBreakDownReport } from 'src/app/models/revenuBreakDownReport';
+import { RevenuBreakingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 
 @Component({
     selector: 'app-revenue-breakdown-report',
@@ -82,6 +84,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
 
     selectedDoctor = -1;
     servicePerDoctorData: any[] = [];
+    tempPieChartLables: Label[] = [];
 
     constructor(
         private sharedService: SharedServices,
@@ -190,6 +193,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                         }
                         return set.label;
                     });
+                    this.tempPieChartLables = this.pieChartLabels;
                     const colors = this.sharedService.getAnalogousColor(event.body.length);
                     this.pieChartData = [
                         {
@@ -287,6 +291,47 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         } else {
             this.selectedDoctor = index;
         }
+        let serviceData = this.servicePerDoctorData.find(ele => ele.drName === this.tempPieChartLables[index]);
+        if (this.selectedDoctor !== -1) {
+            if (serviceData !== null && serviceData !== undefined && serviceData.data.length > 0) {
+                const colors = this.sharedService.getAnalogousColor(serviceData.data.length);
+                this.pieChartData = [
+                    {
+                        data: serviceData.data.map(set => set.ratio.toFixed(2)),
+                        datalabels: {
+                            display: false
+                        },
+                        backgroundColor: colors,
+                        hoverBackgroundColor: colors,
+                        borderWidth: 0,
+                    },
+                ];
+                this.pieChartLabels = serviceData.data.map((ele) => ele.label);
+
+            }
+            else {
+                this.pieChartLabels = [];
+                this.pieChartData = this.pieChartData.map((ele) => {
+                    ele.data = [];
+                    return ele;
+                });
+            }
+        }
+        else {
+            const colors = this.sharedService.getAnalogousColor(this.tempPieChartData.length);
+            this.pieChartData = [
+                {
+                    data: this.tempPieChartData.map(set => set.ratio),
+                    datalabels: {
+                        display: false
+                    },
+                    backgroundColor: colors,
+                    hoverBackgroundColor: colors,
+                    borderWidth: 0,
+                },
+            ];
+            this.pieChartLabels = this.tempPieChartLables;
+        }
 
     }
 
@@ -297,7 +342,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
             drname: drName
         }
-        this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
+        const selectedPayerId = this.selectedPayerId.toLowerCase() === RevenuBreakingReportChart.All ? "0" : this.selectedPayerId;
+        this.reportService.getServicePerDoctor(selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
             if (event instanceof HttpResponse) {
                 let body = event['body'];
                 body = JSON.parse(body);
@@ -313,7 +359,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         }, err => {
             console.log(err);
             this.sharedService.loadingChanged.next(false);
-            this.servicePerDoctorData = [];
+            // this.servicePerDoctorData = [];
         });
 
 
@@ -321,6 +367,9 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     serviceDoctorData(drName) {
         let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
         return serviceData === null || serviceData === undefined ? [] : serviceData.data;
+    }
+    dynamicPieChartLableData() {
+        return this.selectedDoctor !== -1 ? this.tempPieChartLables : this.pieChartLabels;
     }
 
 }
