@@ -24,8 +24,14 @@
                         <p *ngIf="claim.claimIdentities.providerBatchID != null"><span>Submission
                                 Date:</span>&nbsp;<strong>{{claimProps.lastSubmissionDate}}</strong>
                         </p>
+                        <p *ngIf="claimProps.payerbatchrefno !=null"><span>Payer Batch Reference
+                            No.:</span>&nbsp;<strong>{{claimProps.payerbatchrefno}}</strong>
+                    </p>
+
+
                         <p><span>Status:</span>&nbsp;<strong>{{getClaimStatusLabel(claimProps.statusCode)}}</strong>
                         </p>
+
                         <p *ngIf="claimProps.statusDetail != null"><span>Status
                                 Description:</span>&nbsp;<strong>{{claimProps.statusDetail}}</strong>
                         </p>

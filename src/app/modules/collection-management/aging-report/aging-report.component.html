@@ -1,0 +1,150 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Aging Report</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Payer</mat-option>
+                            <mat-option value="Payer 1">Payer 1</mat-option>
+                            <mat-option value="Payer 2">Payer 2</mat-option>
+                            <mat-option value="Payer 3">Payer 3</mat-option>
+                            <mat-option value="Payer 4">Payer 4</mat-option>
+                            <mat-option value="Payer 5">Payer 5</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="control-label">Year</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="2021">
+                            <mat-option value="2021">2021</mat-option>
+                            <mat-option value="2020">2020</mat-option>
+                            <mat-option value="2019">2019</mat-option>
+                            <mat-option value="2018">2018</mat-option>
+                            <mat-option value="2017">2017</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-auto align-self-end">
+                <div class="form-group">
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Payer</th>
+                        <th>Due Date</th>
+                        <th>Amount Outstanding</th>
+                        <th>Aged 1-30</th>
+                        <th>Aged 31-60</th>
+                        <th>Aged 61-90</th>
+                        <th>Aged 91-120</th>
+                        <th>Aged 121-150</th>
+                        <th>Aged 151-180</th>
+                        <th>Aged 181-365</th>
+                        <th>Aged > 365</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Johnson Company</td>
+                        <td>07/08/17</td>
+                        <td>500/1,000</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <td>Pharma Kings Ltd</td>
+                        <td>14/08/2017</td>
+                        <td>100/100</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Hopman Luxury</td>
+                        <td>13/08/2017</td>
+                        <td>645.75/645.75</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>645.75</td>
+                    </tr>
+                    <tr>
+                        <td>Wild green cafe</td>
+                        <td>11/09/2017</td>
+                        <td>35.40/35.40</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>35.40</td>
+                    </tr>
+                    <tr>
+                        <td>Old school boys</td>
+                        <td>09/11/2017</td>
+                        <td>0/605</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
+</div>

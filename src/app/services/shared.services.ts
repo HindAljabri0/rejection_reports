@@ -237,7 +237,7 @@ export class SharedServices {
       case ClaimStatus.Batched.toLowerCase():
         return 'not-saved';
       case ClaimStatus.Downloadable.toLowerCase():
-        return 'ready-submission';
+        return 'downloadable';
       case ClaimStatus.INVALID.toLowerCase():
         return 'invalid';
       default:

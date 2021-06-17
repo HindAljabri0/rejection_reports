@@ -41,4 +41,16 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
+  getServicePerDoctor(payerId: string, providerId: string, data: any) {
+    const requestURL = `/providers/${providerId}/reports/revenue-breakdown/payers/${payerId}/doctor-service`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
+    return this.http.request(request);
+  }
 }
