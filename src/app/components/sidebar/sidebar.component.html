@@ -107,6 +107,16 @@
                                 <span class="text">Rejection Report</span>
                             </a>
                         </li>
+                        <li i18n="@@claimstatussummaryport">
+                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report"
+                                #rejectionReport="routerLinkActive" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
+                                <img src="assets/ic-rejection-report.svg" alt="Rejection Report" class="default-icon" />
+                                <img src="assets/ic-rejection-report-active.svg" alt="Claim Summary Status Report"
+                                    class="active-icon" />
+                                <span class="text">Claim Status Summary Report</span>
+                            </a>
+                        </li>
                     </ul>
                 </mat-expansion-panel>
 
