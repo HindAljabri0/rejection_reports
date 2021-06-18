@@ -636,7 +636,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.commen.loading) { return; }
     this.commen.loadingChanged.next(true);
     this.validationService.reValidateClaims(this.providerId,
-      this.payerId,
+      null,
       this.batchId,
       this.uploadId,
       null,
