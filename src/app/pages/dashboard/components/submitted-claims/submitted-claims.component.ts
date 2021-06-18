@@ -91,10 +91,30 @@ export class SubmittedClaimsComponent implements OnInit {
   }
 
   modifyChartData() {
-    this.claimsChartData[0].data = [this.summaries.processingClaims.data.totalClaims, this.summaries.paidClaims.data.totalClaims, this.summaries.partiallyPaidClaims.data.totalClaims, this.summaries.rejectedClaims.data.totalClaims];
-    this.grossChartData[0].data = [this.summaries.processingClaims.data.gross, this.summaries.paidClaims.data.gross, this.summaries.partiallyPaidClaims.data.gross, this.summaries.rejectedClaims.data.gross];
-    this.netChartData[0].data = [this.summaries.processingClaims.data.totalNetAmount, this.summaries.paidClaims.data.totalNetAmount, this.summaries.partiallyPaidClaims.data.totalNetAmount, this.summaries.rejectedClaims.data.totalNetAmount];
-    this.vatChartData[0].data = [this.summaries.processingClaims.data.totalVatNetAmount, this.summaries.paidClaims.data.totalVatNetAmount, this.summaries.partiallyPaidClaims.data.totalVatNetAmount, this.summaries.rejectedClaims.data.totalVatNetAmount];
+    this.claimsChartData[0].data = [
+      this.summaries.processingClaims.data.totalClaims,
+      this.summaries.paidClaims.data.totalClaims,
+      this.summaries.partiallyPaidClaims.data.totalClaims,
+      this.summaries.rejectedClaims.data.totalClaims
+    ];
+    this.grossChartData[0].data = [
+      this.summaries.processingClaims.data.gross,
+      this.summaries.paidClaims.data.gross,
+      this.summaries.partiallyPaidClaims.data.gross,
+      this.summaries.rejectedClaims.data.gross
+    ];
+    this.netChartData[0].data = [
+      this.summaries.processingClaims.data.totalNetAmount,
+      this.summaries.paidClaims.data.totalNetAmount,
+      this.summaries.partiallyPaidClaims.data.totalNetAmount,
+      this.summaries.rejectedClaims.data.totalNetAmount
+    ];
+    this.vatChartData[0].data = [
+      this.summaries.processingClaims.data.totalVatNetAmount,
+      this.summaries.paidClaims.data.totalVatNetAmount,
+      this.summaries.partiallyPaidClaims.data.totalVatNetAmount,
+      this.summaries.rejectedClaims.data.totalVatNetAmount
+    ];
   }
 
   getCardName(status: string) {
@@ -106,7 +126,8 @@ export class SubmittedClaimsComponent implements OnInit {
   }
 
   calculatePercetage(first: number, second: number, roundValue: number = 4) {
-    return parseFloat(((first / second) * 100).toFixed(roundValue)).toString();
+    const retval = parseFloat(((first / second) * 100).toFixed(roundValue));
+    return isNaN(retval) ? 0 : retval.toString();
   }
 
 }

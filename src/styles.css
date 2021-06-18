@@ -993,8 +993,9 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .dashboard-claim-card .statistics{font-weight: 600;padding-bottom: 6px;}
 .dashboard-claim-card .statistics:last-child{padding-bottom: 0;}
 .dashboard-claim-card .statistics small{font-size: 12px;font-weight: 500;color: #505050;}
-.dashboard-claim-card .progress-block{border-radius: 2px;height: 4px;display: flex;overflow: hidden;margin-bottom: 12px;background-color: #e8e8e8;}
-.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 100%;flex-grow: 0;flex-shrink:0;}
+.dashboard-claim-card .progress-block{overflow: hidden;margin-bottom: 12px;}
+.dashboard-claim-card .progress-block .ready-submission-bar{margin-bottom: 4px;}
+.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 6px;border-radius: 2px;}
 .dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;}
 .dashboard-claim-card .loader-wrapper{display: flex;align-items: center;justify-content: center;padding: 53px 0;}
 .dashboard-legend{display: flex;justify-content: flex-end;padding: 0 0 18px;margin-top: -38px;color: #505050;}
