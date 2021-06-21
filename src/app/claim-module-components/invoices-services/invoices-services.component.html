@@ -241,7 +241,7 @@
                                                                     [matTooltip]="getFieldError('serviceUnitPrice', service.serviceId+'')">
                                                                     <label class="control-label">Unit Price<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Enter unit price" type="number" [formControl]="service.unitPrice">
+                                                                        <input class="form-control" placeholder="Enter unit price" type="number" (change)="service.net = null; service.gross = null" [formControl]="service.unitPrice">
                                                                         <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                                                     </div>
                                                                 </div>
@@ -250,7 +250,7 @@
                                                                 <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity', service.serviceId+'')"
                                                                     [matTooltip]="getFieldError('serviceQuantity', service.serviceId+'')">
                                                                     <label class="control-label">Quantity<span class="asterisk">*</span></label>
-                                                                    <input class="form-control" placeholder="Enter quantity" type="text" [formControl]="service.quantity">
+                                                                    <input class="form-control" placeholder="Enter quantity" type="text" (change)="service.net = null; service.gross = null" [formControl]="service.quantity">
                                                                 </div>
                                                             </div>
                                                             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
@@ -260,7 +260,7 @@
                                                                     </label>
                                                                     <div class="input-group">
                                                                         <input class="form-control" placeholder="Enter patient share" type="number"
-                                                                            [formControl]="service.patientShare">
+                                                                            [formControl]="service.patientShare" (change)="service.net = null">
                                                                         <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                                                     </div>
                                                                 </div>
@@ -271,7 +271,7 @@
                                                                     <label class="control-label">Service Discount <span class="asterisk">*</span></label>
                                                                     <div class="input-group">
                                                                         <input class="form-control" placeholder="Enter service discount" type="number"
-                                                                            [formControl]="service.serviceDiscount">
+                                                                            [formControl]="service.serviceDiscount" (change)="service.net = null">
                                                                         <span class="input-group-append">
                                                                             <span class="input-group-text clickable medium"
                                                                                 (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit
@@ -285,7 +285,7 @@
                                                                     [matTooltip]="getFieldError('INVGDPNNETAMTVAL', service.serviceId+'')">
                                                                     <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Enter net vat rate" type="number"
+                                                                        <input class="form-control" placeholder="Enter net vat rate" type="number" (change)="service.netVatAmount = null"
                                                                             [formControl]="service.netVatRate">
                                                                         <span class="input-group-append"><span class="input-group-text medium">%</span></span>
                                                                     </div>
@@ -296,7 +296,7 @@
                                                                     [matTooltip]="getFieldError('INVGDPNPATSHAVATAMTVAL', service.serviceId+'')">
                                                                     <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Enter patient share vat rate" type="number"
+                                                                        <input class="form-control" placeholder="Enter patient share vat rate" type="number" (change)="service.patientShareVatAmount = null"
                                                                             [formControl]="service.patientShareVatRate">
                                                                         <span class="input-group-append"><span class="input-group-text medium">%</span></span>
                                                                     </div>
@@ -360,7 +360,11 @@
         <mat-icon class="mr-1">error</mat-icon>
         <span class="align-self-center">Price list does not exist!</span>
     </p>
-    <div class="form-group mb-0" *ngIf="priceListExist">
+    <p *ngIf="_isInvalidDate(visitDate)" class="d-flex text-orange">
+        <mat-icon class="mr-1">error</mat-icon>
+        <span class="align-self-center">Please select valid claim date first.</span>
+    </p>
+    <div class="form-group mb-0" *ngIf="priceListExist && !_isInvalidDate(visitDate)">
         <label class="control-label">Search Service Code</label>
         <input type="text" [formControl]="searchServicesController" [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()" (click)="$event.stopPropagation()"
             class="form-control" placeholder="Enter service code here...">
