@@ -831,7 +831,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         totalNetAmount: this.summaries[oldSummaryIndex].totalNetAmount - claim.net,
         totalVatNetAmount: this.summaries[oldSummaryIndex].totalVatNetAmount - claim.netvatamount,
         statuses: this.summaries[oldSummaryIndex].statuses,
-        uploadName: this.summaries[oldSummaryIndex].uploadName
+        uploadName: this.summaries[oldSummaryIndex].uploadName,
+        patientShare: this.summaries[oldSummaryIndex].patientShare - claim.patientShare
       };
       this.claims[index].status = claim.status;
       const newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
@@ -841,7 +842,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           totalNetAmount: this.summaries[newSummaryIndex].totalNetAmount + claim.net,
           totalVatNetAmount: this.summaries[newSummaryIndex].totalVatNetAmount + claim.netvatamount,
           statuses: this.summaries[newSummaryIndex].statuses,
-          uploadName: this.summaries[newSummaryIndex].uploadName
+          uploadName: this.summaries[newSummaryIndex].uploadName,
+          patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare
         };
         window.setTimeout(() => {
           this.summaries = summaries;

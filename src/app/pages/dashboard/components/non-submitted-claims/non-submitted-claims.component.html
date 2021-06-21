@@ -155,6 +155,45 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+                <p class="title"> Patient Share </p>
+                <h4>{{summaries[0].data.patientShare}} <small>SR</small></h4>
+                <div class="progress-block">
+                    <div class="ready-submission-bar bg-ready-submission"
+                        [style.flexBasis]="calculatePercetage(summaries[1].data.patientShare, summaries[0].data.patientShare) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[1].data.patientShare, summaries[0].data.patientShare) + '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel"
+                        [style.flexBasis]="calculatePercetage(summaries[2].data.patientShare, summaries[0].data.patientShare) + '%'"
+                        [style.maxWidth]="calculatePercetage(summaries[2].data.patientShare, summaries[0].data.patientShare) + '%'"></div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{calculatePercetage(summaries[1].data.patientShare, summaries[0].data.patientShare)}} <small>%</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{calculatePercetage(summaries[2].data.patientShare, summaries[0].data.patientShare)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-ready-submission">
+                        {{summaries[1].data.patientShare}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
+                        {{summaries[2].data.patientShare}} <small>SR</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
+                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- <div class="row small-gutter">
     <div class="col-xxl-3 col-xl-4 col-md-6" *ngFor="let item of summaries">
