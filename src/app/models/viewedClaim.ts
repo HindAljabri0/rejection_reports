@@ -38,4 +38,7 @@ export class ViewedClaim {
 
   statusdetail: string;
 
+  patientShare:number;
+  discount:number;
+
 }
