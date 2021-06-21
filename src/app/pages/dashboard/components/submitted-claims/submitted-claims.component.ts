@@ -2,17 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import {
-  getSubmittedClaims,
-  getPaidClaims,
-  getPartiallyPaidClaims,
-  getUnderProcessingClaims,
-  getRejectedClaims,
   DashboardCardData,
   getAllClaimAfterSubmission
 } from '../../store/dashboard.reducer';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
-import { map, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-submitted-claims',
@@ -81,7 +75,7 @@ export class SubmittedClaimsComponent implements OnInit {
     paidClaims: DashboardCardData;
   };
 
-  constructor(private sharedServices: SharedServices, private store: Store) { }
+  constructor(public sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
     this.store.select(getAllClaimAfterSubmission).subscribe(summaries => {
