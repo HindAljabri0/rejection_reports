@@ -342,8 +342,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
             drname: drName
         }
-        const selectedPayerId = this.selectedPayerId.toLowerCase() === RevenuBreakingReportChart.All ? "0" : this.selectedPayerId;
-        this.reportService.getServicePerDoctor(selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
+
+        this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
             if (event instanceof HttpResponse) {
                 let body = event['body'];
                 body = JSON.parse(body);
