@@ -7,12 +7,12 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
                 <p class="title">Number of Claims</p>
-                <h4>{{summaries[0].data.totalClaims}} <small>Claims</small></h4>
+                <h4 matTooltip="{{summaries[0].data.totalClaims}} Claims">{{sharedServices.kFormatter(summaries[0].data.totalClaims)}} <small>Claims</small></h4>
                 <div class="progress-block">
-                    <div class="ready-submission-bar bg-ready-submission" [style.flexBasis]="calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims) + '%'"></div>
-                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.flexBasis]="calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims) + '%'"></div>
+                    <div class="ready-submission-bar bg-ready-submission" [style.width]="calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims) + '%'">
+                    </div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.width]="calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims) + '%'">
+                    </div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
@@ -23,11 +23,11 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission">
-                        {{summaries[1].data.totalClaims}} <small>Claims</small>
+                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.totalClaims}} Claims">
+                        {{sharedServices.kFormatter(summaries[1].data.totalClaims)}} <small>Claims</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{summaries[2].data.totalClaims}} <small>Claims</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.totalClaims}} Claims">
+                        {{sharedServices.kFormatter(summaries[2].data.totalClaims)}} <small>Claims</small>
                     </div>
                 </div>
             </ng-container>
@@ -44,12 +44,10 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
                 <p class="title">Gross Amount</p>
-                <h4>{{summaries[0].data.gross}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries[0].data.gross}} SR">{{sharedServices.kFormatter(summaries[0].data.gross)}} <small>SR</small></h4>
                 <div class="progress-block">
-                    <div class="ready-submission-bar bg-ready-submission" [style.flexBasis]="calculatePercetage(summaries[1].data.gross, summaries[0].data.gross) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[1].data.gross, summaries[0].data.gross) + '%'"></div>
-                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.flexBasis]="calculatePercetage(summaries[2].data.gross, summaries[0].data.gross) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[2].data.gross, summaries[0].data.gross) + '%'"></div>
+                    <div class="ready-submission-bar bg-ready-submission" [style.width]="calculatePercetage(summaries[1].data.gross, summaries[0].data.gross) + '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.width]="calculatePercetage(summaries[2].data.gross, summaries[0].data.gross) + '%'"></div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
@@ -60,11 +58,11 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission">
-                        {{summaries[1].data.gross}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.gross}} SR">
+                        {{sharedServices.kFormatter(summaries[1].data.gross)}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{summaries[2].data.gross}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.gross}} SR">
+                        {{sharedServices.kFormatter(summaries[2].data.gross)}} <small>SR</small>
                     </div>
                 </div>
             </ng-container>
@@ -81,14 +79,12 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
                 <p class="title">Net Amount</p>
-                <h4>{{summaries[0].data.totalNetAmount}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries[0].data.totalNetAmount}} SR">{{sharedServices.kFormatter(summaries[0].data.totalNetAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.flexBasis]="calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
+                        [style.width]="calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.flexBasis]="calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
+                        [style.width]="calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
@@ -99,11 +95,11 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission">
-                        {{summaries[1].data.totalNetAmount}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.totalNetAmount}} SR">
+                        {{sharedServices.kFormatter(summaries[1].data.totalNetAmount)}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{summaries[2].data.totalNetAmount}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.totalNetAmount}} SR">
+                        {{sharedServices.kFormatter(summaries[2].data.totalNetAmount)}} <small>SR</small>
                     </div>
                 </div>
             </ng-container>
@@ -120,14 +116,12 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
                 <p class="title">VAT Amount</p>
-                <h4>{{summaries[0].data.totalVatNetAmount}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries[0].data.totalVatNetAmount}} SR">{{sharedServices.kFormatter(summaries[0].data.totalVatNetAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.flexBasis]="calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
+                        [style.width]="calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.flexBasis]="calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
+                        [style.width]="calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
@@ -138,11 +132,11 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission">
-                        {{summaries[1].data.totalVatNetAmount}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.totalVatNetAmount}} SR">
+                        {{sharedServices.kFormatter(summaries[1].data.totalVatNetAmount)}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{summaries[2].data.totalVatNetAmount}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.totalVatNetAmount}} SR">
+                        {{sharedServices.kFormatter(summaries[2].data.totalVatNetAmount)}} <small>SR</small>
                     </div>
                 </div>
             </ng-container>
@@ -155,6 +149,7 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
@@ -236,3 +231,6 @@
         </app-abstractcard>
     </div>
 </div> -->
+=======
+</div>
+>>>>>>> ab4de5cfef0838d4de6d9fa96b8f12fc6b40d7f7

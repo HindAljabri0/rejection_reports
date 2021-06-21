@@ -297,7 +297,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                 const colors = this.sharedService.getAnalogousColor(serviceData.data.length);
                 this.pieChartData = [
                     {
-                        data: serviceData.data.map(set => set.ratio.toFixed(2)),
+                        data: serviceData.data.map(set => Number(set.ratio).toFixed(2)),
                         datalabels: {
                             display: false
                         },
@@ -342,8 +342,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
             drname: drName
         }
-        const selectedPayerId = this.selectedPayerId.toLowerCase() === RevenuBreakingReportChart.All ? "0" : this.selectedPayerId;
-        this.reportService.getServicePerDoctor(selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
+
+        this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
             if (event instanceof HttpResponse) {
                 let body = event['body'];
                 body = JSON.parse(body);
@@ -366,7 +366,10 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     }
     serviceDoctorData(drName) {
         let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
-        return serviceData === null || serviceData === undefined ? [] : serviceData.data;
+        return serviceData === null || serviceData === undefined ? [] : serviceData.data.map((ele) => {
+            ele.ratio = Number(ele.ratio).toFixed(2);
+            return ele;
+        });
     }
     dynamicPieChartLableData() {
         return this.selectedDoctor !== -1 ? this.tempPieChartLables : this.pieChartLabels;

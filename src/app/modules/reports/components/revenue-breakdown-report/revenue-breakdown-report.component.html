@@ -119,11 +119,12 @@
                                     <span class="color"
                                         [style.background-color]="pieChartData[0].backgroundColor[j]"></span>
                                     <span class="text">
-                                        {{data1.label}}<ng-container *ngIf="tempPieChartData[j].description"> -
-                                            {{tempPieChartData[j].description}}</ng-container>
+                                        {{data1.label}}<ng-container
+                                            *ngIf="data1.description!==undefined && data1.description!==null"> -
+                                            {{data1.description}}</ng-container>
                                         <span class="text-muted">Amount -
-                                            {{tempPieChartData[j].amount | number : "1.2-2"}} SR
-                                            ({{tempPieChartData[j].ratio}}%)</span>
+                                            {{data1.amount | number : "1.2-2"}} SR
+                                            ({{data1.ratio}}%)</span>
                                     </span>
                                 </li>
                             </ul>

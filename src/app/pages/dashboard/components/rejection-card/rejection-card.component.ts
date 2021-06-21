@@ -5,6 +5,7 @@ import { MultiDataSet, Label, Color } from 'ng2-charts';
 import { MemoizedSelector, DefaultProjectorFn, Store } from '@ngrx/store';
 import { getRejectedClaims } from '../../store/dashboard.reducer';
 import { RejectionCardData } from './rejectionCardData';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'dashboard-rejection-card',
@@ -49,7 +50,7 @@ export class RejectionCardComponent implements OnInit {
   sat: number;
   light: number;
 
-  constructor(private store: Store) { }
+  constructor(public sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
     this.store.select(getDepartments).subscribe(departments => this.departments = departments);
