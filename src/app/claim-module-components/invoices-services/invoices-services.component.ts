@@ -684,7 +684,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.emptyOptions = false;
     const query: string = this.searchServicesController.value;
     if (query != null && query != '') {
-      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId).subscribe(
+      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
@@ -765,5 +765,12 @@ export class InvoicesServicesComponent implements OnInit {
       console.log(err);
     });
 
+  }
+
+  _isInvalidDate(date: Date) {
+    if (date != null && !(date instanceof Date)) {
+      date = new Date(date);
+    }
+    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
   }
 }

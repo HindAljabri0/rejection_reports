@@ -360,7 +360,11 @@
         <mat-icon class="mr-1">error</mat-icon>
         <span class="align-self-center">Price list does not exist!</span>
     </p>
-    <div class="form-group mb-0" *ngIf="priceListExist">
+    <p *ngIf="_isInvalidDate(visitDate)" class="d-flex text-orange">
+        <mat-icon class="mr-1">error</mat-icon>
+        <span class="align-self-center">Please select valid claim date first.</span>
+    </p>
+    <div class="form-group mb-0" *ngIf="priceListExist && !_isInvalidDate(visitDate)">
         <label class="control-label">Search Service Code</label>
         <input type="text" [formControl]="searchServicesController" [matAutocomplete]="servicesOptionsAutoComplete" (keyup)="searchServices()" (click)="$event.stopPropagation()"
             class="form-control" placeholder="Enter service code here...">
