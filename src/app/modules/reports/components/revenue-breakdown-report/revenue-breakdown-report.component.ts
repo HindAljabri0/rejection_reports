@@ -36,27 +36,12 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             bodyFontFamily: this.chartFontFamily,
             titleFontFamily: this.chartFontFamily,
             footerFontFamily: this.chartFontFamily,
-            // callbacks: {
-            //     beforeLabel: (tooltipItem) => {
-            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
-            //         const amount = this.currencyPipe.transform(
-            //             selectedData.amount.toString(),
-            //             'number',
-            //             '',
-            //             '1.2-2'
-            //         );
-            //         return amount;
-            //     },
-            //     label: (tooltipItem) => {
-            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
-            //         return selectedData.ratio.toFixed(2);
-            //     },
-            //     afterLabel: (tooltipItem) => {
-            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
-            //         return selectedData.description;
-            //     }
+            callbacks: {
+                label: (tooltipItem, data) => {
+                    return data.datasets[0].data[tooltipItem.index] + '%';
+                },
 
-            // }
+            }
         },
     };
     public pieChartLabels: Label[] = [];
@@ -297,7 +282,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                 const colors = this.sharedService.getAnalogousColor(serviceData.data.length);
                 this.pieChartData = [
                     {
-                        data: serviceData.data.map(set => set.ratio.toFixed(2)),
+                        data: serviceData.data.map(set => Number(set.ratio).toFixed(2)),
                         datalabels: {
                             display: false
                         },
@@ -366,7 +351,10 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     }
     serviceDoctorData(drName) {
         let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
-        return serviceData === null || serviceData === undefined ? [] : serviceData.data;
+        return serviceData === null || serviceData === undefined ? [] : serviceData.data.map((ele) => {
+            ele.ratio = Number(ele.ratio).toFixed(2);
+            return ele;
+        });
     }
     dynamicPieChartLableData() {
         return this.selectedDoctor !== -1 ? this.tempPieChartLables : this.pieChartLabels;
