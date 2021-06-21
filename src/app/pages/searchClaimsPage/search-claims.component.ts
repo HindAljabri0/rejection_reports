@@ -1466,7 +1466,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if (event instanceof HttpResponse) {
         const body = event['body'];
         this.apiPBMValidationEnabled = body.value === "1" ? true : false;
-        this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        // this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        this.isPBMValidationVisible = this.apiPBMValidationEnabled
+          && (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase()
+          || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
