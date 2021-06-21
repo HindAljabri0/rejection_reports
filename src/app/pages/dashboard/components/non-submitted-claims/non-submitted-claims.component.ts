@@ -18,7 +18,7 @@ export class NonSubmittedClaimsComponent implements OnInit {
 
   summaries: DashboardCardData[] = [];
 
-  constructor(private sharedServices: SharedServices, private store: Store) { }
+  constructor(public sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
     this.store.select(getNonSubmittedClaims).subscribe(data => this.summaries[0] = { ...data, title: 'All Claims Before Submission' });

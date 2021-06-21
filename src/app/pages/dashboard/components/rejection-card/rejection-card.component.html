@@ -4,7 +4,7 @@
         <div class="rejection-card-head">
             <div class="left-block">
                 <h4 class="pb-1">Rejected {{unit}}</h4>
-                <h6>{{rejectionByPayerTotalClaims || data.total}} {{unit}}</h6>
+                <h6 matTooltip="{{rejectionByPayerTotalClaims || data.total}} {{unit}}">{{sharedServices.kFormatter(rejectionByPayerTotalClaims || data.total)}} {{unit}}</h6>
             </div>
             <div class="right-block">
                 <canvas *ngIf="!loading" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [options]="options" [colors]="colors">
@@ -18,7 +18,7 @@
             <li *ngFor="let item of data.topFive; let i = index">
                 <div class="status-dot size-lg" [style.background-color]="colors[0].backgroundColor[i]"></div>
                 <div>{{getDepartmentName(item.label)}}</div>
-                <div class="ml-auto pl-2 text-right">{{item.total}} <small>{{unit}}</small></div>
+                <div class="ml-auto pl-2 text-right" matTooltip="{{item.total}} {{unit}}">{{sharedServices.kFormatter(item.total)}} <small>{{unit}}</small></div>
             </li>
         </ul>
     </div>
