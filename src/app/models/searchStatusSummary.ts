@@ -6,6 +6,7 @@ export class SearchStatusSummary {
   gross?: number = 0;
   uploadName: string;
   patientShare=0;
+  discount=0;
 
   constructor(body: {}) {
     if (body != null) {
@@ -16,6 +17,7 @@ export class SearchStatusSummary {
       this.gross = body['gross'];
       this.uploadName = body['uploadName'];
       this.patientShare= body['patientShare'];
+      this.discount-body['discount'];
     } else {
       this.statuses = ['-'];
     }
@@ -29,7 +31,8 @@ export class SearchStatusSummary {
       totalVatNetAmount: 0,
       uploadName: null,
       gross: 0,
-      patientShare:0
+      patientShare:0,
+      discount:0
     };
   }
 }

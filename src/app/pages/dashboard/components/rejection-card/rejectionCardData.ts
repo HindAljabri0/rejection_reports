@@ -6,6 +6,7 @@ export class RejectionCardData {
   totalNetAmount = 0;
   totalVatNetAmount = 0;
   patientShare=0;
+  discount=0;
   topFive: { label: string, total: number, percent?: number }[] = [];
 
   constructor(rejectionBy?: string, body?) {
