@@ -721,12 +721,13 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .progress-report-wrapper .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
 .progress-report-wrapper>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .progress-report-wrapper>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
-.progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 333px);}
+.progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 268px);}
 .progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
 .progress-report-wrapper>.right-block.full-width{flex-basis: 100%;max-width:100%;}
 .progress-report-wrapper>.right-block .chart-wrapper{height: calc(100vh - 333px);position: relative;width: 100%;min-height: 380px;}
 .progress-report-wrapper .custom-legend-wrapper{display: flex;height: calc(100vh - 333px);min-height: 380px;margin: -14px;}
 .progress-report-wrapper .custom-legend-wrapper .chart-wrapper{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 320px);max-width: calc(100% - 320px);}
+.progress-report-wrapper .custom-legend-wrapper .chart-wrapper .empty-state{margin: 14px;}
 .progress-report-wrapper .custom-legend{flex-grow: 0;flex-shrink: 0;flex-basis: 320px;max-width: 320px;max-height: 100%;overflow: auto;padding: 14px;border-left: 1px solid #e1e1e1;}
 .progress-report-wrapper .custom-legend li{display: flex;padding-bottom: 12px;}
 .progress-report-wrapper .custom-legend .color{flex-grow: 0;flex-shrink: 0;flex-basis: 16px;width: 16px;height: 16px;display: block;position: relative;top: 2px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 1;transform: scale(1);}
