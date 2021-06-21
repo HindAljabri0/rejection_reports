@@ -126,7 +126,10 @@ export class ClaimDataComponent implements OnInit {
     this.adminService.checkIfPBMValidationIsEnabled(this.commen.providerId, "101").subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event['body'];
-        this.isPBMValidationVisible = body.value === "1" && this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        // this.isPBMValidationVisible = body.value === "1" && this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        this.isPBMValidationVisible = body.value === "1"
+          && (this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase()
+          || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
