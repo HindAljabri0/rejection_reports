@@ -85,15 +85,19 @@
         </div>
         <div class="right-block" *ngIf="pieChartData.length>0">
             <div class="custom-legend-wrapper">
-                <div class="chart-wrapper">
+                <div class="chart-wrapper" *ngIf="pieChartData[0].data.length>0">
                     <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
                         [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
                     </canvas>
                 </div>
+                <div class="chart-wrapper" *ngIf="pieChartData[0].data.length===0">
+                    <app-empty-state message="No records found" icon="ic-empty-chart.svg">
+                    </app-empty-state>
+                </div>
                 <ul class="custom-legend" [class.child-active]="selectedDoctor!=-1">
-                    <li *ngFor="let data of pieChartLabels;let i=index" [class.open]="i==selectedDoctor"
-                        [class.expandable]="selectedCategory== 'Doctor' && i!=pieChartLabels.length-1">
-                        <ng-container *ngIf="selectedCategory== 'Doctor' && i!=pieChartLabels.length-1">
+                    <li *ngFor="let data of dynamicPieChartLableData();let i=index" [class.open]="i==selectedDoctor"
+                        [class.expandable]="selectedCategory== 'Doctor' && i!=tempPieChartLables.length-1">
+                        <ng-container *ngIf="selectedCategory== 'Doctor' && i!=tempPieChartLables.length-1">
                             <button type="button" (click)="selectDoctor(i)" [title]="data">
                                 <span class="color"
                                     [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
@@ -105,7 +109,10 @@
                                 </span>
                             </button>
                             <ul>
-                                <li class="list-title">
+                                <li class="list-title" *ngIf="serviceDoctorData(data).length===0">
+                                    No services found for this DR.
+                                </li>
+                                <li class="list-title" *ngIf="serviceDoctorData(data).length>0">
                                     Services of {{data}}
                                 </li>
                                 <li *ngFor="let data1 of serviceDoctorData(data);let j=index">
@@ -122,7 +129,7 @@
                             </ul>
                         </ng-container>
                         <ng-container
-                            *ngIf="(selectedCategory== 'Doctor' && i==pieChartLabels.length-1) || selectedCategory!= 'Doctor'">
+                            *ngIf="(selectedCategory== 'Doctor' && i==tempPieChartLables.length-1) || selectedCategory!= 'Doctor'">
                             <span class="color" [style.background-color]="pieChartData[0].backgroundColor[i]"></span>
                             <span class="text">
                                 {{data}}<ng-container *ngIf="tempPieChartData[i].description"> -

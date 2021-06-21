@@ -1,0 +1,120 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+  <div class="block-header has-border">
+    <p>Claim Status Summary Report</p>
+  </div>
+  <div class="block-filter-panel has-border">
+    <div class="row small-gutter" [formGroup]="claimStatusSummaryForm">
+      <div class="col">
+        <div class="form-group" [class.has-error]="submitted && formCn.payerId.errors">
+          <label class="control-label">Payer</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="payerId">
+              <mat-option *ngFor="let payer of payers" [value]="payer.id">
+                {{payer.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="submitted && formCn.payerId.errors">
+            <span class="error-text" *ngIf="formCn.payerId.errors.required">Please select a Payer</span>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group" [class.has-error]="submitted && formCn.fromDate.errors">
+          <label class="control-label">From Date</label>
+          <div class="date-picker">
+            <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date"
+              formControlName="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #fromPicker></mat-datepicker>
+          </div>
+          <div *ngIf="submitted && formCn.fromDate.errors">
+            <span class="error-text" *ngIf="formCn.fromDate.errors.required">Please choose a date</span>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group" [class.has-error]="submitted && formCn.toDate.errors">
+          <label class="control-label">To Date</label>
+          <div class="date-picker">
+            <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
+              formControlName="toDate">
+            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+            <mat-datepicker #toPicker></mat-datepicker>
+          </div>
+          <div *ngIf="submitted && formCn.toDate.errors">
+            <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group" [class.has-error]="submitted && formCn.criteria.errors">
+          <label class="control-label">Rejection Criteria</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="criteria">
+              <mat-option *ngFor="let criterias of criterias" [value]="criterias.id">
+                {{criterias.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="submitted && formCn.criteria.errors">
+            <span class="error-text" *ngIf="formCn.criteria.errors.required">Please select a Rejection Criteria</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-auto">
+        <div class="form-group">
+          <label class="control-label d-lg-block d-none">&nbsp;</label>
+          <button color="primary" mat-flat-button (click)="search()">Search</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="block-body">
+    <div class="pagination-header">
+
+      <button matRipple type="button" class="action-btn ml-auto" (click)="download()" matTooltip="Download">
+        <img src="./assets/{{detailTopActionIcon}}" />
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>No. Of Claim</th>
+            <th>Gross</th>
+            <th>Discount</th>
+            <th>Patient Share</th>
+            <th>Policy Number</th>
+            <th>Net</th>
+            <th>Net VAT</th>
+            <th>Correct Amount</th>
+            <th>Actual Deduct</th>
+            <th>Actual Paid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let claim of rejectedClaims">
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memeberId}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
+                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
+              </tr> -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+      <p class="error-card m-0">{{errorMessage}}</p>
+    </div>
+  </div>
+</div>

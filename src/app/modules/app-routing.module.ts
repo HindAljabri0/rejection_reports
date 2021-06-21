@@ -63,6 +63,11 @@ import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.compone
             canActivate: [RouteCanActiveService]
           },
           {
+            path: ':providerId/reports',
+            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+            canActivate: [RouteCanActiveService]
+          },
+          {
             path: 'collection-management',
             loadChildren: () => import('./collection-management/collection-management.module').then(m => m.CollectionManagementModule),
             canActivate: [RouteCanActiveService]
