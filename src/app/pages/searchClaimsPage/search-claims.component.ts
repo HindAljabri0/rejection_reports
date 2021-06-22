@@ -1479,7 +1479,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   applyPBMValidation() {
     this.commen.loadingChanged.next(true);
     // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-    const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
+    // const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
+    const status = this.isPBMValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
     this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fpatientFileNo).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);
