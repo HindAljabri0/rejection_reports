@@ -67,14 +67,18 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDiscountUnit: 'SAR' | 'PERCENT';
       toothNumber: FormControl,
       netVatRate: FormControl,
+      netVatAmount: number;
       patientShareVatRate: FormControl,
+      patientShareVatAmount: number,
       priceCorrection: number,
       rejection: number,
       isOpen: boolean,
       serviceType: FormControl,
       daysOfSupply: FormControl,
       pbmServiceError: PbmServiceError[],
-      pbmServiceStatus: string
+      pbmServiceStatus: string,
+      gross: number,
+      net: number
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -251,6 +255,9 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].netVatRate.setValue('');
         }
+        if (service.serviceGDPN.netVATamount != null)
+          this.controllers[index].services[serviceIndex].netVatAmount = service.serviceGDPN.netVATamount.value
+
         if (service.serviceGDPN.patientShare != null) {
           this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
         } else {
@@ -269,6 +276,14 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].patientShareVatRate.setValue('');
         }
+        if (service.serviceGDPN.patientShareVATamount != null)
+          this.controllers[index].services[serviceIndex].patientShareVatAmount = service.serviceGDPN.patientShareVATamount.value
+
+        if (service.serviceGDPN.net != null)
+          this.controllers[index].services[serviceIndex].net = service.serviceGDPN.net.value
+
+        if (service.serviceGDPN.gross != null)
+          this.controllers[index].services[serviceIndex].gross = service.serviceGDPN.gross.value
 
         if (service.serviceGDPN.priceCorrection != null) {
           this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
@@ -395,7 +410,9 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDiscountUnit: 'PERCENT',
       toothNumber: new FormControl(),
       netVatRate: new FormControl(0),
+      netVatAmount: 0,
       patientShareVatRate: new FormControl(0),
+      patientShareVatAmount: 0,
       priceCorrection: 0,
       rejection: 0,
       isOpen: false,
@@ -404,7 +421,9 @@ export class InvoicesServicesComponent implements OnInit {
       acutalDeductedAmount: '',
       daysOfSupply: new FormControl(0),
       pbmServiceError: [],
-      pbmServiceStatus: ''
+      pbmServiceStatus: '',
+      net: 0,
+      gross: 0
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
@@ -559,12 +578,18 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   calcGross(service) {
+    if(service.gross != null){
+      return service.gross;
+    }
     let gross = service.unitPrice.value * service.quantity.value;
     gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
     return gross;
   }
 
   calcNet(service, gross?) {
+    if(service.net != null){
+      return service.net;
+    }
     if (gross == null) {
       gross = this.calcGross(service);
     }
@@ -584,12 +609,18 @@ export class InvoicesServicesComponent implements OnInit {
     if (net == null) {
       net = this.calcNet(service);
     }
+    if (service.netVatAmount != null) {
+      return service.netVatAmount
+    }
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
     return netVat;
   }
 
   calcPatientVatRate(service) {
+    if (service.patientShareVatAmount != null) {
+      return service.patientShareVatAmount
+    }
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     return patientShareVATamount;
@@ -684,7 +715,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.emptyOptions = false;
     const query: string = this.searchServicesController.value;
     if (query != null && query != '') {
-      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId).subscribe(
+      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
@@ -765,5 +796,12 @@ export class InvoicesServicesComponent implements OnInit {
       console.log(err);
     });
 
+  }
+
+  _isInvalidDate(date: Date) {
+    if (date != null && !(date instanceof Date)) {
+      date = new Date(date);
+    }
+    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
   }
 }

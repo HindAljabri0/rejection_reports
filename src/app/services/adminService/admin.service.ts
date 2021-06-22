@@ -17,12 +17,13 @@ export class AdminService {
     return this.http.request(request);
   }
 
-  searchServiceCode(serviceCode: string, providerId: string, payerId: string, page?: number, pageSize?: number) {
+  searchServiceCode(serviceCode: string, providerId: string, payerId: string, visitDate: Date, page?: number, pageSize?: number) {
     const requestURL = `/price-list/search`;
     const body = {
       serviceCode: serviceCode,
       providerId: providerId,
-      payerId: payerId
+      payerId: payerId,
+      visitDate: visitDate.getTime()
     };
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, body);
     return this.http.request(request);

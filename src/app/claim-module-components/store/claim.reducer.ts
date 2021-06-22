@@ -94,7 +94,7 @@ const _claimReducer = createReducer(
                 departmentCode == pharmacyId) ? 'DENTAL_OPTICAL_PHARMACY' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = {
 
-            claimDecisionGDPN: body[''],
+            claimDecisionGDPN: body['claimDecisionGDPN'],
             eligibilityCheck: body['eligibilityCheck'],
             lastSubmissionDate: body['lastSubmissionDate'],
             lastUpdateDate: body['lastUpdateDate'],
