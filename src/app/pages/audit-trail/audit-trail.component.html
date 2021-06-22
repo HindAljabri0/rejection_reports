@@ -51,6 +51,7 @@
                         <th>Event Description</th>
                         <th>Date</th>
                         <th>Time</th>
+                        <th>Data</th>
                     </tr>
                     <ng-container *ngFor="let log of logsArray">
                         <tr style="color:#154185" *ngIf="log.id != null"
@@ -62,6 +63,7 @@
                             <td>{{log.eventDescription}}</td>
                             <td>{{log.eventTimeStamp.toLocaleDateString()}}</td>
                             <td>{{log.eventTimeStamp.toLocaleTimeString()}}</td>
+                            <td><a class="primary-link underlined" *ngIf="log.newClaimData != null" (click)="viewJSON(log.objectId, log.newClaimData)">View JSON</a></td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="isEmpty">
