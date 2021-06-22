@@ -158,6 +158,12 @@
                                                                     <h3>{{calcGross(controllers[i].services[j])}}</h3>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-auto">
+                                                                <div class="statistic-box">
+                                                                    <label>Discount</label>
+                                                                    <h3>{{service.serviceDiscount.value}}</h3>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-auto flex-grow-1">
                                                                 <div class="statistic-box d-flex">
                                                                     <div>
@@ -170,10 +176,16 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-auto">
-                                                                <div class="statistic-box">
-                                                                    <label>Patient Share Vat Amount</label>
-                                                                    <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
+                                                            <div class="col-auto flex-grow-1">
+                                                                <div class="statistic-box d-flex">
+                                                                    <div>
+                                                                        <label>PSh Amount</label>
+                                                                        <h3>{{service.patientShare.value}}</h3>
+                                                                    </div>
+                                                                    <div class="text-right ml-auto pl-2">
+                                                                        <label>PSh Vat Amount</label>
+                                                                        <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto" *ngIf="statusCode != undefined">
@@ -241,7 +253,8 @@
                                                                     [matTooltip]="getFieldError('serviceUnitPrice', service.serviceId+'')">
                                                                     <label class="control-label">Unit Price<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Enter unit price" type="number" (change)="service.net = null; service.gross = null" [formControl]="service.unitPrice">
+                                                                        <input class="form-control" placeholder="Enter unit price" type="number"
+                                                                            (change)="service.net = null; service.gross = null" [formControl]="service.unitPrice">
                                                                         <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                                                     </div>
                                                                 </div>
@@ -250,7 +263,8 @@
                                                                 <div class="form-group" [class.has-error]="fieldHasError('serviceQuantity', service.serviceId+'')"
                                                                     [matTooltip]="getFieldError('serviceQuantity', service.serviceId+'')">
                                                                     <label class="control-label">Quantity<span class="asterisk">*</span></label>
-                                                                    <input class="form-control" placeholder="Enter quantity" type="text" (change)="service.net = null; service.gross = null" [formControl]="service.quantity">
+                                                                    <input class="form-control" placeholder="Enter quantity" type="text"
+                                                                        (change)="service.net = null; service.gross = null" [formControl]="service.quantity">
                                                                 </div>
                                                             </div>
                                                             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
@@ -285,8 +299,8 @@
                                                                     [matTooltip]="getFieldError('INVGDPNNETAMTVAL', service.serviceId+'')">
                                                                     <label class="control-label">Net Vat Rate<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Enter net vat rate" type="number" (change)="service.netVatAmount = null"
-                                                                            [formControl]="service.netVatRate">
+                                                                        <input class="form-control" placeholder="Enter net vat rate" type="number"
+                                                                            (change)="service.netVatAmount = null" [formControl]="service.netVatRate">
                                                                         <span class="input-group-append"><span class="input-group-text medium">%</span></span>
                                                                     </div>
                                                                 </div>
@@ -296,8 +310,8 @@
                                                                     [matTooltip]="getFieldError('INVGDPNPATSHAVATAMTVAL', service.serviceId+'')">
                                                                     <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Enter patient share vat rate" type="number" (change)="service.patientShareVatAmount = null"
-                                                                            [formControl]="service.patientShareVatRate">
+                                                                        <input class="form-control" placeholder="Enter patient share vat rate" type="number"
+                                                                            (change)="service.patientShareVatAmount = null" [formControl]="service.patientShareVatRate">
                                                                         <span class="input-group-append"><span class="input-group-text medium">%</span></span>
                                                                     </div>
                                                                 </div>
