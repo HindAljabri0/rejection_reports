@@ -186,9 +186,9 @@ export class InvoicesServicesComponent implements OnInit {
     this.actions.pipe(
       ofType(saveInvoices_Services)
     ).subscribe(() => {
-      // if (this.expandedInvoice != -1) {
-      this.createInvoiceFromControl(this.selectedInvoiceIndex);
-      // }
+      for (let i = 0; i < this.controllers.length; i++) {
+        this.createInvoiceFromControl(i);
+      }
     });
 
     this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
@@ -578,7 +578,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   calcGross(service) {
-    if(service.gross != null){
+    if (service.gross != null) {
       return service.gross;
     }
     let gross = service.unitPrice.value * service.quantity.value;
@@ -587,7 +587,7 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   calcNet(service, gross?) {
-    if(service.net != null){
+    if (service.net != null) {
       return service.net;
     }
     if (gross == null) {
