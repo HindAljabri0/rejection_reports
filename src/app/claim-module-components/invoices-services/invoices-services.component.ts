@@ -304,6 +304,9 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
+    if(this.departments.length == 0){
+      location.reload();
+    }
     this.controllers.forEach(invoiceControllers => {
       if (this.pageMode === "EDIT") {
         invoiceControllers.invoiceDate.enable();
