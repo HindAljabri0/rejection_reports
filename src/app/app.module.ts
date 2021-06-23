@@ -84,6 +84,7 @@ import { UploadsPageComponent } from './pages/uploads-page/uploads-page.componen
 import { UploadCardComponent } from './pages/uploads-page/components/upload-card/upload-card.component';
 import { JsonViewDialogComponent } from './components/dialogs/json-view-dialog/json-view-dialog.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -160,11 +161,13 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
     SmoothScrollModule,
     GuidedTourModule,
     BsDatepickerModule.forRoot(),
-    NgxJsonViewerModule
+    NgxJsonViewerModule,
+    ClipboardModule
   ],
   providers: [
     ThemeService,
     UploadService,
+    ClipboardService,
     // {
     //   provide: ApmService,
     //   useClass: ApmService,

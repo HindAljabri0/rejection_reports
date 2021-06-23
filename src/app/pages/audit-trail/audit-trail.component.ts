@@ -172,7 +172,7 @@ export class AuditTrailComponent implements OnInit {
   viewJSON(objectId:string, json:string){
     this.dialogService.open(JsonViewDialogComponent, {
       data: {
-        objectId:objectId,
+        title: `JSON of Claim [${objectId}]` ,
         json: json
       },
       width: '70%'
