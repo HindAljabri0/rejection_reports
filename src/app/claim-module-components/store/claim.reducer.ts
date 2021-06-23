@@ -102,7 +102,7 @@ const _claimReducer = createReducer(
             paymentReference: body['paymentReference'],
             statusCode: body['statusCode'],
             statusDetail: body['statusDetail'],
-            payerbatchrefno:body['payerbatchrefno'],
+            payerbatchrefno: body['payerbatchrefno'],
 
 
         };
@@ -257,6 +257,15 @@ const _claimReducer = createReducer(
             member: {
                 ...state.claim.member,
                 memberID: memberId
+            }
+        }
+    })),
+    on(actions.updateAccCode, (state, { accCode }) => ({
+        ...state, claim: {
+            ...state.claim,
+            member: {
+                ...state.claim.member,
+                accCode: accCode
             }
         }
     })),
