@@ -38,7 +38,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             footerFontFamily: this.chartFontFamily,
             callbacks: {
                 label: (tooltipItem, data) => {
-                    return data.datasets[0].data[tooltipItem.index] + '%';
+                    let label: any = data.labels[tooltipItem.index];
+                    return label + ': ' + data.datasets[0].data[tooltipItem.index] + '%';
                 },
 
             }
