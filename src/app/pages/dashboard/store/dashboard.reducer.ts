@@ -2,21 +2,15 @@ import { createReducer, on, createFeatureSelector, createSelector } from '@ngrx/
 import * as actions from './dashboard.actions';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
+import { ClaimsSummary } from 'src/app/models/ClaimsSummary';
 
 
-export type DashboardCardData = { loading: boolean, data: SearchStatusSummary | RejectionCardData, error?: string, title?: string };
+export type DashboardCardData = { loading: boolean, data: ClaimsSummary |RejectionCardData|any, error?: string, title?: string };
 
 export interface DashboardStatus {
     searchCriteria: SearchCriteria;
     notSubmittedClaims: DashboardCardData;
     submittedClaims: DashboardCardData;
-    acceptedClaims: DashboardCardData;
-    notAcceptedClaims: DashboardCardData;
-    underSubmissionClaims: DashboardCardData;
-    paidClaims: DashboardCardData;
-    partiallyPaidClaims: DashboardCardData;
-    rejectedClaims: DashboardCardData;
-    underProcessingClaims: DashboardCardData;
     rejectionByDepartment: DashboardCardData;
     rejectionByDoctor: DashboardCardData;
     rejectionByService: DashboardCardData;
@@ -31,11 +25,11 @@ const initState: DashboardStatus = {
     },
     notSubmittedClaims: {
         loading: false,
-        data: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed', 'NotAccepted', 'Batched'])
+        data: ClaimsSummary.emptySummaryWithStatuses(['Accepted', 'Failed', 'NotAccepted'])
     },
     submittedClaims: {
         loading: false,
-        data: SearchStatusSummary.emptySummaryWithStatuses([
+        data: ClaimsSummary.emptySummaryWithStatuses([
             'PAID',
             'PARTIALLY_PAID',
             'REJECTED',
@@ -44,16 +38,6 @@ const initState: DashboardStatus = {
             'OUTSTANDING',
             'PENDING',
             'UNDER_PROCESS'])
-    },
-    acceptedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['Accepted', 'Failed']) },
-    notAcceptedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['NotAccepted']) },
-    underSubmissionClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['Batched']) },
-    paidClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['PAID', 'SETTLED']) },
-    partiallyPaidClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['PARTIALLY_PAID']) },
-    rejectedClaims: { loading: false, data: SearchStatusSummary.emptySummaryWithStatuses(['REJECTED', 'INVALID', 'DUPLICATE']) },
-    underProcessingClaims: {
-        loading: false,
-        data: SearchStatusSummary.emptySummaryWithStatuses(['OUTSTANDING', 'PENDING', 'UNDER_PROCESS'])
     },
     rejectionByDepartment: { loading: false, data: new RejectionCardData('Department') },
     rejectionByDoctor: { loading: false, data: new RejectionCardData('Doctor') },
@@ -80,7 +64,7 @@ const _dashboardReducer = createReducer(
         if (data['statuses'] != null) {
             newState[name] = {
                 loading: state[name].loading,
-                data: SearchStatusSummary.emptySummaryWithStatuses(data['statuses']), error: error
+                data: ClaimsSummary.emptySummaryWithStatuses(data['statuses']), error: error
             };
         } else {
             newState[name] = { loading: state[name].loading, data: new RejectionCardData(data['rejectionBy']), error: error };
@@ -103,23 +87,10 @@ export const dashboardSelector = createFeatureSelector<DashboardStatus>('dashboa
 export const getSummaryByName = (name: actions.DashboardCardNames) => createSelector(dashboardSelector, (state) => state[name]);
 export const getNonSubmittedClaims = createSelector(dashboardSelector, (state) => state.notSubmittedClaims);
 export const getSubmittedClaims = createSelector(dashboardSelector, (state) => state.submittedClaims);
-export const getAcceptedClaims = createSelector(dashboardSelector, (state) => state.acceptedClaims);
-export const getNotAcceptedClaims = createSelector(dashboardSelector, (state) => state.notAcceptedClaims);
-export const getUnderSubmissionClaims = createSelector(dashboardSelector, (state) => state.underSubmissionClaims);
-export const getPaidClaims = createSelector(dashboardSelector, (state) => state.paidClaims);
-export const getPartiallyPaidClaims = createSelector(dashboardSelector, (state) => state.partiallyPaidClaims);
-export const getRejectedClaims = createSelector(dashboardSelector, (state) => state.rejectedClaims);
-export const getUnderProcessingClaims = createSelector(dashboardSelector, (state) => state.underProcessingClaims);
 export const getRejectionByDepartment = createSelector(dashboardSelector, (state) => state.rejectionByDepartment);
 export const getRejectionByDoctor = createSelector(dashboardSelector, (state) => state.rejectionByDoctor);
 export const getRejectionByService = createSelector(dashboardSelector, (state) => state.rejectionByService);
-export const getAllClaimAfterSubmission = createSelector(dashboardSelector, (state) => ({
-    paidClaims: state.paidClaims,
-    partiallyPaidClaims: state.partiallyPaidClaims,
-    rejectedClaims: state.rejectedClaims,
-    processingClaims: state.underProcessingClaims,
-    submittedClaims: state.submittedClaims
-}));
+
 
 export const getDepartments = createSelector(dashboardSelector, (state) => state.departmentNames);
 

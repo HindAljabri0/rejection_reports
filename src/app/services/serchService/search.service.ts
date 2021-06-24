@@ -254,6 +254,13 @@ export class SearchService {
     return this.http.request(request);
   }
 
+    
+  getClaimsSummary( providerId: string, payerId: string, fromDate: string, toDate: string ,statuses:String[]) {
+    const requestURL = `/providers/${providerId}/payerId/${payerId}/ClaimsSummary?fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&statuses=${statuses.toString()}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
   getTopFiveRejections(rejectionBy: string, providerId: string, payerId: string, fromDate: string, toDate: string) {
     const requestURL = `/providers/${providerId}/top/${rejectionBy.toUpperCase()}?payerId=${payerId}&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);

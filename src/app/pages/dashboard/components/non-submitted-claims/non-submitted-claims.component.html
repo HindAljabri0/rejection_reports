@@ -5,227 +5,227 @@
 <div class="row small-gutter">
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
-            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+            <ng-container *ngIf="!summaries.loading  && !summaries.error ">
                 <p class="title">Number of Claims</p>
-                <h4 matTooltip="{{summaries[0].data.totalClaims}} Claims">{{sharedServices.kFormatter(summaries[0].data.totalClaims)}} <small>Claims</small></h4>
+                <h4 matTooltip="{{summaries.data.all_total}} Claims">{{sharedServices.kFormatter(summaries.data.all_total)}} <small>Claims</small></h4>
                 <div class="progress-block">
-                    <div class="ready-submission-bar bg-ready-submission" [style.width]="calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims) + '%'">
+                    <div class="ready-submission-bar bg-ready-submission" [style.width]="PercentageCalculator(summaries.data.accepted_total,summaries.data.failed_total,null,summaries.data.all_total).toString() + '%'">
                     </div>
-                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.width]="calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims) + '%'">
-                    </div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.width]="PercentageCalculator(summaries.data.notaccepted_total,null,null,summaries.data.all_total).toString()+ '%'">
+                    </div> 
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{calculatePercetage(summaries[1].data.totalClaims, summaries[0].data.totalClaims)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_total,summaries.data.failed_total,null,summaries.data.all_total)}} <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{calculatePercetage(summaries[2].data.totalClaims, summaries[0].data.totalClaims)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_total,null,null,summaries.data.all_total)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.totalClaims}} Claims">
-                        {{sharedServices.kFormatter(summaries[1].data.totalClaims)}} <small>Claims</small>
+                    <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_total)+getConvertfromStringToNumber(summaries.data.failed_total)}} Claims">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_total)+summaries.data.failed_total)}} <small>Claims</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.totalClaims}} Claims">
-                        {{sharedServices.kFormatter(summaries[2].data.totalClaims)}} <small>Claims</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_total)}} Claims">
+                        {{sharedServices.kFormatter((summaries.data.notaccepted_total))}} <small>Claims</small>
                     </div>
                 </div>
             </ng-container>
-            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+            <div class="loader-wrapper" *ngIf="summaries.loading">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
-            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            <div class="error" *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
-            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+            <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title">Gross Amount</p>
-                <h4 matTooltip="{{summaries[0].data.gross}} SR">{{sharedServices.kFormatter(summaries[0].data.gross)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_gross}} SR">{{sharedServices.kFormatter(summaries.data.all_gross)}} <small>SR</small></h4>
                 <div class="progress-block">
-                    <div class="ready-submission-bar bg-ready-submission" [style.width]="calculatePercetage(summaries[1].data.gross, summaries[0].data.gross) + '%'"></div>
-                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.width]="calculatePercetage(summaries[2].data.gross, summaries[0].data.gross) + '%'"></div>
-                </div>
+                    <div class="ready-submission-bar bg-ready-submission" [style.width]="PercentageCalculator(summaries.data.accepted_gross,summaries.data.failed_gross,null,summaries.data.all_gross).toString()+ '%'"></div>
+                    <div class="rejected-waseel-bar bg-rejected-waseel" [style.width]="PercentageCalculator(summaries.data.notaccepted_gross,null,null,summaries.data.all_gross).toString() + '%'"></div>
+                </div>                                
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{calculatePercetage(summaries[1].data.gross, summaries[0].data.gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_gross,summaries.data.failed_gross,null,summaries.data.all_gross)}} <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{calculatePercetage(summaries[2].data.gross, summaries[0].data.gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_gross,null,null,summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.gross}} SR">
-                        {{sharedServices.kFormatter(summaries[1].data.gross)}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_gross)+getConvertfromStringToNumber(summaries.data.failed_gross)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_gross)+getConvertfromStringToNumber(summaries.data.failed_gross))}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.gross}} SR">
-                        {{sharedServices.kFormatter(summaries[2].data.gross)}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_gross)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_gross))}} <small>SR</small>
                     </div>
                 </div>
             </ng-container>
-            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+            <div class="loader-wrapper" *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
-            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            <div class="error" *ngIf="summaries.error">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
-            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+            <ng-container *ngIf="!summaries.loading  && !summaries.error ">
                 <p class="title">Net Amount</p>
-                <h4 matTooltip="{{summaries[0].data.totalNetAmount}} SR">{{sharedServices.kFormatter(summaries[0].data.totalNetAmount)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_netAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.width]="calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.accepted_netAmount,summaries.data.failed_netAmount,null,summaries.data.all_netAmount).toString() + '%'"></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount) + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_netAmount,null,null,summaries.data.all_netAmount).toString() + '%'"></div>
                 </div>
-                <div class="statistics d-flex">
+                <div class="statistics d-flex">                       
                     <div class="text-ready-submission">
-                        {{calculatePercetage(summaries[1].data.totalNetAmount, summaries[0].data.totalNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_netAmount,summaries.data.failed_netAmount,null,summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{calculatePercetage(summaries[2].data.totalNetAmount, summaries[0].data.totalNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_netAmount,null,null,summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.totalNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries[1].data.totalNetAmount)}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_netAmount)+getConvertfromStringToNumber(summaries.data.failed_netAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_netAmount)+getConvertfromStringToNumber(summaries.data.failed_netAmount))}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.totalNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries[2].data.totalNetAmount)}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_netAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_netAmount))}} <small>SR</small>
                     </div>
                 </div>
             </ng-container>
-            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+            <div class="loader-wrapper" *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
-            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            <div class="error" *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
-            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+            <ng-container *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">VAT Amount</p>
-                <h4 matTooltip="{{summaries[0].data.totalVatNetAmount}} SR">{{sharedServices.kFormatter(summaries[0].data.totalVatNetAmount)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_VatAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_VatAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.width]="calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.accepted_VatAmount,summaries.data.failed_VatAmount,null,summaries.data.all_VatAmount).toString() + '%'"></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount) + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_VatAmount,null,null,summaries.data.all_VatAmount).toString() + '%'"></div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{calculatePercetage(summaries[1].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_VatAmount,summaries.data.failed_VatAmount,null,summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{calculatePercetage(summaries[2].data.totalVatNetAmount, summaries[0].data.totalVatNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_VatAmount,null,null,summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission" matTooltip="{{summaries[1].data.totalVatNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries[1].data.totalVatNetAmount)}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_VatAmount)+getConvertfromStringToNumber(summaries.data.failed_VatAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_VatAmount)+getConvertfromStringToNumber(summaries.data.failed_VatAmount))}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{summaries[2].data.totalVatNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries[2].data.totalVatNetAmount)}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount))}} <small>SR</small>
                     </div>
                 </div>
             </ng-container>
-            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+            <div class="loader-wrapper" *ngIf="summaries.loading">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
-            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            <div class="error" *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
 
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
-            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+            <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title"> Patient Share </p>
-                <h4>{{summaries[0].data.patientShare}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_Patientshare}} SR">{{sharedServices.kFormatter(summaries.data.all_Patientshare)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.flexBasis]="calculatePercetage(summaries[1].data.patientShare, summaries[0].data.patientShare) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[1].data.patientShare, summaries[0].data.patientShare) + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.accepted_Patientshare,summaries.data.failed_Patientshare,null,summaries.data.all_Patientshare).toString()+ '%'"></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.flexBasis]="calculatePercetage(summaries[2].data.patientShare, summaries[0].data.patientShare) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[2].data.patientShare, summaries[0].data.patientShare) + '%'"></div>
+                    [style.width]="PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare).toString() + '%'"></div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{calculatePercetage(summaries[1].data.patientShare, summaries[0].data.patientShare)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_Patientshare,summaries.data.failed_Patientshare,null,summaries.data.all_Patientshare)}} <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{calculatePercetage(summaries[2].data.patientShare, summaries[0].data.patientShare)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission">
-                        {{summaries[1].data.patientShare}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_Patientshare)+getConvertfromStringToNumber(summaries.data.failed_Patientshare)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_Patientshare)+getConvertfromStringToNumber(summaries.data.failed_Patientshare))}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{summaries[2].data.patientShare}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare))}} <small>SR</small>
                     </div>
+          
                 </div>
             </ng-container>
-            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+            <div class="loader-wrapper" *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
-            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            <div class="error" *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
 
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
-            <ng-container *ngIf="!summaries[0].loading && !summaries[1].loading && !summaries[2].loading && !summaries[0].error && !summaries[1].error && !summaries[2].error">
+            <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title"> Discount</p>
-                <h4>{{summaries[0].data.discount}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_disCount}} SR">{{sharedServices.kFormatter(summaries.data.all_disCount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.flexBasis]="calculatePercetage(summaries[1].data.discount, summaries[0].data.discount) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[1].data.discount, summaries[0].data.discount) + '%'"></div>
+                    [style.width]="PercentageCalculator(summaries.data.accepted_disCount,summaries.data.failed_disCount,null,summaries.data.all_disCount).toString() + '%'"
+                        ></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.flexBasis]="calculatePercetage(summaries[2].data.discount, summaries[0].data.discount) + '%'"
-                        [style.maxWidth]="calculatePercetage(summaries[2].data.discount, summaries[0].data.discount) + '%'"></div>
+                    [style.width]="PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount).toString()  + '%'"
+                        ></div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{calculatePercetage(summaries[1].data.discount, summaries[0].data.discount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_disCount,summaries.data.failed_disCount,null,summaries.data.all_disCount)}} <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{calculatePercetage(summaries[2].data.discount, summaries[0].data.discount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-ready-submission">
-                        {{summaries[1].data.discount}} <small>SR</small>
+                    <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_disCount)+getConvertfromStringToNumber(summaries.data.failed_disCount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_disCount)+getConvertfromStringToNumber(summaries.data.failed_disCount))}} <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{summaries[2].data.discount}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_disCount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_disCount))}} <small>SR</small>
                     </div>
+          
                 </div>
             </ng-container>
-            <div class="loader-wrapper" *ngIf="summaries[0].loading || summaries[1].loading || summaries[2].loading">
+            <div class="loader-wrapper" *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
-            <div class="error" *ngIf="summaries[0].error || summaries[1].error || summaries[2].error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+            <div class="error" *ngIf="summaries.error  ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
@@ -233,26 +233,26 @@
 
 <!-- <div class="row small-gutter">
     <div class="col-xxl-3 col-xl-4 col-md-6" *ngFor="let item of summaries">
-        <app-abstractcard [title]="item.title || getCardName(item.data.statuses[0])" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses[0])"
+        <app-abstractcard [title]="item.title || getCardName(item.data.statuses)" [accentColor]="getCardColor(item.title != null? 'all':item.data.statuses)"
             [clickable]="false" class="primary-card">
             <ng-container *ngIf="item.data != null && !item.loading && item.error == null">
                 <label>No. of Claims</label>
-                <h6 class="dashboard-numbers pb-2 text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.totalClaims}}</h6>
+                <h6 class="dashboard-numbers pb-2 text-{{getCardColor(item.title != null? 'all':item.data.statuses)}}">{{item.data.totalClaims}}</h6>
                 <div class="boxes">
                     <div class="left-box">
                         <label>Gross</label>
-                        <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.gross}}<span class="currency">
+                        <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses)}}">{{item.data.gross}}<span class="currency">
                                 SR</span></h6>
                     </div>
                     <div class="right-box d-flex">
                         <div class="pr-1">
                             <label>Net Amount</label>
-                            <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.totalNetAmount}}<span class="currency">
+                            <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses)}}">{{item.data.totalNetAmount}}<span class="currency">
                                     SR</span></h6>
                         </div>
                         <div class="ml-auto text-right">
                             <label>Net Vat</label>
-                            <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses[0])}}">{{item.data.totalVatNetAmount}}<span
+                            <h6 class="dashboard-numbers text-{{getCardColor(item.title != null? 'all':item.data.statuses)}}">{{item.data.totalVatNetAmount}}<span
                                     class="currency"> SR</span></h6>
                         </div>
                     </div>
