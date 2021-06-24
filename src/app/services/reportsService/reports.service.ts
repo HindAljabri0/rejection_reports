@@ -1,10 +1,11 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CreditReportQueryModel } from 'src/app/models/creditReportQuery';
 import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
 import { Observable } from 'rxjs';
+import { ClaimStatusSummaryReport } from 'src/app/models/claimStatusSummaryReport';
 
 @Injectable({
   providedIn: 'root'
@@ -145,4 +146,32 @@ export class ReportsService {
     const request = new HttpRequest('POST', environment.uploaderHost + requestURL, data, { responseType: 'text' });
     return this.http.request(request);
   }
+  getClaimStatusSummary(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/status-summary`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
+    return this.http.request(request);
+  }
+
+  downalodClaimStatusSummaryCsv(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/status-summary/download?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    // { responseType: 'text', params: searchparams }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'arraybuffer' });
+    return this.http.request(request);
+  }
+
+
 }

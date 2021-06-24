@@ -48,17 +48,18 @@
         </div>
       </div>
       <div class="col">
-        <div class="form-group" [class.has-error]="submitted && formCn.criteria.errors">
-          <label class="control-label">Rejection Criteria</label>
+        <div class="form-group" [class.has-error]="submitted && formCn.summaryCriteria.errors">
+          <label class="control-label">Summary Criteria</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="criteria">
+            <mat-select formControlName="summaryCriteria">
               <mat-option *ngFor="let criterias of criterias" [value]="criterias.id">
                 {{criterias.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div *ngIf="submitted && formCn.criteria.errors">
-            <span class="error-text" *ngIf="formCn.criteria.errors.required">Please select a Rejection Criteria</span>
+          <div *ngIf="submitted && formCn.summaryCriteria.errors">
+            <span class="error-text" *ngIf="formCn.summaryCriteria.errors.required">Please select a Summary
+              Criteria</span>
           </div>
         </div>
       </div>
@@ -72,7 +73,7 @@
     </div>
   </div>
   <div class="block-body">
-    <div class="pagination-header">
+    <div class="pagination-header" *ngIf="claimStatusSummaryData !== null && claimStatusSummaryData !== undefined">
 
       <button matRipple type="button" class="action-btn ml-auto" (click)="download()" matTooltip="Download">
         <img src="./assets/{{detailTopActionIcon}}" />
@@ -87,7 +88,6 @@
             <th>Gross</th>
             <th>Discount</th>
             <th>Patient Share</th>
-            <th>Policy Number</th>
             <th>Net</th>
             <th>Net VAT</th>
             <th>Correct Amount</th>
@@ -96,19 +96,73 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let claim of rejectedClaims">
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memeberId}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
-                  <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
-              </tr> -->
+          <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedStatuses">
+            <td class="row-click">{{claim.status}}</td>
+            <td class="row-click">{{claim.noOfClaims}}</td>
+            <td class="row-click">{{claim.gross}}</td>
+            <td class="row-click">{{claim.discount}}</td>
+            <td class="row-click">{{claim.patientShare}}</td>
+            <td class="row-click">{{claim.net}}</td>
+            <td class="row-click">{{claim.netVat}}</td>
+            <td class="row-click">{{claim.correctAmount}}</td>
+            <td class="row-click">{{claim.actualDeduct}}</td>
+            <td class="row-click">{{claim.actualPaid}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedAmount">
+            <td class="row-click">{{claim.status}}</td>
+            <td class="row-click">{{claim.noOfClaims}}</td>
+            <td class="row-click">{{claim.gross}}</td>
+            <td class="row-click">{{claim.discount}}</td>
+            <td class="row-click">{{claim.patientShare}}</td>
+            <td class="row-click">{{claim.net}}</td>
+            <td class="row-click">{{claim.netVat}}</td>
+            <td class="row-click">{{claim.correctAmount}}</td>
+            <td class="row-click">{{claim.actualDeduct}}</td>
+            <td class="row-click">{{claim.actualPaid}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedStatuses">
+            <td class="row-click">{{claim.status}}</td>
+            <td class="row-click">{{claim.noOfClaims}}</td>
+            <td class="row-click">{{claim.gross}}</td>
+            <td class="row-click">{{claim.discount}}</td>
+            <td class="row-click">{{claim.patientShare}}</td>
+            <td class="row-click">{{claim.net}}</td>
+            <td class="row-click">{{claim.netVat}}</td>
+            <td class="row-click">{{claim.correctAmount}}</td>
+            <td class="row-click">{{claim.actualDeduct}}</td>
+            <td class="row-click">{{claim.actualPaid}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedAmount">
+            <td class="row-click">{{claim.status}}</td>
+            <td class="row-click">{{claim.noOfClaims}}</td>
+            <td class="row-click">{{claim.gross}}</td>
+            <td class="row-click">{{claim.discount}}</td>
+            <td class="row-click">{{claim.patientShare}}</td>
+            <td class="row-click">{{claim.net}}</td>
+            <td class="row-click">{{claim.netVat}}</td>
+            <td class="row-click">{{claim.correctAmount}}</td>
+            <td class="row-click">{{claim.actualDeduct}}</td>
+            <td class="row-click">{{claim.actualPaid}}</td>
+          </tr>
+          <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount">
+            <td class="row-click">{{claim.status}}</td>
+            <td class="row-click">{{claim.noOfClaims}}</td>
+            <td class="row-click">{{claim.gross}}</td>
+            <td class="row-click">{{claim.discount}}</td>
+            <td class="row-click">{{claim.patientShare}}</td>
+            <td class="row-click">{{claim.net}}</td>
+            <td class="row-click">{{claim.netVat}}</td>
+            <td class="row-click">{{claim.correctAmount}}</td>
+            <td class="row-click">{{claim.actualDeduct}}</td>
+            <td class="row-click">{{claim.actualPaid}}</td>
+          </tr>
+          <tr>
+            <td colspan="10" class="p-0">
+              <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
+                class="claim-list-empty-state" message='No reports found!'>
+              </app-empty-state>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
