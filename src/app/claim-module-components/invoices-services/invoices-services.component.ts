@@ -67,14 +67,18 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDiscountUnit: 'SAR' | 'PERCENT';
       toothNumber: FormControl,
       netVatRate: FormControl,
+      netVatAmount: number;
       patientShareVatRate: FormControl,
+      patientShareVatAmount: number,
       priceCorrection: number,
       rejection: number,
       isOpen: boolean,
       serviceType: FormControl,
       daysOfSupply: FormControl,
       pbmServiceError: PbmServiceError[],
-      pbmServiceStatus: string
+      pbmServiceStatus: string,
+      gross: number,
+      net: number
     }[]
   }[] = [];
   expandedInvoice = -1;
@@ -145,6 +149,16 @@ export class InvoicesServicesComponent implements OnInit {
           this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
           this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
         }
+        this.departments = departments;
+        this.store.select(getClaim).subscribe(claim => {
+          claim.invoice.map((invoice, index) => {
+            this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
+          });
+        });
+
+        if (this.controllers.length == 0) {
+          this.addInvoice();
+        }
       });
     this.store.select(getDepartmentCode).subscribe(type => this.claimType = type);
     this.store.select(getVisitDate).subscribe(date => this.visitDate = date);
@@ -166,25 +180,14 @@ export class InvoicesServicesComponent implements OnInit {
         this.store.dispatch(selectGDPN({}));
       }
     });
-    this.store.select(getDepartments).subscribe(departments => {
-      this.departments = departments;
-      this.store.select(getClaim).subscribe(claim => {
-        claim.invoice.map((invoice, index) => {
-          this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
-        });
-      });
-
-      if (this.controllers.length == 0) {
-        this.addInvoice();
-      }
-    }).unsubscribe();
+    
 
     this.actions.pipe(
       ofType(saveInvoices_Services)
     ).subscribe(() => {
-      // if (this.expandedInvoice != -1) {
-      this.createInvoiceFromControl(this.selectedInvoiceIndex);
-      // }
+      for (let i = 0; i < this.controllers.length; i++) {
+        this.createInvoiceFromControl(i);
+      }
     });
 
     this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
@@ -240,7 +243,7 @@ export class InvoicesServicesComponent implements OnInit {
         if (service.serviceGDPN.discount != null)
           this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
         this.controllers[index].services[serviceIndex].serviceDiscountUnit =
-          service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
+          (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
 
         if (service.serviceGDPN.netVATrate != null) {
           this.controllers[index].services[serviceIndex].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
@@ -251,6 +254,9 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].netVatRate.setValue('');
         }
+        if (service.serviceGDPN.netVATamount != null)
+          this.controllers[index].services[serviceIndex].netVatAmount = service.serviceGDPN.netVATamount.value
+
         if (service.serviceGDPN.patientShare != null) {
           this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
         } else {
@@ -269,6 +275,14 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].patientShareVatRate.setValue('');
         }
+        if (service.serviceGDPN.patientShareVATamount != null)
+          this.controllers[index].services[serviceIndex].patientShareVatAmount = service.serviceGDPN.patientShareVATamount.value
+
+        if (service.serviceGDPN.net != null)
+          this.controllers[index].services[serviceIndex].net = service.serviceGDPN.net.value
+
+        if (service.serviceGDPN.gross != null)
+          this.controllers[index].services[serviceIndex].gross = service.serviceGDPN.gross.value
 
         if (service.serviceGDPN.priceCorrection != null) {
           this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
@@ -395,7 +409,9 @@ export class InvoicesServicesComponent implements OnInit {
       serviceDiscountUnit: 'PERCENT',
       toothNumber: new FormControl(),
       netVatRate: new FormControl(0),
+      netVatAmount: 0,
       patientShareVatRate: new FormControl(0),
+      patientShareVatAmount: 0,
       priceCorrection: 0,
       rejection: 0,
       isOpen: false,
@@ -404,7 +420,9 @@ export class InvoicesServicesComponent implements OnInit {
       acutalDeductedAmount: '',
       daysOfSupply: new FormControl(0),
       pbmServiceError: [],
-      pbmServiceStatus: ''
+      pbmServiceStatus: '',
+      net: 0,
+      gross: 0
     });
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
@@ -429,7 +447,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].quantity.disable();
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
-    this.controllers[i].services[j].serviceDiscountUnit = service.serviceGDPN.discount.type == 'PERCENT' ? 'PERCENT' : 'SAR';
+    this.controllers[i].services[j].serviceDiscountUnit = (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
     this.controllers[i].services[j].daysOfSupply.setValue(service.daysOfSupply);
     this.controllers[i].services[j].daysOfSupply.disable();
@@ -503,14 +521,14 @@ export class InvoicesServicesComponent implements OnInit {
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
     const GDPN = invoice.invoiceGDPN;
     GDPN.discount.value = invoice.service.map(service => {
-      if (service.serviceGDPN.discount.type == 'PERCENT') {
+      if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
         let discount =
           (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
         discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
         return discount;
-      } else {
+      } else if (service.serviceGDPN.discount != null) {
         return service.serviceGDPN.discount.value;
-      }
+      } else return 0;
     }).reduce((pre, cur) => pre + cur);
     GDPN.discount.type = 'SAR';
     GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
@@ -559,12 +577,18 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   calcGross(service) {
+    if (service.gross != null) {
+      return service.gross;
+    }
     let gross = service.unitPrice.value * service.quantity.value;
     gross = Number.parseFloat(gross.toPrecision(gross.toFixed().length + 2));
     return gross;
   }
 
   calcNet(service, gross?) {
+    if (service.net != null) {
+      return service.net;
+    }
     if (gross == null) {
       gross = this.calcGross(service);
     }
@@ -584,12 +608,18 @@ export class InvoicesServicesComponent implements OnInit {
     if (net == null) {
       net = this.calcNet(service);
     }
+    if (service.netVatAmount != null) {
+      return service.netVatAmount
+    }
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
     return netVat;
   }
 
   calcPatientVatRate(service) {
+    if (service.patientShareVatAmount != null) {
+      return service.patientShareVatAmount
+    }
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
     return patientShareVATamount;
@@ -684,7 +714,7 @@ export class InvoicesServicesComponent implements OnInit {
     this.emptyOptions = false;
     const query: string = this.searchServicesController.value;
     if (query != null && query != '') {
-      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId).subscribe(
+      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
@@ -765,5 +795,12 @@ export class InvoicesServicesComponent implements OnInit {
       console.log(err);
     });
 
+  }
+
+  _isInvalidDate(date: Date) {
+    if (date != null && !(date instanceof Date)) {
+      date = new Date(date);
+    }
+    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
   }
 }

@@ -94,7 +94,7 @@ const _claimReducer = createReducer(
                 departmentCode == pharmacyId) ? 'DENTAL_OPTICAL_PHARMACY' : 'INPATIENT_OUTPATIENT';
         const props: RetrievedClaimProps = {
 
-            claimDecisionGDPN: body[''],
+            claimDecisionGDPN: body['claimDecisionGDPN'],
             eligibilityCheck: body['eligibilityCheck'],
             lastSubmissionDate: body['lastSubmissionDate'],
             lastUpdateDate: body['lastUpdateDate'],
@@ -102,7 +102,7 @@ const _claimReducer = createReducer(
             paymentReference: body['paymentReference'],
             statusCode: body['statusCode'],
             statusDetail: body['statusDetail'],
-            payerbatchrefno:body['payerbatchrefno'],
+            payerbatchrefno: body['payerbatchrefno'],
 
 
         };
@@ -257,6 +257,15 @@ const _claimReducer = createReducer(
             member: {
                 ...state.claim.member,
                 memberID: memberId
+            }
+        }
+    })),
+    on(actions.updateAccCode, (state, { accCode }) => ({
+        ...state, claim: {
+            ...state.claim,
+            member: {
+                ...state.claim.member,
+                accCode: accCode
             }
         }
     })),

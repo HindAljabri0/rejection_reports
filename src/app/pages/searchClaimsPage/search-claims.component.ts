@@ -45,6 +45,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     navSpeed: 300,
     navText: ['', ''],
     margin: 14,
+    autoWidth: true,
     responsive: {
       0: {
         items: 3,
@@ -845,7 +846,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName,
           patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare,
-          discount: this.summaries[oldSummaryIndex].discount +claim.discount
+          discount: this.summaries[oldSummaryIndex].discount + claim.discount
         };
         window.setTimeout(() => {
           this.summaries = summaries;
@@ -1466,7 +1467,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if (event instanceof HttpResponse) {
         const body = event['body'];
         this.apiPBMValidationEnabled = body.value === "1" ? true : false;
-        this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        // this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        this.isPBMValidationVisible = this.apiPBMValidationEnabled
+          && (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase()
+            || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
@@ -1476,7 +1480,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   applyPBMValidation() {
     this.commen.loadingChanged.next(true);
     // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-    const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
+    // const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
+    const status = this.isPBMValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
     this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fpatientFileNo).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.commen.loadingChanged.next(false);

@@ -68,6 +68,7 @@ export const updatePayer = createAction('[ Claim Patient Info ] update payer', p
 export const updateVisitType = createAction('[ Claim Patient Info ] update visit type', props<{ visitType: string }>());
 export const updateNationality = createAction('[ Claim Patient Info ] update Nationality', props<{ nationality: string }>());
 export const updatePatientMemberId = createAction('[ Claim Patient Info ] update patient member id', props<{ memberId: string }>());
+export const updateAccCode = createAction('[ Claim Patient Info ] update patient account code', props<{ accCode: string }>());
 export const updateNationalId = createAction('[ Claim Patient Info ] update national id', props<{ nationalId: string }>());
 export const updatePolicyNum = createAction('[ Claim Patient Info ] update policy no', props<{ policyNo: string }>());
 export const updateApprovalNum = createAction('[ Claim Patient Info ] update approval no', props<{ approvalNo: string }>());
