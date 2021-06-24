@@ -8,9 +8,9 @@
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
             <ng-container
-                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">Number of Claims</p>
-                <h4 matTooltip="{{summaries.submittedClaims.data.totalClaims}} Claims">{{sharedServices.kFormatter(summaries.submittedClaims.data.totalClaims)}}
+                <h4 matTooltip="{{summaries.data.all_total}} Claims">{{sharedServices.kFormatter(summaries.data.all_total)}}
                     <small>Claims</small>
                 </h4>
                 <div class="chart-wrapper">
@@ -18,211 +18,323 @@
                     </canvas>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-under-processing" matTooltip="{{summaries.processingClaims.data.totalClaims}} Claims">
-                        {{sharedServices.kFormatter(summaries.processingClaims.data.totalClaims)}} <small>Claims</small>
+                    <div class="text-under-processing" matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_total)+getConvertfromStringToNumber(summaries.data.under_process_total)}} Claims">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_total)+getConvertfromStringToNumber(summaries.data.under_process_total))}} <small>Claims</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
-                        {{calculatePercetage(summaries.processingClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.outstanding_total , summaries.data.under_process_total,null,summaries.data.all_total)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.paidClaims.data.totalClaims}} Claims">
-                        {{sharedServices.kFormatter(summaries.paidClaims.data.totalClaims)}} <small>Claims</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_total}} Claims">
+                        {{sharedServices.kFormatter(summaries.data.paid_total)}} <small>Claims</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
-                        {{calculatePercetage(summaries.paidClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.paid_total,null,null, summaries.data.all_total)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.partiallyPaidClaims.data.totalClaims}} Claims">
-                        {{sharedServices.kFormatter(summaries.partiallyPaidClaims.data.totalClaims)}} <small>Claims</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_total}} Claims">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_total)}} <small>Claims</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
-                        {{calculatePercetage(summaries.partiallyPaidClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.partially_paid_total,null,null, summaries.data.all_total)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-rejected" matTooltip="{{summaries.rejectedClaims.data.totalClaims}} Claims">
-                        {{sharedServices.kFormatter(summaries.rejectedClaims.data.totalClaims)}} <small>Claims</small>
+                    <div class="text-rejected" matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_Total)+getConvertfromStringToNumber(summaries.data.invalid_Total)+getConvertfromStringToNumber(summaries.data.rejected_Total)}} Claims">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_Total)+getConvertfromStringToNumber(summaries.data.invalid_Total)+getConvertfromStringToNumber(summaries.data.rejected_Total))}} <small>Claims</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
-                        {{calculatePercetage(summaries.rejectedClaims.data.totalClaims,summaries.submittedClaims.data.totalClaims)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.returend_Total,summaries.data.invalid_Total,summaries.data.rejected_Total,summaries.data.all_total)}} <small>%</small>
                     </div>
                 </div>
             </ng-container>
             <div class="loader-wrapper"
-                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
             <div class="error"
-                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+                *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
             <ng-container
-                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                *ngIf="!summaries.loading&& !summaries.error">
                 <p class="title">Gross Amount</p>
-                <h4 matTooltip="{{summaries.submittedClaims.data.gross}} SR">{{sharedServices.kFormatter(summaries.submittedClaims.data.gross)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_gross}} SR">{{sharedServices.kFormatter(summaries.data.all_gross)}} <small>SR</small></h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="grossChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
                     </canvas>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-under-processing" matTooltip="{{summaries.processingClaims.data.gross}} SR">
-                        {{sharedServices.kFormatter(summaries.processingClaims.data.gross)}} <small>SR</small>
+                    <div class="text-under-processing" matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_gross)+getConvertfromStringToNumber(summaries.data.under_process_gross)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_gross)+getConvertfromStringToNumber(summaries.data.under_process_gross))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
-                        {{calculatePercetage(summaries.processingClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.outstanding_gross , summaries.data.under_process_gross,null,summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.paidClaims.data.gross}} SR">
-                        {{sharedServices.kFormatter(summaries.paidClaims.data.gross)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_gross}} SR">
+                        {{sharedServices.kFormatter(summaries.data.paid_gross)}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
-                        {{calculatePercetage(summaries.paidClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.paid_gross,null,null, summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.partiallyPaidClaims.data.gross}} SR">
-                        {{sharedServices.kFormatter(summaries.partiallyPaidClaims.data.gross)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_gross}} SR">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_gross)}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
-                        {{calculatePercetage(summaries.partiallyPaidClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.partially_paid_gross,null,null, summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-rejected" matTooltip="{{summaries.rejectedClaims.data.gross}} SR">
-                        {{sharedServices.kFormatter(summaries.rejectedClaims.data.gross)}} <small>SR</small>
+                    <div class="text-rejected" matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_gross)+getConvertfromStringToNumber(summaries.data.invalid_gross)+getConvertfromStringToNumber(summaries.data.rejected_gross)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_gross)+getConvertfromStringToNumber(summaries.data.invalid_gross)+getConvertfromStringToNumber(summaries.data.rejected_gross))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
-                        {{calculatePercetage(summaries.rejectedClaims.data.gross,summaries.submittedClaims.data.gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.returend_gross,summaries.data.invalid_gross,summaries.data.rejected_gross,summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
             </ng-container>
             <div class="loader-wrapper"
-                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
             <div class="error"
-                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+                *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
             <ng-container
-                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                *ngIf="!summaries.loading && !summaries.error">
                 <p class="title">Net Amount</p>
-                <h4 matTooltip="{{summaries.submittedClaims.data.totalNetAmount}} SR">{{sharedServices.kFormatter(summaries.submittedClaims.data.totalNetAmount)}} <small>SR</small>
+                <h4 matTooltip="{{summaries.data.all_netAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>SR</small>
                 </h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="netChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
                     </canvas>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-under-processing" matTooltip="{{summaries.processingClaims.data.totalNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.processingClaims.data.totalNetAmount)}} <small>SR</small>
+                    <div class="text-under-processing" matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_netAmount)+getConvertfromStringToNumber(summaries.data.under_process_netAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_netAmount)+getConvertfromStringToNumber(summaries.data.under_process_netAmount))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
-                        {{calculatePercetage(summaries.processingClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.outstanding_netAmount , summaries.data.under_process_netAmount,null,summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.paidClaims.data.totalNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.paidClaims.data.totalNetAmount)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_netAmount}} SR">
+                        {{sharedServices.kFormatter(summaries.data.paid_netAmount)}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
-                        {{calculatePercetage(summaries.paidClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.paid_netAmount,null,null, summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.partiallyPaidClaims.data.totalNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.partiallyPaidClaims.data.totalNetAmount)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_netAmount}} SR">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_netAmount)}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
-                        {{calculatePercetage(summaries.partiallyPaidClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.partially_paid_netAmount,null,null, summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-rejected" matTooltip="{{summaries.rejectedClaims.data.totalNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.rejectedClaims.data.totalNetAmount)}} <small>SR</small>
+                    <div class="text-rejected" matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_netAmount)+getConvertfromStringToNumber(summaries.data.invalid_netAmount)+getConvertfromStringToNumber(summaries.data.rejected_netAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_netAmount)+getConvertfromStringToNumber(summaries.data.invalid_netAmount)+getConvertfromStringToNumber(summaries.data.rejected_netAmount))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
-                        {{calculatePercetage(summaries.rejectedClaims.data.totalNetAmount,summaries.submittedClaims.data.totalNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.returend_netAmount,summaries.data.invalid_netAmount,summaries.data.rejected_netAmount,summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
             </ng-container>
             <div class="loader-wrapper"
-                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
             <div class="error"
-                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+                *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
             <ng-container
-                *ngIf="!summaries.submittedClaims.loading && !summaries.paidClaims.loading && !summaries.partiallyPaidClaims.loading && !summaries.rejectedClaims.loading && !summaries.processingClaims.loading && !summaries.submittedClaims.error && !summaries.paidClaims.error && !summaries.partiallyPaidClaims.error && !summaries.rejectedClaims.error && !summaries.processingClaims.error">
+                *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">VAT Amount</p>
-                <h4 matTooltip="{{summaries.submittedClaims.data.totalVatNetAmount}} SR">{{sharedServices.kFormatter(summaries.submittedClaims.data.totalVatNetAmount)}}
+                <h4 matTooltip="{{summaries.data.all_VatAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_VatAmount)}}
                     <small>SR</small></h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="vatChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
                     </canvas>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-under-processing" matTooltip="{{summaries.processingClaims.data.totalVatNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.processingClaims.data.totalVatNetAmount)}} <small>SR</small>
+                    <div class="text-under-processing" matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_VatAmount)+getConvertfromStringToNumber(summaries.data.under_process_VatAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_VatAmount)+getConvertfromStringToNumber(summaries.data.under_process_VatAmount))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
-                        {{calculatePercetage(summaries.processingClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.outstanding_VatAmount , summaries.data.under_process_VatAmount,null,summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.paidClaims.data.totalVatNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.paidClaims.data.totalVatNetAmount)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_VatAmount}} SR">
+                        {{sharedServices.kFormatter(summaries.data.paid_VatAmount)}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
-                        {{calculatePercetage(summaries.paidClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.paid_VatAmount,null,null, summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.partiallyPaidClaims.data.totalVatNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.partiallyPaidClaims.data.totalVatNetAmount)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_VatAmount}} SR">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_VatAmount)}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
-                        {{calculatePercetage(summaries.partiallyPaidClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.partially_paid_VatAmount,null,null, summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-rejected" matTooltip="{{summaries.rejectedClaims.data.totalVatNetAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.rejectedClaims.data.totalVatNetAmount)}} <small>SR</small>
+                    <div class="text-rejected" matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_VatAmount)+getConvertfromStringToNumber(summaries.data.invalid_VatAmount)+getConvertfromStringToNumber(summaries.data.rejected_VatAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_VatAmount)+getConvertfromStringToNumber(summaries.data.invalid_VatAmount)+getConvertfromStringToNumber(summaries.data.rejected_VatAmount))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
-                        {{calculatePercetage(summaries.rejectedClaims.data.totalVatNetAmount,summaries.submittedClaims.data.totalVatNetAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.returend_VatAmount,summaries.data.invalid_VatAmount,summaries.data.rejected_VatAmount,summaries.data.all_total)}} <small>%</small>
                     </div>
                 </div>
             </ng-container>
             <div class="loader-wrapper"
-                *ngIf="summaries.submittedClaims.loading || summaries.paidClaims.loading || summaries.partiallyPaidClaims.loading || summaries.rejectedClaims.loading || summaries.processingClaims.loading">
+                *ngIf="summaries.loading ">
                 <mat-spinner diameter="40" color="primary">
                 </mat-spinner>
             </div>
             <div class="error"
-                *ngIf="summaries.submittedClaims.error || summaries.paidClaims.error || summaries.partiallyPaidClaims.error || summaries.rejectedClaims.error || summaries.processingClaims.error">
-                <p class="error-text">Could not get data from the server. Please try again later.</p>
+                *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
             </div>
         </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container
+                *ngIf="!summaries.loading  && !summaries.error">
+                <p class="title">Patient Share</p>
+                <h4 matTooltip="{{summaries.data.all_Patientshare}} SR">{{sharedServices.kFormatter(summaries.data.all_Patientshare)}}
+                    <small>SR</small></h4>
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="vatChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-under-processing" matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_Patientshare)+getConvertfromStringToNumber(summaries.data.under_process_Patientshare)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_Patientshare)+getConvertfromStringToNumber(summaries.data.under_process_Patientshare))}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-under-processing">
+                        {{PercentageCalculator(summaries.data.outstanding_Patientshare , summaries.data.under_process_Patientshare,null,summaries.data.all_Patientshare)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_Patientshare}} SR">
+                        {{sharedServices.kFormatter(summaries.data.paid_Patientshare)}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-paid">
+                        {{PercentageCalculator(summaries.data.paid_Patientshare,null,null, summaries.data.all_Patientshare)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_Patientshare}} SR">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_Patientshare)}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-partially-paid">
+                        {{PercentageCalculator(summaries.data.partially_paid_Patientshare,null,null, summaries.data.all_Patientshare)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-rejected" matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_Patientshare)+getConvertfromStringToNumber(summaries.data.invalid_Patientshare)+getConvertfromStringToNumber(summaries.data.rejected_Patientshare)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_Patientshare)+getConvertfromStringToNumber(summaries.data.invalid_Patientshare)+getConvertfromStringToNumber(summaries.data.rejected_Patientshare))}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected">
+                        {{PercentageCalculator(summaries.data.returend_Patientshare,summaries.data.invalid_Patientshare,summaries.data.rejected_Patientshare,summaries.data.all_VatAmount)}} <small>%</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper"
+                *ngIf="summaries.loading ">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error"
+                *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
+            </div>
+        </div> 
+    </div>
+
+    
+    <div class="col-lg-3 col-6">
+        <div class="dashboard-claim-card">
+            <ng-container
+                *ngIf="!summaries.loading  && !summaries.error">
+                <p class="title">Discount</p>
+                <h4 matTooltip="{{summaries.data.all_disCount}} SR">{{sharedServices.kFormatter(summaries.data.all_disCount)}}
+                    <small>SR</small></h4>
+                <div class="chart-wrapper">
+                    <canvas baseChart [datasets]="vatChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                    </canvas>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-under-processing" matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_disCount)+getConvertfromStringToNumber(summaries.data.under_process_disCount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_disCount)+getConvertfromStringToNumber(summaries.data.under_process_disCount))}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-under-processing">
+                        {{PercentageCalculator(summaries.data.outstanding_disCount , summaries.data.under_process_disCount,null,summaries.data.all_disCount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_disCount}} SR">
+                        {{sharedServices.kFormatter(summaries.data.paid_disCount)}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-paid">
+                        {{PercentageCalculator(summaries.data.paid_disCount,null,null, summaries.data.all_disCount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_disCount}} SR">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_disCount)}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-partially-paid">
+                        {{PercentageCalculator(summaries.data.partially_paid_disCount,null,null, summaries.data.all_disCount)}} <small>%</small>
+                    </div>
+                </div>
+                <div class="statistics d-flex">
+                    <div class="text-rejected" matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_disCount)+getConvertfromStringToNumber(summaries.data.invalid_disCount)+getConvertfromStringToNumber(summaries.data.rejected_disCount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_disCount)+getConvertfromStringToNumber(summaries.data.invalid_disCount)+getConvertfromStringToNumber(summaries.data.rejected_disCount))}} <small>SR</small>
+                    </div>
+                    <div class="ml-auto pl-2 text-right text-rejected">
+                        {{PercentageCalculator(summaries.data.returend_disCount,summaries.data.invalid_disCount,summaries.data.rejected_disCount,summaries.data.all_disCount)}} <small>%</small>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="loader-wrapper"
+                *ngIf="summaries.loading ">
+                <mat-spinner diameter="40" color="primary">
+                </mat-spinner>
+            </div>
+            <div class="error"
+                *ngIf="summaries.error ">
+                <p class="error-text">{{summaries.error}}</p>
+            </div>
+        </div> 
     </div>
 </div>

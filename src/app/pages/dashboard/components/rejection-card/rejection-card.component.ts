@@ -1,9 +1,8 @@
-import { getDepartments } from './../../store/dashboard.reducer';
+import { getDepartments, getSubmittedClaims } from './../../store/dashboard.reducer';
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { MultiDataSet, Label, Color } from 'ng2-charts';
 import { MemoizedSelector, DefaultProjectorFn, Store } from '@ngrx/store';
-import { getRejectedClaims } from '../../store/dashboard.reducer';
 import { RejectionCardData } from './rejectionCardData';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -90,8 +89,8 @@ export class RejectionCardComponent implements OnInit {
       }
     }
     if (this.data.rejectionBy != 'Service') {
-      this.store.select(getRejectedClaims).subscribe(summary => {
-        this.rejectionByPayerTotalClaims = summary.data['totalClaims'];
+      this.store.select(getSubmittedClaims).subscribe(summary => {
+        this.rejectionByPayerTotalClaims = this.getConvertfromStringToNumber(summary.data.returend_netAmount)+this.getConvertfromStringToNumber(summary.data.invalid_netAmount)+this.getConvertfromStringToNumber(summary.data.rejected_netAmount);
         const othersValue = this.rejectionByPayerTotalClaims - this.data.topFive
           .map(item => item.total)
           .reduce((item1, item2) => item1 + item2);
@@ -136,6 +135,18 @@ export class RejectionCardComponent implements OnInit {
     }
     return code;
   }
+
+  getConvertfromStringToNumber(value:string){
+     
+    if(value!=null||value!=''){
+     return(Number(value))
+    }else{
+     return 0;
+    }
+
+
+   
+ }
 
 }
 
