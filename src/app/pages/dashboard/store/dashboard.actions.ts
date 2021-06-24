@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { SearchCriteria } from './dashboard.reducer';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
+import { ClaimsSummary } from 'src/app/models/ClaimsSummary';
 
 export const getDepartmentNames = createAction('[ Dashboard ] get department name');
 
@@ -13,32 +14,18 @@ export const setCardIsLoading = createAction('[ Dashboard ] set one card loading
   props<{ name: DashboardCardNames, loading: boolean }>());
 
 export const setCardSummary = createAction('[ Dashboard ] set one card summary',
-  props<{ name: DashboardCardNames, data: SearchStatusSummary | RejectionCardData }>());
+  props<{ name: DashboardCardNames, data: ClaimsSummary | RejectionCardData }>());
 
 export const setCardError = createAction('[ Dashboard ] set one card error', props<{ name: DashboardCardNames, error: string }>());
 
 export const dashboardCardNames: DashboardCardNames[] = [
   'notSubmittedClaims',
   'submittedClaims',
-  'acceptedClaims',
-  'notAcceptedClaims',
-  'underSubmissionClaims',
-  'paidClaims',
-  'partiallyPaidClaims',
-  'rejectedClaims',
-  'underProcessingClaims',
   'rejectionByDepartment',
   'rejectionByDoctor',
   'rejectionByService'];
 export type DashboardCardNames = 'notSubmittedClaims' |
   'submittedClaims' |
-  'acceptedClaims' |
-  'notAcceptedClaims' |
-  'underSubmissionClaims' |
-  'paidClaims' |
-  'partiallyPaidClaims' |
-  'rejectedClaims' |
-  'underProcessingClaims' |
   'rejectionByDepartment' |
   'rejectionByDoctor' |
   'rejectionByService';
