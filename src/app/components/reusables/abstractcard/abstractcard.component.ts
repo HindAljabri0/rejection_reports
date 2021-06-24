@@ -3,7 +3,7 @@ import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-abstractcard',
   templateUrl: './abstractcard.component.html',
-  styleUrls: ['./abstractcard.component.css']
+  styles: ['']
 })
 export class AbstractcardComponent {
 
