@@ -167,24 +167,24 @@
                                                             <div class="col-auto flex-grow-1">
                                                                 <div class="statistic-box d-flex">
                                                                     <div>
-                                                                        <label>Net Amount</label>
-                                                                        <h3>{{calcNet(controllers[i].services[j])}}</h3>
-                                                                    </div>
-                                                                    <div class="text-right ml-auto pl-2">
-                                                                        <label>Net Vat</label>
-                                                                        <h3>{{calcNetVat(controllers[i].services[j])}}</h3>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto flex-grow-1">
-                                                                <div class="statistic-box d-flex">
-                                                                    <div>
                                                                         <label>PSh Amount</label>
                                                                         <h3>{{service.patientShare.value}}</h3>
                                                                     </div>
                                                                     <div class="text-right ml-auto pl-2">
                                                                         <label>PSh Vat Amount</label>
                                                                         <h3>{{calcPatientVatRate(controllers[i].services[j])}}</h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-auto flex-grow-1">
+                                                                <div class="statistic-box d-flex">
+                                                                    <div>
+                                                                        <label>Net Amount</label>
+                                                                        <h3>{{calcNet(controllers[i].services[j])}}</h3>
+                                                                    </div>
+                                                                    <div class="text-right ml-auto pl-2">
+                                                                        <label>Net Vat</label>
+                                                                        <h3>{{calcNetVat(controllers[i].services[j])}}</h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
