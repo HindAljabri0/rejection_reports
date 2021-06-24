@@ -2,6 +2,34 @@
     <div class="block-header has-border">
         <p>Accounts Receivables</p>
     </div>
+    <div class="block-filter-panel">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="row small-gutter">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Year</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="">
+                                    <mat-option value="">Select Year</mat-option>
+                                    <mat-option value="2021">2021</mat-option>
+                                    <mat-option value="2020">2020</mat-option>
+                                    <mat-option value="2019">2019</mat-option>
+                                    <mat-option value="2018">2018</mat-option>
+                                    <mat-option value="2017">2017</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-auto align-self-end">
+                        <div class="form-group">
+                            <button type="button" mat-flat-button color="primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
@@ -66,7 +94,4 @@
             </button>
         </div>
     </div>
-    <button mat-fab color="primary" class="page-fab" (click)="openAddMonthDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>

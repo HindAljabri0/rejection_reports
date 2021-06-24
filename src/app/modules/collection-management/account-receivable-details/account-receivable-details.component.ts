@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { SharedServices } from 'src/app/services/shared.services';
-import { AccountReceivableAddBatchComponent } from '../account-receivable-add-batch/account-receivable-add-batch.component';
 import { AccountReceivableAddPaymentComponent } from '../account-receivable-add-payment/account-receivable-add-payment.component';
 
 @Component({
@@ -39,10 +38,6 @@ export class AccountReceivableDetailsComponent implements OnInit {
   constructor(public dialog: MatDialog, public sharedService: SharedServices) { }
 
   ngOnInit() {
-  }
-
-  openAddBatchDialog() {
-    let dialogRef = this.dialog.open(AccountReceivableAddBatchComponent, { panelClass: ['primary-dialog'], autoFocus: false });
   }
 
   openAddPaymentDialog(event) {
