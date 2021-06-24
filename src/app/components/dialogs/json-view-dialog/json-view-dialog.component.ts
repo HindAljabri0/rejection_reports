@@ -12,11 +12,15 @@ export class JsonViewDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<JsonViewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {objectId:string, json:string},
+    @Inject(MAT_DIALOG_DATA) public data: {title:string, json:string},
   ) { }
 
   ngOnInit() {
     this.json = this.getAsObject();
+  }
+
+  copy() {
+    
   }
 
   closeDialog() {

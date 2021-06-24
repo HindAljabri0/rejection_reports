@@ -36,8 +36,8 @@
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDATE', invoice.invoice.invoiceId) "
-                            [matTooltip]="getFieldError('INVDATE', invoice.invoice.invoiceId)">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDATE', invoice?.invoice?.invoiceId) "
+                            [matTooltip]="getFieldError('INVDATE', invoice?.invoice?.invoiceId)">
                             <div class="date-picker">
                                 <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
                                 <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
@@ -46,14 +46,14 @@
                         </div>
                     </td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVOICENUM', invoice.invoice.invoiceId) || fieldHasError('INVOICENUM', i)"
-                            [matTooltip]="getFieldError('INVOICENUM', invoice.invoice.invoiceId) || getFieldError('INVOICENUM', i)">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVOICENUM', invoice?.invoice?.invoiceId) || fieldHasError('INVOICENUM', i)"
+                            [matTooltip]="getFieldError('INVOICENUM', invoice?.invoice?.invoiceId) || getFieldError('INVOICENUM', i)">
                             <input class="form-control" placeholder="Enter invoice number" type="text" [formControl]="invoice.invoiceNumber">
                         </div>
                     </td>
                     <td width="200">
-                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDEP', invoice.invoice.invoiceId)"
-                            [matTooltip]="getFieldError('INVDEP', invoice.invoice.invoiceId)">
+                        <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDEP', invoice?.invoice?.invoiceId)"
+                            [matTooltip]="getFieldError('INVDEP', invoice?.invoice?.invoiceId)">
                             <mat-form-field class="form-control custom-select-control">
                                 <!-- [value]="controllers[i].invoice.invoiceDepartment" -->
                                 <!-- [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED' && pageMode !== 'EDIT'" -->
@@ -64,8 +64,9 @@
                             </mat-form-field>
                         </div>
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.net.value}}</td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.invoice.invoiceGDPN.netVATamount.value}}
+                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice?.invoice?.invoiceGDPN?.net?.value}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i)">
+                        {{invoice?.invoice?.invoiceGDPN?.netVATamount?.value}}
                     </td>
                     <td class="row-click" (click)="toggleInvoice(i)">{{invoice.services.length}}</td>
                     <td>
@@ -113,18 +114,26 @@
                                         <ng-container *ngFor="let service of invoice.services; let j = index">
                                             <tr [class.text-danger]="serviceHasErrors(i, j)">
                                                 <td class="text-primary text-center row-click" (click)="toggleServiceExpansion($event,i,j)">
-                                                    <mat-icon *ngIf="!service.isOpen" class="size-21">chevron_right</mat-icon>
-                                                    <mat-icon *ngIf="service.isOpen" class="size-21">expand_more</mat-icon>
+                                                    <mat-icon *ngIf="!service.isOpen" class="size-21">chevron_right
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="service.isOpen" class="size-21">expand_more
+                                                    </mat-icon>
                                                 </td>
                                                 <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
                                                     <mat-icon *ngIf="serviceHasErrors(i, j)">error</mat-icon>
                                                 </td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">{{(j+1)}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">{{service.serviceCode.value}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">{{service.serviceDate.value| date:"dd/MM/yyyy"}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">{{calcNet(controllers[i].services[j])}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">{{calcNetVat(controllers[i].services[j])}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">{{calcGross(controllers[i].services[j])}}</td>
+                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                    {{(j+1)}}</td>
+                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                    {{service.serviceCode.value}}</td>
+                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                    {{service.serviceDate.value| date:"dd/MM/yyyy"}}</td>
+                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                    {{calcNet(controllers[i].services[j])}}</td>
+                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                    {{calcNetVat(controllers[i].services[j])}}</td>
+                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                    {{calcGross(controllers[i].services[j])}}</td>
                                                 <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
                                                     <span *ngIf="service.statusCode != null"
                                                         class="semibold text-{{getStatusColor(service.statusCode)}}">{{getStatusText(service.statusCode)}}</span>
@@ -133,7 +142,8 @@
                                                     <ng-container *ngIf="pageMode != 'VIEW'">
                                                         <a href="#" class="primary-link" title="Select a retrieved service"
                                                             *ngIf="pageMode == 'CREATE_FROM_RETRIEVED' && !service.retrieved && j == expandedService"
-                                                            (click)="onSelectRetrievedServiceClick($event, i, j)">Select a
+                                                            (click)="onSelectRetrievedServiceClick($event, i, j)">Select
+                                                            a
                                                             retrieved service</a>
                                                     </ng-container>
                                                 </td>
@@ -231,7 +241,8 @@
                                                             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                                                 <div class="form-group" [class.has-error]="fieldHasError('SERVDES', service.serviceId+'')"
                                                                     [matTooltip]="getFieldError('SERVDES', service.serviceId+'')">
-                                                                    <label class="control-label">Service Description<span class="asterisk">*</span></label>
+                                                                    <label class="control-label">Service
+                                                                        Description<span class="asterisk">*</span></label>
                                                                     <input class="form-control" placeholder="Enter service description" [formControl]="service.serviceDescription"
                                                                         type="text">
                                                                 </div>
@@ -243,7 +254,8 @@
                                                                     <div class="date-picker">
                                                                         <input [matDatepicker]="picker" class="form-control" placeholder="Select service date"
                                                                             [formControl]="service.serviceDate">
-                                                                        <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                                                                        <mat-datepicker-toggle [for]="picker">
+                                                                        </mat-datepicker-toggle>
                                                                         <mat-datepicker #picker></mat-datepicker>
                                                                     </div>
                                                                 </div>
@@ -308,7 +320,8 @@
                                                             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
                                                                 <div class="form-group" [class.has-error]="fieldHasError('INVGDPNPATSHAVATAMTVAL', service.serviceId+'')"
                                                                     [matTooltip]="getFieldError('INVGDPNPATSHAVATAMTVAL', service.serviceId+'')">
-                                                                    <label class="control-label">Patient Share Vat Rate<span class="asterisk">*</span></label>
+                                                                    <label class="control-label">Patient Share Vat
+                                                                        Rate<span class="asterisk">*</span></label>
                                                                     <div class="input-group">
                                                                         <input class="form-control" placeholder="Enter patient share vat rate" type="number"
                                                                             (change)="service.patientShareVatAmount = null" [formControl]="service.patientShareVatRate">
@@ -348,7 +361,8 @@
                                                             <div class="col-xxl-8 col-xl-9 col-lg-8" *ngIf="service.pbmServiceError!==null">
                                                                 <div class="inline-labelled-text">
                                                                     <label>PBM Comments</label>
-                                                                    <p *ngFor="let item of service.pbmServiceError">{{item.errorCode}} :
+                                                                    <p *ngFor="let item of service.pbmServiceError">
+                                                                        {{item.errorCode}} :
                                                                         {{item.errorDescription}}</p>
                                                                 </div>
                                                             </div>
