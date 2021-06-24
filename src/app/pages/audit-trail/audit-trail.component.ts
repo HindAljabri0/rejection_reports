@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { AuditLog } from 'src/app/models/auditLog';
 import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
+import { MatDialog } from '@angular/material';
+import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
 
 @Component({
   selector: 'app-audit-trail',
@@ -29,7 +31,7 @@ export class AuditTrailComponent implements OnInit {
 
   watchLogsSubscription: Subscription;
 
-  constructor(private auditTrailService: AuditTrailService, private commenService: SharedServices) {
+  constructor(private auditTrailService: AuditTrailService, private commenService: SharedServices, private dialogService: MatDialog) {
   }
 
   ngOnInit() {
@@ -165,6 +167,16 @@ export class AuditTrailComponent implements OnInit {
       eventTypeMatches = this.exampleFilterLog.eventType.replace('AuditLogType', '') == value.eventType;
     }
     return objectIdMatches && userIdMatches && providerIdMatches && eventTypeMatches;
+  }
+
+  viewJSON(objectId:string, json:string){
+    this.dialogService.open(JsonViewDialogComponent, {
+      data: {
+        title: `JSON of Claim [${objectId}]` ,
+        json: json
+      },
+      width: '70%'
+    });
   }
 
   get isFiltered() {

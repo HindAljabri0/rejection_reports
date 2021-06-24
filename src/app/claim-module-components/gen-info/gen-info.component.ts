@@ -30,7 +30,8 @@ import {
   updatePhysicianCategory,
   updatePhysicianName,
   updatePageType,
-  updateDepartment
+  updateDepartment,
+  updateAccCode
 } from '../store/claim.actions';
 import {
   getDepartmentCode,
@@ -80,6 +81,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   significantSignController: FormControl = new FormControl();
   commReportController: FormControl = new FormControl();
   eligibilityNumController: FormControl = new FormControl();
+  accCodeController: FormControl = new FormControl();
   selectedCaseType: string;
   isCaceTypeEnabled = true;
   radiologyReportController: FormControl = new FormControl();
@@ -293,6 +295,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.approvalNumController.setValue(claim.claimIdentities.approvalNumber);
     this.policyNumController.setValue(claim.member.policyNumber);
     this.memberIdController.setValue(claim.member.memberID);
+    this.accCodeController.setValue(claim.member.accCode);
     this.planTypeController.setValue(claim.member.planType);
     this.setInitialValueOfNationality();
 
@@ -377,12 +380,14 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     };
     if (allowEdit) {
       this.memberIdController.enable();
+      this.accCodeController.enable();
       this.policyNumController.enable();
       this.nationalIdController.enable();
       this.approvalNumController.enable();
       this.planTypeController.enable();
     } else {
       this.memberIdController.disable();
+      this.accCodeController.disable();
       this.policyNumController.disable();
       this.nationalIdController.disable();
       this.approvalNumController.disable();
@@ -391,6 +396,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     if (enableForNulls) {
       if (this.isControlNull(this.memberIdController)) {
         this.memberIdController.enable();
+      }
+      if (this.isControlNull(this.accCodeController)) {
+        this.accCodeController.enable();
       }
       if (this.isControlNull(this.policyNumController)) {
         this.policyNumController.enable();
@@ -428,7 +436,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     switch (field) {
       case ('claimDate'):
         if (this.claimDateController.value != null)
-          this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value ) }));
+          this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
         else
           this.store.dispatch(updateClaimDate({ claimDate: null }));
         break;
@@ -481,6 +489,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         break;
       case 'memberId':
         this.store.dispatch(updatePatientMemberId({ memberId: this.memberIdController.value }));
+        break;
+      case 'accCode':
+        this.store.dispatch(updateAccCode({ accCode: this.accCodeController.value }));
         break;
       case 'policyNum':
         this.store.dispatch(updatePolicyNum({ policyNo: this.policyNumController.value }));

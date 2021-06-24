@@ -216,6 +216,12 @@
                 class="form-control">
         </div>
     </div>
+    <div class="col">
+        <div class="form-group" [class.has-error]="fieldHasError('ACCCODE')" [matTooltip]="getFieldError('ACCCODE')">
+            <label class="control-label">Account Code</label>
+            <input class="form-control" placeholder="Enter account code" type="text" [formControl]="accCodeController" (change)="updateClaim('accCode')" required>
+        </div>
+    </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
         <div class="form-group" [class.has-error]="fieldHasError('CASETYP')" [matTooltip]="getFieldError('CASETYP')">
             <label class="control-label">Case Type</label>

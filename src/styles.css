@@ -525,7 +525,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog .dialog-title{color: #3060AA;font-weight: 500;padding-bottom: 24px;}
 .primary-dialog-header{padding: 16px;color: #3060AA;font-weight: 500;display: flex;}
 .primary-dialog-header .dialog-close{height: 40px;width: 40px;background: url("./assets/ic-close.svg") center no-repeat;background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px auto;border:0;}
+.primary-dialog-header .dialog-copy{height: 40px;width: 40px;color: #3060AA;background:transparent; background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px 10px;border:0;}
 .primary-dialog-header .dialog-close:hover,.primary-dialog-header .dialog-close:focus,.primary-dialog-header .dialog-close:active{opacity: 1;}
+.primary-dialog-header .dialog-copy:hover,.primary-dialog-header .dialog-copy:focus,.primary-dialog-header .dialog-copy:active{opacity: 1;}
 .primary-dialog-footer,.primary-dialog-body{padding: 16px;}
 .primary-dialog-body .form-group{margin-bottom: 16px;}
 .primary-dialog-header.has-border{border-bottom:1px solid #e1e1e1;}
@@ -1077,6 +1079,15 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* box
 --------------------------------------------------------------------------------------------------------*/
 .box{padding: 14px;border:1px solid #bebebe;border-radius: 6px;}
+
+/* alert
+--------------------------------------------------------------------------------------------------------*/
+.alert{padding: 10px 14px;border:0;margin-bottom: 14px;display: flex;background: #f3f3f3;border-radius: 6px;}
+.alert>span{align-self: center;-ms-flex-item-align: center;}
+.alert>.mat-icon{flex-shrink: 0;flex-basis: 24px;flex-grow: 0;max-width: 24px;margin-right: 8px;}
+.alert.info{background-color: #e6ecf5;color: #3060AA;}
+.alert.success{background-color: #edf9e4;color: #67CD23;}
+.alert.danger{background-color: #f9e6e6;color: #CC2F2F;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

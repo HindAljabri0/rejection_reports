@@ -59,68 +59,70 @@
         </div>
     </form>
     <div class="progress-report-wrapper">
-        <div class="left-block" *ngIf="percenatgeChartData.length>0">
-            <div class="table-responsive">
+        <div class="right-block full-width" *ngIf="percenatgeChartData.length>0">
+            <div class="chart-wrapper">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                    [chartType]="barChartType">
+                </canvas>
+            </div>
+            <div class="table-responsive pt-2">
                 <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
                     <thead>
                         <tr>
                             <th>Quarters</th>
-                            <th>{{firstYear}}</th>
-                            <th>{{secondYear}}</th>
+                            <th>Quarter 1</th>
+                            <th>Quarter 2</th>
+                            <th>Quarter 3</th>
+                            <th>Quarter 4</th>
+                            <th>Sum of total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="align-middle medium" *ngFor="let item of quarterData.firstQuarter;let i=index">
-                            <th class="header-cell">Quarter {{i+1}}</th>
-                            <td>{{item}} SR</td>
-                            <td>{{quarterData.secondQuarter[i]}} SR</td>
+
+                        <tr class="align-middle medium">
+                            <th class="header-cell">{{firstYear}}</th>
+                            <td *ngFor="let item of quarterData.firstQuarter">{{item}} SR</td>
+                            <td>{{quarterData.firstQuaterSumOfTotal}} SR</td>
                         </tr>
 
                         <tr class="align-middle medium">
-                            <th class="header-cell">Sum of total</th>
-                            <td>{{quarterData.firstQuaterSumOfTotal}} SR</td>
+                            <th class="header-cell">{{secondYear}}</th>
+                            <td *ngFor="let item of quarterData.secondQuarter">{{item}} SR</td>
                             <td>{{quarterData.secondQuaterSumOfTotal}} SR</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="right-block" *ngIf="percenatgeChartData.length>0">
-            <div class="chart-wrapper">
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                    [chartType]="barChartType">
-                </canvas>
+            <div class="table-responsive pt-2">
+                <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>{{diffrenceLableName}}</th>
+                            <th *ngFor="let item of percenatgeChartData">{{item.label}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="align-middle medium">
+                            <th class="header-cell">Difference</th>
+                            <ng-container *ngFor="let item of percenatgeChartData">
+                                <td *ngIf="item.value===Rate.Equal">{{item.data}}%</td>
+                                <td class="text-success" *ngIf="item.value===Rate.Up">
+                                    <mat-icon>trending_up</mat-icon><br>{{item.data}}%
+                                </td>
+                                <td class="text-danger" *ngIf="item.value===Rate.Down">
+                                    <mat-icon>trending_down</mat-icon><br>{{item.data}}%
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="right-block full-width" *ngIf="percenatgeChartData.length===0">
             <app-empty-state [message]="getEmptyStateMessage()" icon="ic-empty-chart.svg">
             </app-empty-state>
         </div>
-    </div>
-    <div class="table-responsive" *ngIf="percenatgeChartData.length>0">
-        <table class="primary-grid text-center" cellborder="0" cellpadding="0" border="0">
-            <thead>
-                <tr>
-                    <th>{{diffrenceLableName}}</th>
-                    <th *ngFor="let item of percenatgeChartData">{{item.label}}</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <tr class="align-middle medium">
-                    <th class="header-cell">Difference</th>
-                    <ng-container *ngFor="let item of percenatgeChartData">
-                        <td *ngIf="item.value===Rate.Equal">{{item.data}}%</td>
-                        <td class="text-success" *ngIf="item.value===Rate.Up">
-                            <mat-icon>trending_up</mat-icon><br>{{item.data}}%
-                        </td>
-                        <td class="text-danger" *ngIf="item.value===Rate.Down">
-                            <mat-icon>trending_down</mat-icon><br>{{item.data}}%
-                        </td>
-                    </ng-container>
-                </tr>
-            </tbody>
-        </table>
     </div>
     <!-- <div class="block-footer sticky-bottom">
         <div class="right-block btn-list">

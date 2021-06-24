@@ -77,7 +77,9 @@
     </div>
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
+
             <ng-container *ngIf="!summaries.loading  && !summaries.error ">
+
                 <p class="title">Net Amount</p>
                 <h4 matTooltip="{{summaries.data.all_netAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
@@ -149,9 +151,9 @@
             </div>
         </div>
     </div>
-
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
+
             <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title"> Patient Share </p>
                 <h4 matTooltip="{{summaries.data.all_Patientshare}} SR">{{sharedServices.kFormatter(summaries.data.all_Patientshare)}} <small>SR</small></h4>
@@ -160,6 +162,7 @@
                         [style.width]="PercentageCalculator(summaries.data.accepted_Patientshare,summaries.data.failed_Patientshare,null,summaries.data.all_Patientshare).toString()+ '%'"></div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
                     [style.width]="PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare).toString() + '%'"></div>
+
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
@@ -170,11 +173,13 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
+
                     <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_Patientshare)+getConvertfromStringToNumber(summaries.data.failed_Patientshare)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_Patientshare)+getConvertfromStringToNumber(summaries.data.failed_Patientshare))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare))}} <small>SR</small>
+
                     </div>
           
                 </div>
@@ -189,8 +194,10 @@
         </div>
     </div>
 
+
     <div class="col-lg-3 col-6">
         <div class="dashboard-claim-card">
+
             <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title"> Discount</p>
                 <h4 matTooltip="{{summaries.data.all_disCount}} SR">{{sharedServices.kFormatter(summaries.data.all_disCount)}} <small>SR</small></h4>
@@ -201,6 +208,7 @@
                     <div class="rejected-waseel-bar bg-rejected-waseel"
                     [style.width]="PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount).toString()  + '%'"
                         ></div>
+
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
@@ -211,11 +219,13 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
+
                     <div class="text-ready-submission" matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_disCount)+getConvertfromStringToNumber(summaries.data.failed_disCount)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_disCount)+getConvertfromStringToNumber(summaries.data.failed_disCount))}} <small>SR</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_disCount)}} SR">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_disCount))}} <small>SR</small>
+
                     </div>
           
                 </div>
@@ -229,6 +239,10 @@
             </div>
         </div>
     </div>
+
+
+
+
 </div>
 
 <!-- <div class="row small-gutter">
@@ -272,5 +286,3 @@
         </app-abstractcard>
     </div>
 </div> -->
-
-

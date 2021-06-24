@@ -30,7 +30,8 @@ export class NonSubmittedClaimsComponent implements OnInit {
   }
 
   calculatePercetage(first: number, second: number, roundValue: number = 4) {
-    return parseFloat(((first / second) * 100).toFixed(roundValue)).toString();
+    const retval = parseFloat(((first / second) * 100).toFixed(roundValue));
+    return isNaN(retval) ? 0 : retval.toString();
   }
 
   getConvertfromStringToNumber(value:string){

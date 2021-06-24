@@ -45,6 +45,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     navSpeed: 300,
     navText: ['', ''],
     margin: 14,
+    autoWidth: true,
     responsive: {
       0: {
         items: 3,
@@ -845,7 +846,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           statuses: this.summaries[newSummaryIndex].statuses,
           uploadName: this.summaries[newSummaryIndex].uploadName,
           patientShare: this.summaries[oldSummaryIndex].patientShare + claim.patientShare,
-          discount: this.summaries[oldSummaryIndex].discount +claim.discount
+          discount: this.summaries[oldSummaryIndex].discount + claim.discount
         };
         window.setTimeout(() => {
           this.summaries = summaries;
@@ -1469,7 +1470,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         // this.isPBMValidationVisible = this.apiPBMValidationEnabled && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
         this.isPBMValidationVisible = this.apiPBMValidationEnabled
           && (this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase()
-          || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+            || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
