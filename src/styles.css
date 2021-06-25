@@ -482,6 +482,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .abstract-card-carousel .owl-carousel .owl-nav .owl-next.disabled, .abstract-card-carousel .owl-carousel .owl-nav .owl-prev.disabled,.abstract-card-carousel .owl-carousel .owl-nav .owl-next[disabled], .abstract-card-carousel .owl-carousel .owl-nav .owl-prev[disabled]{opacity: 0;visibility: hidden;}
 .abstract-card-carousel .owl-carousel .owl-stage{display: flex;}
 .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(20% - 14px)!important;}
+.abstract-card-carousel.dynamic-width.fixed-card .owl-carousel .owl-stage{width: 100%!important;}
+.abstract-card-carousel.fixed-card .owl-carousel .owl-item[style="width: 320px; margin-right: 14px;"]{width: 320px!important;}
 
 /* claim totals
 --------------------------------------------------------------------------------------------------------*/
