@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap';
 @Component({
   selector: 'app-claim-status-summary-report',
   templateUrl: './claim-status-summary-report.component.html',
@@ -18,6 +19,8 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   errorMessage: string;
   detailTopActionIcon = 'ic-download.svg';
   claimStatusSummaryData: any;
+  datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false };
+  minDate: any;
   constructor(private commen: SharedServices, private formBuilder: FormBuilder, private reportService: ReportsService, private location: Location, private routeActive: ActivatedRoute) { }
   criterias: { id: string, name: string }[] = [
     { id: 'uploaddate', name: 'Upload Date' },
@@ -26,6 +29,7 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   ngOnInit() {
     this.payers = [];
     const allPayersIds = [];
+    this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
     this.payers.push({
       id: '0',
       name: 'All'
@@ -39,6 +43,7 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     });
 
     this.formLoad();
+
     this.routeActive.queryParams.subscribe(params => {
       if (params.payerId != null) {
         this.claimStatusSummaryForm.controls['payerId'].patchValue(params.payerId);
@@ -47,15 +52,18 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
         this.claimStatusSummaryForm.controls['summaryCriteria'].patchValue(params.summaryCriteria);
       }
       if (params.fromDate != null) {
-        this.claimStatusSummaryForm.controls['fromDate'].patchValue(params.fromDate);
+        const fromDate = moment(params.fromDate, 'YYYY-MM-DD').toDate();
+        this.claimStatusSummaryForm.controls['fromDate'].patchValue(fromDate);
       }
       if (params.toDate != null) {
-        this.claimStatusSummaryForm.controls['toDate'].patchValue(params.toDate);
+        const toDate = moment(params.toDate, 'YYYY-MM-DD').toDate();
+        this.claimStatusSummaryForm.controls['toDate'].patchValue(toDate);
       }
       if (this.claimStatusSummaryForm.valid) {
         this.search();
       }
     });
+
   }
 
   formLoad() {
@@ -138,4 +146,15 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     }
     this.location.go(path);
   }
+  dateValidation(event: any) {
+    if (event !== null) {
+      const startDate = moment(event).format('YYYY-MM-DD');
+      const endDate = moment(this.claimStatusSummaryForm.value.toDate).format('YYYY-MM-DD');
+      if (startDate > endDate)
+        this.claimStatusSummaryForm.controls['toDate'].patchValue('');
+    }
+    this.minDate = new Date(event);
+
+  }
+
 }
