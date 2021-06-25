@@ -54,7 +54,6 @@
                         <th colspan="2">Payer Name</th>
                         <th>Batch</th>
                         <th>Amount Outstanding</th>
-                        <th>Deviating Term</th>
                         <th>Due Date</th>
                         <th>Days Overdue</th>
                         <th>Payment Ratio</th>
@@ -76,7 +75,6 @@
                             <span class="text-muted">07/01/2017</span>
                         </td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">500/1000</td>
-                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">7</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">07/08/2017</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">1,347</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">12.5%</td>
@@ -86,7 +84,7 @@
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="recordOneOpen">
-                        <td colspan="12">
+                        <td colspan="11">
                             <div class="box">
                                 <h5 class="align-self-center medium pb-2">Payments</h5>
                                 <div class="row small-gutter">
@@ -99,6 +97,7 @@
                                                         <th>Amount</th>
                                                         <th>TAT</th>
                                                         <th>Payment Ratio</th>
+                                                        <th width="10"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -107,18 +106,33 @@
                                                         <td>231</td>
                                                         <td>4</td>
                                                         <td>96.91%</td>
+                                                        <td>
+                                                            <button class="text-danger delete-btn">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>4/14/2012</td>
                                                         <td>450</td>
                                                         <td>19</td>
                                                         <td>81.43%</td>
+                                                        <td>
+                                                            <button class="text-danger delete-btn">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>11/27/2016</td>
                                                         <td>437</td>
                                                         <td>7</td>
                                                         <td>63.25%</td>
+                                                        <td>
+                                                            <button class="text-danger delete-btn">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -143,7 +157,6 @@
                             <span class="text-muted">15/07/2017</span>
                         </td>
                         <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">700/800</td>
-                        <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">14</td>
                         <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">13/08/2017</td>
                         <td class="row-click" (click)="recordTwoOpen=!recordTwoOpen">1,456</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">10%</td>
@@ -153,7 +166,7 @@
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="recordTwoOpen">
-                        <td colspan="12">
+                        <td colspan="11">
                             <div class="box">
                                 <h5 class="align-self-center medium pb-2">Payments</h5>
                                 <div class="row small-gutter">
@@ -166,6 +179,7 @@
                                                         <th>Amount</th>
                                                         <th>TAT</th>
                                                         <th>Payment Ratio</th>
+                                                        <th width="10"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -174,18 +188,33 @@
                                                         <td>231</td>
                                                         <td>4</td>
                                                         <td>96.91%</td>
+                                                        <td>
+                                                            <button class="text-danger delete-btn">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>4/14/2012</td>
                                                         <td>450</td>
                                                         <td>19</td>
                                                         <td>81.43%</td>
+                                                        <td>
+                                                            <button class="text-danger delete-btn">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>11/27/2016</td>
                                                         <td>437</td>
                                                         <td>7</td>
                                                         <td>63.25%</td>
+                                                        <td>
+                                                            <button class="text-danger delete-btn">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -223,7 +252,4 @@
             </button>
         </div>
     </div>
-    <button mat-fab color="primary" class="page-fab" (click)="openAddBatchDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>

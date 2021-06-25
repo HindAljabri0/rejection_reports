@@ -8,7 +8,7 @@ import { RegularPaymentDetailsComponent } from './regular-payment-details/regula
 import { RegularPaymentListComponent } from './regular-payment-list/regular-payment-list.component';
 import { SharedModule } from '../shared.module';
 import { MaterialModule } from '../material/material.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { CollectionSummaryListComponent } from './collection-summary-list/collection-summary-list.component';
 import { CollectionSummaryCreateComponent } from './collection-summary-create/collection-summary-create.component';
@@ -19,9 +19,7 @@ import { AccountsReceivableListComponent } from './accounts-receivable-list/acco
 import { AccountReceivableAddPaymentComponent } from './account-receivable-add-payment/account-receivable-add-payment.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { AccountReceivableDetailsComponent } from './account-receivable-details/account-receivable-details.component';
-import { AccountReceivableAddMonthComponent } from './account-receivable-add-month/account-receivable-add-month.component';
 import { BsDatepickerModule } from 'ngx-bootstrap';
-import { AccountReceivableAddBatchComponent } from './account-receivable-add-batch/account-receivable-add-batch.component';
 import { AgingReportComponent } from './aging-report/aging-report.component';
 
 @NgModule({
@@ -39,8 +37,6 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
     AccountsReceivableListComponent,
     AccountReceivableAddPaymentComponent,
     AccountReceivableDetailsComponent,
-    AccountReceivableAddMonthComponent,
-    AccountReceivableAddBatchComponent,
     AgingReportComponent
   ],
   imports: [
@@ -49,6 +45,7 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
     MaterialModule,
     FormsModule,
     ChartsModule,
+    ReactiveFormsModule,
     CollectionManagementRoutingModule,
     NgScrollbarModule,
     SmoothScrollModule,
@@ -57,8 +54,6 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
   entryComponents: [
     FileUploadDialogComponent,
     AccountReceivableAddPaymentComponent,
-    AccountReceivableAddMonthComponent,
-    AccountReceivableAddBatchComponent
   ]
 })
 export class CollectionManagementModule { }
