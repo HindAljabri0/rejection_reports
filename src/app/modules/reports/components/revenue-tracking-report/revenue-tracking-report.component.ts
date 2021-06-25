@@ -205,10 +205,12 @@ export class RevenueTrackingReportComponent implements OnInit {
         this.allChart = RevenuTrackingReportChart.All === params.category ? true : false;
       }
       if (params.fromDate != null) {
+        const fromDate = moment(params.fromDate, 'YYYY-MM-DD').toDate();
         this.revenuTrackingReport.fromDate = params.fromDate;
       }
       if (params.toDate != null) {
-        this.revenuTrackingReport.toDate = params.toDate;
+        const toDate = moment(params.toDate, 'YYYY-MM-DD').toDate();
+        this.revenuTrackingReport.toDate = toDate;
       }
       if (params.payerId != null) {
         this.revenuTrackingReport.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId);

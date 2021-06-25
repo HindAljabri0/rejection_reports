@@ -1,19 +1,17 @@
+import { CurrencyPipe, Location } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
 import { Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
-import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { Location, CurrencyPipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { NgForm } from '@angular/forms';
-import { RevenuBreakDownReport } from 'src/app/models/revenuBreakDownReport';
-import { RevenuBreakingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 
 @Component({
     selector: 'app-revenue-breakdown-report',
@@ -96,10 +94,12 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                 this.selectedCategory = params.category;
             }
             if (params.fromDate != null) {
-                this.fromDateControl = params.fromDate;
+                const fromDate: any = moment(params.fromDate, 'YYYY-MM-DD').toDate();
+                this.fromDateControl = fromDate;
             }
             if (params.toDate != null) {
-                this.toDateControl = params.toDate;
+                const toDate: any = moment(params.toDate, 'YYYY-MM-DD').toDate();
+                this.toDateControl = toDate;
             }
             if (this.isValidDate(this.fromDateControl) && this.isValidDate(this.toDateControl)) {
                 this.generate();
