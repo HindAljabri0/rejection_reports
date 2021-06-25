@@ -13,8 +13,8 @@ import { AccountReceivableAddPaymentComponent } from '../account-receivable-add-
 export class AccountReceivableDetailsComponent implements OnInit {
   recordOneOpen = false;
   recordTwoOpen = false;
-  chartColors = this.sharedService.getAnalogousColor(8);
-  public doughnutChartLabels: Label[] = ['Payment 1', 'Payment 2', 'Payment 3', 'Payment 4', 'Payment 5', 'Payment 6', 'Payment 7', 'Payment 8'];
+  chartColors = this.sharedService.getMonoToneColor(3);
+  public doughnutChartLabels: Label[] = ['Payment 1', 'Payment 2', 'Payment 3', 'Amount Outstanding'];
   public doughnutChartOptions: ChartOptions = {
     legend: {
       display: false
@@ -27,7 +27,7 @@ export class AccountReceivableDetailsComponent implements OnInit {
   };
   public doughnutChartData: ChartDataSets[] = [
     {
-      data: [56, 5, 94, 94, 82, 49, 47, 26],
+      data: [231, 450, 437, 382],
       borderWidth: 1,
       backgroundColor: this.chartColors,
       hoverBackgroundColor: this.chartColors
@@ -35,7 +35,9 @@ export class AccountReceivableDetailsComponent implements OnInit {
   ];
   public doughnutChartType: ChartType = 'doughnut';
 
-  constructor(public dialog: MatDialog, public sharedService: SharedServices) { }
+  constructor(public dialog: MatDialog, public sharedService: SharedServices) {
+    this.chartColors.push('#ececec');
+  }
 
   ngOnInit() {
   }
