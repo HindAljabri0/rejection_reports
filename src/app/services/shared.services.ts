@@ -261,6 +261,10 @@ export class SharedServices {
         return 'Under Submission';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return 'Under Processing';
+      case ClaimStatus.TOTALNOTSUBMITTED.toLowerCase():
+        return 'Total Not Submitted';
+      case ClaimStatus.TOTALSUBMITTED.toLowerCase():
+        return 'Total Submitted';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }

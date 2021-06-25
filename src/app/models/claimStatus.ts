@@ -35,5 +35,7 @@ export enum ClaimStatus {
     Under_Processing = 'UNDER PROCESSING',
     Under_Submision = 'UNDER SUBMISSION',
     Failed = 'FAILED',
-    Submitted = 'SUBMITTED'
+    Submitted = 'SUBMITTED',
+    TOTALNOTSUBMITTED = 'Totalnotsubmitted',
+    TOTALSUBMITTED = 'Totalsubmitted'
 }

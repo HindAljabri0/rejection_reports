@@ -10,7 +10,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap';
 @Component({
   selector: 'app-claim-status-summary-report',
   templateUrl: './claim-status-summary-report.component.html',
-  styleUrls: ['./claim-status-summary-report.component.css']
+  styles: ['']
 })
 export class ClaimStatusSummaryReportComponent implements OnInit {
   payers: { id: string[] | string, name: string }[];
@@ -21,7 +21,13 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   claimStatusSummaryData: any;
   datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false };
   minDate: any;
-  constructor(private commen: SharedServices, private formBuilder: FormBuilder, private reportService: ReportsService, private location: Location, private routeActive: ActivatedRoute) { }
+  constructor(
+    public commen: SharedServices,
+    private formBuilder: FormBuilder,
+    private reportService: ReportsService,
+    private location: Location,
+    private routeActive: ActivatedRoute
+  ) { }
   criterias: { id: string, name: string }[] = [
     { id: 'uploaddate', name: 'Upload Date' },
     { id: 'claimdate', name: 'Claim Date' },
@@ -76,8 +82,9 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   }
   search() {
     this.submitted = true;
-    if (this.claimStatusSummaryForm.invalid)
-      return
+    if (this.claimStatusSummaryForm.invalid) {
+      return;
+    }
 
     this.commen.loadingChanged.next(true);
     this.claimStatusSummaryForm.value.fromDate = moment(this.claimStatusSummaryForm.value.fromDate).format('YYYY-MM-DD');
@@ -108,7 +115,8 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     this.claimStatusSummaryForm.value.toDate = moment(this.claimStatusSummaryForm.value.toDate).format('YYYY-MM-DD');
     this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId, this.claimStatusSummaryForm.value).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
-        let exportedFilename = 'GlobMed_Claims_' + this.claimStatusSummaryForm.value.fromDate + '_' + this.claimStatusSummaryForm.value.toDate + '.xlsx';
+        let exportedFilename = 'GlobMed_Claims_' + this.claimStatusSummaryForm.value.fromDate + '_' +
+          this.claimStatusSummaryForm.value.toDate + '.xlsx';
         if (event.headers.has('content-disposition')) {
           exportedFilename = event.headers.get('content-disposition').split(' ')[1].split('=')[1];
         }
