@@ -112,6 +112,7 @@ export class SubmittedClaimsComponent implements OnInit {
     if(result==100|| result==0){
      return result;
     }else{
+      
     return result.toFixed(2);
     }
     }
