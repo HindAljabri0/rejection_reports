@@ -178,9 +178,7 @@ export class ClaimsSummary
   }
 
   public static emptySummaryWithStatuses(statuses: string[]): ClaimsSummary {
-    // let summary = new ClaimsSummary(null);
-    // summary.statuses = statuses;
-    // return summary;
+    
     return {
       statuses: statuses,
       all_total: 0,

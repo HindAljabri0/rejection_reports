@@ -106,6 +106,9 @@ export class SubmittedClaimsComponent implements OnInit {
   PercentageCalculator(value_1:string,value_2:string,value_3:string,total:number){
 
     let result =(this.getConvertfromStringToNumber(value_1)+this.getConvertfromStringToNumber(value_2)+this.getConvertfromStringToNumber(value_3))/total *100;
+    if(isNaN(result)){
+      result=0;
+     }
     if(result==100|| result==0){
      return result;
     }else{
