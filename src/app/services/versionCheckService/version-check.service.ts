@@ -25,7 +25,7 @@ export class VersionCheckService {
   */
   private checkVersion(url) {
     // timestamp these requests to invalidate caches
-    this.http.get(url + '?t=' + new Date().getTime())
+    this.http.get(url + '/vresion.json?t=' + new Date().getTime())
       .subscribe(
         (response: any) => {
           const hash = response.hash;
