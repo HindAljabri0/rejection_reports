@@ -2,6 +2,7 @@ const host = 'https://api.stg-eclaims.waseel.com';
 export const environment = {
   name: 'oci_staging',
   production: true,
+  versionCheckURL: `https://stg-eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
   claimServiceHost: `${host}/claims`,

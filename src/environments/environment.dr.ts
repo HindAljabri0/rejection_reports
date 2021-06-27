@@ -2,6 +2,7 @@ const host = 'https://api.qa-eclaims.waseel.com';
 export const environment = {
   name: 'dr',
   production: true,
+  versionCheckURL: `https://qa-eclaims.waseel.com`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
   claimServiceHost: `${host}/claims`,
