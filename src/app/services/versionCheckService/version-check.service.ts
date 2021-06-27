@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,8 @@ import { Injectable } from '@angular/core';
 export class VersionCheckService {
   // this will be replaced by actual hash post-build.js
   private currentHash = '{{POST_BUILD_ENTERS_HASH_HERE}}';
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) { 
+  }
   /**
   * Checks in every set frequency the version of frontend application
   * @param url
@@ -32,9 +34,7 @@ export class VersionCheckService {
           const hashChanged = this.hasHashChanged(this.currentHash, hash);
           // If new version, do something
           if (hashChanged) {
-            window.location.reload();
-            // ENTER YOUR CODE TO DO SOMETHING UPON VERSION CHANGE
-            // for an example: location.reload();
+            this.showReloadSnackBar();
           }
           // store the new hash so we wouldn't trigger versionChange again
           // only necessary in case you did not force refresh
@@ -58,5 +58,11 @@ export class VersionCheckService {
       return false;
     }
     return currentHash !== newHash;
+  }
+
+  private showReloadSnackBar() {
+    this.snackBar.open('A new version is available!', 'Reload?').onAction().subscribe(() => {
+      window.location.reload();
+    });
   }
 }
