@@ -437,6 +437,21 @@ export class SharedServices {
     }
     return returnArray;
   }
+  getMonoToneColor(count: number): string[] {
+    const returnArray: string[] = new Array();
+    const baseColor = '#3060AA';
+    const baseColorRGB = this.hexToRGB(baseColor);
+    const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
+    const lightStep = (baseColorHSL.l - 5) / count;
+    let currentLightValue = 0;
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+      const incrementLight = baseColorHSL.l + currentLightValue;
+      const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
+      const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
+      returnArray.push(`rgba(${derivedRGB.r},${derivedRGB.g},${derivedRGB.b},1)`);
+    }
+    return returnArray;
+  }
   formatBytes(bytes, decimals = 2) {
     if (bytes === 0) {
       return '0 Bytes';

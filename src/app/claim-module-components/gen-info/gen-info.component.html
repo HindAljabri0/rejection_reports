@@ -169,10 +169,9 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('CHECOMP')" [matTooltip]="getFieldError('CHECOMP')">
-            <label class="control-label">Chief Complaint Symptoms<span class="asterisk" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
-            <textarea class="form-control" placeholder="Enter chief complaint symptoms" [formControl]="mainSymptomsController" (change)="updateClaim('mainSymptoms')"
-                rows="2"></textarea>
+        <div class="form-group" [class.has-error]="fieldHasError('ACCCODE')" [matTooltip]="getFieldError('ACCCODE')">
+            <label class="control-label">Account Code</label>
+            <input class="form-control" placeholder="Enter account code" type="text" [formControl]="accCodeController" (change)="updateClaim('accCode')" required>
         </div>
     </div>
     <div class="col">
@@ -217,9 +216,10 @@
         </div>
     </div>
     <div class="col">
-        <div class="form-group" [class.has-error]="fieldHasError('ACCCODE')" [matTooltip]="getFieldError('ACCCODE')">
-            <label class="control-label">Account Code</label>
-            <input class="form-control" placeholder="Enter account code" type="text" [formControl]="accCodeController" (change)="updateClaim('accCode')" required>
+        <div class="form-group" [class.has-error]="fieldHasError('CHECOMP')" [matTooltip]="getFieldError('CHECOMP')">
+            <label class="control-label">Chief Complaint Symptoms<span class="asterisk" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT'">*</span></label>
+            <textarea class="form-control" placeholder="Enter chief complaint symptoms" [formControl]="mainSymptomsController" (change)="updateClaim('mainSymptoms')"
+                rows="2"></textarea>
         </div>
     </div>
     <div class="col" *ngIf="claimPageType == 'INPATIENT_OUTPATIENT' && !isPageModeCreate ">
