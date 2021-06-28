@@ -12,7 +12,7 @@
                     </li>
                 </ul>
                 <mat-expansion-panel hideToggle
-                    [expanded]="dashboard.isActive || uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive">
+                    [expanded]="dashboard.isActive || uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive || createBatch.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@claims">Claims</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -45,8 +45,9 @@
                                 <span class="text">Claims History</span>
                             </a>
                         </li>
-                        <li *ngIf="!envProd && !envStaging">
-                            <a routerLink="/create-batch" routerLinkActive="is-active" #claimHistory="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <li [class.d-none]="envProd || envStaging">
+                            <a routerLink="/collection-management/create-batch" routerLinkActive="is-active" #createBatch="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-create-batch.svg" alt="Create Batch" class="default-icon" />
                                 <img src="assets/ic-create-batch-active.svg" alt="Create Batch" class="active-icon" />
                                 <span class="text">Create Batch</span>
