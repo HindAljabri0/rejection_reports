@@ -4,6 +4,8 @@ import { ViewportScroller } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { VersionCheckService } from './services/versionCheckService/version-check.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private router: Router,
     readonly viewportScroller: ViewportScroller,
+    private versionCheckService: VersionCheckService
   ) {
     this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
       this.viewportScroller.scrollToPosition([0, 0]);
@@ -27,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.versionCheckService.initVersionCheck(environment.versionCheckURL);
   }
 
   get isLoggedIn() {

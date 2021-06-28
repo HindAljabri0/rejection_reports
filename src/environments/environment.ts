@@ -5,6 +5,7 @@
 export const environment = {
   name: 'dev',
   production: false,
+  versionCheckURL: `http://localhost:4200`,
   uploaderHost: "http://localhost:8080",
   claimSearchHost: "http://localhost:8082",
   claimServiceHost: "http://localhost:8081",

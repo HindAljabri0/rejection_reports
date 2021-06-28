@@ -61,16 +61,19 @@ export class DashboardEffects {
                                 }
                             }, errorEvent => {
                                 if (errorEvent instanceof HttpErrorResponse) {
+                                
+                                   
                                   
-                                    var erorr;
-                                     ;
-                                    if(errorEvent.error =='[object ProgressEvent]'){
-                                        erorr="Could not get data from the server.";
-                                        
-                                    }else{
-                                        erorr  = errorEvent.error;
-                                    }
-                                    this.store.dispatch(setCardError({ name: name, error:`${erorr}` }));
+                        
+                                     if(errorEvent.status ==404){
+                                        this.store.dispatch(setCardSummary({ name: name, data: ClaimsSummary.emptySummaryWithStatuses(values['statuses']) }));
+                                        this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                                     }
+                                   else{
+                                   
+                                  
+                                    this.store.dispatch(setCardError({ name: name, error:errorEvent.error })); 
+                                }
                                 }
                                 this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                             });
