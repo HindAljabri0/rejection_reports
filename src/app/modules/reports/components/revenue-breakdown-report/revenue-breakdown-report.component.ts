@@ -69,7 +69,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     selectedDoctor = -1;
     servicePerDoctorData: any[] = [];
     tempPieChartLables: Label[] = [];
-
+    minDate: any;
     constructor(
         private sharedService: SharedServices,
         private reportService: RevenuReportService,
@@ -359,6 +359,16 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
     }
     dynamicPieChartLableData() {
         return this.selectedDoctor !== -1 ? this.tempPieChartLables : this.pieChartLabels;
+    }
+    dateValidation(event: any) {
+        if (event !== null) {
+            const startDate = moment(event).format('YYYY-MM-DD');
+            const endDate = moment(this.fromDateControl).format('YYYY-MM-DD');
+            if (startDate > endDate)
+                this.toDateControl = '';
+        }
+        this.minDate = new Date(event);
+
     }
 
 }
