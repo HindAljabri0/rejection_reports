@@ -461,9 +461,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .delete-btn .mat-icon{display:block;}
 .primary-grid>tbody>.seperator-row,.primary-grid>tbody>.seperator-row:nth-child(even){background: #fafafa;font-weight: 600;}
 .primary-grid>tbody>tr>.form-group{margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
-.primary-grid:not(.claim-view-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
+.primary-grid:not(.claim-view-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 32px;background: #fff;border:1px solid #d4d4d4;color:inherit;margin: -3px 0;}
 .primary-grid:not(.claim-view-table) textarea.form-control{height:auto;padding:8px;}
 .primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
+.primary-grid:not(.claim-view-table) .mat-icon-button{height: 32px;width: 32px;line-height: 32px;display: block;}
+.primary-grid:not(.claim-view-table) .mat-datepicker-toggle-default-icon{height: 18px;width: 18px;}
 .primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
 .primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
 .primary-grid .column-header-action{display: flex;align-items:flex-start;}

@@ -21,6 +21,9 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { AccountReceivableDetailsComponent } from './account-receivable-details/account-receivable-details.component';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { AgingReportComponent } from './aging-report/aging-report.component';
+import { StatementOfAccountsComponent } from './statement-of-accounts/statement-of-accounts.component';
+import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-details/statement-of-accounts-details.component';
+import { StatementOfAccountsUploadComponent } from './statement-of-accounts-upload/statement-of-accounts-upload.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
     AccountsReceivableListComponent,
     AccountReceivableAddPaymentComponent,
     AccountReceivableDetailsComponent,
-    AgingReportComponent
+    AgingReportComponent,
+    StatementOfAccountsComponent,
+    StatementOfAccountsDetailsComponent,
+    StatementOfAccountsUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +60,7 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
   entryComponents: [
     FileUploadDialogComponent,
     AccountReceivableAddPaymentComponent,
+    StatementOfAccountsUploadComponent,
   ]
 })
 export class CollectionManagementModule { }
