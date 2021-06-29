@@ -8,8 +8,8 @@
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">Close</button>
-        <button type="button" mat-flat-button color="primary" ngxClipboard [cbContent]="data.json" matRipple>
-            Copy JSON
+        <button type="button" mat-flat-button color="primary" ngxClipboard [cbContent]="data.json" (click)="clickCopy()" matRipple>
+            {{copyText}}
         </button>
     </div>
 </div>
