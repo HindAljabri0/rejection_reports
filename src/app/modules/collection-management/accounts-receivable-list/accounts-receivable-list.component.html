@@ -9,16 +9,11 @@
                     <div class="col">
                         <div class="form-group">
                             <label class="control-label">Year</label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="">
-                                    <mat-option value="">Select Year</mat-option>
-                                    <mat-option value="2021">2021</mat-option>
-                                    <mat-option value="2020">2020</mat-option>
-                                    <mat-option value="2019">2019</mat-option>
-                                    <mat-option value="2018">2018</mat-option>
-                                    <mat-option value="2017">2017</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="date-picker">
+                                <input [matDatepicker]="yearPicker" class="form-control" placeholder="Select year" />
+                                <mat-datepicker-toggle [for]="yearPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #yearPicker></mat-datepicker>
+                            </div>
                         </div>
                     </div>
                     <div class="col-auto align-self-end">

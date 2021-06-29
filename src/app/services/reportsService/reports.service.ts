@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CreditReportQueryModel } from 'src/app/models/creditReportQuery';
 import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
@@ -122,7 +122,10 @@ export class ReportsService {
     }
     const requestURL = `/providers/${providerId}/rejections/download?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text' });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', {
+      responseType: 'text',
+      reportProgress: true
+    });
     return this.http.request(request);
   }
 
