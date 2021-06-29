@@ -1,0 +1,16 @@
+<div class="download-overlay mat-elevation-z8">
+    <mat-spinner *ngIf="contentType == '' && errorMessage == null" diameter="100"></mat-spinner>
+    <img *ngIf="isCSV()  && errorMessage == null" src="./assets/csv.svg" alt="CSV File" />
+    <img *ngIf="(isExcel() || isZip()) && errorMessage == null" src="./assets/xls.svg" alt="Excel File" />
+    <mat-icon class="error-icon" *ngIf="errorMessage != null">error_outline</mat-icon>
+    <div class="download-info">
+        <p class="text error" *ngIf="errorMessage != null">{{errorMessage}}</p>
+        <button *ngIf="errorMessage != null" mat-button color="primary" (click)="dismiss()">Dismiss</button>
+        <p class="text" *ngIf="fileName != null && errorMessage == null" [matTooltip]="fileName">Downloading
+            {{fileName}}</p>
+        <p class="text" *ngIf="fileName == null && errorMessage == null">Waiting for the server to download the file</p>
+        <mat-progress-bar *ngIf="progress == 0 && errorMessage == null" mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar *ngIf="progress > 0 && errorMessage == null" mode="determinate" [value]="progress.toFixed(1)">
+        </mat-progress-bar>
+    </div>
+</div>

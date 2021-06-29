@@ -85,6 +85,7 @@ import { UploadCardComponent } from './pages/uploads-page/components/upload-card
 import { JsonViewDialogComponent } from './components/dialogs/json-view-dialog/json-view-dialog.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
+import { DownloadOverlayComponent } from './components/reusables/download-overlay/download-overlay.component';
 
 @NgModule({
   declarations: [
@@ -139,7 +140,8 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
     ConfiguartionModalComponent,
     UploadsPageComponent,
     UploadCardComponent,
-    JsonViewDialogComponent
+    JsonViewDialogComponent,
+    DownloadOverlayComponent
   ],
   imports: [
     AppRoutingModule,
@@ -191,6 +193,7 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
     PaymentClaimDetailDailogComponent,
     RejectionReportClaimDialogComponent,
     TopFiveRejectionsComponent,
+    DownloadOverlayComponent
   ],
   entryComponents: [
     MessageDialogComponent,
@@ -205,7 +208,8 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
     ChangeLogDialogComponent,
     AttachmentViewDialogComponent,
     JsonViewDialogComponent,
-    ConfiguartionModalComponent
+    ConfiguartionModalComponent,
+    DownloadOverlayComponent
   ],
 })
 export class AppModule { }

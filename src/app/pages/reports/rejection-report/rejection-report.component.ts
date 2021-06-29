@@ -1,16 +1,19 @@
-import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, InjectionToken, Injector } from '@angular/core';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
-import { HttpResponse, HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EventEmitter } from '@angular/core';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { RejectionSummary } from 'src/app/models/rejectionSummary';
 import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/rejectionReportClaimDialogData';
 import { ClaimStatus } from 'src/app/models/claimStatus';
+
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-rejection-report',
@@ -42,26 +45,33 @@ export class RejectionReportComponent implements OnInit {
   rejectionReportSummary: PaginatedResult<RejectionSummary>;
   rejectedClaims = Array();
 
+  lastDownloadSubscriptions: Subscription;
+
 
   constructor(
     public reportService: ReportsService,
     public commen: SharedServices,
     public routeActive: ActivatedRoute,
     public router: Router,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private downloadService: DownloadService) { }
 
   ngOnInit() {
     // this.fetchData();
   }
 
   async fetchData() {
-    if(this.commen.loading){
+    if (this.commen.loading) {
       return;
     }
     if (this.providerId == null || this.from == null || this.to == null || this.payerId == null || this.criteriaType == null) {
       return;
     }
     this.commen.loadingChanged.next(true);
+    this.detailTopActionIcon = 'ic-download.svg';
+    if(this.lastDownloadSubscriptions != null && !this.lastDownloadSubscriptions.closed){
+      this.lastDownloadSubscriptions.unsubscribe();
+    }
     this.errorMessage = null;
     let event;
     event = await this.reportService.getRejectionSummary(this.providerId,
@@ -103,29 +113,15 @@ export class RejectionReportComponent implements OnInit {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') {
       return;
     }
-
-    this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (navigator.msSaveBlob) { // IE 10+
-          const exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-          navigator.msSaveBlob(blob, exportedFilename);
-        } else {
-          const a = document.createElement('a');
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
-          a.target = '_blank';
-          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          a.click();
+    this.lastDownloadSubscriptions = this.downloadService
+      .showDownloadOverlay(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
+      .subscribe(status => {
+        if(status != DownloadStatus.ERROR){
           this.detailTopActionIcon = 'ic-check-circle.svg';
+        } else {
+          this.detailTopActionIcon = 'ic-download.svg';
         }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData('',
-          'Could not reach the server at the moment. Please try again later.',
-          true));
-      }
-    });
+      });
   }
 
   paginatorAction(event) {
@@ -235,3 +231,5 @@ export class RejectionReportComponent implements OnInit {
 
 
 }
+
+

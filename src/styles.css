@@ -1232,3 +1232,42 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     overflow: hidden;
 }
 
+.download-overlay {
+    width: 450px;
+    padding: 16px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: minmax(50px, 25%) 1fr;
+    background-color: white;
+}
+
+.download-overlay>.error-icon{
+    height: 100%;
+    width: 100%;
+    font-size: 100px;
+    color: #CC2F2F;
+}
+
+.download-overlay>.download-info{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    justify-content: space-between;
+}
+
+
+.download-overlay>.download-info>.text {
+    font-size: medium;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 20px;     /* fallback */
+    max-height: 50px;      /* fallback */
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+    margin-bottom: 10px;
+}
+
+.download-overlay>.download-info>.text.error{
+    color: #CC2F2F;
+}
