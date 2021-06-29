@@ -14,6 +14,7 @@ import { AccountReceivableDetailsComponent } from './account-receivable-details/
 import { AgingReportComponent } from './aging-report/aging-report.component';
 import { StatementOfAccountsComponent } from './statement-of-accounts/statement-of-accounts.component';
 import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-details/statement-of-accounts-details.component';
+import { CreateBatchComponent } from './create-batch/create-batch.component';
 
 const routes: Routes = [
   { path: 'regular-payment-list', component: RegularPaymentListComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: 'accounts-receivable-details', component: AccountReceivableDetailsComponent },
   { path: 'aging-report', component: AgingReportComponent },
   { path: 'statement-of-accounts', component: StatementOfAccountsComponent },
-  { path: 'statement-of-accounts-details', component: StatementOfAccountsDetailsComponent }
+  { path: 'statement-of-accounts-details', component: StatementOfAccountsDetailsComponent },
+  { path: 'create-batch', component: CreateBatchComponent }
 ];
 
 @NgModule({

@@ -1,8 +1,15 @@
 <div class="primary-dialog-header has-border">
     <h5 class="primary-dialog-title">{{data.title}}</h5>
-    <button type="button" class="dialog-copy" matToolTip="Copy JSON as text" ngxClipboard [cbContent]="data.json" matRipple><mat-icon>content_copy</mat-icon></button>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="attachment-view-body">
-    <ngx-json-viewer [json]="json"></ngx-json-viewer>
+<div class="primary-dialog-body p-0 fixed-body">
+    <ngx-json-viewer class="json-viewer" [json]="json"></ngx-json-viewer>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Close</button>
+        <button type="button" mat-flat-button color="primary" ngxClipboard [cbContent]="data.json" (click)="clickCopy()" matRipple>
+            {{copyText}}
+        </button>
+    </div>
 </div>

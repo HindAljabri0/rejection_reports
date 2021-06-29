@@ -24,6 +24,9 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
 import { StatementOfAccountsComponent } from './statement-of-accounts/statement-of-accounts.component';
 import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-details/statement-of-accounts-details.component';
 import { StatementOfAccountsUploadComponent } from './statement-of-accounts-upload/statement-of-accounts-upload.component';
+import { CreateBatchComponent } from './create-batch/create-batch.component';
+import { AddBatchDialogComponent } from './add-batch-dialog/add-batch-dialog.component';
+import { AddEditPaymentDialogComponent } from './add-edit-payment-dialog/add-edit-payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,9 @@ import { StatementOfAccountsUploadComponent } from './statement-of-accounts-uplo
     StatementOfAccountsComponent,
     StatementOfAccountsDetailsComponent,
     StatementOfAccountsUploadComponent,
+    CreateBatchComponent,
+    AddBatchDialogComponent,
+    AddEditPaymentDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +67,8 @@ import { StatementOfAccountsUploadComponent } from './statement-of-accounts-uplo
     FileUploadDialogComponent,
     AccountReceivableAddPaymentComponent,
     StatementOfAccountsUploadComponent,
+    AddBatchDialogComponent,
+    AddEditPaymentDialogComponent,
   ]
 })
 export class CollectionManagementModule { }

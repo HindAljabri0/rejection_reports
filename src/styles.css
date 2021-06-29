@@ -464,7 +464,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid:not(.claim-view-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 32px;background: #fff;border:1px solid #d4d4d4;color:inherit;margin: -3px 0;}
 .primary-grid:not(.claim-view-table) textarea.form-control{height:auto;padding:8px;}
 .primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
-.primary-grid:not(.claim-view-table) .mat-icon-button{height: 32px;width: 32px;line-height: 32px;display: block;}
+.primary-grid:not(.claim-view-table) td:not(.actions) .mat-icon-button{height: 32px;width: 32px;line-height: 32px;display: block;}
 .primary-grid:not(.claim-view-table) .mat-datepicker-toggle-default-icon{height: 18px;width: 18px;}
 .primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
 .primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
@@ -809,7 +809,6 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .status-text.ball-red:before{background-color: #FF0000;}
 .status-text.ball-yellow:before{background-color: #fbff00;}
 
-
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/
 .custom-file-upload{position: relative;}
@@ -1093,6 +1092,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .alert.info{background-color: #e6ecf5;color: #3060AA;}
 .alert.success{background-color: #edf9e4;color: #67CD23;}
 .alert.danger{background-color: #f9e6e6;color: #CC2F2F;}
+
+/* json viewer
+--------------------------------------------------------------------------------------------------------*/
+.json-viewer{background-color: #f6f6f6;display: block;padding: 14px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

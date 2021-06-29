@@ -34,7 +34,7 @@
 				<source>
 					Claims
 				</source>
-        <target>
+				<target>
 					المطالبات
 				</target>
 				<context-group purpose="location">
@@ -56,7 +56,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -84,7 +84,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -112,7 +112,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -140,7 +140,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -168,7 +168,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -196,7 +196,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -218,7 +218,7 @@
 				<source>
 					Reports
 				</source>
-        <target>
+				<target>
 					التقارير
 				</target>
 				<context-group purpose="location">
@@ -238,7 +238,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					تقرير المدفوعات
@@ -262,7 +262,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					تقرير التقديم
@@ -286,7 +286,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					تقرير المرفوضات
@@ -310,7 +310,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					تقرير ملخص حالة المطالبات
@@ -330,7 +330,7 @@
 				<source>
 					Denial Management
 				</source>
-        <target>
+				<target>
 					إدارة المرفوضات
 				</target>
 				<context-group purpose="location">
@@ -352,7 +352,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -380,7 +380,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -408,7 +408,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -436,7 +436,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -464,7 +464,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
 					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
@@ -490,7 +490,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					الإعدادات
@@ -510,7 +510,7 @@
 				<source>
 					Configuration
 				</source>
-        <target>
+				<target>
 					الإعدادات
 				</target>
 				<context-group purpose="location">
@@ -530,7 +530,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					إعدادات موفر الخدمة
@@ -542,7 +542,7 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						257
+						261
 					</context>
 				</context-group>
 			</trans-unit>
@@ -554,7 +554,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					إرتباطات موفر الخدمة
@@ -566,7 +566,31 @@
 						src/app/components/sidebar/sidebar.component.html
 					</context>
 					<context context-type="linenumber">
-						265
+						266
+					</context>
+				</context-group>
+			</trans-unit>
+			<trans-unit id="providercContract" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					Provider Contract
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					عقد المزود
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						271
 					</context>
 				</context-group>
 			</trans-unit>
@@ -574,7 +598,7 @@
 				<source>
 					Audit
 				</source>
-        <target>
+				<target>
 					السجل
 				</target>
 				<context-group purpose="location">
@@ -594,7 +618,7 @@
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
-        <target>
+				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
 					سجل النظام
@@ -614,7 +638,7 @@
 				<source>
 					Enter username here...
 				</source>
-        <target>
+				<target>
 					أدخل اسمك هنا...
 				</target>
 				<context-group purpose="location">
@@ -630,7 +654,7 @@
 				<source>
 					Password
 				</source>
-        <target>
+				<target>
 					كلمة المرور
 				</target>
 				<context-group purpose="location">
@@ -654,7 +678,7 @@
 				<source>
 					Sign In
 				</source>
-        <target>
+				<target>
 					تسجيل الدخول
 				</target>
 				<context-group purpose="location">

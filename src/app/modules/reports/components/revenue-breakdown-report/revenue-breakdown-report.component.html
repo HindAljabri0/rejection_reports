@@ -25,7 +25,8 @@
                         <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
                             <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
-                                autocomplete="off" (onShown)="onOpenCalendar($event)" placeholder="Select from month"
+                                (bsValueChange)="dateValidation($event)" autocomplete="off"
+                                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
                                 [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
                         </div>
                     </div>
@@ -36,7 +37,8 @@
                         <div class="date-picker">
                             <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
                                 autocomplete="off" [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
-                                [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required />
+                                [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required
+                                [minDate]="minDate" />
                         </div>
                     </div>
                 </div>
