@@ -809,7 +809,6 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .status-text.ball-red:before{background-color: #FF0000;}
 .status-text.ball-yellow:before{background-color: #fbff00;}
 
-
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/
 .custom-file-upload{position: relative;}
@@ -1093,6 +1092,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .alert.info{background-color: #e6ecf5;color: #3060AA;}
 .alert.success{background-color: #edf9e4;color: #67CD23;}
 .alert.danger{background-color: #f9e6e6;color: #CC2F2F;}
+
+/* json viewer
+--------------------------------------------------------------------------------------------------------*/
+.json-viewer{background-color: #f6f6f6;display: block;padding: 14px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

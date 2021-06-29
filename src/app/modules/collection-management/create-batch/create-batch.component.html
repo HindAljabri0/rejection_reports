@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Create Batch</p>
+        <p>Create Batch for Downloadable Claims</p>
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
@@ -204,9 +204,8 @@
             <mat-paginator class="primary-paginator" length="100" pageSize="10" [showFirstLastButtons]="true" [pageSizeOptions]="[5, 10, 25, 100]">
             </mat-paginator>
         </div>
+        <div class="right-block">
+            <button type="button" color="primary" mat-flat-button (click)="openAddBatchDialog()">Add to Batch</button>
+        </div>
     </div>
-
-    <button mat-fab color="primary" class="page-fab" (click)="openAddBatchDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>

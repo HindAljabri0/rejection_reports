@@ -250,7 +250,7 @@
         </div>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerContract.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -261,12 +261,16 @@
                                 <span class="text">Provider Configuration</span>
                             </a>
                         </li>
-                    </ul>
-                    <ul class="nav-list">
                         <li i18n="@@providermapping">
                             <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active" #providermapping="routerLinkActive"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Provider Mapping</span>
+                            </a>
+                        </li>
+                        <li i18n="@@providercContract">
+                            <a routerLink="/administration/config/provider-contract" routerLinkActive="is-active" #providerContract="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Provider Contract</span>
                             </a>
                         </li>
                     </ul>
