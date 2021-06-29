@@ -31,7 +31,7 @@ export class AuditTrailComponent implements OnInit {
 
   watchLogsSubscription: Subscription;
 
-  constructor(private auditTrailService: AuditTrailService, private commenService: SharedServices, private dialogService: MatDialog) {
+  constructor(private auditTrailService: AuditTrailService, private commenService: SharedServices, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -169,13 +169,13 @@ export class AuditTrailComponent implements OnInit {
     return objectIdMatches && userIdMatches && providerIdMatches && eventTypeMatches;
   }
 
-  viewJSON(objectId:string, json:string){
-    this.dialogService.open(JsonViewDialogComponent, {
+  viewJSON(objectId: string, json: string) {
+    this.dialog.open(JsonViewDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-lg'],
       data: {
-        title: `JSON of Claim [${objectId}]` ,
+        title: `JSON of Claim [${objectId}]`,
         json: json
-      },
-      width: '70%'
+      }
     });
   }
 

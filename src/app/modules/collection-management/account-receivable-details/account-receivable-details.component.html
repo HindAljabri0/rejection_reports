@@ -59,7 +59,6 @@
                         <th>Payment Ratio</th>
                         <th>Total Payments</th>
                         <th>Avg TAT</th>
-                        <th>Total Payment Ratio</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -80,11 +79,10 @@
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">12.5%</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">500</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">25</td>
-                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">50%</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="recordOneOpen">
-                        <td colspan="11">
+                        <td colspan="10">
                             <div class="box">
                                 <h5 class="align-self-center medium pb-2">Payments</h5>
                                 <div class="row small-gutter">
@@ -162,11 +160,10 @@
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">10%</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">100</td>
                         <td class="row-click" (click)="recordOneOpen=!recordOneOpen">45</td>
-                        <td class="row-click" (click)="recordOneOpen=!recordOneOpen">20%</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="recordTwoOpen">
-                        <td colspan="11">
+                        <td colspan="10">
                             <div class="box">
                                 <h5 class="align-self-center medium pb-2">Payments</h5>
                                 <div class="row small-gutter">
