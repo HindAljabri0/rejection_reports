@@ -2,24 +2,124 @@
     <h5 class="primary-dialog-title">Add Payment</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body pb-0">
-    <div class="row small-gutter">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label">Payment Date</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="date" class="form-control" placeholder="Select payment date" />
-                    <mat-datepicker-toggle [for]="date"></mat-datepicker-toggle>
-                    <mat-datepicker #date></mat-datepicker>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label">Amount</label>
-                <input class="form-control" placeholder="Enter amount" />
-            </div>
-        </div>
+<div class="primary-dialog-body p-0">
+    <div class="dialog-table">
+        <table class="primary-grid  sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th width='10'></th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>3008 SR</td>
+                    <td>7/10/2061</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>7530 SR</td>
+                    <td>17/7/2032</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>3606 SR</td>
+                    <td>15/10/2111</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>3159 SR</td>
+                    <td>30/7/2041</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>9651 SR</td>
+                    <td>24/7/2060</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>4450 SR</td>
+                    <td>31/1/2118</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>6264 SR</td>
+                    <td>22/7/2101</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>3078 SR</td>
+                    <td>1/12/2038</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>5809 SR</td>
+                    <td>22/2/2089</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>4054 SR</td>
+                    <td>28/7/2057</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>7721 SR</td>
+                    <td>13/6/2116</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>1420 SR</td>
+                    <td>13/8/2046</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>1677 SR</td>
+                    <td>25/12/2108</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>4260 SR</td>
+                    <td>1/9/2121</td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    </td>
+                    <td>4731 SR</td>
+                    <td>29/5/2046</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <div class="primary-dialog-footer has-border">

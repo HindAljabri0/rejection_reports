@@ -38,10 +38,10 @@
                         <label class="control-label">Date To</label>
                         <div class="date-picker">
                             <!--  -->
-                            <input autocomplete="off" [minDate]="minDate" class="form-control date-picker"
-                                placeholder="Select to month" bsDatepicker [bsConfig]="datePickerConfig"
-                                (onShown)="onOpenCalendar($event)" [(ngModel)]='revenuTrackingReport.toDate'
-                                #toDate='ngModel' name="toDate" required />
+                            <input autocomplete="off" class="form-control date-picker" placeholder="Select to month"
+                                bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                [(ngModel)]='revenuTrackingReport.toDate' #toDate='ngModel' name="toDate" required
+                                [minDate]="minDate" />
                         </div>
                     </div>
                 </div>

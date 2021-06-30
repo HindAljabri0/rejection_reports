@@ -82,6 +82,10 @@ import { AttachmentViewDialogComponent } from './components/dialogs/attachment-v
 import { ConfiguartionModalComponent } from './pages/configuartion-modal/configuartion-modal.component';
 import { UploadsPageComponent } from './pages/uploads-page/uploads-page.component';
 import { UploadCardComponent } from './pages/uploads-page/components/upload-card/upload-card.component';
+import { JsonViewDialogComponent } from './components/dialogs/json-view-dialog/json-view-dialog.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
+import { DownloadOverlayComponent } from './components/reusables/download-overlay/download-overlay.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +139,9 @@ import { UploadCardComponent } from './pages/uploads-page/components/upload-card
     AttachmentViewDialogComponent,
     ConfiguartionModalComponent,
     UploadsPageComponent,
-    UploadCardComponent
+    UploadCardComponent,
+    JsonViewDialogComponent,
+    DownloadOverlayComponent
   ],
   imports: [
     AppRoutingModule,
@@ -156,11 +162,14 @@ import { UploadCardComponent } from './pages/uploads-page/components/upload-card
     NgScrollbarModule,
     SmoothScrollModule,
     GuidedTourModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    NgxJsonViewerModule,
+    ClipboardModule
   ],
   providers: [
     ThemeService,
     UploadService,
+    ClipboardService,
     // {
     //   provide: ApmService,
     //   useClass: ApmService,
@@ -184,6 +193,7 @@ import { UploadCardComponent } from './pages/uploads-page/components/upload-card
     PaymentClaimDetailDailogComponent,
     RejectionReportClaimDialogComponent,
     TopFiveRejectionsComponent,
+    DownloadOverlayComponent
   ],
   entryComponents: [
     MessageDialogComponent,
@@ -197,7 +207,9 @@ import { UploadCardComponent } from './pages/uploads-page/components/upload-card
     UploadSummaryDialogComponent,
     ChangeLogDialogComponent,
     AttachmentViewDialogComponent,
-    ConfiguartionModalComponent
+    JsonViewDialogComponent,
+    ConfiguartionModalComponent,
+    DownloadOverlayComponent
   ],
 })
 export class AppModule { }

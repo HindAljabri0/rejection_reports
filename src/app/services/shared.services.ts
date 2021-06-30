@@ -261,6 +261,10 @@ export class SharedServices {
         return 'Under Submission';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return 'Under Processing';
+      case ClaimStatus.TOTALNOTSUBMITTED.toLowerCase():
+        return 'Total Not Submitted';
+      case ClaimStatus.TOTALSUBMITTED.toLowerCase():
+        return 'Total Submitted';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
@@ -437,6 +441,21 @@ export class SharedServices {
     }
     return returnArray;
   }
+  getMonoToneColor(count: number): string[] {
+    const returnArray: string[] = new Array();
+    const baseColor = '#3060AA';
+    const baseColorRGB = this.hexToRGB(baseColor);
+    const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
+    const lightStep = (baseColorHSL.l - 5) / count;
+    let currentLightValue = 0;
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+      const incrementLight = baseColorHSL.l + currentLightValue;
+      const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
+      const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);
+      returnArray.push(`rgba(${derivedRGB.r},${derivedRGB.g},${derivedRGB.b},1)`);
+    }
+    return returnArray;
+  }
   formatBytes(bytes, decimals = 2) {
     if (bytes === 0) {
       return '0 Bytes';
@@ -446,6 +465,32 @@ export class SharedServices {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  abbreviateNumber(value) {
+    let newValue = value;
+    if (value >= 1000) {
+      const suffixes = ['', 'K', 'M', 'B', 'T'];
+      const suffixNum = Math.floor(('' + value).length / 3);
+      let shortValue: any = '';
+      for (let precision = 2; precision >= 1; precision--) {
+        shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000, suffixNum)) : value).toPrecision(precision));
+        const dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
+        if (dotLessShortValue.length <= 2) { break; }
+      }
+      if (shortValue % 1 != 0) {
+        shortValue = shortValue.toFixed(1);
+      }
+      newValue = shortValue + suffixes[suffixNum];
+    }
+    return newValue;
+  }
+
+  kFormatter(num) {
+    
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (((Math.abs(num) / 1000).toFixed(1)) as any) + 'k'
+      : Math.sign(num) * Math.abs(num);
   }
 
 }

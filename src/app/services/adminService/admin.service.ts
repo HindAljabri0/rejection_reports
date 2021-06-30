@@ -23,7 +23,7 @@ export class AdminService {
       serviceCode: serviceCode,
       providerId: providerId,
       payerId: payerId,
-      visitDate: visitDate.getTime()
+      visitDate: this._fixDate(visitDate).getTime()
     };
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, body);
     return this.http.request(request);
@@ -52,4 +52,11 @@ export class AdminService {
     return this.http.request(request);
   }
 
+
+  _fixDate(date) {
+    if (date != null && !(date instanceof Date)) {
+      return new Date(date);
+    }
+    return date;
+  }
 }

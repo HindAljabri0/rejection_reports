@@ -11,12 +11,6 @@ import { UploadsHistoryComponent } from '../pages/uploads-history/uploads-histor
 import { ReportsComponent } from '../pages/reports/reports-page.component';
 import { GmReportsPageComponent } from '../pages/reports/globmed/gm-reports-page.component';
 import { MainLayoutComponent } from '../main-layout/main-layout.component';
-import { RegularPaymentListComponent } from './collection-management/regular-payment-list/regular-payment-list.component';
-import { RegularPaymentDetailsComponent } from './collection-management/regular-payment-details/regular-payment-details.component';
-import { FinalSettlementReportListComponent } from './collection-management/final-settlement-report-list/final-settlement-report-list.component';
-import {
-  FinalSettlementReportDetailsComponent
-} from './collection-management/final-settlement-report-details/final-settlement-report-details.component';
 import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.component';
 
 @NgModule({
@@ -59,6 +53,11 @@ import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.compone
           },
           {
             path: 'reports/:providerId',
+            loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+            canActivate: [RouteCanActiveService]
+          },
+          {
+            path: ':providerId/reports',
             loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
             canActivate: [RouteCanActiveService]
           },

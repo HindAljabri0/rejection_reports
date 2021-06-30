@@ -1,5 +1,10 @@
 <app-empty-state *ngIf="attachments.length === 0 && pageMode == 'VIEW'" message='No attachments found!'>
 </app-empty-state>
+
+<div class="alert info">
+    <mat-icon class="material-icons-outlined">info</mat-icon>
+    <span>Maximum 7 files can be uploaded for claim and each file can have maximum 2 MB size.</span>
+</div>
 <div class="row small-gutter">
     <ng-container *ngIf='attachments.length > 0'>
         <div class="col-md-6 col-lg-4 col-xxl-3" *ngFor="let attachment of attachments; let i = index">

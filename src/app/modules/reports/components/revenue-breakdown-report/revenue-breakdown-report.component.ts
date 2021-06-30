@@ -1,17 +1,17 @@
+import { CurrencyPipe, Location } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
 import { Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
+import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { SharedServices } from 'src/app/services/shared.services';
-import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
-import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
-import { Location, CurrencyPipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-revenue-breakdown-report',
@@ -34,27 +34,13 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             bodyFontFamily: this.chartFontFamily,
             titleFontFamily: this.chartFontFamily,
             footerFontFamily: this.chartFontFamily,
-            // callbacks: {
-            //     beforeLabel: (tooltipItem) => {
-            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
-            //         const amount = this.currencyPipe.transform(
-            //             selectedData.amount.toString(),
-            //             'number',
-            //             '',
-            //             '1.2-2'
-            //         );
-            //         return amount;
-            //     },
-            //     label: (tooltipItem) => {
-            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
-            //         return selectedData.ratio.toFixed(2);
-            //     },
-            //     afterLabel: (tooltipItem) => {
-            //         const selectedData = this.tempPieChartData[tooltipItem.datasetIndex];
-            //         return selectedData.description;
-            //     }
+            callbacks: {
+                label: (tooltipItem, data) => {
+                    let label: any = data.labels[tooltipItem.index];
+                    return label + ': ' + data.datasets[0].data[tooltipItem.index] + '%';
+                },
 
-            // }
+            }
         },
     };
     public pieChartLabels: Label[] = [];
@@ -82,7 +68,8 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
 
     selectedDoctor = -1;
     servicePerDoctorData: any[] = [];
-
+    tempPieChartLables: Label[] = [];
+    minDate: any;
     constructor(
         private sharedService: SharedServices,
         private reportService: RevenuReportService,
@@ -107,10 +94,12 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                 this.selectedCategory = params.category;
             }
             if (params.fromDate != null) {
-                this.fromDateControl = params.fromDate;
+                const fromDate: any = moment(params.fromDate, 'YYYY-MM-DD').toDate();
+                this.fromDateControl = fromDate;
             }
             if (params.toDate != null) {
-                this.toDateControl = params.toDate;
+                const toDate: any = moment(params.toDate, 'YYYY-MM-DD').toDate();
+                this.toDateControl = toDate;
             }
             if (this.isValidDate(this.fromDateControl) && this.isValidDate(this.toDateControl)) {
                 this.generate();
@@ -190,6 +179,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                         }
                         return set.label;
                     });
+                    this.tempPieChartLables = this.pieChartLabels;
                     const colors = this.sharedService.getAnalogousColor(event.body.length);
                     this.pieChartData = [
                         {
@@ -287,6 +277,47 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         } else {
             this.selectedDoctor = index;
         }
+        let serviceData = this.servicePerDoctorData.find(ele => ele.drName === this.tempPieChartLables[index]);
+        if (this.selectedDoctor !== -1) {
+            if (serviceData !== null && serviceData !== undefined && serviceData.data.length > 0) {
+                const colors = this.sharedService.getAnalogousColor(serviceData.data.length);
+                this.pieChartData = [
+                    {
+                        data: serviceData.data.map(set => Number(set.ratio).toFixed(2)),
+                        datalabels: {
+                            display: false
+                        },
+                        backgroundColor: colors,
+                        hoverBackgroundColor: colors,
+                        borderWidth: 0,
+                    },
+                ];
+                this.pieChartLabels = serviceData.data.map((ele) => ele.label);
+
+            }
+            else {
+                this.pieChartLabels = [];
+                this.pieChartData = this.pieChartData.map((ele) => {
+                    ele.data = [];
+                    return ele;
+                });
+            }
+        }
+        else {
+            const colors = this.sharedService.getAnalogousColor(this.tempPieChartData.length);
+            this.pieChartData = [
+                {
+                    data: this.tempPieChartData.map(set => set.ratio),
+                    datalabels: {
+                        display: false
+                    },
+                    backgroundColor: colors,
+                    hoverBackgroundColor: colors,
+                    borderWidth: 0,
+                },
+            ];
+            this.pieChartLabels = this.tempPieChartLables;
+        }
 
     }
 
@@ -297,6 +328,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
             drname: drName
         }
+
         this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
             if (event instanceof HttpResponse) {
                 let body = event['body'];
@@ -313,14 +345,30 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         }, err => {
             console.log(err);
             this.sharedService.loadingChanged.next(false);
-            this.servicePerDoctorData = [];
+            // this.servicePerDoctorData = [];
         });
 
 
     }
     serviceDoctorData(drName) {
         let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
-        return serviceData === null || serviceData === undefined ? [] : serviceData.data;
+        return serviceData === null || serviceData === undefined ? [] : serviceData.data.map((ele) => {
+            ele.ratio = Number(ele.ratio).toFixed(2);
+            return ele;
+        });
+    }
+    dynamicPieChartLableData() {
+        return this.selectedDoctor !== -1 ? this.tempPieChartLables : this.pieChartLabels;
+    }
+    dateValidation(event: any) {
+        if (event !== null) {
+            const startDate = moment(event).format('YYYY-MM-DD');
+            const endDate = moment(this.fromDateControl).format('YYYY-MM-DD');
+            if (startDate > endDate)
+                this.toDateControl = '';
+        }
+        this.minDate = new Date(event);
+
     }
 
 }
