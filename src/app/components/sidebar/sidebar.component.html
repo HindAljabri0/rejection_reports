@@ -250,7 +250,7 @@
         </div>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || providerContract.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || payerPaymentContract.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -267,10 +267,10 @@
                                 <span class="text">Provider Mapping</span>
                             </a>
                         </li>
-                        <li i18n="@@providercContract">
-                            <a routerLink="/administration/config/provider-contract" routerLinkActive="is-active" #providerContract="routerLinkActive"
+                        <li i18n="@@payerPaymentContract">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
                                 [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Provider Contract</span>
+                                <span class="text">Payer Payment Contract</span>
                             </a>
                         </li>
                     </ul>

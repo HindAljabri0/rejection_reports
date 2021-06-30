@@ -28,7 +28,7 @@ import { AddProviderContractDialogComponent } from './add-provider-contract-dial
       { path: 'config/providers', component: ProvidersConfigComponent },
       { path: 'config/providerMapping', component: ProviderMappingComponent },
       { path: 'config/providers/:providerId', component: ProvidersConfigComponent },
-      { path: 'config/provider-contract', component: ProviderContractComponent }
+      { path: 'config/payer-payment-contract', component: ProviderContractComponent }
     ]),
     CommonModule,
     MaterialModule,
