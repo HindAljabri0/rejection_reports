@@ -1070,7 +1070,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.commen.loadingChanged.next(true);
     let event;
     let excel = false;
-    console.log(this.summaries[this.selectedCardKey].statuses);
     if (this.summaries[this.selectedCardKey].statuses.length == 1 &&
       (this.summaries[this.selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))) {
       event = await this.searchService.downloadExcelSummaries(this.providerId,
