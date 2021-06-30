@@ -3,127 +3,133 @@
         <p>Aging Report</p>
     </div>
     <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Payer</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Payer</mat-option>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
-                            <mat-option value="Payer 5">Payer 5</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Year</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="2021">
-                            <mat-option value="2021">2021</mat-option>
-                            <mat-option value="2020">2020</mat-option>
-                            <mat-option value="2019">2019</mat-option>
-                            <mat-option value="2018">2018</mat-option>
-                            <mat-option value="2017">2017</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-auto align-self-end">
-                <div class="form-group">
-                    <button type="button" mat-flat-button color="primary">Search</button>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="row small-gutter">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Payer</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="">
+                                    <mat-option value="">All</mat-option>
+                                    <mat-option value="Tawuniya">Tawuniya</mat-option>
+                                    <mat-option value="Bupa">Bupa</mat-option>
+                                    <mat-option value="Medgulf">Medgulf</mat-option>
+                                    <mat-option value="Sagar">Sagar</mat-option>
+                                    <mat-option value="Allianz">Allianz</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">As of Date</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date" class="form-control" [formControl]="date">
+                                <mat-datepicker-toggle [for]="asOfDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #asOfDatePicker></mat-datepicker>
+                            </div>
+                            <span class="d-block pt-1 text-sm text-muted">Will show data for 01-01-2020 to 01-01-2021.</span>
+                        </div>
+                    </div>
+                    <div class="col-auto align-self-end">
+                        <div class="form-group">
+                            <button type="button" mat-flat-button color="primary">Search</button>
+                            <span class="d-block pt-1 text-sm">&nbsp;</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
+                        <th width="10"></th>
                         <th>Payer</th>
-                        <th>Due Date</th>
                         <th>Amount Outstanding</th>
-                        <th>Aged 1-30</th>
-                        <th>Aged 31-60</th>
-                        <th>Aged 61-90</th>
-                        <th>Aged 91-120</th>
-                        <th>Aged 121-150</th>
-                        <th>Aged 151-180</th>
-                        <th>Aged 181-365</th>
-                        <th>Aged > 365</th>
+                        <th>Total Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Johnson Company</td>
-                        <td>07/08/17</td>
-                        <td>500/1,000</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>500</td>
-                    </tr>
-                    <tr>
-                        <td>Pharma Kings Ltd</td>
-                        <td>14/08/2017</td>
-                        <td>100/100</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Hopman Luxury</td>
-                        <td>13/08/2017</td>
-                        <td>645.75/645.75</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>645.75</td>
-                    </tr>
-                    <tr>
-                        <td>Wild green cafe</td>
-                        <td>11/09/2017</td>
-                        <td>35.40/35.40</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>35.40</td>
-                    </tr>
-                    <tr>
-                        <td>Old school boys</td>
-                        <td>09/11/2017</td>
-                        <td>0/605</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
+                    <ng-container *ngFor="let item of report;let i=index">
+                        <tr [class.even]="i%2==0">
+                            <td class="text-primary row-click" width="10" (click)="toggleRow(i)">
+                                <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
+                                <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>
+                            </td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.payer}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.amountOutStanding}} SR</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.totalAmoount}} SR</td>
+                        </tr>
+                        <tr *ngIf="currentDetailsOpen==i">
+                            <td colspan="4">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 1-30</div>
+                                                        <p class="form-control-static">{{item.aged1to30}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 31-60</div>
+                                                        <p class="form-control-static">{{item.aged31to60}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 61-90</div>
+                                                        <p class="form-control-static">{{item.aged61to90}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 91-120</div>
+                                                        <p class="form-control-static">{{item.aged91to120}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 121-150</div>
+                                                        <p class="form-control-static">{{item.aged121to150}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 151-180</div>
+                                                        <p class="form-control-static">{{item.aged151to180}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged 181-365</div>
+                                                        <p class="form-control-static">{{item.aged181to365}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Aged > 365</div>
+                                                        <p class="form-control-static">{{item.aged365}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                                [chartType]="barChartType">
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>

@@ -3,11 +3,9 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Store } from '@ngrx/store';
 import {
   getNonSubmittedClaims,
-  getAcceptedClaims,
-  getNotAcceptedClaims,
-  getUnderSubmissionClaims,
   DashboardCardData
 } from '../../store/dashboard.reducer';
+import { NON_BINDABLE_ATTR } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-non-submitted-claims',
@@ -16,15 +14,12 @@ import {
 })
 export class NonSubmittedClaimsComponent implements OnInit {
 
-  summaries: DashboardCardData[] = [];
+  summaries: DashboardCardData;
 
-  constructor(private sharedServices: SharedServices, private store: Store) { }
+  constructor(public sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
-    this.store.select(getNonSubmittedClaims).subscribe(data => this.summaries[0] = { ...data, title: 'All Claims Before Submission' });
-    this.store.select(getAcceptedClaims).subscribe(data => this.summaries[1] = data);
-    this.store.select(getNotAcceptedClaims).subscribe(data => this.summaries[2] = data);
-    this.store.select(getUnderSubmissionClaims).subscribe(data => this.summaries[3] = data);
+    this.store.select(getNonSubmittedClaims).subscribe(data => this.summaries= { ...data, title: 'All Claims Before Submission' });
   }
 
   getCardName(status: string) {
@@ -36,6 +31,30 @@ export class NonSubmittedClaimsComponent implements OnInit {
   }
 
   calculatePercetage(first: number, second: number, roundValue: number = 4) {
-    return parseFloat(((first / second) * 100).toFixed(roundValue)).toString();
+    const retval = parseFloat(((first / second) * 100).toFixed(roundValue));
+    return isNaN(retval) ? 0 : retval.toString();
   }
+
+  getConvertfromStringToNumber(value:string){
+     
+    if(value!=null||value!=''){
+     return(Number(value))
+    }else{
+     return 0;
+    }
+
+ }
+
+ PercentageCalculator(value_1:string,value_2:string,value_3:string,total:number){
+
+ let result =(this.getConvertfromStringToNumber(value_1)+this.getConvertfromStringToNumber(value_2)+this.getConvertfromStringToNumber(value_3))/total *100;
+ if(isNaN(result)){
+  result=0;
+ }
+ if(result==100|| result==0){
+  return result;
+ }else{
+ return result.toFixed(2);
+ }
+ }
 }

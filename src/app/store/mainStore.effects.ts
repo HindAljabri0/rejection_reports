@@ -15,7 +15,7 @@ export class MainStoreEffects {
     constructor(
         private actions$: Actions,
         private titleService: Title,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
     ) {
         interval(3000)
             .subscribe(() => {

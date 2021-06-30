@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { FileUploadDialogComponent } from 'src/app/components/file-upload-dialog/file-upload-dialog.component';
-import { AccountReceivableAddBatchComponent } from '../account-receivable-add-batch/account-receivable-add-batch.component';
 import { AccountReceivableAddPaymentComponent } from '../account-receivable-add-payment/account-receivable-add-payment.component';
 
 @Component({
@@ -10,16 +8,12 @@ import { AccountReceivableAddPaymentComponent } from '../account-receivable-add-
   styles: []
 })
 export class AccountReceivableDetailsComponent implements OnInit {
-  recordOneOpen = false;
-  recordTwoOpen = false;
+  currentOpenRecord = -1;
 
-  constructor(public dialog: MatDialog) { }
-
-  ngOnInit() {
+  constructor(public dialog: MatDialog) {
   }
 
-  openAddBatchDialog() {
-    let dialogRef = this.dialog.open(AccountReceivableAddBatchComponent, { panelClass: ['primary-dialog'], autoFocus: false });
+  ngOnInit() {
   }
 
   openAddPaymentDialog(event) {
@@ -28,6 +22,10 @@ export class AccountReceivableDetailsComponent implements OnInit {
       {
         panelClass: ['primary-dialog']
       });
+  }
+
+  toggleRow(index) {
+    this.currentOpenRecord = (index != -1) ? -1 : index;
   }
 
 }

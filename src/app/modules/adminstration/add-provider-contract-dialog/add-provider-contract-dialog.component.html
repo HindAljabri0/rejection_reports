@@ -1,0 +1,90 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add/Edit Provider Contract</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Payer</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Payer</mat-option>
+                        <mat-option value="Payer 1">Payer 1</mat-option>
+                        <mat-option value="Payer 2">Payer 2</mat-option>
+                        <mat-option value="Payer 3">Payer 3</mat-option>
+                        <mat-option value="Payer 4">Payer 4</mat-option>
+                        <mat-option value="Payer 5">Payer 5</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Provider</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Provider</mat-option>
+                        <mat-option value="Provider 1">Provider 1</mat-option>
+                        <mat-option value="Provider 2">Provider 2</mat-option>
+                        <mat-option value="Provider 3">Provider 3</mat-option>
+                        <mat-option value="Provider 4">Provider 4</mat-option>
+                        <mat-option value="Provider 5">Provider 5</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Effective Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="effectiveDate" class="form-control" placeholder="Select effective date" />
+                    <mat-datepicker-toggle [for]="effectiveDate"></mat-datepicker-toggle>
+                    <mat-datepicker #effectiveDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Expiry Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" />
+                    <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                    <mat-datepicker #expiryDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Mode of Payment</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="">
+                        <mat-option value="">Select Mode of Payment</mat-option>
+                        <mat-option value="Prompt Payment">Prompt Payment</mat-option>
+                        <mat-option value="Regular Payment">Regular Payment</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Upload Agreement Copy</label>
+                <div class="file-upload-wrapper">
+                    <div class="content">
+                        <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
+                            Choose File
+                        </button>
+                        <span class="form-control-static pt-2 d-block" *ngIf="fileUploadFlag">Dallah-Bupa-2021-Agreement.pdf</span>
+                    </div>
+                    <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange()" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="primary">Add Contract</button>
+    </div>
+</div>

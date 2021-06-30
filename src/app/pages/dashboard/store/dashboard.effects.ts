@@ -19,6 +19,7 @@ import { HttpResponse, HttpErrorResponse, HttpRequest } from '@angular/common/ht
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
 import { of } from 'rxjs/internal/observable/of';
+import { ClaimsSummary } from 'src/app/models/ClaimsSummary';
 
 
 @Injectable({
@@ -49,17 +50,30 @@ export class DashboardEffects {
                 this.store.dispatch(setCardIsLoading({ name: name, loading: true }));
                 this.store.select(getSummaryByName(name)).subscribe(data => {
                     const values = data.data;
+                   
                     if (values['statuses'] != undefined) {
-                        this.searchService.getSummaries(this.sharedServices.providerId,
-                            values['statuses'], criteria.fromDate, criteria.toDate, `${criteria.payerId}`)
+                        this.searchService.getClaimsSummary(this.sharedServices.providerId,`${criteria.payerId}`,
+                           criteria.fromDate, criteria.toDate, values['statuses'])
                             .subscribe(event => {
                                 if (event instanceof HttpResponse) {
-                                    this.store.dispatch(setCardSummary({ name: name, data: new SearchStatusSummary(event.body) }));
+                                    this.store.dispatch(setCardSummary({ name: name, data: new ClaimsSummary(event.body,values['statuses']) }));
                                     this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                                 }
                             }, errorEvent => {
                                 if (errorEvent instanceof HttpErrorResponse) {
-                                    this.store.dispatch(setCardError({ name: name, error: errorEvent.message }));
+                                
+                                   
+                                  
+                        
+                                     if(errorEvent.status ==404){
+                                        this.store.dispatch(setCardSummary({ name: name, data: ClaimsSummary.emptySummaryWithStatuses(values['statuses']) }));
+                                        this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                                     }
+                                   else{
+                                   
+                                  
+                                    this.store.dispatch(setCardError({ name: name, error:errorEvent.error })); 
+                                }
                                 }
                                 this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
                             });

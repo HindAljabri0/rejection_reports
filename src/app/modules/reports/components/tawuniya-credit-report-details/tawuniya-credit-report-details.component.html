@@ -29,13 +29,13 @@
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Received Date</label>
-                                <p>{{data.providercreditReportInformation.reportdate}}</p>
+                                <p>{{data.providercreditReportInformation.reportdate | date: 'dd/MM/yyyy'}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Batch Received Date</label>
-                                <p>{{data.providercreditReportInformation.batchreceiveddate}}</p>
+                                <p>{{data.providercreditReportInformation.batchreceiveddate | date: 'dd/MM/yyyy'}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
@@ -65,7 +65,7 @@
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
                             <div class="inline-labelled-text">
                                 <label>Claim Month</label>
-                                <p>{{data.providercreditReportInformation.lossmonth}}</p>
+                                <p>{{data.providercreditReportInformation.lossmonth | date: 'MMM , y'}}</p>
                             </div>
                         </div>
                         <div class="col-xxl-1-5 col-xl-3 col-md-4">
@@ -156,10 +156,11 @@
                 </mat-menu>
                 <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a> -->
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree" (click)="agreeOnSelectedServices()"
-                    [ngClass]="disabledButtonClass()">Agree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree"
+                    (click)="agreeOnSelectedServices()" [ngClass]="disabledButtonClass()">Agree</a>
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled" [ngClass]="disabledButtonClass()">Agree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled"
+                    [ngClass]="disabledButtonClass()">Agree</a>
                 <mat-menu #disagreeMenu="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
                     <div (click)="$event.stopPropagation()">
                         <div class="form-group">
@@ -167,18 +168,21 @@
                             <textarea rows="4" class="form-control" [(ngModel)]="disagreeComment"></textarea>
                         </div>
                         <div class="text-right">
-                            <button type="button" mat-flat-button color="primary" (click)="disagreeOnSelectedServices()">Disagree All</button>
+                            <button type="button" mat-flat-button color="primary"
+                                (click)="disagreeOnSelectedServices()">Disagree All</button>
                         </div>
                     </div>
                 </mat-menu>
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined" [matMenuTriggerFor]="disagreeMenu" title="Disagree"
-                    [ngClass]="disabledButtonClass()">Disagree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined"
+                    [matMenuTriggerFor]="disagreeMenu" title="Disagree" [ngClass]="disabledButtonClass()">Disagree</a>
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length <= 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length == 0)"
-                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled" [ngClass]="disabledButtonClass()">Disagree</a>
+                    href="#" (click)="$event.preventDefault()" class="primary-link underlined disabled"
+                    [ngClass]="disabledButtonClass()">Disagree</a>
             </div>
         </div>
-        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="onTabChange($event)">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding"
+            (selectedTabChange)="onTabChange($event)">
             <mat-tab [label]="'Deducted Services'">
                 <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
                     <div class="fixed-height">
@@ -186,8 +190,10 @@
                             <thead>
                                 <tr>
                                     <th width="10">
-                                        <mat-checkbox class="grid-checkbox" color="primary" [(checked)]="selectionControl.deducted.allCheckBoxIsChecked"
-                                            [(indeterminate)]="selectionControl.deducted.allCheckBoxIsIndeterminate" (change)="selectAllInPage('deducted')">
+                                        <mat-checkbox class="grid-checkbox" color="primary"
+                                            [(checked)]="selectionControl.deducted.allCheckBoxIsChecked"
+                                            [(indeterminate)]="selectionControl.deducted.allCheckBoxIsIndeterminate"
+                                            (change)="selectAllInPage('deducted')">
                                         </mat-checkbox>
                                     </th>
                                     <th>Waseel Batch</th>
@@ -206,15 +212,18 @@
                             </thead>
                             <tbody>
                                 <ng-container *ngIf="!(deductedServices == null || deductedServices.length == 0)">
-                                    <tr class="row-click" *ngFor="let service of deductedServices" (click)="openDetailsDialog($event, service.id.serialno, 'deducted')">
+                                    <tr class="row-click" *ngFor="let service of deductedServices"
+                                        (click)="openDetailsDialog($event, service.id.serialno, 'deducted')">
                                         <td (click)="$event.stopPropagation();">
-                                            <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectionControl.deducted.selections.includes(service.id.serialno)"
+                                            <mat-checkbox class="grid-checkbox" color="primary"
+                                                [checked]="selectionControl.deducted.selections.includes(service.id.serialno)"
                                                 (change)="selectService('deducted', service.id.serialno)">
                                             </mat-checkbox>
                                         </td>
                                         <td>{{service.waseelbatch}}</td>
                                         <td>{{service.physicianid}}</td>
-                                        <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)" class="primary-link underlined disabled ng-star-inserted" href="#"
+                                        <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)"
+                                            class="primary-link underlined disabled ng-star-inserted" href="#"
                                             title="payerClaimNo">{{service.payerclaimno}}</td>
                                         <td></td>
                                         <td>{{service.servicecode}}</td>
@@ -224,17 +233,22 @@
                                         <td>{{service.exceedprice | currency:' '}} SR</td>
                                         <td>{{service.deductedamount | currency:' '}} SR</td>
                                         <td class="text-center">
-                                            <mat-icon *ngIf="service.agree != null" [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}"
+                                            <mat-icon *ngIf="service.agree != null"
+                                                [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}"
                                                 class="size-21">
                                                 {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                         </td>
                                         <td class="actions" (click)="$event.stopPropagation()">
-                                            <button type="button" mat-icon-button class="text-success" matTooltip="Agree" [ngClass]="disabledButtonClass()"
-                                                (click)="agreeOnSelectedServices(service.id.serialno)" [disabled]="disabledButton()">
+                                            <button type="button" mat-icon-button class="text-success"
+                                                matTooltip="Agree" [ngClass]="disabledButtonClass()"
+                                                (click)="agreeOnSelectedServices(service.id.serialno)"
+                                                [disabled]="disabledButton()">
                                                 <mat-icon class="material-icons-outlined">check_circle</mat-icon>
                                             </button>
-                                            <button type="button" mat-icon-button class="text-danger" matTooltip="Disagree" [ngClass]="disabledButtonClass()"
-                                                [matMenuTriggerFor]="editMenu1" #clickMenuTrigger="matMenuTrigger" (click)="selectionDisagreement(service.id.serialno)"
+                                            <button type="button" mat-icon-button class="text-danger"
+                                                matTooltip="Disagree" [ngClass]="disabledButtonClass()"
+                                                [matMenuTriggerFor]="editMenu1" #clickMenuTrigger="matMenuTrigger"
+                                                (click)="selectionDisagreement(service.id.serialno)"
                                                 [disabled]="disabledButton()">
                                                 <mat-icon class="material-icons-outlined">cancel</mat-icon>
                                             </button>
@@ -242,26 +256,33 @@
                                             (click)="$event.stopPropagation()" mat-icon-button class="text-primary">
                                             <mat-icon>edit</mat-icon>
                                         </button> -->
-                                            <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                            <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu"
+                                                xPosition="before">
                                                 <div (click)="$event.stopPropagation()">
                                                     <div class="form-group">
                                                         <label>Comments</label>
-                                                        <textarea rows="4" class="form-control" [(ngModel)]="service.newComments"></textarea>
+                                                        <textarea rows="4" class="form-control"
+                                                            [(ngModel)]="service.newComments"></textarea>
                                                     </div>
                                                     <div class="form-group mb-0">
                                                         <label>Attachments</label>
-                                                        <p class="text-sm text-grey pb-1">Note: The allowed file types are
+                                                        <p class="text-sm text-grey pb-1">Note: The allowed file types
+                                                            are
                                                             GIF,
                                                             JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                         </p>
                                                         <ul class="attachment-list">
-                                                            <li *ngIf="service.newAttachment != null" [matTooltip]="service.newAttachment.name"
+                                                            <li *ngIf="service.newAttachment != null"
+                                                                [matTooltip]="service.newAttachment.name"
                                                                 (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
-                                                                <img [src]="getImageOfBlob(service)" [alt]="service.newAttachment.name" />
+                                                                <img [src]="getImageOfBlob(service)"
+                                                                    [alt]="service.newAttachment.name" />
                                                             </li>
-                                                            <li *ngIf="service.newAttachment == null" matTooltip="Add Attachments" class="add-block">
+                                                            <li *ngIf="service.newAttachment == null"
+                                                                matTooltip="Add Attachments" class="add-block">
                                                                 <div class="file-upload-wrapper text-primary">
-                                                                    <div class="content" (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
+                                                                    <div class="content"
+                                                                        (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
                                                                         <mat-icon>add_circle</mat-icon>
                                                                     </div>
                                                                 </div>
@@ -269,7 +290,8 @@
                                                         </ul>
                                                     </div>
                                                     <div class="text-right">
-                                                        <button type="button" (click)="disagreeOnService(service)" mat-flat-button color="primary">
+                                                        <button type="button" (click)="disagreeOnService(service)"
+                                                            mat-flat-button color="primary">
                                                             Disagree
                                                         </button>
                                                     </div>
@@ -296,8 +318,10 @@
                             <thead>
                                 <tr>
                                     <th width="10">
-                                        <mat-checkbox class="grid-checkbox" color="primary" [(checked)]="selectionControl.rejected.allCheckBoxIsChecked"
-                                            [(indeterminate)]="selectionControl.rejected.allCheckBoxIsIndeterminate" (change)="selectAllInPage('rejected')">
+                                        <mat-checkbox class="grid-checkbox" color="primary"
+                                            [(checked)]="selectionControl.rejected.allCheckBoxIsChecked"
+                                            [(indeterminate)]="selectionControl.rejected.allCheckBoxIsIndeterminate"
+                                            (change)="selectAllInPage('rejected')">
                                         </mat-checkbox>
                                     </th>
                                     <th>Waseel Batch</th>
@@ -315,15 +339,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="row-click" *ngFor="let service of rejectedServices" (click)="openDetailsDialog($event, service.id.serialno, 'rejected')">
+                                <tr class="row-click" *ngFor="let service of rejectedServices"
+                                    (click)="openDetailsDialog($event, service.id.serialno, 'rejected')">
                                     <td (click)="$event.stopPropagation()">
-                                        <mat-checkbox class="grid-checkbox" color="primary" [checked]="selectionControl.rejected.selections.includes(service.id.serialno)"
+                                        <mat-checkbox class="grid-checkbox" color="primary"
+                                            [checked]="selectionControl.rejected.selections.includes(service.id.serialno)"
                                             (change)="selectService('rejected', service.id.serialno)">
                                         </mat-checkbox>
                                     </td>
                                     <td>{{service.waseelbatch}}</td>
                                     <td>{{service.physicianid}}</td>
-                                    <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)" class="primary-link underlined disabled ng-star-inserted" href="#"
+                                    <td (click)="$event.stopPropagation();showClaim(service.payerclaimno)"
+                                        class="primary-link underlined disabled ng-star-inserted" href="#"
                                         title="payerClaimNo">{{service.payerclaimno}}</td>
                                     <td></td>
                                     <td>{{service.servicecode}}</td>
@@ -333,34 +360,43 @@
                                     <td>{{service.exceedprice | currency:' '}} SR</td>
                                     <td>{{service.deductedamount | currency:' '}} SR</td>
                                     <td>
-                                        <mat-icon *ngIf="service.agree != null" [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
+                                        <mat-icon *ngIf="service.agree != null"
+                                            [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
                                             {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                     </td>
                                     <td class="actions">
-                                        <button *ngIf="isEditableBatch()" type="button" (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1" mat-icon-button
-                                            class="text-primary">
+                                        <button *ngIf="isEditableBatch()" type="button"
+                                            (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1"
+                                            mat-icon-button class="text-primary">
                                             <mat-icon>edit</mat-icon>
                                         </button>
-                                        <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu" xPosition="before">
+                                        <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu"
+                                            xPosition="before">
                                             <div (click)="$event.stopPropagation()">
                                                 <div class="form-group">
                                                     <label>Comments</label>
-                                                    <textarea rows="4" class="form-control" [(ngModel)]="service.newComments"></textarea>
+                                                    <textarea rows="4" class="form-control"
+                                                        [(ngModel)]="service.newComments"></textarea>
                                                 </div>
                                                 <div class="form-group mb-0">
                                                     <label>Attachments</label>
-                                                    <p class="text-sm text-grey pb-1">Note: The allowed file types are GIF,
+                                                    <p class="text-sm text-grey pb-1">Note: The allowed file types are
+                                                        GIF,
                                                         JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                     </p>
                                                     <ul class="attachment-list">
-                                                        <li *ngIf="service.newAttachment != null" [matTooltip]="service.newAttachment.name"
+                                                        <li *ngIf="service.newAttachment != null"
+                                                            [matTooltip]="service.newAttachment.name"
                                                             (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
-                                                            <img [src]="getImageOfBlob(service)" [alt]="service.newAttachment.name" />
+                                                            <img [src]="getImageOfBlob(service)"
+                                                                [alt]="service.newAttachment.name" />
                                                             <!-- <img src="./assets/ic-pdf-lg.svg" [alt]="service.newAttachment.name" /> -->
                                                         </li>
-                                                        <li *ngIf="service.newAttachment == null" matTooltip="Add Attachments" class="add-block">
+                                                        <li *ngIf="service.newAttachment == null"
+                                                            matTooltip="Add Attachments" class="add-block">
                                                             <div class="file-upload-wrapper text-primary">
-                                                                <div class="content" (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
+                                                                <div class="content"
+                                                                    (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
                                                                     <mat-icon>add_circle</mat-icon>
                                                                 </div>
                                                             </div>
@@ -368,7 +404,8 @@
                                                     </ul>
                                                 </div>
                                                 <div class="text-right">
-                                                    <button type="button" (click)="disagreeOnService(service)" mat-flat-button color="primary">
+                                                    <button type="button" (click)="disagreeOnService(service)"
+                                                        mat-flat-button color="primary">
                                                         Apply
                                                     </button>
                                                 </div>
@@ -378,8 +415,9 @@
                                 </tr>
                                 <tr>
                                     <td colspan="13" class="p-0">
-                                        <app-empty-state *ngIf="rejectedServices == null || rejectedServices.length == 0" class="claim-list-empty-state"
-                                            message='No reports found!'>
+                                        <app-empty-state
+                                            *ngIf="rejectedServices == null || rejectedServices.length == 0"
+                                            class="claim-list-empty-state" message='No reports found!'>
                                         </app-empty-state>
                                     </td>
                                 </tr>
@@ -410,7 +448,8 @@
         </div>
 
         <div class="btn-list right-block">
-            <button type="button" *ngIf="isEditableBatch()" (click)="submit()" color="primary" mat-flat-button>Submit</button>
+            <button type="button" *ngIf="isEditableBatch()" (click)="submit()" color="primary"
+                mat-flat-button>Submit</button>
         </div>
     </div>
 </div>

@@ -461,9 +461,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .delete-btn .mat-icon{display:block;}
 .primary-grid>tbody>.seperator-row,.primary-grid>tbody>.seperator-row:nth-child(even){background: #fafafa;font-weight: 600;}
 .primary-grid>tbody>tr>.form-group{margin: 0;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;}
-.primary-grid:not(.claim-view-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 26px;background: #fff;border:1px solid #d4d4d4;color:inherit;}
+.primary-grid:not(.claim-view-table) .form-control{border-radius: 0;padding: 0 0 0 5px;height: 32px;background: #fff;border:1px solid #d4d4d4;color:inherit;margin: -3px 0;}
 .primary-grid:not(.claim-view-table) textarea.form-control{height:auto;padding:8px;}
 .primary-grid:not(.claim-view-table) .form-control:focus{border-color:#3060AA;}
+.primary-grid:not(.claim-view-table) td:not(.actions) .mat-icon-button{height: 32px;width: 32px;line-height: 32px;display: block;}
+.primary-grid:not(.claim-view-table) .mat-datepicker-toggle-default-icon{height: 18px;width: 18px;}
 .primary-grid:not(.claim-view-table) .has-error .form-control:focus{border-color:#CC2F2F;}
 .primary-grid.claim-view-table:not(.manual-row-color)>tbody>tr:nth-child(even) .form-control, .primary-grid.claim-view-table.manual-row-color>tbody>.even .form-control{background-color: #fff;}
 .primary-grid .column-header-action{display: flex;align-items:flex-start;}
@@ -482,6 +484,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .abstract-card-carousel .owl-carousel .owl-nav .owl-next.disabled, .abstract-card-carousel .owl-carousel .owl-nav .owl-prev.disabled,.abstract-card-carousel .owl-carousel .owl-nav .owl-next[disabled], .abstract-card-carousel .owl-carousel .owl-nav .owl-prev[disabled]{opacity: 0;visibility: hidden;}
 .abstract-card-carousel .owl-carousel .owl-stage{display: flex;}
 .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(20% - 14px)!important;}
+.abstract-card-carousel.dynamic-width.fixed-card .owl-carousel .owl-stage{width: 100%!important;}
+.abstract-card-carousel.fixed-card .owl-carousel .owl-item[style="width: 320px; margin-right: 14px;"]{width: 320px!important;}
 
 /* claim totals
 --------------------------------------------------------------------------------------------------------*/
@@ -525,11 +529,14 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog .dialog-title{color: #3060AA;font-weight: 500;padding-bottom: 24px;}
 .primary-dialog-header{padding: 16px;color: #3060AA;font-weight: 500;display: flex;}
 .primary-dialog-header .dialog-close{height: 40px;width: 40px;background: url("./assets/ic-close.svg") center no-repeat;background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px auto;border:0;}
+.primary-dialog-header .dialog-copy{height: 40px;width: 40px;color: #3060AA;background:transparent; background-size: 24px 24px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin: -9px -8px -9px 10px;border:0;}
 .primary-dialog-header .dialog-close:hover,.primary-dialog-header .dialog-close:focus,.primary-dialog-header .dialog-close:active{opacity: 1;}
+.primary-dialog-header .dialog-copy:hover,.primary-dialog-header .dialog-copy:focus,.primary-dialog-header .dialog-copy:active{opacity: 1;}
 .primary-dialog-footer,.primary-dialog-body{padding: 16px;}
 .primary-dialog-body .form-group{margin-bottom: 16px;}
 .primary-dialog-header.has-border{border-bottom:1px solid #e1e1e1;}
 .primary-dialog-footer.has-border{border-top:1px solid #e1e1e1;}
+.primary-dialog-body.fixed-body,.primary-dialog-body .dialog-table{overflow: auto;max-height: calc(100vh - 192px);min-height: 320px;}
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
 .error-dialog .mat-dialog-container{background-color: #fae9e9;}
 
@@ -721,12 +728,13 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .progress-report-wrapper .list>.title{font-size:13px;font-weight: 600;background-color: rgba(0,0,0,0.06);padding: 8px 14px;color:#505050;}
 .progress-report-wrapper>.left-block{flex-grow: 0;flex-shrink:0;flex-basis: 260px;max-width:260px;}
 .progress-report-wrapper>.right-block{background-color: #fff;padding: 14px;flex-grow: 0;flex-shrink:0;flex-basis: calc(100% - 260px);max-width:calc(100% - 260px);}
-.progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 333px);}
+.progress-report-wrapper>.right-block .empty-state{min-height: calc(100vh - 268px);}
 .progress-report-wrapper>.right-block .rejection-card-head{display: block;min-height: auto;}
 .progress-report-wrapper>.right-block.full-width{flex-basis: 100%;max-width:100%;}
 .progress-report-wrapper>.right-block .chart-wrapper{height: calc(100vh - 333px);position: relative;width: 100%;min-height: 380px;}
 .progress-report-wrapper .custom-legend-wrapper{display: flex;height: calc(100vh - 333px);min-height: 380px;margin: -14px;}
 .progress-report-wrapper .custom-legend-wrapper .chart-wrapper{flex-grow: 0;flex-shrink: 0;flex-basis: calc(100% - 320px);max-width: calc(100% - 320px);}
+.progress-report-wrapper .custom-legend-wrapper .chart-wrapper .empty-state{margin: 14px;}
 .progress-report-wrapper .custom-legend{flex-grow: 0;flex-shrink: 0;flex-basis: 320px;max-width: 320px;max-height: 100%;overflow: auto;padding: 14px;border-left: 1px solid #e1e1e1;}
 .progress-report-wrapper .custom-legend li{display: flex;padding-bottom: 12px;}
 .progress-report-wrapper .custom-legend .color{flex-grow: 0;flex-shrink: 0;flex-basis: 16px;width: 16px;height: 16px;display: block;position: relative;top: 2px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 1;transform: scale(1);}
@@ -800,7 +808,6 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .status-text.ball-brown:before{background-color: #B48A60;}
 .status-text.ball-red:before{background-color: #FF0000;}
 .status-text.ball-yellow:before{background-color: #fbff00;}
-
 
 /* custom file upload
 --------------------------------------------------------------------------------------------------------*/
@@ -993,9 +1000,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .dashboard-claim-card .statistics{font-weight: 600;padding-bottom: 6px;}
 .dashboard-claim-card .statistics:last-child{padding-bottom: 0;}
 .dashboard-claim-card .statistics small{font-size: 12px;font-weight: 500;color: #505050;}
-.dashboard-claim-card .progress-block{border-radius: 2px;height: 4px;display: flex;overflow: hidden;margin-bottom: 12px;background-color: #e8e8e8;}
-.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 100%;flex-grow: 0;flex-shrink:0;}
-.dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;}
+.dashboard-claim-card .progress-block{overflow: hidden;margin-bottom: 12px;}
+.dashboard-claim-card .progress-block .ready-submission-bar{margin-bottom: 4px;}
+.dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 6px;border-radius: 2px;}
+.dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;overflow: hidden;}
 .dashboard-claim-card .loader-wrapper{display: flex;align-items: center;justify-content: center;padding: 53px 0;}
 .dashboard-legend{display: flex;justify-content: flex-end;padding: 0 0 18px;margin-top: -38px;color: #505050;}
 .dashboard-legend>li{display: flex;align-items:center;margin-right: 12px;}
@@ -1075,6 +1083,19 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* box
 --------------------------------------------------------------------------------------------------------*/
 .box{padding: 14px;border:1px solid #bebebe;border-radius: 6px;}
+
+/* alert
+--------------------------------------------------------------------------------------------------------*/
+.alert{padding: 10px 14px;border:0;margin-bottom: 14px;display: flex;background: #f3f3f3;border-radius: 6px;}
+.alert>span{align-self: center;-ms-flex-item-align: center;}
+.alert>.mat-icon{flex-shrink: 0;flex-basis: 24px;flex-grow: 0;max-width: 24px;margin-right: 8px;}
+.alert.info{background-color: #e6ecf5;color: #3060AA;}
+.alert.success{background-color: #edf9e4;color: #67CD23;}
+.alert.danger{background-color: #f9e6e6;color: #CC2F2F;}
+
+/* json viewer
+--------------------------------------------------------------------------------------------------------*/
+.json-viewer{background-color: #f6f6f6;display: block;padding: 14px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
@@ -1214,3 +1235,42 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     overflow: hidden;
 }
 
+.download-overlay {
+    width: 450px;
+    padding: 16px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: minmax(50px, 25%) 1fr;
+    background-color: white;
+}
+
+.download-overlay>.error-icon{
+    height: 100%;
+    width: 100%;
+    font-size: 100px;
+    color: #CC2F2F;
+}
+
+.download-overlay>.download-info{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    justify-content: space-between;
+}
+
+
+.download-overlay>.download-info>.text {
+    font-size: medium;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 20px;     /* fallback */
+    max-height: 50px;      /* fallback */
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+    margin-bottom: 10px;
+}
+
+.download-overlay>.download-info>.text.error{
+    color: #CC2F2F;
+}
