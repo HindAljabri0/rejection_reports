@@ -54,10 +54,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       992: {
         items: 4,
         slideBy: 4
-      },
-      1200: {
-        items: 5,
-        slideBy: 5
       }
     },
     nav: true
