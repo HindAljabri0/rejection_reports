@@ -1003,7 +1003,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .dashboard-claim-card .progress-block{overflow: hidden;margin-bottom: 12px;}
 .dashboard-claim-card .progress-block .ready-submission-bar{margin-bottom: 4px;}
 .dashboard-claim-card .progress-block .ready-submission-bar,.dashboard-claim-card .progress-block .rejected-waseel-bar{height: 6px;border-radius: 2px;}
-.dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;}
+.dashboard-claim-card .chart-wrapper{height: 80px;width: 80px;margin:-56px 0 16px auto;overflow: hidden;}
 .dashboard-claim-card .loader-wrapper{display: flex;align-items: center;justify-content: center;padding: 53px 0;}
 .dashboard-legend{display: flex;justify-content: flex-end;padding: 0 0 18px;margin-top: -38px;color: #505050;}
 .dashboard-legend>li{display: flex;align-items:center;margin-right: 12px;}

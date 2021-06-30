@@ -570,18 +570,18 @@
 					</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit id="providercContract" datatype="html">
+			<trans-unit id="payerPaymentContract" datatype="html">
 				<source>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
-					Provider Contract
+					Payer Payment Contract
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
 				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
-					عقد المزود
+					عقد السداد
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</target>

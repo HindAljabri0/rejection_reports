@@ -27,8 +27,7 @@
               >
             <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
-              [bsConfig]="datePickerConfig" placeholder="Select From Date" required
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="datePickerConfig" placeholder="Select From Date" required
               (bsValueChange)="dateValidation($event)" />
           </div>
           <div *ngIf="submitted && formCn.fromDate.errors">
@@ -44,8 +43,8 @@
               formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
-              [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required />
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig" [minDate]="minDate"
+              placeholder="Select To Date" required />
           </div>
           <div *ngIf="submitted && formCn.toDate.errors">
             <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
@@ -84,100 +83,102 @@
         <img src="./assets/{{detailTopActionIcon}}" />
       </button>
     </div>
-    <div class="table-responsive" *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
-      <table class="primary-grid manual-row-color" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>No. Of Claim</th>
-            <th>Gross</th>
-            <th>Discount</th>
-            <th>Patient Share</th>
-            <th>Net</th>
-            <th>Net VAT</th>
-            <th>Corrected Amount</th>
-            <th>Actual Deducted</th>
-            <th>Actual Paid</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedStatuses">
-            <td>{{commen.statusToName(claim.status)}}</td>
-            <td>{{claim.noOfClaims}}</td>
-            <td>{{claim.gross | number : '1.2-2'}}</td>
-            <td>{{claim.discount| number : '1.2-2'}}</td>
-            <td>{{claim.patientShare | number : '1.2-2'}}</td>
-            <td>{{claim.net | number : '1.2-2'}}</td>
-            <td>{{claim.netVat | number : '1.2-2'}}</td>
-            <td>{{claim.correctAmount | number : '1.2-2'}}</td>
-            <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
-            <td>{{claim.actualPaid | number : '1.2-2'}}</td>
-          </tr>
-          <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedAmount">
-            <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
-            <td class="header-cell">{{claim.noOfClaims}}</td>
-            <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
-          </tr>
-          <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedStatuses">
-            <td>{{commen.statusToName(claim.status)}}</td>
-            <td>{{claim.noOfClaims}}</td>
-            <td>{{claim.gross | number : '1.2-2'}}</td>
-            <td>{{claim.discount| number : '1.2-2'}}</td>
-            <td>{{claim.patientShare | number : '1.2-2'}}</td>
-            <td>{{claim.net | number : '1.2-2'}}</td>
-            <td>{{claim.netVat | number : '1.2-2'}}</td>
-            <td>{{claim.correctAmount | number : '1.2-2'}}</td>
-            <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
-            <td>{{claim.actualPaid | number : '1.2-2'}}</td>
-          </tr>
-          <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedAmount">
-            <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
-            <td class="header-cell">{{claim.noOfClaims}}</td>
-            <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount" class="even">
-            <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
-            <td class="header-cell">{{claim.noOfClaims}}</td>
-            <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
-            <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
-      class="claim-list-empty-state" message='No reports found!'>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white"
+      *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
+      <div class="fixed-height">
+        <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>No. Of Claim</th>
+              <th>Gross (SR)</th>
+              <th>Discount (SR)</th>
+              <th>Patient Share (SR)</th>
+              <th>Net (SR)</th>
+              <th>Net VAT (SR)</th>
+              <th>Corrected Amount (SR)</th>
+              <th>Actual Deducted (SR)</th>
+              <th>Actual Paid (SR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedStatuses">
+              <td>{{commen.statusToName(claim.status)}}</td>
+              <td>{{claim.noOfClaims}}</td>
+              <td>{{claim.gross | number : '1.2-2'}}</td>
+              <td>{{claim.discount| number : '1.2-2'}}</td>
+              <td>{{claim.patientShare | number : '1.2-2'}}</td>
+              <td>{{claim.net | number : '1.2-2'}}</td>
+              <td>{{claim.netVat | number : '1.2-2'}}</td>
+              <td>{{claim.correctAmount | number : '1.2-2'}}</td>
+              <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
+              <td>{{claim.actualPaid | number : '1.2-2'}}</td>
+            </tr>
+            <tr *ngFor="let claim of claimStatusSummaryData?.NotSubmittedAmount">
+              <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
+              <td class="header-cell">{{claim.noOfClaims}}</td>
+              <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
+            </tr>
+            <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedStatuses">
+              <td>{{commen.statusToName(claim.status)}}</td>
+              <td>{{claim.noOfClaims}}</td>
+              <td>{{claim.gross | number : '1.2-2'}}</td>
+              <td>{{claim.discount| number : '1.2-2'}}</td>
+              <td>{{claim.patientShare | number : '1.2-2'}}</td>
+              <td>{{claim.net | number : '1.2-2'}}</td>
+              <td>{{claim.netVat | number : '1.2-2'}}</td>
+              <td>{{claim.correctAmount | number : '1.2-2'}}</td>
+              <td>{{claim.actualDeduct | number : '1.2-2'}}</td>
+              <td>{{claim.actualPaid | number : '1.2-2'}}</td>
+            </tr>
+            <tr *ngFor="let claim of claimStatusSummaryData?.SubmittedAmount">
+              <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
+              <td class="header-cell">{{claim.noOfClaims}}</td>
+              <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr *ngFor="let claim of claimStatusSummaryData?.TotalAmount" class="even">
+              <td class="header-cell">{{commen.statusToName(claim.status)}}</td>
+              <td class="header-cell">{{claim.noOfClaims}}</td>
+              <td class="header-cell">{{claim.gross | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.discount| number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.patientShare | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.net | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.netVat | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.correctAmount | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.actualDeduct | number : '1.2-2'}}</td>
+              <td class="header-cell">{{claim.actualPaid | number : '1.2-2'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-scrollbar>
+    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined" class="claim-list-empty-state" message='No reports found!'>
     </app-empty-state>
 
     <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">

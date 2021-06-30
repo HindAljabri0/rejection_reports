@@ -6,22 +6,19 @@
         <div class="row small-gutter">
             <div class="col">
                 <div class="form-group">
-                    <label class="control-label">Bank Name</label>
+                    <label class="control-label">Criteria</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="">
-                            <mat-option value="">Select Bank</mat-option>
-                            <mat-option value="Bank 1">Bank 1</mat-option>
-                            <mat-option value="Bank 2">Bank 2</mat-option>
-                            <mat-option value="Bank 3">Bank 3</mat-option>
-                            <mat-option value="Bank 4">Bank 4</mat-option>
-                            <mat-option value="Bank 5">Bank 5</mat-option>
+                            <mat-option value="">Select Criteria</mat-option>
+                            <mat-option value="Upload Date">Upload Date</mat-option>
+                            <mat-option value="Statement Date">Statement Date</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="control-label">Statement Date From</label>
+                    <label class="control-label">From Date</label>
                     <div class="date-picker">
                         <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
                         <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
@@ -31,7 +28,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="control-label">Statement Date To</label>
+                    <label class="control-label">To Date</label>
                     <div class="date-picker">
                         <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
                         <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
@@ -54,7 +51,6 @@
                         <th>Upload Date</th>
                         <th>Statement Start Date</th>
                         <th>Statement End Date</th>
-                        <th>Bank Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,61 +58,51 @@
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">26/12/2043</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">23/6/2061</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">27/7/2101</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">The National Commercial Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">27/2/2092</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">4/5/2034</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">6/10/2063</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">The Saudi British Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">23/7/2106</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">20/8/2072</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">14/7/2066</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Saudi Investment Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">8/3/2095</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">20/7/2066</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">24/9/2035</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Alinma Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">31/8/2045</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">18/4/2064</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">26/7/2052</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Banque Saudi Fransi</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">15/6/2042</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">13/6/2089</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">26/10/2097</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Riyad Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">9/11/2084</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">12/3/2110</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">28/7/2053</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Samba Financial Group (Samba)</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">5/11/2053</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">2/11/2076</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">8/5/2067</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Alawwal Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">21/5/2097</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">20/5/2054</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">3/8/2121</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Al Rajhi Bank</td>
                     </tr>
                     <tr>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">7/2/2031</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">25/11/2042</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">12/2/2040</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">Arab National Bank</td>
                     </tr>
                 </tbody>
             </table>
