@@ -1,0 +1,58 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add Statement</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Upload Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="uploadDate" class="form-control" placeholder="Select upload date" />
+                    <mat-datepicker-toggle [for]="uploadDate"></mat-datepicker-toggle>
+                    <mat-datepicker #uploadDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Statement Start Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select statement start date" />
+                    <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                    <mat-datepicker #startDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Statement End Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="endDate" class="form-control" placeholder="Select statement end date" />
+                    <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                    <mat-datepicker #endDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label class="control-label">Upload Statement File</label>
+                <div class="file-upload-wrapper">
+                    <div class="content">
+                        <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
+                            Choose File
+                        </button>
+                        <span class="form-control-static pt-2 d-block" *ngIf="fileUploadFlag">Statement-03-12-2020.xlsx</span>
+                    </div>
+                    <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange()" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button routerLink="/collection-management/statement-of-accounts-details" (click)="closeDialog()" mat-flat-button color="primary">Add Statement</button>
+    </div>
+</div>
