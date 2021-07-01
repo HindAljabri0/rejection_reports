@@ -45,6 +45,8 @@ export class LoginComponent implements OnInit {
       this.routeActive.queryParams.subscribe(value => {
         if (value.expired != null && value.expired) {
           this.errors = 'Your session have been expired. Please sign in again.';
+        } else if(value.hasClaimPrivileges != null && value.hasClaimPrivileges){
+          this.errors = `The user you used does not have the required privileges to use this system.`;
         }
       });
     });
