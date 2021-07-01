@@ -115,7 +115,8 @@ export class AuthService {
       if (event instanceof HttpResponse) {
         const authorities: Array<any> = event.body['authorities'];
         const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
-        || element['authority'].split('|')[1] == '22.0');
+        || element['authority'].split('|')[1] == '22.0'
+        || element['authority'].split('|')[1] == '24.0');
         if (hasClaimPrivileges) {
           event.body['authorities'].forEach(element => {
             const key = element['authority'].split('|')[0] + element['authority'].split('|')[2];
