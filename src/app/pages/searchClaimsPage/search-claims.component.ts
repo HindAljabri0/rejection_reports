@@ -11,6 +11,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ClaimListModel } from 'src/app/claim-module-components/models/claim-list.model';
+import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
 import { ClaimError } from 'src/app/models/claimError';
 import { ClaimListFilterSelection } from 'src/app/models/claimListSearch';
 import { ClaimStatus } from 'src/app/models/claimStatus';
@@ -23,6 +24,7 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { ValidationService } from 'src/app/services/validationService/validation.service';
@@ -167,6 +169,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private validationService: ValidationService,
     private store: Store,
     private adminService: AdminService,
+    private downloadService: DownloadService,
     private actions$: Actions) { }
 
   ngOnDestroy(): void {
@@ -1063,12 +1066,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   async download() {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
-    this.commen.loadingChanged.next(true);
+  
     let event;
     let excel = false;
     if (this.summaries[this.selectedCardKey].statuses.length == 1 &&
       (this.summaries[this.selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))) {
-      event = await this.searchService.downloadExcelSummaries(this.providerId,
+      event =  this.searchService.downloadExcelSummaries(this.providerId,
         this.summaries[this.selectedCardKey].statuses,
         this.from,
         this.to,
@@ -1082,17 +1085,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate).toPromise().catch(error => {
-          if (error instanceof HttpErrorResponse) {
-            this.dialogService.openMessageDialog(new MessageDialogData('',
-              'Could not reach the server at the moment. Please try again later.',
-              true));
-          }
-          this.commen.loadingChanged.next(false);
-        });
+        this.fclaimdate);
       excel = true;
     } else {
-      event = await this.searchService.downloadSummaries(this.providerId,
+      event =  this.searchService.downloadSummaries(this.providerId,
         this.summaries[this.selectedCardKey].statuses,
         this.from,
         this.to,
@@ -1106,59 +1102,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate).toPromise().catch(error => {
-          if (error instanceof HttpErrorResponse) {
-            this.dialogService.openMessageDialog(new MessageDialogData('',
-              'Could not reach the server at the moment. Please try again later.',
-              true));
-          }
-          this.commen.loadingChanged.next(false);
-        });
+        this.fclaimdate);
     }
 
-    if (event instanceof HttpResponse) {
-      if (navigator.msSaveBlob) { // IE 10+
-        const exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-        const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-        navigator.msSaveBlob(blob, exportedFilenmae);
-      } else {
-        const a = document.createElement('a');
-        const excelData = event.body + '';
-
-        if (excel) {
-          const zip = new JSZip();
-          zip.generateAsync({ type: 'blob' }).then(function (blob) {
-            const FileSaver = require('file-saver');
-            FileSaver.saveAs(event.body, 'waseel-eclaims.zip');
-          }, function (err) {
-            console.log('err: ' + err);
-          });
-        } else {
-          a.href = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(excelData);
-          a.target = '_blank';
-          if (this.from != null) {
-            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          } else if (this.batchId != null) {
-            a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-          } else if (this.uploadId != null) {
-            a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
-          } else if (this.claimRefNo != null) {
-            a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
-          } else if (this.memberId != null) {
-            a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
-          } else if (this.invoiceNo != null) {
-            a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
-          } else if (this.patientFileNo != null) {
-            a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
-          } else if (this.policyNo != null) {
-            a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
-          }
-        }
-        a.click();
-        this.detailTopActionIcon = 'ic-check-circle.svg';
-        this.commen.loadingChanged.next(false);
-      }
-    }
+     this.downloadService.showDownloadOverlay(event)
+     .subscribe(status => {
+       if(status != DownloadStatus.ERROR){
+         this.detailTopActionIcon = 'ic-check-circle.svg';
+       } else {
+         this.detailTopActionIcon = 'ic-download.svg';
+       }
+     });
+    
+    
   }
 
   submitAll() {
