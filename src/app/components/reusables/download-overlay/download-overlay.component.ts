@@ -48,10 +48,11 @@ export class DownloadOverlayComponent implements OnInit {
             a.click();
           }
         } else if (this.isZip()) {
+          let filename = this.fileName;
           const zip = new JSZip();
           zip.generateAsync({ type: 'blob' }).then(function (blob) {
             const FileSaver = require('file-saver');
-            FileSaver.saveAs(event.body, this.filename);
+            FileSaver.saveAs(event.body, filename);
           }, function (err) {
             console.log('err: ' + err);
           });
