@@ -127,12 +127,7 @@
             </button>
         </div>
     </div>
-    <div class="file-upload-wrapper page-fab">
-        <div class="content">
-            <button mat-fab color="primary" class="page-fab">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
-        <input type="file" accept=".xls`" class="file-upload-control" (change)="fileUploadChange()" />
-    </div>
+    <button mat-fab color="primary" class="page-fab" (click)="openAddStatementOfAccountDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>

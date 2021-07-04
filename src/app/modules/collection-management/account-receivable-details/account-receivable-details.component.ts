@@ -25,7 +25,7 @@ export class AccountReceivableDetailsComponent implements OnInit {
   }
 
   toggleRow(index) {
-    this.currentOpenRecord = (index != -1) ? -1 : index;
+    this.currentOpenRecord = (index == this.currentOpenRecord) ? -1 : index;
   }
 
 }

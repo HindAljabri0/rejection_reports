@@ -91,7 +91,7 @@ export class DownloadOverlayComponent implements OnInit {
   }
 
   isCSV() {
-    return this.contentType == "text/csv";
+    return this.contentType.startsWith("text/csv");
   }
 
   isExcel() {

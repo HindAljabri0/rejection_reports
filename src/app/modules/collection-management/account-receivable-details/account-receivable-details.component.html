@@ -24,7 +24,7 @@
                     </tr>
                     <tr>
                         <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
-                            <mat-icon *ngIf="currentOpenRecord==-1" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
                             <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
                         </td>
                         <td class="row-click" (click)="toggleRow(0)">
@@ -98,7 +98,7 @@
                     </tr>
                     <tr>
                         <td class="text-primary text-center row-click" (click)="toggleRow(1)" width="10">
-                            <mat-icon *ngIf="currentOpenRecord==-1" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord!=1" class="size-21">add_circle_outline</mat-icon>
                             <mat-icon *ngIf="currentOpenRecord==1" class="size-21">remove_circle_outline</mat-icon>
                         </td>
                         <td class="row-click" (click)="toggleRow(1)">
@@ -113,6 +113,306 @@
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==1">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="seperator-row">
+                        <td colspan="2">Nextcare</td>
+                        <td>500/1000</td>
+                        <td>07/08/2017</td>
+                        <td>1,347</td>
+                        <td>12.5%</td>
+                        <td>500</td>
+                        <td>25</td>
+                        <td></td>
+                    </tr>
+                    <tr class="seperator-row">
+                        <td colspan="9" class="pl-5">Allianz</td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(2)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=2" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==2" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(2)">
+                            Jan - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(2)">700/800</td>
+                        <td class="row-click" (click)="toggleRow(2)">13/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(2)">1,456</td>
+                        <td class="row-click" (click)="toggleRow(2)">10%</td>
+                        <td class="row-click" (click)="toggleRow(2)">100</td>
+                        <td class="row-click" (click)="toggleRow(2)">45</td>
+                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==2">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(3)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=3" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==3" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(3)">
+                            Jan - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(3)">500/1000</td>
+                        <td class="row-click" (click)="toggleRow(3)">07/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(3)">1,347</td>
+                        <td class="row-click" (click)="toggleRow(3)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(3)">500</td>
+                        <td class="row-click" (click)="toggleRow(3)">25</td>
+                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==3">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="seperator-row">
+                        <td colspan="9" class="pl-5">Walaa</td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(4)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=4" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==4" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(4)">
+                            Jan - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(4)">700/800</td>
+                        <td class="row-click" (click)="toggleRow(4)">13/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(4)">1,456</td>
+                        <td class="row-click" (click)="toggleRow(4)">10%</td>
+                        <td class="row-click" (click)="toggleRow(4)">100</td>
+                        <td class="row-click" (click)="toggleRow(4)">45</td>
+                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==4">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(5)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=5" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==5" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(5)">
+                            Jan - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(5)">500/1000</td>
+                        <td class="row-click" (click)="toggleRow(5)">07/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(5)">1,347</td>
+                        <td class="row-click" (click)="toggleRow(5)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(5)">500</td>
+                        <td class="row-click" (click)="toggleRow(5)">25</td>
+                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==5">
                         <td colspan="10">
                             <div class="box">
                                 <h5 class="align-self-center medium pb-2">Payments</h5>
