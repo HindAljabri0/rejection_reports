@@ -55,6 +55,13 @@ export class DownloadOverlayComponent implements OnInit {
           }, function (err) {
             console.log('err: ' + err);
           });
+        } else if (this.isExcel()) {
+          const blob = new Blob([event.body as BlobPart], { type: 'application/ms-excel' });
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.download = this.fileName;
+          anchor.href = url;
+          anchor.click();
         }
         this.detach();
       }
@@ -95,7 +102,7 @@ export class DownloadOverlayComponent implements OnInit {
   }
 
   isExcel() {
-    return this.contentType == "application/excel";
+    return this.contentType == "application/ms-excel";
   }
 
   isZip() {
