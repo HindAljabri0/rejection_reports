@@ -7,6 +7,8 @@ import { ReportsService } from 'src/app/services/reportsService/reports.service'
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
 @Component({
   selector: 'app-claim-status-summary-report',
   templateUrl: './claim-status-summary-report.component.html',
@@ -26,7 +28,8 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     private formBuilder: FormBuilder,
     private reportService: ReportsService,
     private location: Location,
-    private routeActive: ActivatedRoute
+    private routeActive: ActivatedRoute,
+    private downloadService:DownloadService
   ) { }
   criterias: { id: string, name: string }[] = [
     { id: 'uploaddate', name: 'Upload Date' },
@@ -107,32 +110,18 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
   get formCn() { return this.claimStatusSummaryForm.controls; }
 
   download() {
-    this.commen.loadingChanged.next(true);
     if (this.detailTopActionIcon == 'ic-check-circle.svg') {
       return;
     }
     this.claimStatusSummaryForm.value.fromDate = moment(this.claimStatusSummaryForm.value.fromDate).format('YYYY-MM-DD');
     this.claimStatusSummaryForm.value.toDate = moment(this.claimStatusSummaryForm.value.toDate).format('YYYY-MM-DD');
-    this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId, this.claimStatusSummaryForm.value).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        let exportedFilename = 'GlobMed_Claims_' + this.claimStatusSummaryForm.value.fromDate + '_' +
-          this.claimStatusSummaryForm.value.toDate + '.xlsx';
-        if (event.headers.has('content-disposition')) {
-          exportedFilename = event.headers.get('content-disposition').split(' ')[1].split('=')[1];
-        }
-        const blob = new Blob([event.body], { type: 'application/ms-excel' });
-        const url = window.URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.download = exportedFilename;
-        anchor.href = url;
-        anchor.click();
-        this.commen.loadingChanged.next(false);
+    this.downloadService.showDownloadOverlay(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId, this.claimStatusSummaryForm.value)).subscribe(status => {
+      if(status == DownloadStatus.ERROR){
+        this.detailTopActionIcon = 'ic-download.svg';
+      } else {
+        this.detailTopActionIcon = 'ic-check-circle.svg';
       }
-    }, err => {
-      this.commen.loadingChanged.next(false);
-      console.log(err);
     });
-
   }
 
   editURL(fromDate?: string, toDate?: string) {

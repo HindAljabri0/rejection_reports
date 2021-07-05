@@ -194,7 +194,7 @@ export class SearchService {
       requestURL += `&claimDate=${claimDate}`;
     }
 
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text' });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text' , reportProgress:true});
     return this.http.request(request);
   }
 
@@ -213,7 +213,7 @@ export class SearchService {
     policyNo?: string,
     drname?: string,
     nationalId?: string,
-    claimDate?: string) {
+    claimDate?: string ) {
     let requestURL = `/providers/${providerId}/claims/download/excel?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && payerId != null && (uploadId === null || uploadId === undefined)) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
@@ -244,7 +244,7 @@ export class SearchService {
     else if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestURL += `&claimDate=${claimDate}`;
     }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'blob' });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'blob' , reportProgress:true } );
     return this.http.request(request);
   }
 

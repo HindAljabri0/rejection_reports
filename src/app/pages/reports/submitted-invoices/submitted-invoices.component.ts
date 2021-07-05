@@ -9,6 +9,8 @@ import { EventEmitter } from '@angular/core';
 import { SubmittedInvoiceSummary } from 'src/app/models/submittedInvoiceSummary';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
 
 @Component({
   selector: 'app-submitted-invoices',
@@ -45,7 +47,8 @@ export class SubmittedInvoicesComponent implements OnInit {
     public commen: SharedServices,
     public routeActive: ActivatedRoute,
     public router: Router,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private downloadService: DownloadService) { }
 
   ngOnInit() {
     // this.fetchData();
@@ -96,54 +99,14 @@ export class SubmittedInvoicesComponent implements OnInit {
       return;
     }
 
-    this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (navigator.msSaveBlob) { // IE 10+
-          const exportedFilename = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-          navigator.msSaveBlob(blob, exportedFilename);
-        } else {
-          const a = document.createElement('a');
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
-          a.target = '_blank';
-          a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          a.click();
-          this.detailTopActionIcon = 'ic-check-circle.svg';
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog(new MessageDialogData('',
-          'Could not reach the server at the moment. Please try again later.',
-          true));
+    this.downloadService.showDownloadOverlay(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId)).subscribe(status => {
+      if (status == DownloadStatus.ERROR) {
+        this.detailTopActionIcon = 'ic-download.svg';
+      } else {
+        this.detailTopActionIcon = 'ic-check-circle.svg';
       }
     });
   }
-
-  /* download() {
-    if (this.detailTopActionIcon == "ic-check-circle.svg") return;
-    this.reportService.downloadSubmittedInvoices(this.providerId, this.from, this.to, this.payerId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (navigator.msSaveBlob) { // IE 10+
-          var exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          var blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-          navigator.msSaveBlob(blob, exportedFilenmae);
-        } else {
-          var a = document.createElement("a");
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + "");
-          a.target = '_blank';
-
-            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          a.click();
-          this.detailTopActionIcon = "ic-check-circle.svg";
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.commen.openDialog(new MessageDialogData("", "Could not reach the server at the moment. Please try again later.", true));
-      }
-    });
-  }*/
 
   paginatorAction(event) {
     this.manualPage = event['pageIndex'];
