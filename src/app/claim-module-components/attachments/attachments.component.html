@@ -56,18 +56,16 @@
                 <label class="d-block text-primary pb-2">What Type of Attachment?</label>
                 <mat-radio-group aria-label="Select an option" [value]="fileType">
                     <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'Medical Report'; fileInput.click()" id="MEDICAL_REPORT" value="MEDICAL_REPORT">
-                        Medical
-                        Report
+                        Medical Report
                     </mat-radio-button>
-                    <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'Iqama/ID copy'; fileInput.click()" id="IQAMA_ID_COPY" value="IQAMA_ID_COPY">Iqama/ID
-                        Copy
+                    <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'Iqama/ID copy'; fileInput.click()" id="IQAMA_ID_COPY" value="IQAMA_ID_COPY">
+                        Iqama/ID Copy
                     </mat-radio-button>
                     <mat-radio-button class="d-block pb-2" color="primary" (click)="fileType = 'X-Ray result'; fileInput.click()" id="X_RAY_RESULT" value="X_RAY_RESULT">
-                        X-Ray
-                        Result
+                        X-Ray Result
                     </mat-radio-button>
-                    <mat-radio-button class="d-block" color="primary" (click)="fileType = 'Lab Result'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">Lab
-                        Result
+                    <mat-radio-button class="d-block" color="primary" (click)="fileType = 'Lab Result'; fileInput.click()" id="LAB_RESULT" value="LAB_RESULT">
+                        Lab Result
                     </mat-radio-button>
                     <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
                         accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
