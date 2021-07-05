@@ -25,7 +25,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 @Component({
   selector: 'app-claim-attachments-management',
   templateUrl: './claim-attachments-management.component.html',
-  styleUrls: ['./claim-attachments-management.component.css'],
+  styles: [],
   providers: [{ provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop' }]
 })
 export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
