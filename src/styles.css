@@ -383,7 +383,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-header .actions .action-btn:last-child{margin-right: 0;}
 .block-header .actions .mat-flat-button{margin: -5px 0;}
 .secondary-header{padding: 12px 14px;color:#0079C8;background: #fff;font-weight: 500;}
-.block-filter-panel{background: #fff;padding: 14px 14px 0;}
+.block-filter-panel{background: #fff;padding: 14px 14px 0;overflow: hidden;}
 .block-body {padding: 14px;background-color: #f0eeee;}
 .block-body.create-claim-body{min-height: calc(100vh - 218px);padding-bottom: 0;}
 .block-body.has-border{border-top: 1px solid #bebebe;}
