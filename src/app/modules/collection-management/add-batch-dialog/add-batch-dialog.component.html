@@ -2,23 +2,14 @@
     <h5 class="primary-dialog-title">Add Batch</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body pb-0">
-    <div class="form-group">
-        <label class="control-label">Batch No.</label>
-        <input type="text" class="form-control" placeholder="Enter batch no." />
-    </div>
-    <div class="form-group">
-        <label class="control-label">Batch Date</label>
-        <div class="date-picker">
-            <input [matDatepicker]="batchDate" class="form-control" placeholder="Select batch date" />
-            <mat-datepicker-toggle [for]="batchDate"></mat-datepicker-toggle>
-            <mat-datepicker #batchDate></mat-datepicker>
-        </div>
-    </div>
+<div class="primary-dialog-body">
+    Hey! We will create new batch from selected claim. The batch number for new batch will be <strong>6GBFKCBH</strong> and batch date will be
+    <strong>21/07/2021</strong>.<br><br>Do you
+    confirm that?
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary">Add Batch</button>
+        <button mat-button (click)="closeDialog()">No</button>
+        <button mat-flat-button color="primary">Yes, Add Batch</button>
     </div>
 </div>

@@ -12,6 +12,8 @@ import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-repo
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MatMenuTrigger } from '@angular/material';
 import { RejectionReportComponent } from './rejection-report/rejection-report.component';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
 
 
 @Component({
@@ -73,7 +75,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     private routeActive: ActivatedRoute,
     private commen: SharedServices,
     private reportsService: ReportsService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private downloadService: DownloadService) { }
 
   ngOnInit() {
     this.payers = [];
@@ -242,28 +245,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.actionIcon == 'ic-check-circle.svg') {
       return;
     }
-
-    this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        const exportedFilenmae = `Report_Payment_Reference_${this.paymentReference}.csv`;
-        if (navigator.msSaveBlob) { // IE 10+
-          const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-          navigator.msSaveBlob(blob, exportedFilenmae);
-        } else {
-          const a = document.createElement('a');
-          a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
-          a.target = '_blank';
-          a.download = exportedFilenmae;
-
-          a.click();
-          this.actionIcon = 'ic-check-circle.svg';
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        console.log(errorEvent);
-        this.dialogService.openMessageDialog(new MessageDialogData('',
-          'Could not reach the server at the moment. Please try again later.', true));
+    this.downloadService.showDownloadOverlay(this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference)).subscribe(status => {
+      if(status == DownloadStatus.ERROR){
+        this.actionIcon = 'ic-download.svg';
+      } else {
+        this.actionIcon = 'ic-check-circle.svg';
       }
     });
   }

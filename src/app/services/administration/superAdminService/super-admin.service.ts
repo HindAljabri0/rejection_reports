@@ -45,6 +45,17 @@ export class SuperAdminService {
     const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, { username: username, password: password });
     return this.http.request(request);
   }
+  getPriceListValidationSettings(providerId: string) {
+    const requestURL = `/price-list/providers/${providerId}/config`;
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  updatePriceListSettings(providerId: string, settings: { payerId: string, isServiceCodeEnable: string, isPriceListEnable: string }[]) {
+    const requestURL = `/price-list/providers/${providerId}/config`;
+    const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, settings);
+    return this.http.request(request);
+  }
+
 
 }
 
