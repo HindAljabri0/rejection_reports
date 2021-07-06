@@ -11,11 +11,11 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ClaimListModel } from 'src/app/claim-module-components/models/claim-list.model';
-import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
 import { ClaimError } from 'src/app/models/claimError';
 import { ClaimListFilterSelection } from 'src/app/models/claimListSearch';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
@@ -1105,7 +1105,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.fclaimdate);
     }
 
-     this.downloadService.showDownloadOverlay(event)
+     this.downloadService.startDownload(event)
      .subscribe(status => {
        if(status != DownloadStatus.ERROR){
          this.detailTopActionIcon = 'ic-check-circle.svg';

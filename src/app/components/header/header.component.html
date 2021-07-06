@@ -10,15 +10,21 @@
     <button (click)="toggleSearch()" class="icon-btn tablet-search" mat-icon-button matTooltip="Search">
       <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
     </button>
-    <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
+    <app-language-switcher class="language-switch" [languageList]="languageList"
+      [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
+    <button *ngIf="thereIsActiveDownloads" [matMenuTriggerFor]="downloadMenu" class="icon-btn uploads-btn"
+      #downloadMenuTriggerButton mat-icon-button matTooltip="You can view your download progress here">
+      <mat-icon aria-hidden="false">download</mat-icon>
+    </button>
     <button (click)="toggleUploadHistoryCenter()" class="icon-btn uploads-btn" mat-icon-button matTooltip="Uploads">
       <mat-icon aria-hidden="false">cloud_queue</mat-icon>
-      <!-- <mat-icon aria-hidden="false" class="innerIcon">history</mat-icon> -->
     </button>
-    <button (click)="toggleNotificationCenter()" class="icon-btn {{notificationIconClasses}} notifications-btn" mat-icon-button matTooltip="Notifications">
+    <button (click)="toggleNotificationCenter()" class="icon-btn {{notificationIconClasses}} notifications-btn"
+      mat-icon-button matTooltip="Notifications">
       <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
     </button>
-    <button (click)="toggleAnnouncementCenter()" class="icon-btn announcements-btn" mat-icon-button matTooltip="Announcements">
+    <button (click)="toggleAnnouncementCenter()" class="icon-btn announcements-btn" mat-icon-button
+      matTooltip="Announcements">
       <mat-icon aria-hidden="false" aria-label="Announcements" class="material-icons-outlined">feedback</mat-icon>
     </button>
     <div class="user-info">
@@ -34,3 +40,10 @@
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
   <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
 </header>
+
+<mat-menu #downloadMenu="matMenu" xPosition="before" class="download-progress-view-panel">
+  <ng-container *ngFor="let request of downloads; let i = index">
+    <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
+    <hr *ngIf="i < downloads.length-1">
+  </ng-container>
+</mat-menu>

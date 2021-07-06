@@ -10,7 +10,7 @@ import { SubmittedInvoiceSummary } from 'src/app/models/submittedInvoiceSummary'
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 @Component({
   selector: 'app-submitted-invoices',
@@ -99,7 +99,7 @@ export class SubmittedInvoicesComponent implements OnInit {
       return;
     }
 
-    this.downloadService.showDownloadOverlay(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId)).subscribe(status => {
+    this.downloadService.startDownload(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId)).subscribe(status => {
       if (status == DownloadStatus.ERROR) {
         this.detailTopActionIcon = 'ic-download.svg';
       } else {

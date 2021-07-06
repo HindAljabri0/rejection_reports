@@ -8,7 +8,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 @Component({
   selector: 'app-claim-status-summary-report',
   templateUrl: './claim-status-summary-report.component.html',
@@ -115,7 +115,7 @@ export class ClaimStatusSummaryReportComponent implements OnInit {
     }
     this.claimStatusSummaryForm.value.fromDate = moment(this.claimStatusSummaryForm.value.fromDate).format('YYYY-MM-DD');
     this.claimStatusSummaryForm.value.toDate = moment(this.claimStatusSummaryForm.value.toDate).format('YYYY-MM-DD');
-    this.downloadService.showDownloadOverlay(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId, this.claimStatusSummaryForm.value)).subscribe(status => {
+    this.downloadService.startDownload(this.reportService.downalodClaimStatusSummaryCsv(this.commen.providerId, this.claimStatusSummaryForm.value)).subscribe(status => {
       if(status == DownloadStatus.ERROR){
         this.detailTopActionIcon = 'ic-download.svg';
       } else {

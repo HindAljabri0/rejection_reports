@@ -86,6 +86,7 @@ import { JsonViewDialogComponent } from './components/dialogs/json-view-dialog/j
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { DownloadOverlayComponent } from './components/reusables/download-overlay/download-overlay.component';
+import { DownloadProgressViewComponent } from './components/download-progress-view/download-progress-view.component';
 
 @NgModule({
   declarations: [
@@ -141,7 +142,8 @@ import { DownloadOverlayComponent } from './components/reusables/download-overla
     UploadsPageComponent,
     UploadCardComponent,
     JsonViewDialogComponent,
-    DownloadOverlayComponent
+    DownloadOverlayComponent,
+    DownloadProgressViewComponent
   ],
   imports: [
     AppRoutingModule,
