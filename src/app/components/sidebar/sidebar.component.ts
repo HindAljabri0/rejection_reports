@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { UploadService } from 'src/app/services/claimfileuploadservice/upload.service';
+import { SharedServices } from 'src/app/services/shared.services';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,10 +15,11 @@ export class SidebarComponent implements OnInit {
   envProd = false;
   envStaging = false;
   isAdmin = false;
+  isProvider = false;
   isProviderAdmin = false;
   isRevenueVisible: boolean = false;
 
-  constructor(private auth: AuthService, private uploadService: UploadService) {
+  constructor(private auth: AuthService, private uploadService: UploadService, private sharedServices: SharedServices) {
     this.auth.isUserNameUpdated.subscribe(updated => {
       this.init();
     });
@@ -33,14 +35,18 @@ export class SidebarComponent implements OnInit {
     this.providerId = this.auth.getProviderId();
     const privilege = localStorage.getItem('101101');
     this.isAdmin = privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
+    const providerId = localStorage.getItem('provider_id');
     try {
-      const providerId = localStorage.getItem('provider_id');
       const userPrivileges = localStorage.getItem(`${providerId}101`);
       this.isProviderAdmin = userPrivileges.split('|').includes('3.0');
       this.isRevenueVisible = userPrivileges.split('|').includes('24.0') || userPrivileges.split('|').includes('24.1');
     } catch (error) {
       this.isProviderAdmin = false;
     }
+    this.isProvider = this.sharedServices.getPayersList().some(payer => {
+      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
+      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
+    });
   }
 
   get uploadProgress(): number {

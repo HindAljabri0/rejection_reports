@@ -135,8 +135,9 @@ export class AuthService {
             }
           });
           const authority: string = event.body['authorities'][0]['authority'];
-          localStorage.setItem('provider_id', authority.split('|')[0]);
-          localStorage.setItem('user_name', event.body['principal']['fullName']);
+          console.log(event.body['principal']['providerId']);
+          localStorage.setItem('provider_id', event.body['principal']['providerId']);
+          localStorage.setItem('user_name', event.body['name']);
           localStorage.setItem('provider_name', event.body['principal']['providerName']);
           const payers = event.body['principal']['payers'];
           let payersStr = '';

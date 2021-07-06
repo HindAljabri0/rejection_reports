@@ -31,7 +31,7 @@ import { SwitchProviderComponentComponent } from './switch-provider/switch-provi
       { path: 'config/providerMapping', component: ProviderMappingComponent },
       { path: 'config/providers/:providerId', component: ProvidersConfigComponent },
       { path: 'config/payer-payment-contract', component: ProviderContractComponent },
-      { path: 'config/switch-provider-contract', component: SwitchProviderComponentComponent }
+      { path: 'config/switch-provider', component: SwitchProviderComponentComponent }
     ]),
     CommonModule,
     MaterialModule,
