@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpRe
 import { Component, Inject, OnInit } from '@angular/core';
 import * as JSZip from 'jszip';
 import { Observable, Subject, } from 'rxjs';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { DOWNLOAD_STATUS_OBSERVER, OVERLAY_REFERENCE, REQUEST_OBSERVER } from 'src/app/services/downloadService/download.service';
 
 
@@ -113,4 +114,4 @@ export class DownloadOverlayComponent implements OnInit {
 }
 
 
-export enum DownloadStatus { INIT, DOWNLOADING, ERROR, DONE }
+

@@ -1,1 +1,25 @@
-<p> switch-provid er-component works!</p>
+<app-detailscard title="Switch Providers"
+
+    
+    [bottomRightActionText]=" (isLoading ) || selectedProvider==null || selectedProvider==''? '' : 'Switch'"
+   (bottomRightAction)="switch()">
+    <div class="selectProvider">
+        <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
+            <mat-label>Select Provider</mat-label>
+            <input matInput [matAutocomplete]="auto" [formControl]="providerController" 
+                [readonly]="isLoading">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-autocomplete autoActiveFirstOption #auto>
+                <mat-option *ngFor="let provider of filteredProviders"
+                    [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                    (click)="selectProvider(provider.switchAccountId)">
+                    {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                </mat-option>
+                <mat-option *ngIf="error!= null && error != '' && !isLoading">
+                    {{error}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>

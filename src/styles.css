@@ -1243,23 +1243,33 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     overflow: hidden;
 }
 
-.download-overlay {
+.download-progress-view-panel {
     width: 450px;
-    padding: 16px;
-    border-radius: 5px;
-    display: grid;
-    grid-template-columns: minmax(50px, 25%) 1fr;
-    background-color: white;
+    max-width: none !important;
 }
 
-.download-overlay>.error-icon{
+.download-progress-view {
+    padding: 5px;
+    display: grid;
+    grid-template-columns: minmax(70px, 15%) 1fr;
+}
+
+.download-progress-view>.download-icon{
+    display: grid;
+    place-items: center;
+}
+
+.download-progress-view>.download-icon>*{
+    width: 50px;
+}
+
+.download-progress-view.download-icon>.error-icon{
     height: 100%;
     width: 100%;
     font-size: 100px;
     color: #CC2F2F;
 }
-
-.download-overlay>.download-info{
+.download-progress-view>.download-info{
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -1267,8 +1277,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 }
 
 
-.download-overlay>.download-info>.text {
-    font-size: medium;
+.download-progress-view>.download-info>.text {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -1279,6 +1288,6 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     margin-bottom: 10px;
 }
 
-.download-overlay>.download-info>.text.error{
+.download-progress-view>.download-info>.text.error{
     color: #CC2F2F;
 }

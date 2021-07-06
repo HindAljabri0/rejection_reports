@@ -1,6 +1,6 @@
 <div class="sidebar animate__animated animate__fadeIn animate__faster">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
-        <div class="list-container" *ngIf="!isAdmin">
+        <div class="list-container" *ngIf="isProvider">
             <mat-accordion displayMode="flat">
                 <ul class="nav-list">
                     <li i18n="@@dashboard">
@@ -270,9 +270,6 @@
             </mat-accordion>
 
             <ng-container *ngIf="isProviderAdmin">
-                <div class="list-title">
-                    <hr>
-                </div>
                 <ul class="nav-list">
                     <li i18n="@@configurations">
                         <a routerLink="/configurations" routerLinkActive="is-active">
@@ -282,12 +279,14 @@
                 </ul>
             </ng-container>
         </div>
+        <div class="list-title" *ngIf="isAdmin && isProvider">
+            <hr>
+        </div>
+        <div class="list-title" *ngIf="isAdmin && isProvider">
+            Administration
+        </div>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-
-
-
-
                 <mat-expansion-panel hideToggle
                     [expanded]="providerConfiguration.isActive || providermapping.isActive || payerPaymentContract.isActive">
                     <mat-expansion-panel-header>
@@ -352,7 +351,7 @@
                 </mat-expansion-panel-header>
                 <ul class="nav-list">
                     <li>
-                        <a routerLink="/administration/config/switch-provider-contract" routerLinkActive="is-active"
+                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active"
                             #switchProvider="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                             <span class="text">Switch Provider</span>
                         </a>
