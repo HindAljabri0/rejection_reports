@@ -237,8 +237,8 @@ export class ProvidersConfigComponent implements OnInit {
             this.exisingServiceAndPriceValidationData.push(obj);
           }
         });
-        this.componentLoading.serviceCode = false;
       }
+      this.componentLoading.serviceCode = false;
     }, err => {
       console.log(err);
       this.componentLoading.serviceCode = false;
@@ -320,8 +320,10 @@ export class ProvidersConfigComponent implements OnInit {
       }
     })
 
-    if (priceValidationData.length === 0)
+    if (priceValidationData.length === 0) {
+      this.componentLoading.serviceCode = false;
       return false;
+    }
 
 
     this.superAdmin.updatePriceListSettings(this.selectedProvider, priceValidationData).subscribe(event => {
@@ -329,6 +331,7 @@ export class ProvidersConfigComponent implements OnInit {
         const body: any = event['body'];
         this.serviceAndPriceValidationSetting();
         this.success.serviceCodeSaveSuccess = 'Settings were saved successfully.';
+        // this.setComponentLoading(SERVICE_CODE_RESTRICTION_KEY, false);
         return true;
       }
 
@@ -600,10 +603,10 @@ export class ProvidersConfigComponent implements OnInit {
 
   setComponentLoading(URLKey: string, componentLoading: boolean) {
     switch (URLKey) {
-      // case SERVICE_CODE_RESTRICTION_KEY:
-      // case VALIDATE_RESTRICT_PRICE_UNIT:
-      //   this.componentLoading.serviceCode = componentLoading;
-      //   break;
+      case SERVICE_CODE_RESTRICTION_KEY:
+      case VALIDATE_RESTRICT_PRICE_UNIT:
+        this.componentLoading.serviceCode = componentLoading;
+        break;
       case ICD10_RESTRICTION_KEY:
         this.componentLoading.ICD10Validation = componentLoading;
         break;
