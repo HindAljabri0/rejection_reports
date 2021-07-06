@@ -88,6 +88,7 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { DownloadOverlayComponent } from './components/reusables/download-overlay/download-overlay.component';
 import { DownloadProgressViewComponent } from './components/download-progress-view/download-progress-view.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

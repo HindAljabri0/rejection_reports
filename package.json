@@ -29,7 +29,7 @@
     "buildOciQA": "npm-run-all --parallel buildOciQAEn buildOciQAAr",
     "buildOciStg": "npm-run-all --parallel buildOciStgEn buildOciStgAr",
     "buildOciProd": "npm-run-all --parallel buildOciProdEn buildOciProdAr",
-    "post-build" : "node ./build/post-build.js",
+    "post-build": "node ./build/post-build.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

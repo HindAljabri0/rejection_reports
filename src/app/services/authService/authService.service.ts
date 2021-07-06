@@ -102,6 +102,12 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
+  getSwitchUserToken(providerId:string , username:string) {
+    const requestURL = '/switch_user?providerId='+providerId+'&currentUser='+username;
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
   setTokens(body: {}) {
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
