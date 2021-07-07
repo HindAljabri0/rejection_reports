@@ -1,15 +1,13 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add Batch</h5>
+    <h5 class="primary-dialog-title">Batch Created</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="primary-dialog-body">
-    Hey! We will create new batch from selected claim. The batch number for new batch will be <strong>6GBFKCBH</strong> and batch date will be
-    <strong>21/07/2021</strong>.<br><br>Do you
-    confirm that?
+    Hey! We have created new batch from selected claim(s). The batch number for new batch is <strong>6GBFKCBH</strong> and batch date is
+    <strong>21/07/2021</strong>.
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">No</button>
-        <button mat-flat-button color="primary">Yes, Add Batch</button>
+        <button mat-flat-button color="primary" (click)="closeDialog()">Okay</button>
     </div>
 </div>
