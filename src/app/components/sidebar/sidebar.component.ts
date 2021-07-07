@@ -14,9 +14,6 @@ export class SidebarComponent implements OnInit {
   providerId: string;
   envProd = false;
   envStaging = false;
-  isAdmin = false;
-  isProvider = false;
-  isProviderAdmin = false;
   isRevenueVisible: boolean = false;
 
   constructor(private auth: AuthService, private uploadService: UploadService, private sharedServices: SharedServices) {
@@ -33,20 +30,13 @@ export class SidebarComponent implements OnInit {
 
   init() {
     this.providerId = this.auth.getProviderId();
-    const privilege = localStorage.getItem('101101');
-    this.isAdmin = privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
     const providerId = localStorage.getItem('provider_id');
     try {
       const userPrivileges = localStorage.getItem(`${providerId}101`);
-      this.isProviderAdmin = userPrivileges.split('|').includes('3.0');
       this.isRevenueVisible = userPrivileges.split('|').includes('24.0') || userPrivileges.split('|').includes('24.1');
     } catch (error) {
-      this.isProviderAdmin = false;
     }
-    this.isProvider = this.sharedServices.getPayersList().some(payer => {
-      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
-      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
-    });
+
   }
 
   get uploadProgress(): number {
@@ -60,6 +50,17 @@ export class SidebarComponent implements OnInit {
   toggleNav() {
     document.body.classList.remove('nav-open');
     document.getElementsByTagName('html')[0].classList.remove('nav-open');
+  }
+
+
+  get isAdmin(){
+    return this.sharedServices.isAdmin;
+  };
+  get isProvider() {
+    return this.sharedServices.isProvider;
+  }
+  get isProviderAdmin() {
+    return this.sharedServices.isAdminOfProvider;
   }
 
 }
