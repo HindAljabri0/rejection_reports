@@ -146,14 +146,10 @@ export class SharedServices {
     const providerId = localStorage.getItem('provider_id');
     try {
       const userPrivileges = localStorage.getItem(`${providerId}101`);
-      this._isProviderAdmin = userPrivileges.split('|').includes('3.0');
+      return userPrivileges.split('|').includes('3.0');
     } catch (error) {
-      this._isProviderAdmin = false;
+      return false;
     }
-    return = this.getPayersList().some(payer => {
-      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
-      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
-    });
   }
 
   getNotifications() {
