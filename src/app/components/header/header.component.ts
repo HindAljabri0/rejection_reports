@@ -1,7 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { SharedServices } from '../../services/shared.services';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { Router } from '@angular/router';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
+import { DownloadRequest } from 'src/app/models/downloadRequest';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +23,12 @@ export class HeaderComponent implements OnInit {
 
   notificationIconClasses = 'mat-icon-button mat-button-base ';
 
-  constructor(private commen: SharedServices, public router: Router, public authService: AuthService) {
+  thereIsActiveDownloads: boolean = false;
+  downloads: DownloadRequest[] = [];
+
+  @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
+
+  constructor(private commen: SharedServices, public router: Router, public authService: AuthService, private downloadService: DownloadService) {
     this.commen.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
     });
@@ -47,6 +55,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getUserData();
+    this.downloadService.downloads.subscribe(downloads => {
+      this.downloads = downloads;
+      this.thereIsActiveDownloads = downloads.length > 0;
+      setTimeout(() => this.downloadMenuRef.openMenu(), 500);
+    });
 
   }
 

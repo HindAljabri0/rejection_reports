@@ -60,6 +60,10 @@ export class SharedServices {
 
   getUploadId: any;
 
+  isAdmin = false;
+  isProvider = false;
+  isProviderAdmin = false;
+
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -123,6 +127,20 @@ export class SharedServices {
       this.getNotifications();
       this.getUploadHistory();
       this.getAnnouncements();
+    });
+
+    const privilege = localStorage.getItem('101101');
+    this.isAdmin = privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      this.isProviderAdmin = userPrivileges.split('|').includes('3.0');
+    } catch (error) {
+      this.isProviderAdmin = false;
+    }
+    this.isProvider = this.getPayersList().some(payer => {
+      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
+      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
     });
   }
 

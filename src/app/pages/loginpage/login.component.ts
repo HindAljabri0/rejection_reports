@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
       this.routeActive.queryParams.subscribe(value => {
         if (value.expired != null && value.expired) {
           this.errors = 'Your session have been expired. Please sign in again.';
-        } else if(value.hasClaimPrivileges != null && value.hasClaimPrivileges){
+        } else if (value.hasClaimPrivileges != null && value.hasClaimPrivileges) {
           this.errors = `The user you used does not have the required privileges to use this system.`;
         }
       });
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
 
     this.isLoading = true;
     if (this.username.value == undefined || this.username.value == '') {
-      this.errors = 'Please provide a vaild username!';
+      this.errors = 'Please provide a valid username!';
       this.isLoading = false;
       return;
     } else if (this.password.value == undefined || this.password.value == '') {
@@ -83,7 +83,12 @@ export class LoginComponent implements OnInit {
       if (event instanceof HttpResponse) {
         this.authService.isUserNameUpdated.subscribe(updated => {
           if (updated) {
-            this.router.navigate(['/']);
+            const lastVisitedPath = localStorage.getItem('lastVisitedPath');
+            if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
+              this.router.navigate(lastVisitedPath.split('/'));
+            } else {
+              this.router.navigate(['/']);
+            }
             this.isLoading = false;
           }
         });
@@ -92,7 +97,7 @@ export class LoginComponent implements OnInit {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status < 500 && errorEvent.status >= 400) {
-          this.errors = 'Username or Password is invaild!';
+          this.errors = 'Username or Password is invalid!';
         } else {
           this.errors = 'Could not reach server at the moment. Please try again later.';
         }

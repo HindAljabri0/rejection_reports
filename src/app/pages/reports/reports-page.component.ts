@@ -13,7 +13,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MatMenuTrigger } from '@angular/material';
 import { RejectionReportComponent } from './rejection-report/rejection-report.component';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 
 @Component({
@@ -245,7 +245,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.actionIcon == 'ic-check-circle.svg') {
       return;
     }
-    this.downloadService.showDownloadOverlay(this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference)).subscribe(status => {
+    this.downloadService.startDownload(this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference)).subscribe(status => {
       if(status == DownloadStatus.ERROR){
         this.actionIcon = 'ic-download.svg';
       } else {
