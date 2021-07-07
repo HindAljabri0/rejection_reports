@@ -58,9 +58,9 @@ export class AuthService {
       storageValue.value != null).forEach((storageValue) =>
         localStorage.setItem(storageValue.key, storageValue.value));
     let promise: Promise<boolean>;
-    if(expired != null && expired) {
+    if (expired != null && expired) {
       promise = this.router.navigate(['login'], { queryParams: { expired: expired } });
-    } else  if(hasClaimPrivileges != null && hasClaimPrivileges){
+    } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
       promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges: hasClaimPrivileges } });
     } else {
       promise = this.router.navigate(['login']);
@@ -102,8 +102,8 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
-  getSwitchUserToken(providerId:string , username:string) {
-    const requestURL = '/switch_user?providerId='+providerId+'&currentUser='+username;
+  getSwitchUserToken(providerId: string, username: string) {
+    const requestURL = '/switch_user?providerId=' + providerId + '&currentUser=' + username;
     const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
     return this.httpClient.request(request);
   }
@@ -121,10 +121,10 @@ export class AuthService {
       if (event instanceof HttpResponse) {
         const authorities: Array<any> = event.body['authorities'];
         const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
-        || element['authority'].split('|')[1] == '22.0'
-        || element['authority'].split('|')[1] == '24.0');
+          || element['authority'].split('|')[1] == '22.0'
+          || element['authority'].split('|')[1] == '24.0');
         if (hasClaimPrivileges) {
-          event.body['authorities'].forEach(element => {
+          authorities.forEach(element => {
             const key = element['authority'].split('|')[0] + element['authority'].split('|')[2];
             const value = element['authority'].split('|')[1];
             const currentValue: string = localStorage.getItem(key);
@@ -134,12 +134,10 @@ export class AuthService {
               localStorage.setItem(key, currentValue + '|' + value);
             }
           });
-          const authority: string = event.body['authorities'][0]['authority'];
-          console.log(event.body['principal']['providerId']);
-          localStorage.setItem('provider_id', event.body['principal']['providerId']);
-          localStorage.setItem('user_name', event.body['name']);
-          localStorage.setItem('provider_name', event.body['principal']['providerName']);
-          const payers = event.body['principal']['payers'];
+          localStorage.setItem('provider_id', event.body['providerId']);
+          localStorage.setItem('user_name', event.body['fullName']);
+          localStorage.setItem('provider_name', event.body['providerName']);
+          const payers = event.body['payers'];
           let payersStr = '';
           for (const payerid in payers) {
             payersStr += `${payerid}:${payers[payerid]}|`;
