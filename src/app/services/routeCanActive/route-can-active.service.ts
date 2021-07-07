@@ -125,7 +125,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
     }
     const payers: { id: number, name: string, arName: string }[] = [];
     const payersStr = localStorage.getItem('payers');
-    if (payersStr != null) {
+    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
       const payersStrSplitted = payersStr.split('|');
       payersStrSplitted
         .filter(value =>
