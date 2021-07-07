@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpRequest, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { AssignedAttachment } from 'src/app/pages/searchClaimsPage/store/search.reducer';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -253,6 +254,19 @@ export class ClaimService {
   getClaimIdByPayerRefNo(providerId: string, payerClaimRefNo: string) {
     const requestUrl = `/providers/${providerId}/PayerClaimRefNumber/${payerClaimRefNo}`;
     const request = new HttpRequest('GET', environment.claimServiceHost + requestUrl);
+    return this.httpClient.request(request);
+  }
+
+  batchSummary(providerId: string, data: any): Observable<any> {
+    const requestURL = `/${providerId}/batch/criteria`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimServiceHost + requestURL, { responseType: 'text', params: searchparams });
     return this.httpClient.request(request);
   }
 }
