@@ -71,10 +71,8 @@ export class SwitchProviderComponentComponent implements OnInit {
           });
           this.authService.setTokens(event.body);
         }
-        this.sharedServices.loadingChanged.next(false);
       }, error => {
         this.sharedServices.loadingChanged.next(false);
-        this.error = 'could not load providers, please try again later.';
         console.log(error);
       });
     }

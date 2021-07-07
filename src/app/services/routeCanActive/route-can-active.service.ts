@@ -87,7 +87,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       return false;
     }
     if (segments[0].path == 'administration') {
-      return this._isOnlyAdmin();
+      return this._isAdmin();
     } else if (segments[0].path == 'claims') {
       return true;
     } else if (segments[0].path == 'configurations') {
@@ -111,6 +111,12 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       return userPrivileges != null && userPrivileges.split('|').includes('3.0');
     })
     return !isProvider && item != null && (item.includes('|22') || item.startsWith('22'));
+  }
+
+  private _isAdmin(): boolean {
+    const item = localStorage.getItem('101101');
+    const providerId = localStorage.getItem('provider_id');
+    return item != null && (item.includes('|22') || item.startsWith('22'));
   }
 
   private getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
