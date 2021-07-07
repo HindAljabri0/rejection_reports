@@ -12,10 +12,10 @@
                         <th>Amount Outstanding</th>
                         <th>Due Date</th>
                         <th>Days Overdue</th>
-                        <th>Payment Ratio</th>
                         <th>Total Payments</th>
-                        <th>Avg. TAT</th>
                         <th>Reconciliation Amount</th>
+                        <th>Payment Ratio</th>
+                        <th>Avg. TAT</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -25,10 +25,10 @@
                         <td>500/1000</td>
                         <td>07/08/2017</td>
                         <td>1,347</td>
-                        <td>12.5%</td>
                         <td>500</td>
-                        <td>25</td>
                         <td>50</td>
+                        <td>12.5%</td>
+                        <td>25</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -42,10 +42,10 @@
                         <td class="row-click" (click)="toggleRow(0)">500/1000</td>
                         <td class="row-click" (click)="toggleRow(0)">07/08/2017</td>
                         <td class="row-click" (click)="toggleRow(0)">1,347</td>
-                        <td class="row-click" (click)="toggleRow(0)">12.5%</td>
                         <td class="row-click" (click)="toggleRow(0)">500</td>
-                        <td class="row-click" (click)="toggleRow(0)">25</td>
                         <td class="row-click" (click)="toggleRow(0)">50</td>
+                        <td class="row-click" (click)="toggleRow(0)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(0)">25</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==0">
@@ -60,6 +60,7 @@
                                                 <th>Amount</th>
                                                 <th>TAT</th>
                                                 <th>Payment Ratio</th>
+                                                <th>Category</th>
                                                 <th>Type</th>
                                                 <th width="10"></th>
                                             </tr>
@@ -70,7 +71,8 @@
                                                 <td>231</td>
                                                 <td>4</td>
                                                 <td>96.91%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -82,7 +84,8 @@
                                                 <td>450</td>
                                                 <td>19</td>
                                                 <td>81.43%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -94,7 +97,8 @@
                                                 <td>437</td>
                                                 <td>7</td>
                                                 <td>63.25%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -107,6 +111,7 @@
                                                 <td>0</td>
                                                 <td>5.62%</td>
                                                 <td>Reconciliation</td>
+                                                <td>Regular</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -130,10 +135,10 @@
                         <td class="row-click" (click)="toggleRow(1)">700/800</td>
                         <td class="row-click" (click)="toggleRow(1)">13/08/2017</td>
                         <td class="row-click" (click)="toggleRow(1)">1,456</td>
-                        <td class="row-click" (click)="toggleRow(1)">10%</td>
                         <td class="row-click" (click)="toggleRow(1)">100</td>
-                        <td class="row-click" (click)="toggleRow(1)">45</td>
                         <td class="row-click" (click)="toggleRow(1)">50</td>
+                        <td class="row-click" (click)="toggleRow(1)">10%</td>
+                        <td class="row-click" (click)="toggleRow(1)">45</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==1">
@@ -148,6 +153,7 @@
                                                 <th>Amount</th>
                                                 <th>TAT</th>
                                                 <th>Payment Ratio</th>
+                                                <th>Category</th>
                                                 <th>Type</th>
                                                 <th width="10"></th>
                                             </tr>
@@ -158,7 +164,8 @@
                                                 <td>231</td>
                                                 <td>4</td>
                                                 <td>96.91%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -170,7 +177,8 @@
                                                 <td>450</td>
                                                 <td>19</td>
                                                 <td>81.43%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -182,7 +190,8 @@
                                                 <td>437</td>
                                                 <td>7</td>
                                                 <td>63.25%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -195,6 +204,7 @@
                                                 <td>0</td>
                                                 <td>5.62%</td>
                                                 <td>Reconciliation</td>
+                                                <td>Regular</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -218,10 +228,10 @@
                         <td class="row-click" (click)="toggleRow(2)">700/800</td>
                         <td class="row-click" (click)="toggleRow(2)">13/08/2017</td>
                         <td class="row-click" (click)="toggleRow(2)">1,456</td>
-                        <td class="row-click" (click)="toggleRow(2)">10%</td>
                         <td class="row-click" (click)="toggleRow(2)">100</td>
-                        <td class="row-click" (click)="toggleRow(2)">45</td>
                         <td class="row-click" (click)="toggleRow(2)">0</td>
+                        <td class="row-click" (click)="toggleRow(2)">10%</td>
+                        <td class="row-click" (click)="toggleRow(2)">45</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==2">
@@ -236,6 +246,7 @@
                                                 <th>Amount</th>
                                                 <th>TAT</th>
                                                 <th>Payment Ratio</th>
+                                                <th>Category</th>
                                                 <th>Type</th>
                                                 <th width="10"></th>
                                             </tr>
@@ -246,7 +257,8 @@
                                                 <td>231</td>
                                                 <td>4</td>
                                                 <td>96.91%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -258,7 +270,8 @@
                                                 <td>450</td>
                                                 <td>19</td>
                                                 <td>81.43%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -270,7 +283,8 @@
                                                 <td>437</td>
                                                 <td>7</td>
                                                 <td>63.25%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -283,6 +297,7 @@
                                                 <td>0</td>
                                                 <td>5.62%</td>
                                                 <td>Reconciliation</td>
+                                                <td>Regular</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -306,10 +321,10 @@
                         <td class="row-click" (click)="toggleRow(3)">500/1000</td>
                         <td class="row-click" (click)="toggleRow(3)">07/08/2017</td>
                         <td class="row-click" (click)="toggleRow(3)">1,347</td>
-                        <td class="row-click" (click)="toggleRow(3)">12.5%</td>
                         <td class="row-click" (click)="toggleRow(3)">500</td>
-                        <td class="row-click" (click)="toggleRow(3)">25</td>
                         <td class="row-click" (click)="toggleRow(3)">0</td>
+                        <td class="row-click" (click)="toggleRow(3)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(3)">25</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==3">
@@ -324,6 +339,7 @@
                                                 <th>Amount</th>
                                                 <th>TAT</th>
                                                 <th>Payment Ratio</th>
+                                                <th>Category</th>
                                                 <th>Type</th>
                                                 <th width="10"></th>
                                             </tr>
@@ -334,7 +350,8 @@
                                                 <td>231</td>
                                                 <td>4</td>
                                                 <td>96.91%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -346,7 +363,8 @@
                                                 <td>450</td>
                                                 <td>19</td>
                                                 <td>81.43%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -358,7 +376,8 @@
                                                 <td>437</td>
                                                 <td>7</td>
                                                 <td>63.25%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -371,6 +390,7 @@
                                                 <td>0</td>
                                                 <td>5.62%</td>
                                                 <td>Reconciliation</td>
+                                                <td>Regular</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -394,10 +414,10 @@
                         <td class="row-click" (click)="toggleRow(4)">700/800</td>
                         <td class="row-click" (click)="toggleRow(4)">13/08/2017</td>
                         <td class="row-click" (click)="toggleRow(4)">1,456</td>
-                        <td class="row-click" (click)="toggleRow(4)">10%</td>
                         <td class="row-click" (click)="toggleRow(4)">100</td>
-                        <td class="row-click" (click)="toggleRow(4)">45</td>
                         <td class="row-click" (click)="toggleRow(4)">0</td>
+                        <td class="row-click" (click)="toggleRow(4)">10%</td>
+                        <td class="row-click" (click)="toggleRow(4)">45</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==4">
@@ -412,6 +432,7 @@
                                                 <th>Amount</th>
                                                 <th>TAT</th>
                                                 <th>Payment Ratio</th>
+                                                <th>Category</th>
                                                 <th>Type</th>
                                                 <th width="10"></th>
                                             </tr>
@@ -422,7 +443,8 @@
                                                 <td>231</td>
                                                 <td>4</td>
                                                 <td>96.91%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -434,7 +456,8 @@
                                                 <td>450</td>
                                                 <td>19</td>
                                                 <td>81.43%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -446,7 +469,8 @@
                                                 <td>437</td>
                                                 <td>7</td>
                                                 <td>63.25%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -459,6 +483,7 @@
                                                 <td>0</td>
                                                 <td>5.62%</td>
                                                 <td>Reconciliation</td>
+                                                <td>Regular</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -482,10 +507,10 @@
                         <td class="row-click" (click)="toggleRow(5)">500/1000</td>
                         <td class="row-click" (click)="toggleRow(5)">07/08/2017</td>
                         <td class="row-click" (click)="toggleRow(5)">1,347</td>
-                        <td class="row-click" (click)="toggleRow(5)">12.5%</td>
                         <td class="row-click" (click)="toggleRow(5)">500</td>
-                        <td class="row-click" (click)="toggleRow(5)">25</td>
                         <td class="row-click" (click)="toggleRow(5)">0</td>
+                        <td class="row-click" (click)="toggleRow(5)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(5)">25</td>
                         <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
                     </tr>
                     <tr *ngIf="currentOpenRecord==5">
@@ -500,6 +525,7 @@
                                                 <th>Amount</th>
                                                 <th>TAT</th>
                                                 <th>Payment Ratio</th>
+                                                <th>Category</th>
                                                 <th>Type</th>
                                                 <th width="10"></th>
                                             </tr>
@@ -510,7 +536,8 @@
                                                 <td>231</td>
                                                 <td>4</td>
                                                 <td>96.91%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -522,7 +549,8 @@
                                                 <td>450</td>
                                                 <td>19</td>
                                                 <td>81.43%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -534,7 +562,8 @@
                                                 <td>437</td>
                                                 <td>7</td>
                                                 <td>63.25%</td>
-                                                <td>Regular</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
@@ -547,6 +576,7 @@
                                                 <td>0</td>
                                                 <td>5.62%</td>
                                                 <td>Reconciliation</td>
+                                                <td>Regular</td>
                                                 <td>
                                                     <button class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>

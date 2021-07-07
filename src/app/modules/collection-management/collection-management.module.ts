@@ -8,11 +8,6 @@ import { SharedModule } from '../shared.module';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
-import { CollectionSummaryListComponent } from './collection-summary-list/collection-summary-list.component';
-import { CollectionSummaryCreateComponent } from './collection-summary-create/collection-summary-create.component';
-import { CollectionSummaryDetailsComponent } from './collection-summary-details/collection-summary-details.component';
-import { VatPaymentReportListComponent } from './vat-payment-report-list/vat-payment-report-list.component';
-import { VatPaymentReportDetailsComponent } from './vat-payment-report-details/vat-payment-report-details.component';
 import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
 import { AccountReceivableAddPaymentComponent } from './account-receivable-add-payment/account-receivable-add-payment.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
@@ -33,11 +28,6 @@ import { AccountReceivableDetailsPayerComponent } from './account-receivable-det
     FinalSettlementReportListComponent,
     FinalSettlementReportDetailsComponent,
     FileUploadDialogComponent,
-    CollectionSummaryListComponent,
-    CollectionSummaryCreateComponent,
-    CollectionSummaryDetailsComponent,
-    VatPaymentReportListComponent,
-    VatPaymentReportDetailsComponent,
     AccountsReceivableListComponent,
     AccountReceivableAddPaymentComponent,
     AccountReceivableDetailsComponent,
