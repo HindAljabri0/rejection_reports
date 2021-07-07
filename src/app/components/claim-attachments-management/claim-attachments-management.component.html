@@ -11,7 +11,7 @@
     <div class="pl-7 pr-7">
         <div class="row small-gutter bg-white">
             <div class="col-4">
-                <div class="table-responsive">
+                <div class="table-responsive claim-attachment-table">
                     <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                         <thead>
                             <tr>
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <div class="table-responsive">
+                <div class="table-responsive claim-attachment-table">
                     <table class="primary-grid" cellspacing="0" cellpadding="0" border="0">
                         <thead>
                             <tr>
@@ -104,7 +104,7 @@
                         <mat-icon>arrow_forward</mat-icon>
                     </button>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive claim-attachment-table">
                     <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                         <thead>
                             <tr>
@@ -146,10 +146,10 @@
         </div>
     </div>
     <div class="block-footer has-border">
-        <div class="right-block" *ngIf="!saving">
+        <div class="left-block" *ngIf="!saving">
             <div class="btn-list">
-                <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()">Cancel</button>
                 <button mat-flat-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
+                <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()">Cancel</button>
             </div>
         </div>
         <mat-spinner *ngIf="saving" class="m-auto" diameter="30"></mat-spinner>

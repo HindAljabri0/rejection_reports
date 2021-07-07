@@ -4,8 +4,6 @@ import { CollectionManagementRoutingModule } from './collection-management-routi
 import { FileUploadDialogComponent } from 'src/app/components/file-upload-dialog/file-upload-dialog.component';
 import { FinalSettlementReportDetailsComponent } from './final-settlement-report-details/final-settlement-report-details.component';
 import { FinalSettlementReportListComponent } from './final-settlement-report-list/final-settlement-report-list.component';
-import { RegularPaymentDetailsComponent } from './regular-payment-details/regular-payment-details.component';
-import { RegularPaymentListComponent } from './regular-payment-list/regular-payment-list.component';
 import { SharedModule } from '../shared.module';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,11 +25,11 @@ import { CreateBatchComponent } from './create-batch/create-batch.component';
 import { AddBatchDialogComponent } from './add-batch-dialog/add-batch-dialog.component';
 import { AddEditPaymentDialogComponent } from './add-edit-payment-dialog/add-edit-payment-dialog.component';
 import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accounts-dialog/add-statement-of-accounts-dialog.component';
+import { AddReconciliationPaymentDialogComponent } from './add-reconciliation-payment-dialog/add-reconciliation-payment-dialog.component';
+import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 
 @NgModule({
   declarations: [
-    RegularPaymentListComponent,
-    RegularPaymentDetailsComponent,
     FinalSettlementReportListComponent,
     FinalSettlementReportDetailsComponent,
     FileUploadDialogComponent,
@@ -50,6 +48,8 @@ import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accoun
     AddBatchDialogComponent,
     AddEditPaymentDialogComponent,
     AddStatementOfAccountsDialogComponent,
+    AddReconciliationPaymentDialogComponent,
+    AccountReceivableDetailsPayerComponent,
   ],
   imports: [
     CommonModule,
@@ -69,6 +69,7 @@ import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accoun
     AddBatchDialogComponent,
     AddEditPaymentDialogComponent,
     AddStatementOfAccountsDialogComponent,
+    AddReconciliationPaymentDialogComponent
   ]
 })
 export class CollectionManagementModule { }

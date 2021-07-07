@@ -2,57 +2,74 @@
     <div class="block-header has-border">
         <p>Create Batch for Downloadable Claims</p>
     </div>
-    <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Payer</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Payer</mat-option>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
-                            <mat-option value="Payer 5">Payer 5</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Claim Search Start Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" />
-                        <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
-                        <mat-datepicker #startDate></mat-datepicker>
+    <form #createBatchForm='ngForm' (ngSubmit)='createBatchForm.valid && submit()'>
+        <div class="block-filter-panel">
+            <div class="row small-gutter">
+                <div class="col">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : createBatchForm.submitted && !batchSummary.payerId}">
+                        <label class="control-label">Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId name="payerId">
+                                <mat-option value="0">All</mat-option>
+                                <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                    ({{payer.arName}})</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="createBatchForm.submitted && !batchSummary.payerId">
+                            <span class="error-text">Please select a Payer</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Claim Search End Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="endDate" class="form-control" placeholder="Select end date" />
-                        <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
-                        <mat-datepicker #endDate></mat-datepicker>
+                <div class="col">
+                    <div class="form-group" [ngClass]="{'has-error' : createBatchForm.submitted && startDate.invalid}">
+                        <label class="control-label">Claim Search Start Date</label>
+                        <div class="date-picker">
+                            <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
+                                [(ngModel)]='batchSummary.startDate' class="form-control date-picker"
+                                placeholder="Select start date" (bsValueChange)="dateValidation($event)"
+                                #startDate='ngModel' name="startDate" required />
+                            <!-- <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker> -->
+                            <div *ngIf="createBatchForm.submitted && startDate.invalid">
+                                <span class="error-text">Please choose a date</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-auto align-self-end">
-                <div class="form-group">
-                    <button type="button" mat-flat-button color="primary">Search Claims</button>
+                <div class="col">
+                    <div class="form-group" [ngClass]="{'has-error' : createBatchForm.submitted && endDate.invalid}">
+                        <label class="control-label">Claim Search End Date</label>
+                        <div class="date-picker ">
+                            <input autocomplete="off" bsDatepicker [bsConfig]="datePickerConfig"
+                                [(ngModel)]='batchSummary.endDate' #endDate='ngModel' name="endDate" required
+                                [minDate]="minDate" class="form-control date-picker" placeholder="Select end date"
+                                required />
+                            <!-- <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                        <mat-datepicker #endDate></mat-datepicker> -->
+                            <div *ngIf="createBatchForm.submitted && endDate.invalid">
+                                <span class="error-text">Please choose a date</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <div class="form-group">
+                        <button type="submit" mat-flat-button color="primary">Search Claims</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr class="ng-star-inserted">
                         <th>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                            <mat-checkbox [(checked)]="allCheckBoxIsChecked" class="grid-checkbox" color="primary"
+                                [(indeterminate)]="allCheckBoxIsIndeterminate" (change)="selectAllinPage($event)">
+                            </mat-checkbox>
                         </th>
                         <th>Claim Ref. No.</th>
                         <th>Dr. Name</th>
@@ -65,135 +82,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="ng-star-inserted">
+                    <tr class="ng-star-inserted" *ngFor="let item of batchData">
                         <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                            <mat-checkbox [(checked)]="allCheckBoxIsChecked" class="grid-checkbox" color="primary">
+                            </mat-checkbox>
                         </td>
-                        <td class="row-click"><span class="text-monospace">601215241019</span></td>
-                        <td class="row-click"> Demo</td>
-                        <td class="row-click"><span class="text-monospace">1211212111</span></td>
-                        <td class="row-click"><span class="text-monospace">1211212111</span></td>
-                        <td class="row-click"><span class="text-monospace">1211212111</span></td>
-                        <td class="row-click text-nowrap"> 13-06-2021 </td>
-                        <td class="row-click text-nowrap"> 331.8<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 69.68<span class="currency"> SAR</span></td>
+                        <td class="row-click"><span class="text-monospace">{{item.approvalnumber}}</span></td>
+                        <td class="row-click">{{item.physicianname}}</td>
+                        <td class="row-click"><span class="text-monospace">{{item.memberid}}</span></td>
+                        <td class="row-click"><span class="text-monospace">{{item.idnumber}}</span></td>
+                        <td class="row-click"><span class="text-monospace">{{item.patientfilenumber}}</span></td>
+                        <td class="row-click text-nowrap">{{item.visitdate}}</td>
+                        <td class="row-click text-nowrap">{{item.net}}<span class="currency"> SAR</span></td>
+                        <td class="row-click text-nowrap">{{item.netvatamount}}<span class="currency"> SAR</span></td>
                     </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    <tr>
+                        <td colspan="9" class="p-0">
+                            <app-empty-state *ngIf="batchData == null || batchData.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
                         </td>
-                        <td class="row-click"><span class="text-monospace">60121523163</span></td>
-                        <td class="row-click"> Demo</td>
-                        <td class="row-click"><span class="text-monospace">1212121122</span></td>
-                        <td class="row-click"><span class="text-monospace">112121212</span></td>
-                        <td class="row-click"><span class="text-monospace">112121212</span></td>
-                        <td class="row-click text-nowrap"> 21-06-2021 </td>
-                        <td class="row-click text-nowrap"> 331.8<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 69.68<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL188804</span></td>
-                        <td class="row-click"> Mohammed Abdulrahman Ibrahim</td>
-                        <td class="row-click"><span class="text-monospace">1.03512E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0030040043</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 188.2<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 0<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL187817</span></td>
-                        <td class="row-click"> CHOUKAIR MOHAMED MAZEN</td>
-                        <td class="row-click"><span class="text-monospace">2.15821E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0030030626</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 575<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 2.53<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL186226</span></td>
-                        <td class="row-click"> Fathy Farid Fooshan</td>
-                        <td class="row-click"><span class="text-monospace">2.29446E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0001528188</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 293<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 2.37<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL186218</span></td>
-                        <td class="row-click"> AMR MOHAMMED ELMISTEKAWY</td>
-                        <td class="row-click"><span class="text-monospace">2.14101E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0001526332</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 276.25<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 1.04<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL186207</span></td>
-                        <td class="row-click"> Ashraf Hussein Ali</td>
-                        <td class="row-click"><span class="text-monospace">1.06869E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0001522106</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 627<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 0<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL185631</span></td>
-                        <td class="row-click"> DAAD ZOUKAN KARKOUT</td>
-                        <td class="row-click"><span class="text-monospace">1.05981E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0001202831</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 191.41<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 0<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL185582</span></td>
-                        <td class="row-click"> DAAD ZOUKAN KARKOUT</td>
-                        <td class="row-click"><span class="text-monospace">2.20336E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0001176488</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 440.18<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 2<span class="currency"> SAR</span></td>
-                    </tr>
-                    <tr class="ng-star-inserted">
-                        <td>
-                            <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                        </td>
-                        <td class="row-click"><span class="text-monospace">DLL185393</span></td>
-                        <td class="row-click"> Sami Essam Saeed Mohamed</td>
-                        <td class="row-click"><span class="text-monospace">1.03627E+12</span></td>
-                        <td class="row-click"><span class="text-monospace"></span></td>
-                        <td class="row-click"><span class="text-monospace">ALHH0000934051</span></td>
-                        <td class="row-click text-nowrap"> 04-01-2021 </td>
-                        <td class="row-click text-nowrap"> 130<span class="currency"> SAR</span></td>
-                        <td class="row-click text-nowrap"> 0<span class="currency"> SAR</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -201,11 +109,15 @@
     </ng-scrollbar>
     <div class="block-footer sticky-bottom">
         <div class="left-block">
-            <mat-paginator class="primary-paginator" length="100" pageSize="10" [showFirstLastButtons]="true" [pageSizeOptions]="[5, 10, 25, 100]">
+            <mat-paginator class="primary-paginator" [length]="paginatorLength" #paginator
+                pageSize="batchSummary?.pageSize" [showFirstLastButtons]="true"
+                [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
             </mat-paginator>
         </div>
-        <div class="right-block">
-            <button type="button" color="primary" mat-flat-button (click)="openAddBatchDialog()">Add to Batch</button>
+        <div class="right-block btn-list" *ngIf="batchModel?.totalPages > 0">
+            <!-- <button type="button" color="primary" mat-flat-button >Add to Batch</button> -->
+            <button type="button" mat-flat-button color="primary" (click)="openAddBatchDialog()">Batch {{allCheckBoxIsChecked?"
+                All":"Selection"}}</button>
         </div>
     </div>
 </div>
