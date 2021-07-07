@@ -30,7 +30,7 @@ export class UploadCardComponent implements OnInit {
   }
 
   get canBeDeleted() {
-    return (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
+    return (this.sharedServices.isAdmin && this.sharedServices.isProvider) || (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
   }
 
   deleteUpload() {
@@ -58,9 +58,12 @@ export class UploadCardComponent implements OnInit {
                         this.data.invalid = 0;
                         this.data.ready_for_submission = 0;
                         this.data.rejected_by_waseel = 0;
-                        if (this.totalClaims == 0) {
-                          this.data.uploadName += ' [DELETED]';
-                        }
+                        this.data.paid = 0;
+                        this.data.partially_paid = 0;
+                        this.data.underprocessing = 0;
+                        this.data.undersubmission = 0;
+                        this.data.rejected_by_payer = 0;
+                        this.data.uploadName += ' [DELETED]';
                         this.sharedServices.loadingChanged.next(false);
                       }
                     }, errorEvent => {
@@ -87,7 +90,7 @@ export class UploadCardComponent implements OnInit {
           case "confirm":
 
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Faield'], null, null, null, null, null, null, null)
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], null, null, null, null, null, null, null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.data.downloadable = 0;

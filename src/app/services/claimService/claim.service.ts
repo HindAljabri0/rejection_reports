@@ -107,14 +107,14 @@ export class ClaimService {
   putAttachmentsOfClaim(providerId: string, claimId: string, attachments: AssignedAttachment[]) {
     const requestUrl = `/providers/${providerId}/attachById/${claimId}`;
     const request = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, attachments.map(att =>
-      ({
-        attachmentid: att.attachmentId,
-        providerid: providerId,
-        filename: att.name,
-        attachmentfile: att.file,
-        filetype: att.type,
-        usercomment: null
-      }))
+    ({
+      attachmentid: att.attachmentId,
+      providerid: providerId,
+      filename: att.name,
+      attachmentfile: att.file,
+      filetype: att.type,
+      usercomment: null
+    }))
     );
     return this.httpClient.request(request);
   }
@@ -144,47 +144,55 @@ export class ClaimService {
 
     let requestURL = `/providers/${providerId}/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
-      requestURL += `claimIDs=${claimIDs}&`
+      requestURL += `claimIDs=${claimIDs}`
     } else {
-
-
       if (payerId != null && uploadId == null) {
         requestURL += `payerId=${payerId}&`
-      } if (batchId != null) {
+      }
+      if (batchId != null) {
         requestURL += `batchId=${batchId}&`
-      } if (uploadId != null) {
+      }
+      if (uploadId != null) {
         requestURL += `uploadId=${uploadId}&`
-      } if (caseTypes != null) {
+      }
+      if (caseTypes != null) {
         requestURL += `caseTypes=${caseTypes}&`
-        if (invoiceNo != null) {
-          requestURL += `invoiceNo=${invoiceNo}&`
-        } if (policyNo != null) {
-          requestURL += `policyNo=${policyNo}&`
-        } if (statuses != null) {
-          requestURL += `statuses=${statuses}&`
-        } if (fromDate != null) {
-          requestURL += `fromDate=${fromDate}&`
-        } if (toDate != null) {
-          requestURL += `toDate=${toDate}&`
-        }
-      } if (claimRefNo != null) {
+      }
+      if (invoiceNo != null) {
+        requestURL += `invoiceNo=${invoiceNo}&`
+      }
+      if (policyNo != null) {
+        requestURL += `policyNo=${policyNo}&`
+      }
+      if (statuses != null) {
+        requestURL += `statuses=${statuses}&`
+      }
+      if (fromDate != null) {
+        requestURL += `fromDate=${fromDate}&`
+      }
+      if (toDate != null) {
+        requestURL += `toDate=${toDate}&`
+      }
+      if (claimRefNo != null) {
         requestURL += `claimRefNo=${claimRefNo}&`
-      } if (patientFileNo != null) {
+      }
+      if (patientFileNo != null) {
         requestURL += `patientFileNo=${patientFileNo}&`
       }
       if (memberId != null) {
         requestURL += `memberId=${memberId}&`
       }
       if (drname != null && drname !== '' && drname !== undefined) {
-        requestURL += `&drname=${drname}`;
+        requestURL += `drname=${drname}&`;
       }
       if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-        requestURL += `&nationalId=${nationalId}`;
+        requestURL += `nationalId=${nationalId}&`;
       }
       if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
-        requestURL += `&claimDate=${claimDate}`;
+        requestURL += `claimDate=${claimDate}`;
       }
     }
+
     const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost + requestURL);
     return this.httpClient.request(httpRequest);
   }
