@@ -4,7 +4,8 @@
             <mat-accordion displayMode="flat">
                 <ul class="nav-list">
                     <li i18n="@@dashboard">
-                        <a routerLink="/" routerLinkActive="is-active" #dashboard="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <a routerLink="/" routerLinkActive="is-active" #dashboard="routerLinkActive"
+                            [routerLinkActiveOptions]="{exact: true}">
                             <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
                             <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
                             <span class="text">Dashboard</span>
@@ -18,50 +19,57 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@uploadclaims">
-                            <a routerLink="/upload" routerLinkActive="is-active" #uploadClaim="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/upload" routerLinkActive="is-active" #uploadClaim="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-upload-claims.svg" alt="Upload Claims" class="default-icon" />
                                 <img src="assets/ic-upload-claims-active.svg" alt="Upload Claims" class="active-icon" />
                                 <span class="text">Upload Claims</span>
                             </a>
                         </li>
                         <li i18n="@@createclaim">
-                            <a routerLink="/claims/add" routerLinkActive="is-active" #createClaim="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/claims/add" routerLinkActive="is-active" #createClaim="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-create-claim.svg" alt="Uploads" class="default-icon" />
                                 <img src="assets/ic-create-claim-active.svg" alt="Uploads" class="active-icon" />
                                 <span class="text">Create Claim</span>
                             </a>
                         </li>
                         <li i18n="@@uploads">
-                            <a routerLink="/uploads" routerLinkActive="is-active" #uploads="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/uploads" routerLinkActive="is-active" #uploads="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-cloud.svg" alt="Create Claim" class="default-icon" />
                                 <img src="assets/ic-cloud-active.svg" alt="Create Claim" class="active-icon" />
                                 <span class="text">Uploads</span>
                             </a>
                         </li>
                         <li i18n="@@claimhistory">
-                            <a routerLink="/upload/history" routerLinkActive="is-active" #claimHistory="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/upload/history" routerLinkActive="is-active"
+                                #claimHistory="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-claim-history.svg" alt="Claims History" class="default-icon" />
-                                <img src="assets/ic-claim-history-active.svg" alt="Claims History" class="active-icon" />
+                                <img src="assets/ic-claim-history-active.svg" alt="Claims History"
+                                    class="active-icon" />
                                 <span class="text">Claims History</span>
                             </a>
                         </li>
                         <li [class.d-none]="envProd || envStaging">
-                            <a routerLink="/collection-management/create-batch" routerLinkActive="is-active" #createBatch="routerLinkActive"
-                                [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/collection-management/create-batch" routerLinkActive="is-active"
+                                #createBatch="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-create-batch.svg" alt="Create Batch" class="default-icon" />
                                 <img src="assets/ic-create-batch-active.svg" alt="Create Batch" class="active-icon" />
                                 <span class="text">Create Batch</span>
                             </a>
                         </li>
                         <li i18n="@@notifications">
-                            <a routerLink="/{{providerId}}/notifications" routerLinkActive="is-active" #notification="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/{{providerId}}/notifications" routerLinkActive="is-active"
+                                #notification="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-notifications.svg" alt="Notification" class="default-icon" />
                                 <img src="assets/ic-notifications-active.svg" alt="Notification" class="active-icon" />
                                 <span class="text">Notifications</span>
                             </a>
                         </li>
                         <li i18n="@@announcements">
-                            <a routerLink="/{{providerId}}/announcements" routerLinkActive="is-active" #announcement="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/{{providerId}}/announcements" routerLinkActive="is-active"
+                                #announcement="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-announcement.svg" alt="Announcements" class="default-icon" />
                                 <img src="assets/ic-announcement-active.svg" alt="Announcements" class="active-icon" />
                                 <span class="text">Announcements</span>
@@ -70,31 +78,36 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle [expanded]="paymentReport.isActive || submissionReport.isActive || rejectionReport.isActive">
+                <mat-expansion-panel hideToggle
+                    [expanded]="paymentReport.isActive || submissionReport.isActive || rejectionReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@reports">Reports</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@paymentreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '1'}" #paymentReport="routerLinkActive" routerLinkActive="is-active"
+                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '1'}"
+                                #paymentReport="routerLinkActive" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Payment Report</span>
                             </a>
                         </li>
                         <li i18n="@@submissionreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '2'}" #submissionReport="routerLinkActive" routerLinkActive="is-active"
+                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '2'}"
+                                #submissionReport="routerLinkActive" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Submission Report</span>
                             </a>
                         </li>
                         <li i18n="@@rejectionreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '3'}" #rejectionReport="routerLinkActive" routerLinkActive="is-active"
+                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '3'}"
+                                #rejectionReport="routerLinkActive" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Rejection Report</span>
                             </a>
                         </li>
                         <li i18n="@@claimstatussummaryport">
-                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report" #rejectionReport="routerLinkActive" routerLinkActive="is-active"
+                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report"
+                                #rejectionReport="routerLinkActive" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Claim Status Summary Report</span>
                             </a>
@@ -108,9 +121,11 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@uploadRejectionReport">
-                            <a routerLink="/reports/creditReports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/reports/creditReports" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-credit-report-upload.svg" alt="File Upload" class="default-icon" />
-                                <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload" class="active-icon" />
+                                <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload"
+                                    class="active-icon" />
                                 <span class="text">Credit Reports</span>
                             </a>
                         </li>
@@ -122,14 +137,18 @@
                             </a>
                         </li> -->
                         <li i18n="@@cleanClaimProgress" *ngIf="!envProd">
-                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
-                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
+                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports"
+                                routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports"
+                                    class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports"
+                                    class="active-icon" />
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
                         <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
-                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
+                                routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejected Claim Progress Report</span>
@@ -144,27 +163,32 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
-                            <a routerLink="/collection-management/final-settlement-report-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/collection-management/final-settlement-report-list"
+                                routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Final Settlement Reports</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/accounts-receivable-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/collection-management/accounts-receivable-list" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Accounts Receivables</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/collection-management/accounts-receivable-breakdown-report"
+                                routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">AR Breakown Report</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/aging-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/collection-management/aging-report" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Aging Report</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/statement-of-accounts" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/collection-management/statement-of-accounts" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Statement of Accounts</span>
                             </a>
                         </li>
@@ -182,41 +206,49 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
-                            <a routerLink="/reports/revenue-tracking-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/reports/revenue-tracking-report" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Revenue Tracking Report</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/reports/revenue-report-breakdown" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/reports/revenue-report-breakdown" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Revenue Breakdown Report</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/reports/revenue-comparison-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/reports/revenue-comparison-report" routerLinkActive="is-active"
+                                [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Revenue Comparison Report</span>
                             </a>
                         </li>
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="summaryReport.isActive || ebillingReport.isActive">
+                <mat-expansion-panel hideToggle *ngIf="!envProd"
+                    [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title>GlobMed</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@gmsummaryreport">
-                            <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '1'}" #summaryReport="routerLinkActive" routerLinkActive="is-active"
+                            <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '1'}"
+                                #summaryReport="routerLinkActive" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-summary-report.svg" alt="Summary Report" class="default-icon" />
-                                <img src="assets/ic-summary-report-active.svg" alt="Summary Report" class="active-icon" />
+                                <img src="assets/ic-summary-report-active.svg" alt="Summary Report"
+                                    class="active-icon" />
                                 <span class="text">Summary Report</span>
                             </a>
                         </li>
                         <li i18n="@@gmebillingreport">
-                            <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '2'}" #ebillingReport="routerLinkActive" routerLinkActive="is-active"
+                            <a routerLink="/{{providerId}}/globmed/reports" [queryParams]="{type: '2'}"
+                                #ebillingReport="routerLinkActive" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <img src="assets/ic-ebilling-report.svg" alt="E-billing Report" class="default-icon" />
-                                <img src="assets/ic-ebilling-report-active.svg" alt="E-billing Report" class="active-icon" />
+                                <img src="assets/ic-ebilling-report-active.svg" alt="E-billing Report"
+                                    class="active-icon" />
                                 <span class="text">E-Billing Report</span>
                             </a>
                         </li>
@@ -235,35 +267,31 @@
                 </ul>
             </ng-container>
         </div>
-        <div class="list-title" *ngIf="isAdmin && isProvider">
-            <hr>
-        </div>
-        <div class="list-title" *ngIf="isAdmin && isProvider">
-            Administration
-        </div>
+        <ng-container *ngIf="isAdmin && (isProvider || isRcmUser)">
+            <div class="list-title" *ngIf="isProvider">
+                <hr>
+            </div>
+            <div class="list-title">
+                Administration
+            </div>
+        </ng-container>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@providerconfiguration">
-                            <a routerLink="/administration/config/providers" routerLinkActive="is-active" #providerConfiguration="routerLinkActive"
-                                [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/administration/config/providers" routerLinkActive="is-active"
+                                #providerConfiguration="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Provider Configuration</span>
                             </a>
                         </li>
-                        <li i18n="@@providermapping" >
-                            <a routerLink="/administration/config/providerMapping"  routerLinkActive="is-active" #providermapping="routerLinkActive"
-                                [routerLinkActiveOptions]="{exact: true}">
+                        <li i18n="@@providermapping">
+                            <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active"
+                                #providermapping="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Provider Mapping</span>
-                            </a>
-                        </li>
-                        <li i18n="@@payerPaymentContract" *ngIf="isRcmUser">
-                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active"
-                                [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Payer Payment Contract</span>
                             </a>
                         </li>
                     </ul>
@@ -277,7 +305,8 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@audittrail">
-                            <a routerLink="/administration/auditLogs" routerLinkActive="is-active" #auditTrail="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/administration/auditLogs" routerLinkActive="is-active"
+                                #auditTrail="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Audit Trail</span>
                             </a>
                         </li>
@@ -291,27 +320,48 @@
                 </mat-expansion-panel-header>
                 <ul class="nav-list">
                     <li>
-                        <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <a routerLink="/reports/claim-submissions" routerLinkActive="is-active"
+                            #claimSubmissions="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                             <span class="text">Claim Submissions</span>
                         </a>
                     </li>
                 </ul>
             </mat-expansion-panel>
-
-            <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="switchProvider.isActive">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Costomer Support</mat-panel-title>
-                </mat-expansion-panel-header>
-                <ul class="nav-list">
-                    <li>
-                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive"
-                            [routerLinkActiveOptions]="{exact: true}">
-                            <span class="text">Switch Provider</span>
-                        </a>
-                    </li>
-                </ul>
-            </mat-expansion-panel>
-
+        </div>
+        <ng-container *ngIf="isRcmUser && (isProvider || isAdmin)">
+            <div class="list-title">
+                <hr>
+            </div>
+            <div class="list-title">
+                RCM Configurations
+            </div>
+        </ng-container>
+        <div class="list-container" *ngIf="isRcmUser">
+            <mat-accordion displayMode="flat">
+                <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li i18n="@@payerPaymentContract">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Payer Payment Contract</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="list-container" *ngIf="isRcmUser || isAdmin">
+            <ul class="nav-list">
+                <li>
+                    <a routerLink="/administration/switch-provider" routerLinkActive="is-active"
+                        #switchProvider="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <span class="text">Switch Provider</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </ng-scrollbar>
 </div>

@@ -32,9 +32,12 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       case DashboardComponent:
         if (this._isOnlyAdmin()) {
           return this.router.createUrlTree(['administration']);
+        } else if (this._isOnlyRcm()) {
+          return this.router.createUrlTree(['administration', 'switch-provider']);
         } else {
           return true;
         }
+
       case SearchClaimsComponent:
         providerId = route.url[0].path;
         const batchId = route.queryParamMap.get('batchId');
@@ -87,7 +90,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
       return false;
     }
     if (segments[0].path == 'administration') {
-      return this._isAdmin();
+      return this._isAdminOrRcm();
     } else if (segments[0].path == 'claims') {
       return true;
     } else if (segments[0].path == 'configurations') {
@@ -113,10 +116,19 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
     return !isProvider && item != null && (item.includes('|22') || item.startsWith('22'));
   }
 
-  private _isAdmin(): boolean {
+  private _isOnlyRcm(): boolean {
     const item = localStorage.getItem('101101');
     const providerId = localStorage.getItem('provider_id');
-    return item != null && (item.includes('|22') || item.startsWith('22'));
+    const isProvider = this.getPayersList().some(payer => {
+      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
+      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
+    })
+    return !isProvider && item != null && (item.includes('|24') || item.startsWith('24'));
+  }
+
+  private _isAdminOrRcm(): boolean {
+    const item = localStorage.getItem('101101');
+    return item != null && (item.includes('|22') || item.startsWith('22') || item.includes('|24') || item.startsWith('24'));
   }
 
   private getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
