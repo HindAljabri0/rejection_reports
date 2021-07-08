@@ -997,6 +997,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             newModel.numOfAttachments = ele['numOfAttachments'];
             newModel.numOfPriceListErrors = ele['numOfPriceListErrors'];
             newModel.eligibilitycheck = inde === index ? splitedValue[1] : ele['eligibilitycheck'];
+            newModel.batchNumber = ele['batchNumber'];
             newModel.eligibilityStatusDesc = splitedValue[2] != undefined &&
               inde === index ? splitedValue[2] : ele['eligibilityStatusDesc'];
             claims.push(newModel);
@@ -1219,12 +1220,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                               false))
                             .subscribe(afterColse => {
                               // this.claimService.summaryChange.next(new UploadSummary());
-      
+
                               // location.reload();
-      
+
                               this.router.navigate(['/uploads']);
                             });
-      
+
                         } else {
                           const error = event.body['errors'];
                           this.dialogService.openMessageDialog(
@@ -1232,7 +1233,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                               error[0].description,
                               false));
                         }
-      
+
                       }
                     }, errorEvent => {
                       if (errorEvent instanceof HttpErrorResponse) {
