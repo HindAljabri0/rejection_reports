@@ -1,0 +1,92 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Accounts Receivables Breakdown Report</p>
+    </div>
+    <div class="block-filter-panel has-border">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row small-gutter">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Payer</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="">
+                                    <mat-option value="">Select Payer</mat-option>
+                                    <mat-option value="Payer 1">Payer 1</mat-option>
+                                    <mat-option value="Payer 2">Payer 2</mat-option>
+                                    <mat-option value="Payer 3">Payer 3</mat-option>
+                                    <mat-option value="Payer 4">Payer 4</mat-option>
+                                    <mat-option value="Payer 5">Payer 5</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Year</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="year" class="form-control" placeholder="Select year" />
+                                <mat-datepicker-toggle [for]="year"></mat-datepicker-toggle>
+                                <mat-datepicker #year></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto align-self-end">
+                        <div class="form-group">
+                            <button type="button" mat-flat-button color="primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ar-breakdown-body">
+        <div class="row small-gutter">
+            <div class="col-4">
+                <div class="section-card">
+                    <p class="section-title">Payment Status</p>
+                    <div class="status-chart">
+                        <canvas baseChart [datasets]="paymentStatusChartData" [labels]="paymentStatusChartLabels" [chartType]="paymentStatusChartType"
+                            [options]="paymentStatusChartOptions" [legend]="paymentStatusChartLegend" (chartClick)="paymentStatusChartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="section-card half">
+                    <p class="section-title">Payment Category</p>
+                    <div class="category-chart">
+                        <canvas baseChart [datasets]="paymentCategoryChartData" [labels]="paymentCategoryChartLabels" [chartType]="paymentCategoryChartType"
+                            [options]="paymentCategoryChartOptions" [legend]="paymentCategoryChartLegend">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="section-card half">
+                    <p class="section-title">Payment Type</p>
+                    <div class="type-chart">
+                        <canvas baseChart [datasets]="paymentTypeChartData" [labels]="paymentTypeChartLabels" [chartType]="paymentTypeChartType" [options]="paymentTypeChartOptions"
+                            [legend]="paymentTypeChartLegend">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="section-card">
+                    <ng-container *ngIf="chartMode!=0">
+                        <p class="section-title">Payer Breakdown</p>
+                        <div class="status-chart">
+                            <canvas baseChart [datasets]="payerBreakdownChartData" [labels]="payerBreakdownChartLabels" [chartType]="payerBreakdownChartType"
+                                [options]="payerBreakdownChartOptions" [legend]="payerBreakdownChartLegend">
+                            </canvas>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-footer sticky-bottom">
+        <div class="right-block">
+            <button type="button" mat-flat-button color="primary">Print</button>
+        </div>
+    </div>
+</div>

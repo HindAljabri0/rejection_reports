@@ -60,7 +60,9 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 
 /* button
 --------------------------------------------------------------------------------------------------------*/
-button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-stroked-button,a.mat-button, a.mat-flat-button, a.mat-icon-button, a.mat-stroked-button{line-height: 40px;}
+button.mat-button, button.mat-flat-button, button.mat-icon-button,a.mat-button, a.mat-flat-button, a.mat-icon-button{line-height: 40px;}
+button.mat-stroked-button, a.mat-stroked-button{line-height: 38px;}
+button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 .btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
@@ -1106,6 +1108,33 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 --------------------------------------------------------------------------------------------------------*/
 .json-viewer{background-color: #f6f6f6;display: block;padding: 14px;}
 
+/* account receivable breakdown
+--------------------------------------------------------------------------------------------------------*/
+.ar-breakdown-body{padding: 14px 14px 0;background: #fff;}
+.ar-breakdown-body .section-card{border-radius: 4px;padding: 14px;border:1px solid #D8E7FF;height: calc(100% - 14px);margin-bottom: 14px;}
+.ar-breakdown-body .section-card.half{height: auto;}
+.ar-breakdown-body .section-title{padding-bottom: 12px;font-weight: 600;}
+.ar-breakdown-body .status-chart{height: calc(100% - 32px);width: 90%;margin: 0 auto;}
+.ar-breakdown-body .category-chart,.ar-breakdown-body .type-chart{min-height: 180px;height: calc(100vh - 652px);max-height: 320px;}
+
+/* download progress panel
+--------------------------------------------------------------------------------------------------------*/
+.download-progress-view-panel {width: 440px;max-width: none !important;}
+.download-progress-view-panel .mat-menu-content:not(:empty){padding: 0;background: #fff;}
+.download-progress-view {display: flex;border-bottom: 1px solid #e1e1e1;}
+.download-progress-view:last-child{border-bottom:0;}
+.download-progress-view>.left{display: flex;justify-content: center;flex-basis: 88px;max-width: 88px;flex-grow: 0;flex-shrink: 0;min-height: 88px;border-right: 1px solid #e1e1e1;padding-top: 20px;}
+.download-progress-view>.left>img{height: 48px;width: 48px;display: block;}
+.download-progress-view>.right{flex-basis: calc(100% - 88px);max-width: calc(100% - 88px);flex-grow: 0;flex-shrink: 0;padding: 14px;min-height: 88px;display: flex;align-items: center;}
+.download-progress-view>.right>.inner{flex-grow: 1;}
+.download-progress-view>.download-icon{display: grid;place-items: center;}
+.download-progress-view>.download-icon>*{width: 50px;}
+.download-progress-view .error-icon{height: 32px;width: 32px;font-size: 32px;line-height: 32px;color: #CC2F2F;}
+.download-progress-view .text {font-size: 16px;line-height: 24px;font-weight: 500;max-height: 48px;overflow: hidden;position: relative;}
+.download-progress-view .text:after {content: '';position: absolute;right: 0;top: 24px;width: 136px;display: block;height: 24px;background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );}
+.download-progress-view .size{color:#909090;}
+.download-progress-view .progress{margin-top: 8px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
@@ -1157,7 +1186,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width:1599px) { 
-    .advance-search {width: 630px;display: flex;height: 42px;margin: 13px 0;}
+    .advance-search {width: 610px;display: flex;height: 42px;margin: 13px 0;}
+    .advance-search .mat-chip>span{max-width: 120px;overflow: hidden;text-overflow: ellipsis;display: block;white-space: nowrap;}
     .abstract-card-list>div{flex-basis: 25%;max-width: 25%;}
     .abstract-card-carousel.fixed-card .owl-carousel .owl-item{width: calc(25% - 14px)!important;}
     .bupa-table,.bupa-table .form-control,.bupa-table .form-control.has-error{font-size: 13px;line-height:18px;}
@@ -1242,53 +1272,4 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     padding: 0;
     position: relative;
     overflow: hidden;
-}
-
-.download-progress-view-panel {
-    width: 450px;
-    max-width: none !important;
-}
-
-.download-progress-view {
-    padding: 5px;
-    display: grid;
-    grid-template-columns: minmax(70px, 15%) 1fr;
-}
-
-.download-progress-view>.download-icon{
-    display: grid;
-    place-items: center;
-}
-
-.download-progress-view>.download-icon>*{
-    width: 50px;
-}
-
-.download-progress-view.download-icon>.error-icon{
-    height: 100%;
-    width: 100%;
-    font-size: 100px;
-    color: #CC2F2F;
-}
-.download-progress-view>.download-info{
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    justify-content: space-between;
-}
-
-
-.download-progress-view>.download-info>.text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    line-height: 20px;     /* fallback */
-    max-height: 50px;      /* fallback */
-    -webkit-line-clamp: 2; /* number of lines to show */
-    -webkit-box-orient: vertical;
-    margin-bottom: 10px;
-}
-
-.download-progress-view>.download-info>.text.error{
-    color: #CC2F2F;
 }

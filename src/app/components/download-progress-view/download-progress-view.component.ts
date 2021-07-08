@@ -24,11 +24,11 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
 
   getReadableFileSize() {
     if (this.downloadRequest.downloadedSize < 500) {
-      return `${this.downloadRequest.downloadedSize} B Downloaded.`;
+      return `${this.downloadRequest.downloadedSize} B`;
     } else if ((this.downloadRequest.downloadedSize / 1024) < 500) {
-      return `${(this.downloadRequest.downloadedSize / 1024).toFixed(2)} KB Downloaded.`;
+      return `${(this.downloadRequest.downloadedSize / 1024).toFixed(2)} KB`;
     } else {
-      return `${(this.downloadRequest.downloadedSize / 1024 / 1024).toFixed(2)} MB Downloaded.`;
+      return `${(this.downloadRequest.downloadedSize / 1024 / 1024).toFixed(2)} MB`;
     }
   }
 

@@ -28,16 +28,16 @@ export class HeaderComponent implements OnInit {
 
   @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
-  constructor(private commen: SharedServices, public router: Router, public authService: AuthService, private downloadService: DownloadService) {
-    this.commen.unReadNotificationsCountChange.subscribe(count => {
+  constructor(private sharedServices: SharedServices, public router: Router, public authService: AuthService, private downloadService: DownloadService) {
+    this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
     });
     this.authService.isUserNameUpdated.subscribe((isUpdated) => {
       if (isUpdated) {
         this.getUserData();
-        this.commen.getNotifications();
-        this.commen.getUploadHistory();
-        this.commen.getAnnouncements();
+        this.sharedServices.getNotifications();
+        this.sharedServices.getUploadHistory();
+        this.sharedServices.getAnnouncements();
       }
     }
     );
@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
   }
 
   get loading(): boolean {
-    return this.commen.loading;
+    return this.sharedServices.loading;
   }
 
   ngOnInit() {
@@ -72,15 +72,15 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleAnnouncementCenter() {
-    this.commen.showAnnouncementCenterChange.next(!this.commen.showAnnouncementCenter);
+    this.sharedServices.showAnnouncementCenterChange.next(!this.sharedServices.showAnnouncementCenter);
   }
 
   toggleNotificationCenter() {
-    this.commen.showNotificationCenterChange.next(!this.commen.showNotificationCenter);
+    this.sharedServices.showNotificationCenterChange.next(!this.sharedServices.showNotificationCenter);
   }
 
   toggleUploadHistoryCenter() {
-    this.commen.showUploadsCenterChange.next(!this.commen.showUploadsCenter);
+    this.sharedServices.showUploadsCenterChange.next(!this.sharedServices.showUploadsCenter);
   }
 
   logout() {
@@ -94,6 +94,10 @@ export class HeaderComponent implements OnInit {
   toggleNav() {
     document.body.classList.toggle('nav-open');
     document.getElementsByTagName('html')[0].classList.toggle('nav-open');
+  }
+
+  get isProvider() {
+    return this.sharedServices.isProvider;
   }
 
 }
