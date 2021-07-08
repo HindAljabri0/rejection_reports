@@ -84,7 +84,7 @@ export class DownloadService {
   getFileName(contentDisposition: string) {
     if (contentDisposition != null) {
       if (contentDisposition.includes('filename')) {
-        return contentDisposition.split('filename=')[1];
+        return contentDisposition.split('filename=')[1].replace(`"`, '').replace(`"`, '');
       } else {
         return contentDisposition;
       }
