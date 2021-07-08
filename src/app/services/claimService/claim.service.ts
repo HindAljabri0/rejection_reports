@@ -107,14 +107,14 @@ export class ClaimService {
   putAttachmentsOfClaim(providerId: string, claimId: string, attachments: AssignedAttachment[]) {
     const requestUrl = `/providers/${providerId}/attachById/${claimId}`;
     const request = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, attachments.map(att =>
-    ({
-      attachmentid: att.attachmentId,
-      providerid: providerId,
-      filename: att.name,
-      attachmentfile: att.file,
-      filetype: att.type,
-      usercomment: null
-    }))
+      ({
+        attachmentid: att.attachmentId,
+        providerid: providerId,
+        filename: att.name,
+        attachmentfile: att.file,
+        filetype: att.type,
+        usercomment: null
+      }))
     );
     return this.httpClient.request(request);
   }
@@ -259,6 +259,19 @@ export class ClaimService {
 
   batchSummary(providerId: string, data: any): Observable<any> {
     const requestURL = `/${providerId}/batch/criteria`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimServiceHost + requestURL, { responseType: 'text', params: searchparams });
+    return this.httpClient.request(request);
+  }
+
+  batchClaimNumber(providerId: string, data: any): Observable<any> {
+    const requestURL = `/${providerId}/generate/batchNumber`;
 
     let searchparams = new HttpParams();
     if (data) {

@@ -23,7 +23,7 @@ export class CreateBatchComponent implements OnInit {
   batchSummary: BatchSummary = new BatchSummary();
   datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false, dateInputFormat: 'DD/MM/YYYY' };
   minDate: any;
-  allCheckBoxIsChecked: boolean;
+  allCheckBoxIsChecked: boolean = false;
   allCheckBoxIsIndeterminate: boolean;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
@@ -31,9 +31,10 @@ export class CreateBatchComponent implements OnInit {
   paginatorPagesNumbers: number[];
   batchModel: PaginatedResult<BatchSummaryModel>;
   batchData: any[] = [];
+  selectedBatchData: any = [];
   constructor(public dialog: MatDialog, private sharedService: SharedServices, private claimService: ClaimService, private dialogService: DialogService, private location: Location, private routeActive: ActivatedRoute) {
-    this.batchSummary.page = 0;
-    this.batchSummary.pageSize = 10;
+    // this.batchSummary.page = 0;
+    // this.batchSummary.pageSize = 10;
   }
 
   ngOnInit() {
@@ -74,22 +75,24 @@ export class CreateBatchComponent implements OnInit {
       size: this.batchSummary.pageSize
     }
     this.editURL(startDate, endDate);
-    this.sharedService.loadingChanged.next(true);
     this.claimService.batchSummary(this.sharedService.providerId, obj).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = JSON.parse(event['body']);
-        const pages = Math.ceil((body.totalElements / this.paginator.pageSize));
-        this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
         this.batchModel = new PaginatedResult(body, BatchSummaryModel);
         this.batchData = this.batchModel.content;
-
-        this.paginator.pageIndex = this.batchModel.number;
-        this.paginator.pageSize = this.batchModel.size;
+        this.selectedBatchData = [];
+        if (this.batchData.length > 0) {
+          const pages = Math.ceil((body.totalElements / this.paginator.pageSize));
+          this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+          this.paginator.pageIndex = this.batchModel.number;
+          this.paginator.pageSize = this.batchModel.size;
+        }
       }
       this.sharedService.loadingChanged.next(false);
     }, err => {
       this.sharedService.loadingChanged.next(false);
       this.batchData = [];
+      this.selectedBatchData = [];
       this.dialogService.openMessageDialog(new MessageDialogData('', err.message, true));
       console.log(err);
     });
@@ -103,9 +106,18 @@ export class CreateBatchComponent implements OnInit {
   }
 
   openAddBatchDialog() {
+    const startDate = moment(this.batchSummary.startDate).format('YYYY-MM-DD');
+    const endDate = moment(this.batchSummary.endDate).format('YYYY-MM-DD');
     const dialogRef = this.dialog.open(AddBatchDialogComponent,
       {
-        panelClass: ['primary-dialog', 'dialog-sm']
+        panelClass: ['primary-dialog', 'dialog-sm'],
+        data: {
+          startDate: startDate,
+          endDate: endDate,
+          payerId: this.batchSummary.payerId,
+          selectedBatchData: this.selectedBatchData,
+          batchSelected: this.selectedBatchData.length > 0 ? true : false
+        }
       });
   }
   dateValidation(event: any) {
@@ -118,11 +130,7 @@ export class CreateBatchComponent implements OnInit {
     this.minDate = new Date(event);
 
   }
-  selectAllinPage(event) {
-    this.allCheckBoxIsChecked = event.checked;
-    console.log(event);
 
-  }
 
   editURL(startDate?: string, endDate?: string) {
     let path = '/collection-management/create-batch?';
@@ -161,5 +169,15 @@ export class CreateBatchComponent implements OnInit {
     } else {
       return 0;
     }
+  }
+  selectAllinPage(event) {
+    this.allCheckBoxIsChecked = event.checked;
+
+  }
+  selectedBatch(event, id: any) {
+    if (event.checked)
+      this.selectedBatchData.push(id);
+    else
+      this.selectedBatchData = this.selectedBatchData.filter(ele => ele !== id);
   }
 }
