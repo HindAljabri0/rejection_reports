@@ -151,6 +151,10 @@ export class SharedServices {
       return false;
     }
   }
+  get isRcmUser(){
+    const privilege = localStorage.getItem('101101');
+    return privilege != null && (privilege.includes('|24') || privilege.startsWith('24'));
+  }
 
   getNotifications() {
     if (this.providerId == null) { return; }
