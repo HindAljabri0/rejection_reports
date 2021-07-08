@@ -63,7 +63,7 @@ export class SidebarComponent implements OnInit {
     return this.sharedServices.isAdminOfProvider;
   }
   get isRcmUser(){
-    return this.sharedServices.isAdmin;
+    return this.sharedServices.isRcmUser;
   }
 
 }
