@@ -238,7 +238,7 @@
         </div>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive  || payerPaymentContract.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -249,14 +249,14 @@
                                 <span class="text">Provider Configuration</span>
                             </a>
                         </li>
-                        <li i18n="@@providermapping" *ngIf="isRcmUser">
-                            <a routerLink="/administration/config/providerMapping"  routerLinkActive="is-active"
+                        <li i18n="@@providermapping" >
+                            <a routerLink="/administration/config/providerMapping"  routerLinkActive="is-active" #providermapping="routerLinkActive"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Provider Mapping</span>
                             </a>
                         </li>
-                        <li i18n="@@payerPaymentContract">
-                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
+                        <li i18n="@@payerPaymentContract" *ngIf="isRcmUser">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Payer Payment Contract</span>
                             </a>
