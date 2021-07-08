@@ -10,13 +10,14 @@
                         [ngClass]="{'has-error' : createBatchForm.submitted && !batchSummary.payerId}">
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId='ngModel' name="payerId">
+                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId='ngModel' name="payerId"
+                                required>
                                 <!-- <mat-option value="0">All</mat-option> -->
                                 <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <div *ngIf="createBatchForm.submitted && !payerId.invalid">
+                        <div *ngIf="createBatchForm.submitted && payerId.invalid">
                             <span class="error-text">Please select a Payer</span>
                         </div>
                     </div>

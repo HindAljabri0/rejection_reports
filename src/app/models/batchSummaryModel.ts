@@ -1,5 +1,5 @@
 export class BatchSummary {
-    payerId: any = '0';
+    payerId: any;
     startDate: any = '';
     endDate: any = '';
     page: number = 0;
