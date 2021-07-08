@@ -8,6 +8,7 @@ import { AgingReportComponent } from './aging-report/aging-report.component';
 import { StatementOfAccountsComponent } from './statement-of-accounts/statement-of-accounts.component';
 import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-details/statement-of-accounts-details.component';
 import { CreateBatchComponent } from './create-batch/create-batch.component';
+import { AccountReceivableBreakdownReportComponent } from './account-receivable-breakdown-report/account-receivable-breakdown-report.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'aging-report', component: AgingReportComponent },
   { path: 'statement-of-accounts', component: StatementOfAccountsComponent },
   { path: 'statement-of-accounts-details', component: StatementOfAccountsDetailsComponent },
-  { path: 'create-batch', component: CreateBatchComponent }
+  { path: 'create-batch', component: CreateBatchComponent },
+  { path: 'accounts-receivable-breakdown-report', component: AccountReceivableBreakdownReportComponent }
 ];
 
 @NgModule({

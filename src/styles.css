@@ -60,7 +60,9 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 
 /* button
 --------------------------------------------------------------------------------------------------------*/
-button.mat-button, button.mat-flat-button, button.mat-icon-button, button.mat-stroked-button,a.mat-button, a.mat-flat-button, a.mat-icon-button, a.mat-stroked-button{line-height: 40px;}
+button.mat-button, button.mat-flat-button, button.mat-icon-button,a.mat-button, a.mat-flat-button, a.mat-icon-button{line-height: 40px;}
+button.mat-stroked-button, a.mat-stroked-button{line-height: 38px;}
+button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 .btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
@@ -1105,6 +1107,15 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 /* json viewer
 --------------------------------------------------------------------------------------------------------*/
 .json-viewer{background-color: #f6f6f6;display: block;padding: 14px;}
+
+/* account receivable breakdown
+--------------------------------------------------------------------------------------------------------*/
+.ar-breakdown-body{padding: 14px 14px 0;background: #fff;}
+.ar-breakdown-body .section-card{border-radius: 4px;padding: 14px;border:1px solid #D8E7FF;height: calc(100% - 14px);margin-bottom: 14px;}
+.ar-breakdown-body .section-card.half{height: auto;}
+.ar-breakdown-body .section-title{padding-bottom: 12px;font-weight: 600;}
+.ar-breakdown-body .status-chart{height: calc(100% - 32px);width: 90%;margin: 0 auto;}
+.ar-breakdown-body .category-chart,.ar-breakdown-body .type-chart{min-height: 180px;height: calc(100vh - 652px);max-height: 320px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

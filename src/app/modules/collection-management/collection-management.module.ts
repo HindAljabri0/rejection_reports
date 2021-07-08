@@ -22,6 +22,7 @@ import { AddEditPaymentDialogComponent } from './add-edit-payment-dialog/add-edi
 import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accounts-dialog/add-statement-of-accounts-dialog.component';
 import { AddReconciliationPaymentDialogComponent } from './add-reconciliation-payment-dialog/add-reconciliation-payment-dialog.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
+import { AccountReceivableBreakdownReportComponent } from './account-receivable-breakdown-report/account-receivable-breakdown-report.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AccountReceivableDetailsPayerComponent } from './account-receivable-det
     AddStatementOfAccountsDialogComponent,
     AddReconciliationPaymentDialogComponent,
     AccountReceivableDetailsPayerComponent,
+    AccountReceivableBreakdownReportComponent,
   ],
   imports: [
     CommonModule,
