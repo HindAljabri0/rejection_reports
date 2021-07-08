@@ -13,7 +13,7 @@
             <h4 class="semibold">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
         </div>
         <div class="col-auto">
-            <button mat-stroked-button color="primary">View Summary</button>
+            <button mat-stroked-button color="primary" routerLink="/summary" [queryParams]="{id: data.uploadId}">View Summary</button>
         </div>
     </div>
     <div class="row small-gutter pt-3">

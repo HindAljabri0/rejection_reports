@@ -6,6 +6,7 @@ import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-card',
@@ -170,4 +171,7 @@ export class UploadCardComponent implements OnInit {
         })
     }
   }
+  // goTOClaimViewPage() {
+  //   this.router.navigateByUrl('summary?id=' + this.data.uploadId);
+  // }
 }
