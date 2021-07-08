@@ -10,13 +10,13 @@
                         [ngClass]="{'has-error' : createBatchForm.submitted && !batchSummary.payerId}">
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId name="payerId">
-                                <mat-option value="0">All</mat-option>
+                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId='ngModel' name="payerId">
+                                <!-- <mat-option value="0">All</mat-option> -->
                                 <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <div *ngIf="createBatchForm.submitted && !batchSummary.payerId">
+                        <div *ngIf="createBatchForm.submitted && !payerId.invalid">
                             <span class="error-text">Please select a Payer</span>
                         </div>
                     </div>
@@ -84,7 +84,8 @@
                 <tbody>
                     <tr class="ng-star-inserted" *ngFor="let item of batchData">
                         <td>
-                            <mat-checkbox [(checked)]="allCheckBoxIsChecked" class="grid-checkbox" color="primary">
+                            <mat-checkbox [(checked)]="allCheckBoxIsChecked" class="grid-checkbox" color="primary"
+                                (change)="selectedBatch($event,item.claimid)">
                             </mat-checkbox>
                         </td>
                         <td class="row-click"><span class="text-monospace">{{item.approvalnumber}}</span></td>
@@ -107,16 +108,16 @@
             </table>
         </div>
     </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
+    <!-- pageSize="batchSummary?.pageSize"  -->
+    <div class="block-footer sticky-bottom" *ngIf="batchData.length>0">
         <div class="left-block">
-            <mat-paginator class="primary-paginator" [length]="paginatorLength" #paginator
-                pageSize="batchSummary?.pageSize" [showFirstLastButtons]="true"
+            <mat-paginator class="primary-paginator" [length]="paginatorLength" #paginator [showFirstLastButtons]="true"
                 [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
             </mat-paginator>
         </div>
         <div class="right-block btn-list" *ngIf="batchModel?.totalPages > 0">
             <!-- <button type="button" color="primary" mat-flat-button >Add to Batch</button> -->
-            <button type="button" mat-flat-button color="primary" (click)="openAddBatchDialog()">Batch {{allCheckBoxIsChecked?"
+            <button type="button" mat-flat-button color="primary" (click)="openAddBatchDialog()">Batch {{!allCheckBoxIsChecked?"
                 All":"Selection"}}</button>
         </div>
     </div>
