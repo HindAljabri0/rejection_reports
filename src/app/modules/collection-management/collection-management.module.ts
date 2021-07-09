@@ -18,10 +18,11 @@ import { CreateBatchComponent } from './create-batch/create-batch.component';
 import { AddBatchDialogComponent } from './add-batch-dialog/add-batch-dialog.component';
 import { AddEditPaymentDialogComponent } from './add-edit-payment-dialog/add-edit-payment-dialog.component';
 import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accounts-dialog/add-statement-of-accounts-dialog.component';
-import { AddReconciliationPaymentDialogComponent } from './add-reconciliation-payment-dialog/add-reconciliation-payment-dialog.component';
-import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 import { AccountReceivableBreakdownReportComponent } from './account-receivable-breakdown-report/account-receivable-breakdown-report.component';
 import { AddIntialRejectionDialogComponent } from './add-intial-rejection-dialog/add-intial-rejection-dialog.component';
+import { ReconciliationComponent } from './reconciliation/reconciliation.component';
+import { ReconciliationReportComponent } from './reconciliation-report/reconciliation-report.component';
+import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 
 @NgModule({
   declarations: [
@@ -36,10 +37,11 @@ import { AddIntialRejectionDialogComponent } from './add-intial-rejection-dialog
     AddBatchDialogComponent,
     AddEditPaymentDialogComponent,
     AddStatementOfAccountsDialogComponent,
-    AddReconciliationPaymentDialogComponent,
     AccountReceivableDetailsPayerComponent,
     AccountReceivableBreakdownReportComponent,
     AddIntialRejectionDialogComponent,
+    ReconciliationComponent,
+    ReconciliationReportComponent,
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,6 @@ import { AddIntialRejectionDialogComponent } from './add-intial-rejection-dialog
     AddBatchDialogComponent,
     AddEditPaymentDialogComponent,
     AddStatementOfAccountsDialogComponent,
-    AddReconciliationPaymentDialogComponent,
     AddIntialRejectionDialogComponent
   ]
 })
