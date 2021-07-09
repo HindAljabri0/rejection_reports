@@ -60,9 +60,9 @@
                                 <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
-                            <td class="row-click" (click)="toggleRow(i)">{{item.payer}}</td>
-                            <td class="row-click" (click)="toggleRow(i)">{{item.amountOutStanding}} SR</td>
-                            <td class="row-click" (click)="toggleRow(i)">{{item.totalAmoount}} SR</td>
+                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.payer}}</td>
+                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.amountOutStanding}} SR</td>
+                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.totalAmoount}} SR</td>
                         </tr>
                         <tr *ngIf="currentDetailsOpen==i">
                             <td colspan="4">
