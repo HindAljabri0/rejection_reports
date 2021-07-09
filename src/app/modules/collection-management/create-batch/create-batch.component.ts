@@ -32,6 +32,7 @@ export class CreateBatchComponent implements OnInit {
   batchModel: PaginatedResult<BatchSummaryModel>;
   batchData: any[] = [];
   selectedBatchData: any = [];
+  allChecked: boolean = false;
   constructor(public dialog: MatDialog, private sharedService: SharedServices, private claimService: ClaimService, private dialogService: DialogService, private location: Location, private routeActive: ActivatedRoute) {
     // this.batchSummary.page = 0;
     // this.batchSummary.pageSize = 10;
@@ -81,6 +82,7 @@ export class CreateBatchComponent implements OnInit {
         this.batchModel = new PaginatedResult(body, BatchSummaryModel);
         this.batchData = this.batchModel.content;
         this.selectedBatchData = [];
+        this.allCheckBoxIsChecked = false;
         if (this.batchData.length > 0) {
           const pages = Math.ceil((body.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
@@ -119,6 +121,13 @@ export class CreateBatchComponent implements OnInit {
           batchSelected: this.selectedBatchData.length > 0 ? true : false
         }
       });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.closeStatus) {
+        this.getBatchData();
+      }
+    }, error => {
+
+    });
   }
   dateValidation(event: any) {
     if (event !== null) {
@@ -172,6 +181,7 @@ export class CreateBatchComponent implements OnInit {
   }
   selectAllinPage(event) {
     this.allCheckBoxIsChecked = event.checked;
+    this.allChecked = event.checked;
 
   }
   selectedBatch(event, id: any) {
@@ -179,5 +189,10 @@ export class CreateBatchComponent implements OnInit {
       this.selectedBatchData.push(id);
     else
       this.selectedBatchData = this.selectedBatchData.filter(ele => ele !== id);
+
+    this.allCheckBoxIsChecked = true;
+
+    if (this.selectedBatchData.length === 0)
+      this.allCheckBoxIsChecked = false;
   }
 }
