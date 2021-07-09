@@ -8,6 +8,8 @@ import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-det
 import { CreateBatchComponent } from './create-batch/create-batch.component';
 import { AccountReceivableBreakdownReportComponent } from './account-receivable-breakdown-report/account-receivable-breakdown-report.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
+import { ReconciliationComponent } from './reconciliation/reconciliation.component';
+import { ReconciliationReportComponent } from './reconciliation-report/reconciliation-report.component';
 
 const routes: Routes = [
   { path: 'accounts-receivable-list', component: AccountsReceivableListComponent },
@@ -17,7 +19,9 @@ const routes: Routes = [
   { path: 'statement-of-accounts', component: StatementOfAccountsComponent },
   { path: 'statement-of-accounts-details', component: StatementOfAccountsDetailsComponent },
   { path: 'create-batch', component: CreateBatchComponent },
-  { path: 'accounts-receivable-breakdown-report', component: AccountReceivableBreakdownReportComponent }
+  { path: 'accounts-receivable-breakdown-report', component: AccountReceivableBreakdownReportComponent },
+  { path: 'reconciliation', component: ReconciliationComponent },
+  { path: 'reconciliation-report', component: ReconciliationReportComponent }
 ];
 
 @NgModule({
