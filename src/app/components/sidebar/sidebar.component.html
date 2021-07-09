@@ -230,15 +230,17 @@
                 </ul>
             </ng-container>
         </div>
-        <div class="list-title" *ngIf="isAdmin && isProvider">
-            <hr>
-        </div>
-        <div class="list-title" *ngIf="isAdmin && isProvider">
-            Administration
-        </div>
+        <ng-container *ngIf="isAdmin && (isProvider || isRcmUser)">
+            <div class="list-title" *ngIf="isProvider">
+                <hr>
+            </div>
+            <div class="list-title">
+                Administration
+            </div>
+        </ng-container>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -291,21 +293,40 @@
                     </li>
                 </ul>
             </mat-expansion-panel>
-
-            <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="switchProvider.isActive">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Costomer Support</mat-panel-title>
-                </mat-expansion-panel-header>
-                <ul class="nav-list">
-                    <li>
-                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive"
-                            [routerLinkActiveOptions]="{exact: true}">
-                            <span class="text">Switch Provider</span>
-                        </a>
-                    </li>
-                </ul>
-            </mat-expansion-panel>
-
+        </div>
+        <ng-container *ngIf="isRcmUser && (isProvider || isAdmin)">
+            <div class="list-title">
+                <hr>
+            </div>
+            <div class="list-title">
+                RCM Configurations
+            </div>
+        </ng-container>
+        <div class="list-container" *ngIf="isRcmUser">
+            <mat-accordion displayMode="flat">
+                <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li i18n="@@payerPaymentContract">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Payer Payment Contract</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="list-container" *ngIf="isRcmUser || isAdmin">
+            <ul class="nav-list">
+                <li>
+                    <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <span class="text">Switch Provider</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </ng-scrollbar>
 </div>
