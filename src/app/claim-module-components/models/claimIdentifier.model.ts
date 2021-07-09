@@ -9,6 +9,7 @@ export class ClaimIdentifier {
   approvalNumber: string;
   eligibilityNumber: string;
   uploadID: number;
+  providerBatchNumber: string;
 
   constructor(providerClaimNumber: string) {
     this.providerClaimNumber = providerClaimNumber;
