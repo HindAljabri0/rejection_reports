@@ -282,4 +282,25 @@ export class ClaimService {
     const request = new HttpRequest('GET', environment.claimServiceHost + requestURL, { responseType: 'text', params: searchparams });
     return this.httpClient.request(request);
   }
+
+  addBatchNumber(providerID: string, data: any) {
+    let requestURL = `/${providerID}/batch/criteria?`;
+
+    let searchparams = new HttpParams();
+    if (data.claimIDs != null && data.claimIDs !== undefined && data.claimIDs.length > 0) {
+      requestURL += `claimIDs=${data.claimIDs}&payerId=${data.payerId}&batchNumber=${data.batchNumber}&batchDate=${data.batchDate}`;
+    }
+    else {
+      requestURL += `startDate=${data.startDate}&endDate=${data.endDate}&payerId=${data.payerId}&batchNumber=${data.batchNumber}&batchDate=${data.batchDate}`;
+    }
+
+    // if (data) {
+    //   for (const key in data) {
+    //     if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+    //   }
+    // }
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {}, { headers: headers });
+    return this.httpClient.request(request);
+  }
 }

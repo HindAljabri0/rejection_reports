@@ -5,12 +5,12 @@
 <div class="primary-dialog-body">
     Hey! We will create new batch from selected claim. The batch number for new batch will be
     <strong>{{batchRefNumber}}</strong> and batch date will be
-    <strong>21/07/2021</strong>.<br><br>Do you
+    <strong>{{currentDate | date: 'dd-MM-yyyy'}}</strong>.<br><br>Do you
     confirm that?
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">No</button>
-        <button mat-flat-button color="primary">Yes, Add Batch</button>
+        <button mat-flat-button color="primary" (click)="addBatchDialog()">Yes, Add Batch</button>
     </div>
 </div>

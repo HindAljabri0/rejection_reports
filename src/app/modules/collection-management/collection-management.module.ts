@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CollectionManagementRoutingModule } from './collection-management-routing.module';
 import { FileUploadDialogComponent } from 'src/app/components/file-upload-dialog/file-upload-dialog.component';
-import { FinalSettlementReportDetailsComponent } from './final-settlement-report-details/final-settlement-report-details.component';
-import { FinalSettlementReportListComponent } from './final-settlement-report-list/final-settlement-report-list.component';
 import { SharedModule } from '../shared.module';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,11 +21,10 @@ import { AddStatementOfAccountsDialogComponent } from './add-statement-of-accoun
 import { AddReconciliationPaymentDialogComponent } from './add-reconciliation-payment-dialog/add-reconciliation-payment-dialog.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 import { AccountReceivableBreakdownReportComponent } from './account-receivable-breakdown-report/account-receivable-breakdown-report.component';
+import { AddIntialRejectionDialogComponent } from './add-intial-rejection-dialog/add-intial-rejection-dialog.component';
 
 @NgModule({
   declarations: [
-    FinalSettlementReportListComponent,
-    FinalSettlementReportDetailsComponent,
     FileUploadDialogComponent,
     AccountsReceivableListComponent,
     AccountReceivableAddPaymentComponent,
@@ -42,6 +39,7 @@ import { AccountReceivableBreakdownReportComponent } from './account-receivable-
     AddReconciliationPaymentDialogComponent,
     AccountReceivableDetailsPayerComponent,
     AccountReceivableBreakdownReportComponent,
+    AddIntialRejectionDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -61,7 +59,8 @@ import { AccountReceivableBreakdownReportComponent } from './account-receivable-
     AddBatchDialogComponent,
     AddEditPaymentDialogComponent,
     AddStatementOfAccountsDialogComponent,
-    AddReconciliationPaymentDialogComponent
+    AddReconciliationPaymentDialogComponent,
+    AddIntialRejectionDialogComponent
   ]
 })
 export class CollectionManagementModule { }

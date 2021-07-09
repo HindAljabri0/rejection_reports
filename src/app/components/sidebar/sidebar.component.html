@@ -163,12 +163,6 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
-                            <a routerLink="/collection-management/final-settlement-report-list"
-                                routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Final Settlement Reports</span>
-                            </a>
-                        </li>
-                        <li>
                             <a routerLink="/collection-management/accounts-receivable-list" routerLinkActive="is-active"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Accounts Receivables</span>
@@ -308,7 +302,7 @@
                             <a routerLink="/administration/auditLogs" routerLinkActive="is-active"
                                 #auditTrail="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Audit Trail</span>
-                            </a>
+                            </a>\
                         </li>
                     </ul>
                 </mat-expansion-panel>
@@ -344,8 +338,8 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@payerPaymentContract">
-                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
-                                [routerLinkActiveOptions]="{exact: true}">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active"
+                                #payerPaymentContract="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Payer Payment Contract</span>
                             </a>
                         </li>
@@ -362,6 +356,21 @@
                     </a>
                 </li>
             </ul>
+
+            <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="switchProvider.isActive">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Costomer Support</mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active"
+                            #switchProvider="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                            <span class="text">Switch Provider</span>
+                        </a>
+                    </li>
+                </ul>
+            </mat-expansion-panel>
+
         </div>
     </ng-scrollbar>
 </div>

@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FinalSettlementReportDetailsComponent } from './final-settlement-report-details/final-settlement-report-details.component';
-import { FinalSettlementReportListComponent } from './final-settlement-report-list/final-settlement-report-list.component';
 import { AccountsReceivableListComponent } from './accounts-receivable-list/accounts-receivable-list.component';
 import { AccountReceivableDetailsComponent } from './account-receivable-details/account-receivable-details.component';
 import { AgingReportComponent } from './aging-report/aging-report.component';
@@ -12,8 +10,6 @@ import { AccountReceivableBreakdownReportComponent } from './account-receivable-
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 
 const routes: Routes = [
-  { path: 'final-settlement-report-list', component: FinalSettlementReportListComponent },
-  { path: 'final-settlement-report-details', component: FinalSettlementReportDetailsComponent },
   { path: 'accounts-receivable-list', component: AccountsReceivableListComponent },
   { path: 'accounts-receivable-details', component: AccountReceivableDetailsComponent },
   { path: 'accounts-receivable-details-payer', component: AccountReceivableDetailsPayerComponent },
