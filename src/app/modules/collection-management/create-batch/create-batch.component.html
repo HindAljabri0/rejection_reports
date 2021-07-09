@@ -6,10 +6,12 @@
         <div class="block-filter-panel">
             <div class="row small-gutter">
                 <div class="col">
-                    <div class="form-group" [ngClass]="{'has-error' : createBatchForm.submitted && !batchSummary.payerId}">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : createBatchForm.submitted && !batchSummary.payerId}">
                         <label class="control-label">Payer</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId='ngModel' name="payerId" required>
+                            <mat-select value="" [(ngModel)]="batchSummary.payerId" #payerId='ngModel' name="payerId"
+                                required>
                                 <!-- <mat-option value="0">All</mat-option> -->
                                 <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
                                     ({{payer.arName}})</mat-option>
@@ -24,8 +26,10 @@
                     <div class="form-group" [ngClass]="{'has-error' : createBatchForm.submitted && startDate.invalid}">
                         <label class="control-label">Claim Search Start Date</label>
                         <div class="date-picker">
-                            <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig" [(ngModel)]='batchSummary.startDate' class="form-control date-picker"
-                                placeholder="Select start date" (bsValueChange)="dateValidation($event)" #startDate='ngModel' name="startDate" required />
+                            <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
+                                [(ngModel)]='batchSummary.startDate' class="form-control date-picker"
+                                placeholder="Select start date" (bsValueChange)="dateValidation($event)"
+                                #startDate='ngModel' name="startDate" required />
                             <!-- <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                         <mat-datepicker #startDate></mat-datepicker> -->
                             <div *ngIf="createBatchForm.submitted && startDate.invalid">
@@ -38,8 +42,10 @@
                     <div class="form-group" [ngClass]="{'has-error' : createBatchForm.submitted && endDate.invalid}">
                         <label class="control-label">Claim Search End Date</label>
                         <div class="date-picker ">
-                            <input autocomplete="off" bsDatepicker [bsConfig]="datePickerConfig" [(ngModel)]='batchSummary.endDate' #endDate='ngModel' name="endDate" required
-                                [minDate]="minDate" class="form-control date-picker" placeholder="Select end date" required />
+                            <input autocomplete="off" bsDatepicker [bsConfig]="datePickerConfig"
+                                [(ngModel)]='batchSummary.endDate' #endDate='ngModel' name="endDate" required
+                                [minDate]="minDate" class="form-control date-picker" placeholder="Select end date"
+                                required />
                             <!-- <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
                         <mat-datepicker #endDate></mat-datepicker> -->
                             <div *ngIf="createBatchForm.submitted && endDate.invalid">
@@ -63,7 +69,8 @@
                 <thead>
                     <tr class="ng-star-inserted">
                         <th>
-                            <mat-checkbox [(checked)]="allCheckBoxIsChecked" class="grid-checkbox" color="primary" [(indeterminate)]="allCheckBoxIsIndeterminate"
+                            <mat-checkbox [(checked)]="allCheckBoxIsChecked && allChecked" class="grid-checkbox"
+                                color="primary" [(indeterminate)]="allCheckBoxIsIndeterminate"
                                 (change)="selectAllinPage($event)">
                             </mat-checkbox>
                         </th>
@@ -80,7 +87,8 @@
                 <tbody>
                     <tr class="ng-star-inserted" *ngFor="let item of batchData">
                         <td>
-                            <mat-checkbox [(checked)]="allCheckBoxIsChecked" class="grid-checkbox" color="primary" (change)="selectedBatch($event,item.claimid)">
+                            <mat-checkbox [(checked)]="allCheckBoxIsChecked && allChecked" class="grid-checkbox"
+                                color="primary" (change)="selectedBatch($event,item.claimid)">
                             </mat-checkbox>
                         </td>
                         <td class="row-click"><span class="text-monospace">{{item.approvalnumber}}</span></td>
@@ -88,13 +96,14 @@
                         <td class="row-click"><span class="text-monospace">{{item.memberid}}</span></td>
                         <td class="row-click"><span class="text-monospace">{{item.idnumber}}</span></td>
                         <td class="row-click"><span class="text-monospace">{{item.patientfilenumber}}</span></td>
-                        <td class="row-click text-nowrap">{{item.visitdate}}</td>
+                        <td class="row-click text-nowrap">{{item.visitdate | date: 'dd-MM-yyyy'}}</td>
                         <td class="row-click text-nowrap">{{item.net}}<span class="currency"> SAR</span></td>
                         <td class="row-click text-nowrap">{{item.netvatamount}}<span class="currency"> SAR</span></td>
                     </tr>
                     <tr>
                         <td colspan="9" class="p-0">
-                            <app-empty-state *ngIf="batchData == null || batchData.length == 0" class="claim-list-empty-state" message='No records found!'>
+                            <app-empty-state *ngIf="batchData == null || batchData.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
                         </td>
                     </tr>
@@ -105,8 +114,8 @@
     <!-- pageSize="batchSummary?.pageSize"  -->
     <div class="block-footer sticky-bottom" *ngIf="batchData.length>0">
         <div class="left-block">
-            <mat-paginator class="primary-paginator" [length]="paginatorLength" #paginator [showFirstLastButtons]="true" [pageSizeOptions]="paginatorPageSizeOptions"
-                (page)="paginatorAction($event)">
+            <mat-paginator class="primary-paginator" [length]="paginatorLength" #paginator [showFirstLastButtons]="true"
+                [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
             </mat-paginator>
         </div>
         <div class="right-block btn-list" *ngIf="batchModel?.totalPages > 0">
