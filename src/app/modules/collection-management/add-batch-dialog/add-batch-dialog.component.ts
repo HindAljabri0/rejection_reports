@@ -72,8 +72,9 @@ export class AddBatchDialogComponent implements OnInit {
       };
     this.claimService.addBatchNumber(this.sharedService.providerId, data).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
-        if (event.statusText.toLowerCase() === "ok") {
+        if (event.status === 200) {
           this.closeStatus = true;
+          this.dialogService.openMessageDialog(new MessageDialogData('', "Your batch created successfully", false));
           this.closeDialog();
         }
         else
