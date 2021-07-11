@@ -313,6 +313,12 @@ export class SharedServices {
           name: value.split(':')[1].split(',')[0],
           arName: value.split(':')[1].split(',')[1]
         }));
+    } else if (payersStr != null && payersStr.trim().length > 0  && payersStr.includes(':')) {
+      return [{
+        id: Number.parseInt(payersStr.split(':')[0], 10),
+        name: payersStr.split(':')[1].split(',')[0],
+        arName: payersStr.split(':')[1].split(',')[1]
+      }];
     }
 
     return payers;
