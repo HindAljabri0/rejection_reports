@@ -65,7 +65,9 @@ export class SwitchProviderComponentComponent implements OnInit {
         if (event instanceof HttpResponse) {
           this.authService.isUserNameUpdated.subscribe(updated => {
             if (updated) {
-              this.router.navigate(['/']);
+              this.router.navigate(['/']).then(() => {
+                location.reload();
+              });
               this.sharedServices.loadingChanged.next(false);
             }
           });
