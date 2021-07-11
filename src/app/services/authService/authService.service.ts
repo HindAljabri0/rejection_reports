@@ -42,7 +42,7 @@ export class AuthService {
   }
 
 
-  logout(expired?: boolean) {
+  logout(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
     let demoDoneValue;
     if (window.localStorage.getItem('onboarding-demo-done')) {
@@ -58,11 +58,14 @@ export class AuthService {
       storageValue.value != null).forEach((storageValue) =>
         localStorage.setItem(storageValue.key, storageValue.value));
     let promise: Promise<boolean>;
-    if (expired == null || !expired) {
-      promise = this.router.navigate(['login']);
-    } else {
+    if (expired != null && expired) {
       promise = this.router.navigate(['login'], { queryParams: { expired: expired } });
+    } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
+      promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges: hasClaimPrivileges } });
+    } else {
+      promise = this.router.navigate(['login']);
     }
+
     if (demoDoneValue) {
       window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
     }
@@ -99,38 +102,51 @@ export class AuthService {
     return this.httpClient.request(request);
   }
 
+  getSwitchUserToken(providerId: string, username: string) {
+    const requestURL = '/switch_user?providerId=' + providerId + '&currentUser=' + username;
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
+
   setTokens(body: {}) {
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
-    if(Date.now() < new Date(body['expires_in']).getTime()){
+    if (Date.now() < new Date(body['expires_in']).getTime()) {
       localStorage.setItem('expires_in', body['expires_in']);
     } else {
-      localStorage.setItem('expires_in', new Date(Date.now() + (59*60*1000)).toString())
+      localStorage.setItem('expires_in', new Date(Date.now() + (59 * 60 * 1000)).toString())
     }
     localStorage.setItem('src', body['src']);
     this.getCurrentUserToken().subscribe(event => {
       if (event instanceof HttpResponse) {
-        event.body['authorities'].forEach(element => {
-          const key = element['authority'].split('|')[0] + element['authority'].split('|')[2];
-          const value = element['authority'].split('|')[1];
-          const currentValue: string = localStorage.getItem(key);
-          if (currentValue == null) {
-            localStorage.setItem(key, value);
-          } else {
-            localStorage.setItem(key, currentValue + '|' + value);
+        const authorities: Array<any> = event.body['authorities'];
+        const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
+          || element['authority'].split('|')[1] == '22.0'
+          || element['authority'].split('|')[1] == '24.0');
+        if (hasClaimPrivileges) {
+          authorities.forEach(element => {
+            const key = element['authority'].split('|')[0] + element['authority'].split('|')[2];
+            const value = element['authority'].split('|')[1];
+            const currentValue: string = localStorage.getItem(key);
+            if (currentValue == null) {
+              localStorage.setItem(key, value);
+            } else {
+              localStorage.setItem(key, currentValue + '|' + value);
+            }
+          });
+          localStorage.setItem('provider_id', event.body['providerId']);
+          localStorage.setItem('user_name', event.body['fullName']);
+          localStorage.setItem('provider_name', event.body['providerName']);
+          const payers = event.body['payers'];
+          let payersStr = '';
+          for (const payerid in payers) {
+            payersStr += `${payerid}:${payers[payerid]}|`;
           }
-        });
-        const authority: string = event.body['authorities'][0]['authority'];
-        localStorage.setItem('provider_id', authority.split('|')[0]);
-        localStorage.setItem('user_name', event.body['principal']['fullName']);
-        localStorage.setItem('provider_name', event.body['principal']['providerName']);
-        const payers = event.body['principal']['payers'];
-        let payersStr = '';
-        for (const payerid in payers) {
-          payersStr += `${payerid}:${payers[payerid]}|`;
+          localStorage.setItem('payers', payersStr.substr(0, payersStr.length - 1));
+          this.isUserNameUpdated.next(true);
+        } else {
+          this.logout(false, true);
         }
-        localStorage.setItem('payers', payersStr.substr(0, payersStr.length - 1));
-        this.isUserNameUpdated.next(true);
       }
     });
   }

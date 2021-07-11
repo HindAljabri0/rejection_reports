@@ -1,6 +1,6 @@
 <gdpn-calculation></gdpn-calculation>
 <div class="block-card full-height p-0">
-    <mat-tab-group (selectedTabChange)="changeTab($event)" [dynamicHeight]="true" class="primary-tab claim-view-tabs">
+    <mat-tab-group (selectedTabChange)="changeTab($event)" [dynamicHeight]="true" class="primary-tab">
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="mr-1" *ngIf="genInfoTabHasErrors()" [class.text-danger]="genInfoTabHasErrors()">error
@@ -57,8 +57,7 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()"
-                    [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
+                <mat-icon class="mr-1" *ngIf="invoiceServicesTabHasErrors()" [class.text-danger]="invoiceServicesTabHasErrors()">error</mat-icon>
                 <span [class.text-danger]="invoiceServicesTabHasErrors()">Invoices & Services</span>
             </ng-template>
             <claim-invoices-services></claim-invoices-services>

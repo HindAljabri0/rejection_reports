@@ -12,8 +12,8 @@ import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/reject
 import { ClaimStatus } from 'src/app/models/claimStatus';
 
 import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { DownloadStatus } from 'src/app/components/reusables/download-overlay/download-overlay.component';
 import { Observable, Subscription } from 'rxjs';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 @Component({
   selector: 'app-rejection-report',
@@ -114,7 +114,7 @@ export class RejectionReportComponent implements OnInit {
       return;
     }
     this.lastDownloadSubscriptions = this.downloadService
-      .showDownloadOverlay(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
+      .startDownload(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
       .subscribe(status => {
         if(status != DownloadStatus.ERROR){
           this.detailTopActionIcon = 'ic-check-circle.svg';

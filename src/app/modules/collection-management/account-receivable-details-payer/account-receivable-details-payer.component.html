@@ -1,0 +1,583 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Accounts Receivables - Bupa</p>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th width="10"></th>
+                        <th>Month</th>
+                        <th>Amount Outstanding</th>
+                        <th>Total Submitted</th>
+                        <th>Due Date</th>
+                        <th>Days Overdue</th>
+                        <th>Total Received</th>
+                        <th>Collection Ratio</th>
+                        <th>Initial Rejection Amount</th>
+                        <th>Initial Rejection Ratio</th>
+                        <th>Avg. TAT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="seperator-row">
+                        <td colspan="2">Bupa</td>
+                        <td>545</td>
+                        <td>1871</td>
+                        <td>07/08/2017</td>
+                        <td>1,347</td>
+                        <td>500</td>
+                        <td>12.5%</td>
+                        <td>887</td>
+                        <td>86.50%</td>
+                        <td>25</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(0)">
+                            Jan - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(0)">212</td>
+                        <td class="row-click" (click)="toggleRow(0)">1605</td>
+                        <td class="row-click" (click)="toggleRow(0)">07/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(0)">1,347</td>
+                        <td class="row-click" (click)="toggleRow(0)">500</td>
+                        <td class="row-click" (click)="toggleRow(0)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(0)">491</td>
+                        <td class="row-click" (click)="toggleRow(0)">38.68%</td>
+                        <td class="row-click" (click)="toggleRow(0)">25</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==0">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(1)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=1" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==1" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(1)">
+                            Feb - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(1)">153</td>
+                        <td class="row-click" (click)="toggleRow(1)">1732</td>
+                        <td class="row-click" (click)="toggleRow(1)">13/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(1)">1,456</td>
+                        <td class="row-click" (click)="toggleRow(1)">100</td>
+                        <td class="row-click" (click)="toggleRow(1)">10%</td>
+                        <td class="row-click" (click)="toggleRow(1)">901</td>
+                        <td class="row-click" (click)="toggleRow(1)">100.49%</td>
+                        <td class="row-click" (click)="toggleRow(1)">45</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==1">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(2)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=2" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==2" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(2)">
+                            Mar - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(2)">768</td>
+                        <td class="row-click" (click)="toggleRow(2)">1475</td>
+                        <td class="row-click" (click)="toggleRow(2)">13/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(2)">1,456</td>
+                        <td class="row-click" (click)="toggleRow(2)">100</td>
+                        <td class="row-click" (click)="toggleRow(2)">10%</td>
+                        <td class="row-click" (click)="toggleRow(2)">433</td>
+                        <td class="row-click" (click)="toggleRow(2)">22.64%</td>
+                        <td class="row-click" (click)="toggleRow(2)">45</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==2">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(3)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=3" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==3" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(3)">
+                            Apr - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(3)">476</td>
+                        <td class="row-click" (click)="toggleRow(3)">1995</td>
+                        <td class="row-click" (click)="toggleRow(3)">07/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(3)">1,347</td>
+                        <td class="row-click" (click)="toggleRow(3)">500</td>
+                        <td class="row-click" (click)="toggleRow(3)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(3)">420</td>
+                        <td class="row-click" (click)="toggleRow(3)">68.23%</td>
+                        <td class="row-click" (click)="toggleRow(3)">25</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==3">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(4)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=4" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==4" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(4)">
+                            May - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(4)">997</td>
+                        <td class="row-click" (click)="toggleRow(4)">1930</td>
+                        <td class="row-click" (click)="toggleRow(4)">13/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(4)">1,456</td>
+                        <td class="row-click" (click)="toggleRow(4)">100</td>
+                        <td class="row-click" (click)="toggleRow(4)">10%</td>
+                        <td class="row-click" (click)="toggleRow(4)">173</td>
+                        <td class="row-click" (click)="toggleRow(4)">56.46%</td>
+                        <td class="row-click" (click)="toggleRow(4)">45</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==4">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary text-center row-click" (click)="toggleRow(5)" width="10">
+                            <mat-icon *ngIf="currentOpenRecord!=5" class="size-21">add_circle_outline</mat-icon>
+                            <mat-icon *ngIf="currentOpenRecord==5" class="size-21">remove_circle_outline</mat-icon>
+                        </td>
+                        <td class="row-click" (click)="toggleRow(5)">
+                            Jun - 2021
+                        </td>
+                        <td class="row-click" (click)="toggleRow(5)">482</td>
+                        <td class="row-click" (click)="toggleRow(5)">1882</td>
+                        <td class="row-click" (click)="toggleRow(5)">07/08/2017</td>
+                        <td class="row-click" (click)="toggleRow(5)">1,347</td>
+                        <td class="row-click" (click)="toggleRow(5)">500</td>
+                        <td class="row-click" (click)="toggleRow(5)">12.5%</td>
+                        <td class="row-click" (click)="toggleRow(5)">751</td>
+                        <td class="row-click" (click)="toggleRow(5)">16.62%</td>
+                        <td class="row-click" (click)="toggleRow(5)">25</td>
+                        <td class="actions">
+                            <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="currentOpenRecord==5">
+                        <td colspan="10">
+                            <div class="box">
+                                <h5 class="align-self-center medium pb-2">Payments</h5>
+                                <div class="table-responsive">
+                                    <table class="primary-grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>TAT</th>
+                                                <th>Payment Ratio</th>
+                                                <th>Category</th>
+                                                <th>Type</th>
+                                                <th width="10"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>6/11/2010</td>
+                                                <td>231</td>
+                                                <td>4</td>
+                                                <td>96.91%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4/14/2012</td>
+                                                <td>450</td>
+                                                <td>19</td>
+                                                <td>81.43%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11/27/2016</td>
+                                                <td>437</td>
+                                                <td>7</td>
+                                                <td>63.25%</td>
+                                                <td>Monthly</td>
+                                                <td>Prompt / Early</td>
+                                                <td>
+                                                    <button class="text-danger delete-btn">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple type="button" title="First Page">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple type="button" title="Previous Page">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                1<small>/5</small>
+            </p>
+            <button matRipple type="button" title="Next Page">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple type="button" title="Last Page">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
+    <mat-menu #actionsMenu xPosition="before">
+        <ng-template matMenuContent>
+            <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
+            <button mat-menu-item (click)="openAddInitialRejectionDialog()">Add Initial Rejection</button>
+        </ng-template>
+    </mat-menu>
+</div>

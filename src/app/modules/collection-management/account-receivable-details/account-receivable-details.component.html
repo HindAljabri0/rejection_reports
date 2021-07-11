@@ -1,171 +1,84 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Accounts Receivables</p>
+        <p>Accounts Receivables - Jan 2021</p>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
-            <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th width="10"></th>
-                        <th>Month</th>
+                        <th>Payer</th>
                         <th>Amount Outstanding</th>
+                        <th>Total Submitted</th>
                         <th>Due Date</th>
                         <th>Days Overdue</th>
-                        <th>Payment Ratio</th>
-                        <th>Total Payments</th>
-                        <th>Avg TAT</th>
-                        <th></th>
+                        <th>Total Received</th>
+                        <th>Collection Ratio</th>
+                        <th>Initial Rejection Amount</th>
+                        <th>Initial Rejection Ratio</th>
+                        <th>Avg. TAT</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="seperator-row">
-                        <td colspan="9">Bupa</td>
+                    <tr>
+                        <td>Bupa</td>
+                        <td>614</td>
+                        <td>1985</td>
+                        <td>12/5/2087</td>
+                        <td>1415</td>
+                        <td>578</td>
+                        <td>49.85%</td>
+                        <td>540</td>
+                        <td>31.57%</td>
+                        <td>12</td>
                     </tr>
                     <tr>
-                        <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
-                            <mat-icon *ngIf="currentOpenRecord==-1" class="size-21">add_circle_outline</mat-icon>
-                            <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
-                        </td>
-                        <td class="row-click" (click)="toggleRow(0)">
-                            Jan - 2021
-                        </td>
-                        <td class="row-click" (click)="toggleRow(0)">500/1000</td>
-                        <td class="row-click" (click)="toggleRow(0)">07/08/2017</td>
-                        <td class="row-click" (click)="toggleRow(0)">1,347</td>
-                        <td class="row-click" (click)="toggleRow(0)">12.5%</td>
-                        <td class="row-click" (click)="toggleRow(0)">500</td>
-                        <td class="row-click" (click)="toggleRow(0)">25</td>
-                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
-                    </tr>
-                    <tr *ngIf="currentOpenRecord==0">
-                        <td colspan="10">
-                            <div class="box">
-                                <h5 class="align-self-center medium pb-2">Payments</h5>
-                                <div class="table-responsive">
-                                    <table class="primary-grid">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>TAT</th>
-                                                <th>Payment Ratio</th>
-                                                <th width="10"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>6/11/2010</td>
-                                                <td>231</td>
-                                                <td>4</td>
-                                                <td>96.91%</td>
-                                                <td>
-                                                    <button class="text-danger delete-btn">
-                                                        <mat-icon>delete_outline</mat-icon>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4/14/2012</td>
-                                                <td>450</td>
-                                                <td>19</td>
-                                                <td>81.43%</td>
-                                                <td>
-                                                    <button class="text-danger delete-btn">
-                                                        <mat-icon>delete_outline</mat-icon>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>11/27/2016</td>
-                                                <td>437</td>
-                                                <td>7</td>
-                                                <td>63.25%</td>
-                                                <td>
-                                                    <button class="text-danger delete-btn">
-                                                        <mat-icon>delete_outline</mat-icon>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="seperator-row">
-                        <td colspan="9">MedGulf</td>
+                        <td>MedGulf</td>
+                        <td>228</td>
+                        <td>1265</td>
+                        <td>26/7/2098</td>
+                        <td>1952</td>
+                        <td>961</td>
+                        <td>41.20%</td>
+                        <td>899</td>
+                        <td>65.53%</td>
+                        <td>11</td>
                     </tr>
                     <tr>
-                        <td class="text-primary text-center row-click" (click)="toggleRow(1)" width="10">
-                            <mat-icon *ngIf="currentOpenRecord==-1" class="size-21">add_circle_outline</mat-icon>
-                            <mat-icon *ngIf="currentOpenRecord==1" class="size-21">remove_circle_outline</mat-icon>
-                        </td>
-                        <td class="row-click" (click)="toggleRow(1)">
-                            Jan - 2021
-                        </td>
-                        <td class="row-click" (click)="toggleRow(1)">700/800</td>
-                        <td class="row-click" (click)="toggleRow(1)">13/08/2017</td>
-                        <td class="row-click" (click)="toggleRow(1)">1,456</td>
-                        <td class="row-click" (click)="toggleRow(1)">10%</td>
-                        <td class="row-click" (click)="toggleRow(1)">100</td>
-                        <td class="row-click" (click)="toggleRow(1)">45</td>
-                        <td><a href="#" (click)="openAddPaymentDialog($event)" class="primary-link" title="Add payment">Add payment</a></td>
+                        <td>Nextcare</td>
+                        <td>412</td>
+                        <td>1939</td>
+                        <td>23/5/2094</td>
+                        <td>1659</td>
+                        <td>158</td>
+                        <td>48.14%</td>
+                        <td>610</td>
+                        <td>21.22%</td>
+                        <td>20</td>
                     </tr>
-                    <tr *ngIf="currentOpenRecord==1">
-                        <td colspan="10">
-                            <div class="box">
-                                <h5 class="align-self-center medium pb-2">Payments</h5>
-                                <div class="table-responsive">
-                                    <table class="primary-grid">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>TAT</th>
-                                                <th>Payment Ratio</th>
-                                                <th width="10"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>6/11/2010</td>
-                                                <td>231</td>
-                                                <td>4</td>
-                                                <td>96.91%</td>
-                                                <td>
-                                                    <button class="text-danger delete-btn">
-                                                        <mat-icon>delete_outline</mat-icon>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4/14/2012</td>
-                                                <td>450</td>
-                                                <td>19</td>
-                                                <td>81.43%</td>
-                                                <td>
-                                                    <button class="text-danger delete-btn">
-                                                        <mat-icon>delete_outline</mat-icon>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>11/27/2016</td>
-                                                <td>437</td>
-                                                <td>7</td>
-                                                <td>63.25%</td>
-                                                <td>
-                                                    <button class="text-danger delete-btn">
-                                                        <mat-icon>delete_outline</mat-icon>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </td>
+                    <tr>
+                        <td class="pl-5">Allianz</td>
+                        <td>372</td>
+                        <td>1504</td>
+                        <td>20/2/2088</td>
+                        <td>1578</td>
+                        <td>520</td>
+                        <td>74.15%</td>
+                        <td>562</td>
+                        <td>44.51%</td>
+                        <td>49</td>
+                    </tr>
+                    <tr>
+                        <td class="pl-5">Walaa</td>
+                        <td>331</td>
+                        <td>1866</td>
+                        <td>16/2/2074</td>
+                        <td>1059</td>
+                        <td>129</td>
+                        <td>24.18%</td>
+                        <td>349</td>
+                        <td>39.82%</td>
+                        <td>12</td>
                     </tr>
                 </tbody>
             </table>

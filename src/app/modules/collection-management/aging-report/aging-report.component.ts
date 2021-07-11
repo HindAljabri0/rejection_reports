@@ -57,11 +57,30 @@ export class AgingReportComponent implements OnInit {
     },
   ];
   report = [
-    { payer: 'Tawuniya', amountOutStanding: 500, totalAmoount: 1000, aged1to30: 0, aged31to60: 0, aged61to90: 0, aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 500 },
-    { payer: 'Bupa', amountOutStanding: 100, totalAmoount: 100, aged1to30: 0, aged31to60: 0, aged61to90: 0, aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0 },
-    { payer: 'Medgulf', amountOutStanding: 645.75, totalAmoount: 645.75, aged1to30: 0, aged31to60: 0, aged61to90: 0, aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 645.75 },
-    { payer: 'Sagar', amountOutStanding: 35.40, totalAmoount: 35.40, aged1to30: 0, aged31to60: 0, aged61to90: 0, aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 35.40 },
-    { payer: 'Allianz', amountOutStanding: 0, totalAmoount: 605, aged1to30: 0, aged31to60: 0, aged61to90: 0, aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0 },
+    {
+      className: 'semibold', payer: 'All', amountOutStanding: 500, totalAmoount: 1000, aged1to30: 0, aged31to60: 0, aged61to90: 0,
+      aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 500
+    },
+    {
+      className: '', payer: 'Tawuniya', amountOutStanding: 500, totalAmoount: 1000, aged1to30: 0, aged31to60: 0, aged61to90: 0,
+      aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 500
+    },
+    {
+      className: '', payer: 'Bupa', amountOutStanding: 100, totalAmoount: 100, aged1to30: 0, aged31to60: 0, aged61to90: 0,
+      aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0
+    },
+    {
+      className: '', payer: 'Medgulf', amountOutStanding: 645.75, totalAmoount: 645.75, aged1to30: 0, aged31to60: 0, aged61to90: 0,
+      aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 645.75
+    },
+    {
+      className: '', payer: 'Sagar', amountOutStanding: 35.40, totalAmoount: 35.40, aged1to30: 0, aged31to60: 0, aged61to90: 0,
+      aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 35.40
+    },
+    {
+      className: '', payer: 'Allianz', amountOutStanding: 0, totalAmoount: 605, aged1to30: 0, aged31to60: 0, aged61to90: 0,
+      aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0
+    },
   ]
   constructor() { }
 

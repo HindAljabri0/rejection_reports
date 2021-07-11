@@ -2,74 +2,135 @@
     <div class="block-header has-border">
         <p>Accounts Receivables</p>
     </div>
-    <div class="block-filter-panel">
-        <div class="row">
-            <div class="col-lg-5">
-                <div class="row small-gutter">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">Year</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="yearPicker" class="form-control" placeholder="Select year" />
-                                <mat-datepicker-toggle [for]="yearPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #yearPicker></mat-datepicker>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white">
+        <mat-tab [label]="'By Month'">
+            <div class="block-filter-panel">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="row small-gutter">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="control-label">From Month</label>
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month" />
+                                        <mat-datepicker-toggle [for]="fromMonth"></mat-datepicker-toggle>
+                                        <mat-datepicker #fromMonth></mat-datepicker>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-auto align-self-end">
-                        <div class="form-group">
-                            <button type="button" mat-flat-button color="primary">Search</button>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="control-label">To Month</label>
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month" />
+                                        <mat-datepicker-toggle [for]="toMonth"></mat-datepicker-toggle>
+                                        <mat-datepicker #toMonth></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto align-self-end">
+                                <div class="form-group">
+                                    <button type="button" mat-flat-button color="primary">Search</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
-                    <tr>
-                        <th>Month - Year</th>
-                        <th>Total Amount</th>
-                        <th>Total Paid Amount</th>
-                        <th>Total Outstanding Amount</th>
-                        <th>Collection Ratio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Jan - 2021</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">738</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">150</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">105</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">32%</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Feb - 2021</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">711</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">124</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">271</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">24%</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Mar - 2021</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">780</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">130</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">237</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Apr - 2021</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">591</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">150</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">280</td>
-                        <td class="row-click" routerLink="/collection-management/accounts-receivable-details">67%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </ng-scrollbar>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Month - Year</th>
+                                <th>Total Amount</th>
+                                <th>Total Paid Amount</th>
+                                <th>Total Outstanding Amount</th>
+                                <th>Collection Ratio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Jan - 2021</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">738</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">150</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">105</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">32%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Feb - 2021</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">711</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">124</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">271</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">24%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Mar - 2021</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">780</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">130</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">237</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">30%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">Apr - 2021</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">591</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">150</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">280</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">67%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+        </mat-tab>
+        <mat-tab [label]="'By Payer'">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Payer</th>
+                                <th>Total Amount</th>
+                                <th>Total Paid Amount</th>
+                                <th>Total Outstanding Amount</th>
+                                <th>Collection Ratio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">Bupa</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">738</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">150</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">105</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">32%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">Tawuniya</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">711</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">124</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">271</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">24%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">Medgulf</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">780</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">130</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">237</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">30%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">Walaa</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">591</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">150</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">280</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer">67%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+        </mat-tab>
+    </mat-tab-group>
     <div class="block-footer sticky-bottom">
         <div class="left-block custom-paginator">
             <button matRipple type="button" title="First Page">

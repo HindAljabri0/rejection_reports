@@ -17,6 +17,7 @@ import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/reject
 import {
   RejectionReportClaimDialogComponent
 } from 'src/app/components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
+import { ConfirmAdminDeleteDialogComponent } from 'src/app/components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,11 @@ export class DialogService {
     });
     return dialogRef.afterClosed();
   }
-
+  openConfirmAdminDeleteDialog(): Observable<any> {
+    this.closeAll();
+    const dialogRef = this.dialog.open(ConfirmAdminDeleteDialogComponent);
+    return dialogRef.afterClosed();
+  }
   getClaimAndViewIt(providerId: string, payerId: string, status: string, claimId: string, maxNumberOfAttachment, edit?: boolean) {
     if (this.loading) {
       return;

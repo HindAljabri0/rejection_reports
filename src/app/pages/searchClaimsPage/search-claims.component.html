@@ -84,8 +84,6 @@
                 </ng-template>
             </ng-container>
         </owl-carousel-o>
-
-        <app-claim-attachments-management *ngIf="isManagingAttachments"></app-claim-attachments-management>
     </div>
 
     <ng-container *ngIf="!isManagingAttachments && selectedCardKey != null && summaries[selectedCardKey] != null">
@@ -346,11 +344,15 @@
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Vat</th>
                                     <th
+                                        class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                                        Batch No.</th>
+                                    <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
                                     <th class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}"
                                         *ngIf="isPBMValidationVisible">
                                         PBM Status</th>
+
                                     <th
                                         class="text-right text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <button mat-icon-button (click)="checkAllClaims()"
@@ -404,6 +406,10 @@
                                             class="row-click text-nowrap">
                                             {{claim.netVatAmount}}<span class="currency">
                                                 {{claim.unitOfNetVatAmount}}</span>
+                                        </td>
+                                        <td (click)="showClaim(claim.status, claim.claimId)"
+                                            class="row-click text-nowrap">
+                                            <span class="text-monospace">{{claim.batchNumber}}</span>
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)"
                                             class="text-center row-click">
@@ -583,4 +589,5 @@
             </div>
         </div>
     </ng-container>
+    <app-claim-attachments-management *ngIf="isManagingAttachments"></app-claim-attachments-management>
 </div>

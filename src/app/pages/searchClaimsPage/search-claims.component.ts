@@ -15,6 +15,7 @@ import { ClaimError } from 'src/app/models/claimError';
 import { ClaimListFilterSelection } from 'src/app/models/claimListSearch';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { SearchedClaim } from 'src/app/models/searchedClaim';
 import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
@@ -23,6 +24,7 @@ import { ViewedClaim } from 'src/app/models/viewedClaim';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { EligibilityService } from 'src/app/services/eligibilityService/eligibility.service';
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { ValidationService } from 'src/app/services/validationService/validation.service';
@@ -54,10 +56,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       992: {
         items: 4,
         slideBy: 4
-      },
-      1200: {
-        items: 5,
-        slideBy: 5
       }
     },
     nav: true
@@ -171,6 +169,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private validationService: ValidationService,
     private store: Store,
     private adminService: AdminService,
+    private downloadService: DownloadService,
     private actions$: Actions) { }
 
   ngOnDestroy(): void {
@@ -998,6 +997,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             newModel.numOfAttachments = ele['numOfAttachments'];
             newModel.numOfPriceListErrors = ele['numOfPriceListErrors'];
             newModel.eligibilitycheck = inde === index ? splitedValue[1] : ele['eligibilitycheck'];
+            newModel.batchNumber = ele['batchNumber'];
             newModel.eligibilityStatusDesc = splitedValue[2] != undefined &&
               inde === index ? splitedValue[2] : ele['eligibilityStatusDesc'];
             claims.push(newModel);
@@ -1067,12 +1067,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   async download() {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
-    this.commen.loadingChanged.next(true);
+
     let event;
     let excel = false;
     if (this.summaries[this.selectedCardKey].statuses.length == 1 &&
       (this.summaries[this.selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))) {
-      event = await this.searchService.downloadExcelSummaries(this.providerId,
+      event = this.searchService.downloadExcelSummaries(this.providerId,
         this.summaries[this.selectedCardKey].statuses,
         this.from,
         this.to,
@@ -1086,17 +1086,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate).toPromise().catch(error => {
-          if (error instanceof HttpErrorResponse) {
-            this.dialogService.openMessageDialog(new MessageDialogData('',
-              'Could not reach the server at the moment. Please try again later.',
-              true));
-          }
-          this.commen.loadingChanged.next(false);
-        });
+        this.fclaimdate);
       excel = true;
     } else {
-      event = await this.searchService.downloadSummaries(this.providerId,
+      event = this.searchService.downloadSummaries(this.providerId,
         this.summaries[this.selectedCardKey].statuses,
         this.from,
         this.to,
@@ -1110,59 +1103,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate).toPromise().catch(error => {
-          if (error instanceof HttpErrorResponse) {
-            this.dialogService.openMessageDialog(new MessageDialogData('',
-              'Could not reach the server at the moment. Please try again later.',
-              true));
-          }
-          this.commen.loadingChanged.next(false);
-        });
+        this.fclaimdate);
     }
 
-    if (event instanceof HttpResponse) {
-      if (navigator.msSaveBlob) { // IE 10+
-        const exportedFilenmae = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-        const blob = new Blob([event.body as BlobPart], { type: 'text/csv;charset=utf-8;' });
-        navigator.msSaveBlob(blob, exportedFilenmae);
-      } else {
-        const a = document.createElement('a');
-        const excelData = event.body + '';
-
-        if (excel) {
-          const zip = new JSZip();
-          zip.generateAsync({ type: 'blob' }).then(function (blob) {
-            const FileSaver = require('file-saver');
-            FileSaver.saveAs(event.body, 'waseel-eclaims.zip');
-          }, function (err) {
-            console.log('err: ' + err);
-          });
+    this.downloadService.startDownload(event)
+      .subscribe(status => {
+        if (status != DownloadStatus.ERROR) {
+          this.detailTopActionIcon = 'ic-check-circle.svg';
         } else {
-          a.href = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(excelData);
-          a.target = '_blank';
-          if (this.from != null) {
-            a.download = this.detailCardTitle + '_' + this.from + '_' + this.to + '.csv';
-          } else if (this.batchId != null) {
-            a.download = this.detailCardTitle + '_Batch_' + this.batchId + '.csv';
-          } else if (this.uploadId != null) {
-            a.download = this.detailCardTitle + '_ClaimsIn_' + this.summaries[0].uploadName + '.csv';
-          } else if (this.claimRefNo != null) {
-            a.download = this.detailCardTitle + '_RefNo_' + this.claimRefNo + '.csv';
-          } else if (this.memberId != null) {
-            a.download = this.detailCardTitle + '_Member_' + this.memberId + '.csv';
-          } else if (this.invoiceNo != null) {
-            a.download = this.detailCardTitle + '_InvoiceNo_' + this.invoiceNo + '.csv';
-          } else if (this.patientFileNo != null) {
-            a.download = this.detailCardTitle + '_PatientFileNo_' + this.patientFileNo + '.csv';
-          } else if (this.policyNo != null) {
-            a.download = this.detailCardTitle + '_PolicyNo_' + this.policyNo + '.csv';
-          }
+          this.detailTopActionIcon = 'ic-download.svg';
         }
-        a.click();
-        this.detailTopActionIcon = 'ic-check-circle.svg';
-        this.commen.loadingChanged.next(false);
-      }
-    }
+      });
+
+
   }
 
   submitAll() {
@@ -1230,62 +1183,178 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
   deleteClaimByUploadid() {
-    this.dialogService.openMessageDialog(
-      new MessageDialogData('Delete Upload?',
-        `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
-        false,
-        true))
-      .subscribe(result => {
-        if (result === true) {
-          this.commen.loadingChanged.next(true);
-          const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-          this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
-            this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
-            this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
-              if (event instanceof HttpResponse) {
-                this.commen.loadingChanged.next(false);
-                const status = event.body['status'];
-                if (status == 'Deleted') {
-                  this.dialogService.openMessageDialog(
-                    new MessageDialogData('',
-                      `Your claims deleted successfully.`,
-                      false))
-                    .subscribe(afterColse => {
-                      //  this.commen.showUploadsCenterChange.next(false);
-                      // this.claimService.summaryChange.next(new UploadSummary());
-                      this.router.navigate(['/uploads']);
-                      // location.reload();
+    if (this.commen.isAdmin && this.commen.isProvider && this.isAllCards) {
+      this.dialogService.openConfirmAdminDeleteDialog().subscribe(action => {
+        switch (action) {
+          case "deleteAll":
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('Delete Claims?',
+                `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+                false,
+                true))
+              .subscribe(result => {
+                if (result === true) {
+                  this.commen.loadingChanged.next(true);
+                  const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
+                    this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
+                    this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+                      if (event instanceof HttpResponse) {
+                        this.commen.loadingChanged.next(false);
+                        const status = event.body['status'];
+                        if (status == 'Deleted') {
+                          this.dialogService.openMessageDialog(
+                            new MessageDialogData('',
+                              `Your claims deleted successfully.`,
+                              false))
+                            .subscribe(afterColse => {
+                              //  this.commen.showUploadsCenterChange.next(false);
+                              // this.claimService.summaryChange.next(new UploadSummary());
+                              this.router.navigate(['/uploads']);
+                              // location.reload();
+                            });
+                        } else if (status === 'AlreadySumitted') {
+                          this.dialogService.openMessageDialog(
+                            new MessageDialogData('',
+                              `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                              false))
+                            .subscribe(afterColse => {
+                              // this.claimService.summaryChange.next(new UploadSummary());
+
+                              // location.reload();
+
+                              this.router.navigate(['/uploads']);
+                            });
+
+                        } else {
+                          const error = event.body['errors'];
+                          this.dialogService.openMessageDialog(
+                            new MessageDialogData('',
+                              error[0].description,
+                              false));
+                        }
+
+                      }
+                    }, errorEvent => {
+                      if (errorEvent instanceof HttpErrorResponse) {
+                        this.commen.loadingChanged.next(false);
+                        this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                      }
                     });
-                } else if (status === 'AlreadySumitted') {
-                  this.dialogService.openMessageDialog(
-                    new MessageDialogData('',
-                      `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
-                      false))
-                    .subscribe(afterColse => {
-                      // this.claimService.summaryChange.next(new UploadSummary());
-
-                      // location.reload();
-
-                      this.router.navigate(['/uploads']);
-                    });
-
-                } else {
-                  const error = event.body['errors'];
-                  this.dialogService.openMessageDialog(
-                    new MessageDialogData('',
-                      error[0].description,
-                      false));
                 }
+              });
+            break;
+          case "confirm":
+            this.commen.loadingChanged.next(true);
+            this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
+              this.fpatientFileNo, this.invoiceNo, this.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.fmemberId, this.selectedClaims, this.from, this.to,
+              this.fdrname, this.fnationalid, this.fclaimdate)
+              .subscribe(event => {
+                if (event instanceof HttpResponse) {
+                  this.commen.loadingChanged.next(false);
+                  const status = event.body['status'];
+                  if (status == 'Deleted') {
+                    this.dialogService.openMessageDialog(
+                      new MessageDialogData('',
+                        `Your claims deleted successfully.`,
+                        false))
+                      .subscribe(afterColse => {
+                        //  this.commen.showUploadsCenterChange.next(false);
+                        // this.claimService.summaryChange.next(new UploadSummary());
+                        this.router.navigate(['/uploads']);
+                        // location.reload();
+                      });
+                  } else if (status === 'AlreadySumitted') {
+                    this.dialogService.openMessageDialog(
+                      new MessageDialogData('',
+                        `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                        false))
+                      .subscribe(afterColse => {
+                        // this.claimService.summaryChange.next(new UploadSummary());
 
-              }
-            }, errorEvent => {
-              if (errorEvent instanceof HttpErrorResponse) {
-                this.commen.loadingChanged.next(false);
-                this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
-              }
-            });
+                        // location.reload();
+
+                        this.router.navigate(['/uploads']);
+                      });
+
+                  } else {
+                    const error = event.body['errors'];
+                    this.dialogService.openMessageDialog(
+                      new MessageDialogData('',
+                        error[0].description,
+                        false));
+                  }
+
+                }
+              }, errorEvent => {
+                if (errorEvent instanceof HttpErrorResponse) {
+                  this.commen.loadingChanged.next(false);
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                }
+              });
+
+            break;
+
         }
       });
+    } else {
+      this.dialogService.openMessageDialog(
+        new MessageDialogData('Delete Claims?',
+          `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
+          false,
+          true))
+        .subscribe(result => {
+          if (result === true) {
+            this.commen.loadingChanged.next(true);
+            const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
+            this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
+              this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
+              this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                  this.commen.loadingChanged.next(false);
+                  const status = event.body['status'];
+                  if (status == 'Deleted') {
+                    this.dialogService.openMessageDialog(
+                      new MessageDialogData('',
+                        `Your claims deleted successfully.`,
+                        false))
+                      .subscribe(afterColse => {
+                        //  this.commen.showUploadsCenterChange.next(false);
+                        // this.claimService.summaryChange.next(new UploadSummary());
+                        this.router.navigate(['/uploads']);
+                        // location.reload();
+                      });
+                  } else if (status === 'AlreadySumitted') {
+                    this.dialogService.openMessageDialog(
+                      new MessageDialogData('',
+                        `Your claims deleted successfully. Some claims have not deleted because they are already submitted.`,
+                        false))
+                      .subscribe(afterColse => {
+                        // this.claimService.summaryChange.next(new UploadSummary());
+
+                        // location.reload();
+
+                        this.router.navigate(['/uploads']);
+                      });
+
+                  } else {
+                    const error = event.body['errors'];
+                    this.dialogService.openMessageDialog(
+                      new MessageDialogData('',
+                        error[0].description,
+                        false));
+                  }
+
+                }
+              }, errorEvent => {
+                if (errorEvent instanceof HttpErrorResponse) {
+                  this.commen.loadingChanged.next(false);
+                  this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+                }
+              });
+          }
+        });
+    }
   }
 
   isUnderProcessingStatus(status: string) {

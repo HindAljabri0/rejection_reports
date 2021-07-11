@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { FileUploadDialogComponent } from 'src/app/components/file-upload-dialog/file-upload-dialog.component';
+import { AddStatementOfAccountsDialogComponent } from '../add-statement-of-accounts-dialog/add-statement-of-accounts-dialog.component';
 
 @Component({
   selector: 'app-statement-of-accounts',
@@ -14,8 +14,10 @@ export class StatementOfAccountsComponent implements OnInit {
   ngOnInit() {
   }
 
-  fileUploadChange() {
-    const dialogRef = this.dialog.open(FileUploadDialogComponent, { panelClass: ['primary-dialog'], autoFocus: false });
+  openAddStatementOfAccountDialog() {
+    let dialogRef = this.dialog.open(AddStatementOfAccountsDialogComponent, {
+      panelClass: ['primary-dialog']
+    })
   }
 
 }
