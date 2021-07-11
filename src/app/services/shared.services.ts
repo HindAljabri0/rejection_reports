@@ -124,6 +124,36 @@ export class SharedServices {
       this.getUploadHistory();
       this.getAnnouncements();
     });
+
+    
+    
+  }
+
+  get isAdmin(){
+    const privilege = localStorage.getItem('101101');
+    return privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
+  }
+
+  get isProvider(){
+    const providerId = localStorage.getItem('provider_id');
+    return this.getPayersList().some(payer => {
+      const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
+      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
+    });
+  }
+
+  get isAdminOfProvider(){
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      return userPrivileges.split('|').includes('3.0');
+    } catch (error) {
+      return false;
+    }
+  }
+  get isRcmUser(){
+    const privilege = localStorage.getItem('101101');
+    return privilege != null && (privilege.includes('|24') || privilege.startsWith('24'));
   }
 
   getNotifications() {
@@ -276,7 +306,7 @@ export class SharedServices {
     }
     const payers: { id: number, name: string, arName: string }[] = [];
     const payersStr = localStorage.getItem('payers');
-    if (payersStr != null) {
+    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
       const payersStrSplitted = payersStr.split('|');
       payersStrSplitted
         .filter(value =>

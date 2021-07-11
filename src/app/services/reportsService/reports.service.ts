@@ -101,7 +101,7 @@ export class ReportsService {
 
   downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
     const requestURL = `/providers/${providerId}/payments/${paymentReference}/download`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text' });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -109,7 +109,7 @@ export class ReportsService {
   downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
     const requestURL = `/providers/${providerId}/submissions/download?` +
       `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text' });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -172,7 +172,7 @@ export class ReportsService {
       }
     }
     // { responseType: 'text', params: searchparams }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'arraybuffer' });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
 

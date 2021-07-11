@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-accounts-receivable-list',
@@ -7,7 +6,7 @@ import { MatDialog } from '@angular/material';
     styles: []
 })
 export class AccountsReceivableListComponent implements OnInit {
-    constructor(private dialog: MatDialog) { }
+    constructor() { }
 
     ngOnInit() {
     }

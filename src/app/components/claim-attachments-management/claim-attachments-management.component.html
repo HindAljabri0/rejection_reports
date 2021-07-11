@@ -1,181 +1,187 @@
-<div class="wrapper" style="height: 72vh;">
-    <div class="parent">
-        <header>
-            <mat-icon style="margin-right: 10px;">settings</mat-icon>
-            <h5>Attachments Management</h5>
-        </header>
-        <main>
-            <section class="leftSection">
-                <div class="sectionHeader">
-                    <h6 style="font-weight: 700; grid-column: 3 / span 4;">Claim Ref. No.</h6>
-                    <h6 style="font-weight: 700; grid-column: 7 / span 6;">Member ID</h6>
-                </div>
-                <div style="overflow: auto;">
-                    <div class="sectionItem" *ngFor="let claim of claims" (click)="onClaimClicked(claim.id)">
-                        <mat-radio-button style="grid-column: 1 / span 2;" color="primary" [checked]="selectedClaim == claim.id">
-                        </mat-radio-button>
-                        <p style="grid-column: 3 / span 4;">{{claim.referenceNumber}}</p>
-                        <p style="grid-column: 7 / span 5;">{{claim.memberId}}</p>
-                        <mat-icon style="grid-column: 12"
-                            *ngIf="claim.hasAttachments && !changesToClaimSuccess(claim.id) && !changesToClaimFailed(claim.id)">
-                            attach_file</mat-icon>
-                        <mat-icon style="grid-column: 12;" *ngIf="changesToClaimSuccess(claim.id)" style="color: #7AE988;">
-                            check_circle</mat-icon>
-                        <mat-icon style="grid-column: 12;" *ngIf="changesToClaimFailed(claim.id)" style="color:#C24040;">error
-                        </mat-icon>
-                    </div>
-                </div>
-                <div class="pageControl">
-                    <div>
-                        <button mat-icon-button (click)="changePage(0)">
-                            <mat-icon>skip_previous</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="changePage(1)">
-                            <mat-icon>keyboard_arrow_left</mat-icon>
-                        </button>
-                        <span>{{(currentPage+1) || 0}}</span> / <span>{{maxPages}}</span>
-                        <button mat-icon-button (click)="changePage(2)">
-                            <mat-icon>keyboard_arrow_right</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="changePage(3)">
-                            <mat-icon>skip_next</mat-icon>
-                        </button>
-                    </div>
-                </div>
-            </section>
-            <section class="middleSection">
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th colspan="3">Assigned Attachments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngIf="assignedAttachmentsLoading" style="background-color: unset;">
-                            <td colspan="4">
-                                <mat-spinner diameter="30" style="margin: auto;"></mat-spinner>
-                            </td>
-                        </tr>
-                        <tr *ngFor="let attachment of selectedClaimAssignedAttachments; let i = index;">
-                            <td>
-                                <mat-checkbox [checked]="selectedAssignedAttachments.includes(i)"
-                                    (click)="toggleAssignedAttachmentSelection(i);"></mat-checkbox>
-                            </td>
-                            <td [matTooltip]="attachment.name">{{beautifyFileName(attachment.name)}}</td>
-                            <td style="color: white; font-size: 0.8rem;">
-                                <span
-                                    style="background-color: #FF6D6D; padding: 5px; border-radius: 3px; margin-right: 3px;">
-                                    {{getFileExtension(attachment.name)}}</span>
-                                <span [matMenuTriggerFor]="attachmentTypeMenu"
-                                    (click)="attachmentBeingTypeEdited = attachment; attachmentBeingTypeEditedIsAssigned = true"
-                                    style="background-color: #9E6DFF; padding: 5px; border-radius: 3px; cursor: pointer;">
-                                    {{getFileType(attachment.type)}}</span>
-                            </td>
-                            <td style="padding-left: 0px; padding-right: 20px;">
-                                <mat-icon style="color: #C8C8C8; cursor: pointer;"
-                                    [imageToolTip]="attachment.attachment"
-                                    [imageExtension]="getFileExtension(attachment.name)">visibility</mat-icon>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            <section class="rightSection">
-                <div>
-                    <table>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header">
+        <p>Attachments Management</p>
+    </div>
+    <div class="px-14 pb-14 bg-white">
+        <div class="alert info m-0">
+            <mat-icon class="material-icons-outlined">info</mat-icon>
+            <span>Maximum 7 files can be uploaded for claim and each file can have maximum 2 MB size.</span>
+        </div>
+    </div>
+    <div class="pl-7 pr-7">
+        <div class="row small-gutter bg-white">
+            <div class="col-4">
+                <div class="table-responsive claim-attachment-table">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th colspan="3">Unassigned Attachments</th>
+                                <th width="10"></th>
+                                <th>Claim Ref. No.</th>
+                                <th>Member ID</th>
+                                <th width="10"></th>
                             </tr>
                         </thead>
-                    </table>
-                </div>
-                <div style="overflow: auto;">
-                    <table>
                         <tbody>
-                            <tr *ngIf="attachmentsLoading" style="background-color: unset;">
-                                <td colspan="4">
-                                    <mat-spinner diameter="30" style="margin: auto;"></mat-spinner>
-                                </td>
-                            </tr>
-                            <tr *ngFor="let attachment of attachments; let i = index;">
-                                <td style="padding-left: 20px; padding-right: 0px;">
-                                    <mat-checkbox *ngIf="attachment.type == ''"
-                                        [checked]="selectedAttachments.includes(i)"
-                                        [matMenuTriggerFor]="attachmentTypeMenu"
-                                        (click)="attachmentBeingTypeEdited = attachment; selectAttachmentBeingEdited = i; attachmentBeingTypeEditedIsAssigned = false">
-                                    </mat-checkbox>
-                                    <mat-checkbox *ngIf="attachment.type != ''"
-                                        [checked]="selectedAttachments.includes(i)"
-                                        (click)="toggleAttachmentSelection(i);"></mat-checkbox>
-                                </td>
-                                <td [matTooltip]="attachment.name">{{beautifyFileName(attachment.name)}}</td>
-                                <td style="color: white; font-size: 0.8rem;">
-                                    <span
-                                        style="background-color: #FF6D6D; padding: 5px; border-radius: 3px; margin-right: 3px;">
-                                        {{getFileExtension(attachment.name)}}</span>
-                                    <span [matMenuTriggerFor]="attachmentTypeMenu"
-                                        (click)="attachmentBeingTypeEdited = attachment; attachmentBeingTypeEditedIsAssigned = false"
-                                        style="background-color: #9E6DFF; padding: 5px; border-radius: 3px; cursor: pointer;">
-                                        {{getFileType(attachment.type)}}</span>
-                                </td>
+                            <tr *ngFor="let claim of claims" (click)="onClaimClicked(claim.id)" class="row-click">
                                 <td>
-                                    <mat-icon style="color: #C8C8C8; cursor: pointer;"
-                                        [imageToolTip]="attachment.attachment"
-                                        [imageExtension]="getFileExtension(attachment.name)">visibility</mat-icon>
+                                    <mat-radio-button color="primary" [checked]="selectedClaim == claim.id">
+                                    </mat-radio-button>
+                                </td>
+                                <td>{{claim.referenceNumber}}</td>
+                                <td>{{claim.memberId}}</td>
+                                <td>
+                                    <mat-icon class="text-primary" *ngIf="claim.hasAttachments && !changesToClaimSuccess(claim.id) && !changesToClaimFailed(claim.id)">attach_file
+                                    </mat-icon>
+                                    <mat-icon class="text-success" *ngIf="changesToClaimSuccess(claim.id)">check_circle</mat-icon>
+                                    <mat-icon class="text-danger" *ngIf="changesToClaimFailed(claim.id)">error</mat-icon>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <button mat-fab color="primary" (click)="fileInput.click()"
-                    style="position: absolute; bottom: 90px; right: 30px;">
-                    <mat-icon>add</mat-icon>
-                    <input hidden type="file" #fileInput onclick="this.value = null" multiple
-                        (change)="addFiles($event.target.files)"
-                        accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
-                </button>
-            </section>
-        </main>
-        <footer>
-            <div style="display: flex;" *ngIf="!saving">
-                <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()"
-                    style="margin-right: 5px;">Cancel</button>
-                <button mat-raised-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
+                <div class="block-footer">
+                    <div class="ml-auto mr-auto custom-paginator">
+                        <button matRipple (click)="changePage(0)" type="button" title="First Page">
+                            <img src="./assets/ic-page-first.svg" alt="First" />
+                        </button>
+                        <button matRipple (click)="changePage(1)" type="button" title="Previous Page">
+                            <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                        </button>
+                        <p class="page-info">
+                            {{(currentPage+1) || 0}}<small>/{{maxPages}}</small>
+                        </p>
+                        <button matRipple (click)="changePage(2)" type="button" title="Next Page">
+                            <img src="./assets/ic-page-next.svg" alt="Next" />
+                        </button>
+                        <button matRipple (click)="changePage(3)" type="button" title="Last Page">
+                            <img src="./assets/ic-page-last.svg" alt="Last" />
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div *ngIf="saving">
-                <mat-spinner diameter="30" style="margin: auto;"></mat-spinner>
-            </div>
-        </footer>
-    </div>
-    <div class="floatingButtons">
-        <button mat-mini-fab class="moveToLeftButton" (click)="moveSelectionToAssigned()">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
-        <button mat-mini-fab class="moveToRightButton" (click)="moveSelectionToUnassigned()">
-            <mat-icon>arrow_forward</mat-icon>
-        </button>
-    </div>
-</div>
+            <div class="col-4">
+                <div class="table-responsive claim-attachment-table">
+                    <table class="primary-grid" cellspacing="0" cellpadding="0" border="0">
+                        <thead>
+                            <tr>
+                                <th width="10"></th>
+                                <th colspan="3">Assigned Attachments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="assignedAttachmentsLoading">
+                                <td colspan="4">
+                                    <mat-spinner diameter="30" class="m-auto"></mat-spinner>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let attachment of selectedClaimAssignedAttachments; let i = index;">
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" [checked]="selectedAssignedAttachments.includes(i)" (click)="toggleAssignedAttachmentSelection(i);">
+                                    </mat-checkbox>
+                                </td>
+                                <td [matTooltip]="attachment.name">{{beautifyFileName(attachment.name)}}</td>
+                                <td>
+                                    <span class="text-danger">{{getFileExtension(attachment.name)}}</span>
+                                    <span [matMenuTriggerFor]="attachmentTypeMenu" (click)="attachmentBeingTypeEdited = attachment; attachmentBeingTypeEditedIsAssigned = true"
+                                        class="clickable text-invalid">{{getFileType(attachment.type)}}</span>
 
-<mat-menu #attachmentTypeMenu="matMenu">
-    <div style="padding: 10px;" *ngIf="attachmentBeingTypeEdited != null">
-        <label>What Type of Attachment?</label>
-        <mat-radio-group aria-label="Select an option" style="display: grid;" [value]="attachmentBeingTypeEdited.type">
-            <mat-radio-button (click)="changeAttachmentType('MEDICAL_REPORT', attachmentBeingTypeEditedIsAssigned)"
-                value="MEDICAL_REPORT">Medical
-                Report</mat-radio-button>
-            <mat-radio-button (click)="changeAttachmentType('IQAMA_ID_COPY', attachmentBeingTypeEditedIsAssigned)"
-                value="IQAMA_ID_COPY">Iqama/ID Copy
-            </mat-radio-button>
-            <mat-radio-button (click)="changeAttachmentType('X_RAY_RESULT', attachmentBeingTypeEditedIsAssigned)"
-                value="X_RAY_RESULT">X-Ray Result
-            </mat-radio-button>
-            <mat-radio-button (click)="changeAttachmentType('LAB_RESULT', attachmentBeingTypeEditedIsAssigned)"
-                value="LAB_RESULT">Lab Result
-            </mat-radio-button>
-        </mat-radio-group>
+                                </td>
+                                <td>
+                                    <mat-icon class="text-grey clickable" [imageToolTip]="attachment.attachment" [imageExtension]="getFileExtension(attachment.name)">
+                                        visibility</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-4 relative">
+                <div class="attachment-floating-actions">
+                    <button mat-mini-fab class="bg-success text-white" (click)="moveSelectionToAssigned()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <button mat-mini-fab class="bg-danger text-white" (click)="moveSelectionToUnassigned()">
+                        <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                </div>
+                <div class="table-responsive claim-attachment-table">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th width="10"></th>
+                                <th colspan="3">Unassigned Attachments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="attachmentsLoading">
+                                <td colspan="4">
+                                    <mat-spinner diameter="30" class="m-auto"></mat-spinner>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let attachment of attachments; let i = index;">
+                                <td>
+                                    <mat-checkbox class="grid-checkbox" *ngIf="attachment.type == ''" [checked]="selectedAttachments.includes(i)"
+                                        [matMenuTriggerFor]="attachmentTypeMenu"
+                                        (click)="attachmentBeingTypeEdited = attachment; selectAttachmentBeingEdited = i; attachmentBeingTypeEditedIsAssigned = false">
+                                    </mat-checkbox>
+                                    <mat-checkbox class="grid-checkbox" *ngIf="attachment.type != ''" [checked]="selectedAttachments.includes(i)"
+                                        (click)="toggleAttachmentSelection(i);">
+                                    </mat-checkbox>
+                                </td>
+                                <td [matTooltip]="attachment.name">{{beautifyFileName(attachment.name)}}</td>
+                                <td>
+                                    <span class="text-danger">{{getFileExtension(attachment.name)}}</span>
+                                    <span [matMenuTriggerFor]="attachmentTypeMenu" (click)="attachmentBeingTypeEdited = attachment; attachmentBeingTypeEditedIsAssigned = false"
+                                        class="text-invalid clickable">{{getFileType(attachment.type)}}</span>
+                                </td>
+                                <td>
+                                    <mat-icon class="text-grey clickable" [imageToolTip]="attachment.attachment" [imageExtension]="getFileExtension(attachment.name)">visibility
+                                    </mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</mat-menu>
+    <div class="block-footer has-border">
+        <div class="left-block" *ngIf="!saving">
+            <div class="btn-list">
+                <button mat-flat-button color="primary" [disabled]="!hasChanges" (click)="save()">Save</button>
+                <button mat-flat-button [disabled]="!hasChanges" (click)="cancel()">Cancel</button>
+            </div>
+        </div>
+        <mat-spinner *ngIf="saving" class="m-auto" diameter="30"></mat-spinner>
+    </div>
+
+    <div class="file-upload-wrapper page-fab">
+        <div class="content">
+            <button mat-fab color="primary" class="page-fab">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <input hidden type="file" #fileInput onclick="this.value = null" multiple class="file-upload-control" (change)="addFiles($event.target.files)"
+            accept="image/png,image/jpeg,image/jpg,image/tiff,image/gif,application/pdf" />
+    </div>
+
+    <mat-menu #attachmentTypeMenu="matMenu" class="primary-menu">
+        <ng-container *ngIf="attachmentBeingTypeEdited != null">
+            <label class="d-block text-primary pb-2">What Type of Attachment?</label>
+            <mat-radio-group aria-label="Select an option" style="display: grid;" [value]="attachmentBeingTypeEdited.type">
+                <mat-radio-button class="d-block pb-2" (click)="changeAttachmentType('MEDICAL_REPORT', attachmentBeingTypeEditedIsAssigned)" value="MEDICAL_REPORT">
+                    Medical Report
+                </mat-radio-button>
+                <mat-radio-button class="d-block pb-2" (click)="changeAttachmentType('IQAMA_ID_COPY', attachmentBeingTypeEditedIsAssigned)" value="IQAMA_ID_COPY">
+                    Iqama/ID Copy
+                </mat-radio-button>
+                <mat-radio-button class="d-block pb-2" (click)="changeAttachmentType('X_RAY_RESULT', attachmentBeingTypeEditedIsAssigned)" value="X_RAY_RESULT">
+                    X-Ray Result
+                </mat-radio-button>
+                <mat-radio-button class="d-block" (click)="changeAttachmentType('LAB_RESULT', attachmentBeingTypeEditedIsAssigned)" value="LAB_RESULT">
+                    Lab Result
+                </mat-radio-button>
+            </mat-radio-group>
+        </ng-container>
+    </mat-menu>
+</div>

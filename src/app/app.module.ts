@@ -86,6 +86,9 @@ import { JsonViewDialogComponent } from './components/dialogs/json-view-dialog/j
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { DownloadOverlayComponent } from './components/reusables/download-overlay/download-overlay.component';
+import { DownloadProgressViewComponent } from './components/download-progress-view/download-progress-view.component';
+import { ConfirmAdminDeleteDialogComponent } from './components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -141,7 +144,9 @@ import { DownloadOverlayComponent } from './components/reusables/download-overla
     UploadsPageComponent,
     UploadCardComponent,
     JsonViewDialogComponent,
-    DownloadOverlayComponent
+    DownloadOverlayComponent,
+    DownloadProgressViewComponent,
+    ConfirmAdminDeleteDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -193,7 +198,8 @@ import { DownloadOverlayComponent } from './components/reusables/download-overla
     PaymentClaimDetailDailogComponent,
     RejectionReportClaimDialogComponent,
     TopFiveRejectionsComponent,
-    DownloadOverlayComponent
+    DownloadOverlayComponent,
+    ConfirmAdminDeleteDialogComponent
   ],
   entryComponents: [
     MessageDialogComponent,
@@ -209,7 +215,8 @@ import { DownloadOverlayComponent } from './components/reusables/download-overla
     AttachmentViewDialogComponent,
     JsonViewDialogComponent,
     ConfiguartionModalComponent,
-    DownloadOverlayComponent
+    DownloadOverlayComponent,
+    ConfirmAdminDeleteDialogComponent
   ],
 })
 export class AppModule { }

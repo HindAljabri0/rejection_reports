@@ -12,6 +12,7 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared.module';
 import { ProviderContractComponent } from './provider-contract/provider-contract.component';
 import { AddProviderContractDialogComponent } from './add-provider-contract-dialog/add-provider-contract-dialog.component';
+import { SwitchProviderComponentComponent } from './switch-provider/switch-provider-component/switch-provider-component.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AddProviderContractDialogComponent } from './add-provider-contract-dial
     ProvidersConfigComponent,
     ProviderMappingComponent,
     ProviderContractComponent,
-    AddProviderContractDialogComponent
+    AddProviderContractDialogComponent,
+    SwitchProviderComponentComponent
   ],
   imports: [
     RouterModule.forChild([
@@ -28,7 +30,8 @@ import { AddProviderContractDialogComponent } from './add-provider-contract-dial
       { path: 'config/providers', component: ProvidersConfigComponent },
       { path: 'config/providerMapping', component: ProviderMappingComponent },
       { path: 'config/providers/:providerId', component: ProvidersConfigComponent },
-      { path: 'config/payer-payment-contract', component: ProviderContractComponent }
+      { path: 'config/payer-payment-contract', component: ProviderContractComponent },
+      { path: 'switch-provider', component: SwitchProviderComponentComponent }
     ]),
     CommonModule,
     MaterialModule,

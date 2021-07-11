@@ -95,6 +95,7 @@ export class ProvidersConfigComponent implements OnInit {
   PBMCheckValueController: FormControl = new FormControl('');
   payerMappingValue: { [key: number]: string } = {};
   isPBMLoading: boolean = false;
+  exisingServiceAndPriceValidationData: any = [];
 
   constructor(
     private superAdmin: SuperAdminService,
@@ -158,6 +159,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.location.go(`/administration/config/providers/${providerId}`);
     this.reset();
     this.getAssociatedPayers();
+
   }
 
   getAssociatedPayers() {
@@ -168,9 +170,11 @@ export class ProvidersConfigComponent implements OnInit {
         if (event.body instanceof Array) {
           this.newPBMValidationSettings["101"] = false;
           this.associatedPayers = event.body;
+
           this.associatedPayers.forEach(payer => {
-            this.newServiceValidationSettings[payer.switchAccountId] = false;
-            this.newPriceUnitSettings[payer.switchAccountId] = false;
+            // this.newServiceValidationSettings[payer.switchAccountId] = false;
+            // this.newPriceUnitSettings[payer.switchAccountId] = false;
+
             this.newICD10ValidationSettings[payer.switchAccountId] = false;
             this.newSFDAValidationSettings[payer.switchAccountId] = false;
             // new changes for payer mapping
@@ -203,10 +207,49 @@ export class ProvidersConfigComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
     });
   }
+  serviceAndPriceValidationSetting() {
+    this.componentLoading.serviceCode = true;
+    this.superAdmin.getPriceListValidationSettings(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body: any = event['body'];
+        this.associatedPayers.forEach(payer => {
+          const settingData = body.find(ele => ele.payerId === payer.switchAccountId);
+          if (settingData !== null && settingData !== undefined) {
+            this.newServiceValidationSettings[payer.switchAccountId] = settingData.isServiceCodeEnable === '1' ? true : false;
+            this.newPriceUnitSettings[payer.switchAccountId] = settingData.isPriceUnitEnable === '1' ? true : false;
+            const obj = {
+              payerId: payer.switchAccountId,
+              isServiceCodeEnable: settingData.isServiceCodeEnable,
+              isPriceUnitEnable: settingData.isPriceUnitEnable
+            }
+            this.exisingServiceAndPriceValidationData.push(obj);
+            // payer.hasAssociatedPriceList = settingData.isEnabled === '1' ? true : false;
+          }
+          else {
+            this.newServiceValidationSettings[payer.switchAccountId] = false;
+            this.newPriceUnitSettings[payer.switchAccountId] = false;
+            // payer.hasAssociatedPriceList = false;
+            const obj = {
+              payerId: payer.switchAccountId,
+              isServiceCodeEnable: '0',
+              isPriceUnitEnable: '0'
+            }
+            this.exisingServiceAndPriceValidationData.push(obj);
+          }
+        });
+      }
+      this.componentLoading.serviceCode = false;
+    }, err => {
+      console.log(err);
+      this.componentLoading.serviceCode = false;
+    });
+
+  }
 
   fetchSettings() {
-    this.getSetting(SERVICE_CODE_RESTRICTION_KEY, this.serviceCodeValidationSettings, this.newServiceValidationSettings, false);
-    this.getSetting(VALIDATE_RESTRICT_PRICE_UNIT, this.priceUnitSettings, this.newPriceUnitSettings, false);
+    // this.getSetting(SERVICE_CODE_RESTRICTION_KEY, this.serviceCodeValidationSettings, this.newServiceValidationSettings, false);
+    // this.getSetting(VALIDATE_RESTRICT_PRICE_UNIT, this.priceUnitSettings, this.newPriceUnitSettings, false);
+
     this.getSetting(ICD10_RESTRICTION_KEY, this.ICD10ValidationSettings, this.newICD10ValidationSettings, false);
     this.getSetting(SFDA_RESTRICTION_KEY, this.sfdaValidationSettings, this.newSFDAValidationSettings, false);
     this.getSetting(PBM_RESTRICTION_KEY, this.pbmValidationSettings, this.newPBMValidationSettings, false);
@@ -216,6 +259,9 @@ export class ProvidersConfigComponent implements OnInit {
     this.getPayerMapping();
     this.getProviderMapping();
     // ####### Chages on 02-01-2021 end
+
+    // ####### changes on 05-07-2021
+    this.serviceAndPriceValidationSetting();
   }
 
   save() {
@@ -232,18 +278,20 @@ export class ProvidersConfigComponent implements OnInit {
     }
     this.resetUserMessages();
     const portalUserFlag = this.savePortalUserSettings();
-    const serviceCodeFlag = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings, this.serviceCodeValidationSettings);
+    // const serviceCodeFlag = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings, this.serviceCodeValidationSettings);
     const icd10Flag = this.saveSettings(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings, this.ICD10ValidationSettings);
-    const priceUnitFlag = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings, this.priceUnitSettings);
+    // const priceUnitFlag = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings, this.priceUnitSettings);
     const sfdaFlag = this.saveSettings(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings, this.sfdaValidationSettings);
     const pbmFlag = this.saveSettings(PBM_RESTRICTION_KEY, this.newPBMValidationSettings, this.pbmValidationSettings);
     // change on 02-01-2021 start
     const dbFlag = this.addDatabaseConfig();
     const payerFlag = this.savePayerMapping();
     const providerFlag = this.addProviderMapping();
+    const priceListFlag = this.updatePriceListValidationSetting();
     // change on 02-01-2021 end
-    if (portalUserFlag && serviceCodeFlag && icd10Flag && priceUnitFlag && sfdaFlag && dbFlag
-      && payerFlag && providerFlag && pbmFlag) {
+    // && priceUnitFlag && serviceCodeFlag
+    if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
+      && payerFlag && providerFlag && pbmFlag && priceListFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -251,6 +299,55 @@ export class ProvidersConfigComponent implements OnInit {
         isError: false
       });
     }
+
+  }
+
+  updatePriceListValidationSetting() {
+    this.componentLoading.serviceCode = true;
+    this.errors.payerMappingSaveError = null;
+    this.success.payerMappingSaveSuccess = null;
+    const priceValidationData = [];
+    this.exisingServiceAndPriceValidationData.map((ele, index) => {
+      const isServiceCodeEnable = this.newServiceValidationSettings[ele.payerId] ? '1' : '0';
+      const isPriceUnitEnable = this.newPriceUnitSettings[ele.payerId] ? '1' : '0';
+      if (ele.isServiceCodeEnable !== isServiceCodeEnable || ele.isPriceUnitEnable !== isPriceUnitEnable) {
+        const obj = {
+          payerId: ele.payerId,
+          isServiceCodeEnable: this.newServiceValidationSettings[ele.payerId] ? '1' : '0',
+          isPriceUnitEnable: this.newPriceUnitSettings[ele.payerId] ? '1' : '0'
+        }
+        priceValidationData.push(obj);
+      }
+    })
+
+    if (priceValidationData.length === 0) {
+      this.componentLoading.serviceCode = false;
+      return false;
+    }
+
+
+    this.superAdmin.updatePriceListSettings(this.selectedProvider, priceValidationData).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body: any = event['body'];
+        this.serviceAndPriceValidationSetting();
+        this.success.serviceCodeSaveSuccess = 'Settings were saved successfully.';
+        // this.setComponentLoading(SERVICE_CODE_RESTRICTION_KEY, false);
+        return true;
+      }
+
+      this.componentLoading.serviceCode = false;
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.serviceCodeSaveError = 'Could not change payer mapping, please try again later.';
+        }
+        else {
+          this.setSaveError(SERVICE_CODE_RESTRICTION_KEY, 'Could not save settings, please try again later.');
+        }
+      }
+      this.componentLoading.serviceCode = false
+    });
+
   }
 
   saveSettings(URLKey: string, newSettingValues: { [key: string]: boolean }, settingValues: any[]) {

@@ -1,6 +1,6 @@
 <div class="sidebar animate__animated animate__fadeIn animate__faster">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
-        <div class="list-container" *ngIf="!isAdmin">
+        <div class="list-container" *ngIf="isProvider">
             <mat-accordion displayMode="flat">
                 <ul class="nav-list">
                     <li i18n="@@dashboard">
@@ -144,28 +144,13 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
-                            <a routerLink="/collection-management/regular-payment-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Regular Payment Details</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLink="/collection-management/collection-summary-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Collection Summary</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLink="/collection-management/final-settlement-report-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Final Settlement Reports</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLink="/collection-management/vat-payment-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">VAT Payment Reports</span>
-                            </a>
-                        </li>
-                        <li>
                             <a routerLink="/collection-management/accounts-receivable-list" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Accounts Receivables</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">AR Breakown Report</span>
                             </a>
                         </li>
                         <li>
@@ -176,6 +161,16 @@
                         <li>
                             <a routerLink="/collection-management/statement-of-accounts" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Statement of Accounts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/reconciliation" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Reconciliation</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/reconciliation-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Reconciliation Report</span>
                             </a>
                         </li>
                         <!-- <li>
@@ -236,9 +231,6 @@
             </mat-accordion>
 
             <ng-container *ngIf="isProviderAdmin">
-                <div class="list-title">
-                    <hr>
-                </div>
                 <ul class="nav-list">
                     <li i18n="@@configurations">
                         <a routerLink="/configurations" routerLinkActive="is-active">
@@ -248,9 +240,17 @@
                 </ul>
             </ng-container>
         </div>
+        <ng-container *ngIf="isAdmin && (isProvider || isRcmUser)">
+            <div class="list-title" *ngIf="isProvider">
+                <hr>
+            </div>
+            <div class="list-title">
+                Administration
+            </div>
+        </ng-container>
         <div class="list-container" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive || payerPaymentContract.isActive">
+                <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -265,12 +265,6 @@
                             <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active" #providermapping="routerLinkActive"
                                 [routerLinkActiveOptions]="{exact: true}">
                                 <span class="text">Provider Mapping</span>
-                            </a>
-                        </li>
-                        <li i18n="@@payerPaymentContract">
-                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
-                                [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">Payer Payment Contract</span>
                             </a>
                         </li>
                     </ul>
@@ -304,7 +298,55 @@
                     </li>
                 </ul>
             </mat-expansion-panel>
+
+            <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="switchProvider.isActive">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Customer Support</mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive"
+                            [routerLinkActiveOptions]="{exact: true}">
+                            <span class="text">Switch Provider</span>
+                        </a>
+                    </li>
+                </ul>
+            </mat-expansion-panel>
         </div>
+        <ng-container *ngIf="isRcmUser && (isProvider || isAdmin)">
+            <div class="list-title">
+                <hr>
+            </div>
+            <div class="list-title">
+                RCM Configurations
+            </div>
+        </ng-container>
+        <div class="list-container" *ngIf="isRcmUser">
+            <mat-accordion displayMode="flat">
+                <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title i18n="@@configuration">Configuration</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li i18n="@@payerPaymentContract">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive"
+                                [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">Payer Payment Contract</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <ng-container *ngIf="isRcmUser || isAdmin">
+            <ul class="nav-list">
+                <li>
+                    <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <span class="text">Switch Provider</span>
+                    </a>
+                </li>
+            </ul>
+        </ng-container>
     </ng-scrollbar>
 </div>
 <div class="nav-backdrop">
