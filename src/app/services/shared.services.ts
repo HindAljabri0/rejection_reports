@@ -136,7 +136,7 @@ export class SharedServices {
     const providerId = localStorage.getItem('provider_id');
     return this.getPayersList().some(payer => {
       const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
-      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
+      return userPrivileges != null && (userPrivileges.includes('|3') || userPrivileges.startsWith('3'));
     });
   }
 
@@ -144,7 +144,7 @@ export class SharedServices {
     const providerId = localStorage.getItem('provider_id');
     try {
       const userPrivileges = localStorage.getItem(`${providerId}101`);
-      return userPrivileges.split('|').includes('3.0');
+      return userPrivileges != null && (userPrivileges.includes('|3.0') || userPrivileges.startsWith('3.0'));
     } catch (error) {
       return false;
     }
