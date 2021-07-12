@@ -313,7 +313,7 @@ export class SharedServices {
           name: value.split(':')[1].split(',')[0],
           arName: value.split(':')[1].split(',')[1]
         }));
-    } else if (payersStr != null && payersStr.trim().length > 0  && payersStr.includes(':')) {
+    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
       return [{
         id: Number.parseInt(payersStr.split(':')[0], 10),
         name: payersStr.split(':')[1].split(',')[0],
@@ -523,6 +523,16 @@ export class SharedServices {
     return Math.abs(num) > 999
       ? Math.sign(num) * (((Math.abs(num) / 1000).toFixed(1)) as any) + 'k'
       : Math.sign(num) * Math.abs(num);
+  }
+  dataURItoBlob(dataURI, type) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'application/pdf' });
+    return blob;
   }
 
 }
