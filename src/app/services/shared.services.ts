@@ -10,7 +10,6 @@ import { Notification } from '../models/notification';
 import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
-import { UploadService } from './claimfileuploadservice/upload.service';
 import { SearchService } from './serchService/search.service';
 
 @Injectable({
@@ -65,7 +64,6 @@ export class SharedServices {
     private router: Router,
     private notifications: NotificationsService,
     private announcements: AnnouncementsService,
-    private uploadService: UploadService,
     private searchService: SearchService
   ) {
 
@@ -121,43 +119,43 @@ export class SharedServices {
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.getNotifications();
-      this.getUploadHistory();
+      this.getUploads();
       this.getAnnouncements();
     });
 
-    
-    
+
+
   }
 
-  get isAdmin(){
+  get isAdmin() {
     const privilege = localStorage.getItem('101101');
     return privilege != null && (privilege.includes('|22') || privilege.startsWith('22'));
   }
 
-  get isProvider(){
+  get isProvider() {
     const providerId = localStorage.getItem('provider_id');
     return this.getPayersList().some(payer => {
       const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
-      return userPrivileges != null && userPrivileges.split('|').includes('3.0');
+      return userPrivileges != null && (userPrivileges.includes('|3') || userPrivileges.startsWith('3'));
     });
   }
 
-  get isAdminOfProvider(){
+  get isAdminOfProvider() {
     const providerId = localStorage.getItem('provider_id');
     try {
       const userPrivileges = localStorage.getItem(`${providerId}101`);
-      return userPrivileges.split('|').includes('3.0');
+      return userPrivileges != null && (userPrivileges.includes('|3.0') || userPrivileges.startsWith('3.0'));
     } catch (error) {
       return false;
     }
   }
-  get isRcmUser(){
+  get isRcmUser() {
     const privilege = localStorage.getItem('101101');
     return privilege != null && (privilege.includes('|24') || privilege.startsWith('24'));
   }
 
   getNotifications() {
-    if (this.providerId == null) { return; }
+    if (!this.isProvider) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
@@ -183,7 +181,7 @@ export class SharedServices {
   }
 
   getAnnouncements() {
-    if (this.providerId == null) { return; }
+    if (!this.isProvider) { return; }
     this.payers = this.getPayersList();
     this.payerids = this.payers.map(item => item.id);
     this.announcements.getAnnouncementsCount(this.providerId, this.payerids).subscribe(event => {
@@ -210,10 +208,8 @@ export class SharedServices {
     });
   }
 
-  getUploadHistory() {
-    if (this.providerId == null) {
-      return;
-    }
+  getUploads() {
+    if (!this.isProvider) { return; }
 
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -317,6 +313,12 @@ export class SharedServices {
           name: value.split(':')[1].split(',')[0],
           arName: value.split(':')[1].split(',')[1]
         }));
+    } else if (payersStr != null && payersStr.trim().length > 0  && payersStr.includes(':')) {
+      return [{
+        id: Number.parseInt(payersStr.split(':')[0], 10),
+        name: payersStr.split(':')[1].split(',')[0],
+        arName: payersStr.split(':')[1].split(',')[1]
+      }];
     }
 
     return payers;
@@ -517,7 +519,7 @@ export class SharedServices {
   }
 
   kFormatter(num) {
-    
+
     return Math.abs(num) > 999
       ? Math.sign(num) * (((Math.abs(num) / 1000).toFixed(1)) as any) + 'k'
       : Math.sign(num) * Math.abs(num);

@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
       if (isUpdated) {
         this.getUserData();
         this.sharedServices.getNotifications();
-        this.sharedServices.getUploadHistory();
+        this.sharedServices.getUploads();
         this.sharedServices.getAnnouncements();
       }
     }

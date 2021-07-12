@@ -131,7 +131,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
     return item != null && (item.includes('|22') || item.startsWith('22') || item.includes('|24') || item.startsWith('24'));
   }
 
-  private getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
+  getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
     if (globMed == null) {
       globMed = false;
     }
@@ -148,6 +148,12 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
           name: value.split(':')[1].split(',')[0],
           arName: value.split(':')[1].split(',')[1]
         }));
+    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
+      return [{
+        id: Number.parseInt(payersStr.split(':')[0], 10),
+        name: payersStr.split(':')[1].split(',')[0],
+        arName: payersStr.split(':')[1].split(',')[1]
+      }];
     }
 
     return payers;
