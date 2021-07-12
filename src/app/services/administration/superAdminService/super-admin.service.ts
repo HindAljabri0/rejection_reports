@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpParams, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -55,6 +56,53 @@ export class SuperAdminService {
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, settings);
     return this.http.request(request);
   }
+
+  getPayerPaymentContractDetailsData(providerId: string): Observable<any> {
+    const requestURL = `/providers/${providerId}`;
+
+    // let searchparams = new HttpParams();
+    // if (data) {
+    //   for (const key in data) {
+    //     if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+    //   }
+    // }
+    const request = new HttpRequest('GET', environment.auditTrailServiceHost + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+  addPayerPaymentContractDetailsData(providerId: any, file: File, data: any) {
+    const formdata: FormData = new FormData();
+    formdata.append('agreementCopy', file, file.name);
+    formdata.append('effectiveDate', data.effectiveDate);
+    formdata.append('expiryDate', data.expiryDate);
+    formdata.append('payerid', data.payerid);
+    formdata.append('modePayment', data.modePayment);
+    formdata.append('numberOfDays', data.numberOfDays);
+
+    let requestURL = `/providers/${providerId}`;
+
+    const req = new HttpRequest('POST', environment.auditTrailServiceHost + requestURL, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+    return this.http.request(req);
+  }
+  updatePayerPaymentContractDetailsData(providerId: any, file: File, data: any, editId) {
+    const formdata: FormData = new FormData();
+    formdata.append('agreementCopy', file, file.name);
+    formdata.append('effectiveDate', data.effectiveDate);
+    formdata.append('expiryDate', data.expiryDate);
+    formdata.append('payerid', data.payerid);
+    formdata.append('modePayment', data.modePayment);
+    formdata.append('numberOfDays', data.numberOfDays);
+
+    let requestURL = `/providers/${providerId}/contractId/${editId}`;
+    const req = new HttpRequest('PUT', environment.auditTrailServiceHost + requestURL, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+    return this.http.request(req);
+  }
+
 
 
 }
