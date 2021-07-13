@@ -66,7 +66,7 @@ export class SuperAdminService {
     //     if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
     //   }
     // }
-    const request = new HttpRequest('GET', environment.auditTrailServiceHost + requestURL, { responseType: 'text' });
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
     return this.http.request(request);
   }
   addPayerPaymentContractDetailsData(providerId: any, file: File, data: any) {
@@ -80,7 +80,7 @@ export class SuperAdminService {
 
     let requestURL = `/providers/${providerId}`;
 
-    const req = new HttpRequest('POST', environment.auditTrailServiceHost + requestURL, formdata, {
+    const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, formdata, {
       reportProgress: true,
       responseType: 'text'
     });
@@ -96,7 +96,7 @@ export class SuperAdminService {
     formdata.append('numberOfDays', data.numberOfDays);
 
     let requestURL = `/providers/${providerId}/contractId/${editId}`;
-    const req = new HttpRequest('PUT', environment.auditTrailServiceHost + requestURL, formdata, {
+    const req = new HttpRequest('PUT', environment.payerPaymentContractService + requestURL, formdata, {
       reportProgress: true,
       responseType: 'text'
     });
