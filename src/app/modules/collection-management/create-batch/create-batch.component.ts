@@ -33,13 +33,17 @@ export class CreateBatchComponent implements OnInit {
   batchData: any[] = [];
   selectedBatchData: any = [];
   allChecked: boolean = false;
+  providerCode: string;
   constructor(public dialog: MatDialog, private sharedService: SharedServices, private claimService: ClaimService, private dialogService: DialogService, private location: Location, private routeActive: ActivatedRoute) {
     // this.batchSummary.page = 0;
     // this.batchSummary.pageSize = 10;
   }
 
   ngOnInit() {
-    this.payersList = this.sharedService.getPayersList();
+    const payersList = this.sharedService.getPayersList();
+    this.payersList = payersList.filter(ele => ele.version === '2.0');
+    const acceessToken: any = localStorage.getItem('access_token');
+
     this.routeActive.queryParams.subscribe(params => {
       if (params.startDate != null) {
         const startDate = moment(params.startDate, 'YYYY-MM-DD').toDate();
@@ -62,6 +66,8 @@ export class CreateBatchComponent implements OnInit {
         this.getBatchData();
       }
     });
+
+    this.providerCode = this.sharedService.decodeJwtToken(acceessToken, 'prov_code');
   }
 
   getBatchData() {
@@ -118,7 +124,8 @@ export class CreateBatchComponent implements OnInit {
           endDate: endDate,
           payerId: this.batchSummary.payerId,
           selectedBatchData: this.selectedBatchData,
-          batchSelected: this.selectedBatchData.length > 0 ? true : false
+          batchSelected: this.selectedBatchData.length > 0 ? true : false,
+          providerCode: this.providerCode
         }
       });
     dialogRef.afterClosed().subscribe(result => {
