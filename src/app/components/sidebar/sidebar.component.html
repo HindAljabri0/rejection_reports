@@ -303,20 +303,6 @@
                     </li>
                 </ul>
             </mat-expansion-panel>
-
-            <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="switchProvider.isActive">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Customer Support</mat-panel-title>
-                </mat-expansion-panel-header>
-                <ul class="nav-list">
-                    <li>
-                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive"
-                            [routerLinkActiveOptions]="{exact: true}">
-                            <span class="text">Switch Provider</span>
-                        </a>
-                    </li>
-                </ul>
-            </mat-expansion-panel>
         </div>
         <ng-container *ngIf="isRcmUser && (isProvider || isAdmin)">
             <div class="list-title">
