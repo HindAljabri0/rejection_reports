@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { PaymentProviderModel } from 'src/app/models/PaymentProviderModel';
 import * as moment from 'moment';
 import { parse } from 'querystring';
@@ -18,7 +18,7 @@ export class AddProviderContractDialogComponent implements OnInit {
   fileUploadFlag = false;
   providers: any[] = [];
   filteredProviders: any[] = [];
-  providerController: FormControl = new FormControl();
+  providerController: FormControl = new FormControl('', [Validators.required]);
   selectedProvider: string;
   errors: string;
   associatedPayers: any[] = [];
@@ -192,6 +192,9 @@ export class AddProviderContractDialogComponent implements OnInit {
     if (event.value !== '')
       this.isPayerSelected = false;
   }
-
+  deleteFile() {
+    this.currentFileUpload = null;
+    this.fileUploadFlag = false;
+  }
 
 }

@@ -132,10 +132,8 @@ export class ProviderContractComponent implements OnInit {
     return this.sharedServices.loading;
   }
   viewAttachment(item) {
-    const fileBlob = this.sharedServices.dataURItoBlob(item.agreementCopy, 'application/pdf');
-    const finalAttchment = new File([fileBlob], 'demo.pdf', { type: 'application/pdf' });
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
-      data: { filename: 'provider_' + item.providerId + '_payment_contract.pdf', attachment: finalAttchment }
+      data: { filename: 'provider_' + item.providerId + '_payment_contract.pdf', attachment: item.agreementCopy }
     })
   }
 

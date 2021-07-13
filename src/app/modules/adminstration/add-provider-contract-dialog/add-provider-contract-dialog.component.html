@@ -22,6 +22,10 @@
                         {{errors.providersError}}
                     </mat-option> -->
                     </mat-autocomplete>
+                    <div *ngIf="providerContractForm.submitted && providerController.errors">
+                        <span *ngIf="providerController.errors.required" class="error-text">Please select a
+                            Provider</span>
+                    </div>
                 </div>
             </div>
             <div class="col-6">
@@ -110,7 +114,8 @@
                     <label class="control-label">Upload Agreement Copy</label>
                     <div class="file-upload-wrapper">
                         <div class="content">
-                            <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
+                            <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag"
+                                [disabled]="isPayerSelected">
                                 Choose File
                             </button>
                             <span class="form-control-static pt-2 d-block"
@@ -119,9 +124,12 @@
                         </div>
                         <input type="file" accept="application/pdf"
                             [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
-                            [disabled]="isPayerSelected" name="agreementCopy" class="file-upload-control"
-                            (change)="selectFile($event)" />
+                            [disabled]="isPayerSelected || fileUploadFlag" name="agreementCopy"
+                            class="file-upload-control" (change)="selectFile($event)" />
                     </div>
+                    <a class="primary-link text-danger underlined" *ngIf="fileUploadFlag" title="Delete File?"
+                        (click)="deleteFile()">Delete
+                        File?</a>
                 </div>
             </div>
         </div>
