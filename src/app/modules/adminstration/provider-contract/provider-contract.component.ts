@@ -7,7 +7,7 @@ import { HttpResponse } from '@angular/common/http';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-provider-contract',
   templateUrl: './provider-contract.component.html',
@@ -60,7 +60,6 @@ export class ProviderContractComponent implements OnInit {
       console.log(error);
     });
   }
-
 
   openAddContractDialog(item = null) {
     const isEditData = item !== null ? true : false;
@@ -117,6 +116,8 @@ export class ProviderContractComponent implements OnInit {
         this.paymentData = data.map((ele) => {
           const data = this.associatedPayers.find((subele) => subele.switchAccountId === parseInt(ele.payerId));
           ele.payerName = data.name;
+          ele.effectiveDate = ele.effectiveDate.substring(0, ele.effectiveDate.toLocaleString().indexOf(':') - 3);
+          ele.expiryDate = ele.expiryDate.substring(0, ele.expiryDate.toLocaleString().indexOf(':') - 3);
           return ele;
         })
         this.sharedServices.loadingChanged.next(false);
@@ -132,8 +133,10 @@ export class ProviderContractComponent implements OnInit {
     return this.sharedServices.loading;
   }
   viewAttachment(item) {
+    const expiryDate = moment(item.expiryDate).format('DD-MM-YYYY');
+    const effectiveDate = moment(item.effectiveDate).format('DD-MM-YYYY');
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
-      data: { filename: 'provider_' + item.providerId + '_payment_contract.pdf', attachment: item.agreementCopy }
+      data: { filename: item.providerId + '_' + item.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf', attachment: item.agreementCopy }, panelClass: ['primary-dialog', 'dialog-xl']
     })
   }
 

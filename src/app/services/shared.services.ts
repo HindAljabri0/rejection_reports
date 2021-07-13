@@ -297,30 +297,31 @@ export class SharedServices {
     }
   }
 
-  getPayersList(globMed?: boolean): { id: number, name: string, arName: string, version: string }[] {
+  getPayersList(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
     if (globMed == null) {
       globMed = false;
     }
-    const payers: { id: number, name: string, arName: string, version: string }[] = [];
+    const payers: { id: number, name: string, arName: string, payerCategory: string }[] = [];
     const payersStr = localStorage.getItem('payers');
     if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
       const payersStrSplitted = payersStr.split('|');
       payersStrSplitted
-        .filter(value =>
-          (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
-          || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
+        // As globemed is not integrated with us so comment this below lines
+        // .filter(value =>
+        //   (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
+        //   || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
         .map(value => payers.push({
           id: Number.parseInt(value.split(':')[0], 10),
           name: value.split(':')[1].split(',')[0],
           arName: value.split(':')[1].split(',')[1],
-          version: value.split(':')[1].split(',')[2]
+          payerCategory: value.split(':')[1].split(',')[2]
         }));
     } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
       return [{
         id: Number.parseInt(payersStr.split(':')[0], 10),
         name: payersStr.split(':')[1].split(',')[0],
         arName: payersStr.split(':')[1].split(',')[1],
-        version: payersStr.split(':')[1].split(',')[2]
+        payerCategory: payersStr.split(':')[1].split(',')[2]
       }];
     }
 

@@ -41,7 +41,7 @@ export class CreateBatchComponent implements OnInit {
 
   ngOnInit() {
     const payersList = this.sharedService.getPayersList();
-    this.payersList = payersList.filter(ele => ele.version === '2.0');
+    this.payersList = payersList.filter(ele => ele.payerCategory === '2.0');
     const acceessToken: any = localStorage.getItem('access_token');
 
     this.routeActive.queryParams.subscribe(params => {
