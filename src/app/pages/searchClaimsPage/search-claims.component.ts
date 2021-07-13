@@ -296,6 +296,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       let rejectedByPayerIsDone = false;
       let readyForSubmissionIsDone = false;
       let paidIsDone = false;
+      let invalidIsDone = false;
       for (let i = 0; i < statuses.length; i++) {
         const status = statuses[i];
         if (this.isUnderProcessingStatus(status)) {
@@ -319,7 +320,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           }
           paidIsDone = true;
         } else if (this.isInvalidStatus(status)) {
-          await this.getSummaryOfStatus([ClaimStatus.INVALID]);
+          if (!invalidIsDone) {
+            await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
+          }
+          invalidIsDone = true;
         } else {
           await this.getSummaryOfStatus([status]);
         }
@@ -1382,7 +1386,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
   isInvalidStatus(status: string) {
     status = status.toUpperCase();
-    return status == ClaimStatus.INVALID.toUpperCase();
+    return status == ClaimStatus.INVALID.toUpperCase() || status == 'RETURNED';
   }
 
   handlePageEvent(event: PageEvent) {
