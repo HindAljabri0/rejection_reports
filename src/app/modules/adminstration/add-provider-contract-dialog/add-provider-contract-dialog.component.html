@@ -86,8 +86,9 @@
                     <label class="control-label">Mode of Payment</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="" [(ngModel)]='paymentProviderContractModel.modePayment'
-                            #modePayment='ngModel' name="modePayment" [disabled]="isPayerSelected" required>
-                            <mat-option value="">Select Mode of Payment</mat-option>
+                            #modePayment='ngModel' name="modePayment" [disabled]="isPayerSelected" required
+                            (selectionChange)="modeOfPayment()">
+                            <mat-option value="" selected>Select Mode of Payment</mat-option>
                             <mat-option value="Prompt Payment">Prompt Payment</mat-option>
                             <mat-option value="Regular Payment">Regular Payment</mat-option>
                         </mat-select>
@@ -103,7 +104,7 @@
                     <label class="control-label">No. of Days</label>
                     <input class="form-control" placeholder="Select no. of days" [disabled]="isPayerSelected"
                         [(ngModel)]='paymentProviderContractModel.numberOfDays' #numberOfDays='ngModel'
-                        name="numberOfDays" required />
+                        name="numberOfDays" [required]="isPromptPayment" />
                     <div *ngIf="providerContractForm.submitted && numberOfDays.invalid">
                         <span class="error-text">Please choose number of days</span>
                     </div>
@@ -119,13 +120,16 @@
                                 Choose File
                             </button>
                             <span class="form-control-static pt-2 d-block"
-                                *ngIf="fileUploadFlag">Dallah-Bupa-2021-Agreement.pdf</span>
+                                *ngIf="fileUploadFlag">{{currentFileUpload.name}}</span>
                             <p class="error-text pt-3" *ngIf="error">{{error}}</p>
                         </div>
                         <input type="file" accept="application/pdf"
                             [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
                             [disabled]="isPayerSelected || fileUploadFlag" name="agreementCopy"
-                            class="file-upload-control" (change)="selectFile($event)" />
+                            class="file-upload-control" (change)="selectFile($event)" required />
+                        <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
+                            <span class="error-text">Please choose a file</span>
+                        </div>
                     </div>
                     <a class="primary-link text-danger underlined" *ngIf="fileUploadFlag" title="Delete File?"
                         (click)="deleteFile()">Delete
@@ -136,7 +140,7 @@
     </div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
-            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button type="button" mat-button (click)="closeDialog()">Cancel</button>
             <button mat-flat-button color="primary" type="submit"
                 [disabled]="isPayerSelected">{{data.isEditData?'Update Contract':'Add Contract'}}</button>
         </div>

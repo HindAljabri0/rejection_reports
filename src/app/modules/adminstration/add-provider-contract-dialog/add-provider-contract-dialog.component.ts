@@ -31,6 +31,7 @@ export class AddProviderContractDialogComponent implements OnInit {
   addOrEditContractLabel = "Add";
   isProviderDisabled: boolean = true;
   closeStatus: boolean = false;
+  isPromptPayment: boolean = true;
   constructor(private dialogRef: MatDialogRef<AddProviderContractDialogComponent>, private sharedServices: SharedServices, private superAdmin: SuperAdminService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogService: DialogService) { }
 
   ngOnInit() {
@@ -48,13 +49,18 @@ export class AddProviderContractDialogComponent implements OnInit {
       this.paymentProviderContractModel.effectiveDate = moment(this.data.editData.effectiveDate, 'YYYY-MM-DD').toDate();
       this.paymentProviderContractModel.expiryDate = moment(this.data.editData.expiryDate, 'YYYY-MM-DD').toDate();
       this.paymentProviderContractModel.modePayment = this.data.editData.modeOfPayment;
+      this.isPromptPayment = this.paymentProviderContractModel.modePayment === 'Prompt Payment' ? true : false;
       this.paymentProviderContractModel.numberOfDays = this.data.editData.numberOfDays;
       const fileBlob = this.sharedServices.dataURItoBlob(this.data.editData.agreementCopy, 'application/pdf');
       this.currentFileUpload = new File([fileBlob], 'provider_' + this.data.editData.providerId + '_payment_contract.pdf', { type: 'application/pdf' });
+      this.paymentProviderContractModel.agreementCopy = this.data.editData.agreementCopy;
+      this.fileUploadFlag = true;
       this.getAssociatedPayers();
     }
     else {
       this.paymentProviderContractModel = new PaymentProviderModel();
+      this.fileUploadFlag = false;
+
     }
   }
 
@@ -194,7 +200,11 @@ export class AddProviderContractDialogComponent implements OnInit {
   }
   deleteFile() {
     this.currentFileUpload = null;
+    this.paymentProviderContractModel.agreementCopy = null;
     this.fileUploadFlag = false;
+  }
+  modeOfPayment() {
+    this.isPromptPayment = this.paymentProviderContractModel.modePayment === 'Prompt Payment' ? true : false;
   }
 
 }
