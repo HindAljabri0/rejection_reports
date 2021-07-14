@@ -52,7 +52,9 @@ export class AddProviderContractDialogComponent implements OnInit {
       this.isPromptPayment = this.paymentProviderContractModel.modePayment === 'Prompt Payment' ? true : false;
       this.paymentProviderContractModel.numberOfDays = this.data.editData.numberOfDays;
       const fileBlob = this.sharedServices.dataURItoBlob(this.data.editData.agreementCopy, 'application/pdf');
-      this.currentFileUpload = new File([fileBlob], 'provider_' + this.data.editData.providerId + '_payment_contract.pdf', { type: 'application/pdf' });
+      const expiryDate = moment(this.data.editData.expiryDate).format('DD-MM-YYYY');
+      const effectiveDate = moment(this.data.editData.effectiveDate).format('DD-MM-YYYY');
+      this.currentFileUpload = new File([fileBlob], this.data.editData.providerId + '_' + this.data.editData.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf', { type: 'application/pdf' });
       this.paymentProviderContractModel.agreementCopy = this.data.editData.agreementCopy;
       this.fileUploadFlag = true;
       this.getAssociatedPayers();
