@@ -150,7 +150,12 @@
                         </li>
                         <li>
                             <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                                <span class="text">AR Breakown Report</span>
+                                <span class="text">AR Breakdown Report</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/collection-management/accounts-receivable-tracking-report" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                                <span class="text">AR Tracking Report</span>
                             </a>
                         </li>
                         <li>
@@ -294,20 +299,6 @@
                     <li>
                         <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
                             <span class="text">Claim Submissions</span>
-                        </a>
-                    </li>
-                </ul>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="switchProvider.isActive">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Customer Support</mat-panel-title>
-                </mat-expansion-panel-header>
-                <ul class="nav-list">
-                    <li>
-                        <a routerLink="/administration/config/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive"
-                            [routerLinkActiveOptions]="{exact: true}">
-                            <span class="text">Switch Provider</span>
                         </a>
                     </li>
                 </ul>

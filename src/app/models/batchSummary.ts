@@ -1,7 +1,7 @@
 import { Paginateable } from './paginateable';
 
 export class BatchSummaryModel extends Paginateable {
-    approvalnumber: string;
+    provclaimno: string;
     memberid: string;
     idnumber: string;
     patientfilenumber: string;
@@ -13,7 +13,7 @@ export class BatchSummaryModel extends Paginateable {
 
     constructor(body: {}) {
         super(body);
-        this.approvalnumber = body['approvalnumber'];
+        this.provclaimno = body['provclaimno'];
         this.memberid = body['memberid'];
         this.idnumber = body['idnumber'];
         this.patientfilenumber = body['patientfilenumber'];

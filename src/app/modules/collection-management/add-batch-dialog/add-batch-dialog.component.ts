@@ -25,13 +25,15 @@ export class AddBatchDialogComponent implements OnInit {
     let data = {};
     if (this.data.batchSelected)
       data = {
-        claimid: this.data.selectedBatchData
+        claimid: this.data.selectedBatchData,
+        providerCode: this.data.providerCode
       };
     else
       data = {
         startDate: this.data.startDate,
         endDate: this.data.endDate,
         payerId: this.data.payerId,
+        providerCode: this.data.providerCode
       };
 
     this.sharedService.loadingChanged.next(true);
