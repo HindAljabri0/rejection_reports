@@ -1,42 +1,32 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Accounts Receivables</p>
+        <p>Accounts Receivables Monthly</p>
     </div>
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white">
-        <mat-tab [label]="'By Month'">
-            <div class="block-filter-panel">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="row small-gutter">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label class="control-label">From Month</label>
-                                    <div class="date-picker">
-                                        <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month" />
-                                        <mat-datepicker-toggle [for]="fromMonth"></mat-datepicker-toggle>
-                                        <mat-datepicker #fromMonth></mat-datepicker>
-                                    </div>
-                                </div>
+    <div class="block-filter-panel has-border">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="row small-gutter">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Year</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="year" class="form-control" placeholder="Select year" />
+                                <mat-datepicker-toggle [for]="year"></mat-datepicker-toggle>
+                                <mat-datepicker #year></mat-datepicker>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label class="control-label">To Month</label>
-                                    <div class="date-picker">
-                                        <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month" />
-                                        <mat-datepicker-toggle [for]="toMonth"></mat-datepicker-toggle>
-                                        <mat-datepicker #toMonth></mat-datepicker>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-auto align-self-end">
-                                <div class="form-group">
-                                    <button type="button" mat-flat-button color="primary">Search</button>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto align-self-end">
+                        <div class="form-group">
+                            <button type="button" mat-flat-button color="primary">Search</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white">
+        <mat-tab [label]="'By Year'">
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
                 <div class="fixed-height">
                     <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">

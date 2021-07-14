@@ -88,7 +88,7 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
 
   viewAttachment() {
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
-      data: { filename: this.creditReportDetails.attachmentName, attachment: this.creditReportDetails.attachment }
+      data: { filename: this.creditReportDetails.attachmentName, attachment: this.creditReportDetails.attachment }, panelClass: ['primary-dialog', 'dialog-xl']
     })
   }
 }

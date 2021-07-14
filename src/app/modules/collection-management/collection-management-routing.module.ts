@@ -10,6 +10,7 @@ import { AccountReceivableBreakdownReportComponent } from './account-receivable-
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
 import { ReconciliationComponent } from './reconciliation/reconciliation.component';
 import { ReconciliationReportComponent } from './reconciliation-report/reconciliation-report.component';
+import { AccountReceivableTrackingReportComponent } from './account-receivable-tracking-report/account-receivable-tracking-report.component';
 
 const routes: Routes = [
   { path: 'accounts-receivable-list', component: AccountsReceivableListComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'statement-of-accounts-details', component: StatementOfAccountsDetailsComponent },
   { path: 'create-batch', component: CreateBatchComponent },
   { path: 'accounts-receivable-breakdown-report', component: AccountReceivableBreakdownReportComponent },
+  { path: 'accounts-receivable-tracking-report', component: AccountReceivableTrackingReportComponent },
   { path: 'reconciliation', component: ReconciliationComponent },
   { path: 'reconciliation-report', component: ReconciliationReportComponent }
 ];

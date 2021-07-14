@@ -23,6 +23,7 @@ import { AddIntialRejectionDialogComponent } from './add-intial-rejection-dialog
 import { ReconciliationComponent } from './reconciliation/reconciliation.component';
 import { ReconciliationReportComponent } from './reconciliation-report/reconciliation-report.component';
 import { AccountReceivableDetailsPayerComponent } from './account-receivable-details-payer/account-receivable-details-payer.component';
+import { AccountReceivableTrackingReportComponent } from './account-receivable-tracking-report/account-receivable-tracking-report.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AccountReceivableDetailsPayerComponent } from './account-receivable-det
     AddIntialRejectionDialogComponent,
     ReconciliationComponent,
     ReconciliationReportComponent,
+    AccountReceivableTrackingReportComponent,
   ],
   imports: [
     CommonModule,
