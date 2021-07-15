@@ -36,21 +36,8 @@ export class ProviderContractComponent implements OnInit {
         if (event.body instanceof Array) {
           this.providers = event.body;
           this.filteredProviders = this.providers;
-          if (!location.href.endsWith('providers')) {
-            const paths = location.href.split('/');
-            this.selectedProvider = paths[paths.length - 1];
-
-            const provider = this.providers.find(provider => provider.switchAccountId == this.selectedProvider);
-            if (provider != undefined) {
-              this.providerController.setValue(`${provider.switchAccountId} | ${provider.code} | ${provider.name}`);
-            } else {
-              this.sharedServices.loadingChanged.next(false);
-              this.providerLoader = false;
-            }
-          } else {
-            this.sharedServices.loadingChanged.next(false);
-            this.providerLoader = false;
-          }
+          this.sharedServices.loadingChanged.next(false);
+          this.providerLoader = false;
         }
       }
     }, error => {
@@ -69,7 +56,8 @@ export class ProviderContractComponent implements OnInit {
         data: {
           providers: this.providers,
           isEditData: isEditData,
-          editData: item
+          editData: item,
+          selectedProvider: this.selectedProvider
         }
       });
     dialogRef.afterClosed().subscribe(result => {

@@ -79,9 +79,9 @@
             </button>
         </div>
     </div> -->
-    <!--  -->
+    <!--  || -->
     <button mat-fab color="primary" class="page-fab" (click)="openAddContractDialog()"
-        [disabled]="isLoading && providerLoader">
+        [disabled]="(isLoading && providerLoader) || selectedProvider==='' || selectedProvider===undefined || selectedProvider===null">
         <mat-icon>add</mat-icon>
     </button>
 </div>

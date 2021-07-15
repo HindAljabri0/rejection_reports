@@ -63,7 +63,11 @@ export class AddProviderContractDialogComponent implements OnInit {
     else {
       this.paymentProviderContractModel = new PaymentProviderModel();
       this.fileUploadFlag = false;
-
+      this.selectedProvider = this.data.selectedProvider;
+      const providerData = this.providers.find((ele) => ele.switchAccountId === parseInt(this.data.selectedProvider));
+      const selectedProviderValue = providerData.switchAccountId + ' | ' + providerData.code + ' | ' + providerData.name;
+      this.providerController.patchValue(selectedProviderValue);
+      this.getAssociatedPayers();
     }
   }
 
