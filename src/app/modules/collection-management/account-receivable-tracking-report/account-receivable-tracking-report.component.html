@@ -42,16 +42,10 @@
     </div>
     <div class="ar-report-body pb-14">
         <div class="section-card m-0">
-            <p class="section-title pb-4">Payment Tracking</p>
             <div class="ar-payment-tracking-chart">
                 <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
                     [chartType]="lineChartType"></canvas>
             </div>
-        </div>
-    </div>
-    <div class="block-footer sticky-bottom">
-        <div class="right-block">
-            <button type="button" mat-flat-button color="primary">Print</button>
         </div>
     </div>
 </div>

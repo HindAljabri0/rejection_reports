@@ -253,7 +253,7 @@
                 Administration
             </div>
         </ng-container>
-        <div class="list-container" *ngIf="isAdmin">
+        <div class="list-container pt-0" *ngIf="isAdmin">
             <mat-accordion displayMode="flat">
                 <mat-expansion-panel hideToggle [expanded]="providerConfiguration.isActive || providermapping.isActive">
                     <mat-expansion-panel-header>
@@ -326,7 +326,7 @@
                 RCM Configurations
             </div>
         </ng-container>
-        <div class="list-container" *ngIf="isRcmUser">
+        <div class="list-container pt-0" *ngIf="isRcmUser">
             <mat-accordion displayMode="flat">
                 <mat-expansion-panel hideToggle [expanded]="payerPaymentContract.isActive">
                     <mat-expansion-panel-header>
