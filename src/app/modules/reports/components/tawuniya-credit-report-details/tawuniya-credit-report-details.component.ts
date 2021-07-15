@@ -212,7 +212,19 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        console.log(errorEvent.error);
+        if (errorEvent.status == 400) {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: errorEvent.error.message,
+            isError: true
+          });
+        } else {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: "Could not handle the request at the moment please try again later.",
+            isError: true
+          });
+        }
       }
       this.sharedServices.loadingChanged.next(false);
 
@@ -263,7 +275,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
 
   isEditableBatch() {
     return this.data != null && (this.data.providercreditReportInformation.status == 'NEW' ||
-      this.data.providercreditReportInformation.status == 'UNDERREVIEW');
+      this.data.providercreditReportInformation.status == 'UNDERREVIEW' || this.data.providercreditReportInformation.status == 'INVALID');
   }
 
   openErrorsDialog() {
@@ -366,10 +378,14 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         }
         else {
           control.selections.forEach(serial => {
-            services.find(service => service.id.serialno == serial).agree = 'Y';
-            services.find(service => service.id.serialno == serial).comments = '';
+            let service = services.find(service => service.id.serialno == serial);
+            if (service != null) {
+              service.agree = 'Y';
+              service.comments = '';
+            }
           });
         }
+        control.selections = [];
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -409,9 +425,13 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
         control.selections.forEach(serial => {
-          services.find(service => service.id.serialno == serial).agree = 'N';
-          services.find(service => service.id.serialno == serial).comments = this.disagreeComment;
+          let service = services.find(service => service.id.serialno == serial);
+          if (service != null) {
+            service.agree = 'N';
+            service.comments = this.disagreeComment;
+          }
         });
+        control.selections = [];
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -521,10 +541,10 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   }
   disabledButton() {
     const status = this.data.providercreditReportInformation.status;
-    return status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Under_Submision.toLowerCase() || status.toLowerCase() === ClaimStatus.INVALID.toLowerCase() || status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Submitted.toLowerCase() ? true : false;
+    return status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Under_Submision.toLowerCase() || status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Submitted.toLowerCase() ? true : false;
   }
   disabledButtonClass() {
     const status = this.data.providercreditReportInformation.status;
-    return status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Under_Submision.toLowerCase() || status.toLowerCase() === ClaimStatus.INVALID.toLowerCase() || status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Submitted.toLowerCase() ? 'disabled' : '';
+    return status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Under_Submision.toLowerCase() || status.toLowerCase() === ClaimStatus.Failed.toLowerCase() || status.toLowerCase() === ClaimStatus.Submitted.toLowerCase() ? 'disabled' : '';
   }
 }

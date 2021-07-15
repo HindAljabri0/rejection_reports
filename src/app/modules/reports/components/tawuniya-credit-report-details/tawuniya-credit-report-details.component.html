@@ -364,12 +364,24 @@
                                             [ngClass]="{'text-danger':service.agree =='N', 'text-success': service.agree =='Y'}">
                                             {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                     </td>
-                                    <td class="actions">
-                                        <button *ngIf="isEditableBatch()" type="button"
-                                            (click)="$event.stopPropagation()" [matMenuTriggerFor]="editMenu1"
-                                            mat-icon-button class="text-primary">
-                                            <mat-icon>edit</mat-icon>
+                                    <td class="actions" (click)="$event.stopPropagation()">
+                                        <button type="button" mat-icon-button class="text-success"
+                                            matTooltip="Agree" [ngClass]="disabledButtonClass()"
+                                            (click)="agreeOnSelectedServices(service.id.serialno)"
+                                            [disabled]="disabledButton()">
+                                            <mat-icon class="material-icons-outlined">check_circle</mat-icon>
                                         </button>
+                                        <button type="button" mat-icon-button class="text-danger"
+                                            matTooltip="Disagree" [ngClass]="disabledButtonClass()"
+                                            [matMenuTriggerFor]="editMenu1" #clickMenuTrigger="matMenuTrigger"
+                                            (click)="selectionDisagreement(service.id.serialno)"
+                                            [disabled]="disabledButton()">
+                                            <mat-icon class="material-icons-outlined">cancel</mat-icon>
+                                        </button>
+                                        <!-- <button *ngIf="isEditableBatch()" type="button" [matMenuTriggerFor]="editMenu1"
+                                        (click)="$event.stopPropagation()" mat-icon-button class="text-primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button> -->
                                         <mat-menu #editMenu1="matMenu" class="primary-menu tawuniya-edit-menu"
                                             xPosition="before">
                                             <div (click)="$event.stopPropagation()">
@@ -380,7 +392,8 @@
                                                 </div>
                                                 <div class="form-group mb-0">
                                                     <label>Attachments</label>
-                                                    <p class="text-sm text-grey pb-1">Note: The allowed file types are
+                                                    <p class="text-sm text-grey pb-1">Note: The allowed file types
+                                                        are
                                                         GIF,
                                                         JPEG, JPG, PNG, TIFF, PDF<br />Maximum File Size = 5.0 MB
                                                     </p>
@@ -390,7 +403,6 @@
                                                             (click)="serviceBeingAttachedFileTo = service; fileInput.click()">
                                                             <img [src]="getImageOfBlob(service)"
                                                                 [alt]="service.newAttachment.name" />
-                                                            <!-- <img src="./assets/ic-pdf-lg.svg" [alt]="service.newAttachment.name" /> -->
                                                         </li>
                                                         <li *ngIf="service.newAttachment == null"
                                                             matTooltip="Add Attachments" class="add-block">
@@ -406,7 +418,7 @@
                                                 <div class="text-right">
                                                     <button type="button" (click)="disagreeOnService(service)"
                                                         mat-flat-button color="primary">
-                                                        Apply
+                                                        Disagree
                                                     </button>
                                                 </div>
                                             </div>
