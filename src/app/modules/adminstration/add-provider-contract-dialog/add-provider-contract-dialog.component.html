@@ -33,10 +33,11 @@
                     [ngClass]="{'has-error' : providerContractForm.submitted && !paymentProviderContractModel.payerid}">
                     <label class="control-label">Payer</label>
                     <mat-form-field class="form-control custom-select-control">
+                        <!-- <mat-label>Select payer</mat-label> -->
                         <mat-select [(ngModel)]="paymentProviderContractModel.payerid" #payerid='ngModel'
                             [disabled]="isProviderDisabled" name='payerid' (selectionChange)="payerSelection($event)"
                             required>
-                            <!-- <mat-option value="0">All</mat-option> -->
+                            <mat-option value="">Select payer</mat-option>
                             <mat-option *ngFor="let payer of associatedPayers" [value]="payer.switchAccountId">
                                 {{payer.name}}
                             </mat-option>
