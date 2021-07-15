@@ -337,7 +337,7 @@
                                                                     <label class="control-label">Tooth Number<span class="asterisk"
                                                                             *ngIf="claimType == dentalDepartmentCode">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input class="form-control" placeholder="Select tooth number" type="number"
+                                                                        <input class="form-control" placeholder="Select tooth number"
                                                                             [formControl]="service.toothNumber">
                                                                         <span *ngIf="pageMode != 'VIEW' && !service.toothNumber.disabled" class="input-group-append">
                                                                             <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>

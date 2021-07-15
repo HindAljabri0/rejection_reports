@@ -27,12 +27,18 @@ export class AddProviderContractDialogComponent implements OnInit {
   sizeInMB: string;
   uploadContainerClass = '';
   error = '';
-  isPayerSelected: boolean = true;
-  addOrEditContractLabel = "Add";
-  isProviderDisabled: boolean = true;
-  closeStatus: boolean = false;
-  isPromptPayment: boolean = true;
-  constructor(private dialogRef: MatDialogRef<AddProviderContractDialogComponent>, private sharedServices: SharedServices, private superAdmin: SuperAdminService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogService: DialogService) { }
+  isPayerSelected = true;
+  addOrEditContractLabel = 'Add';
+  isProviderDisabled = true;
+  closeStatus = false;
+  isPromptPayment = true;
+  constructor(
+    private dialogRef: MatDialogRef<AddProviderContractDialogComponent>,
+    private sharedServices: SharedServices,
+    private superAdmin: SuperAdminService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogService: DialogService
+  ) { }
 
   ngOnInit() {
     this.getProvidersData();
@@ -41,9 +47,9 @@ export class AddProviderContractDialogComponent implements OnInit {
     this.providers = this.data.providers;
     this.filteredProviders = this.providers;
     if (this.data.isEditData) {
-      this.addOrEditContractLabel = "Edit";
+      this.addOrEditContractLabel = 'Edit';
       this.selectedProvider = this.data.editData.providerId;
-      const providerData = this.providers.find((ele) => ele.switchAccountId === parseInt(this.data.editData.providerId));
+      const providerData = this.providers.find((ele) => ele.switchAccountId === parseInt(this.data.editData.providerId, 10));
       const selectedProviderValue = providerData.switchAccountId + ' | ' + providerData.code + ' | ' + providerData.name;
       this.providerController.patchValue(selectedProviderValue);
       this.paymentProviderContractModel.effectiveDate = moment(this.data.editData.effectiveDate, 'YYYY-MM-DD').toDate();
@@ -55,12 +61,13 @@ export class AddProviderContractDialogComponent implements OnInit {
       const fileBlob = this.sharedServices.dataURItoBlob(this.data.editData.agreementCopy, 'application/pdf');
       const expiryDate = moment(this.data.editData.expiryDate).format('DD-MM-YYYY');
       const effectiveDate = moment(this.data.editData.effectiveDate).format('DD-MM-YYYY');
-      this.currentFileUpload = new File([fileBlob], this.data.editData.providerId + '_' + this.data.editData.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf', { type: 'application/pdf' });
+      this.currentFileUpload = new File([fileBlob],
+        this.data.editData.providerId + '_' + this.data.editData.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf',
+        { type: 'application/pdf' });
       this.paymentProviderContractModel.agreementCopy = this.data.editData.agreementCopy;
       this.fileUploadFlag = true;
       this.getAssociatedPayers();
-    }
-    else {
+    } else {
       this.paymentProviderContractModel = new PaymentProviderModel();
       this.fileUploadFlag = false;
       this.selectedProvider = this.data.selectedProvider;
@@ -136,37 +143,46 @@ export class AddProviderContractDialogComponent implements OnInit {
       numberOfDays: this.paymentProviderContractModel.numberOfDays,
       agreementCopy: this.paymentProviderContractModel.agreementCopy
 
-    }
-    if (this.data.isEditData)
+    };
+    if (this.data.isEditData) {
       this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
-    else
+    } else {
       this.saveProviderContactDetails(providerContractObjdata);
+    }
 
   }
   updateProviderContactDetails(providerContractObjdata: any, editId: string) {
-    this.superAdmin.updatePayerPaymentContractDetailsData(this.selectedProvider, this.currentFileUpload, providerContractObjdata, editId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', "Your data has been updated successfully", false));
-          this.closeStatus = true;
-          this.closeDialog();
-        }
+    this.superAdmin.updatePayerPaymentContractDetailsData(
+      this.selectedProvider,
+      this.currentFileUpload,
+      providerContractObjdata,
+      editId).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          if (event.status === 200) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been updated successfully', false));
+            this.closeStatus = true;
+            this.closeDialog();
+          }
 
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, err => {
-      if (err instanceof HttpErrorResponse) {
-        this.sharedServices.loadingChanged.next(false);
-        this.closeStatus = false;
-        this.dialogService.openMessageDialog(new MessageDialogData('', err.message, true));
-      }
-    });
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, err => {
+        if (err instanceof HttpErrorResponse) {
+          this.sharedServices.loadingChanged.next(false);
+          this.closeStatus = false;
+          this.dialogService.openMessageDialog(new MessageDialogData('', err.message, true));
+        }
+      });
   }
   saveProviderContactDetails(providerContractObjdata: any) {
-    this.superAdmin.addPayerPaymentContractDetailsData(this.selectedProvider, this.currentFileUpload, providerContractObjdata).subscribe(event => {
+    this.superAdmin.addPayerPaymentContractDetailsData(
+      this.selectedProvider,
+      this.currentFileUpload,
+      providerContractObjdata
+    ).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', "Your data has been saved successfully", false));
+          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
           this.closeDialog();
           this.closeStatus = true;
           this.closeDialog();
@@ -192,7 +208,7 @@ export class AddProviderContractDialogComponent implements OnInit {
           this.isProviderDisabled = false;
           if (this.data.isEditData) {
             this.isPayerSelected = false;
-            this.paymentProviderContractModel.payerid = parseInt(this.data.editData.payerId);
+            this.paymentProviderContractModel.payerid = parseInt(this.data.editData.payerId, 10);
           }
         }
         this.sharedServices.loadingChanged.next(false);
@@ -202,8 +218,9 @@ export class AddProviderContractDialogComponent implements OnInit {
     });
   }
   payerSelection(event) {
-    if (event.value !== '')
+    if (event.value !== '') {
       this.isPayerSelected = false;
+    }
   }
   deleteFile() {
     this.currentFileUpload = null;
