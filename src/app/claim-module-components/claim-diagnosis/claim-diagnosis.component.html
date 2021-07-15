@@ -1,7 +1,6 @@
 <div class="form-group" *ngIf="pageMode != 'VIEW'">
     <label class="control-label">Add Diagnosis</label>
-    <input type="text" class="form-control" placeholder="Search diagnosis code here..." [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()"
-        >
+    <input type="text" class="form-control" placeholder="Search diagnosis code here..." [formControl]="diagnosisController" [matAutocomplete]="auto" (keyup)="searchICDCodes()">
     <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
@@ -12,7 +11,7 @@
 <hr *ngIf="diagnosisList.length>0" class="hr">
 
 <div class="table-responsive" *ngIf="diagnosisList.length>0">
-    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid no-borders">
         <thead class="header-primary">
             <tr>
                 <th>Diagnosis Code</th>
@@ -26,7 +25,7 @@
                     <div class="d-flex">
                         {{diagnosis.diagnosisDescription}}
                         <div class="ml-auto d-flex">
-                            <button class="text-danger delete-btn" *ngIf="diagnosisHasError(diagnosis.diagnosisId)"  [matTooltip]="getDiagnosisError(diagnosis.diagnosisId)">
+                            <button class="text-danger delete-btn" *ngIf="diagnosisHasError(diagnosis.diagnosisId)" [matTooltip]="getDiagnosisError(diagnosis.diagnosisId)">
                                 <mat-icon>error</mat-icon>
                             </button>
                             <button class="text-danger delete-btn" *ngIf="!diagnosisController.disabled" (click)="removeDiagnosis(diagnosis)" matTooltip="Remove">

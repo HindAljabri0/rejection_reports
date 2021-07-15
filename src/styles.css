@@ -449,6 +449,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 --------------------------------------------------------------------------------------------------------*/
 .primary-grid,.primary-grid.mat-table{width: 100%;color:#333;background-color: #fff;font-size:inherit;line-height: inherit;}
 .primary-grid>thead>tr>th,.primary-grid>thead>tr>td,.primary-grid>tbody>tr>th,.primary-grid>tbody>tr>td,.primary-grid>thead>tr>th.mat-header-cell,.primary-grid>thead>tr>td.mat-header-cell,.primary-grid>tbody>tr>th.mat-cell,.primary-grid>tbody>tr>td.mat-cell{vertical-align: top;padding:11px 6px;font-size:inherit;line-height: inherit;height:auto;border-left:1px solid #dedede;}
+.primary-grid>tbody>tr:last-child>th.mat-cell,.primary-grid>tbody>tr:last-child>td.mat-cell,.primary-grid>tbody>tr:last-child>th,.primary-grid>tbody>tr:last-child>td{border-bottom: 1px solid #dedede;}
 .primary-grid>tbody>tr>th>.mat-icon,.primary-grid>tbody>tr>td>.mat-icon,.primary-grid>tbody>tr>th.mat-cell>.mat-icon,.primary-grid>tbody>tr>td.mat-cell>.mat-icon{display: inline-block;vertical-align: top;margin: -2px 0;}
 .primary-grid>tbody>tr>th>.mat-icon.size-21,.primary-grid>tbody>tr>td>.mat-icon.size-21,.primary-grid>tbody>tr>th.mat-cell>.mat-icon.size-21,.primary-grid>tbody>tr>td.mat-cell>.mat-icon.size-21{font-size:21px;line-height:21px;height:21px;width:21px;margin:0;}
 .primary-grid>thead>tr>.align-middle,.primary-grid>tbody>tr>.align-middle,.primary-grid>thead>.align-middle>td,.primary-grid>thead>.align-middle>th,.primary-grid>tbody>.align-middle>td,.primary-grid>tbody>.align-middle>th,.primary-grid>thead>.align-middle>td.mat-header-cell,.primary-grid>thead>.align-middle>th.mat-header-cell,.primary-grid>tbody>.align-middle>td.mat-cell,.primary-grid>tbody>.align-middle>th.mat-cell{vertical-align: middle;}
@@ -485,6 +486,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .column-header-action .action-btn{display: block;color:inherit;padding: 6px;background: none;border:0;margin: -6px -6px -6px auto;border-radius: 50px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);flex-basis: 30px;flex-grow: 0;flex-shrink: 0;max-width: 30px;}
 .primary-grid .column-header-action .action-btn .mat-icon{font-size:18px;line-height: 18px;height: 18px;width: 18px;display: block;}
 .primary-grid .column-header-action.action-active .action-btn{opacity: 1;background: rgba(48, 96, 170,0.16);}
+.primary-grid.no-borders>thead>tr>th,.primary-grid.no-borders>thead>tr>td,.primary-grid.no-borders>tbody>tr>th,.primary-grid.no-borders>tbody>tr>td,.primary-grid.no-borders>thead>tr>th.mat-header-cell,.primary-grid.no-borders>thead>tr>td.mat-header-cell,.primary-grid.no-borders>tbody>tr>th.mat-cell,.primary-grid.no-borders>tbody>tr>td.mat-cell{border:0;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 
