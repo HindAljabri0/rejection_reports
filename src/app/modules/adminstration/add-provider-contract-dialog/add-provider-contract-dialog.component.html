@@ -11,7 +11,7 @@
                     <!-- [readonly]="isLoading" -->
                     <label class="control-label">Provider</label>
                     <input type="text" class="form-control" [matAutocomplete]="auto" [formControl]="providerController"
-                        (input)="updateFilter()" placeholder="Select provider">
+                        (input)="updateFilter()" placeholder="Select provider" [readonly]="data.isEditData">
                     <mat-autocomplete autoActiveFirstOption #auto>
                         <mat-option *ngFor="let provider of filteredProviders"
                             [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
@@ -35,8 +35,8 @@
                     <mat-form-field class="form-control custom-select-control">
                         <!-- <mat-label>Select payer</mat-label> -->
                         <mat-select [(ngModel)]="paymentProviderContractModel.payerid" #payerid='ngModel'
-                            [disabled]="isProviderDisabled" name='payerid' (selectionChange)="payerSelection($event)"
-                            required>
+                            [disabled]="isProviderDisabled ||data.isEditData" name='payerid'
+                            (selectionChange)="payerSelection($event)" required>
                             <mat-option value="">Select payer</mat-option>
                             <mat-option *ngFor="let payer of associatedPayers" [value]="payer.switchAccountId">
                                 {{payer.name}}
