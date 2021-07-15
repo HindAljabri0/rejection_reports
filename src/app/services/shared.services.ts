@@ -11,6 +11,7 @@ import { Announcement } from '../models/announcement';
 import { PaginatedResult } from '../models/paginatedResult';
 import { AuthService } from './authService/authService.service';
 import { SearchService } from './serchService/search.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +59,7 @@ export class SharedServices {
 
 
   getUploadId: any;
-
+  helper = new JwtHelperService();
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -296,28 +297,31 @@ export class SharedServices {
     }
   }
 
-  getPayersList(globMed?: boolean): { id: number, name: string, arName: string }[] {
+  getPayersList(globMed?: boolean): { id: number, name: string, arName: string, payerCategory: string }[] {
     if (globMed == null) {
       globMed = false;
     }
-    const payers: { id: number, name: string, arName: string }[] = [];
+    const payers: { id: number, name: string, arName: string, payerCategory: string }[] = [];
     const payersStr = localStorage.getItem('payers');
     if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
       const payersStrSplitted = payersStr.split('|');
       payersStrSplitted
-        .filter(value =>
-          (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
-          || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
+        // As globemed is not integrated with us so comment this below lines
+        // .filter(value =>
+        //   (!globMed && value.split(':')[1].split(',')[3] != 'GlobeMed')
+        //   || (globMed && value.split(':')[1].split(',')[3] == 'GlobeMed'))
         .map(value => payers.push({
           id: Number.parseInt(value.split(':')[0], 10),
           name: value.split(':')[1].split(',')[0],
-          arName: value.split(':')[1].split(',')[1]
+          arName: value.split(':')[1].split(',')[1],
+          payerCategory: value.split(':')[1].split(',')[2]
         }));
     } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
       return [{
         id: Number.parseInt(payersStr.split(':')[0], 10),
         name: payersStr.split(':')[1].split(',')[0],
-        arName: payersStr.split(':')[1].split(',')[1]
+        arName: payersStr.split(':')[1].split(',')[1],
+        payerCategory: payersStr.split(':')[1].split(',')[2]
       }];
     }
 
@@ -533,6 +537,14 @@ export class SharedServices {
     }
     const blob = new Blob([int8Array], { type: 'application/pdf' });
     return blob;
+  }
+  decodeJwtToken(tkn: string, name: string): string {
+    if (tkn) {
+      let token = this.helper.decodeToken(tkn);
+      return token[name];
+    }
+    else
+      return '';
   }
 
 }

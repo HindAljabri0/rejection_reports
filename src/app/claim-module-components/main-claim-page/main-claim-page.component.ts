@@ -264,7 +264,7 @@ export class MainClaimPageComponent implements OnInit {
 
   get editable() {
     return this.claimProps != null &&
-      ['accepted', 'notaccepted', 'failed', 'invalid', 'downloadable'].includes(this.claimProps.statusCode.toLowerCase());
+      ['accepted', 'notaccepted', 'failed', 'invalid', 'downloadable', 'returned'].includes(this.claimProps.statusCode.toLowerCase());
   }
 
 
