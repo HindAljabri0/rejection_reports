@@ -31,7 +31,8 @@ import {
   updatePhysicianName,
   updatePageType,
   updateDepartment,
-  updateAccCode
+  updateAccCode,
+  updateContactNumber
 } from '../store/claim.actions';
 import {
   getDepartmentCode,
@@ -71,6 +72,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
 
   fileNumberController: FormControl = new FormControl();
+  contactNumberController: FormControl = new FormControl();
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
   ageController: FormControl = new FormControl();
@@ -229,6 +231,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   setData(claim: Claim) {
     this.fileNumberController.setValue(claim.caseInformation.patient.patientFileNumber);
+    this.contactNumberController.setValue(claim.caseInformation.patient.contactNumber);
 
     const illnessDuration = claim.caseInformation.caseDescription.illnessDuration;
     if (illnessDuration != null) {
@@ -307,6 +310,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.fileNumberController.disable();
+    // this.contactNumberController.disable();
     this.claimDateController.disable();
     this.isCaceTypeEnabled = false;
     if (allowEdit) {
@@ -320,6 +324,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.otherConditionController.enable();
       this.eligibilityNumController.enable();
       this.fullNameController.enable();
+      this.contactNumberController.enable();
     } else {
       this.illnessDurationController.disable();
       this.ageController.disable();
@@ -331,11 +336,15 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.otherConditionController.disable();
       this.eligibilityNumController.disable();
       this.fullNameController.disable();
+      this.contactNumberController.disable();
     }
 
     if (enableForNulls) {
       if (this.isControlNull(this.fileNumberController)) {
         this.fileNumberController.enable();
+      }
+      if (this.isControlNull(this.contactNumberController)) {
+        this.contactNumberController.enable();
       }
       if (this.isControlNull(this.illnessDurationController)) {
         this.illnessDurationController.enable();
@@ -445,6 +454,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         break;
       case ('fileNumber'):
         this.store.dispatch(updateFileNumber({ fileNumber: this.fileNumberController.value }));
+        break;
+      case ('contactNumber'):
+        this.store.dispatch(updateContactNumber({ contactNumber: this.contactNumberController.value }));
         break;
       case ('memberDob'):
         this.store.dispatch(updateMemberDob({ memberDob: new Date(this.memberDobController.value) }));

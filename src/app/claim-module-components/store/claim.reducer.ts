@@ -406,6 +406,19 @@ const _claimReducer = createReducer(
             genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'PATFILNO')]
         }
     })),
+    on(actions.updateContactNumber, (state, { contactNumber }) => ({
+        ...state, claim: {
+            ...state.claim,
+            caseInformation: {
+                ...state.claim.caseInformation,
+                patient: { ...state.claim.caseInformation.patient, contactNumber: contactNumber }
+            }
+        },
+        claimErrors: {
+            ...state.claimErrors,
+            genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'CONTNUMBER')]
+        }
+    })),
     on(actions.updateMemberDob, (state, { memberDob }) => ({
         ...state, claim: {
             ...state.claim,
