@@ -5,7 +5,8 @@ import {
   ICD10_RESTRICTION_KEY,
   VALIDATE_RESTRICT_PRICE_UNIT,
   SFDA_RESTRICTION_KEY,
-  PBM_RESTRICTION_KEY
+  PBM_RESTRICTION_KEY,
+  NET_AMOUNT_RESTRICTION_KEY
 } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -43,7 +44,9 @@ export class ProvidersConfigComponent implements OnInit {
     providerMappingError?: string,
     providerMappingSaveError?: string,
     pbmConfigurationError?: string,
-    pbmConfigurationSaveError?: string
+    pbmConfigurationSaveError?: string,
+    netAmountConfigurationError?: string,
+    netAmountConfigurationSaveError?: string,
   } = {};
   success: {
     serviceCodeSaveSuccess?: string,
@@ -53,7 +56,9 @@ export class ProvidersConfigComponent implements OnInit {
     midtableSaveSuccess?: string,
     payerMappingSaveSuccess?: string,
     providerMappingSaveSuccess?: string,
-    pbmConfigurationSaveSuccess?: string
+    pbmConfigurationSaveSuccess?: string,
+    netAmountConfigurationSaveSuccess?: string
+
   } = {};
   componentLoading = {
     serviceCode: true,
@@ -63,7 +68,8 @@ export class ProvidersConfigComponent implements OnInit {
     pbmConfiguration: true,
     midtable: true,
     payerMapping: true,
-    providerMapping: true
+    providerMapping: true,
+    netAmount: true
   };
 
   selectedProvider: string;
@@ -96,6 +102,8 @@ export class ProvidersConfigComponent implements OnInit {
   payerMappingValue: { [key: number]: string } = {};
   isPBMLoading: boolean = false;
   exisingServiceAndPriceValidationData: any = [];
+  netAmountController: FormControl = new FormControl('');
+  netAmountValue: number;
 
   constructor(
     private superAdmin: SuperAdminService,
@@ -262,6 +270,9 @@ export class ProvidersConfigComponent implements OnInit {
 
     // ####### changes on 05-07-2021
     this.serviceAndPriceValidationSetting();
+
+    // Changes on 19-07-2021
+    this.getNetAmountAccuracy();
   }
 
   save() {
@@ -288,10 +299,11 @@ export class ProvidersConfigComponent implements OnInit {
     const payerFlag = this.savePayerMapping();
     const providerFlag = this.addProviderMapping();
     const priceListFlag = this.updatePriceListValidationSetting();
+    const netAmountFlag = this.setNetAmountAccuracy();
     // change on 02-01-2021 end
     // && priceUnitFlag && serviceCodeFlag
     if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-      && payerFlag && providerFlag && pbmFlag && priceListFlag) {
+      && payerFlag && providerFlag && pbmFlag && priceListFlag && netAmountFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -598,6 +610,9 @@ export class ProvidersConfigComponent implements OnInit {
       case PBM_RESTRICTION_KEY:
         this.errors.pbmConfigurationError = message;
         break;
+      case NET_AMOUNT_RESTRICTION_KEY:
+        this.errors.netAmountConfigurationError = message;
+        break;
     }
   }
 
@@ -634,6 +649,9 @@ export class ProvidersConfigComponent implements OnInit {
       case PBM_RESTRICTION_KEY:
         this.errors.pbmConfigurationSaveError = value;
         break;
+      case NET_AMOUNT_RESTRICTION_KEY:
+        this.errors.netAmountConfigurationSaveError = value;
+        break;
     }
 
   }
@@ -652,6 +670,9 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case PBM_RESTRICTION_KEY:
         this.success.pbmConfigurationSaveSuccess = value;
+        break;
+      case NET_AMOUNT_RESTRICTION_KEY:
+        this.success.netAmountConfigurationSaveSuccess = value;
         break;
     }
   }
@@ -1073,5 +1094,67 @@ export class ProvidersConfigComponent implements OnInit {
     this.addPayerMappingList = [];
     this.addDbConfigForm.reset();
     this.providerMappingController.setValue('');
+  }
+  getNetAmountAccuracy() {
+    this.componentLoading.netAmount = true;
+    this.errors.netAmountConfigurationError = null;
+    this.errors.netAmountConfigurationSaveError = null;
+    this.success.netAmountConfigurationSaveSuccess = null;
+    this.dbMapping.getNetAmountAccuracy(this.selectedProvider).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const data: any = event.body;
+        if (event.status === 200) {
+          this.netAmountValue = parseInt(data);
+          this.netAmountController.setValue(data);
+        } else {
+          this.netAmountValue = null;
+          this.netAmountController.setValue(null);
+        }
+      }
+      this.componentLoading.netAmount = false;
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.netAmountConfigurationError = 'Could not load net amount settings, please try again later.';
+        }
+      }
+      this.componentLoading.netAmount = false;
+      this.netAmountValue = null;
+      this.netAmountController.setValue(null);
+    });
+  }
+  setNetAmountAccuracy() {
+    this.errors.netAmountConfigurationError = null;
+    this.errors.netAmountConfigurationSaveError = null;
+    this.success.netAmountConfigurationSaveSuccess = null;
+    if (this.netAmountController.value === this.netAmountValue && this.netAmountController.value !== null)
+      return false;
+
+    this.componentLoading.netAmount = true;
+    this.dbMapping.setNetAmountAccuracy(this.selectedProvider, this.netAmountController.value).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          this.setSaveSuccess(NET_AMOUNT_RESTRICTION_KEY, 'Settings were saved successfully');
+        } else {
+          this.netAmountController.setValue(null);
+        }
+        this.componentLoading.netAmount = false;
+        return true;
+      }
+      return false;
+
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status != 404) {
+          this.errors.netAmountConfigurationSaveError = 'Could not change payer mapping, please try again later.';
+        }
+        else {
+          this.setSaveError(NET_AMOUNT_RESTRICTION_KEY, 'Could not save settings, please try again later.');
+        }
+      }
+      this.componentLoading.netAmount = false
+      return false;
+    });
+    return false;
   }
 }
