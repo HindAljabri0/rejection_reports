@@ -1103,7 +1103,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.dbMapping.getNetAmountAccuracy(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         const data: any = event.body;
-        if (event.status === 200) {
+        if (event.status === 200 && data !== null) {
           this.netAmountValue = parseInt(data);
           this.netAmountController.setValue(data);
         } else {
