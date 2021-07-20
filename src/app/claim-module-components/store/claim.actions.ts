@@ -98,6 +98,7 @@ export const updateCommReport = createAction('[ Claim Gen Info ] update comm rep
 export const updateEligibilityNum = createAction('[ Claim Gen Info ] update eligibility number', props<{ number: string }>());
 export const updateRadiologyReport = createAction('[ Claim Gen Info ] update radiology report', props<{ report: string }>());
 export const updateOtherCondition = createAction('[ Claim Gen Info ] update other condition', props<{ condition: string }>());
+export const updateContactNumber = createAction('[ Claim Gen Info ] update Contact Number', props<{ contactNumber: string }>());
 
 // Vital Signs
 export const updateTemperature = createAction('[ Vital Signs ] update Temperature', props<{ temperature: number }>());

@@ -390,5 +390,40 @@
             </div>
         </mat-expansion-panel>
 
+        <mat-expansion-panel expanded="false">
+            <mat-expansion-panel-header style="background-color: #fbfbfb;">
+                <mat-panel-title style="color: #3060AA;">
+                    Net Amount Accuracy</mat-panel-title>
+                <mat-panel-description *ngIf="errors.netAmountConfigurationSaveError != null">
+                    <span style="color: #ac4040;">{{errors.netAmountConfigurationSaveError}}</span>
+                </mat-panel-description>
+                <mat-panel-description *ngIf="success.netAmountConfigurationSaveSuccess != null">
+                    <span style="color: #40ac60;">{{success.netAmountConfigurationSaveSuccess}}</span>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div
+                *ngIf="(errors.netAmountConfigurationError == null || errors.netAmountConfigurationError == '') && !componentLoading.netAmount">
+                <table style="width: 100%; margin: 10px">
+                    <thead>
+                        <th>Provider</th>
+                        <th style="width:33%;text-align: center">Accuracy Amount</th>
+                    </thead>
+                    <tr>
+                        <td>{{selectedProviderName}}</td>
+                        <td style="text-align: center; width: 33%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>value</mat-label>
+                                <input matInput [formControl]="netAmountController" placeholder="accuracy amount"
+                                    type="number" pattern="^(\d*\.)?\d+$">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div *ngIf="componentLoading.netAmount" style="width: 100%; padding: 10px;">
+                <mat-spinner style="margin: 0px auto;"></mat-spinner>
+            </div>
+        </mat-expansion-panel>
+
     </mat-accordion>
 </app-detailscard>

@@ -7,7 +7,8 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading  && !summaries.error ">
                 <p class="title">Number of Claims</p>
-                <h4 matTooltip="{{summaries.data.all_total}} Claims">{{sharedServices.kFormatter(summaries.data.all_total)}} <small>Claims</small></h4>
+                <h4 matTooltip="{{summaries.data.all_total}} Claims">
+                    {{sharedServices.kFormatter(summaries.data.all_total)}} <small>Claims</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
                         [style.width]="PercentageCalculator(summaries.data.accepted_total,summaries.data.failed_total,null,summaries.data.all_total).toString() + '%'">
@@ -18,18 +19,22 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{PercentageCalculator(summaries.data.accepted_total,summaries.data.failed_total,null,summaries.data.all_total)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_total,summaries.data.failed_total,null,summaries.data.all_total)}}
+                        <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{PercentageCalculator(summaries.data.notaccepted_total,null,null,summaries.data.all_total)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_total,null,null,summaries.data.all_total)}}
+                        <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission"
                         matTooltip="{{getConvertfromStringToNumber(summaries.data.accepted_total)+getConvertfromStringToNumber(summaries.data.failed_total)}} Claims">
-                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_total)+summaries.data.failed_total)}} <small>Claims</small>
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_total)+summaries.data.failed_total)}}
+                        <small>Claims</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_total)}} Claims">
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_total)}} Claims">
                         {{sharedServices.kFormatter((summaries.data.notaccepted_total))}} <small>Claims</small>
                     </div>
                 </div>
@@ -47,19 +52,24 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title">Gross Amount</p>
-                <h4 matTooltip="{{summaries.data.all_gross}} SR">{{sharedServices.kFormatter(summaries.data.all_gross)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_gross.toFixed(2)}} SR">
+                    {{sharedServices.kFormatter(summaries.data.all_gross)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
-                        [style.width]="PercentageCalculator(summaries.data.accepted_gross,summaries.data.failed_gross,null,summaries.data.all_gross).toString()+ '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.accepted_gross,summaries.data.failed_gross,null,summaries.data.all_gross).toString()+ '%'">
+                    </div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="PercentageCalculator(summaries.data.notaccepted_gross,null,null,summaries.data.all_gross).toString() + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_gross,null,null,summaries.data.all_gross).toString() + '%'">
+                    </div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{PercentageCalculator(summaries.data.accepted_gross,summaries.data.failed_gross,null,summaries.data.all_gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_gross,summaries.data.failed_gross,null,summaries.data.all_gross)}}
+                        <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{PercentageCalculator(summaries.data.notaccepted_gross,null,null,summaries.data.all_gross)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_gross,null,null,summaries.data.all_gross)}}
+                        <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
@@ -68,8 +78,10 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_gross)+getConvertfromStringToNumber(summaries.data.failed_gross))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_gross)}} SR">
-                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_gross))}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_gross)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_gross))}}
+                        <small>SR</small>
                     </div>
                 </div>
             </ng-container>
@@ -87,21 +99,25 @@
 
             <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title"> Discount</p>
-                <h4 matTooltip="{{summaries.data.all_disCount}} SR">{{sharedServices.kFormatter(summaries.data.all_disCount)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_disCount}} SR">
+                    {{sharedServices.kFormatter(summaries.data.all_disCount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
                         [style.width]="PercentageCalculator(summaries.data.accepted_disCount,summaries.data.failed_disCount,null,summaries.data.all_disCount).toString() + '%'">
                     </div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount).toString()  + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount).toString()  + '%'">
+                    </div>
 
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{PercentageCalculator(summaries.data.accepted_disCount,summaries.data.failed_disCount,null,summaries.data.all_disCount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_disCount,summaries.data.failed_disCount,null,summaries.data.all_disCount)}}
+                        <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_disCount,null,null,summaries.data.all_disCount)}}
+                        <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
@@ -111,8 +127,10 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_disCount)+getConvertfromStringToNumber(summaries.data.failed_disCount))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_disCount)}} SR">
-                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_disCount))}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_disCount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_disCount))}}
+                        <small>SR</small>
 
                     </div>
 
@@ -132,21 +150,25 @@
 
             <ng-container *ngIf="!summaries.loading && !summaries.error ">
                 <p class="title"> Patient Share </p>
-                <h4 matTooltip="{{summaries.data.all_Patientshare}} SR">{{sharedServices.kFormatter(summaries.data.all_Patientshare)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_Patientshare}} SR">
+                    {{sharedServices.kFormatter(summaries.data.all_Patientshare)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
                         [style.width]="PercentageCalculator(summaries.data.accepted_Patientshare,summaries.data.failed_Patientshare,null,summaries.data.all_Patientshare).toString()+ '%'">
                     </div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare).toString() + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare).toString() + '%'">
+                    </div>
 
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{PercentageCalculator(summaries.data.accepted_Patientshare,summaries.data.failed_Patientshare,null,summaries.data.all_Patientshare)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_Patientshare,summaries.data.failed_Patientshare,null,summaries.data.all_Patientshare)}}
+                        <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_Patientshare,null,null,summaries.data.all_Patientshare)}}
+                        <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
@@ -156,8 +178,10 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_Patientshare)+getConvertfromStringToNumber(summaries.data.failed_Patientshare))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare)}} SR">
-                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare))}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_Patientshare))}}
+                        <small>SR</small>
 
                     </div>
 
@@ -178,20 +202,24 @@
             <ng-container *ngIf="!summaries.loading  && !summaries.error ">
 
                 <p class="title">Net Amount</p>
-                <h4 matTooltip="{{summaries.data.all_netAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_netAmount}} SR">
+                    {{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
                         [style.width]="PercentageCalculator(summaries.data.accepted_netAmount,summaries.data.failed_netAmount,null,summaries.data.all_netAmount).toString() + '%'">
                     </div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="PercentageCalculator(summaries.data.notaccepted_netAmount,null,null,summaries.data.all_netAmount).toString() + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_netAmount,null,null,summaries.data.all_netAmount).toString() + '%'">
+                    </div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{PercentageCalculator(summaries.data.accepted_netAmount,summaries.data.failed_netAmount,null,summaries.data.all_netAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_netAmount,summaries.data.failed_netAmount,null,summaries.data.all_netAmount)}}
+                        <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{PercentageCalculator(summaries.data.notaccepted_netAmount,null,null,summaries.data.all_netAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_netAmount,null,null,summaries.data.all_netAmount)}}
+                        <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
@@ -200,8 +228,10 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_netAmount)+getConvertfromStringToNumber(summaries.data.failed_netAmount))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_netAmount)}} SR">
-                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_netAmount))}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_netAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_netAmount))}}
+                        <small>SR</small>
                     </div>
                 </div>
             </ng-container>
@@ -218,20 +248,24 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">VAT Amount</p>
-                <h4 matTooltip="{{summaries.data.all_VatAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_VatAmount)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_VatAmount}} SR">
+                    {{sharedServices.kFormatter(summaries.data.all_VatAmount)}} <small>SR</small></h4>
                 <div class="progress-block">
                     <div class="ready-submission-bar bg-ready-submission"
                         [style.width]="PercentageCalculator(summaries.data.accepted_VatAmount,summaries.data.failed_VatAmount,null,summaries.data.all_VatAmount).toString() + '%'">
                     </div>
                     <div class="rejected-waseel-bar bg-rejected-waseel"
-                        [style.width]="PercentageCalculator(summaries.data.notaccepted_VatAmount,null,null,summaries.data.all_VatAmount).toString() + '%'"></div>
+                        [style.width]="PercentageCalculator(summaries.data.notaccepted_VatAmount,null,null,summaries.data.all_VatAmount).toString() + '%'">
+                    </div>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-ready-submission">
-                        {{PercentageCalculator(summaries.data.accepted_VatAmount,summaries.data.failed_VatAmount,null,summaries.data.all_VatAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.accepted_VatAmount,summaries.data.failed_VatAmount,null,summaries.data.all_VatAmount)}}
+                        <small>%</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected-waseel">
-                        {{PercentageCalculator(summaries.data.notaccepted_VatAmount,null,null,summaries.data.all_VatAmount)}} <small>%</small>
+                        {{PercentageCalculator(summaries.data.notaccepted_VatAmount,null,null,summaries.data.all_VatAmount)}}
+                        <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
@@ -240,8 +274,10 @@
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.accepted_VatAmount)+getConvertfromStringToNumber(summaries.data.failed_VatAmount))}}
                         <small>SR</small>
                     </div>
-                    <div class="ml-auto pl-2 text-right text-rejected-waseel" matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount)}} SR">
-                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount))}} <small>SR</small>
+                    <div class="ml-auto pl-2 text-right text-rejected-waseel"
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount)}} SR">
+                        {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.notaccepted_VatAmount))}}
+                        <small>SR</small>
                     </div>
                 </div>
             </ng-container>

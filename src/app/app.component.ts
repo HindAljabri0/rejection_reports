@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     localStorage.setItem('lastVisitedPath', location.pathname.replace('/en/', '').replace('/ar/', ''));
-    this.versionCheckService.initVersionCheck(environment.versionCheckURL);
+    this.versionCheckService.initVersionCheck(environment.versionCheckURL + (location.pathname.includes('/en') ? '/en' : '/ar'));
   }
 
   get isLoggedIn() {
