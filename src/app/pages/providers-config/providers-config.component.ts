@@ -167,8 +167,13 @@ export class ProvidersConfigComponent implements OnInit {
     );
   }
 
-  selectProvider(providerId: string) {
-    this.selectedProvider = providerId;
+  selectProvider(providerId: string = null) {
+    if (providerId !== null)
+      this.selectedProvider = providerId;
+    else {
+      const providerId = this.providerController.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
     this.location.go(`/administration/config/providers/${providerId}`);
     this.reset();
     this.getAssociatedPayers();

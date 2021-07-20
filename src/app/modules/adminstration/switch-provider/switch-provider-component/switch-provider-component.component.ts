@@ -47,9 +47,13 @@ export class SwitchProviderComponentComponent implements OnInit {
     return this.sharedServices.loading;
   }
 
-  selectProvider(providerId: string) {
-    this.selectedProvider = providerId;
-
+  selectProvider(providerId: string = null) {
+    if (providerId !== null)
+      this.selectedProvider = providerId;
+    else {
+      const providerId = this.providerController.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
   }
 
   updateFilter() {

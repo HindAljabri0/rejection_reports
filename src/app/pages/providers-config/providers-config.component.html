@@ -6,7 +6,7 @@
         <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
             <mat-label>Select Provider</mat-label>
             <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
-                [readonly]="isLoading">
+                [readonly]="isLoading" (keyup.enter)="selectProvider()">
             <button mat-button matSuffix mat-icon-button>
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
