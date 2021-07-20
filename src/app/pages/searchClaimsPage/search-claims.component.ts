@@ -297,8 +297,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       let readyForSubmissionIsDone = false;
       let paidIsDone = false;
       let invalidIsDone = false;
-      for (let i = 0; i < statuses.length; i++) {
-        const status = statuses[i];
+      for (const status of statuses) {
         if (this.isUnderProcessingStatus(status)) {
           if (!underProcessingIsDone) {
             await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
@@ -1190,7 +1189,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.commen.isAdmin && this.commen.isProvider && this.isAllCards) {
       this.dialogService.openConfirmAdminDeleteDialog().subscribe(action => {
         switch (action) {
-          case "deleteAll":
+          case 'deleteAll':
             this.dialogService.openMessageDialog(
               new MessageDialogData('Delete Claims?',
                 `This will delete all claims according to your selection criteria. Are you sure you want to delete it? This cannot be undone.`,
@@ -1200,9 +1199,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 if (result === true) {
                   this.commen.loadingChanged.next(true);
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
-                    this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
-                    this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null,
+                    this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims,
+                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.commen.loadingChanged.next(false);
                         const status = event.body['status'];
@@ -1248,11 +1247,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 }
               });
             break;
-          case "confirm":
+          case 'confirm':
             this.commen.loadingChanged.next(true);
             this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
-              this.fpatientFileNo, this.invoiceNo, this.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.fmemberId, this.selectedClaims, this.from, this.to,
-              this.fdrname, this.fnationalid, this.fclaimdate)
+              this.fpatientFileNo, this.invoiceNo, this.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.fmemberId,
+              this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);

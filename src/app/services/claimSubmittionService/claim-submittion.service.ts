@@ -45,8 +45,7 @@ export class ClaimSubmittionService {
       requestURL += `batchId=${batchId}`;
     } else if (invoiceNo != null) {
       requestURL += `invoiceNo=${invoiceNo}`;
-    }
-    else if (policyNo != null) {
+    } else if (policyNo != null) {
       requestURL += `policyNo=${policyNo}`;
     }
 

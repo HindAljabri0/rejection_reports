@@ -131,8 +131,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   departmentFilterCtrl: FormControl = new FormControl();
   filteredDepartments: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   @ViewChild('departmentSelect', { static: true }) departmentSelect: MatSelect;
-  isDepartmentDisable: boolean = false;
-  isPageModeCreate: boolean = false;
+  isDepartmentDisable = false;
+  isPageModeCreate = false;
   constructor(
     private store: Store,
     private datePipe: DatePipe,
@@ -210,7 +210,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         this.departments = values.departments;
         this.isPageModeCreate = true;
       } else {
-        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL_PHARMACY' ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical' || department.name == 'Pharmacy') : values.departments;
+        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL_PHARMACY'
+          ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical'
+            || department.name == 'Pharmacy') : values.departments;
       }
       this.filteredDepartments.next(this.departments.slice());
       this.departmentFilterCtrl.valueChanges
@@ -431,14 +433,15 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.physicianIdController.disable();
     }
   }
-  //this.claimDateController.value
+  // this.claimDateController.value
   updateClaim(field: string) {
     switch (field) {
       case ('claimDate'):
-        if (this.claimDateController.value != null)
+        if (this.claimDateController.value != null) {
           this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
-        else
+        } else {
           this.store.dispatch(updateClaimDate({ claimDate: null }));
+        }
         break;
       case ('caseType'):
         this.store.dispatch(updateCaseType({ caseType: this.selectedCaseType }));

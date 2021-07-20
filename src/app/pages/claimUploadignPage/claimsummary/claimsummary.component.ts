@@ -300,7 +300,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   // deleteClaimByUploadid(uploadSummaryID: number, refNumber: string) {
   //   this.dialogService.openMessageDialog(
   //     new MessageDialogData('Delete Upload?',
-  //       `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+  //       `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it?
+  // This cannot be undone.`,
   //       false,
   //       true))
   //     .subscribe(result => {
@@ -348,8 +349,9 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
           });
         }
       }, err => {
-        if (err.status)
+        if (err.status) {
           this.authService.logout();
+        }
       }), eventError => {
         this.commen.loadingChanged.next(false);
       };

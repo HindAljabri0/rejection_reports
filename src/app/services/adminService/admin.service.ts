@@ -20,9 +20,9 @@ export class AdminService {
   searchServiceCode(serviceCode: string, providerId: string, payerId: string, visitDate: Date, page?: number, pageSize?: number) {
     const requestURL = `/price-list/search`;
     const body = {
-      serviceCode: serviceCode,
-      providerId: providerId,
-      payerId: payerId,
+      serviceCode,
+      providerId,
+      payerId,
       visitDate: this._fixDate(visitDate).getTime()
     };
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, body);

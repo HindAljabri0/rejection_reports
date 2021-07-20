@@ -62,8 +62,8 @@ export class SearchEffects {
                     data.attachments.filter(att => att.claimId == id))
                     .pipe(
                         filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
-                        map(response => ({ id: id, status: 'done' })),
-                        catchError(err => of({ id: id, status: 'error', error: err }))
+                        map(response => ({ id, status: 'done' })),
+                        catchError(err => of({ id, status: 'error', error: err }))
                     )
             )
         )),
@@ -93,7 +93,7 @@ export class SearchEffects {
             const body = response.body;
             if (body instanceof Array) {
                 results = body.map(att => ({
-                    claimId: claimId, file: att['attachmentfile'],
+                    claimId, file: att['attachmentfile'],
                     type: att['filetype'], name: att['filename'], attachmentId: att['attachmentid']
                 }));
             }

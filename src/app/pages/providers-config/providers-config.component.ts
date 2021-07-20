@@ -94,7 +94,7 @@ export class ProvidersConfigComponent implements OnInit {
   PBMPasswordController: FormControl = new FormControl('');
   PBMCheckValueController: FormControl = new FormControl('');
   payerMappingValue: { [key: number]: string } = {};
-  isPBMLoading: boolean = false;
+  isPBMLoading = false;
   exisingServiceAndPriceValidationData: any = [];
 
   constructor(
@@ -108,7 +108,11 @@ export class ProvidersConfigComponent implements OnInit {
     sharedServices.loadingChanged.next(true);
   }
 
-
+  static test(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'required': true };
+  }
 
   ngOnInit() {
     this.superAdmin.getProviders().subscribe(event => {
@@ -150,7 +154,8 @@ export class ProvidersConfigComponent implements OnInit {
 
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
+      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase()
+        .includes(this.providerController.value.toLowerCase())
     );
   }
 
@@ -168,7 +173,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.superAdmin.getAssociatedPayers(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
-          this.newPBMValidationSettings["101"] = false;
+          this.newPBMValidationSettings['101'] = false;
           this.associatedPayers = event.body;
 
           this.associatedPayers.forEach(payer => {
@@ -178,7 +183,10 @@ export class ProvidersConfigComponent implements OnInit {
             this.newICD10ValidationSettings[payer.switchAccountId] = false;
             this.newSFDAValidationSettings[payer.switchAccountId] = false;
             // new changes for payer mapping
-            this.existingPayers.push({ payerId: payer.switchAccountId, payerName: payer.name, mappingName: '', providerId: this.selectedProvider });
+            this.existingPayers.push({
+              payerId: payer.switchAccountId, payerName: payer.name, mappingName: '',
+              providerId: this.selectedProvider
+            });
             this.newPayerMappingEnable[payer.switchAccountId] = false;
             this.newPayerMappingValue[payer.switchAccountId] = '';
             this.payerMappingValue[payer.switchAccountId] = '';
@@ -221,11 +229,10 @@ export class ProvidersConfigComponent implements OnInit {
               payerId: payer.switchAccountId,
               isServiceCodeEnable: settingData.isServiceCodeEnable,
               isPriceUnitEnable: settingData.isPriceUnitEnable
-            }
+            };
             this.exisingServiceAndPriceValidationData.push(obj);
             // payer.hasAssociatedPriceList = settingData.isEnabled === '1' ? true : false;
-          }
-          else {
+          } else {
             this.newServiceValidationSettings[payer.switchAccountId] = false;
             this.newPriceUnitSettings[payer.switchAccountId] = false;
             // payer.hasAssociatedPriceList = false;
@@ -233,7 +240,7 @@ export class ProvidersConfigComponent implements OnInit {
               payerId: payer.switchAccountId,
               isServiceCodeEnable: '0',
               isPriceUnitEnable: '0'
-            }
+            };
             this.exisingServiceAndPriceValidationData.push(obj);
           }
         });
@@ -278,7 +285,8 @@ export class ProvidersConfigComponent implements OnInit {
     }
     this.resetUserMessages();
     const portalUserFlag = this.savePortalUserSettings();
-    // const serviceCodeFlag = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings, this.serviceCodeValidationSettings);
+    // const serviceCodeFlag = this.saveSettings(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings,
+    // this.serviceCodeValidationSettings);
     const icd10Flag = this.saveSettings(ICD10_RESTRICTION_KEY, this.newICD10ValidationSettings, this.ICD10ValidationSettings);
     // const priceUnitFlag = this.saveSettings(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings, this.priceUnitSettings);
     const sfdaFlag = this.saveSettings(SFDA_RESTRICTION_KEY, this.newSFDAValidationSettings, this.sfdaValidationSettings);
@@ -315,10 +323,10 @@ export class ProvidersConfigComponent implements OnInit {
           payerId: ele.payerId,
           isServiceCodeEnable: this.newServiceValidationSettings[ele.payerId] ? '1' : '0',
           isPriceUnitEnable: this.newPriceUnitSettings[ele.payerId] ? '1' : '0'
-        }
+        };
         priceValidationData.push(obj);
       }
-    })
+    });
 
     if (priceValidationData.length === 0) {
       this.componentLoading.serviceCode = false;
@@ -340,12 +348,11 @@ export class ProvidersConfigComponent implements OnInit {
       if (error instanceof HttpErrorResponse) {
         if (error.status != 404) {
           this.errors.serviceCodeSaveError = 'Could not change payer mapping, please try again later.';
-        }
-        else {
+        } else {
           this.setSaveError(SERVICE_CODE_RESTRICTION_KEY, 'Could not save settings, please try again later.');
         }
       }
-      this.componentLoading.serviceCode = false
+      this.componentLoading.serviceCode = false;
     });
 
   }
@@ -363,7 +370,7 @@ export class ProvidersConfigComponent implements OnInit {
         this.setSaveError(URLKey, null);
         this.setSaveSuccess(URLKey, null);
         this.superAdmin.saveProviderPayerSettings(this.selectedProvider, newSettingsKeys.map(payerId => ({
-          payerId: payerId,
+          payerId,
           key: URLKey,
           value: (newSettingValues[payerId]) ? '1' : '0'
         })
@@ -396,7 +403,7 @@ export class ProvidersConfigComponent implements OnInit {
       case SERVICE_CODE_RESTRICTION_KEY:
         this.serviceCodeValidationSettings.push({
           providerId: this.selectedProvider,
-          payerId: payerId,
+          payerId,
           key: URLKey,
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
@@ -404,7 +411,7 @@ export class ProvidersConfigComponent implements OnInit {
       case VALIDATE_RESTRICT_PRICE_UNIT:
         this.priceUnitSettings.push({
           providerId: this.selectedProvider,
-          payerId: payerId,
+          payerId,
           key: URLKey,
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
@@ -412,7 +419,7 @@ export class ProvidersConfigComponent implements OnInit {
       case ICD10_RESTRICTION_KEY:
         this.ICD10ValidationSettings.push({
           providerId: this.selectedProvider,
-          payerId: payerId,
+          payerId,
           key: URLKey,
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
@@ -420,7 +427,7 @@ export class ProvidersConfigComponent implements OnInit {
       case SFDA_RESTRICTION_KEY:
         this.sfdaValidationSettings.push({
           providerId: this.selectedProvider,
-          payerId: payerId,
+          payerId,
           key: URLKey,
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
@@ -428,7 +435,7 @@ export class ProvidersConfigComponent implements OnInit {
       case PBM_RESTRICTION_KEY:
         this.pbmValidationSettings.push({
           providerId: this.selectedProvider,
-          payerId: payerId,
+          payerId,
           key: URLKey,
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
@@ -805,12 +812,6 @@ export class ProvidersConfigComponent implements OnInit {
       return true;
     }
     return true;
-  }
-
-  static test(control: FormControl) {
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { 'required': true };
   }
 
   validateForm() {

@@ -2,7 +2,7 @@ import { GDPN } from './GDPN.model';
 import { Service } from './service.model';
 
 export class Invoice {
-  invoiceId?:number;
+  invoiceId?: number;
   invoiceNumber: string;
   invoiceDate: Date;
   invoiceDepartment: string;

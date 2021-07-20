@@ -116,7 +116,7 @@ export class InvoicesServicesComponent implements OnInit {
   acutalDeductedAmount: any;
   statusCode: any;
   claimProps: RetrievedClaimProps;
-  isPBMValidationVisible: boolean = false;
+  isPBMValidationVisible = false;
   selectedInvoiceIndex: any;
   constructor(
     private store: Store,
@@ -152,7 +152,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.departments = departments;
         this.store.select(getClaim).subscribe(claim => {
           claim.invoice.map((invoice, index) => {
-            this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
+            this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment, 10));
           });
         });
 
@@ -180,7 +180,7 @@ export class InvoicesServicesComponent implements OnInit {
         this.store.dispatch(selectGDPN({}));
       }
     });
-    
+
 
     this.actions.pipe(
       ofType(saveInvoices_Services)
@@ -212,7 +212,7 @@ export class InvoicesServicesComponent implements OnInit {
       this.controllers[index].invoice = invoice;
       this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
       this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
-      this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
+      this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment, 10));
       invoice.service.forEach(service => {
         this.addService(index, false);
         const serviceIndex = this.controllers[index].services.length - 1;
@@ -237,11 +237,13 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].pbmServiceError = service.pbmServiceError;
         this.controllers[index].services[serviceIndex].pbmServiceStatus = service.pbmServiceStatus;
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
-        if (service.unitPrice != null)
+        if (service.unitPrice != null) {
           this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
+        }
 
-        if (service.serviceGDPN.discount != null)
+        if (service.serviceGDPN.discount != null) {
           this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
+        }
         this.controllers[index].services[serviceIndex].serviceDiscountUnit =
           (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
 
@@ -254,8 +256,9 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].netVatRate.setValue('');
         }
-        if (service.serviceGDPN.netVATamount != null)
-          this.controllers[index].services[serviceIndex].netVatAmount = service.serviceGDPN.netVATamount.value
+        if (service.serviceGDPN.netVATamount != null) {
+          this.controllers[index].services[serviceIndex].netVatAmount = service.serviceGDPN.netVATamount.value;
+        }
 
         if (service.serviceGDPN.patientShare != null) {
           this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
@@ -275,14 +278,17 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].patientShareVatRate.setValue('');
         }
-        if (service.serviceGDPN.patientShareVATamount != null)
-          this.controllers[index].services[serviceIndex].patientShareVatAmount = service.serviceGDPN.patientShareVATamount.value
+        if (service.serviceGDPN.patientShareVATamount != null) {
+          this.controllers[index].services[serviceIndex].patientShareVatAmount = service.serviceGDPN.patientShareVATamount.value;
+        }
 
-        if (service.serviceGDPN.net != null)
-          this.controllers[index].services[serviceIndex].net = service.serviceGDPN.net.value
+        if (service.serviceGDPN.net != null) {
+          this.controllers[index].services[serviceIndex].net = service.serviceGDPN.net.value;
+        }
 
-        if (service.serviceGDPN.gross != null)
-          this.controllers[index].services[serviceIndex].gross = service.serviceGDPN.gross.value
+        if (service.serviceGDPN.gross != null) {
+          this.controllers[index].services[serviceIndex].gross = service.serviceGDPN.gross.value;
+        }
 
         if (service.serviceGDPN.priceCorrection != null) {
           this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
@@ -304,12 +310,11 @@ export class InvoicesServicesComponent implements OnInit {
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.controllers.forEach(invoiceControllers => {
-      if (this.pageMode === "EDIT") {
+      if (this.pageMode === 'EDIT') {
         invoiceControllers.invoiceDate.enable();
         invoiceControllers.invoiceNumber.enable();
         invoiceControllers.invoiceDepartment.enable();
-      }
-      else {
+      } else {
         invoiceControllers.invoiceDate.disable();
         invoiceControllers.invoiceNumber.disable();
         invoiceControllers.invoiceDepartment.disable();
@@ -386,7 +391,10 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   addInvoice(withService?: boolean) {
-    this.controllers.push({ invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(), services: [], invoiceDepartment: new FormControl() });
+    this.controllers.push({
+      invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(),
+      services: [], invoiceDepartment: new FormControl()
+    });
     if (this.departments.length > 0) {
       this.controllers[this.controllers.length - 1].invoice.invoiceDepartment = `${this.departments[0].departmentId}`;
     }
@@ -447,7 +455,8 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].quantity.disable();
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
-    this.controllers[i].services[j].serviceDiscountUnit = (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
+    this.controllers[i].services[j].serviceDiscountUnit = (service.serviceGDPN.discount != null
+      && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
     this.controllers[i].services[j].daysOfSupply.setValue(service.daysOfSupply);
     this.controllers[i].services[j].daysOfSupply.disable();
@@ -478,8 +487,9 @@ export class InvoicesServicesComponent implements OnInit {
       this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
     }
 
-    if (this.selectedInvoiceIndex !== undefined && this.selectedInvoiceIndex < this.controllers.length)
+    if (this.selectedInvoiceIndex !== undefined && this.selectedInvoiceIndex < this.controllers.length) {
       this.createInvoiceFromControl(this.selectedInvoiceIndex);
+    }
 
     this.selectedInvoiceIndex = i;
   }
@@ -528,7 +538,9 @@ export class InvoicesServicesComponent implements OnInit {
         return discount;
       } else if (service.serviceGDPN.discount != null) {
         return service.serviceGDPN.discount.value;
-      } else return 0;
+      } else {
+        return 0;
+      }
     }).reduce((pre, cur) => pre + cur);
     GDPN.discount.type = 'SAR';
     GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
@@ -609,7 +621,7 @@ export class InvoicesServicesComponent implements OnInit {
       net = this.calcNet(service);
     }
     if (service.netVatAmount != null) {
-      return service.netVatAmount
+      return service.netVatAmount;
     }
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
@@ -618,7 +630,7 @@ export class InvoicesServicesComponent implements OnInit {
 
   calcPatientVatRate(service) {
     if (service.patientShareVatAmount != null) {
-      return service.patientShareVatAmount
+      return service.patientShareVatAmount;
     }
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
@@ -648,12 +660,12 @@ export class InvoicesServicesComponent implements OnInit {
     event.preventDefault();
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
-      invoiceIndex: invoiceIndex,
+      invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
       invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ?
         new Date(this.controllers[invoiceIndex].invoiceDate.value) :
         null,
-      serviceIndex: serviceIndex,
+      serviceIndex,
     }));
   }
 
@@ -667,7 +679,7 @@ export class InvoicesServicesComponent implements OnInit {
   onAddRetrievedServiceClick(invoiceIndex) {
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
-      invoiceIndex: invoiceIndex,
+      invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
       invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ?
         new Date(this.controllers[invoiceIndex].invoiceDate.value) :
@@ -786,12 +798,12 @@ export class InvoicesServicesComponent implements OnInit {
     return this.sharedServices.statusToName(status);
   }
   getPBMValidation() {
-    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, "101").subscribe((event: any) => {
+    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event['body'];
-        this.isPBMValidationVisible = body.value === "1"
+        this.isPBMValidationVisible = body.value === '1'
           && (this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase()
-          || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+            || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
@@ -803,6 +815,7 @@ export class InvoicesServicesComponent implements OnInit {
     if (date != null && !(date instanceof Date)) {
       date = new Date(date);
     }
-    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
+    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth())
+      || Number.isNaN(date.getDay()) || date.getTime() > Date.now();
   }
 }

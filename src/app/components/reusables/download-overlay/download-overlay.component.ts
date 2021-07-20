@@ -16,22 +16,23 @@ export class DownloadOverlayComponent implements OnInit {
 
   progress = 0;
   fileName: string;
-  contentType: string = '';
+  contentType = '';
   errorMessage: string;
 
-  constructor(@Inject(REQUEST_OBSERVER) private downloadMethod: Observable<HttpEvent<unknown>>,
+  constructor(
+    @Inject(REQUEST_OBSERVER) private downloadMethod: Observable<HttpEvent<unknown>>,
     @Inject(DOWNLOAD_STATUS_OBSERVER) private status: Subject<DownloadStatus>,
-    @Inject(OVERLAY_REFERENCE) private overlayRef: OverlayRef) { }
+    @Inject(OVERLAY_REFERENCE) private overlayRef: OverlayRef
+  ) { }
 
   ngOnInit() {
     this.status.next(DownloadStatus.INIT);
     this.downloadMethod.subscribe(event => {
       this.status.next(DownloadStatus.DOWNLOADING);
       if (event instanceof HttpHeaderResponse) {
-        this.getFileName(event.headers.get("Content-Disposition"));
-        this.contentType = event.headers.get("Content-Type");
-      }
-      else if (event.type == HttpEventType.DownloadProgress) {
+        this.getFileName(event.headers.get('Content-Disposition'));
+        this.contentType = event.headers.get('Content-Type');
+      } else if (event.type == HttpEventType.DownloadProgress) {
         this.progress = event.loaded / (event.loaded + (event.loaded + 3 / event.loaded + 1 * 1000000)) * 100;
       } else if (event instanceof HttpResponse) {
         this.progress = 100;
@@ -49,7 +50,7 @@ export class DownloadOverlayComponent implements OnInit {
             a.click();
           }
         } else if (this.isZip()) {
-          let filename = this.fileName;
+          const filename = this.fileName;
           const zip = new JSZip();
           zip.generateAsync({ type: 'blob' }).then(function (blob) {
             const FileSaver = require('file-saver');
@@ -68,16 +69,16 @@ export class DownloadOverlayComponent implements OnInit {
         this.detach();
       }
     }, errorEvent => {
-      this.errorMessage = "Could not reach the server at the moment please try again later."
+      this.errorMessage = 'Could not reach the server at the moment please try again later.';
       this.status.next(DownloadStatus.ERROR);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status == 404) {
-          this.errorMessage = "Could not find data to download."
+          this.errorMessage = 'Could not find data to download.';
         } else if (errorEvent.status < 500) {
           this.errorMessage = errorEvent.error;
         }
       }
-    })
+    });
   }
 
   getFileName(contentDisposition: string) {
@@ -100,15 +101,15 @@ export class DownloadOverlayComponent implements OnInit {
   }
 
   isCSV() {
-    return this.contentType.startsWith("text/csv");
+    return this.contentType.startsWith('text/csv');
   }
 
   isExcel() {
-    return this.contentType == "application/ms-excel";
+    return this.contentType == 'application/ms-excel';
   }
 
   isZip() {
-    return this.contentType == "application/zip";
+    return this.contentType == 'application/zip';
   }
 
 }

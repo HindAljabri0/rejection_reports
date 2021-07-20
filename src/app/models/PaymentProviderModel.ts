@@ -2,7 +2,7 @@ export class PaymentProviderModel {
     payerid: any = '';
     effectiveDate: any = '';
     expiryDate: any = '';
-    modePayment: string = '';
+    modePayment = '';
     numberOfDays: number;
     agreementCopy: any;
 }

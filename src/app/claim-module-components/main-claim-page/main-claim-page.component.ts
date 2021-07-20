@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
@@ -43,10 +43,7 @@ import { Location } from '@angular/common';
   templateUrl: './main-claim-page.component.html',
   styles: []
 })
-export class MainClaimPageComponent implements OnInit {
-
-
-
+export class MainClaimPageComponent implements OnInit, OnDestroy {
   claim: Claim;
   claimProps: RetrievedClaimProps;
   errors: any;
@@ -137,7 +134,7 @@ export class MainClaimPageComponent implements OnInit {
     const claimId = this.router.routerState.snapshot.url.split('/')[2];
     if (claimId != 'add') {
       this.store.dispatch(hideHeaderAndSideMenu());
-      this.store.dispatch(retrieveClaim({ claimId: claimId, edit: this.router.routerState.snapshot.url.endsWith('#edit') }));
+      this.store.dispatch(retrieveClaim({ claimId, edit: this.router.routerState.snapshot.url.endsWith('#edit') }));
     }
     this.store.dispatch(loadLOVs());
     this.store.select(getDepartments)
@@ -167,15 +164,16 @@ export class MainClaimPageComponent implements OnInit {
       `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
     this.claimType = type;
     const payers = this.sharedService.getPayersList();
-    if (this.claimType == this.dentalDepartmentCode || this.claimType == this.opticalDepartmentCode || this.claimType == this.pharmacyDepartmentCode) {
+    if (this.claimType == this.dentalDepartmentCode || this.claimType == this.opticalDepartmentCode ||
+      this.claimType == this.pharmacyDepartmentCode) {
       this.claimName = type == this.dentalDepartmentCode ? 'Dental' : type == this.opticalDepartmentCode ? 'Optical' : 'Pharmacy';
-      this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
+      this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber, payers }));
     } else {
       this.claimName = type === 'INPATIENT' ? 'Inpatient' : 'Outpatient';
       this.store.dispatch(startCreatingNewClaim({
         data: {
           claimType: this.claimType,
-          providerClaimNumber: providerClaimNumber
+          providerClaimNumber
         }
       }));
 
@@ -202,7 +200,7 @@ export class MainClaimPageComponent implements OnInit {
     if (status != null) {
       return this.sharedService.getCardAccentColor(status);
     }
-     return 'all-claim';
+    return 'all-claim';
   }
 
   edit() {

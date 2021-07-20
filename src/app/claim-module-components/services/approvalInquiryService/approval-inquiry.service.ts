@@ -13,8 +13,8 @@ export class ApprovalInquiryService {
     const requestUrl = `/providers/${providerId}/inquiry/approval`;
     const body = {
       approvalReferenceNumber: approvalNumber,
-      approvalType: approvalType,
-      payerId: payerId
+      approvalType,
+      payerId
     };
     const request = new HttpRequest('POST', environment.claimInquireServiceHost + requestUrl, body);
     return this.http.request(request);

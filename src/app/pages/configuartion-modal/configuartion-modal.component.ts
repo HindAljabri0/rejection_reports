@@ -14,7 +14,12 @@ export class ConfiguartionModalComponent implements OnInit {
   currentFileUpload: File;
   error = '';
   sizeInMB: string;
-  constructor(private dialogRef: MatDialogRef<ConfiguartionModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public common: SharedServices, private _configurationService: ConfigurationService, private dialogService: DialogService) { }
+  constructor(
+    private dialogRef: MatDialogRef<ConfiguartionModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public common: SharedServices,
+    private _configurationService: ConfigurationService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.currentFileUpload = this.data.file;
@@ -61,10 +66,10 @@ export class ConfiguartionModalComponent implements OnInit {
   }
   upload() {
     if (this.currentFileUpload === undefined) {
-      this.error = "Please upload the one csv file."
+      this.error = 'Please upload the one csv file.';
       return;
     }
-    this.error = "";
+    this.error = '';
     this.startUploading();
   }
   startUploading() {
@@ -73,7 +78,9 @@ export class ConfiguartionModalComponent implements OnInit {
       if (res.body !== undefined) {
         this.common.loadingChanged.next(false);
         this.closeDialog();
-        !res.body.response ? this.dialogService.openMessageDialog(new MessageDialogData('', res.body.message, true)) : this.dialogService.openMessageDialog(new MessageDialogData('', res.body.message, false));
+        !res.body.response
+          ? this.dialogService.openMessageDialog(new MessageDialogData('', res.body.message, true))
+          : this.dialogService.openMessageDialog(new MessageDialogData('', res.body.message, false));
       }
     }, err => {
       this.common.loadingChanged.next(false);

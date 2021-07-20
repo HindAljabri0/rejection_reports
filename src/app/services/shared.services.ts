@@ -540,11 +540,11 @@ export class SharedServices {
   }
   decodeJwtToken(tkn: string, name: string): string {
     if (tkn) {
-      let token = this.helper.decodeToken(tkn);
+      const token = this.helper.decodeToken(tkn);
       return token[name];
-    }
-    else
+    } else {
       return '';
+    }
   }
 
 }

@@ -6,8 +6,6 @@ import { interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { changePageTitle, showSnackBarMessage } from './mainStore.actions';
 
-
-
 @Injectable({ providedIn: 'root' })
 export class MainStoreEffects {
 

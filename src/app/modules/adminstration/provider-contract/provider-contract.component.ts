@@ -55,7 +55,7 @@ export class ProviderContractComponent implements OnInit {
         panelClass: ['primary-dialog', 'dialog-lg'],
         data: {
           providers: this.providers,
-          isEditData: isEditData,
+          isEditData,
           editData: item,
           selectedProvider: this.selectedProvider
         }

@@ -104,7 +104,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   }
 
   clearErrors() {
-    this.updateIllnesses({ source: { checked: true }, value: 'NA' })
+    this.updateIllnesses({ source: { checked: true }, value: 'NA' });
   }
 }
 

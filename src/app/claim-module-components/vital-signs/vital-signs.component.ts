@@ -51,7 +51,7 @@ export class VitalSignsComponent implements OnInit {
         this.toggleEdit(false, true);
       }
     });
-    this.store.select(getVitalSignsErrors).subscribe(errors => this.errors =errors);
+    this.store.select(getVitalSignsErrors).subscribe(errors => this.errors = errors);
   }
 
   setData(claim: Claim) {

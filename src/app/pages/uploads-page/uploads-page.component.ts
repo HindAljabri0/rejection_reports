@@ -30,7 +30,7 @@ export class UploadsPageComponent implements OnInit {
     if (this.isLoading) {
       return;
     }
-    if(this.uploads.length >= this.length){
+    if (this.uploads.length >= this.length) {
       return;
     }
     this.sharedService.loadingChanged.next(true);
@@ -52,7 +52,7 @@ export class UploadsPageComponent implements OnInit {
 
   openUpload(uploadId: number) {
     this.router.navigate([this.sharedService.providerId, 'claims'], {
-      queryParams: { uploadId: uploadId }
+      queryParams: { uploadId }
     });
   }
 

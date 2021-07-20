@@ -5,7 +5,7 @@ import { RejectionCardData } from '../components/rejection-card/rejectionCardDat
 import { ClaimsSummary } from 'src/app/models/ClaimsSummary';
 
 
-export type DashboardCardData = { loading: boolean, data: ClaimsSummary |RejectionCardData|any, error?: string, title?: string };
+export type DashboardCardData = { loading: boolean, data: ClaimsSummary | RejectionCardData | any, error?: string, title?: string };
 
 export interface DashboardStatus {
     searchCriteria: SearchCriteria;
@@ -50,7 +50,7 @@ const _dashboardReducer = createReducer(
     on(actions.updateSearchCriteria, (state, criteria) => ({ ...state, searchCriteria: criteria })),
     on(actions.setCardIsLoading, (state, { name, loading }) => {
         const newState = { ...state };
-        newState[name] = { loading: loading, data: state[name].data, error: state[name].error };
+        newState[name] = { loading, data: state[name].data, error: state[name].error };
         return newState;
     }),
     on(actions.setCardSummary, (state, { name, data: summary }) => {
@@ -64,10 +64,10 @@ const _dashboardReducer = createReducer(
         if (data['statuses'] != null) {
             newState[name] = {
                 loading: state[name].loading,
-                data: ClaimsSummary.emptySummaryWithStatuses(data['statuses']), error: error
+                data: ClaimsSummary.emptySummaryWithStatuses(data['statuses']), error
             };
         } else {
-            newState[name] = { loading: state[name].loading, data: new RejectionCardData(data['rejectionBy']), error: error };
+            newState[name] = { loading: state[name].loading, data: new RejectionCardData(data['rejectionBy']), error };
         }
         return newState;
     }),
