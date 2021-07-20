@@ -17,8 +17,8 @@ export class AdminService {
     return this.http.request(request);
   }
 
-  searchServiceCode(serviceCode: string, providerId: string, payerId: string, visitDate: Date, page?: number, pageSize?: number) {
-    const requestURL = `/price-list/search`;
+  searchServiceCode(serviceCode: string, providerId: string, payerId: string, visitDate: Date, serviceType?: string, page?: number, pageSize?: number) {
+    const requestURL = `/price-list/search?serviceType=${serviceType}`;
     const body = {
       serviceCode,
       providerId,
