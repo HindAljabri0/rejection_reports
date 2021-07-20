@@ -2,7 +2,7 @@ export class BatchSummary {
     payerId: any;
     startDate: any = '';
     endDate: any = '';
-    page: number = 0;
-    pageSize: number = 10;
+    page = 0;
+    pageSize = 10;
     totalPages: number;
 }

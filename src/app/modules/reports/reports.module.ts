@@ -24,7 +24,9 @@ import { CreditReportUploadModalComponent } from './components/credit-report-upl
 import { ClaimSubmissionsComponent } from './components/claim-submissions/claim-submissions.component';
 import { RevenueReportComponent } from './components/revenue-report/revenue-report.component';
 import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
-import { TawuniyaCreditReportErrorsDialogComponent } from './components/tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
+import {
+  TawuniyaCreditReportErrorsDialogComponent
+} from './components/tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-report/revenue-breakdown-report.component';
 import { RevenueComparativeReportComponent } from './components/revenue-comparative-report/revenue-comparative-report.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';

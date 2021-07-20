@@ -130,12 +130,12 @@ export class ReportsService {
   }
 
   saveBupaRejectionReport(providerId: string, data: CreditReportQueryModel) {
-    let body = { ...data };
+    const body = { ...data };
     Object.keys(body).some(key => {
       if (body[key].toString().includes('%')) {
-        body[key] = +body[key].replace(/%/g, "");
+        body[key] = +body[key].replace(/%/g, '');
       }
-      if (body[key] === "") {
+      if (body[key] === '') {
         body[key] = 0;
       }
     });
@@ -172,7 +172,8 @@ export class ReportsService {
       }
     }
     // { responseType: 'text', params: searchparams }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'arraybuffer', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
+      { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
 

@@ -112,7 +112,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
     const isProvider = this.getPayersList().some(payer => {
       const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
       return userPrivileges != null && userPrivileges.split('|').includes('3.0');
-    })
+    });
     return !isProvider && item != null && (item.includes('|22') || item.startsWith('22'));
   }
 
@@ -122,7 +122,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
     const isProvider = this.getPayersList().some(payer => {
       const userPrivileges = localStorage.getItem(`${providerId}${payer.id}`);
       return userPrivileges != null && userPrivileges.split('|').includes('3.0');
-    })
+    });
     return !isProvider && item != null && (item.includes('|24') || item.startsWith('24'));
   }
 

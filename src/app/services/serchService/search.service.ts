@@ -183,18 +183,15 @@ export class SearchService {
       requestURL += `&patientFileNo=${patientFileNo}`;
     } else if (policyNo != null && (uploadId === null || uploadId === undefined)) {
       requestURL += `&policyNo=${policyNo}`;
-    }
-    else if (drname != null && drname !== '' && drname !== undefined) {
+    } else if (drname != null && drname !== '' && drname !== undefined) {
       requestURL += `&drname=${drname}`;
-    }
-    else if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+    } else if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
       requestURL += `&nationalId=${nationalId}`;
-    }
-    else if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+    } else if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestURL += `&claimDate=${claimDate}`;
     }
 
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text' , reportProgress:true});
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -213,7 +210,7 @@ export class SearchService {
     policyNo?: string,
     drname?: string,
     nationalId?: string,
-    claimDate?: string ) {
+    claimDate?: string) {
     let requestURL = `/providers/${providerId}/claims/download/excel?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && payerId != null && (uploadId === null || uploadId === undefined)) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
@@ -234,17 +231,14 @@ export class SearchService {
       requestURL += `&patientFileNo=${patientFileNo}`;
     } else if (policyNo != null && (uploadId === null || uploadId === undefined)) {
       requestURL += `&policyNo=${policyNo}`;
-    }
-    else if (drname != null && drname !== '' && drname !== undefined) {
+    } else if (drname != null && drname !== '' && drname !== undefined) {
       requestURL += `&drname=${drname}`;
-    }
-    else if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+    } else if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
       requestURL += `&nationalId=${nationalId}`;
-    }
-    else if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+    } else if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestURL += `&claimDate=${claimDate}`;
     }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'blob' , reportProgress:true } );
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -254,8 +248,8 @@ export class SearchService {
     return this.http.request(request);
   }
 
-    
-  getClaimsSummary( providerId: string, payerId: string, fromDate: string, toDate: string ,statuses:String[]) {
+
+  getClaimsSummary(providerId: string, payerId: string, fromDate: string, toDate: string, statuses: string[]) {
     const requestURL = `/providers/${providerId}/payerId/${payerId}/ClaimsSummary?fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&statuses=${statuses.toString()}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);

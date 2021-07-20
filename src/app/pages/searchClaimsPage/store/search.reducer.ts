@@ -67,7 +67,7 @@ const _searchReducer = createReducer(
     initState,
     on(setSearchCriteria, (state, { type, ...criteria }) => ({ ...state, searchCriteria: { ...state.searchCriteria, ...criteria } })),
     on(storeClaims, (state, { claims, currentPage, maxPages, pageSize }) =>
-        ({ ...state, claims: claims, currentPage: currentPage, maxPages: maxPages, pageSize: pageSize })),
+        ({ ...state, claims, currentPage, maxPages, pageSize })),
     on(toggleAssignedAttachmentLoading, (state, { isLoading }) =>
         ({ ...state, attachmentManagementState: { ...state.attachmentManagementState, assignedAttachmentsLoading: isLoading } })),
     on(assignAttachmentsToClaim, (state, { attachments }) =>
@@ -87,7 +87,7 @@ const _searchReducer = createReducer(
             ...state, attachmentManagementState: {
                 ...state.attachmentManagementState,
                 assignedAttachments: allAttachments,
-                claimsWithChanges: claimsWithChanges
+                claimsWithChanges
             }
         });
     }),
@@ -103,7 +103,7 @@ const _searchReducer = createReducer(
         attachmentManagementState: {
             ...state.attachmentManagementState,
             saveChangesLoading: false,
-            responses: responses,
+            responses,
             claimsWithChanges: state.attachmentManagementState.claimsWithChanges.filter(id =>
                 responses.findIndex(res => res.id == id && res.status == 'error') != -1)
         }

@@ -105,7 +105,7 @@ export class LabResultsComponent implements OnInit {
           this.resultsControls.push(controls);
         }
       );
-      if(this.resultsControls.length > 0 && this.expandedResult == -1){
+      if (this.resultsControls.length > 0 && this.expandedResult == -1) {
         this.toggleResult(0);
       }
     }
@@ -142,7 +142,7 @@ export class LabResultsComponent implements OnInit {
 
   createEmptyResultControls() {
     return {
-      results: new  Investigation(),
+      results: new Investigation(),
       testDate: new FormControl(),
       testCode: new FormControl(),
       testSerial: new FormControl(),
@@ -153,7 +153,7 @@ export class LabResultsComponent implements OnInit {
 
   createEmptyComponentControls() {
     return {
-      components : new Observation(),
+      components: new Observation(),
       componentCode: new FormControl(),
       componentSerial: new FormControl(),
       componentDescription: new FormControl(),
@@ -211,11 +211,11 @@ export class LabResultsComponent implements OnInit {
     }
   }
 
-  fieldHasError(fieldName , code) {
+  fieldHasError(fieldName, code) {
     return this.errors.findIndex(error => error.fieldName == fieldName && error.code == code) != -1;
   }
 
-  getFieldError(fieldName ,code) {
+  getFieldError(fieldName, code) {
     const index = this.errors.findIndex(error => error.fieldName == fieldName && error.code == code);
     if (index > -1) {
       return this.errors[index].error || '';

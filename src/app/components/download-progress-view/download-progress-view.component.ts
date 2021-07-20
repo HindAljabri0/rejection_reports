@@ -33,19 +33,22 @@ export class DownloadProgressViewComponent implements OnInit, AfterContentInit {
   }
 
   isCSV() {
-    return this.downloadRequest.contentType != null && this.downloadRequest.contentType.startsWith("text/csv");
+    return this.downloadRequest.contentType != null && this.downloadRequest.contentType.startsWith('text/csv');
   }
 
   isExcel() {
-    return this.downloadRequest.contentType == "application/ms-excel";
+    return this.downloadRequest.contentType == 'application/ms-excel';
   }
 
   isZip() {
-    return this.downloadRequest.contentType == "application/zip";
+    return this.downloadRequest.contentType == 'application/zip';
   }
 
   getValue() {
-    return this.downloadRequest.totalSize != null && this.downloadRequest.totalSize != -1 ? this.downloadRequest.downloadedSize / this.downloadRequest.totalSize : this.downloadRequest.downloadedSize;
+    return this.downloadRequest.totalSize != null
+      && this.downloadRequest.totalSize != -1
+      ? this.downloadRequest.downloadedSize / this.downloadRequest.totalSize
+      : this.downloadRequest.downloadedSize;
   }
 
 }

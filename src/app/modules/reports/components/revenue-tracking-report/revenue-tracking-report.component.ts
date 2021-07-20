@@ -79,18 +79,20 @@ export class RevenueTrackingReportComponent implements OnInit {
         fontFamily: this.chartFontFamily,
         fontColor: this.chartFontColor
       },
-      onClick: function (e, legendItem) {
-        var isAvgCost = document.getElementById('avgCost');
-        var chartName = document.getElementById('chartName');
-        if ((chartName.textContent.toLowerCase() === "all" && chartName.classList.contains('active')) || (isAvgCost !== null && isAvgCost.classList.contains('active')))
+      onClick(e, legendItem) {
+        const isAvgCost = document.getElementById('avgCost');
+        const chartName = document.getElementById('chartName');
+        if ((chartName.textContent.toLowerCase() === 'all' && chartName.classList.contains('active')) || (isAvgCost !== null &&
+          isAvgCost.classList.contains('active'))) {
           return;
+        }
 
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
+        const index = legendItem.datasetIndex;
+        const ci = this.chart;
+        const alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
 
         ci.data.datasets.forEach(function (e, i) {
-          var meta = ci.getDatasetMeta(i);
+          const meta = ci.getDatasetMeta(i);
 
           if (i !== index) {
             if (!alreadyHidden) {
@@ -102,14 +104,14 @@ export class RevenueTrackingReportComponent implements OnInit {
             meta.hidden = null;
           }
         });
-        let maxValue: any = document.getElementById('yaxisMaxValue');
+        const maxValue: any = document.getElementById('yaxisMaxValue');
         // let multipleData = [];
         // ci.data.datasets.map((ele) => {
         //   multipleData.push(ele.data);
         // });
         // var maxValue = Math.max(...[].concat(...multipleData));
 
-        ci.options.scales.yAxes[0].ticks.max = parseInt(maxValue.value);
+        ci.options.scales.yAxes[0].ticks.max = parseInt(maxValue.value, 10);
 
         ci.update();
       }
@@ -121,19 +123,17 @@ export class RevenueTrackingReportComponent implements OnInit {
       callbacks: {
         label: (data, values) => {
           if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.All) {
-            const payerId = parseInt(values.datasets[data.datasetIndex].label);
+            const payerId = parseInt(values.datasets[data.datasetIndex].label, 10);
             if (payerId !== undefined && !isNaN(payerId)) {
               const payerData = this.payersList.find(ele => ele.id === payerId);
               data.value = payerData.name + ' ' + payerData.arName;
             }
-          }
-          else if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.Department) {
-            const departmentId = parseInt(values.datasets[data.datasetIndex].label);
+          } else if (this.revenuTrackingReport.subcategory === RevenuTrackingReportChart.Department) {
+            const departmentId = parseInt(values.datasets[data.datasetIndex].label, 10);
             if (departmentId !== undefined && !isNaN(departmentId)) {
               data.value = this.departments.find((ele) => ele.departmentId === departmentId).name;
             }
-          }
-          else {
+          } else {
             data.value = values.datasets[data.datasetIndex].label;
           }
           return data.value;
@@ -145,7 +145,7 @@ export class RevenueTrackingReportComponent implements OnInit {
             '',
             '1.2-2'
           );
-          return "Amount - " + data.value + ' SR';
+          return 'Amount - ' + data.value + ' SR';
         }
       }
     },
@@ -164,32 +164,39 @@ export class RevenueTrackingReportComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'MMM YYYY' };
   minDate: any;
   error: string;
-  isGenerateData: boolean = false;
+  isGenerateData = false;
   public lineChartPlugins = [{
     afterInit: (chart, options) => {
       chart.legend.afterFit = () => {
         chart.legend.legendItems.map((label) => {
           if (this.payersList.length > 0 && this.allChart) {
-            let value = this.payersList.find(ele => ele.id === parseInt(label.text));
+            const value = this.payersList.find(ele => ele.id === parseInt(label.text, 10));
             label.text = value.name + ' ' + value.arName;
           }
           if (this.revenuTrackingReport.subcategory.toLowerCase() === RevenuTrackingReportChart.Department.toLowerCase()) {
 
             if (this.departments != null && this.departments.length > 0) {
-              let value = this.departments.find(ele => ele.departmentId === parseInt(label.text));
+              const value = this.departments.find(ele => ele.departmentId === parseInt(label.text, 10));
               label.text = value.name;
             }
           }
 
           return label;
-        })
+        });
       };
     },
   }, pluginDataLabels];
   departments: any;
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   yaxisMaxValue: any = null;
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private store: Store, private currencyPipe: CurrencyPipe) {
+  constructor(
+    private sharedService: SharedServices,
+    private reportSerice: RevenuReportService,
+    private routeActive: ActivatedRoute,
+    private location: Location,
+    private store: Store,
+    private currencyPipe: CurrencyPipe
+  ) {
   }
 
   ngOnInit(): void {
@@ -213,13 +220,12 @@ export class RevenueTrackingReportComponent implements OnInit {
         this.revenuTrackingReport.toDate = toDate;
       }
       if (params.payerId != null) {
-        this.revenuTrackingReport.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId);
+        this.revenuTrackingReport.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId, 10);
         if (this.revenuTrackingReport.payerId !== '0') {
           const data = this.payersList.find(ele => ele.id === parseInt(this.revenuTrackingReport.payerId, 10));
           this.selectedPayerName = data.name + ' ' + data.arName;
           this.isServiceVisible = true;
-        }
-        else {
+        } else {
           this.selectedPayerName = 'All';
           this.isServiceVisible = false;
         }
@@ -232,8 +238,9 @@ export class RevenueTrackingReportComponent implements OnInit {
 
   showAllChart(form) {
     form.submitted = true;
-    if (form.invalid)
-      return
+    if (form.invalid) {
+      return;
+    }
     this.allChart = true;
     this.serviceOrPayerType = RevenuTrackingReportChart.All;
     this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
@@ -241,8 +248,9 @@ export class RevenueTrackingReportComponent implements OnInit {
   }
   showServiceChart(categoryType, form) {
     form.submitted = true;
-    if (form.invalid)
-      return
+    if (form.invalid) {
+      return;
+    }
 
     this.allChart = false;
     this.serviceOrPayerType = categoryType;
@@ -265,8 +273,9 @@ export class RevenueTrackingReportComponent implements OnInit {
       this.revenuTrackingReport.subcategory = RevenuTrackingReportChart.All;
       this.allChart = true;
     }
-    if (!form.invalid)
+    if (!form.invalid) {
       this.generate();
+    }
   }
   get revenuTrackingEnum() {
     return RevenuTrackingReportChart;
@@ -279,16 +288,17 @@ export class RevenueTrackingReportComponent implements OnInit {
   }
   generate() {
     this.isGenerateData = true;
-    if (this.chart !== undefined && this.chart !== null)
+    if (this.chart !== undefined && this.chart !== null) {
       this.chart.chart.options.scales.yAxes[0].ticks.max = undefined;
+    }
 
     const fromDate = moment(this.revenuTrackingReport.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
     this.editURL(fromDate, toDate);
     const obj: RevenuTrackingReport = {
       payerId: this.revenuTrackingReport.payerId,
-      fromDate: fromDate,
-      toDate: toDate,
+      fromDate,
+      toDate,
       subcategory: this.revenuTrackingReport.subcategory,
     };
 
@@ -323,7 +333,9 @@ export class RevenueTrackingReportComponent implements OnInit {
             pointHoverBorderColor: 'rgba(0,0,0,0)',
           });
         }
-        // this.router.navigateByUrl('/reports/revenue-report-breakdown', { queryParams: { payerId: this.revenuTrackingReport.payerId, fromDate: this.revenuTrackingReport.fromDate, toDate: this.revenuTrackingReport.toDate, category: this.revenuTrackingReport.subcategory } });
+        /*this.router.navigateByUrl('/reports/revenue-report-breakdown', { queryParams: { payerId: this.revenuTrackingReport.payerId,
+        fromDate: this.revenuTrackingReport.fromDate, toDate: this.revenuTrackingReport.toDate,
+        category: this.revenuTrackingReport.subcategory } });*/
       }
       this.sharedService.loadingChanged.next(false);
 
@@ -352,8 +364,9 @@ export class RevenueTrackingReportComponent implements OnInit {
     if (event !== null) {
       const startDate = moment(event).format('YYYY-MM-DD');
       const endDate = moment(this.revenuTrackingReport.toDate).format('YYYY-MM-DD');
-      if (startDate > endDate)
+      if (startDate > endDate) {
         this.revenuTrackingReport.toDate = '';
+      }
     }
     this.minDate = new Date(event);
 

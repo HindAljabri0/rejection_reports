@@ -69,7 +69,7 @@ export class RejectionReportComponent implements OnInit {
     }
     this.commen.loadingChanged.next(true);
     this.detailTopActionIcon = 'ic-download.svg';
-    if(this.lastDownloadSubscriptions != null && !this.lastDownloadSubscriptions.closed){
+    if (this.lastDownloadSubscriptions != null && !this.lastDownloadSubscriptions.closed) {
       this.lastDownloadSubscriptions.unsubscribe();
     }
     this.errorMessage = null;
@@ -116,7 +116,7 @@ export class RejectionReportComponent implements OnInit {
     this.lastDownloadSubscriptions = this.downloadService
       .startDownload(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
       .subscribe(status => {
-        if(status != DownloadStatus.ERROR){
+        if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
         } else {
           this.detailTopActionIcon = 'ic-download.svg';

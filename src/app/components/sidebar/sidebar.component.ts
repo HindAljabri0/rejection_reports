@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
   providerId: string;
   envProd = false;
   envStaging = false;
-  isRevenueVisible: boolean = false;
+  isRevenueVisible = false;
 
   constructor(private auth: AuthService, private uploadService: UploadService, private sharedServices: SharedServices) {
     this.auth.isUserNameUpdated.subscribe(updated => {
@@ -53,16 +53,16 @@ export class SidebarComponent implements OnInit {
   }
 
 
-  get isAdmin(){
+  get isAdmin() {
     return this.sharedServices.isAdmin;
-  };
+  }
   get isProvider() {
     return this.sharedServices.isProvider;
   }
   get isProviderAdmin() {
     return this.sharedServices.isAdminOfProvider;
   }
-  get isRcmUser(){
+  get isRcmUser() {
     return this.sharedServices.isRcmUser;
   }
 

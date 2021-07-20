@@ -15,7 +15,7 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
   }
 
   openAddEditPaymentDialog() {
-    let dialogRef = this.dialog.open(AddEditPaymentDialogComponent,
+    const dialogRef = this.dialog.open(AddEditPaymentDialogComponent,
       {
         panelClass: ['primary-dialog', 'dialog-sm']
       });

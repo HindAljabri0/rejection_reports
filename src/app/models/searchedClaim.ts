@@ -22,7 +22,7 @@ export class SearchedClaim extends Paginateable {
   eligibilitycheck: string;
   numOfAttachments: number;
   numOfPriceListErrors: number;
-  eligibilityStatusDesc: String;
+  eligibilityStatusDesc: string;
   batchNumber: number;
   constructor(body: {}) {
     super(body);

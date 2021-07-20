@@ -59,9 +59,9 @@ export class AuthService {
         localStorage.setItem(storageValue.key, storageValue.value));
     let promise: Promise<boolean>;
     if (expired != null && expired) {
-      promise = this.router.navigate(['login'], { queryParams: { expired: expired } });
+      promise = this.router.navigate(['login'], { queryParams: { expired } });
     } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
-      promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges: hasClaimPrivileges } });
+      promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges } });
     } else {
       promise = this.router.navigate(['login']);
     }
@@ -114,7 +114,7 @@ export class AuthService {
     if (Date.now() < new Date(body['expires_in']).getTime()) {
       localStorage.setItem('expires_in', body['expires_in']);
     } else {
-      localStorage.setItem('expires_in', new Date(Date.now() + (59 * 60 * 1000)).toString())
+      localStorage.setItem('expires_in', new Date(Date.now() + (59 * 60 * 1000)).toString());
     }
     localStorage.setItem('src', body['src']);
     this.getCurrentUserToken().subscribe(event => {

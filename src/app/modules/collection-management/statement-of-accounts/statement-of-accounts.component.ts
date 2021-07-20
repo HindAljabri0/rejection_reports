@@ -15,9 +15,9 @@ export class StatementOfAccountsComponent implements OnInit {
   }
 
   openAddStatementOfAccountDialog() {
-    let dialogRef = this.dialog.open(AddStatementOfAccountsDialogComponent, {
+    const dialogRef = this.dialog.open(AddStatementOfAccountsDialogComponent, {
       panelClass: ['primary-dialog']
-    })
+    });
   }
 
 }

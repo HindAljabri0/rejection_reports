@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="control-label">Provider</label>
                 <input type="text" class="form-control" placeholder="Select Provider" [matAutocomplete]="auto"
-                    [formControl]="providerController" (input)="updateFilter()" />
+                    (keyup.enter)="selectProvider()" [formControl]="providerController" (input)="updateFilter()" />
                 <mat-autocomplete autoActiveFirstOption #auto>
                     <mat-option *ngFor="let provider of filteredProviders"
                         [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"

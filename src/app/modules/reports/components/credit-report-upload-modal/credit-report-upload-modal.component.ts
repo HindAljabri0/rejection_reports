@@ -17,7 +17,14 @@ export class CreditReportUploadModalComponent implements OnInit {
   error = '';
   priceListDoesNotExistMessages: string[] = [];
   sizeInMB: string;
-  constructor(private dialogRef: MatDialogRef<CreditReportUploadModalComponent>, private dialogService: DialogService, private router: Router, public common: SharedServices, private fileValidationService: ClaimFilesValidationService, private creditReportService: CreditReportService, @Inject(MAT_DIALOG_DATA) public data: File) { }
+  constructor(
+    private dialogRef: MatDialogRef<CreditReportUploadModalComponent>,
+    private dialogService: DialogService,
+    private router: Router,
+    public common: SharedServices,
+    private fileValidationService: ClaimFilesValidationService,
+    private creditReportService: CreditReportService,
+    @Inject(MAT_DIALOG_DATA) public data: File) { }
   selectedFiles: FileList;
   ngOnInit() {
     this.currentFileUpload = this.data;
@@ -65,10 +72,10 @@ export class CreditReportUploadModalComponent implements OnInit {
 
   upload() {
     if (this.currentFileUpload === undefined) {
-      this.error = "Please upload the one pdf file."
+      this.error = 'Please upload the one pdf file.';
       return;
     }
-    this.error = "";
+    this.error = '';
     this.startUpload();
   }
 
@@ -76,7 +83,7 @@ export class CreditReportUploadModalComponent implements OnInit {
     const providerId = this.common.providerId;
     const payerId = 319;
     this.common.loadingChanged.next(true);
-    //payerid static
+    // payerid static
     this.creditReportService.pushFileToStorage(providerId, payerId, this.currentFileUpload).subscribe((res: any) => {
       this.common.loadingChanged.next(true);
       if (res.body !== undefined) {

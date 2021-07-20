@@ -71,7 +71,7 @@ export class Service {
                             decision.serviceGDPN.priceCorrection = gdpn['priceCorrection'];
                         }
                     }
-                    services.push({ service: service, decision: decision, used: false });
+                    services.push({ service, decision, used: false });
                 });
             }
         }

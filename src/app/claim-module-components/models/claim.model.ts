@@ -156,14 +156,14 @@ export class Claim {
             }
         }
         const attachments = claim.attachment.map(att => ({ ...att, fileType: Claim.convertFileType(att.fileType) }));
-        let physicianCategory = claim.caseInformation.physician.physicianCategory;
+        const physicianCategory = claim.caseInformation.physician.physicianCategory;
         claim = {
             ...claim,
             attachment: attachments,
             caseInformation: {
                 ...claim.caseInformation,
-                physician: { ...claim.caseInformation.physician, physicianCategory: physicianCategory },
-                patient: { ...claim.caseInformation.patient, fullName: fullName, firstName: null, middleName: null, lastName: null }
+                physician: { ...claim.caseInformation.physician, physicianCategory },
+                patient: { ...claim.caseInformation.patient, fullName, firstName: null, middleName: null, lastName: null }
             }
         };
         const admission = incomingClaim.admission;

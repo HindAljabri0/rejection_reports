@@ -23,12 +23,17 @@ export class HeaderComponent implements OnInit {
 
   notificationIconClasses = 'mat-icon-button mat-button-base ';
 
-  thereIsActiveDownloads: boolean = false;
+  thereIsActiveDownloads = false;
   downloads: DownloadRequest[] = [];
 
   @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
-  constructor(private sharedServices: SharedServices, public router: Router, public authService: AuthService, private downloadService: DownloadService) {
+  constructor(
+    private sharedServices: SharedServices,
+    public router: Router,
+    public authService: AuthService,
+    private downloadService: DownloadService
+  ) {
     this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
     });

@@ -45,7 +45,7 @@ export class ClaimDataComponent implements OnInit {
   @Input() claimType = '';
   claim: Claim;
   claimProps: RetrievedClaimProps;
-  isPBMValidationVisible: boolean = false;
+  isPBMValidationVisible = false;
 
   constructor(private store: Store, private adminService: AdminService, private commen: SharedServices) { }
 
@@ -113,7 +113,7 @@ export class ClaimDataComponent implements OnInit {
     }
     return false;
   }
-  
+
   claimHaveLabData() {
     return this.claim != null
       && this.claim.caseInformation != null
@@ -123,13 +123,14 @@ export class ClaimDataComponent implements OnInit {
   }
 
   getPBMValidation() {
-    this.adminService.checkIfPBMValidationIsEnabled(this.commen.providerId, "101").subscribe((event: any) => {
+    this.adminService.checkIfPBMValidationIsEnabled(this.commen.providerId, '101').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event['body'];
-        // this.isPBMValidationVisible = body.value === "1" && this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase() ? true : false;
-        this.isPBMValidationVisible = body.value === "1"
+        // this.isPBMValidationVisible = body.value === "1"
+        // && this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase() ? true : false;
+        this.isPBMValidationVisible = body.value === '1'
           && (this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase()
-          || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+            || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);

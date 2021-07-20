@@ -89,16 +89,16 @@ export class ClaimDiagnosisComponent implements OnInit {
   }
 
   addICDDiagnosis(diag: ICDDiagnosis) {
-    
-      this.diagnosisList.push(diag);
-      this.store.dispatch(updateDiagnosisList({
-        list: this.diagnosisList.map(diag =>
-          ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })
-        )
-      }));
-      this.icedOptions = [];
-    
-    
+
+    this.diagnosisList.push(diag);
+    this.store.dispatch(updateDiagnosisList({
+      list: this.diagnosisList.map(diag =>
+        ({ diagnosisCode: diag.diagnosisCode, diagnosisDescription: diag.diagnosisDescription })
+      )
+    }));
+    this.icedOptions = [];
+
+
   }
 
   removeDiagnosis(diag: ICDDiagnosis) {
@@ -134,6 +134,6 @@ export class ClaimDiagnosisComponent implements OnInit {
       return this.errors[index].error || '';
     }
     return '';
-   
+
   }
 }

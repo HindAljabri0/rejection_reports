@@ -107,14 +107,14 @@ export class ClaimService {
   putAttachmentsOfClaim(providerId: string, claimId: string, attachments: AssignedAttachment[]) {
     const requestUrl = `/providers/${providerId}/attachById/${claimId}`;
     const request = new HttpRequest('PUT', environment.claimServiceHost + requestUrl, attachments.map(att =>
-      ({
-        attachmentid: att.attachmentId,
-        providerid: providerId,
-        filename: att.name,
-        attachmentfile: att.file,
-        filetype: att.type,
-        usercomment: null
-      }))
+    ({
+      attachmentid: att.attachmentId,
+      providerid: providerId,
+      filename: att.name,
+      attachmentfile: att.file,
+      filetype: att.type,
+      usercomment: null
+    }))
     );
     return this.httpClient.request(request);
   }
@@ -134,53 +134,54 @@ export class ClaimService {
   deleteClaim(providerId: string, claimId) {
     const requestUrl = `/providers/${providerId}/${claimId}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
-    const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost + requestUrl, {}, { headers: headers });
+    const httpRequest = new HttpRequest('DELETE', environment.claimServiceHost + requestUrl, {}, { headers });
     return this.httpClient.request(httpRequest);
   }
 
-  deleteClaimByCriteria(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string, drname?: string,
-    nationalId?: string,
-    claimDate?: string) {
+  deleteClaimByCriteria(
+    providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[],
+    claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string,
+    claimIDs: string[], fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string) {
 
     let requestURL = `/providers/${providerId}/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
-      requestURL += `claimIDs=${claimIDs}`
+      requestURL += `claimIDs=${claimIDs}`;
     } else {
       if (payerId != null && uploadId == null) {
-        requestURL += `payerId=${payerId}&`
+        requestURL += `payerId=${payerId}&`;
       }
       if (batchId != null) {
-        requestURL += `batchId=${batchId}&`
+        requestURL += `batchId=${batchId}&`;
       }
       if (uploadId != null) {
-        requestURL += `uploadId=${uploadId}&`
+        requestURL += `uploadId=${uploadId}&`;
       }
       if (caseTypes != null) {
-        requestURL += `caseTypes=${caseTypes}&`
+        requestURL += `caseTypes=${caseTypes}&`;
       }
       if (invoiceNo != null) {
-        requestURL += `invoiceNo=${invoiceNo}&`
+        requestURL += `invoiceNo=${invoiceNo}&`;
       }
       if (policyNo != null) {
-        requestURL += `policyNo=${policyNo}&`
+        requestURL += `policyNo=${policyNo}&`;
       }
       if (statuses != null) {
-        requestURL += `statuses=${statuses}&`
+        requestURL += `statuses=${statuses}&`;
       }
       if (fromDate != null) {
-        requestURL += `fromDate=${fromDate}&`
+        requestURL += `fromDate=${fromDate}&`;
       }
       if (toDate != null) {
-        requestURL += `toDate=${toDate}&`
+        requestURL += `toDate=${toDate}&`;
       }
       if (claimRefNo != null) {
-        requestURL += `claimRefNo=${claimRefNo}&`
+        requestURL += `claimRefNo=${claimRefNo}&`;
       }
       if (patientFileNo != null) {
-        requestURL += `patientFileNo=${patientFileNo}&`
+        requestURL += `patientFileNo=${patientFileNo}&`;
       }
       if (memberId != null) {
-        requestURL += `memberId=${memberId}&`
+        requestURL += `memberId=${memberId}&`;
       }
       if (drname != null && drname !== '' && drname !== undefined) {
         requestURL += `drname=${drname}&`;
@@ -197,34 +198,43 @@ export class ClaimService {
     return this.httpClient.request(httpRequest);
   }
 
-  PBMValidation(providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string, patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[], fromDate: string, toDate: string, drname?: string,
-    nationalId?: string,
-    claimDate?: string) {
+  PBMValidation(
+    providerId: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string,
+    patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[],
+    fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string) {
 
     let requestURL = `/providers/${providerId}/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
-      requestURL += `claimIDs=${claimIDs}&`
+      requestURL += `claimIDs=${claimIDs}&`;
     } else {
 
 
       if (payerId != null && uploadId == null) {
-        requestURL += `payerId=${payerId}&`
-      } if (batchId != null) {
-        requestURL += `batchId=${batchId}&`
-      } if (uploadId != null) {
-        requestURL += `uploadId=${uploadId}&`
-      } if (caseTypes != null) {
-        requestURL += `caseTypes=${caseTypes}&`
-      } if (invoiceNo != null) {
-        requestURL += `invoiceNo=${invoiceNo}&`
-      } if (policyNo != null) {
-        requestURL += `policyNo=${policyNo}&`
-      } if (statuses != null) {
-        requestURL += `statuses=${statuses}&`
-      } if (fromDate != null) {
-        requestURL += `fromDate=${fromDate}&`
-      } if (toDate != null) {
-        requestURL += `toDate=${toDate}&`
+        requestURL += `payerId=${payerId}&`;
+      }
+      if (batchId != null) {
+        requestURL += `batchId=${batchId}&`;
+      }
+      if (uploadId != null) {
+        requestURL += `uploadId=${uploadId}&`;
+      }
+      if (caseTypes != null) {
+        requestURL += `caseTypes=${caseTypes}&`;
+      }
+      if (invoiceNo != null) {
+        requestURL += `invoiceNo=${invoiceNo}&`;
+      }
+      if (policyNo != null) {
+        requestURL += `policyNo=${policyNo}&`;
+      }
+      if (statuses != null) {
+        requestURL += `statuses=${statuses}&`;
+      }
+      if (fromDate != null) {
+        requestURL += `fromDate=${fromDate}&`;
+      }
+      if (toDate != null) {
+        requestURL += `toDate=${toDate}&`;
       }
       if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
         requestURL += `claimRefNo=${claimRefNo}&`;
@@ -247,7 +257,7 @@ export class ClaimService {
       }
     }
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
-    const httpRequest = new HttpRequest('POST', environment.pbmValidationService + requestURL, {}, { headers: headers });
+    const httpRequest = new HttpRequest('POST', environment.pbmValidationService + requestURL, {}, { headers });
     return this.httpClient.request(httpRequest);
   }
 
@@ -286,11 +296,10 @@ export class ClaimService {
   addBatchNumber(providerID: string, data: any) {
     let requestURL = `/${providerID}/batch/criteria?`;
 
-    let searchparams = new HttpParams();
+    const searchparams = new HttpParams();
     if (data.claimIDs != null && data.claimIDs !== undefined && data.claimIDs.length > 0) {
       requestURL += `claimIDs=${data.claimIDs}&payerId=${data.payerId}&batchNumber=${data.batchNumber}&batchDate=${data.batchDate}`;
-    }
-    else {
+    } else {
       requestURL += `startDate=${data.startDate}&endDate=${data.endDate}&payerId=${data.payerId}&batchNumber=${data.batchNumber}&batchDate=${data.batchDate}`;
     }
 
@@ -300,7 +309,7 @@ export class ClaimService {
     //   }
     // }
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
-    const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {}, { headers: headers });
+    const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {}, { headers });
     return this.httpClient.request(request);
   }
 }

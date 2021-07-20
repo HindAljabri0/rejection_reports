@@ -82,7 +82,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
         value.codes.forEach((cValue, cKey) => this.codeValueDictionary.get(key).codes.set(cKey,
           { label: cValue.label, values: [...cValue.values] }));
         if (!key.startsWith('departmentName') && !key.endsWith('Unit')) {
-          this.categories.push({ label: value.label, key: key });
+          this.categories.push({ label: value.label, key });
         } else if (!key.endsWith('Unit')) {
           payersCodes.push(key.split('_')[1]);
         }
@@ -103,7 +103,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
     this.selectedCategory = category;
     if (this.codeValueDictionary.has(category)) {
       this.codeValueDictionary.get(category).codes.forEach((value, key) => {
-        this.codes.push({ label: value.label, key: key });
+        this.codes.push({ label: value.label, key });
         this.codes.sort((c1, c2) => c1.label.localeCompare(c2.label));
       });
     }
@@ -170,7 +170,7 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
     }
     this.codeValueDictionary.get(category).codes.get(code).values.push(value);
     this.selectCode(code);
-    this.store.dispatch(addNewMappingValue({ value: { categoryId: category, codeId: code, value: value } }));
+    this.store.dispatch(addNewMappingValue({ value: { categoryId: category, codeId: code, value } }));
   }
   cancel() {
     this.values = [];
@@ -198,7 +198,12 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   }
   openCSV(event) {
     const dialogRef = this.dialog.open(ConfiguartionModalComponent,
-      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.sharedServices.providerId, selectedProviderId: this.sharedServices.providerId } });
+      {
+        panelClass: ['primary-dialog'], autoFocus: false, data: {
+          file: event.target.files[0],
+          providerId: this.sharedServices.providerId, selectedProviderId: this.sharedServices.providerId
+        }
+      });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 

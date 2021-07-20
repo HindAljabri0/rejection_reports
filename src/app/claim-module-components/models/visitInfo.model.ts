@@ -6,7 +6,8 @@ export class VisitInfo {
     visitType: string;
 
     constructor(claimType: string) {
-        if (claimType !== 'INPATIENT')
+        if (claimType !== 'INPATIENT') {
             this.departmentCode = claimType;
+        }
     }
 }

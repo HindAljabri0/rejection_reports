@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Store } from '@ngrx/store';
@@ -45,7 +45,7 @@ import { CancelPreAuthorizationModel } from 'src/app/models/allCreditSummaryDeta
   templateUrl: './credit-report-summary-details.component.html',
   styles: []
 })
-export class CreditReportSummaryDetailsComponent implements OnInit {
+export class CreditReportSummaryDetailsComponent implements OnInit, OnDestroy {
 
   public chartOneLabels: Label[] = ['Rejection Medical Reasons Breakdown', 'Rejection Medical Reasons Breakdown'];
   public chartOneData: ChartDataSets[] = [
@@ -110,7 +110,8 @@ export class CreditReportSummaryDetailsComponent implements OnInit {
   pendingModel: PendingModel[];
   grandTotalRejectionAmountModel: GrandTotalRejectionAmountModel[];
   approvedToPayModel: ApprovedPayModel[];
-  columnsName = ['Claim ID', 'Bupa No', 'File No', 'Inv No', 'Group Name', 'Diagnosis', 'Service Description', 'Treatment Date', 'Amt Shortfall Reason', 'Total Claimed Amt', 'Total SF Amt', 'VAT Rej. Amt'];
+  columnsName = ['Claim ID', 'Bupa No', 'File No', 'Inv No', 'Group Name', 'Diagnosis', 'Service Description', 'Treatment Date',
+    'Amt Shortfall Reason', 'Total Claimed Amt', 'Total SF Amt', 'VAT Rej. Amt'];
   summaryType: number;
   labelName: string;
   detailsConfig: any[] = [];
@@ -142,8 +143,9 @@ export class CreditReportSummaryDetailsComponent implements OnInit {
     // }];
     const keyDatas = this.checkConfigType([]);
 
-    if (keyDatas !== undefined)
+    if (keyDatas !== undefined) {
       this.summaryKeys = Object.keys(keyDatas[0]);
+    }
 
     this.detailsConfig = this.creditReportService.detailsConfig;
     const data = this.detailsConfig.find(ele => ele.type === this.summaryType);
@@ -222,7 +224,7 @@ export class CreditReportSummaryDetailsComponent implements OnInit {
     }
   }
   getCreditReportSummaryDetailsData() {
-    const batchId = "0";
+    const batchId = '0';
     this.subscription.add(this.creditReportService.getCreditReportsList(batchId).subscribe((res: any) => {
       if (res.body !== undefined) {
         const data = JSON.stringify(res.body);
@@ -231,7 +233,7 @@ export class CreditReportSummaryDetailsComponent implements OnInit {
       }
     }, err => {
       console.log(err);
-    }))
+    }));
   }
 
   goToFirstPage() {
