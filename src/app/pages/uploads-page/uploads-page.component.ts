@@ -14,7 +14,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class UploadsPageComponent implements OnInit {
 
   errorMessage: string;
-  uploads: UploadCardData[] = [];
+  uploads: any[] = [];
   MAX = Number.MAX_VALUE;
   length = Number.MAX_VALUE;
   pageSize = 10;
@@ -39,6 +39,10 @@ export class UploadsPageComponent implements OnInit {
         if (event instanceof HttpResponse) {
           this.sharedService.loadingChanged.next(false);
           this.uploads = this.uploads.concat(event.body['content']);
+          this.uploads.map((ele) => {
+            ele.isManualUpload = ele.uploadName.toLowerCase().includes('manual')
+            return ele;
+          })
           this.length = event.body['totalElements'];
           this.pageIndex++;
         }
