@@ -1604,13 +1604,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 location.reload();
               });
           }
-          console.log(event);
+          this.commen.loadingChanged.next(false);
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
-          this.commen.loadingChanged.next(false);
-          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+          if (errorEvent.status === 404)
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
+          else
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
         }
+        this.commen.loadingChanged.next(false);
       });
     // }
     // });
