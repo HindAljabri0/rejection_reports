@@ -1,17 +1,14 @@
-<app-detailscard title="Switch Providers"
-    [bottomRightActionText]=" (isLoading ) || selectedProvider==null || selectedProvider==''? '' : 'Switch'"
-    (bottomRightAction)="switch()">
-    <div class="selectProvider">
-        <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
-            <mat-label>Select Provider</mat-label>
-            <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Switch Providers</p>
+    </div>
+    <div class="bg-white p-14">
+        <div class="form-group mb-0">
+            <label class="control-label">Select Provider</label>
+            <input [matAutocomplete]="auto" class="form-control" placeholder="Search provider here..." [formControl]="providerController" (input)="updateFilter()"
                 (keyup.enter)="selectProvider()" [readonly]="isLoading">
-            <button mat-button matSuffix mat-icon-button>
-                <mat-icon>arrow_drop_down</mat-icon>
-            </button>
             <mat-autocomplete autoActiveFirstOption #auto>
-                <mat-option *ngFor="let provider of filteredProviders"
-                    [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
+                <mat-option *ngFor="let provider of filteredProviders" [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name"
                     (click)="selectProvider(provider.switchAccountId)">
                     {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
                 </mat-option>
@@ -19,5 +16,11 @@
                     {{error}}
                 </mat-option>
             </mat-autocomplete>
-        </mat-form-field>
+        </div>
     </div>
+    <div class="block-footer has-border" *ngIf="!isLoading && selectedProvider!=null && selectedProvider!=''">
+        <div class="right-block">
+            <button type="button" mat-flat-button color="primary" (click)="switch()">Switch</button>
+        </div>
+    </div>
+</div>
