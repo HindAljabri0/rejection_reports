@@ -1,3 +1,14 @@
-<ngx-monaco-editor disabled="true" class="my-code-editor" [options]="editorOptions" [(ngModel)]="xmlData"
-  (onInit)="onInit($event)">
-</ngx-monaco-editor>
+<div class="primary-dialog-header has-border">
+  <h5 class="primary-dialog-title">XML Viewer</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body p-0">
+  <ngx-monaco-editor disabled="true" class="xml-viewer" [options]="editorOptions" [(ngModel)]="xmlData" (onInit)="onInit($event)">
+  </ngx-monaco-editor>
+</div>
+<div class="primary-dialog-footer has-border">
+  <div class="btn-list text-right">
+    <button mat-button (click)="closeDialog()">Close</button>
+    <button type="button" mat-flat-button color="primary" matRipple>Download XML</button>
+  </div>
+</div>

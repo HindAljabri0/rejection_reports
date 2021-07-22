@@ -1107,9 +1107,11 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .alert.success{background-color: #edf9e4;color: #67CD23;}
 .alert.danger{background-color: #f9e6e6;color: #CC2F2F;}
 
-/* json viewer
+/* json xml viewer
 --------------------------------------------------------------------------------------------------------*/
 .json-viewer{background-color: #f6f6f6;display: block;padding: 14px;}
+.xml-viewer{height: auto!important;}
+.xml-viewer .editor-container{height: calc(100vh - 192px)!important;min-height: 320px;}
 
 /* account receivable breakdown
 --------------------------------------------------------------------------------------------------------*/
