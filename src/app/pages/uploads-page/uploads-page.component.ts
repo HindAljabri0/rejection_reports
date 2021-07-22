@@ -43,7 +43,7 @@ export class UploadsPageComponent implements OnInit {
             if (ele.uploadName.toLowerCase().includes('manual')) {
               let manualEntery = ele.uploadName.split('_');
               let manualText = manualEntery[manualEntery.length - 1];
-              if (manualText.toLowerCase() === 'manual')
+              if (manualText.toLowerCase().includes('manual'))
                 ele.isManualUpload = true;
             }
             return ele;
