@@ -24,5 +24,19 @@ export class XmlViewDialogComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
+  download() {
+    let filename = "sample.xml";
+    let pom = document.createElement('a');
+    let bb = new Blob([this.xmlData], { type: 'text/plain' });
+
+    pom.setAttribute('href', window.URL.createObjectURL(bb));
+    pom.setAttribute('download', filename);
+
+    pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+    pom.draggable = true;
+    pom.classList.add('dragout');
+
+    pom.click();
+  }
 
 }
