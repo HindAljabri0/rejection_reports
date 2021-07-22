@@ -70,7 +70,7 @@
                             <td>{{log.eventTimeStamp.toLocaleTimeString()}}</td>
                             <td><a class="primary-link underlined" *ngIf="log.newClaimData != null"
                                     (click)="viewJSON(log.objectId, log.newClaimData)">View JSON</a><a
-                                    *ngIf="log.eventType==='ClaimSubmissionRequestAuditLogType' || log.eventType==='ClaimSubmissionResponseAuditLogType'"
+                                    *ngIf="log.eventType==='ClaimSubmissionRequest' || log.eventType==='ClaimSubmissionResponse'"
                                     class="primary-link underlined" (click)="viewXml(log)">View XML</a></td>
                         </tr>
                     </ng-container>
