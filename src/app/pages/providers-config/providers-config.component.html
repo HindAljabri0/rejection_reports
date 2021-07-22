@@ -334,12 +334,12 @@
                     </thead>
                     <tr *ngFor="let payer of associatedPayers" style="width: 100%">
                         <td style="widows: 42%">
-                            <p>{{payer.name}}
+                            <p [ngStyle]="{'color': (payer.hasAssociatedDrugList)? 'black':'gray'}">{{payer.name}}
                             </p>
                         </td>
                         <td>
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" color="primary"
+                                        width: 15%" color="primary" [disabled]="!payer.hasAssociatedDrugList"
                                 [(ngModel)]="newSFDAValidationSettings[payer.switchAccountId]">
                             </mat-slide-toggle>
                         </td>

@@ -118,6 +118,8 @@ export class InvoicesServicesComponent implements OnInit {
   claimProps: RetrievedClaimProps;
   isPBMValidationVisible = false;
   selectedInvoiceIndex: any;
+  serviceTypeParIndex: any;
+  serviceTypeChildIndex: any;
   constructor(
     private store: Store,
     private actions: Actions,
@@ -725,8 +727,9 @@ export class InvoicesServicesComponent implements OnInit {
     this.serviceCodeSearchError = null;
     this.emptyOptions = false;
     const query: string = this.searchServicesController.value;
+    const serviceType = this.controllers[this.serviceTypeParIndex].services[this.serviceTypeChildIndex].serviceType.value;
     if (query != null && query != '') {
-      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate).subscribe(
+      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate, serviceType).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
@@ -818,4 +821,9 @@ export class InvoicesServicesComponent implements OnInit {
     return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth())
       || Number.isNaN(date.getDay()) || date.getTime() > Date.now();
   }
+  setServiceTypeIndex(pindex: any, cindex: any) {
+    this.serviceTypeParIndex = pindex;
+    this.serviceTypeChildIndex = cindex;
+  }
+
 }
