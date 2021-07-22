@@ -74,6 +74,7 @@
     "ngx-infinite-scroll": "^8.0.1",
     "ngx-json-viewer": "^3.0.2",
     "ngx-mat-select-search": "^3.2.0",
+    "ngx-monaco-editor": "^8.1.1",
     "ngx-owl-carousel-o": "^2.1.1",
     "ngx-scrollbar": "^4.2.0",
     "rxjs": "~6.4.0",

@@ -88,7 +88,8 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { DownloadOverlayComponent } from './components/reusables/download-overlay/download-overlay.component';
 import { DownloadProgressViewComponent } from './components/download-progress-view/download-progress-view.component';
 import { ConfirmAdminDeleteDialogComponent } from './components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
-
+import { XmlViewDialogComponent } from './components/dialogs/xml-view-dialog/xml-view-dialog.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,8 @@ import { ConfirmAdminDeleteDialogComponent } from './components/dialogs/confirm-
     JsonViewDialogComponent,
     DownloadOverlayComponent,
     DownloadProgressViewComponent,
-    ConfirmAdminDeleteDialogComponent
+    ConfirmAdminDeleteDialogComponent,
+    XmlViewDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -169,7 +171,8 @@ import { ConfirmAdminDeleteDialogComponent } from './components/dialogs/confirm-
     GuidedTourModule,
     BsDatepickerModule.forRoot(),
     NgxJsonViewerModule,
-    ClipboardModule
+    ClipboardModule,
+    MonacoEditorModule.forRoot()
   ],
   providers: [
     ThemeService,
@@ -216,7 +219,8 @@ import { ConfirmAdminDeleteDialogComponent } from './components/dialogs/confirm-
     JsonViewDialogComponent,
     ConfiguartionModalComponent,
     DownloadOverlayComponent,
-    ConfirmAdminDeleteDialogComponent
+    ConfirmAdminDeleteDialogComponent,
+    XmlViewDialogComponent
   ],
 })
 export class AppModule { }

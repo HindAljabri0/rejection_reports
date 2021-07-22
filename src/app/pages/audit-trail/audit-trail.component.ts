@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { MatDialog } from '@angular/material';
 import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
+import { XmlViewDialogComponent } from 'src/app/components/dialogs/xml-view-dialog/xml-view-dialog.component';
 
 @Component({
   selector: 'app-audit-trail',
@@ -201,6 +202,14 @@ export class AuditTrailComponent implements OnInit {
 
   get loading() {
     return this.commenService.loading;
+  }
+  viewXml(item) {
+    this.dialog.open(XmlViewDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-lg'],
+      data: {
+        mainData: item,
+      }
+    });
   }
 
 }

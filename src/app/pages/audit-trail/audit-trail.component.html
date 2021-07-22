@@ -21,16 +21,20 @@
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field floatLabel="never" appearance="outline" style="width: 15%;">
-                            <input matInput [matDatepicker]="fromPicker" placeholder="Before date" [formControl]="beforeDateControl">
+                            <input matInput [matDatepicker]="fromPicker" placeholder="Before date"
+                                [formControl]="beforeDateControl">
                             <mat-datepicker-toggle matSuffix [for]="fromPicker">
                                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                             </mat-datepicker-toggle>
                             <mat-datepicker #fromPicker></mat-datepicker>
                         </mat-form-field>
-                        <button mat-raised-button color="primary" style=" margin-right: 5px;" (click)="filter()">Filter</button>
-                        <button *ngIf="isFiltered" mat-raised-button color="primary" style=" margin-right: 5px;" (click)="clear()">Clear</button>
-                        <button (click)="stopWatchingLogs()" *ngIf="watchLogsSubscription != null && !watchLogsSubscription.closed; else playButton" mat-icon-button
-                            matTooltip="Pause">
+                        <button mat-raised-button color="primary" style=" margin-right: 5px;"
+                            (click)="filter()">Filter</button>
+                        <button *ngIf="isFiltered" mat-raised-button color="primary" style=" margin-right: 5px;"
+                            (click)="clear()">Clear</button>
+                        <button (click)="stopWatchingLogs()"
+                            *ngIf="watchLogsSubscription != null && !watchLogsSubscription.closed; else playButton"
+                            mat-icon-button matTooltip="Pause">
                             <mat-icon aria-hidden="false" aria-label="Pause">pause</mat-icon>
                         </button>
                         <ng-template #playButton>
@@ -41,7 +45,8 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body " style="width: 100%; padding:0px; text-align: center; line-height: 3; background-color: #EFF5FF;">
+            <div class="card-body "
+                style="width: 100%; padding:0px; text-align: center; line-height: 3; background-color: #EFF5FF;">
                 <table style="width: 100%; color: #4672B4; border-collapse:separate; border-spacing: 0px 5px;">
                     <tr>
                         <th>Object ID</th>
@@ -63,7 +68,10 @@
                             <td>{{log.eventDescription}}</td>
                             <td>{{log.eventTimeStamp.toLocaleDateString()}}</td>
                             <td>{{log.eventTimeStamp.toLocaleTimeString()}}</td>
-                            <td><a class="primary-link underlined" *ngIf="log.newClaimData != null" (click)="viewJSON(log.objectId, log.newClaimData)">View JSON</a></td>
+                            <td><a class="primary-link underlined" *ngIf="log.newClaimData != null"
+                                    (click)="viewJSON(log.objectId, log.newClaimData)">View JSON</a><a
+                                    *ngIf="log.eventType==='ClaimSubmissionRequestAuditLogType' || log.eventType==='ClaimSubmissionResponseAuditLogType'"
+                                    class="primary-link underlined" (click)="viewXml(log)">View XML</a></td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="isEmpty">
@@ -74,7 +82,8 @@
                     <ng-container *ngIf="thereIsMoreToLoad; else noMoreDataToLoad">
                         <tr style="background-color: white;">
                             <td colspan="7">
-                                <button *ngIf="!loading; else showLoadingSpinner " mat-button (click)="loadMore()">Load More</button>
+                                <button *ngIf="!loading; else showLoadingSpinner " mat-button (click)="loadMore()">Load
+                                    More</button>
                                 <ng-template #showLoadingSpinner>
                                     <mat-spinner diameter="35" style="width: 100%; margin: 10px auto;">
                                     </mat-spinner>
