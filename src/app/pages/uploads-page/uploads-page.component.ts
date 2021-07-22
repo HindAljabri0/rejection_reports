@@ -40,7 +40,12 @@ export class UploadsPageComponent implements OnInit {
           this.sharedService.loadingChanged.next(false);
           this.uploads = this.uploads.concat(event.body['content']);
           this.uploads.map((ele) => {
-            ele.isManualUpload = ele.uploadName.toLowerCase().includes('manual')
+            if (ele.uploadName.toLowerCase().includes('manual')) {
+              let manualEntery = ele.uploadName.split('_');
+              let manualText = manualEntery[manualEntery.length - 1];
+              if (manualText.toLowerCase() === 'manual')
+                ele.isManualUpload = true;
+            }
             return ele;
           })
           this.length = event.body['totalElements'];
