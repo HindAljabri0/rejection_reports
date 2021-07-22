@@ -48,9 +48,9 @@ export class SwitchProviderComponentComponent implements OnInit {
   }
 
   selectProvider(providerId: string = null) {
-    if (providerId !== null)
+    if (providerId !== null) {
       this.selectedProvider = providerId;
-    else {
+    } else {
       const providerId = this.providerController.value.split('|')[0].trim();
       this.selectedProvider = providerId;
     }
