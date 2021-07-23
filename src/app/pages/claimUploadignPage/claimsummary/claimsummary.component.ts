@@ -130,15 +130,19 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
               this.cardCount = (uploadService.summary.noOfNotUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
               this.cardCount = (uploadService.summary.noOfDownloadableClaims != 0) ? this.cardCount + 1 : this.cardCount;
             }
+            if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
+              // this.location.go('/summary?id=' + this.summary.uploadSummaryID);
+              this.getResults();
+            } else if (this.location.path().includes('summary')) {
+              // this.router.navigate(['/upload']);
+              this.summary.uploadSummaryID = parseInt(value.id);
+              this.getResults();
+            }
           }, eventError => {
             this.commen.loadingChanged.next(false);
           });
-        } else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
-          this.location.go('/summary?id=' + this.summary.uploadSummaryID);
-          this.getResults();
-        } else if (this.location.path().includes('summary')) {
-          this.router.navigate(['/upload']);
         }
+
       });
     });
 
@@ -202,7 +206,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
-      this.router.navigate(['/summary']);
+      // this.router.navigate(['/summary']);
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null && value) {
@@ -233,7 +237,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
 
   getUploadedClaimsDetails(status?: string, page?: number, pageSize?: number) {
-    if (this.commen.loading) { return; }
+    // if (this.commen.loading) { return; }
     this.commen.loadingChanged.next(true);
     if (this.paginatedResult != null) {
       this.paginatedResult.content = [];

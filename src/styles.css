@@ -69,6 +69,7 @@ button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 .btn-action>img{display: block;height: 24px;width: 24px;}
 .btn-action>.mat-icon{display: block;}
 .primary-text-btn{color: #3060AA;}
+.btn-block{width: 100%;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -178,6 +179,7 @@ button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 .attachment-floating-actions{position: absolute;top: 50%;transform: translate(0, -50%);display: flex;flex-direction: column;margin-left: -28px;}
 .attachment-floating-actions>button:not(:last-child){margin-bottom: 8px;}
 .claim-attachment-table{min-height: 210px;}
+.mat-icon.size-20{font-size:20px;line-height:20px;height:20px;width:20px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -669,7 +671,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* aside panel
 --------------------------------------------------------------------------------------------------------*/
-.aside-panel{background-color: rgba(255, 255, 255, 0.85);top: 68px;z-index: 8;position: fixed;right: -320px;width: 320px;box-shadow: 0 5px 10px rgba(0,0,0,0.16);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom:0;-webkit-backdrop-filter: blur(2px);backdrop-filter: blur(2px);}
+.aside-panel{background-color: #fff;top: 68px;z-index: 8;position: fixed;right: -320px;width: 320px;box-shadow: 0 5px 10px rgba(0,0,0,0.16);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0;visibility: hidden;bottom:0;-webkit-backdrop-filter: blur(2px);backdrop-filter: blur(2px);}
 .aside-panel.show{right: 0;opacity: 1;visibility: visible;}
 
 /* uploaded card
@@ -677,11 +679,13 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .uplaoded-card{transition:all 0.2s cubic-bezier(0.35,0,0.25,1);padding: 14px;background: #fff;}
 .uplaoded-card:hover,.uplaoded-card:focus,.uplaoded-card:active{background-color: #f8f8f8;}
 .upload-history-list .uplaoded-card{border-bottom: 1px solid #e1e1e1;}
+.upload-history-list ng-scrollbar{height: calc(100% - 49px)!important;}
 .uploaded-card-all .uplaoded-card{border:1px solid rgba(48, 97, 171, 0.16);border-radius:6px;margin-bottom: 14px;height:calc(100% - 14px);background-color: rgba(48, 96, 170, 0.06);}
 .uploaded-card-all .scroll-block{max-height: calc(100vh - 174px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploads-body.scroll-block{max-height: calc(100vh - 70px);overflow: auto;padding: 14px;margin: -14px;min-height: 320px;}
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
 .uploaded-card-all .scroll-block + .info-block{margin-top: 28px;}
+.upload-history-list .bottom-block{border-top: 1px solid #e8e8e8;padding: 6px;text-align: center;box-shadow: 0px -3px 4px rgba(0,0,0,0.10);position: relative;}
 
 /* filter menu
 --------------------------------------------------------------------------------------------------------*/
@@ -841,6 +845,10 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .file-upload-wrapper>.content{z-index:0;position:relative;}
 .file-upload-wrapper>.file-upload-control{position: absolute;top: 0;left: 0;height:100%;width:100%;z-index: 1;opacity: 0;display:block;cursor: pointer;}
 .file-upload-wrapper.page-fab{position: fixed;}
+.file-upload-wrapper .uploaded-file-name{color: #3060AA;display: flex;align-items: center;}
+.file-upload-wrapper .uploaded-file-name>.icon{background: none;padding: 6px;border:0;color: #505050;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);opacity: 0.64;margin-left: auto;flex-grow: 0;flex-shrink: 0;}
+.file-upload-wrapper .uploaded-file-name>.icon .mat-icon{display: block;}
+.file-upload-wrapper .uploaded-file-name>.icon:hover,.file-upload-wrapper .uploaded-file-name>.icon:focus,.file-upload-wrapper .uploaded-file-name>.icon:active{opacity: 1;}
 
 /* custom breadcrumb
 --------------------------------------------------------------------------------------------------------*/
