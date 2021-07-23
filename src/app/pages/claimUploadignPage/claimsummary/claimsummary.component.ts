@@ -101,6 +101,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     },
     nav: true
   };
+  isFirstTimeLoad: boolean;
 
   constructor(
     public location: Location,
@@ -142,6 +143,9 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
             this.commen.loadingChanged.next(false);
           });
         }
+        // else if (this.location.path().includes('summary')) {
+        //   this.router.navigate(['/upload']);
+        // }
 
       });
     });
@@ -205,8 +209,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isFirstTimeLoad = false;
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
-      // this.router.navigate(['/summary']);
+      if (this.isFirstTimeLoad)
+        this.router.navigate(['/summary']);
+      else
+        this.isFirstTimeLoad = true;
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null && value) {
