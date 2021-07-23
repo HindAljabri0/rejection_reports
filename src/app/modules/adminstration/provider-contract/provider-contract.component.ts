@@ -74,8 +74,13 @@ export class ProviderContractComponent implements OnInit {
       `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
     );
   }
-  selectProvider(providerId: string) {
-    this.selectedProvider = providerId;
+  selectProvider(providerId: string = null) {
+    if (providerId !== null)
+      this.selectedProvider = providerId;
+    else {
+      const providerId = this.providerController.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
     this.getAssociatedPayers();
   }
   getAssociatedPayers() {
