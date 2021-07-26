@@ -1133,7 +1133,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.netAmountConfigurationError = null;
     this.errors.netAmountConfigurationSaveError = null;
     this.success.netAmountConfigurationSaveSuccess = null;
-    if (this.netAmountController.value === this.netAmountValue && this.netAmountController.value !== null)
+    if (this.netAmountController.value === this.netAmountValue)
       return false;
 
     this.componentLoading.netAmount = true;
@@ -1152,7 +1152,7 @@ export class ProvidersConfigComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status != 404) {
-          this.errors.netAmountConfigurationSaveError = 'Could not change payer mapping, please try again later.';
+          this.errors.netAmountConfigurationSaveError = 'Could not change Net Amount Accuracy, please try again later.';
         }
         else {
           this.setSaveError(NET_AMOUNT_RESTRICTION_KEY, 'Could not save settings, please try again later.');
