@@ -133,9 +133,9 @@
                             [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
                             name="agreementCopy" *ngIf="!fileUploadFlag" [disabled]="isPayerSelected"
                             class="file-upload-control" (change)="selectFile($event)" required />
-                        <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
+                        <!-- <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
                             <span class="error-text">Please choose a file</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
