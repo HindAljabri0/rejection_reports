@@ -129,13 +129,15 @@
                             </div>
                             <p class="error-text pt-1" *ngIf="error">{{error}}</p>
                         </div>
-                        <input type="file" accept="application/pdf"
-                            [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
-                            name="agreementCopy" *ngIf="!fileUploadFlag" [disabled]="isPayerSelected"
-                            class="file-upload-control" (change)="selectFile($event)" required />
-                        <!-- <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
-                            <span class="error-text">Please choose a file</span>
-                        </div> -->
+                        <div *ngIf="!fileUploadFlag">
+                            <input type="file" accept="application/pdf"
+                                [(ngModel)]='paymentProviderContractModel.agreementCopy' #agreementCopy='ngModel'
+                                name="agreementCopy" [disabled]="isPayerSelected" class="file-upload-control"
+                                (change)="selectFile($event)" required />
+                            <div *ngIf="providerContractForm.submitted && agreementCopy.invalid">
+                                <span class="error-text">Please choose a file</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
