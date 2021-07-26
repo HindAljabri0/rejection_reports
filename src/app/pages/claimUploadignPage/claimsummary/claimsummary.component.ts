@@ -146,6 +146,10 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
         // else if (this.location.path().includes('summary')) {
         //   this.router.navigate(['/upload']);
         // }
+        // else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
+        //   this.location.go('/summary?id=' + this.summary.uploadSummaryID);
+        //   this.getResults();
+        // }
 
       });
     });
@@ -210,8 +214,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
-      if (!this.router.url.includes('id'))
-        this.router.navigate(['/summary']);
+      if (!this.router.url.includes('id')) {
+        // this.summary = value;
+        this.location.go('/summary?id=' + value.uploadSummaryID);
+        this.getResults();
+      }
+      // this.router.navigate(['/summary']);
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null && value) {
