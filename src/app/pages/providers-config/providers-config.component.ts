@@ -1133,8 +1133,14 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.netAmountConfigurationError = null;
     this.errors.netAmountConfigurationSaveError = null;
     this.success.netAmountConfigurationSaveSuccess = null;
+
+
+
     if (this.netAmountController.value === this.netAmountValue)
       return false;
+
+    if (this.netAmountController.value === '' || this.netAmountController.value === null || this.netAmountController.value === undefined)
+      this.netAmountController.setValue(0.5);
 
     this.componentLoading.netAmount = true;
     this.dbMapping.setNetAmountAccuracy(this.selectedProvider, this.netAmountController.value).subscribe(event => {
