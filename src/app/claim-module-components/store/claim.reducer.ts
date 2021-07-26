@@ -158,6 +158,15 @@ const _claimReducer = createReducer(
         claimPropsBeforeEdit: null,
         mode: 'VIEW'
     })),
+    on(actions.toCreateMode, (state) => ({
+        ...state,
+        mode: 'CREATE',
+        claimBeforeEdit: null,
+        claimPropsBeforeEdit: null,
+        newAttachments: [],
+        claim: null,
+        retrievedClaimProps: null
+    })),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {

@@ -32,6 +32,8 @@ import { ClaimSubmittionService } from '../../services/claimSubmittionService/cl
 import { SearchService } from '../../services/serchService/search.service';
 import { SharedServices } from '../../services/shared.services';
 import { setSearchCriteria, storeClaims } from './store/search.actions';
+import { MatDialog } from '@angular/material';
+import { EditClaimComponent } from '../edit-claim/edit-claim.component';
 
 
 @Component({
@@ -156,6 +158,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
   constructor(
+    public dialog: MatDialog,
     public location: Location,
     public submittionService: ClaimSubmittionService,
     public commen: SharedServices,
@@ -830,8 +833,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` +
+    this.location.go(`/claims/${claimId}` +
       (edit != null && edit ? '#edit' : ''));
+    const dialogRef = this.dialog.open(EditClaimComponent, { panelClass: ['primary-dialog', 'full-screen-dialog'], autoFocus: false, data: { claimId: claimId } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+      }
+    }, error => {
+
+    });
   }
 
   reloadClaim(claim: ViewedClaim) {
