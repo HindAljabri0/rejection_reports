@@ -1075,22 +1075,62 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let excel = false;
     if (this.summaries[this.selectedCardKey].statuses.length == 1 &&
       (this.summaries[this.selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))) {
-      event = this.searchService.downloadExcelSummaries(this.providerId,
-        this.summaries[this.selectedCardKey].statuses,
-        this.from,
-        this.to,
-        this.payerId,
-        this.batchId,
-        this.uploadId,
-        this.fclaimRefNo,
-        this.memberId,
-        this.invoiceNo,
-        this.fpatientFileNo,
-        this.policyNo,
-        this.fdrname,
-        this.fnationalid,
-        this.fclaimdate);
-      excel = true;
+      this.dialogService.openMessageDialog({
+        title: '',
+        isError: false,
+        message: 'Do you want to download payers format ? ',
+        cancelButtonText: 'No',
+        confirmButtonText: 'Yes',
+        withButtons:true
+
+
+      }).subscribe(result => {
+        if (result == true) {
+          event = this.searchService.downloadExcelSummaries(this.providerId,
+            this.summaries[this.selectedCardKey].statuses,
+            this.from,
+            this.to,
+            this.payerId,
+            this.batchId,
+            this.uploadId,
+            this.fclaimRefNo,
+            this.memberId,
+            this.invoiceNo,
+            this.fpatientFileNo,
+            this.policyNo,
+            this.fdrname,
+            this.fnationalid,
+            this.fclaimdate);
+          excel = true;
+        }
+        else {
+          event = this.searchService.downloadSummaries(this.providerId,
+            this.summaries[this.selectedCardKey].statuses,
+            this.from,
+            this.to,
+            this.payerId,
+            this.batchId,
+            this.uploadId,
+            this.fclaimRefNo,
+            this.memberId,
+            this.invoiceNo,
+            this.fpatientFileNo,
+            this.policyNo,
+            this.fdrname,
+            this.fnationalid,
+            this.fclaimdate);
+
+        }
+        this.downloadService.startDownload(event)
+          .subscribe(status => {
+            if (status != DownloadStatus.ERROR) {
+              this.detailTopActionIcon = 'ic-check-circle.svg';
+            } else {
+              this.detailTopActionIcon = 'ic-download.svg';
+            }
+          });
+      })
+
     } else {
       event = this.searchService.downloadSummaries(this.providerId,
         this.summaries[this.selectedCardKey].statuses,
@@ -1108,16 +1148,18 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.fnationalid,
         this.fclaimdate);
     }
+    if (event != null) {
 
-    this.downloadService.startDownload(event)
-      .subscribe(status => {
-        if (status != DownloadStatus.ERROR) {
-          this.detailTopActionIcon = 'ic-check-circle.svg';
-        } else {
-          this.detailTopActionIcon = 'ic-download.svg';
-        }
-      });
 
+      this.downloadService.startDownload(event)
+        .subscribe(status => {
+          if (status != DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }
 
   }
 
