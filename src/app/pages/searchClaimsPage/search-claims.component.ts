@@ -30,8 +30,12 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { ValidationService } from 'src/app/services/validationService/validation.service';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
 import { SearchService } from '../../services/serchService/search.service';
-import { SharedServices } from '../../services/shared.services';
+import { SEARCH_TAB_RESULTS_KEY, SharedServices } from '../../services/shared.services';
 import { setSearchCriteria, storeClaims } from './store/search.actions';
+import { MatDialog } from '@angular/material';
+import { EditClaimComponent } from '../edit-claim/edit-claim.component';
+import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
+import { changePageTitle } from 'src/app/store/mainStore.actions';
 
 
 @Component({
@@ -156,6 +160,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
   constructor(
+    public dialog: MatDialog,
     public location: Location,
     public submittionService: ClaimSubmittionService,
     public commen: SharedServices,
@@ -247,7 +252,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.invoiceNo = value.invoiceNo;
       this.patientFileNo = value.patientFileNo;
       this.policyNo = value.policyNo;
-      this.editMode = value.editMode;
+      this.editMode = value.editMode || location.href.includes("#edit");
       this.fdrname = value.drname;
       this.fnationalid = value.nationalId;
       this.fclaimdate = value.claimDate;
@@ -771,9 +776,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let path = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
-    }
-    if (this.editMode != null) {
-      claimInfo += `&editMode=${this.editMode}`;
+      if (this.editMode != null) {
+        claimInfo += '#edit'
+      }
     }
     if (this.from != null && this.to != null && this.payerId != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
@@ -823,15 +828,32 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.pageIndex != null && this.pageIndex > 0) {
       path += `&page=${(this.pageIndex)}`;
     }
-    if (path !== '' && path !== this.router.url) {
+    if (path !== '') {
       this.location.go(path);
     }
   }
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` +
-      (edit != null && edit ? '#edit' : ''));
+    this.claimId = claimId;
+    if (edit) {
+      this.editMode = `${edit}`;
+    } else {
+      this.editMode = null;
+    }
+    this.resetURL();
+    this.store.dispatch(cancelClaim());
+    const dialogRef = this.dialog.open(EditClaimComponent, { panelClass: ['primary-dialog', 'full-screen-dialog'], autoFocus: false, data: { claimId: claimId } });
+    dialogRef.afterClosed().subscribe(result => {
+      this.claimId = null;
+      this.editMode = null;
+      this.resetURL();
+      this.store.dispatch(cancelClaim());
+      this.store.dispatch(changePageTitle({ title: "Waseel E-Claims" }));
+      if (result != null) {
+        this.showClaim(null, result);
+      }
+    });
   }
 
   reloadClaim(claim: ViewedClaim) {
@@ -1625,4 +1647,4 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
 
-export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
+

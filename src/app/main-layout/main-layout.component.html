@@ -1,6 +1,6 @@
-<app-sidebar *ngIf="!(isHeaderAndSideMenuHidden$ | async)"></app-sidebar>
-<app-header *ngIf="!(isHeaderAndSideMenuHidden$ | async)" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
-<div [ngClass]="{'main-content': !(isHeaderAndSideMenuHidden$ | async)}">
+<app-sidebar></app-sidebar>
+<app-header [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-header>
+<div class="main-content">
     <router-outlet>
     </router-outlet>
 </div>
