@@ -31,6 +31,7 @@ import { RevenueBreakdownReportComponent } from './components/revenue-breakdown-
 import { RevenueComparativeReportComponent } from './components/revenue-comparative-report/revenue-comparative-report.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ClaimStatusSummaryReportComponent } from 'src/app/pages/reports/claim-summary-status-report/claim-status-summary-report.component';
+import { RejectionTrackingReportComponent } from './components/rejection-tracking-report/rejection-tracking-report.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { ClaimStatusSummaryReportComponent } from 'src/app/pages/reports/claim-s
     TawuniyaCreditReportErrorsDialogComponent,
     RevenueBreakdownReportComponent,
     RevenueComparativeReportComponent,
-    ClaimStatusSummaryReportComponent
+    ClaimStatusSummaryReportComponent,
+    RejectionTrackingReportComponent
   ],
   imports: [
     CommonModule,
