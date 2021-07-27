@@ -66,12 +66,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -95,12 +95,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -126,12 +126,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -162,12 +162,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -194,12 +194,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -230,12 +230,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -262,12 +262,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -298,12 +298,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -329,12 +329,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -365,12 +365,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -397,12 +397,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -433,12 +433,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -465,12 +465,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -501,12 +501,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -533,12 +533,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -569,12 +569,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumError": "10mb"
                 }
               ]
             }
