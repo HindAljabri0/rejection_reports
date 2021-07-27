@@ -12,7 +12,7 @@ export class ValidationService {
   reValidateClaims(
     providerID: string, payerId: string, batchId: string, uploadId: string, caseTypes: string[], claimRefNo: string,
     patientFileNo: string, invoiceNo: string, policyNo: string, statuses: string[], memberId: string, claimIDs: string[],
-    fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string) {
+    fromDate: string, toDate: string, drname?: string, nationalId?: string, claimDate?: string, netAmount?: string, batchNo?: string) {
 
     let requestURL = `/providers/${providerID}/re-validate/criteria?`;
     if (claimIDs != null && claimIDs.length > 0) {
@@ -65,6 +65,12 @@ export class ValidationService {
       }
       if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
         requestURL += `claimDate=${claimDate}`;
+      }
+      if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+        requestURL += `netAmount=${netAmount}`;
+      }
+      if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+        requestURL += `batchNo=${batchNo}`;
       }
     }
 
