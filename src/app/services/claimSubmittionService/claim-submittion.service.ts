@@ -32,7 +32,9 @@ export class ClaimSubmittionService {
     policyNo?: string,
     drname?: string,
     nationalId?: string,
-    claimDate?: string) {
+    claimDate?: string,
+    netAmount?:string,
+    batchNo?:string) {
     let requestURL: string;
 
     requestURL = `/providers/${providerId}/submit/criteria?`;
@@ -74,7 +76,12 @@ export class ClaimSubmittionService {
     if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestURL += `&claimDate=${claimDate}`;
     }
-
+    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
+    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+      requestURL += `&batchNo=${batchNo}`;
+    }
     const request = new HttpRequest('POST', environment.claimServiceHost + requestURL, {});
     return this.http.request(request);
   }

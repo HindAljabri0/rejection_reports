@@ -147,6 +147,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     { key: 'MEMBERID', value: 'memberID' },
     { key: 'NATIONALID', value: 'nationalId' },
     { key: 'PATIENTFILENO', value: 'patientFileNO' },
+    { key: 'CLAIMNET', value: 'netAmount' },
+    { key: 'BATCHNUM', value: 'batchNo' },
   ];
   appliedFilters: any = [];
   fdrname = '';
@@ -155,6 +157,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   fclaimRefNo = '';
   fmemberId = '';
   fpatientFileNo = '';
+  fclaimNet = '';
+  fbatchNum = '';
 
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
@@ -466,7 +470,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.policyNo,
       this.fdrname,
       this.fnationalid,
-      this.fclaimdate).subscribe((event) => {
+      this.fclaimdate,
+      this.fclaimNet,
+      this.fbatchNum).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -617,7 +623,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.commen.loadingChanged.next(true);
     this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, [this.casetype],
       null, this.fclaimRefNo, this.fmemberId, this.invoiceNo, this.fpatientFileNo, this.policyNo, this.fdrname, this.fnationalid,
-      this.fclaimdate).subscribe((event) => {
+      this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
           if (event.body['queuedStatus'] == 'QUEUED') {
@@ -665,7 +671,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses,
       this.fmemberId,
       this.selectedClaims,
-      this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate)
+      this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           const numberOfClaims = event.body['numberOfClaims'];
@@ -943,7 +949,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.casetype,
       this.fdrname,
       this.fnationalid,
-      this.fclaimdate
+      this.fclaimdate,
+      this.fclaimNet,
+      this.fbatchNum
     ));
   }
   /*checkAllClaims() {
@@ -1002,7 +1010,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           this.claims.map((ele: any, index: number) => {
             const newModel = new SearchedClaim(ele.body);
             newModel.batchId = ele['batchId'];
-            newModel.claimDate = ele['claimDate'];
             newModel.claimId = ele['claimId'];
             newModel.providerClaimNumber = ele['providerClaimNumber'];
             newModel.drName = ele['drName'];
@@ -1111,7 +1118,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate);
+        this.fclaimdate,
+        this.fclaimNet,
+        this.fbatchNum);
       excel = true;
     } else {
       event = this.searchService.downloadSummaries(this.providerId,
@@ -1128,7 +1137,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate);
+        this.fclaimdate,
+        this.fclaimNet,
+        this.fbatchNum);
     }
 
     this.downloadService.startDownload(event)
@@ -1223,7 +1234,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
                   this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null,
                     this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims,
-                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.commen.loadingChanged.next(false);
                         const status = event.body['status'];
@@ -1273,7 +1284,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             this.commen.loadingChanged.next(true);
             this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
               this.fpatientFileNo, this.invoiceNo, this.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.fmemberId,
-              this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate)
+              this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);
@@ -1334,7 +1345,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
             this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
               this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
-              this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+              this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);
                   const status = event.body['status'];
@@ -1445,6 +1456,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       case ClaimListFilterSelection.CLAIMREFNO:
         this.fclaimRefNo = this.claimList.claimRefNO;
         break;
+      case ClaimListFilterSelection.CLAIMNET:
+        this.fclaimNet = this.claimList.netAmount;
+        break;
+      case ClaimListFilterSelection.BATCHNUM:
+        this.fbatchNum = this.claimList.batchNo;
+        break;
     }
 
 
@@ -1463,6 +1480,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
       this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.fclaimdate = ClaimListFilterSelection.CLAIMDATE ? dates : this.fclaimdate;
+    this.fclaimNet = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.fclaimNet;
+    this.fbatchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.fbatchNum;
   }
 
 
@@ -1492,6 +1511,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             break;
           case ClaimListFilterSelection.CLAIMREFNO:
             this.fclaimRefNo = this.claimList.claimRefNO;
+            break;
+          case ClaimListFilterSelection.CLAIMNET:
+            this.fclaimNet = this.claimList.netAmount;
+            break;
+          case ClaimListFilterSelection.BATCHNUM:
+            this.fbatchNum = this.claimList.batchNo;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1539,6 +1564,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.PATIENTFILENO);
     }
+    if (this.fclaimNet != null && this.fclaimNet !== '' && this.fclaimNet !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.CLAIMNET);
+    }
+    if (this.fbatchNum != null && this.fbatchNum !== '' && this.fbatchNum !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
+    }
   }
 
   setReloadedFilters(key: string) {
@@ -1574,6 +1605,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.fpatientFileNo != null && this.fpatientFileNo !== '' && this.fpatientFileNo !== undefined &&
       (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
       this.setReloadedInputFilters('patientFileNO', this.fpatientFileNo);
+    }
+    if (this.fclaimNet != null && this.fclaimNet !== '' && this.fclaimNet !== undefined) {
+      this.setReloadedInputFilters('netAmount', this.fclaimNet);
+    }
+    if (this.fbatchNum != null && this.fbatchNum !== '' && this.fbatchNum !== undefined) {
+      this.setReloadedInputFilters('batchNo', this.fbatchNum);
     }
   }
 
