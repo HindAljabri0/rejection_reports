@@ -380,7 +380,7 @@ export class RejectionTrackingReportComponent implements OnInit {
     }
   }
   editURL(fromDate?: string, toDate?: string) {
-    let path = '/reports/revenue-tracking-report?';
+    let path = '/reports/rejection-tracking-report?';
     if (this.revenuTrackingReport.subcategory != null) {
       path += `payerId=${this.revenuTrackingReport.payerId}&`;
     }
