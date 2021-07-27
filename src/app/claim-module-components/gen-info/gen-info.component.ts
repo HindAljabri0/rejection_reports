@@ -135,6 +135,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('departmentSelect', { static: true }) departmentSelect: MatSelect;
   isDepartmentDisable = false;
   isPageModeCreate = false;
+  
   constructor(
     private store: Store,
     private datePipe: DatePipe,
@@ -143,6 +144,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.select(getPageMode).pipe(
+      takeUntil(this._onDestroy),
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {

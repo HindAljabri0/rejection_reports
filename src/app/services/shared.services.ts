@@ -548,3 +548,6 @@ export class SharedServices {
   }
 
 }
+
+
+export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
