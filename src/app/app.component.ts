@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Waseele';
+  title = 'Waseel E-Claims';
   private ngUnsubscribe = new Subject<void>();
 
   constructor(

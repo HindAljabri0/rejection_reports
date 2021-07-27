@@ -243,6 +243,7 @@ export class MainClaimPageComponent implements OnInit, OnDestroy {
   }
 
   close() {
+    this.store.dispatch(cancelClaim());
     window.close();
   }
 

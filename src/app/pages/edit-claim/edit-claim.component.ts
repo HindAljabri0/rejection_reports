@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { RetrievedClaimProps } from 'src/app/claim-module-components/models/retrievedClaimProps.model';
 import { ClaimPageMode, ClaimPageType, getPageMode, getPageType, getClaim, getRetrievedClaimProps, getClaimModuleError, getClaimModuleIsLoading, getPaginationControl } from 'src/app/claim-module-components/store/claim.reducer';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -43,7 +42,6 @@ export class EditClaimComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<EditClaimComponent>,
-    private router: Router,
     private store: Store,
     private sharedService: SharedServices,
     private dialogService: DialogService,
@@ -113,7 +111,7 @@ export class EditClaimComponent implements OnInit {
     const claimId = this.data.claimId;
     if (claimId != 'add') {
       this.store.dispatch(hideHeaderAndSideMenu());
-      this.store.dispatch(retrieveClaim({ claimId: claimId, edit: this.router.routerState.snapshot.url.endsWith('#edit') }));
+      this.store.dispatch(retrieveClaim({ claimId: claimId, edit: location.href.includes('#edit') }));
     }
     this.store.dispatch(loadLOVs());
     this.store.select(getDepartments)
@@ -197,8 +195,8 @@ export class EditClaimComponent implements OnInit {
     }
   }
 
-  close() {
-    this.dialogRef.close();
+  close(result?) {
+    this.dialogRef.close(result != null?`${result}`:null);
   }
 
   getError() {
@@ -214,39 +212,35 @@ export class EditClaimComponent implements OnInit {
 
   goToFirstPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
-
-      this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[0]}` }));
+      this.close(this.paginationControl.searchTabCurrentResults[0]);
+      // this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[0]}` }));
     }
   }
   goToPrePage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
-      this.store.dispatch(goToClaim({
-        claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1]}`
-      }));
+      this.close(this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1]);
+      // this.store.dispatch(goToClaim({
+      //   claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1]}`
+      // }));
     }
   }
   goToNextPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size) {
-      this.store.dispatch(goToClaim({
-        claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1]}`
-      }));
+      this.close(this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1]);
+      // this.store.dispatch(goToClaim({
+      //   claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1]}`
+      // }));
     }
   }
   goToLastPage() {
-    if (this.paginationControl != null && this.paginationControl.currentIndex != this.paginationControl.size - 1) {
-      this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1]}` }));
-    }
+    this.close(this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1]);
+    // if (this.paginationControl != null && this.paginationControl.currentIndex != this.paginationControl.size - 1) {
+    //   this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1]}` }));
+    // }
   }
 
   get editable() {
     return this.claimProps != null &&
       ['accepted', 'notaccepted', 'failed', 'invalid', 'downloadable', 'returned'].includes(this.claimProps.statusCode.toLowerCase());
   }
-
-
-  ngOnDestroy(): void {
-    this.close();
-  }
-
-
 }

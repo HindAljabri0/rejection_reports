@@ -7,7 +7,7 @@ import { Service } from '../models/service.model';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { FileType } from '../models/attachmentRequest.model';
-import { SEARCH_TAB_RESULTS_KEY } from 'src/app/pages/searchClaimsPage/search-claims.component';
+import { SEARCH_TAB_RESULTS_KEY } from 'src/app/services/shared.services';
 
 export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT';
 export type ClaimPageType = 'DENTAL_OPTICAL_PHARMACY' | 'INPATIENT_OUTPATIENT';
