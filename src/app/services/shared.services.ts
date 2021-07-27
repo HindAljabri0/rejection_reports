@@ -261,6 +261,8 @@ export class SharedServices {
         return 'partially-paid';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return 'under-processing';
+      case ClaimStatus.Submitted.toLowerCase():
+        return 'submitted';
       case ClaimStatus.Batched.toLowerCase():
         return 'not-saved';
       case ClaimStatus.Downloadable.toLowerCase():
