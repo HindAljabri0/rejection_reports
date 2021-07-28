@@ -256,7 +256,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.invoiceNo = value.invoiceNo;
       this.patientFileNo = value.patientFileNo;
       this.policyNo = value.policyNo;
-      this.editMode = value.editMode || location.href.includes("#edit");
+      this.editMode = value.editMode || location.href.includes('#edit');
       this.fdrname = value.drname;
       this.fnationalid = value.nationalId;
       this.fclaimdate = value.claimDate;
@@ -783,7 +783,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
       if (this.editMode != null) {
-        claimInfo += '#edit'
+        claimInfo += '#edit';
       }
     }
     if (this.from != null && this.to != null && this.payerId != null && this.uploadId === null) {
@@ -849,13 +849,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    const dialogRef = this.dialog.open(EditClaimComponent, { panelClass: ['primary-dialog', 'full-screen-dialog'], autoFocus: false, data: { claimId: claimId } });
+    const dialogRef = this.dialog.open(EditClaimComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+      autoFocus: false, data: { claimId }
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.claimId = null;
       this.editMode = null;
       this.resetURL();
       this.store.dispatch(cancelClaim());
-      this.store.dispatch(changePageTitle({ title: "Waseel E-Claims" }));
+      this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
       if (result != null) {
         this.showClaim(null, result);
       }
@@ -1097,95 +1100,29 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       });
   }
 
-  async download() {
+  async downloadWaseelFormat() {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
 
     let event;
-    let excel = false;
-    if (this.summaries[this.selectedCardKey].statuses.length == 1 &&
-      (this.summaries[this.selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))) {
-      this.dialogService.openMessageDialog({
-        title: '',
-        isError: false,
-        message: 'Do you want to download payers format ? ',
-        cancelButtonText: 'No',
-        confirmButtonText: 'Yes',
-        withButtons:true
 
-
-      }).subscribe(result => {
-        if (result == true) {
-          event = this.searchService.downloadExcelSummaries(this.providerId,
-            this.summaries[this.selectedCardKey].statuses,
-            this.from,
-            this.to,
-            this.payerId,
-            this.batchId,
-            this.uploadId,
-            this.fclaimRefNo,
-            this.memberId,
-            this.invoiceNo,
-            this.fpatientFileNo,
-            this.policyNo,
-            this.fdrname,
-            this.fnationalid,
-            this.fclaimdate,
-            this.fclaimNet,
-            this.fbatchNum);
-          excel = true;
-        }
-        else {
-          event = this.searchService.downloadSummaries(this.providerId,
-            this.summaries[this.selectedCardKey].statuses,
-            this.from,
-            this.to,
-            this.payerId,
-            this.batchId,
-            this.uploadId,
-            this.fclaimRefNo,
-            this.memberId,
-            this.invoiceNo,
-            this.fpatientFileNo,
-            this.policyNo,
-            this.fdrname,
-            this.fnationalid,
-            this.fclaimdate,
-            this.fclaimNet,
-            this.fbatchNum);
-
-        }
-        this.downloadService.startDownload(event)
-          .subscribe(status => {
-            if (status != DownloadStatus.ERROR) {
-              this.detailTopActionIcon = 'ic-check-circle.svg';
-            } else {
-              this.detailTopActionIcon = 'ic-download.svg';
-            }
-          });
-      })
-
-    } else {
-      event = this.searchService.downloadSummaries(this.providerId,
-        this.summaries[this.selectedCardKey].statuses,
-        this.from,
-        this.to,
-        this.payerId,
-        this.batchId,
-        this.uploadId,
-        this.fclaimRefNo,
-        this.memberId,
-        this.invoiceNo,
-        this.fpatientFileNo,
-        this.policyNo,
-        this.fdrname,
-        this.fnationalid,
-        this.fclaimdate,
-        this.fclaimNet,
-        this.fbatchNum);
-    }
+    event = this.searchService.downloadSummaries(this.providerId,
+      this.summaries[this.selectedCardKey].statuses,
+      this.from,
+      this.to,
+      this.payerId,
+      this.batchId,
+      this.uploadId,
+      this.fclaimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.fpatientFileNo,
+      this.policyNo,
+      this.fdrname,
+      this.fnationalid,
+      this.fclaimdate,
+      this.fclaimNet,
+      this.fbatchNum);
     if (event != null) {
-
-
       this.downloadService.startDownload(event)
         .subscribe(status => {
           if (status != DownloadStatus.ERROR) {
@@ -1196,6 +1133,37 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         });
     }
 
+  }
+
+  async downloadPayerFormat() {
+    if (this.detailTopActionIcon == 'ic-check-circle.svg') { return; }
+
+    let event;
+    event = this.searchService.downloadExcelSummaries(this.providerId,
+      this.summaries[this.selectedCardKey].statuses,
+      this.from,
+      this.to,
+      this.payerId,
+      this.batchId,
+      this.uploadId,
+      this.fclaimRefNo,
+      this.memberId,
+      this.invoiceNo,
+      this.fpatientFileNo,
+      this.policyNo,
+      this.fdrname,
+      this.fnationalid,
+      this.fclaimdate,
+      this.fclaimNet,
+      this.fbatchNum);
+    this.downloadService.startDownload(event)
+      .subscribe(status => {
+        if (status != DownloadStatus.ERROR) {
+          this.detailTopActionIcon = 'ic-check-circle.svg';
+        } else {
+          this.detailTopActionIcon = 'ic-download.svg';
+        }
+      });
   }
 
   submitAll() {
@@ -1278,7 +1246,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
                   this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null,
                     this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims,
-                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe(event => {
+                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet,
+                    this.fbatchNum).subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.commen.loadingChanged.next(false);
                         const status = event.body['status'];
@@ -1618,7 +1587,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   setReloadedFilters(key: string) {
     const data = {
-      key: key
+      key
     };
     this.appliedFilters.push(data);
   }
@@ -1711,10 +1680,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
-          if (errorEvent.status === 404)
+          if (errorEvent.status === 404) {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error.message, true));
-          else
+          } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.message, true));
+          }
         }
         this.commen.loadingChanged.next(false);
       });

@@ -11,8 +11,7 @@ export class StatementAccountSummary {
 
 
 export class AddStatmentAccountModel {
-    uploadDate: any = '';
-    statmentStartDate: any = '';
-    statmentEndDate: any = '';
-    uploadStatment: any = '';
+    statementStartDate: any = '';
+    statementEndDate: any = '';
+    file: any = '';
 }

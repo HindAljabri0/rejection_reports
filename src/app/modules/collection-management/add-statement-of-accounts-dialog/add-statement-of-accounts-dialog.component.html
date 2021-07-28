@@ -23,64 +23,65 @@
             </div> -->
             <div class="col-6">
                 <div class="form-group"
-                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statmentStartDate}">
+                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statementStartDate}">
                     <label class="control-label">Statement Start Date</label>
                     <div class="date-picker">
                         <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select statement start date" />
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                     <mat-datepicker #startDate></mat-datepicker> -->
                         <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
-                            [(ngModel)]='addStatmentAccountModel.statmentStartDate' class="form-control date-picker"
+                            [(ngModel)]='addStatmentAccountModel.statementStartDate' class="form-control date-picker"
                             placeholder="Select upload date" (bsValueChange)="dateValidation($event)"
-                            #statmentStartDate='ngModel' name="statmentStartDate" required />
+                            #statementStartDate='ngModel' name="statementStartDate" required />
                     </div>
-                    <div *ngIf="statementAddAccountForm.submitted && statmentStartDate.invalid">
+                    <div *ngIf="statementAddAccountForm.submitted && statementStartDate.invalid">
                         <span class="error-text">Please choose a statement start date</span>
                     </div>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group"
-                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statmentEndDate}">
+                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statementEndDate}">
                     <label class="control-label">Statement End Date</label>
                     <div class="date-picker">
                         <!-- <input [matDatepicker]="endDate" class="form-control" placeholder="Select statement end date" />
                     <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
                     <mat-datepicker #endDate></mat-datepicker> -->
                         <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
-                            [(ngModel)]='addStatmentAccountModel.statmentEndDate' class="form-control date-picker"
+                            [(ngModel)]='addStatmentAccountModel.statementEndDate' class="form-control date-picker"
                             [minDate]="minDate" placeholder="Select start date" (bsValueChange)="dateValidation($event)"
-                            #statmentEndDate='ngModel' name="statmentEndDate" required />
+                            #statementEndDate='ngModel' name="statementEndDate" required />
                     </div>
                 </div>
-                <div *ngIf="statementAddAccountForm.submitted && statmentEndDate.invalid">
+                <div *ngIf="statementAddAccountForm.submitted && statementEndDate.invalid">
                     <span class="error-text">Please choose a statement end date</span>
                 </div>
             </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group"
-                [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.uploadStatment}">
-                <label class="control-label">Upload Statement File</label>
-                <div class="file-upload-wrapper">
-                    <div class="content">
-                        <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
-                            Choose File
-                        </button>
-                        <span class="form-control-static pt-2 d-block"
-                            *ngIf="fileUploadFlag">{{currentFileUpload.name}}</span>
+            <div class="col-6">
+                <div class="form-group"
+                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.file}">
+                    <label class="control-label">Upload Statement File</label>
+                    <div class="file-upload-wrapper">
+                        <div class="content">
+                            <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
+                                Choose File
+                            </button>
+                            <span class="form-control-static pt-2 d-block"
+                                *ngIf="fileUploadFlag">{{currentFileUpload.name}}</span>
+                        </div>
+                        <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            class="file-upload-control" (change)="selectFile($event)"
+                            [(ngModel)]='addStatmentAccountModel.file' #file='ngModel' name="file" required />
                     </div>
-                    <input type="file" accept=".pdf" class="file-upload-control" (change)="selectFile($event)"
-                        [(ngModel)]='addStatmentAccountModel.uploadStatment' #uploadStatment='ngModel'
-                        name="uploadStatment" required />
-                </div>
-                <div *ngIf="statementAddAccountForm.submitted && uploadStatment.invalid">
-                    <span class="error-text">Please choose a file</span>
-                </div>
-                <p class="error-text pt-3" *ngIf="fileError">{{fileError}}</p>
+                    <div *ngIf="statementAddAccountForm.submitted && file.invalid">
+                        <span class="error-text">Please choose a file</span>
+                    </div>
+                    <p class="error-text pt-3" *ngIf="fileError">{{fileError}}</p>
 
+                </div>
             </div>
         </div>
+
     </div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
