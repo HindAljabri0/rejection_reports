@@ -1,58 +1,92 @@
-<div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add Statement</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
-</div>
-<div class="primary-dialog-body pb-0">
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">
-                <label class="control-label">Upload Date</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="uploadDate" class="form-control" placeholder="Select upload date" />
-                    <mat-datepicker-toggle [for]="uploadDate"></mat-datepicker-toggle>
-                    <mat-datepicker #uploadDate></mat-datepicker>
+<form #statementAddAccountForm='ngForm' (ngSubmit)='statementAddAccountForm.valid && submit()'>
+    <div class="primary-dialog-header has-border">
+        <h5 class="primary-dialog-title">Add Statement</h5>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+    </div>
+
+    <div class="primary-dialog-body pb-0">
+        <div class="row">
+            <!-- <div class="col-6">
+                <div class="form-group"
+                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.uploadDate}">
+                    <label class="control-label">Upload Date</label>
+                    <div class="date-picker">
+                        <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
+                            [(ngModel)]='addStatmentAccountModel.uploadDate' class="form-control date-picker"
+                            placeholder="Select upload date" (bsValueChange)="dateValidation($event)"
+                            #uploadDate='ngModel' name="uploadDate" required />
+                    </div>
+                    <div *ngIf="statementAddAccountForm.submitted && uploadDate.invalid">
+                        <span class="error-text">Please choose a upload date</span>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <label class="control-label">Statement Start Date</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select statement start date" />
+            </div> -->
+            <div class="col-6">
+                <div class="form-group"
+                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statmentStartDate}">
+                    <label class="control-label">Statement Start Date</label>
+                    <div class="date-picker">
+                        <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select statement start date" />
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
-                    <mat-datepicker #startDate></mat-datepicker>
+                    <mat-datepicker #startDate></mat-datepicker> -->
+                        <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
+                            [(ngModel)]='addStatmentAccountModel.statmentStartDate' class="form-control date-picker"
+                            placeholder="Select upload date" (bsValueChange)="dateValidation($event)"
+                            #statmentStartDate='ngModel' name="statmentStartDate" required />
+                    </div>
+                    <div *ngIf="statementAddAccountForm.submitted && statmentStartDate.invalid">
+                        <span class="error-text">Please choose a statement start date</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <label class="control-label">Statement End Date</label>
-                <div class="date-picker">
-                    <input [matDatepicker]="endDate" class="form-control" placeholder="Select statement end date" />
+            <div class="col-6">
+                <div class="form-group"
+                    [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statmentEndDate}">
+                    <label class="control-label">Statement End Date</label>
+                    <div class="date-picker">
+                        <!-- <input [matDatepicker]="endDate" class="form-control" placeholder="Select statement end date" />
                     <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
-                    <mat-datepicker #endDate></mat-datepicker>
+                    <mat-datepicker #endDate></mat-datepicker> -->
+                        <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
+                            [(ngModel)]='addStatmentAccountModel.statmentEndDate' class="form-control date-picker"
+                            [minDate]="minDate" placeholder="Select start date" (bsValueChange)="dateValidation($event)"
+                            #statmentEndDate='ngModel' name="statmentEndDate" required />
+                    </div>
+                </div>
+                <div *ngIf="statementAddAccountForm.submitted && statmentEndDate.invalid">
+                    <span class="error-text">Please choose a statement end date</span>
                 </div>
             </div>
         </div>
         <div class="col-6">
-            <div class="form-group">
+            <div class="form-group"
+                [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.uploadStatment}">
                 <label class="control-label">Upload Statement File</label>
                 <div class="file-upload-wrapper">
                     <div class="content">
                         <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
                             Choose File
                         </button>
-                        <span class="form-control-static pt-2 d-block" *ngIf="fileUploadFlag">Statement-03-12-2020.xlsx</span>
+                        <span class="form-control-static pt-2 d-block"
+                            *ngIf="fileUploadFlag">{{currentFileUpload.name}}</span>
                     </div>
-                    <input type="file" accept=".pdf" class="file-upload-control" (change)="fileUploadChange()" />
+                    <input type="file" accept=".pdf" class="file-upload-control" (change)="selectFile($event)"
+                        [(ngModel)]='addStatmentAccountModel.uploadStatment' #uploadStatment='ngModel'
+                        name="uploadStatment" required />
                 </div>
+                <div *ngIf="statementAddAccountForm.submitted && uploadStatment.invalid">
+                    <span class="error-text">Please choose a file</span>
+                </div>
+                <p class="error-text pt-3" *ngIf="fileError">{{fileError}}</p>
+
             </div>
         </div>
     </div>
-</div>
-<div class="primary-dialog-footer has-border">
-    <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
-        <button routerLink="/collection-management/statement-of-accounts-details" (click)="closeDialog()" mat-flat-button color="primary">Add Statement</button>
+    <div class="primary-dialog-footer has-border">
+        <div class="btn-list text-right">
+            <button mat-button (click)="closeDialog()">Cancel</button>
+            <!-- routerLink="/collection-management/statement-of-accounts-details" -->
+            <button type="submit" mat-flat-button color="primary">Add Statement</button>
+        </div>
     </div>
-</div>
+</form>
