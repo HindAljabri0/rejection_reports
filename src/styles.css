@@ -466,7 +466,11 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid>thead>tr>th:last-child:not(.not-last-child),.primary-grid>thead>tr>td:last-child:not(.not-last-child),.primary-grid>tbody>tr>th:last-child:not(.not-last-child),.primary-grid>tbody>tr>td:last-child:not(.not-last-child){padding-right: 12px;}
 .primary-grid:not(.manual-row-color)>tbody>tr:nth-child(even),.primary-grid.manual-row-color>tbody>.even{background-color: #EDF4FF;}
 .primary-grid .actions{text-align: right;white-space: nowrap;}
-.primary-grid .actions .mat-icon-button{width: 30px;height: 30px;line-height: 30px;margin:-5px 0;display: inline-block;vertical-align: middle;}
+.primary-grid .actions .mat-icon-button,.primary-grid .actions .action-letter-btn,.primary-grid .actions .mat-spinner{display: inline-block;vertical-align: middle;}
+.primary-grid .actions .action-letter-btn,.primary-grid .actions .mat-spinner{margin: -5px 3px;}
+.primary-grid .actions .action-letter-btn:first-child,.primary-grid .actions .mat-spinner:first-child{margin-left: 0;}
+.primary-grid .actions .action-letter-btn:last-child,.primary-grid .actions .mat-spinner:last-child{margin-right: 0;}
+.primary-grid .actions .mat-icon-button{width: 30px;height: 30px;line-height: 30px;margin:-5px 0;}
 .primary-grid .actions .mat-icon-button.disabled,.primary-grid .actions .mat-icon-button:disabled{opacity: 0.5;cursor: not-allowed;}
 .primary-grid .actions .mat-icon-button .mat-button-wrapper{display: block;}
 .primary-grid .actions .mat-icon-button .mat-icon{font-size: 20px;line-height: 20px;height: 20px;width: 20px;}
@@ -1148,6 +1152,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .download-progress-view .text:after {content: '';position: absolute;right: 0;top: 24px;width: 136px;display: block;height: 24px;background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );}
 .download-progress-view .size{color:#909090;}
 .download-progress-view .progress{margin-top: 8px;}
+
+/* action letter btn
+--------------------------------------------------------------------------------------------------------*/
+.action-letter-btn{height: 20px;width: 20px;border-radius:50px;font-size: 12px;font-weight: 700;text-align: center;line-height: 16px;overflow: hidden;text-overflow: ellipsis;display: block;padding: 0;border:2px solid #909090;background:transparent;}
+.action-letter-btn.theme-success{border-color:#29bf24;color:#29bf24;}
+.action-letter-btn.theme-danger{border-color:#CC2F2F;color:#CC2F2F;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
