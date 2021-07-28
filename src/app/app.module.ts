@@ -90,6 +90,9 @@ import { DownloadProgressViewComponent } from './components/download-progress-vi
 import { ConfirmAdminDeleteDialogComponent } from './components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
 import { XmlViewDialogComponent } from './components/dialogs/xml-view-dialog/xml-view-dialog.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { EditClaimComponent } from './pages/edit-claim/edit-claim.component';
+import { ClaimModule } from './modules/claim/claim.module';
+
 
 @NgModule({
   declarations: [
@@ -148,7 +151,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     DownloadOverlayComponent,
     DownloadProgressViewComponent,
     ConfirmAdminDeleteDialogComponent,
-    XmlViewDialogComponent
+    XmlViewDialogComponent,
+    EditClaimComponent
   ],
   imports: [
     AppRoutingModule,
@@ -172,7 +176,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     BsDatepickerModule.forRoot(),
     NgxJsonViewerModule,
     ClipboardModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
+    ClaimModule
   ],
   providers: [
     ThemeService,
@@ -220,7 +225,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     ConfiguartionModalComponent,
     DownloadOverlayComponent,
     ConfirmAdminDeleteDialogComponent,
-    XmlViewDialogComponent
+    XmlViewDialogComponent,
+    EditClaimComponent
   ],
 })
 export class AppModule { }

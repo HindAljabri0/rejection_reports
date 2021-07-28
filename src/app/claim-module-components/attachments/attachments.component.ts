@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentViewData } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-data';
 import { AttachmentRequest, FileType } from '../models/attachmentRequest.model';
 import { updateCurrentAttachments } from '../store/claim.actions';
 import { ClaimPageMode, getClaim, getPageMode } from '../store/claim.reducer';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'claim-attachments',
   templateUrl: './attachments.component.html',
   styles: []
 })
-export class AttachmentsComponent implements OnInit {
+export class AttachmentsComponent implements OnInit, OnDestroy {
 
   constructor(private sanitizer: DomSanitizer, private store: Store, private dialog: MatDialog) { }
 
@@ -26,14 +27,22 @@ export class AttachmentsComponent implements OnInit {
 
   pageMode: ClaimPageMode;
 
+  _onDestroy = new Subject<void>();
+
   ngOnInit() {
     this.store.select(getPageMode).pipe(
+      takeUntil(this._onDestroy),
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], retrievedAttachments: values[1].attachment }))
     ).subscribe(({ mode, retrievedAttachments }) => {
       this.pageMode = mode;
       this.setData(retrievedAttachments);
     });
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
 
   setData(attachments: AttachmentRequest[]) {

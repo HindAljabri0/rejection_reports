@@ -30,8 +30,12 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { ValidationService } from 'src/app/services/validationService/validation.service';
 import { ClaimSubmittionService } from '../../services/claimSubmittionService/claim-submittion.service';
 import { SearchService } from '../../services/serchService/search.service';
-import { SharedServices } from '../../services/shared.services';
+import { SEARCH_TAB_RESULTS_KEY, SharedServices } from '../../services/shared.services';
 import { setSearchCriteria, storeClaims } from './store/search.actions';
+import { MatDialog } from '@angular/material';
+import { EditClaimComponent } from '../edit-claim/edit-claim.component';
+import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
+import { changePageTitle } from 'src/app/store/mainStore.actions';
 
 
 @Component({
@@ -143,6 +147,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     { key: 'MEMBERID', value: 'memberID' },
     { key: 'NATIONALID', value: 'nationalId' },
     { key: 'PATIENTFILENO', value: 'patientFileNO' },
+    { key: 'CLAIMNET', value: 'netAmount' },
+    { key: 'BATCHNUM', value: 'batchNo' },
   ];
   appliedFilters: any = [];
   fdrname = '';
@@ -151,11 +157,14 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   fclaimRefNo = '';
   fmemberId = '';
   fpatientFileNo = '';
+  fclaimNet = '';
+  fbatchNum = '';
 
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
   constructor(
+    public dialog: MatDialog,
     public location: Location,
     public submittionService: ClaimSubmittionService,
     public commen: SharedServices,
@@ -247,7 +256,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.invoiceNo = value.invoiceNo;
       this.patientFileNo = value.patientFileNo;
       this.policyNo = value.policyNo;
-      this.editMode = value.editMode;
+      this.editMode = value.editMode || location.href.includes("#edit");
       this.fdrname = value.drname;
       this.fnationalid = value.nationalId;
       this.fclaimdate = value.claimDate;
@@ -461,7 +470,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.policyNo,
       this.fdrname,
       this.fnationalid,
-      this.fclaimdate).subscribe((event) => {
+      this.fclaimdate,
+      this.fclaimNet,
+      this.fbatchNum).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -612,7 +623,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.commen.loadingChanged.next(true);
     this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, [this.casetype],
       null, this.fclaimRefNo, this.fmemberId, this.invoiceNo, this.fpatientFileNo, this.policyNo, this.fdrname, this.fnationalid,
-      this.fclaimdate).subscribe((event) => {
+      this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
           if (event.body['queuedStatus'] == 'QUEUED') {
@@ -660,7 +671,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.summaries[this.selectedCardKey].statuses,
       this.fmemberId,
       this.selectedClaims,
-      this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate)
+      this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           const numberOfClaims = event.body['numberOfClaims'];
@@ -771,9 +782,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let path = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
-    }
-    if (this.editMode != null) {
-      claimInfo += `&editMode=${this.editMode}`;
+      if (this.editMode != null) {
+        claimInfo += '#edit'
+      }
     }
     if (this.from != null && this.to != null && this.payerId != null && this.uploadId === null) {
       path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
@@ -823,15 +834,32 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.pageIndex != null && this.pageIndex > 0) {
       path += `&page=${(this.pageIndex)}`;
     }
-    if (path !== '' && path !== this.router.url) {
+    if (path !== '') {
       this.location.go(path);
     }
   }
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    window.open(`${location.protocol}//${location.host}/${location.pathname.split('/')[1]}/claims/${claimId}` +
-      (edit != null && edit ? '#edit' : ''));
+    this.claimId = claimId;
+    if (edit) {
+      this.editMode = `${edit}`;
+    } else {
+      this.editMode = null;
+    }
+    this.resetURL();
+    this.store.dispatch(cancelClaim());
+    const dialogRef = this.dialog.open(EditClaimComponent, { panelClass: ['primary-dialog', 'full-screen-dialog'], autoFocus: false, data: { claimId: claimId } });
+    dialogRef.afterClosed().subscribe(result => {
+      this.claimId = null;
+      this.editMode = null;
+      this.resetURL();
+      this.store.dispatch(cancelClaim());
+      this.store.dispatch(changePageTitle({ title: "Waseel E-Claims" }));
+      if (result != null) {
+        this.showClaim(null, result);
+      }
+    });
   }
 
   reloadClaim(claim: ViewedClaim) {
@@ -921,7 +949,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.casetype,
       this.fdrname,
       this.fnationalid,
-      this.fclaimdate
+      this.fclaimdate,
+      this.fclaimNet,
+      this.fbatchNum
     ));
   }
   /*checkAllClaims() {
@@ -980,7 +1010,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           this.claims.map((ele: any, index: number) => {
             const newModel = new SearchedClaim(ele.body);
             newModel.batchId = ele['batchId'];
-            newModel.claimDate = ele['claimDate'];
             newModel.claimId = ele['claimId'];
             newModel.providerClaimNumber = ele['providerClaimNumber'];
             newModel.drName = ele['drName'];
@@ -1075,22 +1104,66 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let excel = false;
     if (this.summaries[this.selectedCardKey].statuses.length == 1 &&
       (this.summaries[this.selectedCardKey].statuses.includes('Downloadable'.toLowerCase()))) {
-      event = this.searchService.downloadExcelSummaries(this.providerId,
-        this.summaries[this.selectedCardKey].statuses,
-        this.from,
-        this.to,
-        this.payerId,
-        this.batchId,
-        this.uploadId,
-        this.fclaimRefNo,
-        this.memberId,
-        this.invoiceNo,
-        this.fpatientFileNo,
-        this.policyNo,
-        this.fdrname,
-        this.fnationalid,
-        this.fclaimdate);
-      excel = true;
+      this.dialogService.openMessageDialog({
+        title: '',
+        isError: false,
+        message: 'Do you want to download payers format ? ',
+        cancelButtonText: 'No',
+        confirmButtonText: 'Yes',
+        withButtons:true
+
+
+      }).subscribe(result => {
+        if (result == true) {
+          event = this.searchService.downloadExcelSummaries(this.providerId,
+            this.summaries[this.selectedCardKey].statuses,
+            this.from,
+            this.to,
+            this.payerId,
+            this.batchId,
+            this.uploadId,
+            this.fclaimRefNo,
+            this.memberId,
+            this.invoiceNo,
+            this.fpatientFileNo,
+            this.policyNo,
+            this.fdrname,
+            this.fnationalid,
+            this.fclaimdate,
+            this.fclaimNet,
+            this.fbatchNum);
+          excel = true;
+        }
+        else {
+          event = this.searchService.downloadSummaries(this.providerId,
+            this.summaries[this.selectedCardKey].statuses,
+            this.from,
+            this.to,
+            this.payerId,
+            this.batchId,
+            this.uploadId,
+            this.fclaimRefNo,
+            this.memberId,
+            this.invoiceNo,
+            this.fpatientFileNo,
+            this.policyNo,
+            this.fdrname,
+            this.fnationalid,
+            this.fclaimdate,
+            this.fclaimNet,
+            this.fbatchNum);
+
+        }
+        this.downloadService.startDownload(event)
+          .subscribe(status => {
+            if (status != DownloadStatus.ERROR) {
+              this.detailTopActionIcon = 'ic-check-circle.svg';
+            } else {
+              this.detailTopActionIcon = 'ic-download.svg';
+            }
+          });
+      })
+
     } else {
       event = this.searchService.downloadSummaries(this.providerId,
         this.summaries[this.selectedCardKey].statuses,
@@ -1106,18 +1179,22 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.policyNo,
         this.fdrname,
         this.fnationalid,
-        this.fclaimdate);
+        this.fclaimdate,
+        this.fclaimNet,
+        this.fbatchNum);
     }
+    if (event != null) {
 
-    this.downloadService.startDownload(event)
-      .subscribe(status => {
-        if (status != DownloadStatus.ERROR) {
-          this.detailTopActionIcon = 'ic-check-circle.svg';
-        } else {
-          this.detailTopActionIcon = 'ic-download.svg';
-        }
-      });
 
+      this.downloadService.startDownload(event)
+        .subscribe(status => {
+          if (status != DownloadStatus.ERROR) {
+            this.detailTopActionIcon = 'ic-check-circle.svg';
+          } else {
+            this.detailTopActionIcon = 'ic-download.svg';
+          }
+        });
+    }
 
   }
 
@@ -1201,7 +1278,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
                   this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null,
                     this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims,
-                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.commen.loadingChanged.next(false);
                         const status = event.body['status'];
@@ -1251,7 +1328,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             this.commen.loadingChanged.next(true);
             this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
               this.fpatientFileNo, this.invoiceNo, this.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.fmemberId,
-              this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate)
+              this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);
@@ -1312,7 +1389,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
             this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
               this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
-              this.fdrname, this.fnationalid, this.fclaimdate).subscribe(event => {
+              this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);
                   const status = event.body['status'];
@@ -1423,6 +1500,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       case ClaimListFilterSelection.CLAIMREFNO:
         this.fclaimRefNo = this.claimList.claimRefNO;
         break;
+      case ClaimListFilterSelection.CLAIMNET:
+        this.fclaimNet = this.claimList.netAmount;
+        break;
+      case ClaimListFilterSelection.BATCHNUM:
+        this.fbatchNum = this.claimList.batchNo;
+        break;
     }
 
 
@@ -1441,6 +1524,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
       this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.fclaimdate = ClaimListFilterSelection.CLAIMDATE ? dates : this.fclaimdate;
+    this.fclaimNet = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.fclaimNet;
+    this.fbatchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.fbatchNum;
   }
 
 
@@ -1470,6 +1555,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             break;
           case ClaimListFilterSelection.CLAIMREFNO:
             this.fclaimRefNo = this.claimList.claimRefNO;
+            break;
+          case ClaimListFilterSelection.CLAIMNET:
+            this.fclaimNet = this.claimList.netAmount;
+            break;
+          case ClaimListFilterSelection.BATCHNUM:
+            this.fbatchNum = this.claimList.batchNo;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1517,6 +1608,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.PATIENTFILENO);
     }
+    if (this.fclaimNet != null && this.fclaimNet !== '' && this.fclaimNet !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.CLAIMNET);
+    }
+    if (this.fbatchNum != null && this.fbatchNum !== '' && this.fbatchNum !== undefined) {
+      this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
+    }
   }
 
   setReloadedFilters(key: string) {
@@ -1552,6 +1649,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.fpatientFileNo != null && this.fpatientFileNo !== '' && this.fpatientFileNo !== undefined &&
       (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
       this.setReloadedInputFilters('patientFileNO', this.fpatientFileNo);
+    }
+    if (this.fclaimNet != null && this.fclaimNet !== '' && this.fclaimNet !== undefined) {
+      this.setReloadedInputFilters('netAmount', this.fclaimNet);
+    }
+    if (this.fbatchNum != null && this.fbatchNum !== '' && this.fbatchNum !== undefined) {
+      this.setReloadedInputFilters('batchNo', this.fbatchNum);
     }
   }
 
@@ -1625,4 +1728,4 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
 
-export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';
+

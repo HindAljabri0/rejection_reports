@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
 import {
   FieldError,
@@ -30,18 +30,19 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Actions, ofType } from '@ngrx/effects';
 import { DatePipe } from '@angular/common';
 import { ServiceDecision } from '../models/serviceDecision.model';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { parse } from 'querystring';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'claim-invoices-services',
   templateUrl: './invoices-services.component.html',
   styles: []
 })
-export class InvoicesServicesComponent implements OnInit {
+export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
   isRetrievedClaim = false;
 
@@ -127,8 +128,11 @@ export class InvoicesServicesComponent implements OnInit {
     private sharedServices: SharedServices,
     private datePipe: DatePipe) { }
 
+  _onDestroy = new Subject<void>();
+
   ngOnInit() {
     this.store.select(getPageMode).pipe(
+      takeUntil(this._onDestroy),
       withLatestFrom(this.store.select(getClaim)),
       withLatestFrom(this.store.select(getRetrievedClaimProps)),
       map(values => ({ mode: values[0][0], claim: values[0][1], claimProps: values[1] }))
@@ -144,15 +148,16 @@ export class InvoicesServicesComponent implements OnInit {
       this.claimProps = claimProps;
       this.getPBMValidation();
     });
-    this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors || []);
+    this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
     this.store.select(getDepartments)
+      .pipe(takeUntil(this._onDestroy))
       .subscribe(departments => {
         if (departments != null && departments.length > 0) {
           this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
           this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
         }
         this.departments = departments;
-        this.store.select(getClaim).subscribe(claim => {
+        this.store.select(getClaim).pipe(takeUntil(this._onDestroy)).subscribe(claim => {
           claim.invoice.map((invoice, index) => {
             this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment, 10));
           });
@@ -162,9 +167,9 @@ export class InvoicesServicesComponent implements OnInit {
           this.addInvoice();
         }
       });
-    this.store.select(getDepartmentCode).subscribe(type => this.claimType = type);
-    this.store.select(getVisitDate).subscribe(date => this.visitDate = date);
-    this.store.select(getSelectedPayer).subscribe(payerId => {
+    this.store.select(getDepartmentCode).pipe(takeUntil(this._onDestroy)).subscribe(type => this.claimType = type);
+    this.store.select(getVisitDate).pipe(takeUntil(this._onDestroy)).subscribe(date => this.visitDate = date);
+    this.store.select(getSelectedPayer).pipe(takeUntil(this._onDestroy)).subscribe(payerId => {
       this.payerId = payerId;
       this.priceListExist = true;
       this.searchServicesController.setValue('');
@@ -175,7 +180,7 @@ export class InvoicesServicesComponent implements OnInit {
       this.expandedService = 0;
     }
 
-    this.store.select(getSelectedTab).subscribe(tab => {
+    this.store.select(getSelectedTab).pipe(takeUntil(this._onDestroy)).subscribe(tab => {
       if (tab == 'INVOICES_SERVICES') {
         this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
       } else {
@@ -185,6 +190,7 @@ export class InvoicesServicesComponent implements OnInit {
 
 
     this.actions.pipe(
+      takeUntil(this._onDestroy),
       ofType(saveInvoices_Services)
     ).subscribe(() => {
       for (let i = 0; i < this.controllers.length; i++) {
@@ -192,7 +198,7 @@ export class InvoicesServicesComponent implements OnInit {
       }
     });
 
-    this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
+    this.actions.pipe(takeUntil(this._onDestroy), ofType(addRetrievedServices)).subscribe(data => {
       if (data.serviceIndex != null) {
         const service = data.services[0].service;
         const decision = data.services[0].decision;
@@ -204,6 +210,11 @@ export class InvoicesServicesComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
 
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
