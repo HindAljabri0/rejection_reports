@@ -86,8 +86,20 @@
                 <div class="actions">
                     <button *ngIf="appliedFilters.length>0" (click)="clearFilters('',true)" class="primary-text-btn" mat-flat-button type="button">Clear
                         Filter</button>
-                    <button matRipple (click)="download()" type="button" class="action-btn"
-                        *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
+                    <button matRipple (click)="downloadWaseelFormat()" type="button" class="action-btn" *ngIf="(searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null) && !(summaries[selectedCardKey].statuses.length == 1 &&
+                        (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase())))">
+                        <img src="./assets/{{detailTopActionIcon}}" />
+                    </button>
+                    <mat-menu #downloadMenu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="downloadWaseelFormat()">
+                            <span>Download in Waseel Format</span>
+                        </button>
+                        <button mat-menu-item (click)="downloadPayerFormat()">
+                            <span>Download in Payer Format</span>
+                        </button>
+                    </mat-menu>
+                    <button matRipple [matMenuTriggerFor]="downloadMenu" type="button" class="action-btn" *ngIf="(searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null) && (summaries[selectedCardKey].statuses.length == 1 &&
+                    (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase())))">
                         <img src="./assets/{{detailTopActionIcon}}" />
                     </button>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
@@ -278,11 +290,9 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action"
-                                            [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMNET)">
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMNET)">
                                             <span>Net Amount</span>
-                                            <button type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="claimNetFilter" (click)="checkReloadedFilter()">
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimNetFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #claimNetFilter="matMenu" xPosition="before" class="filter-menu">
@@ -290,17 +300,13 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Net Amount</label>
-                                                            <input class="form-control" placeholder="Claim Net Amount"
-                                                                type="number"
-                                                                [(ngModel)]="claimList.netAmount"
+                                                            <input class="form-control" placeholder="Claim Net Amount" type="number" [(ngModel)]="claimList.netAmount"
                                                                 #claimNet="ngModel" name="claimNet">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button
-                                                            (click)="clearFilters('netAmount')">Clear</button>
-                                                        <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMNET)">Filter</button>
+                                                        <button mat-flat-button (click)="clearFilters('netAmount')">Clear</button>
+                                                        <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMNET)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
@@ -311,11 +317,9 @@
                                         Net Vat</th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <div class="column-header-action"
-                                            [ngClass]="checkAppliedFilter(claimSearchSelection.BATCHNUM)">
+                                        <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.BATCHNUM)">
                                             <span>Batch No.</span>
-                                            <button type="button" class="action-btn" matRipple
-                                                [matMenuTriggerFor]="batchNumFilter" (click)="checkReloadedFilter()">
+                                            <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="batchNumFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
                                             </button>
                                             <mat-menu #batchNumFilter="matMenu" xPosition="before" class="filter-menu">
@@ -323,16 +327,13 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Batch Number</label>
-                                                            <input [(ngModel)]="claimList.batchNo"
-                                                                #batchNo="ngModel" name="batchNo" class="form-control"
+                                                            <input [(ngModel)]="claimList.batchNo" #batchNo="ngModel" name="batchNo" class="form-control"
                                                                 placeholder="Batch Number">
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button
-                                                            (click)="clearFilters('batchNo')">Clear</button>
-                                                        <button mat-flat-button color="primary"
-                                                            (click)="searchClaimBased(claimSearchSelection.BATCHNUM)">Filter</button>
+                                                        <button mat-flat-button (click)="clearFilters('batchNo')">Clear</button>
+                                                        <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.BATCHNUM)">Filter</button>
                                                     </div>
                                                 </div>
                                             </mat-menu>
