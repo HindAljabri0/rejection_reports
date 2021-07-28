@@ -69,6 +69,7 @@ export class AddStatementOfAccountsDialogComponent implements OnInit {
       statementStartDate: moment(this.addStatmentAccountModel.statementStartDate).format('DD-MM-YYYY'),
       statementEndDate: moment(this.addStatmentAccountModel.statementEndDate).format('DD-MM-YYYY'),
     }
+    this.common.loadingChanged.next(true);
     this._reportService.addPayerSOAData(
       this.common.providerId,
       this.currentFileUpload,
