@@ -82,7 +82,8 @@
               Type</button>
           </li>
         </ng-container>
-        <ng-container *ngIf="!isServiceVisible">
+        <!-- *ngIf="!isServiceVisible" -->
+        <ng-container>
           <li>
             <button type="button" (click)="showServiceChart(revenuTrackingEnum.AvgCost,revenuTrackingReportForm)"
               [class.active]="isActiveService(revenuTrackingEnum.AvgCost)" id="avgCost" matRipple>Average
