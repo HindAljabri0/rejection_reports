@@ -263,6 +263,8 @@ export class SharedServices {
         return 'under-processing';
       case ClaimStatus.Submitted.toLowerCase():
         return 'submitted';
+      case ClaimStatus.SUBMITTED_OUTSIDE_WASEEL.toLowerCase():
+        return 'submitted-outside-waseel';
       case ClaimStatus.Batched.toLowerCase():
         return 'not-saved';
       case ClaimStatus.Downloadable.toLowerCase():
@@ -290,6 +292,8 @@ export class SharedServices {
         return 'Under Submission';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return 'Under Processing';
+      case ClaimStatus.SUBMITTED_OUTSIDE_WASEEL.toLowerCase():
+        return 'Submitted Outside Waseel';
       case ClaimStatus.TOTALNOTSUBMITTED.toLowerCase():
         return 'Total Not Submitted';
       case ClaimStatus.TOTALSUBMITTED.toLowerCase():
