@@ -4,6 +4,11 @@ import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { AddStatmentAccountModel } from 'src/app/models/statementAccountModel';
 import * as moment from 'moment';
 import { SharedServices } from 'src/app/services/shared.services';
+import { ReportsService } from 'src/app/services/reportsService/reports.service';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { stat } from 'fs';
 @Component({
   selector: 'app-add-statement-of-accounts-dialog',
   templateUrl: './add-statement-of-accounts-dialog.component.html',
@@ -17,28 +22,31 @@ export class AddStatementOfAccountsDialogComponent implements OnInit {
   currentFileUpload: File;
   fileError = '';
   sizeInMB: string;
-  constructor(private dialogRef: MatDialogRef<AddStatementOfAccountsDialogComponent>, public common: SharedServices) { }
+  status: boolean = false;
+  constructor(private dialogRef: MatDialogRef<AddStatementOfAccountsDialogComponent>, public common: SharedServices, private _reportService: ReportsService, private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.status = false;
   }
 
-  closeDialog() {
+  closeDialog(status: boolean = false) {
+    this.status = status;
     this.dialogRef.close();
   }
 
   dateValidation(event: any) {
     if (event !== null) {
       const startDate = moment(event).format('YYYY-MM-DD');
-      const endDate = moment(this.addStatmentAccountModel.statmentEndDate).format('YYYY-MM-DD');
+      const endDate = moment(this.addStatmentAccountModel.statementEndDate).format('YYYY-MM-DD');
       if (startDate > endDate) {
-        this.addStatmentAccountModel.statmentEndDate = '';
+        this.addStatmentAccountModel.statementEndDate = '';
       }
     }
     this.minDate = new Date(event);
 
   }
   checkfile() {
-    const validExts = new Array('.csv');
+    const validExts = new Array('.xlsx');
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -57,7 +65,32 @@ export class AddStatementOfAccountsDialogComponent implements OnInit {
   }
 
   submit() {
-
+    const body = {
+      statementStartDate: moment(this.addStatmentAccountModel.statementStartDate).format('DD-MM-YYYY'),
+      statementEndDate: moment(this.addStatmentAccountModel.statementEndDate).format('DD-MM-YYYY'),
+    }
+    this.common.loadingChanged.next(true);
+    this._reportService.addPayerSOAData(
+      this.common.providerId,
+      this.currentFileUpload,
+      body
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          this.dialogService.openMessageDialog(new MessageDialogData('', 'Your data has been saved successfully', false));
+          this.closeDialog(true);
+        }
+        else {
+          this.status = false;
+        }
+        this.common.loadingChanged.next(false);
+      }
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        this.common.loadingChanged.next(false);
+        this.dialogService.openMessageDialog(new MessageDialogData('', err.error, true));
+      }
+    });
   }
   selectFile(event) {
     this.fileUploadFlag = true;

@@ -836,7 +836,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.pageIndex != null && this.pageIndex > 0) {
       path += `&page=${(this.pageIndex)}`;
     }
-    if (path !== '') {
+    if (path !== '' && path !== this.router.url) {
       this.location.go(path);
     }
   }
