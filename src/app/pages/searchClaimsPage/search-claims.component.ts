@@ -124,6 +124,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   waitingEligibilityCheck = false;
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
+  approvalWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility = false;
   currentSelectedTab = 0;
   validationDetails: ClaimError[];
@@ -188,6 +189,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    //console.log(this.claims[0].statusApproval);
     this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
@@ -926,6 +928,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id, 10)]));
   }
 
+  checkClaimForApproval(id: string) {
+    this.approvalWaitingList[id] = { result: '', waiting: true };
+  //  this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id, 10)]));
+  }
+
   checkSelectedClaims() {
     this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = { result: '', waiting: true });
     this.waitingEligibilityCheck = true;
@@ -1067,6 +1074,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   claimIsWaitingEligibility(claimId: string) {
     return this.eligibilityWaitingList[claimId] != null && this.eligibilityWaitingList[claimId].waiting;
+  }
+
+  claimIsWaitingApproval(claimId: string) {
+    return this.approvalWaitingList[claimId] != null && this.approvalWaitingList[claimId].waiting;
   }
   get isWaitingForEligibility() {
     return this.waitingEligibilityCheck;
@@ -1224,6 +1235,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isEligibleState(status: string) {
     if (status == null) { return false; }
     return status.toLowerCase() == 'eligible';
+  }
+
+  isApprovalState(status: string) {
+    if (status == null) { return false; }
+    return status.toLowerCase() == 'Approval';
   }
 
   get showEligibilityButton() {
