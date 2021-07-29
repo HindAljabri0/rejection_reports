@@ -22,6 +22,12 @@ export class StatementOfAccountsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddStatementOfAccountsDialogComponent, {
       panelClass: ['primary-dialog']
     });
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogRef.componentInstance.status) {
+      }
+    }, error => {
+
+    });
   }
   submit() {
 

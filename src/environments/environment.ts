@@ -19,7 +19,7 @@ export const environment = {
   creditReportService: 'http://localhost:8484',
   tawuniyaCreditReportService: 'http://localhost:8491',
   pbmValidationService: 'http://localhost:8099',
-  payerPaymentContractService: `http://localhost:8089/payer-payment-contract`
+  payerPaymentContractService: `http://localhost:8089`
 
 };
 

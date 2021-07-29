@@ -176,6 +176,22 @@ export class ReportsService {
       { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
+  addPayerSOAData(providerId: any, fileUpload: File, data: any) {
+    const formdata: FormData = new FormData();
+    for (const key in data) {
+      if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'file') {
+        formdata.append(key, data[key]);
+      }
+    }
+    formdata.append('file', fileUpload);
+    const requestURL = `/providers/${providerId}/statement`;
+
+    const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+    return this.http.request(req);
+  }
 
 
 }
