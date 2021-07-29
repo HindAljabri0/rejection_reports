@@ -1,12 +1,12 @@
 import { claimReducer } from '../claim-module-components/store/claim.reducer';
 
 export class StatementAccountSummary {
-    criteria: any = '';
-    startDate: any = '';
-    endDate: any = '';
-    pageNo: number;
-    pageSize: number;
-    totalPages: number
+    searchCriteria: any = '';
+    fromDate: any = '';
+    toDate: any = '';
+    page: number = 0;
+    size: number = 10;
+    totalPages: number = 0;
 }
 
 
