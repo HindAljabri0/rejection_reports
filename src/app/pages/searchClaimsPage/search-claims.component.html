@@ -404,14 +404,24 @@
                                                 matTooltip="Rejected">dangerous</mat-icon>
                                         </td>
                                         <td class="actions text-center">
-                                            <button class="action-letter-btn" (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility"
+                                            <div> <button class="action-letter-btn" (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility"
                                                 *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">E</button>
                                             <span class="action-letter-btn theme-success" matTooltip="Eligible"
                                                 *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">E</span>
                                             <span class="action-letter-btn theme-danger"
                                                 matTooltip="{{claim.eligibilitycheck}} {{claim.eligibilityStatusDesc!==null && claim.eligibilityStatusDesc!==undefined ? ': '+ claim.eligibilityStatusDesc:'' }}"
                                                 *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">E</span>
-                                            <mat-spinner diameter="20" *ngIf="claimIsWaitingEligibility(claim.claimId)"></mat-spinner>
+                                            <mat-spinner diameter="20" *ngIf="claimIsWaitingEligibility(claim.claimId)"></mat-spinner></div>
+                                            <div> 
+                                                <button class="action-letter-btn" (click)="checkClaimForApproval(claim.claimId)" matTooltip="Verify Approval"
+                                                *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.statusApproval == null && !claimIsWaitingApproval(claim.claimId)">A</button>
+                                            <span class="action-letter-btn theme-success" matTooltip="Approval"
+                                                *ngIf="isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
+                                            <span class="action-letter-btn theme-danger"
+                                                matTooltip="{{claim.statusApproval}} {{claim.descApproval!==null && claim.descApproval!==undefined ? ': '+ claim.descApproval:'' }}"
+                                                *ngIf="claim.statusApproval != null && !isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
+                                            <mat-spinner diameter="20" *ngIf="claimIsWaitingApproval(claim.claimId)"></mat-spinner></div>
+                                           
                                         </td>
                                         <td class="actions">
                                             <button [disabled]="!(claim.numOfPriceListErrors > 0)" class="text-orange" *ngIf="claim.numOfPriceListErrors > 0" mat-icon-button
