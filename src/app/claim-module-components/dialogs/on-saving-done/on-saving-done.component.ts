@@ -5,6 +5,8 @@ import { OnSavingDoneDialogData } from './on-saving-done.data';
 import { SharedServices } from 'src/app/services/shared.services';
 import { viewThisMonthClaims, cancelClaim } from '../../store/claim.actions';
 import { Location } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-on-saving-done',
@@ -18,7 +20,8 @@ export class OnSavingDoneComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: OnSavingDoneDialogData,
     private store: Store,
     private sharedServices: SharedServices,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -66,8 +69,14 @@ export class OnSavingDoneComponent implements OnInit {
       }).join(','));
     }
     pathSegments.push(this.data.claimId);
-    this.location.go(pathSegments.join('/'));
-    location.reload();
+    this.location.path().replace('#edit', '')
+    this.router.navigateByUrl(this.location.path());
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        location.reload();
+      });
+
   }
 
   get isNotAccepted() {

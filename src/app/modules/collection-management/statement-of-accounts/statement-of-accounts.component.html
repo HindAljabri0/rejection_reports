@@ -7,17 +7,17 @@
             <div class="row small-gutter">
                 <div class="col">
                     <div class="form-group"
-                        [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.criteria}">
+                        [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.searchCriteria}">
                         <label class="control-label">Criteria</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" [(ngModel)]='stamentAccountModel.criteria' #criteria='ngModel'
-                                name="criteria" required>
+                            <mat-select value="" [(ngModel)]='stamentAccountModel.searchCriteria'
+                                #searchCriteria='ngModel' name="searchCriteria" required>
                                 <mat-option value="" selected>Select Criteria</mat-option>
-                                <mat-option value="Upload Date">Upload Date</mat-option>
-                                <mat-option value="Statement Date">Statement Date</mat-option>
+                                <mat-option value="uploaddate">Upload Date</mat-option>
+                                <mat-option value="statementdate">Statement Date</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <div *ngIf="statementAccountForm.submitted && criteria.invalid">
+                        <div *ngIf="statementAccountForm.submitted && searchCriteria.invalid">
                             <span class="error-text">Please select a Criteria</span>
                         </div>
                     </div>
@@ -26,34 +26,34 @@
                     <div class="form-group">
                         <label class="control-label">From Date</label>
                         <div class="date-picker"
-                            [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.startDate}">
-                            <!-- <input [matDatepicker]="fromDate" class="form-control" [(ngModel)]='stamentAccountModel.startDate' #startDate='ngModel' name="startDate" placeholder="Select from date" />
+                            [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.fromDate}">
+                            <!-- <input [matDatepicker]="fromDate" class="form-control" [(ngModel)]='stamentAccountModel.fromDate' #fromDate='ngModel' name="fromDate" placeholder="Select from date" />
                             <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
                             <mat-datepicker #fromDate></mat-datepicker> -->
                             <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
-                                [(ngModel)]='stamentAccountModel.startDate' class="form-control date-picker"
+                                [(ngModel)]='stamentAccountModel.fromDate' class="form-control date-picker"
                                 placeholder="Select start date" (bsValueChange)="dateValidation($event)"
-                                #startDate='ngModel' name="startDate" required />
+                                #fromDate='ngModel' name="fromDate" required />
                         </div>
-                        <div *ngIf="statementAccountForm.submitted && startDate.invalid">
+                        <div *ngIf="statementAccountForm.submitted && fromDate.invalid">
                             <span class="error-text">Please choose a from date</span>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group"
-                        [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.endDate}">
+                        [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.toDate}">
                         <label class="control-label">To Date</label>
                         <div class="date-picker">
-                            <!-- <input [matDatepicker]="toDate" class="form-control" [(ngModel)]='stamentAccountModel.endDate' #endDate='ngModel' name="endDate" placeholder="Select to date" />
+                            <!-- <input [matDatepicker]="toDate" class="form-control" [(ngModel)]='stamentAccountModel.toDate' #toDate='ngModel' name="toDate" placeholder="Select to date" />
                             <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker> -->
                             <input autocomplete="off" bsDatepicker [bsConfig]="datePickerConfig"
-                                [(ngModel)]='stamentAccountModel.endDate' #endDate='ngModel' name="endDate" required
+                                [(ngModel)]='stamentAccountModel.toDate' #toDate='ngModel' name="toDate" required
                                 [minDate]="minDate" class="form-control date-picker" placeholder="Select end date"
                                 required />
                         </div>
-                        <div *ngIf="statementAccountForm.submitted && endDate.invalid">
+                        <div *ngIf="statementAccountForm.submitted && toDate.invalid">
                             <span class="error-text">Please choose a to date</span>
                         </div>
                     </div>
@@ -77,105 +77,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let item of sOAData" routerLink="/collection-management/statement-of-accounts-details">
+                        <td class="row-click">
+                            {{item.uploadDate  | date: 'dd-MM-yyyy'}}</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            26/12/2043</td>
+                            {{item.statementStartDate  | date: 'dd-MM-yyyy'}}</td>
                         <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            23/6/2061</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            27/7/2101</td>
+                            {{item.statementEndDate  | date: 'dd-MM-yyyy'}}</td>
                     </tr>
                     <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            27/2/2092</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">4/5/2034
+                        <td colspan="3" class="p-0">
+                            <app-empty-state *ngIf="sOAData == null || sOAData.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
                         </td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            6/10/2063</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            23/7/2106</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            20/8/2072</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            14/7/2066</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">8/3/2095
-                        </td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            20/7/2066</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            24/9/2035</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            31/8/2045</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            18/4/2064</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            26/7/2052</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            15/6/2042</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            13/6/2089</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            26/10/2097</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            9/11/2084</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            12/3/2110</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            28/7/2053</td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            5/11/2053</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            2/11/2076</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">8/5/2067
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            21/5/2097</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            20/5/2054</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">3/8/2121
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">7/2/2031
-                        </td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            25/11/2042</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
-                            12/2/2040</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
     <div class="block-footer sticky-bottom">
-        <div class="left-block custom-paginator">
-            <button matRipple (click)="goToFirstPage()" type="button" title="First Page">
+        <div class="left-block custom-paginator" *ngIf="stamentAccountModel.totalPages > 0">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
+                [disabled]="stamentAccountModel.page==0 || isLoading">
                 <img src="./assets/ic-page-first.svg" alt="First" />
             </button>
-            <button matRipple type="button" (click)="goToPrePage()" title="Previous Page">
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
+                [disabled]="stamentAccountModel.page==0 || isLoading">
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
-                1<small>/5</small>
+                {{(stamentAccountModel.page+1)}}<small>/{{stamentAccountModel.totalPages }}</small>
             </p>
-            <button (click)="goToNextPage()" matRipple type="button" title="Next Page">
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
+                [disabled]="(stamentAccountModel.page+1)==stamentAccountModel.totalPages || isLoading">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
             </button>
-            <button matRipple type="button" title="Last Page" (click)="goToLastPage()">
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
+                [disabled]="(stamentAccountModel.page+1)==stamentAccountModel.totalPages || isLoading ">
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>
