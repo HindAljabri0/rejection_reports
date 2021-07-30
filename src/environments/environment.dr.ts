@@ -1,4 +1,4 @@
-const host = 'https://api.eclaims.waseel.com';
+const host = 'https://api.qa-eclaims.waseel.com';
 export const environment = {
   name: 'dr',
   production: true,
