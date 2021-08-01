@@ -66,10 +66,10 @@ export class EligibilityService {
       requestUrl += `claimDate=${claimDate}`;
     }
     if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
-      requestUrl += `netAmount=${netAmount}`;
+      requestUrl += `&netAmount=${netAmount}`;
     }
     if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
-      requestUrl += `batchNo=${batchNo}`;
+      requestUrl += `&batchNo=${batchNo}`;
     }
     const request = new HttpRequest('POST', environment.claimServiceHost + requestUrl, '');
     return this.http.request(request);
