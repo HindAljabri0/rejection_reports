@@ -6,6 +6,7 @@ import { CreditReportQueryModel } from 'src/app/models/creditReportQuery';
 import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
 import { Observable } from 'rxjs';
 import { ClaimStatusSummaryReport } from 'src/app/models/claimStatusSummaryReport';
+import { StatementAccountSummary } from 'src/app/models/statementAccountModel';
 
 @Injectable({
   providedIn: 'root'
@@ -192,6 +193,19 @@ export class ReportsService {
     });
     return this.http.request(req);
   }
-
+  getPayerSOAData(providerId: string, data: StatementAccountSummary): Observable<any> {
+    const requestURL = `/providers/${providerId}/statement/fetch?` +
+      `fromDate=${data.fromDate}&toDate=${data.toDate}&searchCriteria=${data.searchCriteria}&page=${data.page}&size=${data.size}`;
+    // let searchparams = new HttpParams();
+    // if (data) {
+    //   for (const key in data) {
+    //     if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'totalPages') {
+    //       searchparams = searchparams.set(key, data[key]);
+    //     }
+    //   }
+    // }
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
 
 }

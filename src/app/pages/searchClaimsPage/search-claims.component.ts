@@ -784,7 +784,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let path = '';
     if (this.claimId != null) {
       claimInfo = `&claimId=${this.claimId}`;
-      if (this.editMode != null) {
+      if (this.editMode != null && this.editMode == 'true') {
         claimInfo += '#edit';
       }
     }
@@ -836,7 +836,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.pageIndex != null && this.pageIndex > 0) {
       path += `&page=${(this.pageIndex)}`;
     }
-    if (path !== '' && path !== this.router.url) {
+    if (path !== '') {
       this.location.go(path);
     }
   }
