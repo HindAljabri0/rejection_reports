@@ -1076,6 +1076,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             newModel.batchNumber = ele['batchNumber'];
             newModel.eligibilityStatusDesc = splitedValue[2] != undefined &&
               inde === index ? splitedValue[2] : ele['eligibilityStatusDesc'];
+            newModel.statusApproval = ele['statusApproval'];
+            newModel.descApproval = ele['descApproval'];
             claims.push(newModel);
           });
           this.claims = new Array();
