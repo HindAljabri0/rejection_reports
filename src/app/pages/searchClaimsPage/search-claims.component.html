@@ -494,7 +494,7 @@
                                         <td class="actions text-center">
                                             <button class="action-letter-btn" (click)="checkClaim(claim.claimId)"
                                                 matTooltip="Verify Eligibility"
-                                                *ngIf="(claim.status == 'Downloadable' || claim.status == 'Accepted') && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">E</button>
+                                                *ngIf="claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">E</button>
                                             <span class="action-letter-btn theme-success" matTooltip="Eligible"
                                                 *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">E</span>
                                             <span class="action-letter-btn theme-danger"
@@ -505,7 +505,7 @@
                                             <button class="action-letter-btn"
                                                 (click)="checkClaimForApproval(claim.claimId)"
                                                 matTooltip="Verify Approval"
-                                                *ngIf="(claim.status == 'Downloadable' || claim.status == 'Accepted') && claim.statusApproval == null && !claimIsWaitingApproval(claim.claimId)">A</button>
+                                                *ngIf="claim.status == 'Accepted' && claim.statusApproval == null && !claimIsWaitingApproval(claim.claimId)">A</button>
                                             <span class="action-letter-btn theme-success"
                                                 matTooltip="Approval number is verified"
                                                 *ngIf="isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
