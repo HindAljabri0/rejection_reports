@@ -5,7 +5,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import * as JSZip from 'jszip';
 import * as moment from 'moment';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -36,6 +35,8 @@ import { MatDialog } from '@angular/material';
 import { EditClaimComponent } from '../edit-claim/edit-claim.component';
 import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
 import { changePageTitle } from 'src/app/store/mainStore.actions';
+import { ApprovalDetailInquiryService } from 'src/app/services/approvalDetailInquiryService/approval-detail-inquiry.service';
+import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
 
 
 @Component({
@@ -123,9 +124,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   queryPage: number;
 
   waitingEligibilityCheck = false;
+  waitingApprovalCheck = false;
   eligibilityWaitingList: { result: string, waiting: boolean }[] = [];
   approvalWaitingList: { result: string, waiting: boolean }[] = [];
   watchingEligibility = false;
+  watchingApproval = false;
   currentSelectedTab = 0;
   validationDetails: ClaimError[];
   results: any[];
@@ -175,6 +178,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     private dialogService: DialogService,
     private claimService: ClaimService,
     private eligibilityService: EligibilityService,
+    private approvalService: ApprovalDetailInquiryService,
     private notificationService: NotificationsService,
     private validationService: ValidationService,
     private store: Store,
@@ -496,7 +500,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
               for (const claim of this.claims) {
                 if (this.selectedClaims.includes(claim.claimId)) { this.selectedClaimsCountOfPage++; }
               }
-              if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
+              // if (this.payerId == null) { this.payerId = this.claims[0].payerId; }
               this.setAllCheckBoxIsIndeterminate();
               this.detailCardTitle = this.commen.statusToName(this.summaries[key].statuses[0]);
               const pages = Math.ceil((this.searchResult.totalElements / this.searchResult.numberOfElements));
@@ -930,7 +934,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkClaimForApproval(id: string) {
     this.approvalWaitingList[id] = { result: '', waiting: true };
-  //  this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id, 10)]));
+    let criteria = new ClaimCriteriaModel();
+    criteria.claimIds = [id];
+    this.handleApprovalCheckRequest(this.approvalService.verifyApprovalByCriteria(this.providerId, criteria));
   }
 
   checkSelectedClaims() {
@@ -940,7 +946,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.payerId,
       this.selectedClaims.map(id => Number.parseInt(id, 10))));
   }
-
 
   checkAllClaims() {
     this.waitingEligibilityCheck = true;
@@ -964,18 +969,19 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.fbatchNum
     ));
   }
-  /*checkAllClaims() {
-    this.waitingEligibilityCheck = true;
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
-      this.payerId,
-      this.from,
-      this.to,
-      this.uploadId));
-  }*/
+
+  checkClaimsApproval() {
+    if (this.selectedClaims.length > 0)
+      this.selectedClaims.forEach(claimid => this.approvalWaitingList[claimid] = { result: '', waiting: true });
+    else
+      this.claims.forEach(claim => this.approvalWaitingList[claim.claimId] = { result: '', waiting: true });
+    this.waitingApprovalCheck = true;
+    this.handleApprovalCheckRequest(this.approvalService.verifyApprovalByCriteria(this.providerId, this.getClaimQueryParams()));
+  }
+
 
   handleEligibilityCheckRequest(request: Observable<HttpEvent<unknown>>) {
-    // if (this.eligibilityWaitingList.length === 0)
-    //   this.waitingEligibilityCheck = false;
+
     this.watchEligibilityChanges();
     request.subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -984,6 +990,34 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }, errorEvent => {
       this.waitingEligibilityCheck = false;
       this.eligibilityWaitingList = [];
+      if (errorEvent instanceof HttpErrorResponse) {
+        if (errorEvent.status == 400) {
+          this.dialogService.openMessageDialog(new MessageDialogData(
+            '', 'Some of the selected claims are already checked or are not ready for submission.', true)
+          );
+        } else if ((errorEvent.status / 100).toFixed() == '5') {
+          if (errorEvent.error['errors'] != null) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('', 'Could not reach the server at the moment. Please try again leter.', true)
+            );
+          }
+        }
+      }
+    });
+  }
+  handleApprovalCheckRequest(request: Observable<HttpEvent<unknown>>) {
+
+    this.watchApprovalChanges();
+    request.subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.deSelectAll();
+      }
+    }, errorEvent => {
+      this.waitingApprovalCheck = false;
+      this.approvalWaitingList = [];
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status == 400) {
           this.dialogService.openMessageDialog(new MessageDialogData(
@@ -1046,17 +1080,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           });
           this.claims = new Array();
           this.claims = claims;
-
-          // if (splitedValue.length >= 2) {
-          //   const index = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
-          //   if (index > -1) {
-          //     console.log(this.claims[index]);
-
-          //     this.claims[index].eligibilitycheck = splitedValue[1];
-          //     if(splitedValue[2] != undefined){
-          //       this.claims[index].eligibilityStatusDesc = splitedValue[2];
-          //     }
-          //   }
         }
         if (this.eligibilityWaitingList[splitedValue[0]] != null) {
           this.eligibilityWaitingList[splitedValue[0]].result = splitedValue[1];
@@ -1065,8 +1088,67 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       }
       if ((this.eligibilityWaitingList.length != 0 && this.eligibilityWaitingList.every(claim => !claim.waiting))
         || this.claims.every(claim => claim.status == 'Accepted' && claim.eligibilitycheck != null)) {
-        // this.notificationService.stopWatchingMessages('eligibility');
         this.waitingEligibilityCheck = false;
+      }
+
+    });
+  }
+
+  watchApprovalChanges() {
+    if (this.watchingApproval) { return; }
+
+    this.watchingApproval = true;
+
+
+    this.notificationService.startWatchingMessages(this.providerId, 'approval');
+    this.notificationService._messageWatchSources['approval'].subscribe(value => {
+      value = value.replace(`"`, '').replace(`"`, '');
+      const splitedValue: string[] = value.split(':');
+
+      if (splitedValue.length >= 2) {
+        const inde = this.claims.findIndex(claim => claim.claimId == splitedValue[0]);
+        if (inde > -1) {
+          const claims: any = [];
+          this.claims.map((ele: any, index: number) => {
+            const newModel = new SearchedClaim(ele.body);
+            newModel.batchId = ele['batchId'];
+            newModel.claimId = ele['claimId'];
+            newModel.providerClaimNumber = ele['providerClaimNumber'];
+            newModel.drName = ele['drName'];
+            newModel.policyNumber = ele['policyNumber'];
+            newModel.memberId = ele['memberId'];
+            newModel.nationalId = ele['nationalId'];
+            newModel.submissionDate = ele['submissionDate'];
+            newModel.patientFileNumber = ele['patientFileNumber'];
+            newModel.claimDate = ele['claimDate'];
+            newModel.netAmount = ele['netAmount'];
+            newModel.netVatAmount = ele['netVatAmount'];
+            newModel.unitOfNetAmount = ele['unitOfNetAmount'];
+            newModel.unitOfNetVatAmount = ele['unitOfNetVatAmount'];
+            newModel.status = ele['status'];
+            newModel.statusDetail = ele['statusDetail'];
+            newModel.payerId = ele['payerId'];
+            newModel.numOfAttachments = ele['numOfAttachments'];
+            newModel.numOfPriceListErrors = ele['numOfPriceListErrors'];
+            newModel.batchNumber = ele['batchNumber'];
+            newModel.eligibilitycheck = ele['eligibilitycheck'];
+            newModel.eligibilityStatusDesc = ele['eligibilityStatusDesc'];
+            newModel.statusApproval = inde === index ? splitedValue[1] : ele['statusApproval'];
+            newModel.descApproval = splitedValue[2] != undefined &&
+              inde === index ? splitedValue[2] : ele['descApproval'];
+            claims.push(newModel);
+          });
+          this.claims = new Array();
+          this.claims = claims;
+        }
+        if (this.approvalWaitingList[splitedValue[0]] != null) {
+          this.approvalWaitingList[splitedValue[0]].result = splitedValue[1];
+          this.approvalWaitingList[splitedValue[0]].waiting = false;
+        }
+      }
+      if ((this.approvalWaitingList.length != 0 && this.approvalWaitingList.every(claim => !claim.waiting))
+        || this.claims.every(claim => claim.status == 'Accepted' && claim.statusApproval != null)) {
+        this.waitingApprovalCheck = false;
       }
 
     });
@@ -1081,6 +1163,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
   get isWaitingForEligibility() {
     return this.waitingEligibilityCheck;
+  }
+  get isWaitingForApproval() {
+    return this.waitingApprovalCheck;
   }
 
   deleteClaim(claimId: string, refNumber: string) {
@@ -1243,6 +1328,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   get showEligibilityButton() {
+    return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
+      this.summaries[this.selectedCardKey].statuses.includes('all');
+  }
+  get showApprovalButton() {
     return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
       this.summaries[this.selectedCardKey].statuses.includes('all');
   }
@@ -1710,6 +1799,29 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   get statusSelected() {
     return ClaimStatus;
   }
+
+  getClaimQueryParams() {
+    let params: ClaimCriteriaModel = new ClaimCriteriaModel();
+    params.batchId = this.batchId;
+    params.batchNo = this.fbatchNum;
+    params.claimDate = this.fclaimdate;
+    params.claimIds = this.selectedClaims;
+    params.claimRefNo = this.claimRefNo;
+    params.drname = this.fdrname;
+    params.fromDate = this.from;
+    params.toDate = this.to;
+    params.invoiceNo = this.invoiceNo;
+    params.memberId = this.memberId;
+    params.nationalId = this.fnationalid;
+    params.netAmount = this.fclaimNet;
+    params.patientFileNo = this.patientFileNo;
+    params.payerId = this.payerId;
+    params.policyNo = this.policyNo;
+    params.statuses = this.summaries[this.selectedCardKey].statuses;
+    params.uploadId = this.uploadId;
+    return params;
+  }
+
 }
 
 
