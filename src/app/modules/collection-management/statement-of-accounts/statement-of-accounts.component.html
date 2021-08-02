@@ -23,10 +23,10 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.fromDate}">
                         <label class="control-label">From Date</label>
-                        <div class="date-picker"
-                            [ngClass]="{'has-error' : statementAccountForm.submitted && !stamentAccountModel.fromDate}">
+                        <div class="date-picker">
                             <!-- <input [matDatepicker]="fromDate" class="form-control" [(ngModel)]='stamentAccountModel.fromDate' #fromDate='ngModel' name="fromDate" placeholder="Select from date" />
                             <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
                             <mat-datepicker #fromDate></mat-datepicker> -->
