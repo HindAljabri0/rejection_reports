@@ -69,14 +69,16 @@
                             <span class="form-control-static pt-2 d-block"
                                 *ngIf="fileUploadFlag">{{currentFileUpload.name}}</span>
                         </div>
-                        <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        <input type="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                             class="file-upload-control" (change)="selectFile($event)"
                             [(ngModel)]='addStatmentAccountModel.file' #file='ngModel' name="file" required />
                     </div>
                     <div *ngIf="statementAddAccountForm.submitted && file.invalid">
                         <span class="error-text">Please choose a file</span>
                     </div>
-                    <p class="error-text pt-3" *ngIf="fileError">{{fileError}}</p>
+                    <p class="error-text pt-3" *ngIf="fileError!==undefined && fileError!==null && fileError!==''">
+                        {{fileError}}</p>
 
                 </div>
             </div>
@@ -85,9 +87,12 @@
     </div>
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
-            <button mat-button (click)="closeDialog()">Cancel</button>
+            <button type="button" mat-button (click)="closeDialog()">Cancel</button>
             <!-- routerLink="/collection-management/statement-of-accounts-details" -->
-            <button type="submit" mat-flat-button color="primary">Add Statement</button>
+            <button type="submit"
+                [disabled]="statementAddAccountForm.invalid || currentFileUpload===undefined || currentFileUpload===null"
+                mat-flat-button color="primary">Add
+                Statement</button>
         </div>
     </div>
 </form>

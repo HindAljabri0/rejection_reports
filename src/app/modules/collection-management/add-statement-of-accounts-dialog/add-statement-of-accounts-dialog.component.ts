@@ -46,7 +46,7 @@ export class AddStatementOfAccountsDialogComponent implements OnInit {
 
   }
   checkfile() {
-    const validExts = new Array('.xlsx');
+    const validExts = ['.xlsx', '.xls'];
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -97,10 +97,10 @@ export class AddStatementOfAccountsDialogComponent implements OnInit {
     this.currentFileUpload = event.target.files[0];
     this.sizeInMB = this.common.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
-      event.target.files = [];
+      event.target.files = null;
       this.currentFileUpload = undefined;
+      this.fileUploadFlag = false;
       return;
     }
   }
-
 }

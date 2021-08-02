@@ -6,7 +6,7 @@ export class PayerStatementModel {
     page: number = 0;
     pageSize: number = 10;
     totalPages: number = 0;
-    payer: number;
+    payer: any = "0";
 }
 
 export class AddPayerStatmentModel {
