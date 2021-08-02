@@ -77,12 +77,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of sOAData" routerLink="/collection-management/statement-of-accounts-details">
-                        <td class="row-click">
+                    <tr *ngFor="let item of sOAData">
+                        <td class="row-click" (click)="goToStatmentDetails(item)">
                             {{item.uploadDate  | date: 'dd-MM-yyyy'}}</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
+                        <td class="row-click" (click)="goToStatmentDetails(item)">
                             {{item.statementStartDate  | date: 'dd-MM-yyyy'}}</td>
-                        <td class="row-click" routerLink="/collection-management/statement-of-accounts-details">
+                        <td class="row-click" (click)="goToStatmentDetails(item)">
                             {{item.statementEndDate  | date: 'dd-MM-yyyy'}}</td>
                     </tr>
                     <tr>
