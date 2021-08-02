@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { StatementAccountSummary } from 'src/app/models/statementAccountModel';
@@ -19,7 +19,7 @@ export class StatementOfAccountsComponent implements OnInit {
   minDate: any;
   datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false, dateInputFormat: 'DD/MM/YYYY' };
   sOAData: any[] = [];
-  constructor(public dialog: MatDialog, private reportService: ReportsService, private commen: SharedServices, private location: Location, private routeActive: ActivatedRoute) {
+  constructor(public dialog: MatDialog, private reportService: ReportsService, private commen: SharedServices, private location: Location, private routeActive: ActivatedRoute, private router: Router) {
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.searchCriteria != null) {
@@ -29,9 +29,16 @@ export class StatementOfAccountsComponent implements OnInit {
         const fromDate = moment(params.fromDate, 'YYYY-MM-DD').toDate();
         this.stamentAccountModel.fromDate = fromDate;
       }
+      else {
+        let todayDate = new Date();
+        this.stamentAccountModel.fromDate = new Date(todayDate.setMonth(todayDate.getMonth() - 1));
+      }
       if (params.toDate != null) {
         const toDate = moment(params.toDate, 'YYYY-MM-DD').toDate();
         this.stamentAccountModel.toDate = toDate;
+      }
+      else {
+        this.stamentAccountModel.toDate = new Date();
       }
       if (params.page != null) {
         this.stamentAccountModel.page = params.page;
@@ -39,7 +46,7 @@ export class StatementOfAccountsComponent implements OnInit {
       if (params.size != null) {
         this.stamentAccountModel.size = params.size;
       }
-      if (params.toDate != null && params.fromDate != null && params.searchCriteria != null) {
+      if (this.stamentAccountModel.toDate != null && this.stamentAccountModel.fromDate != null && this.stamentAccountModel.searchCriteria != null) {
         this.getPayerSOAData();
       }
     });
@@ -154,5 +161,8 @@ export class StatementOfAccountsComponent implements OnInit {
   }
   get isLoading() {
     return this.commen.loading;
+  }
+  goToStatmentDetails(item) {
+    this.router.navigate(['/collection-management/statement-of-accounts-details'], { queryParams: { id: item.statementId, fromDate: moment(this.stamentAccountModel.fromDate).format('YYYY-MM-DD'), toDate: moment(this.stamentAccountModel.toDate).format('YYYY-MM-DD'), } });
   }
 }

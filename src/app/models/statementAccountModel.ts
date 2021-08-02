@@ -1,7 +1,7 @@
-import { claimReducer } from '../claim-module-components/store/claim.reducer';
+
 
 export class StatementAccountSummary {
-    searchCriteria: any = '';
+    searchCriteria: any = 'uploaddate';
     fromDate: any = '';
     toDate: any = '';
     page: number = 0;
