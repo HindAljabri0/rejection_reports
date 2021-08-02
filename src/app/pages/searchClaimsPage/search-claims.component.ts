@@ -1001,7 +1001,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
           } else {
             this.dialogService.openMessageDialog(
-              new MessageDialogData('', 'Could not reach the server at the moment. Please try again leter.', true)
+              new MessageDialogData('', 'Could not reach the server at the moment. Please try again later.', true)
             );
           }
         }
@@ -1019,9 +1019,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.waitingApprovalCheck = false;
       this.approvalWaitingList = [];
       if (errorEvent instanceof HttpErrorResponse) {
-        if (errorEvent.status == 400) {
+        if (errorEvent.status == 404) {
           this.dialogService.openMessageDialog(new MessageDialogData(
-            '', 'Some of the selected claims are already checked or are not ready for submission.', true)
+            '', "No claims were found to be verified. Make sure selected claims aren't already verified.", true)
           );
         } else if ((errorEvent.status / 100).toFixed() == '5') {
           if (errorEvent.error['errors'] != null) {
@@ -1029,7 +1029,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
           } else {
             this.dialogService.openMessageDialog(
-              new MessageDialogData('', 'Could not reach the server at the moment. Please try again leter.', true)
+              new MessageDialogData('', 'Could not reach the server at the moment. Please try again later.', true)
             );
           }
         }
