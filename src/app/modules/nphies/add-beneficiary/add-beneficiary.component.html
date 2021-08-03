@@ -1,0 +1,307 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Add Beneficiary</p>
+    </div>
+    <div class="block-filter-panel mb-3">
+        <h5 class="semibold pb-2 mb-3 border-bottom">Personal Information</h5>
+        <div class="row small-gutter">
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">First Name</label>
+                    <input placeholder="Enter first name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Middle Name</label>
+                    <input placeholder="Enter middle name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Last Name</label>
+                    <input placeholder="Enter last name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Family Name</label>
+                    <input placeholder="Enter family name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Full Name (Optional)</label>
+                    <input placeholder="Enter full name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Beneficiary File ID</label>
+                    <input placeholder="Enter middle name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Date of Birth - Hijri</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="dateHijri" class="form-control" placeholder="Select date of birth as per Hijri">
+                        <mat-datepicker-toggle [for]="dateHijri"></mat-datepicker-toggle>
+                        <mat-datepicker #dateHijri></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Date of Birth</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth">
+                        <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
+                        <mat-datepicker #dateOfBirth></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">E-Health ID</label>
+                    <input placeholder="Enter E-Health ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Natiionality</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Natiionality</mat-option>
+                            <mat-option value="Natiionality 1">Natiionality 1</mat-option>
+                            <mat-option value="Natiionality 2">Natiionality 2</mat-option>
+                            <mat-option value="Natiionality 3">Natiionality 3</mat-option>
+                            <mat-option value="Natiionality 4">Natiionality 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Residency Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Residency Type</mat-option>
+                            <mat-option value="Type 1">Type 1</mat-option>
+                            <mat-option value="Type 2">Type 2</mat-option>
+                            <mat-option value="Type 3">Type 3</mat-option>
+                            <mat-option value="Type 4">Type 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Document Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Document Type</mat-option>
+                            <mat-option value="Type 1">Type 1</mat-option>
+                            <mat-option value="Type 2">Type 2</mat-option>
+                            <mat-option value="Type 3">Type 3</mat-option>
+                            <mat-option value="Type 4">Type 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Document ID</label>
+                    <input placeholder="Enter document ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Contact Number</label>
+                    <input placeholder="Enter contact number" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Marital Status</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Marital Status</mat-option>
+                            <mat-option value="Status 1">Status 1</mat-option>
+                            <mat-option value="Status 2">Status 2</mat-option>
+                            <mat-option value="Status 3">Status 3</mat-option>
+                            <mat-option value="Status 4">Status 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Gender</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Gender</mat-option>
+                            <mat-option value="Male">Male</mat-option>
+                            <mat-option value="Female">Female</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Blood Group</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Blood Group</mat-option>
+                            <mat-option value="Group 1">Group 1</mat-option>
+                            <mat-option value="Group 2">Group 2</mat-option>
+                            <mat-option value="Group 3">Group 3</mat-option>
+                            <mat-option value="Group 4">Group 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Preferred Language</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Preferred Language</mat-option>
+                            <mat-option value="English">English</mat-option>
+                            <mat-option value="Arabic">Arabic</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Emergency Phone Number</label>
+                    <input placeholder="Enter emergency phone number" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <input placeholder="Enter email" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <h5 class="semibold pb-2 pt-3 mb-3 border-bottom">Address</h5>
+        <div class="table-responsive">
+            <table class="primary-grid manual-row-color claim-view-table no-borders">
+                <thead>
+                    <tr>
+                        <th>House No./Appartment</th>
+                        <th>Street Name</th>
+                        <th>City</th>
+                        <th>State/Province</th>
+                        <th>Country</th>
+                        <th>Postal Code</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle">
+                        <td>
+                            <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control minw145" placeholder="Enter Street Name" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control minw145" placeholder="Enter City" />
+                        </td>
+                        <td>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select State/Province</mat-option>
+                                    <mat-option value="State 1">State 1</mat-option>
+                                    <mat-option value="State 2">State 2</mat-option>
+                                    <mat-option value="State 3">State 3</mat-option>
+                                    <mat-option value="State 4">State 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Country</mat-option>
+                                    <mat-option value="Country 1">Country 1</mat-option>
+                                    <mat-option value="Country 2">Country 2</mat-option>
+                                    <mat-option value="Country 3">Country 3</mat-option>
+                                    <mat-option value="Country 4">Country 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control minw145" placeholder="Enter Postal Code" />
+                        </td>
+                        <td class="actions">
+                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pb-2">
+            <a href="#" class="primary-link semibold">+ Add Address</a>
+        </div>
+
+
+        <h5 class="semibold pb-2 pt-3 mb-3 border-bottom">Insurance Plans</h5>
+        <div class="table-responsive">
+            <table class="primary-grid manual-row-color claim-view-table no-borders">
+                <thead>
+                    <tr>
+                        <th>Insurance Plan</th>
+                        <th>Expiry Date</th>
+                        <th>Member Card ID</th>
+                        <th width="10"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle">
+                        <td>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Insurance Plan</mat-option>
+                                    <mat-option value="Plan 1">Plan 1</mat-option>
+                                    <mat-option value="Plan 2">Plan 2</mat-option>
+                                    <mat-option value="Plan 3">Plan 3</mat-option>
+                                    <mat-option value="Plan 4">Plan 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <div class="form-group m-0">
+                                <div class="date-picker">
+                                    <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date">
+                                    <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #expiryDate></mat-datepicker>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" placeholder="Enter member card ID" />
+                        </td>
+                        <td class="actions">
+                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pb-2">
+            <a href="#" class="primary-link semibold">+ Add Insurance Plan</a>
+        </div>
+        <hr class="hr spaced">
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Add Beneficiary</button>
+        </div>
+    </div>
+</div>
