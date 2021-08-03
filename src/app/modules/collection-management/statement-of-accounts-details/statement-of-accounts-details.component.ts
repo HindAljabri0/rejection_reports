@@ -30,7 +30,7 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
         this.transactionModel.statementId = parseInt(params.id);
       }
       if (params.payer != null) {
-        this.transactionModel.payer = parseInt(params.payer);
+        this.transactionModel.payer = params.payer;
       }
       if (params.fromDate != null) {
         const fromDate = moment(params.fromDate, 'YYYY-MM-DD').toDate();
@@ -151,7 +151,7 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
     path += `fromDate=${moment(this.previousFromdate).format('YYYY-MM-DD')}&`;
     path += `toDate=${moment(this.previousToDate).format('YYYY-MM-DD')}&`;
     if (this.transactionModel.page != null) {
-      path += `page=${this.transactionModel.page}`;
+      path += `page=${this.transactionModel.page}&`;
     }
     if (this.transactionModel.pageSize != null) {
       path += `pageSize=${this.transactionModel.pageSize}`;
