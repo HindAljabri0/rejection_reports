@@ -79,6 +79,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
         this.creditReportData = res.body.content;
         if (res.body.content.length == 0) {
           this.creditReportSearchModel.totalPages = 0;
+          this.sharedServices.loadingChanged.next(false);
         } else {
           this.creditReportSearchModel.totalPages = res.body.totalPages;
           this.sharedServices.loadingChanged.next(false);
