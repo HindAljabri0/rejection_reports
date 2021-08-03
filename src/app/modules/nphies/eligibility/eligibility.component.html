@@ -1,0 +1,237 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Submit Eligibility</p>
+    </div>
+    <div class="block-filter-panel mb-3">
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Member ID</label>
+                    <input placeholder="Enter member ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Policy No.</label>
+                    <input placeholder="Enter policy no." class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">National ID / Iqama ID</label>
+                    <input placeholder="Enter national ID / iqama ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Referral Batch</label>
+                    <mat-radio-group class="radio-group inline">
+                        <mat-radio-button color="primary" [value]="1">Benefits</mat-radio-button>
+                        <mat-radio-button color="primary" [value]="2">Discovery</mat-radio-button>
+                        <mat-radio-button color="primary" [value]="3">Validation</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Service Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date">
+                        <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
+                        <mat-datepicker #serviceDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date">
+                        <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Department Name</label>
+                    <input class="form-control" placeholder="Enter department name">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Department Role</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Department Role</mat-option>
+                            <mat-option value="Role 1">Role 1</mat-option>
+                            <mat-option value="Role 2">Role 2</mat-option>
+                            <mat-option value="Role 3">Role 3</mat-option>
+                            <mat-option value="Role 4">Role 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Submit Eligibility</button>
+        </div>
+    </div>
+
+    <div class="block-header has-border">
+        <p>Eligibility Transactions</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                        <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filterFromDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filterToDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Eligibility ID</label>
+                    <input placeholder="Enter eligibility ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Insurance Plan</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Insurance Plan</mat-option>
+                            <mat-option value="Plan 1">Plan 1</mat-option>
+                            <mat-option value="Plan 2">Plan 2</mat-option>
+                            <mat-option value="Plan 3">Plan 3</mat-option>
+                            <mat-option value="Plan 4">Plan 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Beneficiary</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Beneficiary</mat-option>
+                            <mat-option value="Beneficiary 1">Beneficiary 1</mat-option>
+                            <mat-option value="Beneficiary 2">Beneficiary 2</mat-option>
+                            <mat-option value="Beneficiary 3">Beneficiary 3</mat-option>
+                            <mat-option value="Beneficiary 4">Beneficiary 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Status</mat-option>
+                            <mat-option value="Status 1">Status 1</mat-option>
+                            <mat-option value="Status 2">Status 2</mat-option>
+                            <mat-option value="Status 3">Status 3</mat-option>
+                            <mat-option value="Status 4">Status 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Member Card ID</th>
+                        <th>Eligibility ID</th>
+                        <th>Transaction Date/Time</th>
+                        <th>Insurance Plan</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>496661</td>
+                        <td>LAV4FIYPZWKS</td>
+                        <td>22/4/2026</td>
+                        <td>Plan - 1</td>
+                        <td>Approved</td>
+                        <td class="actions">
+                            <button mat-icon-button matTooltip="Refresh" class="text-primary">
+                                <mat-icon>refresh</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
+                                <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>106823</td>
+                        <td>3CL3UHRA4OJZ</td>
+                        <td>9/5/2076</td>
+                        <td>Plan - 1</td>
+                        <td>Approved</td>
+                        <td class="actions">
+                            <button mat-icon-button matTooltip="Refresh" class="text-primary">
+                                <mat-icon>refresh</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
+                                <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>729978</td>
+                        <td>X1NBKAKAU0CK</td>
+                        <td>25/3/2037</td>
+                        <td>Plan - 1</td>
+                        <td>Approved</td>
+                        <td class="actions">
+                            <button mat-icon-button matTooltip="Refresh" class="text-primary">
+                                <mat-icon>refresh</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
+                                <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>285297</td>
+                        <td>TX7DBH9MGLSN</td>
+                        <td>25/7/2063</td>
+                        <td>Plan - 1</td>
+                        <td>Approved</td>
+                        <td class="actions">
+                            <button mat-icon-button matTooltip="Refresh" class="text-primary">
+                                <mat-icon>refresh</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
+                                <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+</div>
