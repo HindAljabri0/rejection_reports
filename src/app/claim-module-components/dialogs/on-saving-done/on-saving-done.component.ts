@@ -55,7 +55,12 @@ export class OnSavingDoneComponent implements OnInit {
 
   onOK() {
     const pathSegments = this.location.path().split('/');
-    const oldClaimId = pathSegments.pop();
+    let oldClaimId;
+    if (pathSegments.includes("claimId=")) {
+      oldClaimId = pathSegments.pop().split('=').pop();
+    } else {
+      oldClaimId = pathSegments.pop();
+    }
     oldClaimId.replace('#edit', '');
     const paginationIds = localStorage.getItem('search_tab_result');
     if (paginationIds != null) {
@@ -68,15 +73,8 @@ export class OnSavingDoneComponent implements OnInit {
         }
       }).join(','));
     }
-    pathSegments.push(this.data.claimId);
-    this.location.path().replace('#edit', '')
-    this.router.navigateByUrl(this.location.path());
-    this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe((e: NavigationEnd) => {
-        location.reload();
-      });
-
+    this.location.go(this.location.path().replace('#edit', ''));
+    location.reload();
   }
 
   get isNotAccepted() {
