@@ -163,6 +163,6 @@ export class StatementOfAccountsComponent implements OnInit {
     return this.commen.loading;
   }
   goToStatmentDetails(item) {
-    this.router.navigate(['/collection-management/statement-of-accounts-details'], { queryParams: { id: item.statementId, fromDate: moment(this.stamentAccountModel.fromDate).format('YYYY-MM-DD'), toDate: moment(this.stamentAccountModel.toDate).format('YYYY-MM-DD'), } });
+    this.router.navigate(['/collection-management/statement-of-accounts-details'], { queryParams: { flag: 1, id: item.statementId, fromDate: moment(this.stamentAccountModel.fromDate).format('YYYY-MM-DD'), toDate: moment(this.stamentAccountModel.toDate).format('YYYY-MM-DD') } });
   }
 }
