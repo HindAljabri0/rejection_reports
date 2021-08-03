@@ -8,11 +8,13 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
+import { AddBeneficiaryComponent } from './add-beneficiary/add-beneficiary.component';
 
 @NgModule({
   declarations: [
     EligibilityComponent,
-    ViewEligibilityDetailsComponent
+    ViewEligibilityDetailsComponent,
+    AddBeneficiaryComponent
   ],
   imports: [
     CommonModule,
