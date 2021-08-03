@@ -48,6 +48,8 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
       if (params.pageSize != null) {
         this.transactionModel.pageSize = params.pageSize;
       }
+      this.transactionModel.flag = params.flag !== null && params.flag !== undefined ? params.flag : 0;
+
       if (this.transactionModel.toDate != null && this.transactionModel.fromDate != null && this.transactionModel.payer != null && this.transactionModel.statementId != null) {
         this.getTransactionsSOAData();
       }
@@ -65,7 +67,8 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
       page: this.transactionModel.page,
       pageSize: this.transactionModel.pageSize,
       totalPages: this.transactionModel.totalPages,
-      statementId: this.transactionModel.statementId
+      statementId: this.transactionModel.statementId,
+      flag: this.transactionModel.flag
     };
     this.commen.loadingChanged.next(true);
     this.editURL(body.fromDate, body.toDate);
@@ -76,11 +79,12 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
           const data = JSON.parse(body);
           data.content.map((ele) => {
             const payerData = this.payersList.find(sele => sele.id === parseInt(ele.payerId));
-            ele.payerName = payerData !== undefined ? payerData.name + ' ' + payerData.arName : '';
+            ele.payerName = payerData !== undefined ? payerData.name + ' ' + payerData.arName : ele.payerId;
             return ele;
           })
           this.transactionData = data.content;
           this.transactionModel.totalPages = data.totalPages;
+          this.transactionModel.flag = 0;
         }
         else {
           this.transactionData = [];
@@ -150,12 +154,14 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
     // }
     path += `fromDate=${moment(this.previousFromdate).format('YYYY-MM-DD')}&`;
     path += `toDate=${moment(this.previousToDate).format('YYYY-MM-DD')}&`;
+
     if (this.transactionModel.page != null) {
       path += `page=${this.transactionModel.page}&`;
     }
     if (this.transactionModel.pageSize != null) {
-      path += `pageSize=${this.transactionModel.pageSize}`;
+      path += `pageSize=${this.transactionModel.pageSize}&`;
     }
+    path += `flag=0`;
     if (path.endsWith('?') || path.endsWith('&')) {
       path = path.substr(0, path.length - 1);
     }

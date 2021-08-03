@@ -51,6 +51,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     invoiceNumber: FormControl,
     invoiceDate: FormControl,
     invoiceDepartment: FormControl,
+    needsRecalculation: boolean,
     services: {
       retrieved: boolean,
       statusCode?: string,
@@ -406,7 +407,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
   addInvoice(withService?: boolean) {
     this.controllers.push({
       invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(),
-      services: [], invoiceDepartment: new FormControl()
+      services: [], invoiceDepartment: new FormControl(), needsRecalculation: false
     });
     if (this.departments.length > 0) {
       this.controllers[this.controllers.length - 1].invoice.invoiceDepartment = `${this.departments[0].departmentId}`;
@@ -542,31 +543,35 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
 
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
-    const GDPN = invoice.invoiceGDPN;
-    GDPN.discount.value = invoice.service.map(service => {
-      if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
-        let discount =
-          (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
-        discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
-        return discount;
-      } else if (service.serviceGDPN.discount != null) {
-        return service.serviceGDPN.discount.value;
-      } else {
-        return 0;
-      }
-    }).reduce((pre, cur) => pre + cur);
-    GDPN.discount.type = 'SAR';
-    GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
-    GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
-    GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
-    GDPN.netVATrate.value = invoice.service.map(service => service.serviceGDPN.netVATrate.value).reduce((pre, cur) => pre + cur);
-    GDPN.patientShare.value = invoice.service.map(service => service.serviceGDPN.patientShare.value).reduce((pre, cur) => pre + cur);
-    GDPN.patientShareVATamount.value = invoice.service.map(
-      service => service.serviceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur
-      );
-    GDPN.patientShareVATrate.value = invoice.service.map(
-      service => service.serviceGDPN.patientShareVATrate.value).reduce((pre, cur) => pre + cur
-      );
+    if (this.controllers[i].needsRecalculation) {
+      const GDPN = invoice.invoiceGDPN;
+      GDPN.discount.value = invoice.service.map(service => {
+        if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
+          let discount =
+            (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
+          discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
+          return discount;
+        } else if (service.serviceGDPN.discount != null) {
+          return service.serviceGDPN.discount.value;
+        } else {
+          return 0;
+        }
+      }).reduce((pre, cur) => pre + cur);
+      GDPN.discount.type = 'SAR';
+      GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
+      GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
+      GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
+      GDPN.netVATrate.value = invoice.service.map(service => service.serviceGDPN.netVATrate.value).reduce((pre, cur) => pre + cur);
+      GDPN.patientShare.value = invoice.service.map(service => service.serviceGDPN.patientShare.value).reduce((pre, cur) => pre + cur);
+      GDPN.patientShareVATamount.value = invoice.service.map(
+        service => service.serviceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur
+        );
+      GDPN.patientShareVATrate.value = invoice.service.map(
+        service => service.serviceGDPN.patientShareVATrate.value).reduce((pre, cur) => pre + cur
+        );
+    } else {
+      invoice.invoiceGDPN = this.controllers[i].invoice.invoiceGDPN;
+    }
     this.controllers[i].invoice = invoice;
     this.updateClaim();
   }
@@ -665,7 +670,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
-    this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice) }));
+    this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice), recalculateClaimGDPN: this.controllers.some(control => control.needsRecalculation) }));
   }
 
   onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex) {

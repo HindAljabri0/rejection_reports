@@ -313,7 +313,7 @@
                                                                     <div class="input-group">
                                                                         <input class="form-control"
                                                                             placeholder="Enter unit price" type="number"
-                                                                            (change)="service.net = null; service.gross = null"
+                                                                            (change)="service.net = null; service.gross = null; controllers[i].needsRecalculation = true"
                                                                             [formControl]="service.unitPrice">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">SAR</span></span>
@@ -328,7 +328,7 @@
                                                                             class="asterisk">*</span></label>
                                                                     <input class="form-control"
                                                                         placeholder="Enter quantity" type="text"
-                                                                        (change)="service.net = null; service.gross = null"
+                                                                        (change)="service.net = null; service.gross = null; controllers[i].needsRecalculation = true"
                                                                         [formControl]="service.quantity">
                                                                 </div>
                                                             </div>
@@ -344,7 +344,7 @@
                                                                             placeholder="Enter patient share"
                                                                             type="number"
                                                                             [formControl]="service.patientShare"
-                                                                            (change)="service.net = null">
+                                                                            (change)="service.net = null; controllers[i].needsRecalculation = true">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">SAR</span></span>
                                                                     </div>
@@ -361,7 +361,7 @@
                                                                             placeholder="Enter service discount"
                                                                             type="number"
                                                                             [formControl]="service.serviceDiscount"
-                                                                            (change)="service.net = null">
+                                                                            (change)="service.net = null; controllers[i].needsRecalculation = true">
                                                                         <span class="input-group-append">
                                                                             <span
                                                                                 class="input-group-text clickable medium"
@@ -381,7 +381,7 @@
                                                                         <input class="form-control"
                                                                             placeholder="Enter net vat rate"
                                                                             type="number"
-                                                                            (change)="service.netVatAmount = null"
+                                                                            (change)="service.netVatAmount = null; controllers[i].needsRecalculation = true"
                                                                             [formControl]="service.netVatRate">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">%</span></span>
@@ -398,7 +398,7 @@
                                                                         <input class="form-control"
                                                                             placeholder="Enter patient share vat rate"
                                                                             type="number"
-                                                                            (change)="service.patientShareVatAmount = null"
+                                                                            (change)="service.patientShareVatAmount = null; controllers[i].needsRecalculation = true"
                                                                             [formControl]="service.patientShareVatRate">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">%</span></span>
