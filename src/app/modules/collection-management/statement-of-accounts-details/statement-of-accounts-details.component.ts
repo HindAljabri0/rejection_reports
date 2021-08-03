@@ -76,7 +76,7 @@ export class StatementOfAccountsDetailsComponent implements OnInit {
           const data = JSON.parse(body);
           data.content.map((ele) => {
             const payerData = this.payersList.find(sele => sele.id === parseInt(ele.payerId));
-            ele.payerName = payerData.name + ' ' + payerData.arName;
+            ele.payerName = payerData !== undefined ? payerData.name + ' ' + payerData.arName : '';
             return ele;
           })
           this.transactionData = data.content;
