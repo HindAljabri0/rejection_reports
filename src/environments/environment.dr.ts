@@ -1,4 +1,4 @@
-const host = 'https://api.qa-eclaims.waseel.com';
+const host = window.location.protocol + '//api.' + window.location.hostname;;
 export const environment = {
   name: 'dr',
   production: true,
