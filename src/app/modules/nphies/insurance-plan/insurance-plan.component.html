@@ -1,0 +1,46 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Insurance Plans</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <input placeholder="Enter name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Code</label>
+                    <input placeholder="Enter code" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Insurer Name</label>
+                    <input placeholder="Enter insurer name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Payer Name</label>
+                    <input placeholder="Enter payer name" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Is Active?</label>
+                    <mat-radio-group class="radio-group inline">
+                        <mat-radio-button color="primary" [value]="1">Yes</mat-radio-button>
+                        <mat-radio-button color="primary" [value]="2">No</mat-radio-button>
+                        <mat-radio-button color="primary" [value]="3">Both</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+</div>

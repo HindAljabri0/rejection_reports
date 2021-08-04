@@ -385,8 +385,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .block-header .action-btn[disabled]{opacity: 0.5;cursor:not-allowed;}
 .block-header .actions{display: flex;}
 .block-header .actions .action-btn{margin-right: 6px;}
-.block-header .actions .action-btn:last-child{margin-right: 0;}
-.block-header .actions .mat-flat-button{margin: -5px 0;}
+.block-header .actions .mat-flat-button{margin: -5px 0;margin-right: 6px;}
+.block-header .actions .action-btn:last-child,.block-header .actions .mat-flat-button:last-child{margin-right: 0;}
 .secondary-header{padding: 12px 14px;color:#0079C8;background: #fff;font-weight: 500;}
 .block-filter-panel{background: #fff;padding: 14px 14px 0;overflow: hidden;}
 .block-body {padding: 14px;background-color: #f0eeee;}
