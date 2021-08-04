@@ -638,26 +638,31 @@ const _claimReducer = createReducer(
         }
     })),
 
-    on(actions.updateInvoices_Services, (state, { invoices }) => {
-        const GDPN: GDPN = {
-            discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            netVATamount: {
-                value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur),
-                type: 'SAR'
-            },
-            netVATrate: null,
-            patientShare: {
-                value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur),
-                type: 'SAR'
-            },
-            patientShareVATamount: {
-                value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur),
-                type: 'SAR'
-            },
-            patientShareVATrate: null,
-        };
+    on(actions.updateInvoices_Services, (state, { invoices, recalculateClaimGDPN }) => {
+        let GDPN: GDPN;
+        if (recalculateClaimGDPN) {
+            GDPN = {
+                discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                netVATamount: {
+                    value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur),
+                    type: 'SAR'
+                },
+                netVATrate: null,
+                patientShare: {
+                    value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur),
+                    type: 'SAR'
+                },
+                patientShareVATamount: {
+                    value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur),
+                    type: 'SAR'
+                },
+                patientShareVATrate: null,
+            };
+        } else {
+            GDPN = state.claim.claimGDPN;
+        }
         return ({
             ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN },
             claimErrors: {

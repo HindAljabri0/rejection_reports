@@ -1,14 +1,13 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
-import { AddStatmentAccountModel } from 'src/app/models/statementAccountModel';
 import * as moment from 'moment';
-import { SharedServices } from 'src/app/services/shared.services';
-import { ReportsService } from 'src/app/services/reportsService/reports.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { AddStatmentAccountModel } from 'src/app/models/statementAccountModel';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { stat } from 'fs';
+import { ReportsService } from 'src/app/services/reportsService/reports.service';
+import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-add-statement-of-accounts-dialog',
   templateUrl: './add-statement-of-accounts-dialog.component.html',

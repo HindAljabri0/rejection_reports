@@ -129,7 +129,7 @@ export const updateLabResults = createAction('[ LAB Results ] update LAB Results
 export const saveInvoices_Services =
   createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services',
-  props<{ invoices: Invoice[] }>());
+  props<{ invoices: Invoice[], recalculateClaimGDPN: boolean }>());
 export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retrieved service',
   props<SelectServiceDialogData>());
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice',
