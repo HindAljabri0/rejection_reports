@@ -1824,6 +1824,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     return params;
   }
 
+  isReadyForSubmission() {
+    const cardKey: any = this.selectedCardKey;
+    return parseInt(cardKey) !== 0 && this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === this.statusSelected.Accepted.toLowerCase() ? true : false;
+  }
+
 }
 
 
