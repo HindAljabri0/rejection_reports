@@ -9,18 +9,18 @@ import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
 import { AddBeneficiaryComponent } from './add-beneficiary/add-beneficiary.component';
-// import { AddPreauthorizationComponent } from './add-preauthorization/add-preauthorization.component';
+import { AddPreauthorizationComponent } from './add-preauthorization/add-preauthorization.component';
 import { EligibilityTransactionsComponent } from './eligibility-transactions/eligibility-transactions.component';
-// import { InsurancePlanComponent } from './insurance-plan/insurance-plan.component';
+import { InsurancePlanComponent } from './insurance-plan/insurance-plan.component';
 
 @NgModule({
   declarations: [
     EligibilityComponent,
     ViewEligibilityDetailsComponent,
     AddBeneficiaryComponent,
-    // AddPreauthorizationComponent,
+    AddPreauthorizationComponent,
     EligibilityTransactionsComponent,
-    // InsurancePlanComponent
+    InsurancePlanComponent
   ],
   imports: [
     CommonModule,
