@@ -23,7 +23,7 @@ export class CreateBatchComponent implements OnInit {
   batchSummary: BatchSummary = new BatchSummary();
   datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false, dateInputFormat: 'DD/MM/YYYY' };
   minDate: any;
-  allCheckBoxIsChecked: boolean = false;
+  allCheckBoxIsChecked = false;
   allCheckBoxIsIndeterminate: boolean;
   paginatorPageSizeOptions = [10, 20, 50, 100];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
@@ -32,9 +32,15 @@ export class CreateBatchComponent implements OnInit {
   batchModel: PaginatedResult<BatchSummaryModel>;
   batchData: any[] = [];
   selectedBatchData: any = [];
-  allChecked: boolean = false;
+  allChecked = false;
   providerCode: string;
-  constructor(public dialog: MatDialog, private sharedService: SharedServices, private claimService: ClaimService, private dialogService: DialogService, private location: Location, private routeActive: ActivatedRoute) {
+  constructor(
+    public dialog: MatDialog,
+    private sharedService: SharedServices,
+    private claimService: ClaimService,
+    private dialogService: DialogService,
+    private location: Location,
+    private routeActive: ActivatedRoute) {
     // this.batchSummary.page = 0;
     // this.batchSummary.pageSize = 10;
   }
@@ -54,7 +60,7 @@ export class CreateBatchComponent implements OnInit {
         this.batchSummary.endDate = endDate;
       }
       if (params.payerId != null) {
-        this.batchSummary.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId);
+        this.batchSummary.payerId = params.payerId === '0' ? '0' : parseInt(params.payerId, 10);
       }
       if (params.page != null) {
         this.batchSummary.page = params.page;
@@ -75,12 +81,12 @@ export class CreateBatchComponent implements OnInit {
     const startDate = moment(this.batchSummary.startDate).format('YYYY-MM-DD');
     const endDate = moment(this.batchSummary.endDate).format('YYYY-MM-DD');
     const obj = {
-      startDate: startDate,
-      endDate: endDate,
+      startDate,
+      endDate,
       payerId: this.batchSummary.payerId,
       page: this.batchSummary.page,
       size: this.batchSummary.pageSize
-    }
+    };
     this.editURL(startDate, endDate);
     this.claimService.batchSummary(this.sharedService.providerId, obj).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
@@ -120,8 +126,8 @@ export class CreateBatchComponent implements OnInit {
       {
         panelClass: ['primary-dialog', 'dialog-sm'],
         data: {
-          startDate: startDate,
-          endDate: endDate,
+          startDate,
+          endDate,
           payerId: this.batchSummary.payerId,
           selectedBatchData: this.selectedBatchData,
           batchSelected: this.selectedBatchData.length > 0 ? true : false,
@@ -140,8 +146,9 @@ export class CreateBatchComponent implements OnInit {
     if (event !== null) {
       const startDate = moment(event).format('YYYY-MM-DD');
       const endDate = moment(this.batchSummary.endDate).format('YYYY-MM-DD');
-      if (startDate > endDate)
+      if (startDate > endDate) {
         this.batchSummary.endDate = '';
+      }
     }
     this.minDate = new Date(event);
 
@@ -192,14 +199,16 @@ export class CreateBatchComponent implements OnInit {
 
   }
   selectedBatch(event, id: any) {
-    if (event.checked)
+    if (event.checked) {
       this.selectedBatchData.push(id);
-    else
+    } else {
       this.selectedBatchData = this.selectedBatchData.filter(ele => ele !== id);
+    }
 
     this.allCheckBoxIsChecked = true;
 
-    if (this.selectedBatchData.length === 0)
+    if (this.selectedBatchData.length === 0) {
       this.allCheckBoxIsChecked = false;
+    }
   }
 }

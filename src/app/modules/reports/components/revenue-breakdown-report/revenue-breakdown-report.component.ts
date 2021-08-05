@@ -36,7 +36,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             footerFontFamily: this.chartFontFamily,
             callbacks: {
                 label: (tooltipItem, data) => {
-                    let label: any = data.labels[tooltipItem.index];
+                    const label: any = data.labels[tooltipItem.index];
                     return label + ': ' + data.datasets[0].data[tooltipItem.index] + '%';
                 },
 
@@ -196,11 +196,12 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                         ele.ratio = ele.ratio.toFixed(2);
                         return ele;
                     });
-                    if (this.selectedCategory == 'Doctor')
+                    if (this.selectedCategory == 'Doctor') {
                         this.pieChartLabels.map((ele) => {
                             this.getServicesPerDoctorData(ele);
 
                         });
+                    }
 
                 }
 
@@ -277,7 +278,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         } else {
             this.selectedDoctor = index;
         }
-        let serviceData = this.servicePerDoctorData.find(ele => ele.drName === this.tempPieChartLables[index]);
+        const serviceData = this.servicePerDoctorData.find(ele => ele.drName === this.tempPieChartLables[index]);
         if (this.selectedDoctor !== -1) {
             if (serviceData !== null && serviceData !== undefined && serviceData.data.length > 0) {
                 const colors = this.sharedService.getAnalogousColor(serviceData.data.length);
@@ -294,16 +295,14 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                 ];
                 this.pieChartLabels = serviceData.data.map((ele) => ele.label);
 
-            }
-            else {
+            } else {
                 this.pieChartLabels = [];
                 this.pieChartData = this.pieChartData.map((ele) => {
                     ele.data = [];
                     return ele;
                 });
             }
-        }
-        else {
+        } else {
             const colors = this.sharedService.getAnalogousColor(this.tempPieChartData.length);
             this.pieChartData = [
                 {
@@ -327,7 +326,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             fromDate: moment(this.fromDateControl).format('YYYY-MM-DD'),
             toDate: moment(this.toDateControl).format('YYYY-MM-DD'),
             drname: drName
-        }
+        };
 
         this.reportService.getServicePerDoctor(this.selectedPayerId, this.sharedService.providerId, obj).subscribe((event: any) => {
             if (event instanceof HttpResponse) {
@@ -335,9 +334,9 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
                 body = JSON.parse(body);
                 if (body !== undefined && body !== null && body.length > 0) {
                     const data = {
-                        drName: drName,
+                        drName,
                         data: body
-                    }
+                    };
                     this.servicePerDoctorData.push(data);
                 }
                 this.sharedService.loadingChanged.next(false);
@@ -351,7 +350,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
 
     }
     serviceDoctorData(drName) {
-        let serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
+        const serviceData = this.servicePerDoctorData.find(ele => ele.drName === drName);
         return serviceData === null || serviceData === undefined ? [] : serviceData.data.map((ele) => {
             ele.ratio = Number(ele.ratio).toFixed(2);
             return ele;
@@ -364,8 +363,9 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
         if (event !== null) {
             const startDate = moment(event).format('YYYY-MM-DD');
             const endDate = moment(this.fromDateControl).format('YYYY-MM-DD');
-            if (startDate > endDate)
+            if (startDate > endDate) {
                 this.toDateControl = '';
+            }
         }
         this.minDate = new Date(event);
 

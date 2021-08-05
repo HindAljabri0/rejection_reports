@@ -125,7 +125,7 @@ export class GmReportsPageComponent implements OnInit, AfterViewInit {
     if (this.pageSize > 10) {
       queryParams.pageSize = this.pageSize;
     }
-    this.router.navigate([this.providerId, 'globmed', 'reports'], { queryParams: queryParams });
+    this.router.navigate([this.providerId, 'globmed', 'reports'], { queryParams });
     this.summarySearchResult.fetchData();
   }
 

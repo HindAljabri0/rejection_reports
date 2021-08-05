@@ -27,7 +27,7 @@ export class ImageToolTipDirective implements OnInit {
         overlayX: 'end',
         overlayY: 'center',
       }]).withDefaultOffsetX(-30).withDefaultOffsetY(10);
-    this.overlayRef = this.overlay.create({ positionStrategy: positionStrategy });
+    this.overlayRef = this.overlay.create({ positionStrategy });
   }
 
   @HostListener('mouseenter')

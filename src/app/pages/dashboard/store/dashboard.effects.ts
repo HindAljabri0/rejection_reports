@@ -47,35 +47,37 @@ export class DashboardEffects {
         ofType(updateSearchCriteria),
         tap(criteria => {
             dashboardCardNames.forEach(name => {
-                this.store.dispatch(setCardIsLoading({ name: name, loading: true }));
+                this.store.dispatch(setCardIsLoading({ name, loading: true }));
                 this.store.select(getSummaryByName(name)).subscribe(data => {
                     const values = data.data;
-                   
+
                     if (values['statuses'] != undefined) {
-                        this.searchService.getClaimsSummary(this.sharedServices.providerId,`${criteria.payerId}`,
-                           criteria.fromDate, criteria.toDate, values['statuses'])
+                        this.searchService.getClaimsSummary(this.sharedServices.providerId, `${criteria.payerId}`,
+                            criteria.fromDate, criteria.toDate, values['statuses'])
                             .subscribe(event => {
                                 if (event instanceof HttpResponse) {
-                                    this.store.dispatch(setCardSummary({ name: name, data: new ClaimsSummary(event.body,values['statuses']) }));
-                                    this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                                    this.store.dispatch(setCardSummary({ name, data: new ClaimsSummary(event.body, values['statuses']) }));
+                                    this.store.dispatch(setCardIsLoading({ name, loading: false }));
                                 }
                             }, errorEvent => {
                                 if (errorEvent instanceof HttpErrorResponse) {
-                                
-                                   
-                                  
-                        
-                                     if(errorEvent.status ==404){
-                                        this.store.dispatch(setCardSummary({ name: name, data: ClaimsSummary.emptySummaryWithStatuses(values['statuses']) }));
-                                        this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
-                                     }
-                                   else{
-                                   
-                                  
-                                    this.store.dispatch(setCardError({ name: name, error:errorEvent.error })); 
+
+
+
+
+                                    if (errorEvent.status == 404) {
+                                        this.store.dispatch(setCardSummary({
+                                            name,
+                                            data: ClaimsSummary.emptySummaryWithStatuses(values['statuses'])
+                                        }));
+                                        this.store.dispatch(setCardIsLoading({ name, loading: false }));
+                                    } else {
+
+
+                                        this.store.dispatch(setCardError({ name, error: errorEvent.error }));
+                                    }
                                 }
-                                }
-                                this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                                this.store.dispatch(setCardIsLoading({ name, loading: false }));
                             });
                     } else {
                         if (values['rejectionBy'] != 'Service' || (values['rejectionBy'] == 'Service' && criteria.payerId == 102)) {
@@ -84,20 +86,20 @@ export class DashboardEffects {
                                 .subscribe(event => {
                                     if (event instanceof HttpResponse) {
                                         this.store.dispatch(setCardSummary({
-                                            name: name,
+                                            name,
                                             data: new RejectionCardData(values['rejectionBy'], event.body)
                                         }));
-                                        this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                                        this.store.dispatch(setCardIsLoading({ name, loading: false }));
                                     }
                                 }, errorEvent => {
                                     if (errorEvent instanceof HttpErrorResponse) {
-                                        this.store.dispatch(setCardError({ name: name, error: errorEvent.message }));
+                                        this.store.dispatch(setCardError({ name, error: errorEvent.message }));
                                     }
-                                    this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                                    this.store.dispatch(setCardIsLoading({ name, loading: false }));
                                 });
                         } else {
-                            this.store.dispatch(setCardError({ name: name, error: `Payer's Data Not Available.` }));
-                            this.store.dispatch(setCardIsLoading({ name: name, loading: false }));
+                            this.store.dispatch(setCardError({ name, error: `Payer's Data Not Available.` }));
+                            this.store.dispatch(setCardIsLoading({ name, loading: false }));
                         }
                     }
                 }).unsubscribe();

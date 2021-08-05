@@ -62,7 +62,7 @@ const _configurationReducer = createReducer(
             if (index != -1) {
                 const newValues = [...state.codeValueManagement.newValues];
                 newValues.splice(index, 1);
-                return { ...state, codeValueManagement: { ...state.codeValueManagement, newValues: newValues } };
+                return { ...state, codeValueManagement: { ...state.codeValueManagement, newValues } };
             }
         }
         return { ...state };

@@ -8,7 +8,7 @@ export class AuditLog {
   eventPath: string;
   eventDescription: string;
 
-  newClaimData? : string;
+  newClaimData?: string;
 
   deserialize(input: any): this {
     Object.assign(this, input);

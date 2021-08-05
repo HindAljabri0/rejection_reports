@@ -90,7 +90,9 @@ export class RejectionCardComponent implements OnInit {
     }
     if (this.data.rejectionBy != 'Service') {
       this.store.select(getSubmittedClaims).subscribe(summary => {
-        this.rejectionByPayerTotalClaims = this.getConvertfromStringToNumber(summary.data.returend_netAmount)+this.getConvertfromStringToNumber(summary.data.invalid_netAmount)+this.getConvertfromStringToNumber(summary.data.rejected_netAmount);
+        this.rejectionByPayerTotalClaims = this.getConvertfromStringToNumber(summary.data.returend_netAmount)
+          + this.getConvertfromStringToNumber(summary.data.invalid_netAmount)
+          + this.getConvertfromStringToNumber(summary.data.rejected_netAmount);
         const othersValue = this.rejectionByPayerTotalClaims - this.data.topFive
           .map(item => item.total)
           .reduce((item1, item2) => item1 + item2);
@@ -136,17 +138,17 @@ export class RejectionCardComponent implements OnInit {
     return code;
   }
 
-  getConvertfromStringToNumber(value:string){
-     
-    if(value!=null||value!=''){
-     return(Number(value))
-    }else{
-     return 0;
+  getConvertfromStringToNumber(value: string) {
+
+    if (value != null || value != '') {
+      return (Number(value));
+    } else {
+      return 0;
     }
 
 
-   
- }
+
+  }
 
 }
 

@@ -70,7 +70,7 @@ export class RevenueComparativeReportComponent implements OnInit {
         anchor: 'end',
         align: 'end',
         formatter: (context) => {
-          let amount = this.currencyPipe.transform(
+          const amount = this.currencyPipe.transform(
             context.toString(),
             'number',
             '',
@@ -164,14 +164,20 @@ export class RevenueComparativeReportComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'YYYY' };
   minDate: any;
   error: string;
-  isGenerateData: boolean = false;
+  isGenerateData = false;
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   diffrenceLableName: any;
   percenatgeChartData: any = [];
   quarterData: { firstQuarter: any[]; firstQuaterSumOfTotal: any; secondQuarter: any[], secondQuaterSumOfTotal: any; };
   firstYear: string;
   secondYear: string;
-  constructor(private sharedService: SharedServices, private reportSerice: RevenuReportService, private routeActive: ActivatedRoute, private location: Location, private currencyPipe: CurrencyPipe) { }
+  constructor(
+    private sharedService: SharedServices,
+    private reportSerice: RevenuReportService,
+    private routeActive: ActivatedRoute,
+    private location: Location,
+    private currencyPipe: CurrencyPipe
+  ) { }
 
   ngOnInit() {
     this.payersList = this.sharedService.getPayersList();
@@ -214,8 +220,8 @@ export class RevenueComparativeReportComponent implements OnInit {
     this.editURL(fromDate, toDate);
     const obj: RevenuComparativeReport = {
       payerId: this.revenuComparativeReport.payerId,
-      fromDate: fromDate,
-      toDate: toDate,
+      fromDate,
+      toDate,
       isAvgCost: this.revenuComparativeReport.isAvgCost,
     };
 
@@ -267,11 +273,11 @@ export class RevenueComparativeReportComponent implements OnInit {
 
         const firstQuarterTotal = firstYearData.reduce((acc, n, i) => {
           const curr = acc.pop();
-          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n]
+          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n];
         }, [0]);
         const secondQuarterTotal = secondYearData.reduce((acc, n, i) => {
           const curr = acc.pop();
-          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n]
+          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n];
         }, [0]);
         this.quarterData.secondQuarter = secondQuarterTotal.map((ele) => this.currencyPipe.transform(
           ele.toString(),
@@ -349,8 +355,9 @@ export class RevenueComparativeReportComponent implements OnInit {
     if (event !== null) {
       const startDate = moment(event).format('YYYY-MM-DD');
       const endDate = moment(this.revenuComparativeReport.toDate).format('YYYY-MM-DD');
-      if (startDate > endDate)
+      if (startDate > endDate) {
         this.revenuComparativeReport.toDate = '';
+      }
     }
     this.minDate = new Date(event);
 

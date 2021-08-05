@@ -17,7 +17,7 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
   dialogData;
   title;
   creditReportDetails;
-  isLoading: Boolean = false;
+  isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<TawuniyaCreditReportDetailsDialogComponent>,
@@ -26,7 +26,9 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) data
-  ) { this.dialogData = data }
+  ) {
+    this.dialogData = data;
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -88,7 +90,11 @@ export class TawuniyaCreditReportDetailsDialogComponent implements OnInit {
 
   viewAttachment() {
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
-      data: { filename: this.creditReportDetails.attachmentName, attachment: this.creditReportDetails.attachment }, panelClass: ['primary-dialog', 'dialog-xl']
-    })
+      data: {
+        filename: this.creditReportDetails.attachmentName,
+        attachment: this.creditReportDetails.attachment
+      },
+      panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 }

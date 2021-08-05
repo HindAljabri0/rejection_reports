@@ -27,8 +27,7 @@ export class ClaimpageComponent implements OnInit {
   get summary(): UploadSummary {
     if (this.location.path().includes('summary')) {
       return this.uploadService.summary;
-    }
-    else {
+    } else {
       return new UploadSummary();
     }
   }

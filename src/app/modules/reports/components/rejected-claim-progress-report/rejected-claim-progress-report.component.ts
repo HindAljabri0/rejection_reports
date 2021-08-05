@@ -184,7 +184,8 @@ export class RejectedClaimProgressReportComponent implements OnInit {
   //   plugins: {
   //     datalabels: {
   //       formatter: (value, ctx) => {
-  //         return this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.CleanClaims || this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.UncleanClaims ? value + "%" : value;
+  //         return this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.CleanClaims
+  // || this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.UncleanClaims ? value + "%" : value;
   //       },
   //       anchor: 'end',
   //       align: 'end',
@@ -205,7 +206,9 @@ export class RejectedClaimProgressReportComponent implements OnInit {
   //         let allData = data.datasets[tooltipItem.datasetIndex].data;
   //         let tooltipLabel = data.labels[tooltipItem.index];
   //         let tooltipData = allData[tooltipItem.index];
-  //         return this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.CleanClaims || this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.UncleanClaims ? tooltipLabel + " : " + tooltipData + "%" : tooltipLabel + " : " + tooltipData;
+  //         return this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.CleanClaims
+  // || this.generateReport.rejectedClaimComparisionType === rejectedClaimComparisionType.UncleanClaims
+  // ? tooltipLabel + " : " + tooltipData + "%" : tooltipLabel + " : " + tooltipData;
   //       }
   //     }
   //   },
@@ -273,7 +276,7 @@ export class RejectedClaimProgressReportComponent implements OnInit {
   // generateReport: rejectedClaimProgressReport = new rejectedClaimProgressReport();
   // datePickerConfig: Partial<BsDatepickerConfig> = { dateInputFormat: 'YYYY' };
   beforeDatePickerTitle = 'before year';
-  afterDatePickerTitle = 'after year'
+  afterDatePickerTitle = 'after year';
   percenatgeChartData: any = [];
   months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -291,12 +294,12 @@ export class RejectedClaimProgressReportComponent implements OnInit {
     key: 'Day', value: this.normalDays, label: 'Date'
   }
   ];
-  diffrenceLableName: string = "Year";
+  diffrenceLableName = 'Year';
   labelConfig = [
     { type: rejectedClaimComparisionType.TotalNetAmount, value: 'Total Net Amount Tracking Report' },
     { type: rejectedClaimComparisionType.VATAmount, value: 'VAT Amount Tracking Report' },
     { type: rejectedClaimComparisionType.SUMOfTopTenRejectedService, value: 'Sum of Top 10 Rejected Services' },
-  ]
+  ];
   get providerId(): string {
     return this.sharedService.providerId;
   }
@@ -335,14 +338,14 @@ export class RejectedClaimProgressReportComponent implements OnInit {
     } else if (event.value === 'Day') {
       this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
     } else {
-      this.datePickerConfig = { dateInputFormat: 'YYYY' }
+      this.datePickerConfig = { dateInputFormat: 'YYYY' };
     }
     this.generateReport.beforeDate = '';
     this.generateReport.afterDate = '';
   }
 
   generate() {
-    let body = { ...this.generateReport };
+    const body = { ...this.generateReport };
     body.beforeDate = this.setDate(body.beforeDate);
     body.afterDate = this.setDate(body.afterDate);
     // this.reportSerice.rejectedClaimProgressReport(this.providerId, body).subscribe(event => {
@@ -366,13 +369,15 @@ export class RejectedClaimProgressReportComponent implements OnInit {
     //         value = 100;
     //       else if (secondYearData[index] === 0 && ele > secondYearData[index])
     //         value = 100;
-    //       const finalValue = ele !== 0 && secondYearData[index] !== 0 ? ele > secondYearData[index] ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index]) : value;
+    //       const finalValue = ele !== 0 && secondYearData[index] !== 0 ? ele > secondYearData[index]
+    // ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index]) : value;
     //       if (this.generateReport.comparisionCriteria === "Month")
     //         percentageLabelData[index] = 'WEEK ' + (index + 1);
 
     //       const obj = {
     //         label: percentageLabelData[index],
-    //         value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
+    //         value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index]
+    // ? this.Rate.Down : this.Rate.Up,
     //         data: Number(finalValue.toFixed(2))
     //       };
     //       this.percenatgeChartData.push(obj);

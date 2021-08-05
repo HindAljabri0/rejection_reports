@@ -31,7 +31,8 @@ import {
   updatePhysicianName,
   updatePageType,
   updateDepartment,
-  updateAccCode
+  updateAccCode,
+  updateContactNumber
 } from '../store/claim.actions';
 import {
   getDepartmentCode,
@@ -71,6 +72,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
 
   fileNumberController: FormControl = new FormControl();
+  contactNumberController: FormControl = new FormControl();
   memberDobController: FormControl = new FormControl();
   illnessDurationController: FormControl = new FormControl();
   ageController: FormControl = new FormControl();
@@ -131,8 +133,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   departmentFilterCtrl: FormControl = new FormControl();
   filteredDepartments: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   @ViewChild('departmentSelect', { static: true }) departmentSelect: MatSelect;
-  isDepartmentDisable: boolean = false;
-  isPageModeCreate: boolean = false;
+  isDepartmentDisable = false;
+  isPageModeCreate = false;
+  
   constructor(
     private store: Store,
     private datePipe: DatePipe,
@@ -141,6 +144,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.select(getPageMode).pipe(
+      takeUntil(this._onDestroy),
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
@@ -210,7 +214,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         this.departments = values.departments;
         this.isPageModeCreate = true;
       } else {
-        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL_PHARMACY' ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical' || department.name == 'Pharmacy') : values.departments;
+        this.departments = this.pageType.toLocaleUpperCase() === 'DENTAL_OPTICAL_PHARMACY'
+          ? values.departments.filter(department => department.name == 'Dental' || department.name == 'Optical'
+            || department.name == 'Pharmacy') : values.departments;
       }
       this.filteredDepartments.next(this.departments.slice());
       this.departmentFilterCtrl.valueChanges
@@ -229,6 +235,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   setData(claim: Claim) {
     this.fileNumberController.setValue(claim.caseInformation.patient.patientFileNumber);
+    this.contactNumberController.setValue(claim.caseInformation.patient.contactNumber);
 
     const illnessDuration = claim.caseInformation.caseDescription.illnessDuration;
     if (illnessDuration != null) {
@@ -307,6 +314,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.fileNumberController.disable();
+    // this.contactNumberController.disable();
     this.claimDateController.disable();
     this.isCaceTypeEnabled = false;
     if (allowEdit) {
@@ -320,6 +328,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.otherConditionController.enable();
       this.eligibilityNumController.enable();
       this.fullNameController.enable();
+      this.contactNumberController.enable();
     } else {
       this.illnessDurationController.disable();
       this.ageController.disable();
@@ -331,11 +340,15 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.otherConditionController.disable();
       this.eligibilityNumController.disable();
       this.fullNameController.disable();
+      this.contactNumberController.disable();
     }
 
     if (enableForNulls) {
       if (this.isControlNull(this.fileNumberController)) {
         this.fileNumberController.enable();
+      }
+      if (this.isControlNull(this.contactNumberController)) {
+        this.contactNumberController.enable();
       }
       if (this.isControlNull(this.illnessDurationController)) {
         this.illnessDurationController.enable();
@@ -431,20 +444,24 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.physicianIdController.disable();
     }
   }
-  //this.claimDateController.value
+  // this.claimDateController.value
   updateClaim(field: string) {
     switch (field) {
       case ('claimDate'):
-        if (this.claimDateController.value != null)
+        if (this.claimDateController.value != null) {
           this.store.dispatch(updateClaimDate({ claimDate: new Date(this.claimDateController.value) }));
-        else
+        } else {
           this.store.dispatch(updateClaimDate({ claimDate: null }));
+        }
         break;
       case ('caseType'):
         this.store.dispatch(updateCaseType({ caseType: this.selectedCaseType }));
         break;
       case ('fileNumber'):
         this.store.dispatch(updateFileNumber({ fileNumber: this.fileNumberController.value }));
+        break;
+      case ('contactNumber'):
+        this.store.dispatch(updateContactNumber({ contactNumber: this.contactNumberController.value }));
         break;
       case ('memberDob'):
         this.store.dispatch(updateMemberDob({ memberDob: new Date(this.memberDobController.value) }));

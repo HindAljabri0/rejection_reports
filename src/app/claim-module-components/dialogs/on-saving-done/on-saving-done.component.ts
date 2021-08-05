@@ -5,6 +5,8 @@ import { OnSavingDoneDialogData } from './on-saving-done.data';
 import { SharedServices } from 'src/app/services/shared.services';
 import { viewThisMonthClaims, cancelClaim } from '../../store/claim.actions';
 import { Location } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-on-saving-done',
@@ -18,15 +20,17 @@ export class OnSavingDoneComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: OnSavingDoneDialogData,
     private store: Store,
     private sharedServices: SharedServices,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.dialogRef.backdropClick().subscribe(() => {
-      if (!this.showViewAllButton)
-        this.onOK()
-      else if(this.data.status != 'Not_Saved')
+      if (!this.showViewAllButton) {
+        this.onOK();
+      } else if (this.data.status != 'Not_Saved') {
         this.store.dispatch(cancelClaim());
+      }
     });
   }
 
@@ -50,16 +54,26 @@ export class OnSavingDoneComponent implements OnInit {
   }
 
   onOK() {
-    let pathSegments = this.location.path().split('/');
-    let oldClaimId = pathSegments.pop();
-    oldClaimId.replace("#edit", '');
+    const pathSegments = this.location.path().split('/');
+    let oldClaimId;
+    if (pathSegments.includes("claimId=")) {
+      oldClaimId = pathSegments.pop().split('=').pop();
+    } else {
+      oldClaimId = pathSegments.pop();
+    }
+    oldClaimId.replace('#edit', '');
     const paginationIds = localStorage.getItem('search_tab_result');
     if (paginationIds != null) {
-      let paginationIdsSegments = paginationIds.split(',');
-      localStorage.setItem('search_tab_result', paginationIdsSegments.map(id => { if (id == oldClaimId) return this.data.claimId; else return id; }).join(','));
+      const paginationIdsSegments = paginationIds.split(',');
+      localStorage.setItem('search_tab_result', paginationIdsSegments.map(id => {
+        if (id == oldClaimId) {
+          return this.data.claimId;
+        } else {
+          return id;
+        }
+      }).join(','));
     }
-    pathSegments.push(this.data.claimId);
-    this.location.go(pathSegments.join('/'));
+    this.location.go(this.location.path().replace('#edit', ''));
     location.reload();
   }
 

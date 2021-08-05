@@ -43,7 +43,7 @@ export class SuperAdminService {
 
   savePortalUserSettings(providerId: string, username: string, password: string) {
     const requestURL = `/providers/${providerId}/portal-user/save`;
-    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, { username: username, password: password });
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, { username, password });
     return this.http.request(request);
   }
   getPriceListValidationSettings(providerId: string) {
@@ -78,7 +78,7 @@ export class SuperAdminService {
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
 
-    let requestURL = `/providers/${providerId}`;
+    const requestURL = `/providers/${providerId}`;
 
     const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, formdata, {
       reportProgress: true,
@@ -95,7 +95,7 @@ export class SuperAdminService {
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
 
-    let requestURL = `/providers/${providerId}/contractId/${editId}`;
+    const requestURL = `/providers/${providerId}/contractId/${editId}`;
     const req = new HttpRequest('PUT', environment.payerPaymentContractService + requestURL, formdata, {
       reportProgress: true,
       responseType: 'text'
@@ -112,3 +112,4 @@ export const VALIDATE_RESTRICT_PRICE_UNIT = 'validateOrRestrictUnitPrice';
 export const ICD10_RESTRICTION_KEY = 'ICD10Validation';
 export const SFDA_RESTRICTION_KEY = 'sfdaRestriction';
 export const PBM_RESTRICTION_KEY = 'pbmValidation';
+export const NET_AMOUNT_RESTRICTION_KEY = 'netAmountValidation';

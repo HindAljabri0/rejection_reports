@@ -1,50 +1,63 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Transactions - 23/6/2061 to 27/7/2101</p>
+        <p>Transactions - {{previousFromdate | date: 'dd/MM/yyyy'}} to {{previousToDate | date: 'dd/MM/yyyy'}}</p>
     </div>
     <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Payer</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="">
-                            <mat-option value="">Select Payer</mat-option>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
-                            <mat-option value="Payer 5">Payer 5</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+        <form #statementAccountForm='ngForm' (ngSubmit)='statementAccountForm.valid && submit()'>
+            <div class="row small-gutter">
+                <div class="col">
+                    <div class="form-group" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.payer}">
+                        <label class="control-label">Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [(ngModel)]="transactionModel.payer" #payer='ngModel' name="payer" required>
+                                <mat-option value="0">All</mat-option>
+                                <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
+                                    ({{payer.arName}})</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="statementAccountForm.submitted && payer.invalid">
+                            <span class="error-text">Please select a Payer</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Payment Date From</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
+                <div class="col">
+                    <div class="form-group" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.fromDate}">
+                        <label class="control-label">Payment Date From</label>
+                        <div class="date-picker" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.fromDate}">
+                            <!-- <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
                         <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #fromDate></mat-datepicker>
+                        <mat-datepicker #fromDate></mat-datepicker> -->
+                            <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig" [(ngModel)]='transactionModel.fromDate' class="form-control date-picker"
+                                placeholder="Select start date" (bsValueChange)="dateValidation($event)" #fromDate='ngModel' name="fromDate" required />
+                        </div>
+                        <div *ngIf="statementAccountForm.submitted && fromDate.invalid">
+                            <span class="error-text">Please choose a from date</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label class="control-label">Payment Date To</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
+                <div class="col">
+                    <div class="form-group" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.toDate}">
+                        <label class="control-label">Payment Date To</label>
+                        <div class="date-picker">
+                            <!-- <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
                         <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
-                        <mat-datepicker #toDate></mat-datepicker>
+                        <mat-datepicker #toDate></mat-datepicker> -->
+                            <input autocomplete="off" bsDatepicker [bsConfig]="datePickerConfig" [(ngModel)]='transactionModel.toDate' #toDate='ngModel' name="toDate" required
+                                [minDate]="minDate" class="form-control date-picker" placeholder="Select end date" required />
+                        </div>
+                        <div *ngIf="statementAccountForm.submitted && toDate.invalid">
+                            <span class="error-text">Please choose a to date</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <button type="submit" mat-flat-button color="primary">Search</button>
                     </div>
                 </div>
             </div>
-            <div class="col-auto align-self-end">
-                <div class="form-group">
-                    <button type="button" mat-flat-button color="primary">Search</button>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
@@ -57,75 +70,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>26/12/2043</td>
-                        <td>1855 SR</td>
-                        <td>Bupa</td>
+                    <tr *ngFor="let item of transactionData">
+                        <td>{{item.paymentDate | date: 'dd-MM-yyyy'}}</td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.payerName}}</td>
                     </tr>
                     <tr>
-                        <td>27/2/2092</td>
-                        <td>2063 SR</td>
-                        <td>Tawuniya</td>
-                    </tr>
-                    <tr>
-                        <td>23/7/2106</td>
-                        <td>4184 SR</td>
-                        <td>Medgulf</td>
-                    </tr>
-                    <tr>
-                        <td>8/3/2095</td>
-                        <td>2642 SR</td>
-                        <td>Tawuniya</td>
-                    </tr>
-                    <tr>
-                        <td>31/8/2045</td>
-                        <td>3101 SR</td>
-                        <td>Medgulf</td>
-                    </tr>
-                    <tr>
-                        <td>15/6/2042</td>
-                        <td>4296 SR</td>
-                        <td>Tawuniya</td>
-                    </tr>
-                    <tr>
-                        <td>9/11/2084</td>
-                        <td>1257 SR</td>
-                        <td>Medgulf</td>
-                    </tr>
-                    <tr>
-                        <td>5/11/2053</td>
-                        <td>4368 SR</td>
-                        <td>Bupa</td>
-                    </tr>
-                    <tr>
-                        <td>21/5/2097</td>
-                        <td>3193 SR</td>
-                        <td>Medgulf</td>
-                    </tr>
-                    <tr>
-                        <td>7/2/2031</td>
-                        <td>2785 SR</td>
-                        <td>Tawuniya</td>
+                        <td colspan="3" class="p-0">
+                            <app-empty-state *ngIf="transactionData == null || transactionData.length == 0" class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
     <div class="block-footer sticky-bottom">
-        <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page">
+        <div class="left-block custom-paginator" *ngIf="transactionModel.totalPages > 0">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="transactionModel.page==0 || isLoading">
                 <img src="./assets/ic-page-first.svg" alt="First" />
             </button>
-            <button matRipple type="button" title="Previous Page">
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="transactionModel.page==0 || isLoading">
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
-                1<small>/5</small>
+                {{(transactionModel.page+1)}}<small>/{{transactionModel.totalPages }}</small>
             </p>
-            <button matRipple type="button" title="Next Page">
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(transactionModel.page+1)==transactionModel.totalPages || isLoading">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
             </button>
-            <button matRipple type="button" title="Last Page">
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(transactionModel.page+1)==transactionModel.totalPages || isLoading ">
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>

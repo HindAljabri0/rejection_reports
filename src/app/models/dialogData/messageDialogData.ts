@@ -19,6 +19,7 @@ export class MessageDialogData {
     this.withButtons = withButtons || false;
     this.confirmButtonText = confirmButtonText || 'Confirm';
     this.cancelButtonText = cancelButtonText || 'Cancel';
+
   }
 
 }

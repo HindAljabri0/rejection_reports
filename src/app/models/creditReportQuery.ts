@@ -135,7 +135,7 @@ export class CreditReportQueryModel {
     discountDifferenceVat = null;
     discountDifferenceVatPercent = '';
 
-    deductibleDifference = null
+    deductibleDifference = null;
     deductibleDifferencePercent = '';
     deductibleDifferenceVat = null;
     deductibleDifferenceVatPercent = '';

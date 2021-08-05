@@ -7,7 +7,7 @@ import { Service } from '../models/service.model';
 import { ServiceDecision } from '../models/serviceDecision.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { FileType } from '../models/attachmentRequest.model';
-import { SEARCH_TAB_RESULTS_KEY } from 'src/app/pages/searchClaimsPage/search-claims.component';
+import { SEARCH_TAB_RESULTS_KEY } from 'src/app/services/shared.services';
 
 export type ClaimPageMode = 'CREATE' | 'CREATE_FROM_RETRIEVED' | 'VIEW' | 'EDIT';
 export type ClaimPageType = 'DENTAL_OPTICAL_PHARMACY' | 'INPATIENT_OUTPATIENT';
@@ -38,8 +38,8 @@ export interface ClaimState {
     mode: ClaimPageMode;
     type: ClaimPageType;
     paginationControl: { currentIndex: number, size: number, searchTabCurrentResults: number[]; };
-    pbmClaimError: [],
-    pbmClaimStatus: string
+    pbmClaimError: [];
+    pbmClaimStatus: string;
 
 }
 
@@ -127,7 +127,7 @@ const _claimReducer = createReducer(
         }
         return ({
             ...state, claim: Claim.fromViewResponse(body['claim']),
-            type: type,
+            type,
             retrievedClaimProps: props,
             loading: false,
             claimBeforeEdit: (editable ? Claim.fromViewResponse(body['claim']) : null),
@@ -135,7 +135,7 @@ const _claimReducer = createReducer(
             mode: (editable ? 'EDIT' : 'VIEW'),
             paginationControl: {
                 searchTabCurrentResults: searchTabResults,
-                currentIndex: currentIndex,
+                currentIndex,
                 size: searchTabResults.length
             },
             claimErrors: body['errors'],
@@ -158,6 +158,15 @@ const _claimReducer = createReducer(
         claimPropsBeforeEdit: null,
         mode: 'VIEW'
     })),
+    on(actions.toCreateMode, (state) => ({
+        ...state,
+        mode: 'CREATE',
+        claimBeforeEdit: null,
+        claimPropsBeforeEdit: null,
+        newAttachments: [],
+        claim: null,
+        retrievedClaimProps: null
+    })),
     on(actions.getClaimDataByApproval, (state) => ({ ...state, approvalFormLoading: true })),
     on(actions.startCreatingNewClaim, (state, { data }) => {
         if (data.hasOwnProperty('claim')) {
@@ -169,7 +178,10 @@ const _claimReducer = createReducer(
             };
         } else {
             const claim = new Claim(data['claimType'], data['providerClaimNumber']);
-            return { ...state, claim: claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT' || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL_PHARMACY' };
+            return {
+                ...state, claim, mode: 'CREATE', type: (data['claimType'] === 'INPATIENT'
+                    || data['claimType'] === 'OUTPATIENT') ? 'INPATIENT_OUTPATIENT' : 'DENTAL_OPTICAL_PHARMACY'
+            };
         }
     }),
     on(actions.loadLOVs, (state) => ({ ...state, loading: true })),
@@ -178,7 +190,7 @@ const _claimReducer = createReducer(
         LOVs: extractFromHttpResponse(LOVs),
         loading: state.mode == 'CREATE' ? false : state.loading
     })),
-    on(actions.setLoading, (state, { loading }) => ({ ...state, loading: loading })),
+    on(actions.setLoading, (state, { loading }) => ({ ...state, loading })),
     on(actions.setUploadId, (state, { id }) => ({
         ...state, claim: {
             ...state.claim,
@@ -188,7 +200,7 @@ const _claimReducer = createReducer(
             }
         }
     })),
-    on(actions.setError, (state, { error }) => ({ ...state, error: error, loading: false, approvalFormLoading: false })),
+    on(actions.setError, (state, { error }) => ({ ...state, error, loading: false, approvalFormLoading: false })),
     on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs, paginationControl: state.paginationControl })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
@@ -204,7 +216,7 @@ const _claimReducer = createReducer(
                 claimErrors = { ...state.claimErrors, illnessErrors: errors };
                 break;
         }
-        return { ...state, claimErrors: claimErrors };
+        return { ...state, claimErrors };
     }),
     on(actions.updatePatientName, (state, { name }) => ({
         ...state, claim: {
@@ -220,7 +232,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                patient: { ...state.claim.caseInformation.patient, gender: gender }
+                patient: { ...state.claim.caseInformation.patient, gender }
             }
         }
     })),
@@ -238,7 +250,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             visitInformation: {
                 ...state.claim.visitInformation,
-                visitType: visitType
+                visitType
             }
         }
     })),
@@ -247,7 +259,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                patient: { ...state.claim.caseInformation.patient, nationality: nationality }
+                patient: { ...state.claim.caseInformation.patient, nationality }
             }
         }
     })),
@@ -265,7 +277,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             member: {
                 ...state.claim.member,
-                accCode: accCode
+                accCode
             }
         }
     })),
@@ -301,7 +313,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             member: {
                 ...state.claim.member,
-                planType: planType
+                planType
             }
         }
     })),
@@ -320,7 +332,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                physician: { ...state.claim.caseInformation.physician, physicianName: physicianName }
+                physician: { ...state.claim.caseInformation.physician, physicianName }
             }
         }
     })),
@@ -329,7 +341,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                physician: { ...state.claim.caseInformation.physician, physicianCategory: physicianCategory }
+                physician: { ...state.claim.caseInformation.physician, physicianCategory }
             }
         }
     })),
@@ -389,7 +401,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                caseType: caseType
+                caseType
             }
         }
     })),
@@ -406,6 +418,19 @@ const _claimReducer = createReducer(
             genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'PATFILNO')]
         }
     })),
+    on(actions.updateContactNumber, (state, { contactNumber }) => ({
+        ...state, claim: {
+            ...state.claim,
+            caseInformation: {
+                ...state.claim.caseInformation,
+                patient: { ...state.claim.caseInformation.patient, contactNumber: contactNumber }
+            }
+        },
+        claimErrors: {
+            ...state.claimErrors,
+            genInfoErrors: [...state.claimErrors.genInfoErrors.filter(error => error.fieldName != 'CONTNUMBER')]
+        }
+    })),
     on(actions.updateMemberDob, (state, { memberDob }) => ({
         ...state, claim: {
             ...state.claim,
@@ -420,7 +445,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration: illnessDuration }
+                caseDescription: { ...state.claim.caseInformation.caseDescription, illnessDuration }
             }
         }
     })),
@@ -429,7 +454,7 @@ const _claimReducer = createReducer(
             ...state.claim,
             caseInformation: {
                 ...state.claim.caseInformation,
-                patient: { ...state.claim.caseInformation.patient, age: age }
+                patient: { ...state.claim.caseInformation.patient, age }
             }
         }
     })),
@@ -486,7 +511,7 @@ const _claimReducer = createReducer(
                 ...state.claim.caseInformation,
                 caseDescription: {
                     ...state.claim.caseInformation.caseDescription,
-                    temperature: temperature
+                    temperature
                 }
             }
         }
@@ -508,7 +533,7 @@ const _claimReducer = createReducer(
                 ...state.claim.caseInformation,
                 caseDescription: {
                     ...state.claim.caseInformation.caseDescription,
-                    pulse: pulse
+                    pulse
                 }
             }
         }
@@ -530,7 +555,7 @@ const _claimReducer = createReducer(
                 ...state.claim.caseInformation,
                 caseDescription: {
                     ...state.claim.caseInformation.caseDescription,
-                    weight: weight
+                    weight
                 }
             }
         }
@@ -540,7 +565,7 @@ const _claimReducer = createReducer(
             ...state.claim, caseInformation:
             {
                 ...state.claim.caseInformation, caseDescription:
-                    { ...state.claim.caseInformation.caseDescription, height: height }
+                    { ...state.claim.caseInformation.caseDescription, height }
             }
         }
     })),
@@ -613,26 +638,31 @@ const _claimReducer = createReducer(
         }
     })),
 
-    on(actions.updateInvoices_Services, (state, { invoices }) => {
-        const GDPN: GDPN = {
-            discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
-            netVATamount: {
-                value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur),
-                type: 'SAR'
-            },
-            netVATrate: null,
-            patientShare: {
-                value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur),
-                type: 'SAR'
-            },
-            patientShareVATamount: {
-                value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur),
-                type: 'SAR'
-            },
-            patientShareVATrate: null,
-        };
+    on(actions.updateInvoices_Services, (state, { invoices, recalculateClaimGDPN }) => {
+        let GDPN: GDPN;
+        if (recalculateClaimGDPN) {
+            GDPN = {
+                discount: { value: invoices.map(invoice => invoice.invoiceGDPN.discount.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                gross: { value: invoices.map(invoice => invoice.invoiceGDPN.gross.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                net: { value: invoices.map(invoice => invoice.invoiceGDPN.net.value).reduce((pre, cur) => pre + cur), type: 'SAR' },
+                netVATamount: {
+                    value: invoices.map(invoice => invoice.invoiceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur),
+                    type: 'SAR'
+                },
+                netVATrate: null,
+                patientShare: {
+                    value: invoices.map(invoice => invoice.invoiceGDPN.patientShare.value).reduce((pre, cur) => pre + cur),
+                    type: 'SAR'
+                },
+                patientShareVATamount: {
+                    value: invoices.map(invoice => invoice.invoiceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur),
+                    type: 'SAR'
+                },
+                patientShareVATrate: null,
+            };
+        } else {
+            GDPN = state.claim.claimGDPN;
+        }
         return ({
             ...state, claim: { ...state.claim, invoice: invoices, claimGDPN: GDPN },
             claimErrors: {
@@ -659,11 +689,11 @@ const _claimReducer = createReducer(
                 used: false
             } : s)
         })),
-    on(actions.selectGDPN, (state, { invoiceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex: invoiceIndex } })),
+    on(actions.selectGDPN, (state, { invoiceIndex }) => ({ ...state, selectedGDPN: { invoiceIndex } })),
     on(actions.removeDiagonsisError, (state, { errors }) => {
         let claimErrors = initState.claimErrors;
         claimErrors = { ...state.claimErrors, diagnosisErrors: errors };
-        return { ...state, claimErrors: claimErrors };
+        return { ...state, claimErrors };
     }),
 );
 

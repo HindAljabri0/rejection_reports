@@ -22,7 +22,7 @@ export class ProviderContractComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
-  providerLoader: boolean = false;
+  providerLoader = false;
   paymentData: any[] = [];
   payersList: { id: number; name: string; arName: string; }[];
   associatedPayers: { switchAccountId: number; name: string; arabicName: string; category: string; hasAssociatedPriceList: boolean; }[];
@@ -36,21 +36,8 @@ export class ProviderContractComponent implements OnInit {
         if (event.body instanceof Array) {
           this.providers = event.body;
           this.filteredProviders = this.providers;
-          if (!location.href.endsWith('providers')) {
-            const paths = location.href.split('/');
-            this.selectedProvider = paths[paths.length - 1];
-
-            const provider = this.providers.find(provider => provider.switchAccountId == this.selectedProvider);
-            if (provider != undefined) {
-              this.providerController.setValue(`${provider.switchAccountId} | ${provider.code} | ${provider.name}`);
-            } else {
-              this.sharedServices.loadingChanged.next(false);
-              this.providerLoader = false;
-            }
-          } else {
-            this.sharedServices.loadingChanged.next(false);
-            this.providerLoader = false;
-          }
+          this.sharedServices.loadingChanged.next(false);
+          this.providerLoader = false;
         }
       }
     }, error => {
@@ -63,13 +50,14 @@ export class ProviderContractComponent implements OnInit {
 
   openAddContractDialog(item = null) {
     const isEditData = item !== null ? true : false;
-    let dialogRef = this.dialog.open(AddProviderContractDialogComponent,
+    const dialogRef = this.dialog.open(AddProviderContractDialogComponent,
       {
         panelClass: ['primary-dialog', 'dialog-lg'],
         data: {
           providers: this.providers,
-          isEditData: isEditData,
-          editData: item
+          isEditData,
+          editData: item,
+          selectedProvider: this.selectedProvider
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -86,8 +74,13 @@ export class ProviderContractComponent implements OnInit {
       `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
     );
   }
-  selectProvider(providerId: string) {
-    this.selectedProvider = providerId;
+  selectProvider(providerId: string = null) {
+    if (providerId !== null)
+      this.selectedProvider = providerId;
+    else {
+      const providerId = this.providerController.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
     this.getAssociatedPayers();
   }
   getAssociatedPayers() {
@@ -114,12 +107,12 @@ export class ProviderContractComponent implements OnInit {
         const body = event['body'];
         const data = JSON.parse(body);
         this.paymentData = data.map((ele) => {
-          const data = this.associatedPayers.find((subele) => subele.switchAccountId === parseInt(ele.payerId));
+          const data = this.associatedPayers.find((subele) => subele.switchAccountId === parseInt(ele.payerId, 10));
           ele.payerName = data.name;
           ele.effectiveDate = ele.effectiveDate.substring(0, ele.effectiveDate.toLocaleString().indexOf(':') - 3);
           ele.expiryDate = ele.expiryDate.substring(0, ele.expiryDate.toLocaleString().indexOf(':') - 3);
           return ele;
-        })
+        });
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
@@ -132,12 +125,15 @@ export class ProviderContractComponent implements OnInit {
   get isLoading() {
     return this.sharedServices.loading;
   }
-  viewAttachment(item) {
+  viewAttachment(e, item) {
+    e.preventDefault();
     const expiryDate = moment(item.expiryDate).format('DD-MM-YYYY');
     const effectiveDate = moment(item.effectiveDate).format('DD-MM-YYYY');
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
-      data: { filename: item.providerId + '_' + item.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf', attachment: item.agreementCopy }, panelClass: ['primary-dialog', 'dialog-xl']
-    })
+      data: {
+        filename: item.providerId + '_' + item.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf', attachment: item.agreementCopy
+      }, panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }

@@ -1,5 +1,5 @@
 export class Observation {
-  observationId?:number;
+  observationId?: number;
   observationCode: string;
   observationDescription: string;
   observationValue: string;

@@ -14,6 +14,7 @@ import { RevenueReportComponent } from './components/revenue-report/revenue-repo
 import { RevenueTrackingReportComponent } from './components/revenue-tracking-report/revenue-tracking-report.component';
 import { TawuniyaCreditReportDetailsComponent } from './components/tawuniya-credit-report-details/tawuniya-credit-report-details.component';
 import { ClaimStatusSummaryReportComponent } from 'src/app/pages/reports/claim-summary-status-report/claim-status-summary-report.component';
+import { RejectionTrackingReportComponent } from './components/rejection-tracking-report/rejection-tracking-report.component';
 
 
 const routes: Routes = [
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: 'revenue-tracking-report', component: RevenueTrackingReportComponent },
   { path: 'revenue-report-breakdown', component: RevenueBreakdownReportComponent },
   { path: 'revenue-comparison-report', component: RevenueComparativeReportComponent },
-  { path: 'claim-status-summary-report', component: ClaimStatusSummaryReportComponent }
+  { path: 'claim-status-summary-report', component: ClaimStatusSummaryReportComponent },
+  { path: 'rejection-tracking-report', component: RejectionTrackingReportComponent }
 
 ];
 

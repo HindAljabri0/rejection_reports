@@ -27,11 +27,12 @@ export class UploadCardComponent implements OnInit {
   get totalClaims() {
     return this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.undersubmission
       + this.data.underprocessing + this.data.paid + this.data.partially_paid + this.data.rejected_by_payer
-      + this.data.invalid + this.data.downloadable;
+      + this.data.invalid + this.data.downloadable + this.data.submitted_outside_waseel;
   }
 
   get canBeDeleted() {
-    return (this.sharedServices.isAdmin && this.sharedServices.isProvider) || (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
+    return (this.sharedServices.isAdmin && this.sharedServices.isProvider)
+      || (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
   }
 
   deleteUpload() {
@@ -42,7 +43,7 @@ export class UploadCardComponent implements OnInit {
     if (this.sharedServices.isAdmin && this.sharedServices.isProvider) {
       this.dialogService.openConfirmAdminDeleteDialog().subscribe(action => {
         switch (action) {
-          case "deleteAll":
+          case 'deleteAll':
 
             this.dialogService.openMessageDialog(
               new MessageDialogData(`Delete ${this.data.uploadName}?`,
@@ -52,7 +53,8 @@ export class UploadCardComponent implements OnInit {
               .subscribe(result => {
                 if (result === true) {
                   this.sharedServices.loadingChanged.next(true);
-                  this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null, null, null, null, null, null, null, null, null, null, null)
+                  this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '',
+                    null, null, null, null, null, null, null, null, null, null, null, null, null)
                     .subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.data.downloadable = 0;
@@ -72,26 +74,27 @@ export class UploadCardComponent implements OnInit {
                       if (errorEvent instanceof HttpErrorResponse) {
                         if (errorEvent.status == 404) {
                           this.dialogService.openMessageDialog({
-                            title: "",
-                            message: "It appears that the claims have been already deleted for this upload.",
+                            title: '',
+                            message: 'It appears that the claims have been already deleted for this upload.',
                             isError: true
-                          })
+                          });
                         } else {
                           this.dialogService.openMessageDialog({
-                            title: "",
-                            message: "Cloud not handle the request at the moment. Please try again later.",
+                            title: '',
+                            message: 'Cloud not handle the request at the moment. Please try again later.',
                             isError: true
-                          })
+                          });
                         }
                       }
                     });
                 }
-              })
+              });
             break;
-          case "confirm":
+          case 'confirm':
 
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], null, null, null, null, null, null, null)
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null,
+              null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], null, null, null, null, null, null, null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.data.downloadable = 0;
@@ -108,16 +111,16 @@ export class UploadCardComponent implements OnInit {
                 if (errorEvent instanceof HttpErrorResponse) {
                   if (errorEvent.status == 404) {
                     this.dialogService.openMessageDialog({
-                      title: "",
-                      message: "It appears that the claims have been already deleted for this upload.",
+                      title: '',
+                      message: 'It appears that the claims have been already deleted for this upload.',
                       isError: true
-                    })
+                    });
                   } else {
                     this.dialogService.openMessageDialog({
-                      title: "",
-                      message: "Cloud not handle the request at the moment. Please try again later.",
+                      title: '',
+                      message: 'Cloud not handle the request at the moment. Please try again later.',
                       isError: true
-                    })
+                    });
                   }
                 }
               });
@@ -127,8 +130,7 @@ export class UploadCardComponent implements OnInit {
         }
       });
 
-    }
-    else {
+    } else {
       this.dialogService.openMessageDialog(
         new MessageDialogData(`Delete ${this.data.uploadName}?`,
           `This will delete all not submitted claims inside this upload. Are you sure you want to delete them? This cannot be undone.`,
@@ -137,7 +139,8 @@ export class UploadCardComponent implements OnInit {
         .subscribe(result => {
           if (result === true) {
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null, null, null, null, null, null, null, null, null, null, null, null)
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null,
+              null, null, null, null, null, null, null, null, null, null, null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.data.downloadable = 0;
@@ -154,21 +157,21 @@ export class UploadCardComponent implements OnInit {
                 if (errorEvent instanceof HttpErrorResponse) {
                   if (errorEvent.status == 404) {
                     this.dialogService.openMessageDialog({
-                      title: "",
-                      message: "It appears that the claims have been already deleted for this upload.",
+                      title: '',
+                      message: 'It appears that the claims have been already deleted for this upload.',
                       isError: true
-                    })
+                    });
                   } else {
                     this.dialogService.openMessageDialog({
-                      title: "",
-                      message: "Cloud not handle the request at the moment. Please try again later.",
+                      title: '',
+                      message: 'Cloud not handle the request at the moment. Please try again later.',
                       isError: true
-                    })
+                    });
                   }
                 }
               });
           }
-        })
+        });
     }
   }
   // goTOClaimViewPage() {

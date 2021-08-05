@@ -78,7 +78,7 @@ export class ClaimEffects {
     openApprovalFormDialog$ = createEffect(() => this.actions$.pipe(
         ofType(openCreateByApprovalDialog),
         tap(data => this.dialog.open(CreateByApprovalFormComponent, {
-            data: data,
+            data,
             closeOnNavigation: true,
             panelClass: ['primary-dialog']
         }))
@@ -132,7 +132,7 @@ export class ClaimEffects {
     openSelectServiceDialog$ = createEffect(() => this.actions$.pipe(
         ofType(openSelectServiceDialog),
         tap(data => this.dialog.open(SelectServiceDialogComponent, {
-            data: data,
+            data,
             closeOnNavigation: true,
             width: '90%',
         }))
@@ -150,8 +150,10 @@ export class ClaimEffects {
         withLatestFrom(this.store.select(getPageMode)),
         map(values => ({ errors: values[0][1], pageMode: values[1] })),
         map(values => {
-            if ((values.errors.genInfoErrors.length == 0 || values.errors.genInfoErrors.every(error => !['VSITDATE', 'PATFILNO', 'DPARCODE'].includes(error.fieldName)))
-                && (values.errors.invoicesErrors.length == 0 || values.errors.invoicesErrors.every(error => error.fieldName != 'INVOICENUM'))
+            if ((values.errors.genInfoErrors.length == 0
+                || values.errors.genInfoErrors.every(error => !['VSITDATE', 'PATFILNO', 'DPARCODE'].includes(error.fieldName)))
+                && (values.errors.invoicesErrors.length == 0
+                    || values.errors.invoicesErrors.every(error => error.fieldName != 'INVOICENUM'))
             ) {
                 if (values.pageMode == 'CREATE') {
                     return getUploadId({ providerId: this.sharedServices.providerId });
@@ -191,7 +193,7 @@ export class ClaimEffects {
                     } catch (error) { }
                 }
                 this.store.dispatch(setLoading({ loading: false }));
-                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status: status, description: description } });
+                return of({ type: setError.type, error: { code: 'CLAIM_SAVING_ERROR', status, description } });
             })
         ))
     ));
@@ -221,7 +223,7 @@ export class ClaimEffects {
                     type: setError.type,
                     error: {
                         code: 'CLAIM_SAVING_ERROR',
-                        status: status,
+                        status,
                         description: description || 'Could not handle the request.'
                     }
                 });
@@ -232,7 +234,7 @@ export class ClaimEffects {
     openOnSavingDoneDialog$ = createEffect(() => this.actions$.pipe(
         ofType(showOnSaveDoneDialog),
         tap(data => this.dialog.open(OnSavingDoneComponent, {
-            data: data,
+            data,
             closeOnNavigation: true,
             panelClass: ['primary-dialog']
         }))

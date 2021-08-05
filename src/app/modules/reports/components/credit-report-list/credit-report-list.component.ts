@@ -7,7 +7,9 @@ import { CreditReportService } from 'src/app/services/creditReportService/credit
 import { SharedServices } from 'src/app/services/shared.services';
 import { CreditReportUploadModalComponent } from '../credit-report-upload-modal/credit-report-upload-modal.component';
 import { Router } from '@angular/router';
-import { TawuniyaCreditReportErrorsDialogComponent } from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
+import {
+  TawuniyaCreditReportErrorsDialogComponent
+} from '../tawuniya-credit-report-errors-dialog/tawuniya-credit-report-errors-dialog.component';
 
 
 @Component({
@@ -33,11 +35,15 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     pageSize: number,
     totalPages: number
   };
-  isFileUploadVisible: boolean = false;
-  isBupaRecord: boolean = false;
+  isFileUploadVisible = false;
+  isBupaRecord = false;
   // paginationControl: any;
 
-  constructor(private dialog: MatDialog, private creditReportService: CreditReportService, private sharedServices: SharedServices, private datePipe: DatePipe, private router: Router) { }
+  constructor(
+    private dialog: MatDialog,
+    private creditReportService: CreditReportService,
+    private sharedServices: SharedServices,
+    private datePipe: DatePipe, private router: Router) { }
 
 
   ngOnInit() {
@@ -73,6 +79,7 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
         this.creditReportData = res.body.content;
         if (res.body.content.length == 0) {
           this.creditReportSearchModel.totalPages = 0;
+          this.sharedServices.loadingChanged.next(false);
         } else {
           this.creditReportSearchModel.totalPages = res.body.totalPages;
           this.sharedServices.loadingChanged.next(false);
@@ -188,7 +195,9 @@ export class CreditReportListComponent implements OnInit, OnDestroy {
     this.creditReportSearchModel.totalPages = 0;
   }
   goToSummaryPage(item) {
-    this.isFileUploadVisible ? this.router.navigate(['/reports/creditReportSummary'], { queryParams: { batchId: item.batchId, payerId: item.payerId } }) : this.router.navigateByUrl(`/reports/creditReports/tawuniya/batch/${item.batchId}`);
+    this.isFileUploadVisible
+      ? this.router.navigate(['/reports/creditReportSummary'], { queryParams: { batchId: item.batchId, payerId: item.payerId } })
+      : this.router.navigateByUrl(`/reports/creditReports/tawuniya/batch/${item.batchId}`);
   }
 
   changeTab(e, status) {

@@ -187,7 +187,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.pageSize > 10) {
       queryParams.pageSize = this.pageSize;
     }
-    this.router.navigate([this.providerId, 'reports'], { queryParams: queryParams });
+    this.router.navigate([this.providerId, 'reports'], { queryParams });
     if (this.reportTypeControl.value == 1) {
       this.paymentSearchResult.fetchData();
     }
@@ -245,13 +245,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.actionIcon == 'ic-check-circle.svg') {
       return;
     }
-    this.downloadService.startDownload(this.reportsService.downloadPaymentClaimSummaryAsCSV(this.providerId, this.paymentReference)).subscribe(status => {
-      if(status == DownloadStatus.ERROR){
-        this.actionIcon = 'ic-download.svg';
-      } else {
-        this.actionIcon = 'ic-check-circle.svg';
-      }
-    });
+    this.downloadService.startDownload(this.reportsService.downloadPaymentClaimSummaryAsCSV(
+      this.providerId, this.paymentReference)).subscribe(status => {
+        if (status == DownloadStatus.ERROR) {
+          this.actionIcon = 'ic-download.svg';
+        } else {
+          this.actionIcon = 'ic-check-circle.svg';
+        }
+      });
   }
 
 

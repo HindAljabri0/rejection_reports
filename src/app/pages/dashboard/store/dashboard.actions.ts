@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { SearchCriteria } from './dashboard.reducer';
-import { SearchStatusSummary } from 'src/app/models/searchStatusSummary';
 import { RejectionCardData } from '../components/rejection-card/rejectionCardData';
 import { ClaimsSummary } from 'src/app/models/ClaimsSummary';
 

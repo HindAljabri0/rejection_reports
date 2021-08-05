@@ -19,7 +19,13 @@ export class CreditReportCreateConfirmDialogComponent implements OnInit {
     return this.sharedService.providerId;
   }
 
-  constructor(private dialogRef: MatDialogRef<CreditReportCreateConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: CreditReportQueryModel, private reportService: ReportsService, private sharedService: SharedServices, private dialogService: DialogService, private router: Router) {
+  constructor(
+    private dialogRef: MatDialogRef<CreditReportCreateConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: CreditReportQueryModel,
+    private reportService: ReportsService,
+    private sharedService: SharedServices,
+    private dialogService: DialogService,
+    private router: Router) {
     this.dialogData = this.data;
   }
 
@@ -39,7 +45,7 @@ export class CreditReportCreateConfirmDialogComponent implements OnInit {
             this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false)).subscribe(res => {
               // this.router.navigateByUrl('');
             });
-          }, 1000)
+          }, 1000);
         } else {
           this.dialogService.openMessageDialog(new MessageDialogData('', event.body.toString(), false));
         }

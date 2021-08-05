@@ -3,7 +3,7 @@ export class SearchStatusSummary {
   totalClaims = 0;
   totalNetAmount = 0;
   totalVatNetAmount = 0;
-  gross?: number = 0;
+  gross?= 0;
   uploadName: string;
   patientShare = 0;
   discount = 0;
@@ -30,7 +30,7 @@ export class SearchStatusSummary {
 
   public static emptySummaryWithStatuses(statuses: string[]): SearchStatusSummary {
     return {
-      statuses: statuses,
+      statuses,
       totalClaims: 0,
       totalNetAmount: 0,
       totalVatNetAmount: 0,

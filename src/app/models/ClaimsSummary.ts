@@ -1,13 +1,12 @@
-export class ClaimsSummary
- {
+export class ClaimsSummary {
 
   statuses: string[];
-  all_total:Number;
-  all_gross: Number;
-  all_netAmount: Number;
-  all_VatAmount: Number;
-  all_Patientshare: Number;
-  all_disCount: Number;
+  all_total: number;
+  all_gross: number;
+  all_netAmount: number;
+  all_VatAmount: number;
+  all_Patientshare: number;
+  all_disCount: number;
 
   accepted_total: string;
   failed_total: string;
@@ -64,7 +63,7 @@ export class ClaimsSummary
   accepted_Patientshare: string;
   failed_Patientshare: string;
   notaccepted_Patientshare: string;
-  batched_Patientshare: string
+  batched_Patientshare: string;
   outstanding_Patientshare: string;
   under_process_Patientshare: string;
   paid_Patientshare: string;
@@ -77,7 +76,7 @@ export class ClaimsSummary
   accepted_disCount: string;
   failed_disCount: string;
   notaccepted_disCount: string;
-  batched_disCount: string
+  batched_disCount: string;
   outstanding_disCount: string;
   under_process_disCount: string;
   paid_disCount: string;
@@ -87,10 +86,10 @@ export class ClaimsSummary
   returend_disCount: string;
   downloadable_disCount: string;
 
-  constructor(body: {} ,statuses?) {
+  constructor(body: {}, statuses?) {
 
     if (body != null) {
-  this.statuses=statuses;
+      this.statuses = statuses;
       this.all_total = body['all_total'];
       this.all_gross = body['all_gross'];
       this.all_netAmount = body['all_netAmount'];
@@ -178,16 +177,16 @@ export class ClaimsSummary
   }
 
   public static emptySummaryWithStatuses(statuses: string[]): ClaimsSummary {
-    
+
     return {
-      statuses: statuses,
+      statuses,
       all_total: 0,
       all_gross: 0,
       all_netAmount: 0,
       all_VatAmount: 0,
       all_Patientshare: 0,
       all_disCount: 0,
-    
+
       accepted_total: null,
       failed_total: null,
       notaccepted_total: null,
@@ -200,7 +199,7 @@ export class ClaimsSummary
       invalid_Total: null,
       returend_Total: null,
       downloadable_Total: null,
-    
+
       accepted_gross: null,
       failed_gross: null,
       notaccepted_gross: null,
@@ -212,7 +211,7 @@ export class ClaimsSummary
       rejected_gross: null,
       invalid_gross: null,
       returend_gross: null,
-      downloadable_gross:null,
+      downloadable_gross: null,
       accepted_netAmount: null,
       failed_netAmount: null,
       notaccepted_netAmount: null,
@@ -225,7 +224,7 @@ export class ClaimsSummary
       invalid_netAmount: null,
       returend_netAmount: null,
       downloadable_netAmount: null,
-    
+
       accepted_VatAmount: null,
       failed_VatAmount: null,
       notaccepted_VatAmount: null,
@@ -238,11 +237,11 @@ export class ClaimsSummary
       invalid_VatAmount: null,
       returend_VatAmount: null,
       downloadable_VatAmount: null,
-    
+
       accepted_Patientshare: null,
       failed_Patientshare: null,
       notaccepted_Patientshare: null,
-      batched_Patientshare:null,
+      batched_Patientshare: null,
       outstanding_Patientshare: null,
       under_process_Patientshare: null,
       paid_Patientshare: null,
@@ -251,11 +250,11 @@ export class ClaimsSummary
       invalid_Patientshare: null,
       returend_Patientshare: null,
       downloadable_Patientshare: null,
-    
+
       accepted_disCount: null,
       failed_disCount: null,
       notaccepted_disCount: null,
-      batched_disCount:null,
+      batched_disCount: null,
       outstanding_disCount: null,
       under_process_disCount: null,
       paid_disCount: null,
@@ -263,7 +262,8 @@ export class ClaimsSummary
       rejected_disCount: null,
       invalid_disCount: null,
       returend_disCount: null,
-      downloadable_disCount: null  };
+      downloadable_disCount: null
+    };
   }
 
 }

@@ -215,7 +215,7 @@ export class ClaimfileuploadComponent implements OnInit {
       this.cancel();
     });
     const errorobservable = this.uploadService.errorChange.subscribe(error => {
-      this.dialogService.openMessageDialog(new MessageDialogData("", error, true));
+      this.dialogService.openMessageDialog(new MessageDialogData('', error, true));
       errorobservable.unsubscribe();
       this.uploading = false;
       this.cancel();

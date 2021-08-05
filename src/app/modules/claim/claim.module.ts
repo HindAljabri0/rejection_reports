@@ -67,7 +67,22 @@ import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-commen
   exports: [
     CreateByApprovalFormComponent,
     SelectServiceDialogComponent,
-    OnSavingDoneComponent
+    OnSavingDoneComponent,
+    GdpnCalculationComponent,
+    ClaimDataComponent,
+    ClaimDiagnosisComponent,
+    ClaimIllnessesComponent,
+    GenInfoComponent,
+    InvoicesServicesComponent,
+    CreateByApprovalFormComponent,
+    SelectServiceDialogComponent,
+    OnSavingDoneComponent,
+    VitalSignsComponent,
+    AdmissionComponent,
+    AttachmentsComponent,
+    ClaimErrorsComponent,
+    LabResultsComponent,
+    PbmCommentsComponent
   ],
   entryComponents: [
     CreateByApprovalFormComponent,

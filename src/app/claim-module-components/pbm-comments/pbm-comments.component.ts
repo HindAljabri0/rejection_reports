@@ -17,7 +17,9 @@ export class PbmCommentsComponent implements OnInit {
   ngOnInit() {
     this.store.select(getPBMClaimError).subscribe(pbmData => this.pbmClaimError = pbmData);
     this.store.select(getPBMClaimStatus).subscribe(pbmData => this.pbmClaimStatus = pbmData);
-    this.pbmClaimError = this.pbmClaimError !== null && this.pbmClaimError !== undefined && this.pbmClaimError.length > 0 ? this.pbmClaimError : [];
+    this.pbmClaimError = this.pbmClaimError !== null && this.pbmClaimError !== undefined && this.pbmClaimError.length > 0
+      ? this.pbmClaimError
+      : [];
   }
 
 }

@@ -38,7 +38,7 @@ export class DbMappingService {
     const requestURL = `/providers/${providerId}/payer-mapping`;
 
     const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
-    const requestWithBody = request.clone({ body: body });
+    const requestWithBody = request.clone({ body });
     return this.http.request(requestWithBody);
   }
   setProviderMapping(body, providerId) {
@@ -54,6 +54,20 @@ export class DbMappingService {
   deleteProviderMapping(providedId) {
     const requestURL: string = `/providers/` + providedId + `/provider-mapping`;
     const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  getNetAmountAccuracy(providedId) {
+    const requestURL: string = `/providers/` + providedId + `/config/amount`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  setNetAmountAccuracy(providedId, body) {
+    const requestURL = `/providers/${providedId}/config/amount`;
+    const formdata: FormData = new FormData();
+    formdata.append('netValue', body);
+    const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, formdata, {
+      responseType: 'text'
+    });
     return this.http.request(request);
   }
 }

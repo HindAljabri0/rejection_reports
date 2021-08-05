@@ -99,13 +99,14 @@ export class SubmittedInvoicesComponent implements OnInit {
       return;
     }
 
-    this.downloadService.startDownload(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to, this.payerId)).subscribe(status => {
-      if (status == DownloadStatus.ERROR) {
-        this.detailTopActionIcon = 'ic-download.svg';
-      } else {
-        this.detailTopActionIcon = 'ic-check-circle.svg';
-      }
-    });
+    this.downloadService.startDownload(this.reportService.downloadSubmittedInvoiceSummaryAsCSV(this.providerId, this.from, this.to,
+      this.payerId)).subscribe(status => {
+        if (status == DownloadStatus.ERROR) {
+          this.detailTopActionIcon = 'ic-download.svg';
+        } else {
+          this.detailTopActionIcon = 'ic-check-circle.svg';
+        }
+      });
   }
 
   paginatorAction(event) {

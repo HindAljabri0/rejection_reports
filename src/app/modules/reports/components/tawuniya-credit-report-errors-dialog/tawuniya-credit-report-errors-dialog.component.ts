@@ -15,7 +15,11 @@ import { TwaniyaErrorDescription } from 'src/app/claim-module-components/models/
 export class TawuniyaCreditReportErrorsDialogComponent implements OnInit {
   errorDetails: TwaniyaErrorDescription = new TwaniyaErrorDescription();
 
-  constructor(private dialogRef: MatDialogRef<TawuniyaCreditReportErrorsDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: CreditReportUploadModel, private _creditReportService: CreditReportService, private _common: SharedServices) {
+  constructor(
+    private dialogRef: MatDialogRef<TawuniyaCreditReportErrorsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: CreditReportUploadModel,
+    private _creditReportService: CreditReportService,
+    private _common: SharedServices) {
     this.errorDetails.pageNo = 0;
     this.errorDetails.pageSize = 10;
     this.errorDetails.totalPages = 0;
@@ -26,7 +30,12 @@ export class TawuniyaCreditReportErrorsDialogComponent implements OnInit {
   }
   getErrorDescriptionData() {
     this._common.loadingChanged.next(true);
-    this._creditReportService.showsTwaniyaReportsError(this._common.providerId, this.data.batchId, this.errorDetails.pageNo, this.errorDetails.pageSize).subscribe((res: any) => {
+    this._creditReportService.showsTwaniyaReportsError(
+      this._common.providerId,
+      this.data.batchId,
+      this.errorDetails.pageNo,
+      this.errorDetails.pageSize
+    ).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.errorDetails.data = res.body.content;
         if (res.body.content.length == 0) {

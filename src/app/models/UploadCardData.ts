@@ -13,5 +13,7 @@ export class UploadCardData {
     rejected_by_payer: number;
     invalid: number;
     downloadable: number;
+    submitted_outside_waseel: number;
+    isManualUpload?: boolean = false;
 
 }
