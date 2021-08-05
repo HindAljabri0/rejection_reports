@@ -12,7 +12,11 @@ export class FileUploadDialogComponent implements OnInit {
   currentFileUpload: File;
   error = '';
   sizeInMB: string;
-  constructor(private dialogRef: MatDialogRef<FileUploadDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: File, public common: SharedServices) { }
+  constructor(
+    private dialogRef: MatDialogRef<FileUploadDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: File,
+    public common: SharedServices
+  ) { }
 
   ngOnInit() {
     this.currentFileUpload = this.data;

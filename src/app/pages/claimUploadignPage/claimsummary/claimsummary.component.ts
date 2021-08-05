@@ -101,6 +101,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
     },
     nav: true
   };
+  isFirstTimeLoad: boolean;
 
   constructor(
     public location: Location,
@@ -130,15 +131,26 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
               this.cardCount = (uploadService.summary.noOfNotUploadedClaims != 0) ? this.cardCount + 1 : this.cardCount;
               this.cardCount = (uploadService.summary.noOfDownloadableClaims != 0) ? this.cardCount + 1 : this.cardCount;
             }
+            // if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
+            // this.location.go('/summary?id=' + this.summary.uploadSummaryID);
+            this.getResults();
+            // } else if (this.location.path().includes('summary')) {
+            // this.router.navigate(['/upload']);
+            // this.summary.uploadSummaryID = parseInt(value.id);
+            // this.getResults();
+            // }
           }, eventError => {
             this.commen.loadingChanged.next(false);
           });
-        } else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
-          this.location.go('/summary?id=' + this.summary.uploadSummaryID);
-          this.getResults();
-        } else if (this.location.path().includes('summary')) {
-          this.router.navigate(['/upload']);
         }
+        // else if (this.location.path().includes('summary')) {
+        //   this.router.navigate(['/upload']);
+        // }
+        // else if (this.summary.uploadSummaryID != null && this.location.path().includes('summary')) {
+        //   this.location.go('/summary?id=' + this.summary.uploadSummaryID);
+        //   this.getResults();
+        // }
+
       });
     });
 
@@ -202,7 +214,12 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.summaryObservable = this.uploadService.summaryChange.subscribe(value => {
-      this.router.navigate(['/summary']);
+      if (!this.router.url.includes('id')) {
+        // this.summary = value;
+        this.location.go('/summary?id=' + value.uploadSummaryID);
+        this.getResults();
+      }
+      // this.router.navigate(['/summary']);
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null && value) {
@@ -233,7 +250,7 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   }
 
   getUploadedClaimsDetails(status?: string, page?: number, pageSize?: number) {
-    if (this.commen.loading) { return; }
+    // if (this.commen.loading) { return; }
     this.commen.loadingChanged.next(true);
     if (this.paginatedResult != null) {
       this.paginatedResult.content = [];
@@ -300,7 +317,8 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
   // deleteClaimByUploadid(uploadSummaryID: number, refNumber: string) {
   //   this.dialogService.openMessageDialog(
   //     new MessageDialogData('Delete Upload?',
-  //       `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it? This cannot be undone.`,
+  //       `This will delete all related claims for the upload with reference: ${refNumber}. Are you sure you want to delete it?
+  // This cannot be undone.`,
   //       false,
   //       true))
   //     .subscribe(result => {
@@ -348,8 +366,9 @@ export class ClaimsummaryComponent implements OnInit, OnDestroy {
           });
         }
       }, err => {
-        if (err.status)
+        if (err.status) {
           this.authService.logout();
+        }
       }), eventError => {
         this.commen.loadingChanged.next(false);
       };

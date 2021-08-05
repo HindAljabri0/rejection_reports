@@ -7,7 +7,8 @@
             <!--  -->
             <label class="control-label">Provider</label>
             <input [readonly]="isLoading" type="text" class="form-control" [matAutocomplete]="auto"
-                [formControl]="providerController" (input)="updateFilter()" placeholder="Select provider">
+                [formControl]="providerController" (input)="updateFilter()" (keyup.enter)="selectProvider()"
+                placeholder="Select provider">
 
             <mat-autocomplete autoActiveFirstOption #auto>
                 <mat-option *ngFor="let provider of filteredProviders"
@@ -40,7 +41,7 @@
                         <td>{{item.modeOfPayment}}</td>
                         <td>{{item.numberOfDays}}</td>
                         <td>
-                            <a title="View" class="primary-link" (click)="viewAttachment(item)">View</a>
+                            <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,item)">View</a>
                         </td>
                         <td class="actions">
                             <button type="button" mat-icon-button class="text-primary"
@@ -79,9 +80,9 @@
             </button>
         </div>
     </div> -->
-    <!--  -->
+    <!--  || -->
     <button mat-fab color="primary" class="page-fab" (click)="openAddContractDialog()"
-        [disabled]="isLoading && providerLoader">
+        [disabled]="(isLoading && providerLoader) || selectedProvider==='' || selectedProvider===undefined || selectedProvider===null">
         <mat-icon>add</mat-icon>
     </button>
 </div>

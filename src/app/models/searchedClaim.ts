@@ -22,8 +22,10 @@ export class SearchedClaim extends Paginateable {
   eligibilitycheck: string;
   numOfAttachments: number;
   numOfPriceListErrors: number;
-  eligibilityStatusDesc: String;
+  eligibilityStatusDesc: string;
   batchNumber: number;
+  statusApproval:string;
+  descApproval:string;
   constructor(body: {}) {
     super(body);
     if (body != null) {
@@ -49,6 +51,8 @@ export class SearchedClaim extends Paginateable {
       this.numOfPriceListErrors = body['numOfPriceListErrors'];
       this.eligibilityStatusDesc = body['eligibilityStatusDesc'];
       this.batchNumber = body['batchNumber'];
+      this.statusApproval=body['statusApproval'];
+      this.descApproval=body['descApproval'];
     }
   }
 }

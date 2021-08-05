@@ -17,22 +17,22 @@ export class DownloadService {
   private _downloads: DownloadRequest[] = [];
   downloads: Subject<DownloadRequest[]> = new Subject();
 
-  constructor(private overlay: Overlay,
+  constructor(
+    private overlay: Overlay,
     private _injector: Injector) {
     this.downloads.subscribe(downloads => this._downloads = downloads);
   }
 
   startDownload(request: Observable<HttpEvent<unknown>>) {
-    let downloadRequest = new DownloadRequest();
+    const downloadRequest = new DownloadRequest();
     this.downloads.next([...this._downloads, downloadRequest]);
     downloadRequest.status$.next(DownloadStatus.INIT);
     request.subscribe(event => {
       if (event instanceof HttpHeaderResponse) {
-        downloadRequest.filename$.next(this.getFileName(event.headers.get("Content-Disposition")));
-        downloadRequest.contentType$.next(event.headers.get("Content-Type"));
+        downloadRequest.filename$.next(this.getFileName(event.headers.get('Content-Disposition')));
+        downloadRequest.contentType$.next(event.headers.get('Content-Type'));
         downloadRequest.status$.next(DownloadStatus.DOWNLOADING);
-      }
-      else if (event.type == HttpEventType.DownloadProgress) {
+      } else if (event.type == HttpEventType.DownloadProgress) {
         downloadRequest.downloadedSize$.next(event.loaded);
         downloadRequest.totalSize$.next(event.total);
         downloadRequest.status$.next(DownloadStatus.DOWNLOADING);
@@ -68,11 +68,11 @@ export class DownloadService {
         }
       }
     }, errorEvent => {
-      downloadRequest.errorMessage$.next("Could not reach the server at the moment please try again later.");
+      downloadRequest.errorMessage$.next('Could not reach the server at the moment please try again later.');
       downloadRequest.status$.next(DownloadStatus.ERROR);
       if (errorEvent instanceof HttpErrorResponse) {
         if (errorEvent.status == 404) {
-          downloadRequest.errorMessage$.next("Could not find data to download.");
+          downloadRequest.errorMessage$.next('Could not find data to download.');
         } else if (errorEvent.status < 500) {
           downloadRequest.errorMessage$.next(errorEvent.error);
         }
@@ -92,15 +92,15 @@ export class DownloadService {
   }
 
   isCSV(contentType: string) {
-    return contentType.startsWith("text/csv");
+    return contentType.startsWith('text/csv');
   }
 
   isExcel(contentType: string) {
-    return contentType == "application/ms-excel";
+    return contentType == 'application/ms-excel';
   }
 
   isZip(contentType: string) {
-    return contentType == "application/zip";
+    return contentType == 'application/zip';
   }
 
 }

@@ -47,21 +47,26 @@ export class SwitchProviderComponentComponent implements OnInit {
     return this.sharedServices.loading;
   }
 
-  selectProvider(providerId: string) {
-    this.selectedProvider = providerId;
-
+  selectProvider(providerId: string = null) {
+    if (providerId !== null) {
+      this.selectedProvider = providerId;
+    } else {
+      const providerId = this.providerController.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
   }
 
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
+      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase()
+        .includes(this.providerController.value.toLowerCase())
     );
   }
 
   switch() {
     if (!this.isLoading) {
       this.sharedServices.loadingChanged.next(true);
-      this.authService.getSwitchUserToken(this.selectedProvider, "o").subscribe(event => {
+      this.authService.getSwitchUserToken(this.selectedProvider, 'o').subscribe(event => {
         if (event instanceof HttpResponse) {
           this.authService.isUserNameUpdated.subscribe(updated => {
             if (updated) {

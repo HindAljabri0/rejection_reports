@@ -1,8 +1,8 @@
 export class TwaniyaErrorDescription {
-    data: TwaniyaError[]
+    data: TwaniyaError[];
     pageNo: number;
     pageSize: number;
-    totalPages: number
+    totalPages: number;
 }
 
 export class TwaniyaError {

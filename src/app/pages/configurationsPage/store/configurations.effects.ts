@@ -32,7 +32,7 @@ export class ConfigurationsEffects {
         switchMap(() => this.settingsService.getProviderMappingsWithCategories(this.sharedServices.providerId).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => storeProviderMappingValues({ values: this.getCategorizedCodeValuesFromResponse(response) })),
-            catchError(error => of({ type: setCodeValueManagementError.type, error: error }))
+            catchError(error => of({ type: setCodeValueManagementError.type, error }))
         ))
     ));
 
@@ -55,7 +55,7 @@ export class ConfigurationsEffects {
             })
         )),
         map(requests => requests.subscribe(responses => {
-            this.store.dispatch(storeSaveChangesResponsesOfCodeValueManagement({ responses: responses }));
+            this.store.dispatch(storeSaveChangesResponsesOfCodeValueManagement({ responses }));
             this.store.dispatch(loadProviderMappingValues());
         })),
 

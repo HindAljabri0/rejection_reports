@@ -7,7 +7,7 @@
         <mat-spinner diameter="48"></mat-spinner>
     </div>
     <!-- <mat-accordion [displayMode]="'flat'"  *ngIf="this.creditReportDetails != undefined && !isLoading"> -->
-    <ng-container *ngIf="this.creditReportDetails != undefined && !isLoading">
+    <div class="primary-accordion" *ngIf="this.creditReportDetails != undefined && !isLoading">
         <mat-expansion-panel expanded="true" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -235,7 +235,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-    </ng-container>
+    </div>
     <app-empty-state *ngIf="this.creditReportDetails == undefined && !isLoading" class="claim-list-empty-state" message='No {{title}} services found!'>
     </app-empty-state>
 </div>

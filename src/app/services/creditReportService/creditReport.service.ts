@@ -19,10 +19,16 @@ export class CreditReportService {
         { label: 'A. Appropriateness of Care', type: SummaryType.approCare },
         { label: 'B. Technical / Contractual', type: SummaryType.techContr },
         { label: 'B.1 Consultation within the free follow-up period ', type: SummaryType.followUpPeriod },
-        { label: 'B.2 Charges / service included, bundled or part of billed procedure / consultation or management.', type: SummaryType.management },
+        {
+            label: 'B.2 Charges / service included, bundled or part of billed procedure / consultation or management.',
+            type: SummaryType.management
+        },
         { label: 'B.3 Duplicate / Repeated Billing / Finally Settled ', type: SummaryType.finSettled },
         { label: '"C- Pricelist Shortfall / Billed"<br>"Above Contractual / Agreed Prices"', type: SummaryType.priceShortFall },
-        { label: 'C.1 Not covered by the effective insurance policy (condition /service) / within the waiting period', type: SummaryType.waitingPeriod },
+        {
+            label: 'C.1 Not covered by the effective insurance policy (condition /service) / within the waiting period',
+            type: SummaryType.waitingPeriod
+        },
         { label: 'C.2 Out of validity of effective insurance policy. ', type: SummaryType.insPolicy },
         { label: 'C.3 Age / gender not matching with the type of service provided.', type: SummaryType.serProvided },
         { label: 'D. Policy Compliance', type: SummaryType.poliCompi },
@@ -41,7 +47,7 @@ export class CreditReportService {
         { label: 'Pending', type: SummaryType.pending },
         { label: 'Grand Total Rejections amounts', type: SummaryType.grTotRejAm },
         { label: 'Approved to pay', type: SummaryType.approPay },
-    ]
+    ];
     summary: UploadSummary;
     summaryChange: Subject<UploadSummary> = new Subject<UploadSummary>();
     uploading = false;
@@ -84,20 +90,25 @@ export class CreditReportService {
     }
 
     listBupaCreditReports(providerId: string, data: any) {
-        if (data.receivedFromDate != null)
-            data.receivedFromDate = data.receivedFromDate.format("YYYY-MM-DD");
+        if (data.receivedFromDate != null) {
+            data.receivedFromDate = data.receivedFromDate.format('YYYY-MM-DD');
+        }
 
-        if (data.receivedToDate != null)
-            data.receivedToDate = data.receivedToDate.format("YYYY-MM-DD");
+        if (data.receivedToDate != null) {
+            data.receivedToDate = data.receivedToDate.format('YYYY-MM-DD');
+        }
 
         const requestURL = `/providers/${providerId}/report/rejected/list`;
         const request = new HttpRequest('POST', environment.creditReportService + requestURL, data);
         return this.http.request(request);
     }
 
-    listTawuniyaCreditReports(providerId: string, status: string, fromDate: string, toDate: string, batchId: string, page: number, pageSize: number) {
+    listTawuniyaCreditReports(
+        providerId: string, status: string, fromDate: string, toDate: string, batchId: string, page: number,
+        pageSize: number
+    ) {
         let requestURL = `/providers/${providerId}?page=${page}&size=${pageSize}`;
-        if (status != null && status != "All") {
+        if (status != null && status != 'All') {
             requestURL += `&status=${status}`;
         }
         if (fromDate != null) {
@@ -122,7 +133,9 @@ export class CreditReportService {
         return this.http.request(request);
     }
 
-    getTawuniyaCreditReportServices(providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services', page: number, size: number) {
+    getTawuniyaCreditReportServices(
+        providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services',
+        page: number, size: number) {
         const requestURL = `/providers/${providerId}/batches/${batchId}/${serviceType}?page=${page}&size=${size}`;
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
@@ -139,27 +152,32 @@ export class CreditReportService {
         const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL, null);
         return this.http.request(request);
     }
-    showsTwaniyaReportsError(providerId: string, batchId: string, page: Number, pageSize: number) {
+    showsTwaniyaReportsError(providerId: string, batchId: string, page: number, pageSize: number) {
         const requestURL = `/providers/${providerId}/batches/${batchId}/errors?page=${page}&size=${pageSize}`;
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL, null);
         return this.http.request(request);
     }
 
-    sendTwaniyaReportsFeedback(providerId: string, batchId: string, serialNo: string, serviceType: 'deducted' | 'rejected', agree: boolean, comment: string, attachment: File) {
+    sendTwaniyaReportsFeedback(
+        providerId: string, batchId: string, serialNo: string, serviceType: 'deducted' | 'rejected',
+        agree: boolean, comment: string, attachment: File) {
         const requestURL = `/providers/${providerId}/batches/${batchId}/${serialNo}/feedback`;
-        let formData: FormData = new FormData();
+        const formData: FormData = new FormData();
         formData.append('rejectionType', serviceType);
         formData.append('agree', `${agree}`);
         formData.append('comment', comment);
 
-        if (attachment !== undefined && attachment !== null && attachment.name !== undefined && attachment.name !== null)
+        if (attachment !== undefined && attachment !== null && attachment.name !== undefined && attachment.name !== null) {
             formData.append('file', attachment, attachment.name);
+        }
 
         const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL, formData);
         return this.http.request(request);
     }
 
-    sendTwaniyaReportsFeedbacks(providerId: string, batchId: string, serviceType: 'deducted' | 'rejected', body: { agree: true, serialNumbers: string[] } | { comment: string, agree: false, serialNumbers: string[] }) {
+    sendTwaniyaReportsFeedbacks(
+        providerId: string, batchId: string, serviceType: 'deducted' | 'rejected',
+        body: { agree: true, serialNumbers: string[] } | { comment: string, agree: false, serialNumbers: string[] }) {
         const requestURL = `/providers/${providerId}/batches/${batchId}/feedback/${serviceType}`;
         const request = new HttpRequest('POST', environment.tawuniyaCreditReportService + requestURL, body);
         return this.http.request(request);

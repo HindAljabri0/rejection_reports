@@ -1,41 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  loadLOVs,
-  cancelClaim,
-  startValidatingClaim,
-  setLoading,
-  saveInvoices_Services,
-  openCreateByApprovalDialog,
-  retrieveClaim,
-  toEditMode,
-  cancelEdit,
-  saveLabResults,
-  goToClaim,
-  startCreatingNewClaim,
-  getUploadId,
-  saveClaimChanges
-} from '../store/claim.actions';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { SharedServices } from 'src/app/services/shared.services';
+import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
 import { Claim } from '../models/claim.model';
-
+import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import {
-  getClaim,
+  cancelClaim,
+
+
+
+
+
+
+  cancelEdit,
+
+  goToClaim, loadLOVs,
+
+
+
+
+  openCreateByApprovalDialog,
+  retrieveClaim, saveInvoices_Services,
+
+
+
+
+  saveLabResults, setLoading,
+
+
+
+
+
+
+
+  startCreatingNewClaim, startValidatingClaim,
+
+
+
+
+  toEditMode
+} from '../store/claim.actions';
+import {
+  ClaimPageMode,
+  ClaimPageType, getClaim,
   getClaimModuleError,
   getClaimModuleIsLoading,
   getDepartments,
   getPageMode,
   getPageType,
-  ClaimPageMode,
-  ClaimPageType,
-  getRetrievedClaimProps,
-  getPaginationControl,
+
+
+
+  getPaginationControl, getRetrievedClaimProps
 } from '../store/claim.reducer';
-import { SharedServices } from 'src/app/services/shared.services';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { changePageTitle, hideHeaderAndSideMenu } from 'src/app/store/mainStore.actions';
-import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
-import { Location } from '@angular/common';
+
 
 
 @Component({
@@ -43,10 +64,7 @@ import { Location } from '@angular/common';
   templateUrl: './main-claim-page.component.html',
   styles: []
 })
-export class MainClaimPageComponent implements OnInit {
-
-
-
+export class MainClaimPageComponent implements OnInit, OnDestroy {
   claim: Claim;
   claimProps: RetrievedClaimProps;
   errors: any;
@@ -74,6 +92,7 @@ export class MainClaimPageComponent implements OnInit {
     private sharedService: SharedServices,
     private dialogService: DialogService,
     private location: Location) {
+    // this.pageMode = 'CREATE';
     store.select(getPageMode).subscribe(claimPageMode => {
       this.pageMode = claimPageMode;
       this.editPageTitle();
@@ -125,8 +144,9 @@ export class MainClaimPageComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.store.select(getClaimModuleIsLoading).subscribe(loading => {
-      this.isLoading = loading;
+      this.isLoading = false;
       this.sharedService.loadingChanged.next(loading);
     });
 
@@ -167,15 +187,16 @@ export class MainClaimPageComponent implements OnInit {
       `${this.sharedService.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
     this.claimType = type;
     const payers = this.sharedService.getPayersList();
-    if (this.claimType == this.dentalDepartmentCode || this.claimType == this.opticalDepartmentCode || this.claimType == this.pharmacyDepartmentCode) {
+    if (this.claimType == this.dentalDepartmentCode || this.claimType == this.opticalDepartmentCode ||
+      this.claimType == this.pharmacyDepartmentCode) {
       this.claimName = type == this.dentalDepartmentCode ? 'Dental' : type == this.opticalDepartmentCode ? 'Optical' : 'Pharmacy';
-      this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber: providerClaimNumber, payers: payers }));
+      this.store.dispatch(openCreateByApprovalDialog({ claimType: type, providerClaimNumber, payers }));
     } else {
       this.claimName = type === 'INPATIENT' ? 'Inpatient' : 'Outpatient';
       this.store.dispatch(startCreatingNewClaim({
         data: {
           claimType: this.claimType,
-          providerClaimNumber: providerClaimNumber
+          providerClaimNumber
         }
       }));
 
@@ -202,7 +223,7 @@ export class MainClaimPageComponent implements OnInit {
     if (status != null) {
       return this.sharedService.getCardAccentColor(status);
     }
-     return 'all-claim';
+    return 'all-claim';
   }
 
   edit() {
@@ -222,6 +243,7 @@ export class MainClaimPageComponent implements OnInit {
   }
 
   close() {
+    this.store.dispatch(cancelClaim());
     window.close();
   }
 
@@ -269,7 +291,7 @@ export class MainClaimPageComponent implements OnInit {
 
 
   ngOnDestroy(): void {
-    this.cancel();
+    // this.cancel();
   }
 
 

@@ -65,6 +65,11 @@ import { UploadsPageComponent } from '../pages/uploads-page/uploads-page.compone
             path: 'collection-management',
             loadChildren: () => import('./collection-management/collection-management.module').then(m => m.CollectionManagementModule),
             canActivate: [RouteCanActiveService]
+          },
+          {
+            path: 'nphies',
+            loadChildren: () => import('./nphies/nphies.module').then(m => m.NphiesModule),
+            canActivate: [RouteCanActiveService]
           }
         ]
       }

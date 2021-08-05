@@ -1,4 +1,4 @@
-<app-detailscard title="Providers Configration"
+<app-detailscard title="Providers Configuration"
     [bottomLeftActionText]=" (isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '' : 'Reset'"
     [bottomRightActionText]=" (isLoading || componentLoading.serviceCode || componentLoading.portalUser)? '' : 'Save'"
     (bottomLeftAction)=" reset()" (bottomRightAction)="save()">
@@ -6,7 +6,7 @@
         <mat-form-field style="width: 98%; margin-top: 20px;" appearance="outline">
             <mat-label>Select Provider</mat-label>
             <input matInput [matAutocomplete]="auto" [formControl]="providerController" (input)="updateFilter()"
-                [readonly]="isLoading">
+                [readonly]="isLoading" (keyup.enter)="selectProvider()">
             <button mat-button matSuffix mat-icon-button>
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
@@ -334,12 +334,12 @@
                     </thead>
                     <tr *ngFor="let payer of associatedPayers" style="width: 100%">
                         <td style="widows: 42%">
-                            <p>{{payer.name}}
+                            <p [ngStyle]="{'color': (payer.hasAssociatedDrugList)? 'black':'gray'}">{{payer.name}}
                             </p>
                         </td>
                         <td>
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" color="primary"
+                                        width: 15%" color="primary" [disabled]="!payer.hasAssociatedDrugList"
                                 [(ngModel)]="newSFDAValidationSettings[payer.switchAccountId]">
                             </mat-slide-toggle>
                         </td>
@@ -386,6 +386,41 @@
                 </table>
             </div>
             <div *ngIf="componentLoading.pbmConfiguration" style="width: 100%; padding: 10px;">
+                <mat-spinner style="margin: 0px auto;"></mat-spinner>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded="false">
+            <mat-expansion-panel-header style="background-color: #fbfbfb;">
+                <mat-panel-title style="color: #3060AA;">
+                    Net Amount Accuracy</mat-panel-title>
+                <mat-panel-description *ngIf="errors.netAmountConfigurationSaveError != null">
+                    <span style="color: #ac4040;">{{errors.netAmountConfigurationSaveError}}</span>
+                </mat-panel-description>
+                <mat-panel-description *ngIf="success.netAmountConfigurationSaveSuccess != null">
+                    <span style="color: #40ac60;">{{success.netAmountConfigurationSaveSuccess}}</span>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div
+                *ngIf="(errors.netAmountConfigurationError == null || errors.netAmountConfigurationError == '') && !componentLoading.netAmount">
+                <table style="width: 100%; margin: 10px">
+                    <thead>
+                        <th>Provider</th>
+                        <th style="width:33%;text-align: center">Accuracy Amount</th>
+                    </thead>
+                    <tr>
+                        <td>{{selectedProviderName}}</td>
+                        <td style="text-align: center; width: 33%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>value</mat-label>
+                                <input matInput [formControl]="netAmountController" placeholder="0.5 SR" type="number"
+                                    pattern="^(\d*\.)?\d+$">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div *ngIf="componentLoading.netAmount" style="width: 100%; padding: 10px;">
                 <mat-spinner style="margin: 0px auto;"></mat-spinner>
             </div>
         </mat-expansion-panel>

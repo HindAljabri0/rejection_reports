@@ -12,6 +12,6 @@ export class RetrievedClaimProps {
     paymentReference: string;
     claimDecisionGDPN: GDPN;
     eligibilityCheck: string;
-    payerbatchrefno:String;
+    payerbatchrefno: string;
 
 }

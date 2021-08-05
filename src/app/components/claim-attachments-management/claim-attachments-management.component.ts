@@ -112,23 +112,23 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
       const error = { code: 'SELECT_ATTACHMENT', message: null };
       if (file.size == 0) {
         error.message = `[${file.name}] file is empty`;
-        this.store.dispatch(showErrorMessage({ error: error }));
+        this.store.dispatch(showErrorMessage({ error }));
         continue;
       }
       const mimeType = file.type;
       if (mimeType.match(/image\/*/) == null && !mimeType.includes('pdf')) {
         error.message = `[${file.name}] is not an image or a PDF file`;
-        this.store.dispatch(showErrorMessage({ error: error }));
+        this.store.dispatch(showErrorMessage({ error }));
         continue;
       }
       if (this.attachments.find(attachment => attachment.name == file.name) != undefined) {
         error.message = `[${file.name}] attachment with same file name already exist.`;
-        this.store.dispatch(showErrorMessage({ error: error }));
+        this.store.dispatch(showErrorMessage({ error }));
         continue;
       }
       if (file.size / 1024 / 1024 > 2) {
         error.message = `[${file.name}] file size is higher than 2MB`;
-        this.store.dispatch(showErrorMessage({ error: error }));
+        this.store.dispatch(showErrorMessage({ error }));
         continue;
       }
       this.preview(file);
@@ -155,7 +155,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
     const index = this.claims.findIndex(claim => claim.id == claimId);
     if (index != -1) {
       if (this.claims[index].hasAttachments) {
-        this.store.dispatch(requestClaimAttachments({ claimId: claimId }));
+        this.store.dispatch(requestClaimAttachments({ claimId }));
       }
       if (this.assignedAttachmentsSubscription$ != null) {
         this.assignedAttachmentsSubscription$.unsubscribe();
@@ -232,7 +232,7 @@ export class ClaimAttachmentsManagementComponent implements OnInit, OnDestroy {
   }
 
   changePage(action: SearchPaginationAction) {
-    this.store.dispatch(requestClaimsPage({ action: action }));
+    this.store.dispatch(requestClaimsPage({ action }));
   }
 
   changeAttachmentType(type: string, assigned?: boolean) {

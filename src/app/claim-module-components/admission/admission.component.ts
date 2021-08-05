@@ -44,7 +44,7 @@ export class AdmissionComponent implements OnInit {
         this.toggleEdit(false, mode, true);
       }
     });
-    this.store.select(getAdmissionErrors).subscribe(errors => this.errors =errors);
+    this.store.select(getAdmissionErrors).subscribe(errors => this.errors = errors);
   }
 
   setData(claim: Claim) {

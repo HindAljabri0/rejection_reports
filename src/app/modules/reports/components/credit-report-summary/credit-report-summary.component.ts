@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -15,7 +15,7 @@ import { SharedServices } from 'src/app/services/shared.services';
   templateUrl: './credit-report-summary.component.html',
   styles: []
 })
-export class CreditReportSummaryComponent implements OnInit {
+export class CreditReportSummaryComponent implements OnInit, OnDestroy {
   public chartOneLabels: Label[] = ['Rejection Medical Reasons Breakdown', 'Rejection Medical Reasons Breakdown'];
   public chartOneData: ChartDataSets[] = [
     {
@@ -77,7 +77,12 @@ export class CreditReportSummaryComponent implements OnInit {
   private subscription = new Subscription();
   batchId: string;
   payerId: string;
-  constructor(private store: Store, private creditReportService: CreditReportService, private router: Router, private activatedRoute: ActivatedRoute, public common: SharedServices) { }
+  constructor(
+    private store: Store,
+    private creditReportService: CreditReportService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    public common: SharedServices) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -99,13 +104,14 @@ export class CreditReportSummaryComponent implements OnInit {
     this.subscription.add(this.creditReportService.getCreditReportSummary(providerId, data).subscribe((res: any) => {
       if (res.body !== undefined) {
         this.common.loadingChanged.next(false);
-        if (res.body.data !== null)
+        if (res.body.data !== null) {
           this.summaryData = res.body.data;
+        }
 
       }
     }, err => {
       console.log(err);
-    }))
+    }));
   }
 
   goToFirstPage() {
@@ -134,7 +140,8 @@ export class CreditReportSummaryComponent implements OnInit {
     this.subscription.unsubscribe();
   }
   goToSummaryDetailsPage(summaryType) {
-    // this.router.navigate(['/reports/creditReportSummaryDetails'], { queryParams: { batchId: this.batchId, payerId: this.payerId, summaryType: summaryType } })
+    // this.router.navigate(['/reports/creditReportSummaryDetails'], { queryParams: { batchId: this.batchId, payerId: this.payerId,
+    // summaryType: summaryType } })
   }
 
   get summType() {

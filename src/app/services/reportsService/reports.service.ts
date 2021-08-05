@@ -6,6 +6,8 @@ import { CreditReportQueryModel } from 'src/app/models/creditReportQuery';
 import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
 import { Observable } from 'rxjs';
 import { ClaimStatusSummaryReport } from 'src/app/models/claimStatusSummaryReport';
+import { StatementAccountSummary } from 'src/app/models/statementAccountModel';
+import { PayerStatementModel } from 'src/app/models/payerStatmentModel';
 
 @Injectable({
   providedIn: 'root'
@@ -130,12 +132,12 @@ export class ReportsService {
   }
 
   saveBupaRejectionReport(providerId: string, data: CreditReportQueryModel) {
-    let body = { ...data };
+    const body = { ...data };
     Object.keys(body).some(key => {
       if (body[key].toString().includes('%')) {
-        body[key] = +body[key].replace(/%/g, "");
+        body[key] = +body[key].replace(/%/g, '');
       }
-      if (body[key] === "") {
+      if (body[key] === '') {
         body[key] = 0;
       }
     });
@@ -172,9 +174,49 @@ export class ReportsService {
       }
     }
     // { responseType: 'text', params: searchparams }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'arraybuffer', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
+      { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
+  addPayerSOAData(providerId: any, fileUpload: File, data: any) {
+    const formdata: FormData = new FormData();
+    for (const key in data) {
+      if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'file') {
+        formdata.append(key, data[key]);
+      }
+    }
+    formdata.append('file', fileUpload);
+    const requestURL = `/providers/${providerId}/statement`;
 
+    const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+    return this.http.request(req);
+  }
+  getPayerSOAData(providerId: string, data: StatementAccountSummary): Observable<any> {
+    const requestURL = `/providers/${providerId}/statement/fetch?` +
+      `fromDate=${data.fromDate}&toDate=${data.toDate}&searchCriteria=${data.searchCriteria}&page=${data.page}&size=${data.size}`;
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+  addPayementSOAData(providerId: any, data: any) {
+    const requestURL = `/providers/${providerId}/payment/save`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, data, { headers: headers });
+    return this.http.request(request);
+  }
+  getPaymentStatmentSOA(providerId: string, data: PayerStatementModel): Observable<any> {
+    const requestURL = `/providers/${providerId}/payment`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'totalPages') { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text', params: searchparams });
+    return this.http.request(request);
+  }
 
 }

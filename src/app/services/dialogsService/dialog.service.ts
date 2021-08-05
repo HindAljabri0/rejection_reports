@@ -17,7 +17,9 @@ import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/reject
 import {
   RejectionReportClaimDialogComponent
 } from 'src/app/components/dialogs/rejection-report-claim-dialog/rejection-report-claim-dialog.component';
-import { ConfirmAdminDeleteDialogComponent } from 'src/app/components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
+import {
+  ConfirmAdminDeleteDialogComponent
+} from 'src/app/components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +82,7 @@ export class DialogService {
       width: '50%',
       height: '70%',
       panelClass: 'claimDialog',
-      data: { claim: claim, edit: (edit || false), maxNumberOfAttachment: maxNumberOfAttachment },
+      data: { claim, edit: (edit || false), maxNumberOfAttachment },
     });
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);

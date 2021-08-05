@@ -6,8 +6,6 @@ import { interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { changePageTitle, showSnackBarMessage } from './mainStore.actions';
 
-
-
 @Injectable({ providedIn: 'root' })
 export class MainStoreEffects {
 
@@ -27,7 +25,7 @@ export class MainStoreEffects {
 
     changePageTitle$ = createEffect(() => this.actions$.pipe(
         ofType(changePageTitle),
-        tap(value => this.titleService.setTitle(`${value.title.length >= 13 ? '' : 'Waseel Eclaims - '}${value.title}`))
+        tap(value => this.titleService.setTitle(`${value.title.length >= 13 ? '' : 'Waseel E-Claims - '}${value.title}`))
     ), { dispatch: false });
 
     onShowSnackBarMessage$ = createEffect(() => this.actions$.pipe(

@@ -4,7 +4,7 @@
 <ng-content></ng-content>
 
 <div class="inner-loader-wrapper">
-    <div class="inner-loader" *ngIf="isLoading">
+    <div class="inner-loader" *ngIf="isLoading || (showEligibilityButton && isWaitingForEligibility)">
         <mat-spinner diameter="48"></mat-spinner>
     </div>
 
@@ -99,34 +99,52 @@
             </button>
             <div class="right-block">
                 <div class="actions">
-                    <!-- <button matRipple type="button" (click)="reValidateClaims()" *ngIf="isRevalidate"
-                        class="action-btn">
-                        <img src="./assets/ic-refresh.svg" alt="Refresh" />
-                    </button> -->
+                    <mat-menu #downloadMenu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="downloadWaseelFormat()">
+                            <span>Download in Waseel Format</span>
+                        </button>
+                        <button mat-menu-item (click)="downloadPayerFormat()">
+                            <span>Download in Payer Format</span>
+                        </button>
+                    </mat-menu>
+                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="checkAllClaims()"
+                            *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
+                            <span>Verify All Ready Claims' Eligibility</span>
+                        </button>
+                        <button mat-menu-item (click)="checkSelectedClaims()"
+                            *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
+                            <span>Verify All Selected Claims' Eligibility</span>
+                        </button>
+                        <button mat-menu-item (click)="checkClaimsApproval()"
+                            *ngIf="showApprovalButton && selectedClaims.length == 0 && !isWaitingForApproval">
+                            <span>Verify All Ready Claims' Approval</span>
+                        </button>
+                        <button mat-menu-item (click)="checkClaimsApproval()"
+                            *ngIf="showApprovalButton && selectedClaims.length > 0 && !isWaitingForApproval">
+                            <span>Verify All Selected Claims' Approval</span>
+                        </button>
+                    </mat-menu>
                     <button *ngIf="appliedFilters.length>0" (click)="clearFilters('',true)" class="primary-text-btn"
                         mat-flat-button type="button">Clear
                         Filter</button>
-                    <button mat-flat-button class="primary-text-btn" *ngIf="isRevalidate"
-                        (click)="reValidateClaims()">Re-Validate
-                        {{selectedClaims.length==0?" All":"Selection"}}</button>
-                    <button matRipple (click)="download()" type="button" class="action-btn"
-                        *ngIf="searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
+                    <button mat-flat-button type="button" color="primary" *ngIf="isRevalidate"
+                        (click)="reValidateClaims()">
+                        Re-Validate {{selectedClaims.length==0?" All":"Selection"}}
+                    </button>
+                    <button matRipple (click)="downloadWaseelFormat()" type="button" class="action-btn"
+                        *ngIf="(searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null) && !(summaries[selectedCardKey].statuses.length == 1 && (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase())))">
                         <img src="./assets/{{detailTopActionIcon}}" />
                     </button>
-                    <!-- <mat-menu #moreMenu="matMenu" xPosition="before">
-                        <button mat-menu-item>
-                            <span>Menu 1</span>
-                        </button>
-                        <button mat-menu-item>
-                            <span>Menu 2</span>
-                        </button>
-                        <button mat-menu-item>
-                            <span>Menu 3</span>
-                        </button>
-                    </mat-menu>
-                    <button matRipple type="button" class="action-btn" [matMenuTriggerFor]="moreMenu">
+                    <button matRipple [matMenuTriggerFor]="downloadMenu" type="button" class="action-btn"
+                        *ngIf="(searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null) && (summaries[selectedCardKey].statuses.length == 1 && (summaries[selectedCardKey].statuses.includes('Downloadable'.toLowerCase())))">
+                        <img src="./assets/{{detailTopActionIcon}}" />
+                    </button>
+                    <button matRipple type="button" class="action-btn"
+                        *ngIf="(showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility) || (showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility) || (showApprovalButton && selectedClaims.length == 0 && !isWaitingForApproval) || (showApprovalButton && selectedClaims.length > 0 && !isWaitingForApproval)"
+                        [matMenuTriggerFor]="moreMenu">
                         <img src="./assets/ic-more.svg" alt="More" />
-                    </button> -->
+                    </button>
                 </div>
             </div>
         </div>
@@ -339,34 +357,76 @@
                                     </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Net Amount</th>
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMNET)">
+                                            <span>Net Amount</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="claimNetFilter" (click)="checkReloadedFilter()">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #claimNetFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Net Amount</label>
+                                                            <input class="form-control" placeholder="Claim Net Amount"
+                                                                type="number" [(ngModel)]="claimList.netAmount"
+                                                                #claimNet="ngModel" name="claimNet">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('netAmount')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.CLAIMNET)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Net Vat</th>
                                     <th
                                         class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        Batch No.</th>
+                                        <div class="column-header-action"
+                                            [ngClass]="checkAppliedFilter(claimSearchSelection.BATCHNUM)">
+                                            <span>Batch No.</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="batchNumFilter" (click)="checkReloadedFilter()">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #batchNumFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Batch Number</label>
+                                                            <input [(ngModel)]="claimList.batchNo" #batchNo="ngModel"
+                                                                name="batchNo" class="form-control"
+                                                                placeholder="Batch Number">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button
+                                                            (click)="clearFilters('batchNo')">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="searchClaimBased(claimSearchSelection.BATCHNUM)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         Status</th>
                                     <th class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}"
                                         *ngIf="isPBMValidationVisible">
                                         PBM Status</th>
-
+                                    <th class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}"
+                                        matTooltip="Verification Status" *ngIf="isReadyForSubmission()">
+                                        V.S.</th>
                                     <th
                                         class="text-right text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                                        <button mat-icon-button (click)="checkAllClaims()"
-                                            matTooltip="Verify All Ready Claims' Eligibility"
-                                            *ngIf="showEligibilityButton && selectedClaims.length == 0 && !isWaitingForEligibility">
-                                            <mat-icon>check_circle_outline</mat-icon>
-                                        </button>
-                                        <button mat-icon-button (click)="checkSelectedClaims()"
-                                            matTooltip="Verify All Selected Claims' Eligibility"
-                                            *ngIf="showEligibilityButton && selectedClaims.length > 0 && !isWaitingForEligibility">
-                                            <mat-icon>check_circle_outline</mat-icon>
-                                        </button>
-                                        <mat-spinner *ngIf="showEligibilityButton && isWaitingForEligibility"
-                                            diameter="20"></mat-spinner>
                                     </th>
                                 </tr>
 
@@ -432,6 +492,32 @@
                                                 class="material-icons-outlined size-21 text-danger"
                                                 matTooltip="Rejected">dangerous</mat-icon>
                                         </td>
+                                        <!--  -->
+                                        <td class="actions text-center" *ngIf="isReadyForSubmission()">
+                                            <button class="action-letter-btn" (click)="checkClaim(claim.claimId)"
+                                                matTooltip="Verify Eligibility"
+                                                *ngIf="claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">E</button>
+                                            <span class="action-letter-btn theme-success" matTooltip="Eligible"
+                                                *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">E</span>
+                                            <span class="action-letter-btn theme-danger"
+                                                matTooltip="{{claim.eligibilitycheck}} {{claim.eligibilityStatusDesc!==null && claim.eligibilityStatusDesc!==undefined ? ': '+ claim.eligibilityStatusDesc:'' }}"
+                                                *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">E</span>
+                                            <mat-spinner diameter="20" *ngIf="claimIsWaitingEligibility(claim.claimId)">
+                                            </mat-spinner>
+                                            <button class="action-letter-btn"
+                                                (click)="checkClaimForApproval(claim.claimId)"
+                                                matTooltip="Verify Approval"
+                                                *ngIf="claim.status == 'Accepted' && claim.statusApproval == null && !claimIsWaitingApproval(claim.claimId)">A</button>
+                                            <span class="action-letter-btn theme-success"
+                                                matTooltip="Approval number is verified"
+                                                *ngIf="isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
+                                            <span class="action-letter-btn theme-danger"
+                                                matTooltip="{{claim.statusApproval}} {{claim.descApproval!==null && claim.descApproval!==undefined ? ': '+ claim.descApproval:'' }}"
+                                                *ngIf="claim.statusApproval != null && !isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
+                                            <mat-spinner diameter="20" *ngIf="claimIsWaitingApproval(claim.claimId)">
+                                            </mat-spinner>
+
+                                        </td>
                                         <td class="actions">
                                             <button [disabled]="!(claim.numOfPriceListErrors > 0)" class="text-orange"
                                                 *ngIf="claim.numOfPriceListErrors > 0" mat-icon-button
@@ -458,24 +544,6 @@
                                                 matTooltip="Delete" class="text-primary">
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
-                                            <button class="text-light-grey" mat-icon-button
-                                                (click)="checkClaim(claim.claimId)" matTooltip="Verify Eligibility"
-                                                *ngIf="claim.status == 'Downloadable' && claim.status == 'Accepted' && claim.eligibilitycheck == null && !claimIsWaitingEligibility(claim.claimId)">
-                                                <mat-icon>check_circle_outline</mat-icon>
-                                            </button>
-                                            <button class="text-parrot" mat-icon-button matTooltip="Eligible"
-                                                *ngIf="isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                                                <mat-icon>check_circle_outline</mat-icon>
-                                            </button>
-                                            <button class="text-light-pink" mat-icon-button
-                                                matTooltip="{{claim.eligibilitycheck}} {{claim.eligibilityStatusDesc!==null && claim.eligibilityStatusDesc!==undefined ? ': '+ claim.eligibilityStatusDesc:'' }}"
-                                                *ngIf="claim.eligibilitycheck != null && !isEligibleState(claim.eligibilitycheck) && !claimIsWaitingEligibility(claim.claimId)">
-                                                <mat-icon>error_outline</mat-icon>
-                                            </button>
-                                            <div class="mat-spinner-wrapper"
-                                                *ngIf="claimIsWaitingEligibility(claim.claimId)">
-                                                <mat-spinner diameter="20"></mat-spinner>
-                                            </div>
                                         </td>
                                     </tr>
                                 </ng-container>

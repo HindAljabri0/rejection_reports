@@ -18,7 +18,9 @@ export class RevenuReportService {
     let searchparams = new HttpParams();
     if (data) {
       for (const key in data) {
-        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'subcategory') { searchparams = searchparams.set(key, data[key]); }
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'subcategory') {
+          searchparams = searchparams.set(key, data[key]);
+        }
       }
     }
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
@@ -36,7 +38,9 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
-  generateRevenuReportBreakdown(providerId: string, payerId: string, fromDate: string, toDate: string, category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers'): Observable<any> {
+  generateRevenuReportBreakdown(
+    providerId: string, payerId: string, fromDate: string, toDate: string,
+    category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers'): Observable<any> {
     const requestURL = `/providers/${providerId}/reports/revenue-breakdown/payers/${payerId}?fromDate=${fromDate}&toDate=${toDate}&category=${category}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
@@ -53,4 +57,19 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
+  generateRejectionTrackingReport(providerId: string, data: RevenuTrackingReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejection-tracking/${data.subcategory}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'subcategory') {
+          searchparams = searchparams.set(key, data[key]);
+        }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
+    return this.http.request(request);
+  }
+
 }

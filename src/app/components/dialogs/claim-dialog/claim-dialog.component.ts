@@ -472,13 +472,13 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
   preview(file: File, index: number) {
     const mimeType = file.type;
     if (mimeType.includes('pdf')) {
-      return this.newAttachmentsPreview.push({ src: 'pdf', name: file.name, index: index });
+      return this.newAttachmentsPreview.push({ src: 'pdf', name: file.name, index });
     }
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (_event) => {
-      this.newAttachmentsPreview.push({ src: reader.result, name: file.name, index: index });
+      this.newAttachmentsPreview.push({ src: reader.result, name: file.name, index });
     };
   }
 
@@ -518,9 +518,9 @@ export class ClaimDialogComponent implements OnInit, AfterContentInit {
     const index = this.data.claim.services.findIndex(service => service == this.serviceUnderEditting);
     if (index >= 0) {
       this.edittedServices.push({
-        index: index,
+        index,
         oldValue: `${this.data.claim.services[index].servicecode} | ${this.data.claim.services[index].servicedescription}`,
-        newValue: newValue
+        newValue
       });
       this.data.claim.services[index].servicecode = newValue.split('|')[0].trim();
       this.data.claim.services[index].servicedescription = newValue.split('|')[1].trim();

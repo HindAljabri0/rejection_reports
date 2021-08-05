@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Invoice } from '../models/invoice.model';
 import {
   FieldError,
@@ -30,18 +30,19 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Actions, ofType } from '@ngrx/effects';
 import { DatePipe } from '@angular/common';
 import { ServiceDecision } from '../models/serviceDecision.model';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import { ClaimStatus } from 'src/app/models/claimStatus';
 import { parse } from 'querystring';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'claim-invoices-services',
   templateUrl: './invoices-services.component.html',
   styles: []
 })
-export class InvoicesServicesComponent implements OnInit {
+export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
   isRetrievedClaim = false;
 
@@ -50,6 +51,7 @@ export class InvoicesServicesComponent implements OnInit {
     invoiceNumber: FormControl,
     invoiceDate: FormControl,
     invoiceDepartment: FormControl,
+    needsRecalculation: boolean,
     services: {
       retrieved: boolean,
       statusCode?: string,
@@ -116,8 +118,10 @@ export class InvoicesServicesComponent implements OnInit {
   acutalDeductedAmount: any;
   statusCode: any;
   claimProps: RetrievedClaimProps;
-  isPBMValidationVisible: boolean = false;
+  isPBMValidationVisible = false;
   selectedInvoiceIndex: any;
+  serviceTypeParIndex: any;
+  serviceTypeChildIndex: any;
   constructor(
     private store: Store,
     private actions: Actions,
@@ -125,8 +129,11 @@ export class InvoicesServicesComponent implements OnInit {
     private sharedServices: SharedServices,
     private datePipe: DatePipe) { }
 
+  _onDestroy = new Subject<void>();
+
   ngOnInit() {
     this.store.select(getPageMode).pipe(
+      takeUntil(this._onDestroy),
       withLatestFrom(this.store.select(getClaim)),
       withLatestFrom(this.store.select(getRetrievedClaimProps)),
       map(values => ({ mode: values[0][0], claim: values[0][1], claimProps: values[1] }))
@@ -142,17 +149,18 @@ export class InvoicesServicesComponent implements OnInit {
       this.claimProps = claimProps;
       this.getPBMValidation();
     });
-    this.store.select(getInvoicesErrors).subscribe(errors => this.errors = errors || []);
+    this.store.select(getInvoicesErrors).pipe(takeUntil(this._onDestroy)).subscribe(errors => this.errors = errors || []);
     this.store.select(getDepartments)
+      .pipe(takeUntil(this._onDestroy))
       .subscribe(departments => {
         if (departments != null && departments.length > 0) {
           this.dentalDepartmentCode = departments.find(department => department.name == 'Dental').departmentId + '';
           this.opticalDepartmentCode = departments.find(department => department.name == 'Optical').departmentId + '';
         }
         this.departments = departments;
-        this.store.select(getClaim).subscribe(claim => {
+        this.store.select(getClaim).pipe(takeUntil(this._onDestroy)).subscribe(claim => {
           claim.invoice.map((invoice, index) => {
-            this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
+            this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment, 10));
           });
         });
 
@@ -160,9 +168,9 @@ export class InvoicesServicesComponent implements OnInit {
           this.addInvoice();
         }
       });
-    this.store.select(getDepartmentCode).subscribe(type => this.claimType = type);
-    this.store.select(getVisitDate).subscribe(date => this.visitDate = date);
-    this.store.select(getSelectedPayer).subscribe(payerId => {
+    this.store.select(getDepartmentCode).pipe(takeUntil(this._onDestroy)).subscribe(type => this.claimType = type);
+    this.store.select(getVisitDate).pipe(takeUntil(this._onDestroy)).subscribe(date => this.visitDate = date);
+    this.store.select(getSelectedPayer).pipe(takeUntil(this._onDestroy)).subscribe(payerId => {
       this.payerId = payerId;
       this.priceListExist = true;
       this.searchServicesController.setValue('');
@@ -173,16 +181,17 @@ export class InvoicesServicesComponent implements OnInit {
       this.expandedService = 0;
     }
 
-    this.store.select(getSelectedTab).subscribe(tab => {
+    this.store.select(getSelectedTab).pipe(takeUntil(this._onDestroy)).subscribe(tab => {
       if (tab == 'INVOICES_SERVICES') {
         this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
       } else {
         this.store.dispatch(selectGDPN({}));
       }
     });
-    
+
 
     this.actions.pipe(
+      takeUntil(this._onDestroy),
       ofType(saveInvoices_Services)
     ).subscribe(() => {
       for (let i = 0; i < this.controllers.length; i++) {
@@ -190,7 +199,7 @@ export class InvoicesServicesComponent implements OnInit {
       }
     });
 
-    this.actions.pipe(ofType(addRetrievedServices)).subscribe(data => {
+    this.actions.pipe(takeUntil(this._onDestroy), ofType(addRetrievedServices)).subscribe(data => {
       if (data.serviceIndex != null) {
         const service = data.services[0].service;
         const decision = data.services[0].decision;
@@ -204,6 +213,11 @@ export class InvoicesServicesComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
   setData(claim: Claim, claimProps: RetrievedClaimProps) {
     this.controllers = [];
     claim.invoice.forEach(invoice => {
@@ -212,7 +226,7 @@ export class InvoicesServicesComponent implements OnInit {
       this.controllers[index].invoice = invoice;
       this.controllers[index].invoiceDate.setValue(this.datePipe.transform(invoice.invoiceDate, 'yyyy-MM-dd'));
       this.controllers[index].invoiceNumber.setValue(invoice.invoiceNumber);
-      this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment));
+      this.controllers[index].invoiceDepartment.setValue(parseInt(invoice.invoiceDepartment, 10));
       invoice.service.forEach(service => {
         this.addService(index, false);
         const serviceIndex = this.controllers[index].services.length - 1;
@@ -237,11 +251,13 @@ export class InvoicesServicesComponent implements OnInit {
         this.controllers[index].services[serviceIndex].pbmServiceError = service.pbmServiceError;
         this.controllers[index].services[serviceIndex].pbmServiceStatus = service.pbmServiceStatus;
         this.controllers[index].services[serviceIndex].quantity.setValue(service.requestedQuantity);
-        if (service.unitPrice != null)
+        if (service.unitPrice != null) {
           this.controllers[index].services[serviceIndex].unitPrice.setValue(service.unitPrice.value);
+        }
 
-        if (service.serviceGDPN.discount != null)
+        if (service.serviceGDPN.discount != null) {
           this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
+        }
         this.controllers[index].services[serviceIndex].serviceDiscountUnit =
           (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
 
@@ -254,8 +270,9 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].netVatRate.setValue('');
         }
-        if (service.serviceGDPN.netVATamount != null)
-          this.controllers[index].services[serviceIndex].netVatAmount = service.serviceGDPN.netVATamount.value
+        if (service.serviceGDPN.netVATamount != null) {
+          this.controllers[index].services[serviceIndex].netVatAmount = service.serviceGDPN.netVATamount.value;
+        }
 
         if (service.serviceGDPN.patientShare != null) {
           this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
@@ -275,14 +292,17 @@ export class InvoicesServicesComponent implements OnInit {
         } else {
           this.controllers[index].services[serviceIndex].patientShareVatRate.setValue('');
         }
-        if (service.serviceGDPN.patientShareVATamount != null)
-          this.controllers[index].services[serviceIndex].patientShareVatAmount = service.serviceGDPN.patientShareVATamount.value
+        if (service.serviceGDPN.patientShareVATamount != null) {
+          this.controllers[index].services[serviceIndex].patientShareVatAmount = service.serviceGDPN.patientShareVATamount.value;
+        }
 
-        if (service.serviceGDPN.net != null)
-          this.controllers[index].services[serviceIndex].net = service.serviceGDPN.net.value
+        if (service.serviceGDPN.net != null) {
+          this.controllers[index].services[serviceIndex].net = service.serviceGDPN.net.value;
+        }
 
-        if (service.serviceGDPN.gross != null)
-          this.controllers[index].services[serviceIndex].gross = service.serviceGDPN.gross.value
+        if (service.serviceGDPN.gross != null) {
+          this.controllers[index].services[serviceIndex].gross = service.serviceGDPN.gross.value;
+        }
 
         if (service.serviceGDPN.priceCorrection != null) {
           this.controllers[index].services[serviceIndex].priceCorrection = service.serviceGDPN.priceCorrection.value;
@@ -304,12 +324,11 @@ export class InvoicesServicesComponent implements OnInit {
 
   toggleEdit(allowEdit: boolean, enableForNulls?: boolean) {
     this.controllers.forEach(invoiceControllers => {
-      if (this.pageMode === "EDIT") {
+      if (this.pageMode === 'EDIT') {
         invoiceControllers.invoiceDate.enable();
         invoiceControllers.invoiceNumber.enable();
         invoiceControllers.invoiceDepartment.enable();
-      }
-      else {
+      } else {
         invoiceControllers.invoiceDate.disable();
         invoiceControllers.invoiceNumber.disable();
         invoiceControllers.invoiceDepartment.disable();
@@ -386,7 +405,10 @@ export class InvoicesServicesComponent implements OnInit {
   }
 
   addInvoice(withService?: boolean) {
-    this.controllers.push({ invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(), services: [], invoiceDepartment: new FormControl() });
+    this.controllers.push({
+      invoice: new Invoice(), invoiceDate: new FormControl(), invoiceNumber: new FormControl(),
+      services: [], invoiceDepartment: new FormControl(), needsRecalculation: false
+    });
     if (this.departments.length > 0) {
       this.controllers[this.controllers.length - 1].invoice.invoiceDepartment = `${this.departments[0].departmentId}`;
     }
@@ -447,7 +469,8 @@ export class InvoicesServicesComponent implements OnInit {
     this.controllers[i].services[j].quantity.disable();
     this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
     this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
-    this.controllers[i].services[j].serviceDiscountUnit = (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
+    this.controllers[i].services[j].serviceDiscountUnit = (service.serviceGDPN.discount != null
+      && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
     this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
     this.controllers[i].services[j].daysOfSupply.setValue(service.daysOfSupply);
     this.controllers[i].services[j].daysOfSupply.disable();
@@ -478,8 +501,9 @@ export class InvoicesServicesComponent implements OnInit {
       this.store.dispatch(selectGDPN({ invoiceIndex: this.expandedInvoice }));
     }
 
-    if (this.selectedInvoiceIndex !== undefined && this.selectedInvoiceIndex < this.controllers.length)
+    if (this.selectedInvoiceIndex !== undefined && this.selectedInvoiceIndex < this.controllers.length) {
       this.createInvoiceFromControl(this.selectedInvoiceIndex);
+    }
 
     this.selectedInvoiceIndex = i;
   }
@@ -519,29 +543,35 @@ export class InvoicesServicesComponent implements OnInit {
     invoice.invoiceDepartment = this.controllers[i].invoice.invoiceDepartment;
 
     invoice.service = this.controllers[i].services.map((service) => this.createServiceFromControl(service));
-    const GDPN = invoice.invoiceGDPN;
-    GDPN.discount.value = invoice.service.map(service => {
-      if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
-        let discount =
-          (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
-        discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
-        return discount;
-      } else if (service.serviceGDPN.discount != null) {
-        return service.serviceGDPN.discount.value;
-      } else return 0;
-    }).reduce((pre, cur) => pre + cur);
-    GDPN.discount.type = 'SAR';
-    GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
-    GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
-    GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
-    GDPN.netVATrate.value = invoice.service.map(service => service.serviceGDPN.netVATrate.value).reduce((pre, cur) => pre + cur);
-    GDPN.patientShare.value = invoice.service.map(service => service.serviceGDPN.patientShare.value).reduce((pre, cur) => pre + cur);
-    GDPN.patientShareVATamount.value = invoice.service.map(
-      service => service.serviceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur
-      );
-    GDPN.patientShareVATrate.value = invoice.service.map(
-      service => service.serviceGDPN.patientShareVATrate.value).reduce((pre, cur) => pre + cur
-      );
+    if (this.controllers[i].needsRecalculation) {
+      const GDPN = invoice.invoiceGDPN;
+      GDPN.discount.value = invoice.service.map(service => {
+        if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
+          let discount =
+            (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
+          discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
+          return discount;
+        } else if (service.serviceGDPN.discount != null) {
+          return service.serviceGDPN.discount.value;
+        } else {
+          return 0;
+        }
+      }).reduce((pre, cur) => pre + cur);
+      GDPN.discount.type = 'SAR';
+      GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
+      GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
+      GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
+      GDPN.netVATrate.value = invoice.service.map(service => service.serviceGDPN.netVATrate.value).reduce((pre, cur) => pre + cur);
+      GDPN.patientShare.value = invoice.service.map(service => service.serviceGDPN.patientShare.value).reduce((pre, cur) => pre + cur);
+      GDPN.patientShareVATamount.value = invoice.service.map(
+        service => service.serviceGDPN.patientShareVATamount.value).reduce((pre, cur) => pre + cur
+        );
+      GDPN.patientShareVATrate.value = invoice.service.map(
+        service => service.serviceGDPN.patientShareVATrate.value).reduce((pre, cur) => pre + cur
+        );
+    } else {
+      invoice.invoiceGDPN = this.controllers[i].invoice.invoiceGDPN;
+    }
     this.controllers[i].invoice = invoice;
     this.updateClaim();
   }
@@ -609,7 +639,7 @@ export class InvoicesServicesComponent implements OnInit {
       net = this.calcNet(service);
     }
     if (service.netVatAmount != null) {
-      return service.netVatAmount
+      return service.netVatAmount;
     }
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
@@ -618,7 +648,7 @@ export class InvoicesServicesComponent implements OnInit {
 
   calcPatientVatRate(service) {
     if (service.patientShareVatAmount != null) {
-      return service.patientShareVatAmount
+      return service.patientShareVatAmount;
     }
     let patientShareVATamount = (service.patientShare.value * (service.patientShareVatRate.value / 100));
     patientShareVATamount = Number.parseFloat(patientShareVATamount.toPrecision(patientShareVATamount.toFixed().length + 2));
@@ -640,7 +670,7 @@ export class InvoicesServicesComponent implements OnInit {
     }
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
-    this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice) }));
+    this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice), recalculateClaimGDPN: this.controllers.some(control => control.needsRecalculation) }));
   }
 
   onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex) {
@@ -648,12 +678,12 @@ export class InvoicesServicesComponent implements OnInit {
     event.preventDefault();
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
-      invoiceIndex: invoiceIndex,
+      invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
       invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ?
         new Date(this.controllers[invoiceIndex].invoiceDate.value) :
         null,
-      serviceIndex: serviceIndex,
+      serviceIndex,
     }));
   }
 
@@ -667,7 +697,7 @@ export class InvoicesServicesComponent implements OnInit {
   onAddRetrievedServiceClick(invoiceIndex) {
     this.createInvoiceFromControl(this.expandedInvoice);
     this.store.dispatch(openSelectServiceDialog({
-      invoiceIndex: invoiceIndex,
+      invoiceIndex,
       invoiceNumber: this.controllers[invoiceIndex].invoiceNumber.value,
       invoiceDate: this.controllers[invoiceIndex].invoiceDate.value != null ?
         new Date(this.controllers[invoiceIndex].invoiceDate.value) :
@@ -713,8 +743,9 @@ export class InvoicesServicesComponent implements OnInit {
     this.serviceCodeSearchError = null;
     this.emptyOptions = false;
     const query: string = this.searchServicesController.value;
+    const serviceType = this.controllers[this.serviceTypeParIndex].services[this.serviceTypeChildIndex].serviceType.value;
     if (query != null && query != '') {
-      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate).subscribe(
+      this.adminService.searchServiceCode(query.toUpperCase(), this.sharedServices.providerId, this.payerId, this.visitDate, serviceType).subscribe(
         event => {
           if (event instanceof HttpResponse) {
             if (event.body instanceof Object) {
@@ -786,12 +817,12 @@ export class InvoicesServicesComponent implements OnInit {
     return this.sharedServices.statusToName(status);
   }
   getPBMValidation() {
-    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, "101").subscribe((event: any) => {
+    this.adminService.checkIfPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const body = event['body'];
-        this.isPBMValidationVisible = body.value === "1"
+        this.isPBMValidationVisible = body.value === '1'
           && (this.claimProps.statusCode.toLowerCase() === ClaimStatus.Accepted.toLowerCase()
-          || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+            || this.claimProps.statusCode.toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
       }
     }, err => {
       console.log(err);
@@ -803,6 +834,12 @@ export class InvoicesServicesComponent implements OnInit {
     if (date != null && !(date instanceof Date)) {
       date = new Date(date);
     }
-    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth()) || Number.isNaN(date.getDay()) || date.getTime() > Date.now()
+    return date == null || Number.isNaN(date.getTime()) || Number.isNaN(date.getFullYear()) || Number.isNaN(date.getMonth())
+      || Number.isNaN(date.getDay()) || date.getTime() > Date.now();
   }
+  setServiceTypeIndex(pindex: any, cindex: any) {
+    this.serviceTypeParIndex = pindex;
+    this.serviceTypeChildIndex = cindex;
+  }
+
 }

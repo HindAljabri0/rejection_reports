@@ -1,8 +1,8 @@
 export class PaymentProviderModel {
-    payerid: any;
+    payerid: any = '';
     effectiveDate: any = '';
     expiryDate: any = '';
-    modePayment: string
+    modePayment = '';
     numberOfDays: number;
     agreementCopy: any;
 }

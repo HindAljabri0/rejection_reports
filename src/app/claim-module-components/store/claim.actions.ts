@@ -59,6 +59,7 @@ export const finishValidation = createAction('[ Claim ] finishValidation');
 export const addClaimErrors = createAction('[ Claim ] add errors', props<{ module: string, errors: FieldError[] }>());
 export const changeSelectedTab = createAction('[ Claim ] change selected tab', props<{ tab: string }>());
 export const toEditMode = createAction('[ Claim ] change page mode to edit');
+export const toCreateMode = createAction('[ Claim ] change page mode to create');
 export const cancelEdit = createAction('[ Claim ] cancel editing');
 export const goToClaim = createAction('[ CLaim ] go to claim', props<{ claimId: string }>());
 // Patient
@@ -98,6 +99,7 @@ export const updateCommReport = createAction('[ Claim Gen Info ] update comm rep
 export const updateEligibilityNum = createAction('[ Claim Gen Info ] update eligibility number', props<{ number: string }>());
 export const updateRadiologyReport = createAction('[ Claim Gen Info ] update radiology report', props<{ report: string }>());
 export const updateOtherCondition = createAction('[ Claim Gen Info ] update other condition', props<{ condition: string }>());
+export const updateContactNumber = createAction('[ Claim Gen Info ] update Contact Number', props<{ contactNumber: string }>());
 
 // Vital Signs
 export const updateTemperature = createAction('[ Vital Signs ] update Temperature', props<{ temperature: number }>());
@@ -127,7 +129,7 @@ export const updateLabResults = createAction('[ LAB Results ] update LAB Results
 export const saveInvoices_Services =
   createAction('[ Invoice & Services ] this will force invoice/services component to dispatch updateInvoices_services action');
 export const updateInvoices_Services = createAction('[ Invoices & Services ] update invoices & services',
-  props<{ invoices: Invoice[] }>());
+  props<{ invoices: Invoice[], recalculateClaimGDPN: boolean }>());
 export const openSelectServiceDialog = createAction('[ Invoices & Services ] open a dialog to select a retrieved service',
   props<SelectServiceDialogData>());
 export const addRetrievedServices = createAction('[ Invoices & Services ] add retrieved services to invoice',

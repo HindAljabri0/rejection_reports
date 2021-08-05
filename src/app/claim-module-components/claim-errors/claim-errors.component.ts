@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { FieldError, getRetrievedClaimProps, getUncategorisedErrors, getGenInfoErrors, getDiagnosisErrors, getInvoicesErrors, getLabResultsErrors, getAllErrors } from '../store/claim.reducer';
+import { FieldError, getAllErrors } from '../store/claim.reducer';
 
 @Component({
   selector: 'claim-errors',
@@ -21,7 +21,7 @@ export class ClaimErrorsComponent implements OnInit {
         ...error.genInfoErrors,
         ...error.invoicesErrors,
         ...error.labResultsErrors,
-        ...error.uncategorised, 
+        ...error.uncategorised,
         ...error.admissionErrors,
         ...error.illnessErrors,
         ...error.vitalSignsErrors,

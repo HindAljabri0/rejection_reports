@@ -1,21 +1,21 @@
-import { HttpEvent } from "@angular/common/http";
-import { Observable, Subject } from "rxjs";
+import { HttpEvent } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 
 export class DownloadRequest {
 
     downloadedSize$: Subject<number>;
-    private _downloadedSize:number = -1;
+    private _downloadedSize = -1;
     totalSize$: Subject<number>;
-    private _totalSize:number = -1;
+    private _totalSize = -1;
     status$: Subject<DownloadStatus>;
-    private _status:DownloadStatus;
+    private _status: DownloadStatus;
     filename$: Subject<string>;
     private _filename: string;
     contentType$: Subject<string>;
     private _contentType: string;
     errorMessage$: Subject<string>;
-    private _errorMessage:string;
+    private _errorMessage: string;
 
     constructor() {
         this.downloadedSize$ = new Subject();
@@ -33,24 +33,24 @@ export class DownloadRequest {
 
     }
 
-    get downloadedSize(){
+    get downloadedSize() {
         return this._downloadedSize;
     }
-    get totalSize(){
+    get totalSize() {
         return this._totalSize;
     }
-    get status(){
+    get status() {
         return this._status;
     }
-    get filename(){
+    get filename() {
         return this._filename;
     }
-    get contentType(){
+    get contentType() {
         return this._contentType;
     }
-    get errorMessage(){
+    get errorMessage() {
         return this._errorMessage;
-    }    
+    }
 
 }
 

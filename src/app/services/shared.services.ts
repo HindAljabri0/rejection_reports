@@ -261,6 +261,10 @@ export class SharedServices {
         return 'partially-paid';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return 'under-processing';
+      case ClaimStatus.Submitted.toLowerCase():
+        return 'submitted';
+      case ClaimStatus.SUBMITTED_OUTSIDE_WASEEL.toLowerCase():
+        return 'submitted-outside-waseel';
       case ClaimStatus.Batched.toLowerCase():
         return 'not-saved';
       case ClaimStatus.Downloadable.toLowerCase():
@@ -288,6 +292,8 @@ export class SharedServices {
         return 'Under Submission';
       case ClaimStatus.OUTSTANDING.toLowerCase():
         return 'Under Processing';
+      case ClaimStatus.SUBMITTED_OUTSIDE_WASEEL.toLowerCase():
+        return 'Submitted Outside Waseel';
       case ClaimStatus.TOTALNOTSUBMITTED.toLowerCase():
         return 'Total Not Submitted';
       case ClaimStatus.TOTALSUBMITTED.toLowerCase():
@@ -540,11 +546,13 @@ export class SharedServices {
   }
   decodeJwtToken(tkn: string, name: string): string {
     if (tkn) {
-      let token = this.helper.decodeToken(tkn);
+      const token = this.helper.decodeToken(tkn);
       return token[name];
-    }
-    else
+    } else {
       return '';
+    }
   }
 
 }
+
+export const SEARCH_TAB_RESULTS_KEY = 'search_tab_result';

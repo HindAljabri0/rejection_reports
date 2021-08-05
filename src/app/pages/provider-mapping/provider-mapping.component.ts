@@ -17,7 +17,11 @@ export class ProviderMappingComponent implements OnInit {
   filteredProviders: any[] = [];
   providers: any[] = [];
   selectedProvider: string;
-  constructor(private dialog: MatDialog, private sharedServices: SharedServices, private superAdmin: SuperAdminService, private location: Location) { }
+  constructor(
+    private dialog: MatDialog,
+    private sharedServices: SharedServices,
+    private superAdmin: SuperAdminService,
+    private location: Location) { }
 
   ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
@@ -36,13 +40,26 @@ export class ProviderMappingComponent implements OnInit {
     });
   }
 
-  selectProvider(providerId: string) {
-    this.selectedProvider = providerId;
+  selectProvider(providerId: string = null) {
+    if (providerId !== null)
+      this.selectedProvider = providerId;
+    else {
+      const providerId = this.providerController.value.split('|')[0].trim();
+      this.selectedProvider = providerId;
+    }
   }
 
   openCSV(event) {
     const dialogRef = this.dialog.open(ConfiguartionModalComponent,
-      { panelClass: ['primary-dialog'], autoFocus: false, data: { file: event.target.files[0], providerId: this.sharedServices.providerId, selectedProviderId: this.selectedProvider } });
+      {
+        panelClass: ['primary-dialog'],
+        autoFocus: false,
+        data: {
+          file: event.target.files[0],
+          providerId: this.sharedServices.providerId,
+          selectedProviderId: this.selectedProvider
+        }
+      });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
@@ -64,7 +81,7 @@ export class ProviderMappingComponent implements OnInit {
     this.filteredProviders = this.providers.filter(provider =>
       `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
     );
-    this.selectedProvider = this.providerController.value === "" ? undefined : this.selectedProvider;
+    this.selectedProvider = this.providerController.value === '' ? undefined : this.selectedProvider;
   }
 
 }

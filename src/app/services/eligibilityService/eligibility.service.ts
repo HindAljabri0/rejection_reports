@@ -29,7 +29,9 @@ export class EligibilityService {
     policyNo: string,
     casetype?: string, drname?: string,
     nationalId?: string,
-    claimDate?: string) {
+    claimDate?: string,
+    netAmount?: string,
+    batchNo?: string) {
     let requestUrl = `/providers/${providerId}/eligibility/criteria?`;
     if (uploadId != null) {
       requestUrl += `uploadId=${uploadId}`;
@@ -62,6 +64,12 @@ export class EligibilityService {
     }
     if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
       requestUrl += `claimDate=${claimDate}`;
+    }
+    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+      requestUrl += `&netAmount=${netAmount}`;
+    }
+    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+      requestUrl += `&batchNo=${batchNo}`;
     }
     const request = new HttpRequest('POST', environment.claimServiceHost + requestUrl, '');
     return this.http.request(request);

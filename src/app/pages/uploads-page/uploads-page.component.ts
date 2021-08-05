@@ -14,7 +14,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class UploadsPageComponent implements OnInit {
 
   errorMessage: string;
-  uploads: UploadCardData[] = [];
+  uploads: any[] = [];
   MAX = Number.MAX_VALUE;
   length = Number.MAX_VALUE;
   pageSize = 10;
@@ -30,7 +30,7 @@ export class UploadsPageComponent implements OnInit {
     if (this.isLoading) {
       return;
     }
-    if(this.uploads.length >= this.length){
+    if (this.uploads.length >= this.length) {
       return;
     }
     this.sharedService.loadingChanged.next(true);
@@ -39,6 +39,15 @@ export class UploadsPageComponent implements OnInit {
         if (event instanceof HttpResponse) {
           this.sharedService.loadingChanged.next(false);
           this.uploads = this.uploads.concat(event.body['content']);
+          this.uploads.map((ele) => {
+            if (ele.uploadName.toLowerCase().includes('manual')) {
+              let manualEntery = ele.uploadName.split('_');
+              let manualText = manualEntery[manualEntery.length - 1];
+              if (manualText.toLowerCase().includes('manual'))
+                ele.isManualUpload = true;
+            }
+            return ele;
+          })
           this.length = event.body['totalElements'];
           this.pageIndex++;
         }
@@ -52,7 +61,7 @@ export class UploadsPageComponent implements OnInit {
 
   openUpload(uploadId: number) {
     this.router.navigate([this.sharedService.providerId, 'claims'], {
-      queryParams: { uploadId: uploadId }
+      queryParams: { uploadId }
     });
   }
 

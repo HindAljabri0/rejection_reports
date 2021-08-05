@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { getIllnessCode, getClaim, getPageMode, ClaimPageMode, FieldError, getIllnessErrors } from '../store/claim.reducer';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material';
 import { addClaimErrors, updateIllnesses } from '../store/claim.actions';
-import { map, withLatestFrom } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 import { Claim } from '../models/claim.model';
 
 @Component({
@@ -26,10 +26,13 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
 
   errors: FieldError[];
 
+  _onDestroy = new Subject<void>();
+
   constructor(private store: Store) { }
 
   ngOnInit() {
     this.store.select(getPageMode).pipe(
+      takeUntil(this._onDestroy),
       withLatestFrom(this.store.select(getClaim)),
       map(values => ({ mode: values[0], claim: values[1] }))
     ).subscribe(({ mode, claim }) => {
@@ -68,6 +71,8 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -104,7 +109,7 @@ export class ClaimIllnessesComponent implements OnInit, OnDestroy {
   }
 
   clearErrors() {
-    this.updateIllnesses({ source: { checked: true }, value: 'NA' })
+    this.updateIllnesses({ source: { checked: true }, value: 'NA' });
   }
 }
 
