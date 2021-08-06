@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { ViewEligibilityDetailsComponent } from '../view-eligibility-details/view-eligibility-details.component';
 
 @Component({
   selector: 'app-eligibility',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EligibilityComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  openDetailsDialog() {
+    const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent,
+      {
+        panelClass: ['primary-dialog', 'dialog-xl']
+      });
   }
 
 }

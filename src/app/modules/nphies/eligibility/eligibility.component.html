@@ -6,35 +6,35 @@
         <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Member ID</label>
+                    <label class="control-label">Member ID<span class="asterisk">*</span></label>
                     <input placeholder="Enter member ID" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Policy No.</label>
+                    <label class="control-label">Policy No.<span class="asterisk">*</span></label>
                     <input placeholder="Enter policy no." class="form-control">
                 </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">National ID / Iqama ID</label>
+                    <label class="control-label">National ID / Iqama ID<span class="asterisk">*</span></label>
                     <input placeholder="Enter national ID / iqama ID" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Referral Batch</label>
-                    <mat-radio-group class="radio-group inline">
-                        <mat-radio-button color="primary" [value]="1">Benefits</mat-radio-button>
-                        <mat-radio-button color="primary" [value]="2">Discovery</mat-radio-button>
-                        <mat-radio-button color="primary" [value]="3">Validation</mat-radio-button>
-                    </mat-radio-group>
+                    <label class="control-label">Purpose</label>
+                    <div class="checkbox-group inline">
+                        <mat-checkbox color="primary" [value]="1">Benefits</mat-checkbox>
+                        <mat-checkbox color="primary" [value]="2">Discovery</mat-checkbox>
+                        <mat-checkbox color="primary" [value]="3">Validation</mat-checkbox>
+                    </div>
                 </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Service Date</label>
+                    <label class="control-label">Service Date<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date">
                         <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Submit Eligibility</button>
+            <button type="button" mat-flat-button color="primary" (click)="openDetailsDialog()">Submit Eligibility</button>
         </div>
     </div>
 </div>

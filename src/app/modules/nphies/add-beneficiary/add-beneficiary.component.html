@@ -7,31 +7,31 @@
         <div class="row small-gutter">
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">First Name</label>
+                    <label class="control-label">First Name<span class="asterisk">*</span></label>
                     <input placeholder="Enter first name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Middle Name</label>
+                    <label class="control-label">Middle Name<span class="asterisk">*</span></label>
                     <input placeholder="Enter middle name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Last Name</label>
+                    <label class="control-label">Last Name<span class="asterisk">*</span></label>
                     <input placeholder="Enter last name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Family Name</label>
+                    <label class="control-label">Family Name<span class="asterisk">*</span></label>
                     <input placeholder="Enter family name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Full Name (Optional)</label>
+                    <label class="control-label">Full Name</label>
                     <input placeholder="Enter full name" class="form-control">
                 </div>
             </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Date of Birth - Hijri</label>
+                    <label class="control-label">Date of Birth - Hijri<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input [matDatepicker]="dateHijri" class="form-control" placeholder="Select date of birth as per Hijri">
                         <mat-datepicker-toggle [for]="dateHijri"></mat-datepicker-toggle>
@@ -53,7 +53,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Date of Birth</label>
+                    <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
                     <div class="date-picker">
                         <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth">
                         <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Natiionality</label>
+                    <label class="control-label">Natiionality<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Natiionality</mat-option>
@@ -83,7 +83,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Residency Type</label>
+                    <label class="control-label">Residency Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Residency Type</mat-option>
@@ -97,7 +97,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Document Type</label>
+                    <label class="control-label">Document Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Document Type</mat-option>
@@ -111,13 +111,13 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Document ID</label>
+                    <label class="control-label">Document ID<span class="asterisk">*</span></label>
                     <input placeholder="Enter document ID" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Contact Number</label>
+                    <label class="control-label">Contact Number<span class="asterisk">*</span></label>
                     <input placeholder="Enter contact number" class="form-control">
                 </div>
             </div>
@@ -137,7 +137,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Gender</label>
+                    <label class="control-label">Gender<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Gender</mat-option>
@@ -247,7 +247,7 @@
             </table>
         </div>
         <div class="pb-2">
-            <a href="#" class="primary-link semibold">+ Add Address</a>
+            <a href="#" title="+ Add Address" class="primary-link semibold">+ Add Address</a>
         </div>
 
 
@@ -256,9 +256,9 @@
             <table class="primary-grid manual-row-color claim-view-table no-borders">
                 <thead>
                     <tr>
-                        <th>Payer</th>
-                        <th>Expiry Date</th>
-                        <th>Member Card ID</th>
+                        <th>Payer<span class="asterisk">*</span></th>
+                        <th>Expiry Date<span class="asterisk">*</span></th>
+                        <th>Member Card ID<span class="asterisk">*</span></th>
                         <th width="10"></th>
                     </tr>
                 </thead>
@@ -297,7 +297,7 @@
             </table>
         </div>
         <div class="pb-2">
-            <a href="#" class="primary-link semibold">+ Add Insurance Plan</a>
+            <a href="#" title="+ Add Insurance Plan" class="primary-link semibold">+ Add Insurance Plan</a>
         </div>
         <hr class="hr spaced">
         <div class="form-group">
