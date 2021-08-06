@@ -12,6 +12,8 @@ import { AddBeneficiaryComponent } from './add-beneficiary/add-beneficiary.compo
 import { AddPreauthorizationComponent } from './add-preauthorization/add-preauthorization.component';
 import { EligibilityTransactionsComponent } from './eligibility-transactions/eligibility-transactions.component';
 import { InsurancePlanComponent } from './insurance-plan/insurance-plan.component';
+import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
+import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { InsurancePlanComponent } from './insurance-plan/insurance-plan.componen
     AddBeneficiaryComponent,
     AddPreauthorizationComponent,
     EligibilityTransactionsComponent,
-    InsurancePlanComponent
+    InsurancePlanComponent,
+    AddInsurancePlanDialogComponent,
+    AddEditPreauthorizationItemComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +38,9 @@ import { InsurancePlanComponent } from './insurance-plan/insurance-plan.componen
     NphiesRoutingModule
   ],
   entryComponents: [
-    ViewEligibilityDetailsComponent
+    ViewEligibilityDetailsComponent,
+    AddInsurancePlanDialogComponent,
+    AddEditPreauthorizationItemComponent
   ]
 })
 export class NphiesModule { }

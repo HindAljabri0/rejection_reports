@@ -1072,6 +1072,9 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* checkbox
 --------------------------------------------------------------------------------------------------------*/
+.form-group>.checkbox-group{padding-top: 9px;display: block;}
+.checkbox-group .mat-checkbox{display: block;margin-bottom: 8px;}
+.checkbox-group.inline .mat-checkbox{margin-right: 16px;display: inline-block;vertical-align: top;}
 .mat-checkbox .mat-checkbox-inner-container{background-color: #fff;}
 .mat-checkbox .mat-checkbox-frame{border-color:#8c8c8c;border-width:1px;}
 
