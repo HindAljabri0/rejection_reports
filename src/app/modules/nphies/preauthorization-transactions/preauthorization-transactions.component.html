@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Eligibility Transactions</p>
+        <p>Preauthorization Transactions</p>
     </div>
     <div class="block-filter-panel">
         <div class="row small-gutter">
@@ -26,20 +26,20 @@
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Eligibility ID</label>
-                    <input placeholder="Enter eligibility ID" class="form-control">
+                    <label class="control-label">Pre Authorization ID</label>
+                    <input placeholder="Enter pre authorization ID" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Payer</label>
+                    <label class="control-label">Insurance Plan</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
-                            <mat-option value="-1">Select Payer</mat-option>
-                            <mat-option value="Payer 1">Payer 1</mat-option>
-                            <mat-option value="Payer 2">Payer 2</mat-option>
-                            <mat-option value="Payer 3">Payer 3</mat-option>
-                            <mat-option value="Payer 4">Payer 4</mat-option>
+                            <mat-option value="-1">Select Insurance Plan</mat-option>
+                            <mat-option value="Insurance Plan 1">Insurance Plan 1</mat-option>
+                            <mat-option value="Insurance Plan 2">Insurance Plan 2</mat-option>
+                            <mat-option value="Insurance Plan 3">Insurance Plan 3</mat-option>
+                            <mat-option value="Insurance Plan 4">Insurance Plan 4</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -83,7 +83,7 @@
                 <thead>
                     <tr>
                         <th>Member Card ID</th>
-                        <th>Eligibility ID</th>
+                        <th>Pre Authorization ID</th>
                         <th>Transaction Date/Time</th>
                         <th>Insurance Plan</th>
                         <th>Status</th>
@@ -104,6 +104,15 @@
                             <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
                                 <mat-icon class="material-icons-outlined">description</mat-icon>
                             </button>
+                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
+                                <mat-icon>add</mat-icon>
+                            </button>
                         </td>
                     </tr>
                     <tr>
@@ -118,6 +127,15 @@
                             </button>
                             <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
                                 <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
+                                <mat-icon>add</mat-icon>
                             </button>
                         </td>
                     </tr>
@@ -134,6 +152,15 @@
                             <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
                                 <mat-icon class="material-icons-outlined">description</mat-icon>
                             </button>
+                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
+                                <mat-icon>add</mat-icon>
+                            </button>
                         </td>
                     </tr>
                     <tr>
@@ -148,6 +175,15 @@
                             </button>
                             <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
                                 <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
+                                <mat-icon>add</mat-icon>
                             </button>
                         </td>
                     </tr>

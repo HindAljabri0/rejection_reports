@@ -12,8 +12,9 @@ import { AddBeneficiaryComponent } from './add-beneficiary/add-beneficiary.compo
 import { AddPreauthorizationComponent } from './add-preauthorization/add-preauthorization.component';
 import { EligibilityTransactionsComponent } from './eligibility-transactions/eligibility-transactions.component';
 import { InsurancePlanComponent } from './insurance-plan/insurance-plan.component';
-import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
+import { PreauthorizationTransactionsComponent } from './preauthorization-transactions/preauthorization-transactions.component';
 import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorization-item/add-edit-preauthorization-item.component';
+import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorizatio
     EligibilityTransactionsComponent,
     InsurancePlanComponent,
     AddInsurancePlanDialogComponent,
-    AddEditPreauthorizationItemComponent
+    AddEditPreauthorizationItemComponent,
+    PreauthorizationTransactionsComponent
   ],
   imports: [
     CommonModule,
