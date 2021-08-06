@@ -85,7 +85,7 @@ export class MedicalRejctionReportComponent implements OnInit {
   }
 
   search() {
-    this.submitted = false;
+    this.submitted = true;
 
     if (this.medicalRejectionReportForm.invalid)
       return
