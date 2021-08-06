@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddPreauthorizationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  openAddEditItemDialog(e) {
+    e.preventDefault();
+    this.dialog.open(AddEditPreauthorizationItemComponent, {
+      panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }
