@@ -4,7 +4,7 @@
             <mat-accordion displayMode="flat">
                 <ul class="nav-list">
                     <li i18n="@@dashboard">
-                        <a routerLink="/" routerLinkActive="is-active" #dashboard="routerLinkActive" [routerLinkActiveOptions]="{exact: true}">
+                        <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
                             <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
                             <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
                             <span class="text">Dashboard</span>
@@ -12,7 +12,7 @@
                     </li>
                 </ul>
                 <mat-expansion-panel hideToggle
-                    [expanded]="dashboard.isActive || uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive || createBatch.isActive">
+                    [expanded]="uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive || createBatch.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@claims">Claims</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -262,6 +262,11 @@
                         <li>
                             <a routerLink="/nphies/add-preauthorization" routerLinkActive="is-active">
                                 <span class="text">Add Pre Authorization</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/nphies/preauthorization-transactions" routerLinkActive="is-active">
+                                <span class="text">Pre Authorization Transactions</span>
                             </a>
                         </li>
                     </ul>
