@@ -84,14 +84,19 @@
                                 <span class="text">Submission Report</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectionreport">
+                        <li i18n="@@technicalrejectionreport">
                             <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '3'}" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
-                                <span class="text">Rejection Report</span>
+                                <span class="text">Technical Rejection Report</span>
                             </a>
                         </li>
                         <li i18n="@@claimstatussummaryport">
                             <a routerLink="/{{providerId}}/reports/claim-status-summary-report" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Claim Status Summary Report</span>
+                            </a>
+                        </li>
+                        <li i18n="@@medicalrejectionport">
+                            <a routerLink="/{{providerId}}/reports/medical-rejection-report" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
+                                <span class="text">Medical Rejection Report</span>
                             </a>
                         </li>
                     </ul>

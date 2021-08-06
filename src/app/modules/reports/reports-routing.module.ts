@@ -15,6 +15,7 @@ import { RevenueTrackingReportComponent } from './components/revenue-tracking-re
 import { TawuniyaCreditReportDetailsComponent } from './components/tawuniya-credit-report-details/tawuniya-credit-report-details.component';
 import { ClaimStatusSummaryReportComponent } from 'src/app/pages/reports/claim-summary-status-report/claim-status-summary-report.component';
 import { RejectionTrackingReportComponent } from './components/rejection-tracking-report/rejection-tracking-report.component';
+import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-rejction-report/medical-rejction-report.component';
 
 
 const routes: Routes = [
@@ -31,8 +32,8 @@ const routes: Routes = [
   { path: 'revenue-report-breakdown', component: RevenueBreakdownReportComponent },
   { path: 'revenue-comparison-report', component: RevenueComparativeReportComponent },
   { path: 'claim-status-summary-report', component: ClaimStatusSummaryReportComponent },
-  { path: 'rejection-tracking-report', component: RejectionTrackingReportComponent }
-
+  { path: 'rejection-tracking-report', component: RejectionTrackingReportComponent },
+  { path: 'medical-rejection-report', component: MedicalRejctionReportComponent }
 ];
 
 @NgModule({
