@@ -165,6 +165,8 @@ button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 .pl-14{padding-left: 14px !important;}
 .pr-14{padding-right: 14px !important;}
 .px-14{padding-right: 14px !important;padding-left: 14px !important;}
+.mt-14{margin-top: 14px !important;}
+.mb-14{margin-bottom: 14px !important;}
 .minw145{min-width: 145px;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
 .error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
@@ -495,6 +497,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid.no-borders>thead>tr>th,.primary-grid.no-borders>thead>tr>td,.primary-grid.no-borders>tbody>tr>th,.primary-grid.no-borders>tbody>tr>td,.primary-grid.no-borders>thead>tr>th.mat-header-cell,.primary-grid.no-borders>thead>tr>td.mat-header-cell,.primary-grid.no-borders>tbody>tr>th.mat-cell,.primary-grid.no-borders>tbody>tr>td.mat-cell{border:0;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
+.grid-radio .mat-radio-label-content{display: none;}
+.grid-radio .mat-radio-label{vertical-align: top;padding: 10px;}
+.grid-radio.mat-radio-button{display: block;margin: -10px auto;width: 40px;}
 
 /* abstract card carousel
 --------------------------------------------------------------------------------------------------------*/

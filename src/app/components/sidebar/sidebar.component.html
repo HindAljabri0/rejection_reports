@@ -39,33 +39,28 @@
                             </a>
                         </li>
                         <li i18n="@@claimhistory">
-                            <a routerLink="/upload/history" routerLinkActive="is-active"
-                                #claimHistory="routerLinkActive">
+                            <a routerLink="/upload/history" routerLinkActive="is-active" #claimHistory="routerLinkActive">
                                 <img src="assets/ic-claim-history.svg" alt="Claims History" class="default-icon" />
-                                <img src="assets/ic-claim-history-active.svg" alt="Claims History"
-                                    class="active-icon" />
+                                <img src="assets/ic-claim-history-active.svg" alt="Claims History" class="active-icon" />
                                 <span class="text">Claims History</span>
                             </a>
                         </li>
                         <li [class.d-none]="envProd || envStaging">
-                            <a routerLink="/collection-management/create-batch" routerLinkActive="is-active"
-                                #createBatch="routerLinkActive">
+                            <a routerLink="/collection-management/create-batch" routerLinkActive="is-active" #createBatch="routerLinkActive">
                                 <img src="assets/ic-create-batch.svg" alt="Create Batch" class="default-icon" />
                                 <img src="assets/ic-create-batch-active.svg" alt="Create Batch" class="active-icon" />
                                 <span class="text">Create Batch</span>
                             </a>
                         </li>
                         <li i18n="@@notifications">
-                            <a routerLink="/{{providerId}}/notifications" routerLinkActive="is-active"
-                                #notification="routerLinkActive">
+                            <a routerLink="/{{providerId}}/notifications" routerLinkActive="is-active" #notification="routerLinkActive">
                                 <img src="assets/ic-notifications.svg" alt="Notification" class="default-icon" />
                                 <img src="assets/ic-notifications-active.svg" alt="Notification" class="active-icon" />
                                 <span class="text">Notifications</span>
                             </a>
                         </li>
                         <li i18n="@@announcements">
-                            <a routerLink="/{{providerId}}/announcements" routerLinkActive="is-active"
-                                #announcement="routerLinkActive">
+                            <a routerLink="/{{providerId}}/announcements" routerLinkActive="is-active" #announcement="routerLinkActive">
                                 <img src="assets/ic-announcement.svg" alt="Announcements" class="default-icon" />
                                 <img src="assets/ic-announcement-active.svg" alt="Announcements" class="active-icon" />
                                 <span class="text">Announcements</span>
@@ -74,39 +69,33 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle
-                    [expanded]="paymentReport.isActive || submissionReport.isActive || rejectionReport.isActive">
+                <mat-expansion-panel hideToggle [expanded]="paymentReport.isActive || submissionReport.isActive || rejectionReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@reports">Reports</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@paymentreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '1'}"
-                                #paymentReport="routerLinkActive" routerLinkActive="is-active">
+                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '1'}" #paymentReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Payment Report</span>
                             </a>
                         </li>
                         <li i18n="@@submissionreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '2'}"
-                                #submissionReport="routerLinkActive" routerLinkActive="is-active">
+                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '2'}" #submissionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Submission Report</span>
                             </a>
                         </li>
                         <li i18n="@@technicalrejectionreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '3'}"
-                                #rejectionReport="routerLinkActive" routerLinkActive="is-active">
+                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '3'}" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Technical Rejection Report</span>
                             </a>
                         </li>
                         <li i18n="@@claimstatussummaryport">
-                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report"
-                                #rejectionReport="routerLinkActive" routerLinkActive="is-active">
+                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Claim Status Summary Report</span>
                             </a>
                         </li>
                         <li i18n="@@medicalrejectionport">
-                            <a routerLink="/{{providerId}}/reports/medical-rejection-report"
-                                #rejectionReport="routerLinkActive" routerLinkActive="is-active">
+                            <a routerLink="/{{providerId}}/reports/medical-rejection-report" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Medical Rejection Report</span>
                             </a>
                         </li>
@@ -121,8 +110,7 @@
                         <li i18n="@@uploadRejectionReport">
                             <a routerLink="/reports/creditReports" routerLinkActive="is-active">
                                 <img src="assets/ic-credit-report-upload.svg" alt="File Upload" class="default-icon" />
-                                <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload"
-                                    class="active-icon" />
+                                <img src="assets/ic-credit-report-upload-active.svg" alt="File Upload" class="active-icon" />
                                 <span class="text">Credit Reports</span>
                             </a>
                         </li>
@@ -134,26 +122,21 @@
                             </a>
                         </li> -->
                         <li i18n="@@cleanClaimProgress" *ngIf="!envProd">
-                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports"
-                                routerLinkActive="is-active">
-                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports"
-                                    class="default-icon" />
-                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports"
-                                    class="active-icon" />
+                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active">
+                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
                         <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
-                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
-                                routerLinkActive="is-active">
+                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejected Claim Progress Report</span>
                             </a>
                         </li>
                         <li i18n="@@rejectionTrackingReport" *ngIf="!envStaging && !envProd">
-                            <a routerLink="/reports/{{providerId}}/rejection-tracking-report"
-                                routerLinkActive="is-active">
+                            <a routerLink="/reports/{{providerId}}/rejection-tracking-report" routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejection Tracking Report</span>
@@ -168,20 +151,17 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
-                            <a routerLink="/collection-management/accounts-receivable-list"
-                                routerLinkActive="is-active">
+                            <a routerLink="/collection-management/accounts-receivable-list" routerLinkActive="is-active">
                                 <span class="text">Accounts Receivables</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/accounts-receivable-breakdown-report"
-                                routerLinkActive="is-active">
+                            <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active">
                                 <span class="text">AR Breakdown Report</span>
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/accounts-receivable-tracking-report"
-                                routerLinkActive="is-active">
+                            <a routerLink="/collection-management/accounts-receivable-tracking-report" routerLinkActive="is-active">
                                 <span class="text">AR Tracking Report</span>
                             </a>
                         </li>
@@ -191,12 +171,11 @@
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/collection-management/statement-of-accounts" routerLinkActive="is-active"
-                                [class.is-active]="statementAccountDetails.isActive">
+                            <a routerLink="/collection-management/statement-of-accounts" routerLinkActive="is-active" [class.is-active]="statementAccountDetails.isActive">
                                 <span class="text">Statement of Accounts</span>
                             </a>
-                            <a routerLink="/collection-management/statement-of-accounts-details" class="d-none"
-                                routerLinkActive="is-active" #statementAccountDetails="routerLinkActive"></a>
+                            <a routerLink="/collection-management/statement-of-accounts-details" class="d-none" routerLinkActive="is-active"
+                                #statementAccountDetails="routerLinkActive"></a>
                         </li>
                         <li>
                             <a routerLink="/collection-management/reconciliation" routerLinkActive="is-active">
@@ -238,6 +217,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
+
                 <!-- 
                 <mat-expansion-panel hideToggle *ngIf="!envProd"
                     [expanded]="summaryReport.isActive || ebillingReport.isActive">
@@ -263,12 +243,12 @@
                 </mat-expansion-panel> -->
                 <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Nphies</mat-panel-title>
+                        <mat-panel-title>NPHIES</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
                             <a routerLink="/nphies/eligibility" routerLinkActive="is-active">
-                                <span class="text">Submit Eligibility</span>
+                                <span class="text">Request Eligibility</span>
                             </a>
                         </li>
                         <li>
@@ -277,8 +257,8 @@
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/nphies/add-beneficiary" routerLinkActive="is-active">
-                                <span class="text">Add Beneficiary</span>
+                            <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
+                                <span class="text">Beneficiary</span>
                             </a>
                         </li>
                         <li>
@@ -288,7 +268,7 @@
                         </li>
                         <li>
                             <a routerLink="/nphies/add-preauthorization" routerLinkActive="is-active">
-                                <span class="text">Add Pre Authorization</span>
+                                <span class="text">Request Pre Authorization</span>
                             </a>
                         </li>
                         <li>
@@ -329,14 +309,12 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@providerconfiguration">
-                            <a routerLink="/administration/config/providers" routerLinkActive="is-active"
-                                #providerConfiguration="routerLinkActive">
+                            <a routerLink="/administration/config/providers" routerLinkActive="is-active" #providerConfiguration="routerLinkActive">
                                 <span class="text">Provider Configuration</span>
                             </a>
                         </li>
                         <li i18n="@@providermapping">
-                            <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active"
-                                #providermapping="routerLinkActive">
+                            <a routerLink="/administration/config/providerMapping" routerLinkActive="is-active" #providermapping="routerLinkActive">
                                 <span class="text">Provider Mapping</span>
                             </a>
                         </li>
@@ -351,8 +329,7 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@audittrail">
-                            <a routerLink="/administration/auditLogs" routerLinkActive="is-active"
-                                #auditTrail="routerLinkActive">
+                            <a routerLink="/administration/auditLogs" routerLinkActive="is-active" #auditTrail="routerLinkActive">
                                 <span class="text">Audit Trail</span>
                             </a>
                         </li>
@@ -366,8 +343,7 @@
                 </mat-expansion-panel-header>
                 <ul class="nav-list">
                     <li>
-                        <a routerLink="/reports/claim-submissions" routerLinkActive="is-active"
-                            #claimSubmissions="routerLinkActive">
+                        <a routerLink="/reports/claim-submissions" routerLinkActive="is-active" #claimSubmissions="routerLinkActive">
                             <span class="text">Claim Submissions</span>
                         </a>
                     </li>
@@ -390,8 +366,7 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@payerPaymentContract">
-                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active"
-                                #payerPaymentContract="routerLinkActive">
+                            <a routerLink="/administration/config/payer-payment-contract" routerLinkActive="is-active" #payerPaymentContract="routerLinkActive">
                                 <span class="text">Payer Payment Contract</span>
                             </a>
                         </li>
@@ -402,8 +377,7 @@
         <ng-container *ngIf="isRcmUser || isAdmin">
             <ul class="nav-list">
                 <li>
-                    <a routerLink="/administration/switch-provider" routerLinkActive="is-active"
-                        #switchProvider="routerLinkActive">
+                    <a routerLink="/administration/switch-provider" routerLinkActive="is-active" #switchProvider="routerLinkActive">
                         <span class="text">Switch Provider</span>
                     </a>
                 </li>

@@ -1,37 +1,37 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Add Beneficiary</p>
+        <p>Beneficiary</p>
     </div>
     <div class="block-filter-panel">
         <h5 class="semibold pb-2 mb-3 border-bottom">Personal Information</h5>
         <div class="row small-gutter">
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">First Name<span class="asterisk">*</span></label>
+                    <label class="control-label">First Name</label>
                     <input placeholder="Enter first name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Middle Name<span class="asterisk">*</span></label>
-                    <input placeholder="Enter middle name" class="form-control">
+                    <label class="control-label">Second Name</label>
+                    <input placeholder="Enter second name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Last Name<span class="asterisk">*</span></label>
-                    <input placeholder="Enter last name" class="form-control">
+                    <label class="control-label">Third Name</label>
+                    <input placeholder="Enter third name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Family Name<span class="asterisk">*</span></label>
+                    <label class="control-label">Family Name</label>
                     <input placeholder="Enter family name" class="form-control">
                 </div>
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Full Name</label>
+                    <label class="control-label">Full Name<span class="asterisk">*</span></label>
                     <input placeholder="Enter full name" class="form-control">
                 </div>
             </div>
@@ -39,16 +39,6 @@
                 <div class="form-group">
                     <label class="control-label">Beneficiary File ID</label>
                     <input placeholder="Enter middle name" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-lg-3">
-                <div class="form-group">
-                    <label class="control-label">Date of Birth - Hijri<span class="asterisk">*</span></label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="dateHijri" class="form-control" placeholder="Select date of birth as per Hijri">
-                        <mat-datepicker-toggle [for]="dateHijri"></mat-datepicker-toggle>
-                        <mat-datepicker #dateHijri></mat-datepicker>
-                    </div>
                 </div>
             </div>
             <div class="col-4 col-lg-3">
@@ -69,7 +59,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Natiionality<span class="asterisk">*</span></label>
+                    <label class="control-label">Natiionality</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Natiionality</mat-option>
@@ -83,14 +73,13 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Residency Type<span class="asterisk">*</span></label>
+                    <label class="control-label">Residency Type</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
-                            <mat-option value="-1">Select Residency Type</mat-option>
-                            <mat-option value="Type 1">Type 1</mat-option>
-                            <mat-option value="Type 2">Type 2</mat-option>
-                            <mat-option value="Type 3">Type 3</mat-option>
-                            <mat-option value="Type 4">Type 4</mat-option>
+                            <mat-option value="-2">Select Residency Type</mat-option>
+                            <mat-option value="Visitor">Visitor</mat-option>
+                            <mat-option value="Dependent">Dependent</mat-option>
+                            <mat-option value="Citizen or Resident">Citizen or Resident</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -101,10 +90,10 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Document Type</mat-option>
-                            <mat-option value="Type 1">Type 1</mat-option>
-                            <mat-option value="Type 2">Type 2</mat-option>
-                            <mat-option value="Type 3">Type 3</mat-option>
-                            <mat-option value="Type 4">Type 4</mat-option>
+                            <mat-option value="Resident Card">Resident Card</mat-option>
+                            <mat-option value="Passport">Passport</mat-option>
+                            <mat-option value="GCC ID">GCC ID</mat-option>
+                            <mat-option value="National Card or Border Number">National Card or Border Number</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -117,7 +106,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Contact Number<span class="asterisk">*</span></label>
+                    <label class="control-label">Contact Number</label>
                     <input placeholder="Enter contact number" class="form-control">
                 </div>
             </div>
@@ -153,10 +142,14 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Blood Group</mat-option>
-                            <mat-option value="Group 1">Group 1</mat-option>
-                            <mat-option value="Group 2">Group 2</mat-option>
-                            <mat-option value="Group 3">Group 3</mat-option>
-                            <mat-option value="Group 4">Group 4</mat-option>
+                            <mat-option value="O+">O+</mat-option>
+                            <mat-option value="O-">O-</mat-option>
+                            <mat-option value="A+">A+</mat-option>
+                            <mat-option value="A-">A-</mat-option>
+                            <mat-option value="B+">B+</mat-option>
+                            <mat-option value="B-">B-</mat-option>
+                            <mat-option value="AB+">AB+</mat-option>
+                            <mat-option value="AB-">AB-</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -256,14 +249,18 @@
             <table class="primary-grid manual-row-color claim-view-table no-borders">
                 <thead>
                     <tr>
+                        <th class="text-center">Set Primary?</th>
                         <th>Payer<span class="asterisk">*</span></th>
-                        <th>Expiry Date<span class="asterisk">*</span></th>
+                        <th>Expiry Date</th>
                         <th>Member Card ID<span class="asterisk">*</span></th>
                         <th width="10"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="align-middle">
+                        <td class="text-center">
+                            <mat-radio-button color="primary" class="grid-radio" checked="true"></mat-radio-button>
+                        </td>
                         <td>
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select value="-1">
