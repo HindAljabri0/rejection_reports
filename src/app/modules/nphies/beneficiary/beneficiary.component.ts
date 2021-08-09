@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class BeneficiaryComponent implements OnInit {
-
+  addMode = false;
+  editMode = false;
+  viewMode = false;
   constructor() { }
 
   ngOnInit() {

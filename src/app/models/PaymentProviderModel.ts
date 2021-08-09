@@ -5,4 +5,5 @@ export class PaymentProviderModel {
     modePayment = '';
     numberOfDays: number;
     agreementCopy: any;
+    isActive: any;
 }
