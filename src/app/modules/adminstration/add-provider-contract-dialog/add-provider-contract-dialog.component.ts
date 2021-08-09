@@ -165,6 +165,9 @@ export class AddProviderContractDialogComponent implements OnInit {
           return
         }
       }
+      else {
+        this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
+      }
 
     } else {
       this.saveProviderContactDetails(providerContractObjdata);

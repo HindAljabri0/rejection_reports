@@ -77,6 +77,7 @@ export class SuperAdminService {
     formdata.append('payerid', data.payerid);
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
+    formdata.append('isActive', data.isActive);
 
     const requestURL = `/providers/${providerId}`;
 
@@ -94,6 +95,7 @@ export class SuperAdminService {
     formdata.append('payerid', data.payerid);
     formdata.append('modePayment', data.modePayment);
     formdata.append('numberOfDays', data.numberOfDays);
+    formdata.append('isActive', data.isActive);
 
     const requestURL = `/providers/${providerId}/contractId/${editId}`;
     const req = new HttpRequest('PUT', environment.payerPaymentContractService + requestURL, formdata, {
