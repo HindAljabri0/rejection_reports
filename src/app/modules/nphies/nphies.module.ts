@@ -15,6 +15,7 @@ import { InsurancePlanComponent } from './insurance-plan/insurance-plan.componen
 import { PreauthorizationTransactionsComponent } from './preauthorization-transactions/preauthorization-transactions.component';
 import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
+import { EligibilityDetailsComponent } from './eligibility-details/eligibility-details.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add
     InsurancePlanComponent,
     AddInsurancePlanDialogComponent,
     AddEditPreauthorizationItemComponent,
-    PreauthorizationTransactionsComponent
+    PreauthorizationTransactionsComponent,
+    EligibilityDetailsComponent
   ],
   imports: [
     CommonModule,

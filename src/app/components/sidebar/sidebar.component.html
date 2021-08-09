@@ -218,7 +218,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="summaryReport.isActive || ebillingReport.isActive">
+                <!-- <mat-expansion-panel hideToggle *ngIf="!envProd" [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title>GlobMed</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -238,15 +238,15 @@
                             </a>
                         </li>
                     </ul>
-                </mat-expansion-panel>
+                </mat-expansion-panel> -->
                 <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Nphies</mat-panel-title>
+                        <mat-panel-title>NPHIES</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
                             <a routerLink="/nphies/eligibility" routerLinkActive="is-active">
-                                <span class="text">Submit Eligibility</span>
+                                <span class="text">Request Eligibility</span>
                             </a>
                         </li>
                         <li>
@@ -266,7 +266,7 @@
                         </li>
                         <li>
                             <a routerLink="/nphies/add-preauthorization" routerLinkActive="is-active">
-                                <span class="text">Add Pre Authorization</span>
+                                <span class="text">Request Pre Authorization</span>
                             </a>
                         </li>
                         <li>

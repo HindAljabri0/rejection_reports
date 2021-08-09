@@ -8,17 +8,10 @@ import { ViewEligibilityDetailsComponent } from '../view-eligibility-details/vie
   styles: []
 })
 export class EligibilityComponent implements OnInit {
-
+  showDetails = false;
   constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
-  }
-
-  openDetailsDialog() {
-    const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent,
-      {
-        panelClass: ['primary-dialog', 'dialog-xl']
-      });
   }
 
 }
