@@ -34,7 +34,7 @@ export class DialogService {
     private searchService: SearchService,
     private reportService: ReportsService) { }
 
-  openMessageDialog(dialogData: MessageDialogData, width?: string, height?: string): Observable<any> {
+  openMessageDialog(dialogData: MessageDialogData): Observable<any> {
     this.closeAll();
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       panelClass: ['primary-dialog', dialogData.isError ? 'error-dialog' : (!dialogData.withButtons ? 'success-dialog' : '')],

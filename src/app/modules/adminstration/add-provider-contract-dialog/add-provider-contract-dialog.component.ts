@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { parse } from 'querystring';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 @Component({
   selector: 'app-add-provider-contract-dialog',
   templateUrl: './add-provider-contract-dialog.component.html',
@@ -38,7 +39,8 @@ export class AddProviderContractDialogComponent implements OnInit {
     private sharedServices: SharedServices,
     private superAdmin: SuperAdminService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -131,7 +133,8 @@ export class AddProviderContractDialogComponent implements OnInit {
   }
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
+      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase()
+        .includes(this.providerController.value.toLowerCase())
     );
   }
   selectProvider(providerId: string) {
@@ -146,8 +149,8 @@ export class AddProviderContractDialogComponent implements OnInit {
     const expiryDate = moment(this.paymentProviderContractModel.expiryDate).format('YYYY-MM-DD');
     const effectiveDate = moment(this.paymentProviderContractModel.effectiveDate).format('YYYY-MM-DD');
     const providerContractObjdata = {
-      effectiveDate: effectiveDate,
-      expiryDate: expiryDate,
+      effectiveDate,
+      expiryDate,
       payerid: this.paymentProviderContractModel.payerid,
       modePayment: this.paymentProviderContractModel.modePayment,
       numberOfDays: this.paymentProviderContractModel.numberOfDays,
@@ -159,13 +162,21 @@ export class AddProviderContractDialogComponent implements OnInit {
       if (this.preIsActive !== this.paymentProviderContractModel.isActive) {
         const msg = this.paymentProviderContractModel.isActive ? 'deactivate' : 'activate';
         const noteMsg = 'Other Contracts for this payer will be deactivated';
-        if (confirm('Are you sure you want to ' + msg + ' contract')) {
-          this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
-        } else {
-          return
-        }
-      }
-      else {
+        const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, {
+          panelClass: ['primary-dialog'],
+          disableClose: true,
+          autoFocus: false,
+          data: {
+            mainMessage: 'Are you sure you want to ' + msg + ' contract?',
+            mode: 'alert'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
+          }
+        }, error => { });
+      } else {
         this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
       }
 
