@@ -497,6 +497,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid.no-borders>thead>tr>th,.primary-grid.no-borders>thead>tr>td,.primary-grid.no-borders>tbody>tr>th,.primary-grid.no-borders>tbody>tr>td,.primary-grid.no-borders>thead>tr>th.mat-header-cell,.primary-grid.no-borders>thead>tr>td.mat-header-cell,.primary-grid.no-borders>tbody>tr>th.mat-cell,.primary-grid.no-borders>tbody>tr>td.mat-cell{border:0;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
+.grid-radio .mat-radio-label-content{display: none;}
+.grid-radio .mat-radio-label{vertical-align: top;padding: 10px;}
+.grid-radio.mat-radio-button{display: block;margin: -10px auto;width: 40px;}
 
 /* abstract card carousel
 --------------------------------------------------------------------------------------------------------*/
