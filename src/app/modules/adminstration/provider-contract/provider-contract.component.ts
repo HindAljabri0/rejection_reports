@@ -26,6 +26,8 @@ export class ProviderContractComponent implements OnInit {
   paymentData: any[] = [];
   payersList: { id: number; name: string; arName: string; }[];
   associatedPayers: { switchAccountId: number; name: string; arabicName: string; category: string; hasAssociatedPriceList: boolean; }[];
+  activePayments: any = [];
+  inActivePayments: any = [];
   constructor(private dialog: MatDialog, private sharedServices: SharedServices, private superAdmin: SuperAdminService) { }
 
   ngOnInit() {
@@ -57,7 +59,8 @@ export class ProviderContractComponent implements OnInit {
           providers: this.providers,
           isEditData,
           editData: item,
-          selectedProvider: this.selectedProvider
+          selectedProvider: this.selectedProvider,
+          associatedPayers: this.associatedPayers
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -113,6 +116,8 @@ export class ProviderContractComponent implements OnInit {
           ele.expiryDate = ele.expiryDate.substring(0, ele.expiryDate.toLocaleString().indexOf(':') - 3);
           return ele;
         });
+        this.activePayments = this.paymentData.filter(ele => ele.isActive === '1');
+        this.inActivePayments = this.paymentData.filter(ele => ele.isActive === '0');
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {
@@ -131,7 +136,7 @@ export class ProviderContractComponent implements OnInit {
     const effectiveDate = moment(item.effectiveDate).format('DD-MM-YYYY');
     this.dialog.open<AttachmentViewDialogComponent, AttachmentViewData, any>(AttachmentViewDialogComponent, {
       data: {
-        filename: item.providerId + '_' + item.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf', attachment: item.agreementCopy
+        filename: item.fileName, attachment: item.agreementCopy
       }, panelClass: ['primary-dialog', 'dialog-xl']
     });
   }
