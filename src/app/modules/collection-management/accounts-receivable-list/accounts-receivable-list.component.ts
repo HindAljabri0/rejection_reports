@@ -25,8 +25,12 @@ export class AccountsReceivableListComponent implements OnInit {
         this.routeActive.queryParams.subscribe(params => {
             if (params.strYear != null) {
                 this.accountReceivableModel.strYear = params.strYear;
-                this.search();
             }
+            else {
+                const todayDate = new Date();
+                this.accountReceivableModel.strYear = moment(todayDate).format('YYYY');
+            }
+            this.search();
         });
     }
 
