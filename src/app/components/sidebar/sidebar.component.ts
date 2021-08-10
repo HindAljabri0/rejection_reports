@@ -65,5 +65,13 @@ export class SidebarComponent implements OnInit {
   get isRcmUser() {
     return this.sharedServices.isRcmUser;
   }
-
+  get hasAllNphiesPrivilege() {
+    return this.sharedServices.hasAllNphiesPrivilege;
+  }
+  get hasNphiesBeneficiaryPrivilege() {
+    return this.sharedServices.hasNphiesBeneficiaryPrivilege
+  }
+  get hasAnyNphiesPrivilege() {
+    return this.hasAllNphiesPrivilege || this.hasNphiesBeneficiaryPrivilege;
+  }
 }

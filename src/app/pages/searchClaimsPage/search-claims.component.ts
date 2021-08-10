@@ -568,6 +568,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.claims != null && this.claims.length > 0) {
       const claimsIds = this.claims.map(claim => claim.claimId);
       localStorage.setItem(SEARCH_TAB_RESULTS_KEY, claimsIds.join(','));
+      console.log(claimsIds.join(','))
     } else {
       localStorage.removeItem(SEARCH_TAB_RESULTS_KEY);
     }
