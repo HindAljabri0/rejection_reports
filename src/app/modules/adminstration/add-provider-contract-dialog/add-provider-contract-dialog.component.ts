@@ -160,7 +160,7 @@ export class AddProviderContractDialogComponent implements OnInit {
     };
     if (this.data.isEditData) {
       if (this.preIsActive !== this.paymentProviderContractModel.isActive) {
-        const msg = this.paymentProviderContractModel.isActive ? 'deactivate' : 'activate';
+        const msg = this.paymentProviderContractModel.isActive === '1' ? 'activate' : 'deactivate';
         const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, {
           panelClass: ['primary-dialog'],
           disableClose: true,
