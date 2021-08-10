@@ -64,6 +64,7 @@ body:hover::-webkit-scrollbar-thumb{background-color: rgba(182, 180, 180, 0.7);}
 button.mat-button, button.mat-flat-button, button.mat-icon-button,a.mat-button, a.mat-flat-button, a.mat-icon-button{line-height: 40px;}
 button.mat-stroked-button, a.mat-stroked-button{line-height: 38px;}
 button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
+button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-button[disabled], button.mat-stroked-button[disabled],a.mat-button[disabled], a.mat-flat-button[disabled], a.mat-icon-button[disabled], a.mat-stroked-button[disabled]{cursor: not-allowed;}
 .btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
@@ -350,6 +351,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-control.custom-select-control.mat-form-field .mat-select-trigger{padding: 4px 12px;padding-right: 28px;height:100%;display:flex;align-items:center;}
 .form-control.custom-select-control.mat-form-field .mat-form-field-flex{height:100%;}
 .form-control.custom-select-control.mat-form-field .mat-select{display:block;height:100%;}
+.form-control.custom-select-control.mat-form-field .mat-select.mat-select-disabled .mat-select-trigger{cursor: not-allowed;}
 .mat-select-panel-wrap .mat-select-panel .mat-option{height:auto;line-height:inherit;white-space:normal;overflow:visible;padding:11px 16px;}
 
 /* form error
@@ -1171,6 +1173,14 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .action-letter-btn{height: 20px;width: 20px;border-radius:50px;font-size: 12px;font-weight: 700;text-align: center;line-height: 16px;overflow: hidden;text-overflow: ellipsis;display: block;padding: 0;border:2px solid #909090;background:transparent;}
 .action-letter-btn.theme-success{border-color:#29bf24;color:#29bf24;}
 .action-letter-btn.theme-danger{border-color:#CC2F2F;color:#CC2F2F;}
+
+/* confirmation dialog body
+--------------------------------------------------------------------------------------------------------*/
+.confirmation-dialog-body{display: flex;padding-bottom: 16px;}
+.confirmation-dialog-body>img{height: 48px;width: 48px;flex-shrink: 0;flex-grow: 0;flex-basis: 48px;max-width: 48px; display: block;margin-right: 12px;}
+.confirmation-dialog-body>.right-block{flex-shrink: 0;flex-grow: 0;flex-basis: calc(100% - 60px);max-width: calc(100% - 60px);align-self:center;-ms-flex-item-align:center;}
+.confirmation-dialog-body>.right-block .title{font-size: 16px;line-height: 22px;font-weight: 600;}
+.confirmation-dialog-body>.right-block .subtitle{color: #707070;display: block;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
