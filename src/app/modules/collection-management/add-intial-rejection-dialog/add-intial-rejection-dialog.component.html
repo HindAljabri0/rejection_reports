@@ -1,28 +1,36 @@
-<div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Add Initial Rejection</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
-</div>
-<div class="primary-dialog-body pb-0">
-    <div class="form-group">
-        <label class="control-label">Initial Rejection Amount / Percentage</label>
-        <div class="row extra-small-gutter">
-            <div class="col">
-                <input class="form-control" type="text" placeholder="Enter intial rejection amount / percentage">
-            </div>
-            <div class="col-auto">
-                <mat-form-field class="form-control custom-select-control">
-                    <mat-select value="SR">
-                        <mat-option value="%">%</mat-option>
-                        <mat-option value="SR">SR</mat-option>
-                    </mat-select>
-                </mat-form-field>
+<form #intitalRejectionForm='ngForm' (ngSubmit)='intitalRejectionForm.valid && submit()'>
+    <div class="primary-dialog-header has-border">
+        <h5 class="primary-dialog-title">{{dialogTitle}} Initial Rejection</h5>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+    </div>
+    <div class="primary-dialog-body pb-0">
+        <div class="form-group"
+            [ngClass]="{'has-error' : intitalRejectionForm.submitted && !intitalRejectionModel.amount}">
+            <label class="control-label">Initial Rejection Amount / Percentage</label>
+            <div class="row extra-small-gutter">
+                <div class="col">
+                    <input class="form-control" type="number" placeholder="Enter intial rejection amount / percentage"
+                        [(ngModel)]='intitalRejectionModel.amount' #amount='ngModel' name="amount" required>
+                    <div *ngIf="intitalRejectionForm.submitted && amount.invalid">
+                        <span class="error-text">Please enter a amount</span>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="SR" [(ngModel)]='intitalRejectionModel.unitOfAmount' #unitOfAmount='ngModel'
+                            name="unitOfAmount">
+                            <mat-option value="PERCENT">%</mat-option>
+                            <mat-option value="SR">SR</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="primary-dialog-footer has-border">
-    <div class="btn-list text-right">
-        <button mat-button (click)="closeDialog()">Cancel</button>
-        <button (click)="closeDialog()" mat-flat-button color="primary">Add</button>
+    <div class="primary-dialog-footer has-border">
+        <div class="btn-list text-right">
+            <button type="button" mat-button (click)="closeDialog()">Cancel</button>
+            <button type="submit" mat-flat-button color="primary">Add</button>
+        </div>
     </div>
-</div>
+</form>
