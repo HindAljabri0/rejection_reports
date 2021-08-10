@@ -166,8 +166,8 @@ export class AddProviderContractDialogComponent implements OnInit {
           disableClose: true,
           autoFocus: false,
           data: {
-            mainMessage: 'Are you sure you want to ' + msg + ' contract?',
-            subMessage: this.paymentProviderContractModel.isActive === '1' ? 'Other Contracts for this payer will be deactivated' : '',
+            mainMessage: 'Are you sure you want to ' + msg + ' this contract?',
+            subMessage: this.paymentProviderContractModel.isActive === '1' ? 'Other contract between this provider and payer will be deactivated' : '',
             mode: 'alert'
           }
         });
