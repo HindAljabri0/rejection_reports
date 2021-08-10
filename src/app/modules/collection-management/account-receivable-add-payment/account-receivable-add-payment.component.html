@@ -13,110 +13,21 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr *ngFor="let item of payementData">
                     <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                        <mat-checkbox #accCheck class="grid-checkbox" (click)="selectedAccountPayer(item,accCheck)"
+                            color="primary">
+                        </mat-checkbox>
                     </td>
-                    <td>3008 SR</td>
-                    <td>7/10/2061</td>
+                    <td>{{item.amount | number : '1.2-2'}} SR</td>
+                    <td>{{item.paymentDate | date: 'dd-MM-yyyy' }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
+                    <td colspan="3" class="p-0">
+                        <app-empty-state *ngIf="payementData == null || payementData.length == 0"
+                            class="claim-list-empty-state" message='No records found!'>
+                        </app-empty-state>
                     </td>
-                    <td>7530 SR</td>
-                    <td>17/7/2032</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>3606 SR</td>
-                    <td>15/10/2111</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>3159 SR</td>
-                    <td>30/7/2041</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>9651 SR</td>
-                    <td>24/7/2060</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>4450 SR</td>
-                    <td>31/1/2118</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>6264 SR</td>
-                    <td>22/7/2101</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>3078 SR</td>
-                    <td>1/12/2038</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>5809 SR</td>
-                    <td>22/2/2089</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>4054 SR</td>
-                    <td>28/7/2057</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>7721 SR</td>
-                    <td>13/6/2116</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>1420 SR</td>
-                    <td>13/8/2046</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>1677 SR</td>
-                    <td>25/12/2108</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>4260 SR</td>
-                    <td>1/9/2121</td>
-                </tr>
-                <tr>
-                    <td>
-                        <mat-checkbox class="grid-checkbox" color="primary"></mat-checkbox>
-                    </td>
-                    <td>4731 SR</td>
-                    <td>29/5/2046</td>
                 </tr>
             </tbody>
         </table>
@@ -125,6 +36,7 @@
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
         <button mat-button (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="primary">Add Payment</button>
+        <button mat-flat-button color="primary" [disabled]="selctedAccountPayerData.length===0"
+            (click)="addPaymentReceivableData()">Add Payment</button>
     </div>
 </div>
