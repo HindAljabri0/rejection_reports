@@ -344,8 +344,6 @@ export class SharedServices {
         return 'SAICO';
       case '201':
         return 'Malath';
-      case '207':
-        return 'Rajhi';
       case '203':
         return 'GCI';
       case '202':
