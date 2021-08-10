@@ -201,7 +201,7 @@ const _claimReducer = createReducer(
         }
     })),
     on(actions.setError, (state, { error }) => ({ ...state, error, loading: false, approvalFormLoading: false })),
-    on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs, paginationControl: state.paginationControl })),
+    on(actions.cancelClaim, (state) => ({ ...initState, loading: false, LOVs: state.LOVs })),
     on(actions.changeSelectedTab, (state, { tab }) => ({ ...state, selectedTab: tab })),
     on(actions.addClaimErrors, (state, { module, errors }) => {
         let claimErrors = initState.claimErrors;

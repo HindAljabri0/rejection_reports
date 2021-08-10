@@ -241,7 +241,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel> -->
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
+                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>NPHIES</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -256,7 +256,7 @@
                                 <span class="text">Eligibility Transactions</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="hasNphiesBeneficiaryPrivilege">
                             <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
                                 <span class="text">Beneficiary</span>
                             </a>
