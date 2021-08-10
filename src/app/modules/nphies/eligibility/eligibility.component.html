@@ -5,7 +5,7 @@
         </div>
         <div class="block-filter-panel">
             <div class="row small-gutter">
-                <div class="col-4">
+                <div class="col-8">
                     <div class="form-group">
                         <label class="control-label">Beneficiary<span class="asterisk">*</span></label>
                         <mat-form-field class="form-control custom-select-control">
@@ -17,24 +17,7 @@
                                 <mat-option value="Beneficiary 4">Beneficiary 4</mat-option>
                             </mat-select>
                         </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label class="control-label">Member ID<span class="asterisk">*</span></label>
-                        <input placeholder="Enter member ID" class="form-control">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label class="control-label">Policy No.</label>
-                        <input placeholder="Enter policy no." class="form-control">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label class="control-label">National ID / Iqama ID<span class="asterisk">*</span></label>
-                        <input placeholder="Enter national ID / iqama ID" class="form-control">
+                        <a routerLink="/nphies/beneficiary" title="+ Add Beneficiary" class="primary-link medium d-inline-block mt-1">+ Add Beneficiary</a>
                     </div>
                 </div>
                 <div class="col-4">
@@ -55,12 +38,6 @@
                             <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker>
                         </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label class="control-label">Department Name</label>
-                        <input class="form-control" placeholder="Enter department name">
                     </div>
                 </div>
                 <div class="col-8">
