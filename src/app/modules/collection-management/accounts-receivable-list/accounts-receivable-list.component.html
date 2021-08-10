@@ -2,7 +2,7 @@
     <div class="block-header has-border">
         <p>Accounts Receivables Monthly</p>
     </div>
-    <form #createBatchForm='ngForm' (ngSubmit)='createBatchForm.valid && getAccountReceivablePayerData()'>
+    <form #createBatchForm='ngForm' (ngSubmit)='createBatchForm.valid && search()'>
         <div class="block-filter-panel has-border">
             <div class="row">
                 <div class="col-lg-5">
@@ -28,8 +28,7 @@
             </div>
         </div>
     </form>
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white"
-        (selectedTabChange)="getByPayerOrYear($event)">
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white" #tabEvent>
         <mat-tab [label]="'By Year'">
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
                 <div class="fixed-height">
@@ -44,53 +43,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    Jan - 2021</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    738</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    150</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    105</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    32%</td>
+                            <tr *ngFor="let item of yearData">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
+                                    [queryParams]="{month: item.month}">
+                                    {{item.month}}</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
+                                    [queryParams]="{month: item.month}">
+                                    {{item.totalSubmittedAmount}}</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
+                                    [queryParams]="{month: item.month}">
+                                    {{item.totalPaidAmount}}</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
+                                    [queryParams]="{month: item.month}">
+                                    {{item.totalOutstandingAmount}}</td>
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
+                                    [queryParams]="{month: item.month}">
+                                    {{item.collecttionRatio}}</td>
                             </tr>
                             <tr>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    Feb - 2021</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    711</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    124</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    271</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    24%</td>
-                            </tr>
-                            <tr>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    Mar - 2021</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    780</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    130</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    237</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    30%</td>
-                            </tr>
-                            <tr>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    Apr - 2021</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    591</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    150</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    280</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details">
-                                    67%</td>
+                                <td colspan="5" class="p-0">
+                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0"
+                                        class="claim-list-empty-state" message='No records found!'>
+                                    </app-empty-state>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,7 +80,7 @@
                             <tr>
                                 <th>Payer</th>
                                 <th>Total Submitted Amount</th>
-                                <th>Total Received Amount</th>
+                                <th>Total Paid Amount</th>
                                 <th>Total Outstanding Amount</th>
                                 <th>Collection Ratio</th>
                             </tr>
@@ -113,19 +88,24 @@
                         <tbody>
                             <tr *ngFor="let item of payementData">
                                 <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer">
+                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                    [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.payerName}}</td>
                                 <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer">
+                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                    [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.totalSubmittedAmount}}</td>
                                 <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer">
+                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                    [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.totalReceivedAmount}}</td>
                                 <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer">
+                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                    [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.outstandingAmount}}</td>
                                 <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer">
+                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                    [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.totalReceivedPerc}}</td>
                             </tr>
                             <tr>
