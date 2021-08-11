@@ -37,9 +37,8 @@ export class DbMappingService {
   deletePayerMapping(providerId: string, body) {
     const requestURL = `/providers/${providerId}/payer-mapping`;
 
-    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
-    const requestWithBody = request.clone({ body });
-    return this.http.request(requestWithBody);
+    const request = new HttpRequest('PUT', environment.settingsServiceHost + requestURL, body);
+    return this.http.request(request);
   }
   setProviderMapping(body, providerId) {
     const requestURL: string = `/providers/` + providerId + `/provider-mapping`;

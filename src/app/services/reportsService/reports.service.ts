@@ -218,5 +218,16 @@ export class ReportsService {
     const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
+  getTechinicalRejection(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string, page: number, pageSize: number): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejections/technical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}&page=${page}&pageSize=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+  downloadTechnicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejections/technical/download?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '',
+      { responseType: 'arraybuffer', reportProgress: true });
+    return this.http.request(request);
+  }
 
 }

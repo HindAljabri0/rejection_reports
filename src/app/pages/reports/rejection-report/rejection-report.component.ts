@@ -60,7 +60,7 @@ export class RejectionReportComponent implements OnInit {
     // this.fetchData();
   }
 
-  async fetchData() {
+  fetchData() {
     if (this.commen.loading) {
       return;
     }
@@ -73,16 +73,50 @@ export class RejectionReportComponent implements OnInit {
       this.lastDownloadSubscriptions.unsubscribe();
     }
     this.errorMessage = null;
-    let event;
-    event = await this.reportService.getRejectionSummary(this.providerId,
+    // let event;
+    // event = await this.reportService.getRejectionSummary(this.providerId,
+    //   this.from,
+    //   this.to,
+    //   this.payerId,
+    //   this.criteriaType,
+    //   this.queryPage,
+    //   this.pageSize).subscribe((event) => {
+    //     if (event instanceof HttpResponse) {
+    //       this.rejectionReportSummary = new PaginatedResult(event.body, RejectionSummary);
+    //       this.rejectedClaims = this.rejectionReportSummary.content;
+    //       const pages = Math.ceil((this.rejectionReportSummary.totalElements / this.paginator.pageSize));
+    //       this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
+    //       this.manualPage = this.rejectionReportSummary.number;
+    //       this.paginator.pageIndex = this.rejectionReportSummary.number;
+    //       this.paginator.pageSize = this.rejectionReportSummary.numberOfElements;
+
+    //       if (this.rejectedClaims.length == 0) {
+    //         this.errorMessage = 'No Results Found';
+    //       }
+    //       this.commen.loadingChanged.next(false);
+    //     }
+    //   }, error => {
+    //     if (error instanceof HttpErrorResponse) {
+    //       if ((error.status / 100).toFixed() == '4') {
+    //         this.errorMessage = 'Access Denied.';
+    //       } else if ((error.status / 100).toFixed() == '5') {
+    //         this.errorMessage = 'Server could not handle the request. Please try again later.';
+    //       } else {
+    //         this.errorMessage = 'Somthing went wrong.';
+    //       }
+    //     }
+    //     this.commen.loadingChanged.next(false);
+    //   });
+    const criteriaType = this.criteriaType.toString() === '1' ? 'extraction' : 'claim';
+    this.reportService.getTechinicalRejection(this.commen.providerId,
       this.from,
       this.to,
       this.payerId,
-      this.criteriaType,
-      this.queryPage,
-      this.pageSize).subscribe((event) => {
+      criteriaType,
+      this.queryPage, this.pageSize).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
-          this.rejectionReportSummary = new PaginatedResult(event.body, RejectionSummary);
+          const body = JSON.parse(event.body);
+          this.rejectionReportSummary = new PaginatedResult(body, RejectionSummary);
           this.rejectedClaims = this.rejectionReportSummary.content;
           const pages = Math.ceil((this.rejectionReportSummary.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
@@ -113,8 +147,19 @@ export class RejectionReportComponent implements OnInit {
     if (this.detailTopActionIcon == 'ic-check-circle.svg') {
       return;
     }
+    // this.lastDownloadSubscriptions = this.downloadService
+    //   .startDownload(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
+    //   .subscribe(status => {
+    //     if (status != DownloadStatus.ERROR) {
+    //       this.detailTopActionIcon = 'ic-check-circle.svg';
+    //     } else {
+    //       this.detailTopActionIcon = 'ic-download.svg';
+    //     }
+    //   });
+    const criteriaType = this.criteriaType.toString() === '1' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
-      .startDownload(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
+      .startDownload(this.reportService
+        .downloadTechnicalRejectionReport(this.providerId, this.from, this.to, this.payerId, criteriaType))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
