@@ -259,22 +259,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="align-middle">
+                        <tr class="align-middle" *ngFor ="let address  of addresses">
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"  [formControl]="houseNumberController" />
+                                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"  [formControl]="address.houseNumberController" />
                             </td>
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Street Name"  [formControl]="streetNameController"/>
+                                <input type="text" class="form-control minw145" placeholder="Enter Street Name"  [formControl]="address.streetNameController"/>
                             </td>
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController"/>
+                                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="address.cityNameController"/>
                             </td>
                             <td>
                                 <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="selectedState" 
-                                    (selectionChange)="selectedState = $event.value;" 
+                                    <mat-select [value]="address.selectedState" 
+                                    (selectionChange)="address.selectedState = $event.value;" 
                                     #State>
-                                        <mat-option value="-1">Select State/Province</mat-option>
+                                        <mat-option value="">Select State/Province</mat-option>
                                         <mat-option value="State 1">State 1</mat-option>
                                         <mat-option value="State 2">State 2</mat-option>
                                         <mat-option value="State 3">State 3</mat-option>
@@ -284,10 +284,10 @@
                             </td>
                             <td>
                                 <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="selectedCountry" 
+                                    <mat-select [value]="address.selectedCountry" 
                                     (selectionChange)="selectedCountry = $event.value;" 
                                     #Country>
-                                        <mat-option value="-1">Select Country</mat-option>
+                                        <mat-option value="">Select Country</mat-option>
                                         <mat-option value="Country 1">Country 1</mat-option>
                                         <mat-option value="Country 2">Country 2</mat-option>
                                         <mat-option value="Country 3">Country 3</mat-option>
@@ -296,7 +296,7 @@
                                 </mat-form-field>
                             </td>
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" />
+                                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="address.postalCodeController" />
                             </td>
                             <td class="actions">
                                 <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
