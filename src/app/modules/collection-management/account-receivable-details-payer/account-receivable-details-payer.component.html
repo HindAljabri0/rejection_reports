@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Accounts Receivables Monthly - Bupa</p>
+        <p>Accounts Receivables Monthly - {{payerName}}</p>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
@@ -26,23 +26,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let item of receivableDetailsData">
+                    <tr class="seperator-row" *ngIf="receivableDetailsData.length>0">
+                        <td colspan="2">{{payerName}}</td>
+                        <td>{{sumOfTotalReceivableObj.sumTotalSubmitted}}</td>
+                        <td>{{sumOfTotalReceivableObj.sumTotalReceivedAmount}}</td>
+                        <td>{{sumOfTotalReceivableObj.sumTotalReceivedAmountPerc}}</td>
+                        <td>{{sumOfTotalReceivableObj.initRejectionAmount}}</td>
+                        <td>{{sumOfTotalReceivableObj.initRejectionAmountPerc}}</td>
+                        <td>{{sumOfTotalReceivableObj.sumTotalOutstandingAmount}}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{sumOfTotalReceivableObj.sumAvgTat}}</td>
+                        <td></td>
+                    </tr>
+                    <ng-container *ngFor="let item of receivableDetailsData;let i=index;">
 
                         <tr>
-                            <td class="text-primary text-center row-click" (click)="toggleRow(0)" width="10">
-                                <mat-icon *ngIf="currentOpenRecord!=0" class="size-21">add_circle_outline</mat-icon>
-                                <mat-icon *ngIf="currentOpenRecord==0" class="size-21">remove_circle_outline</mat-icon>
+                            <td class="text-primary text-center row-click" (click)="toggleRow(i)" width="10">
+                                <mat-icon *ngIf="currentOpenRecord!=i" class="size-21">add_circle_outline</mat-icon>
+                                <mat-icon *ngIf="currentOpenRecord==i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.month}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.totalSubmitted}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.totalReceivedAmount}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.totalReceivedPerc}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.initRejectionAmount}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.initRejectionPerc}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.outstandingAmount}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.dueDate}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.overDueDay}}</td>
-                            <td class="row-click" (click)="toggleRow(0)">{{item.avgTat}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.month}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.totalSubmitted}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.totalReceivedAmount}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.totalReceivedPerc}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionAmount}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionPerc}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.outstandingAmount}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.dueDate}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.overDueDay}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.avgTat}}</td>
                             <td class="actions">
                                 <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
                                     (click)="setSelcetedPayerAndDate(item)">
@@ -50,7 +63,7 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr *ngIf="currentOpenRecord==0">
+                        <tr *ngIf="currentOpenRecord==i">
                             <td colspan="12">
                                 <div class="box">
                                     <h5 class="align-self-center medium pb-2">Payments</h5>
@@ -67,43 +80,25 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>6/11/2010</td>
-                                                    <td>231</td>
-                                                    <td>4</td>
-                                                    <td>96.91%</td>
-                                                    <td>Prompt / Early</td>
+                                                <tr *ngFor="let innerData of item.payments">
+                                                    <td>{{innerData.paymentDate | date: 'dd-MM-yyyy'}}</td>
+                                                    <td>{{innerData.amount}}</td>
+                                                    <td>{{innerData.tat}}</td>
+                                                    <td>{{innerData.paymentRatio}}</td>
+                                                    <td>{{innerData.type}}</td>
                                                     <td>
                                                         <button class="text-danger delete-btn"
-                                                            (click)="deletePayment()">
+                                                            (click)="deletePayment(innerData.paymentId)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>4/14/2012</td>
-                                                    <td>450</td>
-                                                    <td>19</td>
-                                                    <td>81.43%</td>
-                                                    <td>Prompt / Early</td>
-                                                    <td>
-                                                        <button class="text-danger delete-btn"
-                                                            (click)="deletePayment()">
-                                                            <mat-icon>delete_outline</mat-icon>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>11/27/2016</td>
-                                                    <td>437</td>
-                                                    <td>7</td>
-                                                    <td>63.25%</td>
-                                                    <td>Prompt / Early</td>
-                                                    <td>
-                                                        <button class="text-danger delete-btn"
-                                                            (click)="deletePayment()">
-                                                            <mat-icon>delete_outline</mat-icon>
-                                                        </button>
+                                                    <td colspan="6" class="p-0">
+                                                        <app-empty-state
+                                                            *ngIf="item.payments == null || item.payments.length == 0"
+                                                            class="claim-list-empty-state" message='No records found!'>
+                                                        </app-empty-state>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -113,6 +108,13 @@
                             </td>
                         </tr>
                     </ng-container>
+                    <tr>
+                        <td colspan="10" class="p-0">
+                            <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
