@@ -92,6 +92,7 @@ import { XmlViewDialogComponent } from './components/dialogs/xml-view-dialog/xml
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { EditClaimComponent } from './pages/edit-claim/edit-claim.component';
 import { ClaimModule } from './modules/claim/claim.module';
+import { ConfirmationAlertDialogComponent } from './components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 
 @NgModule({
@@ -152,7 +153,8 @@ import { ClaimModule } from './modules/claim/claim.module';
     DownloadProgressViewComponent,
     ConfirmAdminDeleteDialogComponent,
     XmlViewDialogComponent,
-    EditClaimComponent
+    EditClaimComponent,
+    ConfirmationAlertDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -226,7 +228,8 @@ import { ClaimModule } from './modules/claim/claim.module';
     DownloadOverlayComponent,
     ConfirmAdminDeleteDialogComponent,
     XmlViewDialogComponent,
-    EditClaimComponent
+    EditClaimComponent,
+    ConfirmationAlertDialogComponent
   ],
 })
 export class AppModule { }

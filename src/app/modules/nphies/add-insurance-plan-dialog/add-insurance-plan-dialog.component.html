@@ -1,0 +1,87 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add Insurance Plan</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+    <div class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Name<span class="asterisk">*</span></label>
+                <input placeholder="Enter name" class="form-control">
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Code<span class="asterisk">*</span></label>
+                <input placeholder="Enter code" class="form-control">
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <input placeholder="Enter description" class="form-control">
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Payer<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select Payer</mat-option>
+                        <mat-option value="Payer 1">Payer 1</mat-option>
+                        <mat-option value="Payer 2">Payer 2</mat-option>
+                        <mat-option value="Payer 3">Payer 3</mat-option>
+                        <mat-option value="Payer 4">Payer 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Insurer<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select Insurer</mat-option>
+                        <mat-option value="Insurer 1">Insurer 1</mat-option>
+                        <mat-option value="Insurer 2">Insurer 2</mat-option>
+                        <mat-option value="Insurer 3">Insurer 3</mat-option>
+                        <mat-option value="Insurer 4">Insurer 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Discount Rate(%)<span class="asterisk">*</span></label>
+                <input placeholder="Enter discount rate(%)" class="form-control">
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Patient Share(%)<span class="asterisk">*</span></label>
+                <input placeholder="Enter patient share(%)" class="form-control">
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Max Patient Share</label>
+                <input placeholder="Enter max patient share" class="form-control">
+            </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+            <div class="form-group">
+                <label class="control-label">Is Active?</label>
+                <mat-radio-group class="radio-group inline">
+                    <mat-radio-button color="primary" [value]="1">Yes</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="2">No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="primary">Add Plan</button>
+    </div>
+</div>

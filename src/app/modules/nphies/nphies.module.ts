@@ -8,19 +8,29 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
-import { AddBeneficiaryComponent } from './add-beneficiary/add-beneficiary.component';
+import { BeneficiaryComponent } from './beneficiary/beneficiary.component';
 import { AddPreauthorizationComponent } from './add-preauthorization/add-preauthorization.component';
 import { EligibilityTransactionsComponent } from './eligibility-transactions/eligibility-transactions.component';
 import { InsurancePlanComponent } from './insurance-plan/insurance-plan.component';
+import { PreauthorizationTransactionsComponent } from './preauthorization-transactions/preauthorization-transactions.component';
+import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorization-item/add-edit-preauthorization-item.component';
+import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
+import { EligibilityDetailsComponent } from './eligibility-details/eligibility-details.component';
+import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-details/view-preauthorization-details.component';
 
 @NgModule({
   declarations: [
     EligibilityComponent,
     ViewEligibilityDetailsComponent,
-    AddBeneficiaryComponent,
+    BeneficiaryComponent,
     AddPreauthorizationComponent,
     EligibilityTransactionsComponent,
-    InsurancePlanComponent
+    InsurancePlanComponent,
+    AddInsurancePlanDialogComponent,
+    AddEditPreauthorizationItemComponent,
+    PreauthorizationTransactionsComponent,
+    EligibilityDetailsComponent,
+    ViewPreauthorizationDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +44,10 @@ import { InsurancePlanComponent } from './insurance-plan/insurance-plan.componen
     NphiesRoutingModule
   ],
   entryComponents: [
-    ViewEligibilityDetailsComponent
+    ViewEligibilityDetailsComponent,
+    AddInsurancePlanDialogComponent,
+    AddEditPreauthorizationItemComponent,
+    ViewPreauthorizationDetailsComponent
   ]
 })
 export class NphiesModule { }

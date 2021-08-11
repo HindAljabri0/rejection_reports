@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { parse } from 'querystring';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 @Component({
   selector: 'app-add-provider-contract-dialog',
   templateUrl: './add-provider-contract-dialog.component.html',
@@ -32,12 +33,14 @@ export class AddProviderContractDialogComponent implements OnInit {
   isProviderDisabled = true;
   closeStatus = false;
   isPromptPayment = true;
+  preIsActive: any;
   constructor(
     private dialogRef: MatDialogRef<AddProviderContractDialogComponent>,
     private sharedServices: SharedServices,
     private superAdmin: SuperAdminService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -61,12 +64,21 @@ export class AddProviderContractDialogComponent implements OnInit {
       const fileBlob = this.sharedServices.dataURItoBlob(this.data.editData.agreementCopy, 'application/pdf');
       const expiryDate = moment(this.data.editData.expiryDate).format('DD-MM-YYYY');
       const effectiveDate = moment(this.data.editData.effectiveDate).format('DD-MM-YYYY');
+      // this.currentFileUpload = new File([fileBlob],
+      //   this.data.editData.providerId + '_' + this.data.editData.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf',
+      //   { type: 'application/pdf' });
       this.currentFileUpload = new File([fileBlob],
-        this.data.editData.providerId + '_' + this.data.editData.payerName + '_' + effectiveDate + '_' + expiryDate + '.pdf',
+        this.data.editData.fileName,
         { type: 'application/pdf' });
+
       this.paymentProviderContractModel.agreementCopy = this.data.editData.agreementCopy;
+      this.paymentProviderContractModel.isActive = this.data.editData.isActive;
       this.fileUploadFlag = true;
-      this.getAssociatedPayers();
+      this.associatedPayers = this.data.associatedPayers;
+      this.isProviderDisabled = false;
+      this.isPayerSelected = false;
+      this.paymentProviderContractModel.payerid = parseInt(this.data.editData.payerId, 10);
+      this.preIsActive = this.data.editData.isActive;
     } else {
       this.paymentProviderContractModel = new PaymentProviderModel();
       this.fileUploadFlag = false;
@@ -121,7 +133,8 @@ export class AddProviderContractDialogComponent implements OnInit {
   }
   updateFilter() {
     this.filteredProviders = this.providers.filter(provider =>
-      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase().includes(this.providerController.value.toLowerCase())
+      `${provider.switchAccountId} | ${provider.code} | ${provider.name}`.toLowerCase()
+        .includes(this.providerController.value.toLowerCase())
     );
   }
   selectProvider(providerId: string) {
@@ -136,16 +149,37 @@ export class AddProviderContractDialogComponent implements OnInit {
     const expiryDate = moment(this.paymentProviderContractModel.expiryDate).format('YYYY-MM-DD');
     const effectiveDate = moment(this.paymentProviderContractModel.effectiveDate).format('YYYY-MM-DD');
     const providerContractObjdata = {
-      effectiveDate: effectiveDate,
-      expiryDate: expiryDate,
+      effectiveDate,
+      expiryDate,
       payerid: this.paymentProviderContractModel.payerid,
       modePayment: this.paymentProviderContractModel.modePayment,
-      numberOfDays: this.paymentProviderContractModel.numberOfDays,
-      agreementCopy: this.paymentProviderContractModel.agreementCopy
+      numberOfDays: this.paymentProviderContractModel.numberOfDays === undefined || this.paymentProviderContractModel.numberOfDays === null || this.paymentProviderContractModel.numberOfDays === '' ? 0 : this.paymentProviderContractModel.numberOfDays,
+      agreementCopy: this.paymentProviderContractModel.agreementCopy,
+      isActive: this.paymentProviderContractModel.isActive
 
     };
     if (this.data.isEditData) {
-      this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
+      if (this.preIsActive !== this.paymentProviderContractModel.isActive) {
+        const msg = this.paymentProviderContractModel.isActive === '1' ? 'activate' : 'deactivate';
+        const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, {
+          panelClass: ['primary-dialog'],
+          disableClose: true,
+          autoFocus: false,
+          data: {
+            mainMessage: 'Are you sure you want to ' + msg + ' this contract?',
+            subMessage: this.paymentProviderContractModel.isActive === '1' ? 'Other contract between this provider and payer will be deactivated' : '',
+            mode: 'alert'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
+          }
+        }, error => { });
+      } else {
+        this.updateProviderContactDetails(providerContractObjdata, this.data.editData.contractId);
+      }
+
     } else {
       this.saveProviderContactDetails(providerContractObjdata);
     }

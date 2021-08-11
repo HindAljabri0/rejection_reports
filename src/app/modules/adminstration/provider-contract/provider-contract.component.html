@@ -19,7 +19,7 @@
             </mat-autocomplete>
         </div>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+    <!-- <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
@@ -60,7 +60,102 @@
                 </tbody>
             </table>
         </div>
-    </ng-scrollbar>
+    </ng-scrollbar> -->
+
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding bg-white">
+        <mat-tab [label]="'Active'">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Payer</th>
+                                <th>Effective Date</th>
+                                <th>Expiry Date</th>
+                                <th>Mode of Payment</th>
+                                <th>No. of Days</th>
+                                <th>Agreement Copy</th>
+                                <th width="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of activePayments">
+                                <td>{{item.payerName}}</td>
+                                <td>{{item.effectiveDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{item.expiryDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{item.modeOfPayment}}</td>
+                                <td>{{item.numberOfDays}}</td>
+                                <td>
+                                    <a href="#" title="View" class="primary-link"
+                                        (click)="viewAttachment($event,item)">View</a>
+                                </td>
+                                <td class="actions">
+                                    <button type="button" mat-icon-button class="text-primary"
+                                        (click)="openAddContractDialog(item)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" class="p-0">
+                                    <app-empty-state *ngIf="activePayments == null || activePayments.length == 0"
+                                        class="claim-list-empty-state" message='No records found!'>
+                                    </app-empty-state>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+        </mat-tab>
+        <mat-tab [label]="'InActive'">
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Payer</th>
+                                <th>Effective Date</th>
+                                <th>Expiry Date</th>
+                                <th>Mode of Payment</th>
+                                <th>No. of Days</th>
+                                <th>Agreement Copy</th>
+                                <th width="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of inActivePayments">
+                                <td>{{item.payerName}}</td>
+                                <td>{{item.effectiveDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{item.expiryDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{item.modeOfPayment}}</td>
+                                <td>{{item.numberOfDays}}</td>
+                                <td>
+                                    <a href="#" title="View" class="primary-link"
+                                        (click)="viewAttachment($event,item)">View</a>
+                                </td>
+                                <td class="actions">
+                                    <button type="button" mat-icon-button class="text-primary"
+                                        (click)="openAddContractDialog(item)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" class="p-0">
+                                    <app-empty-state *ngIf="inActivePayments == null || inActivePayments.length == 0"
+                                        class="claim-list-empty-state" message='No records found!'>
+                                    </app-empty-state>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+        </mat-tab>
+    </mat-tab-group>
+
+
     <!-- <div class="block-footer sticky-bottom" *ngIf="!isLoading">
         <div class="left-block custom-paginator" *ngIf="paymentData.length > 0">
             <button matRipple type="button" title="First Page">

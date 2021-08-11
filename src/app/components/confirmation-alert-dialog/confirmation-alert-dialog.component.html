@@ -1,0 +1,16 @@
+<div class="primary-dialog-body">
+    <div class="confirmation-dialog-body">
+        <img src="./assets/ic-success.svg" alt="Success" *ngIf="data.mode=='success'" />
+        <img src="./assets/ic-warning.svg" alt="Warning" *ngIf="data.mode=='warning'" />
+        <img src="./assets/ic-danger.svg" alt="Alert" *ngIf="data.mode=='alert'" />
+        <img src="./assets/ic-info.svg" alt="Info" *ngIf="data.mode=='info'" />
+        <div class="right-block">
+            <p class="title">{{data.mainMessage}}</p>
+            <span class="subtitle" *ngIf="data.subMessage">{{data.subMessage}}</span>
+        </div>
+    </div>
+    <div class="btn-list text-right">
+        <button mat-flat-button type="button" *ngIf="!data.hideNoButton" (click)="noClick()">{{data.noButtonText || 'No'}}</button>
+        <button mat-flat-button type="button" (click)="yesClick()" color="primary">{{data.yesButtonText || 'Yes'}}</button>
+    </div>
+</div>

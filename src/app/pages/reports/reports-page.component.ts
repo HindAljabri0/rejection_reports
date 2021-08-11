@@ -27,7 +27,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   reports: { id: number, name: string }[] = [
     { id: 1, name: 'Payment Report' },
     { id: 2, name: 'Claim Submission Report' },
-    { id: 3, name: 'Rejection Report' },
+    { id: 3, name: 'Technical Rejection Report' },
   ];
 
   criterias: { id: number, name: string }[] = [
