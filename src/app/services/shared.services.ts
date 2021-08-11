@@ -155,6 +155,25 @@ export class SharedServices {
     return privilege != null && (privilege.includes('|24') || privilege.startsWith('24'));
   }
 
+
+  get hasAllNphiesPrivilege() {
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      return userPrivileges != null && (userPrivileges.includes('|25.0') || userPrivileges.startsWith('25.0'));
+    } catch (error) {
+      return false;
+    }
+  }
+  get hasNphiesBeneficiaryPrivilege() {
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      return userPrivileges != null && (userPrivileges.includes('|25.1') || userPrivileges.startsWith('25.1'));
+    } catch (error) {
+      return false;
+    }
+  }
   getNotifications() {
     if (!this.isProvider) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
@@ -344,8 +363,6 @@ export class SharedServices {
         return 'SAICO';
       case '201':
         return 'Malath';
-      case '207':
-        return 'Rajhi';
       case '203':
         return 'GCI';
       case '202':
