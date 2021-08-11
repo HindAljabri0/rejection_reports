@@ -320,7 +320,7 @@
                                 <mat-radio-button color="primary" class="grid-radio" checked="true"></mat-radio-button>
                             </td>
                             <td>
-                                <div class="form-group m-0" [matTooltip] ="insurancePlan.payerErorr" [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErrore.trim().length>0">
+                                <div class="form-group m-0" [matTooltip] ="insurancePlan.payerErorr" [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
                                 <mat-form-field class="form-control custom-select-control">
                                     <mat-select [value]="insurancePlan.selectePayer"
                                     (selectionChange)="insurancePlan.selectePayer = $event.value;">
