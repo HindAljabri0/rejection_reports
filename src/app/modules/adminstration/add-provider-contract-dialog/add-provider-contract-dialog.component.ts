@@ -153,7 +153,7 @@ export class AddProviderContractDialogComponent implements OnInit {
       expiryDate,
       payerid: this.paymentProviderContractModel.payerid,
       modePayment: this.paymentProviderContractModel.modePayment,
-      numberOfDays: this.paymentProviderContractModel.numberOfDays,
+      numberOfDays: this.paymentProviderContractModel.numberOfDays === undefined || this.paymentProviderContractModel.numberOfDays === null || this.paymentProviderContractModel.numberOfDays === '' ? 0 : this.paymentProviderContractModel.numberOfDays,
       agreementCopy: this.paymentProviderContractModel.agreementCopy,
       isActive: this.paymentProviderContractModel.isActive
 
