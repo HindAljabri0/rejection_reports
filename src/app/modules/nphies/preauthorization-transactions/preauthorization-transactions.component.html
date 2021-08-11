@@ -92,98 +92,74 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>496661</td>
-                        <td>LAV4FIYPZWKS</td>
-                        <td>22/4/2026</td>
-                        <td>Plan - 1</td>
-                        <td>Approved</td>
+                        <td class="row-click" (click)="openDetailsDialog()">496661</td>
+                        <td class="row-click" (click)="openDetailsDialog()">LAV4FIYPZWKS</td>
+                        <td class="row-click" (click)="openDetailsDialog()">22/4/2026</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Reuse" class="text-primary">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
-                                <mat-icon class="material-icons-outlined">description</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
-                                <mat-icon>add</mat-icon>
+                            <mat-menu #moreMenu="matMenu" xPosition="before">
+                                <button mat-menu-item><span>Reuse</span></button>
+                                <button mat-menu-item><span>Cancel</span></button>
+                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                <button mat-menu-item><span>Add New Related Claim</span></button>
+                            </mat-menu>
+                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
                     <tr>
-                        <td>106823</td>
-                        <td>3CL3UHRA4OJZ</td>
-                        <td>9/5/2076</td>
-                        <td>Plan - 1</td>
-                        <td>Approved</td>
+                        <td class="row-click" (click)="openDetailsDialog()">106823</td>
+                        <td class="row-click" (click)="openDetailsDialog()">3CL3UHRA4OJZ</td>
+                        <td class="row-click" (click)="openDetailsDialog()">9/5/2076</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Reuse" class="text-primary">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
-                                <mat-icon class="material-icons-outlined">description</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
-                                <mat-icon>add</mat-icon>
+                            <mat-menu #moreMenu="matMenu" xPosition="before">
+                                <button mat-menu-item><span>Reuse</span></button>
+                                <button mat-menu-item><span>Cancel</span></button>
+                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                <button mat-menu-item><span>Add New Related Claim</span></button>
+                            </mat-menu>
+                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
                     <tr>
-                        <td>729978</td>
-                        <td>X1NBKAKAU0CK</td>
-                        <td>25/3/2037</td>
-                        <td>Plan - 1</td>
-                        <td>Approved</td>
+                        <td class="row-click" (click)="openDetailsDialog()">729978</td>
+                        <td class="row-click" (click)="openDetailsDialog()">X1NBKAKAU0CK</td>
+                        <td class="row-click" (click)="openDetailsDialog()">25/3/2037</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Reuse" class="text-primary">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
-                                <mat-icon class="material-icons-outlined">description</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
-                                <mat-icon>add</mat-icon>
+                            <mat-menu #moreMenu="matMenu" xPosition="before">
+                                <button mat-menu-item><span>Reuse</span></button>
+                                <button mat-menu-item><span>Cancel</span></button>
+                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                <button mat-menu-item><span>Add New Related Claim</span></button>
+                            </mat-menu>
+                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
                     <tr>
-                        <td>285297</td>
-                        <td>TX7DBH9MGLSN</td>
-                        <td>25/7/2063</td>
-                        <td>Plan - 1</td>
-                        <td>Approved</td>
+                        <td class="row-click" (click)="openDetailsDialog()">285297</td>
+                        <td class="row-click" (click)="openDetailsDialog()">TX7DBH9MGLSN</td>
+                        <td class="row-click" (click)="openDetailsDialog()">25/7/2063</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
                         <td class="actions">
-                            <button mat-icon-button matTooltip="Reuse" class="text-primary">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="View Details" (click)="openDetailsDialog()" class="text-primary">
-                                <mat-icon class="material-icons-outlined">description</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Cancel" class="text-primary">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Nullify/Soft Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Add New Related Claim" class="text-primary">
-                                <mat-icon>add</mat-icon>
+                            <mat-menu #moreMenu="matMenu" xPosition="before">
+                                <button mat-menu-item><span>Reuse</span></button>
+                                <button mat-menu-item><span>Cancel</span></button>
+                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                <button mat-menu-item><span>Add New Related Claim</span></button>
+                            </mat-menu>
+                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                <mat-icon>more_vert</mat-icon>
                             </button>
                         </td>
                     </tr>
