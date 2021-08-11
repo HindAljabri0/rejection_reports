@@ -1,8 +1,12 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
+import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-beneficiary',
@@ -13,15 +17,24 @@ export class BeneficiaryComponent implements OnInit {
   addMode = false;
   editMode = false;
   viewMode = false;
-  selectedNationality="";
-  selectedMaritalStatus="";
-  selectedDocumentType="";
-  selectedGender="";
-  selectedPayer="";
+  beneficiaryModel:BeneficiaryModel;
+  selectedNationality = "";
+  selectedMaritalStatus = "";
+  selectedDocumentType = "";
+  selectedGender = "";
+  selectedPayer = "";
+  selectedResidencyType="";
+  selectedBloodGroup = "";
+  selectedLanguage = "";
+  selectedState="";
+  selectedCountry = "";
+
+  isLoading = true;
+  
 
   dob: FormControl = new FormControl();
   documentId: FormControl = new FormControl();
-  
+
   nationalities = nationalities;
   maritalStatuses: { Code: string, Name: string }[] = [
     { Code: 'A', Name: 'Annulled' },
@@ -35,39 +48,59 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'U', Name: 'unmarried' },
     { Code: 'W', Name: 'Widowed' },];
   nationalityFilterCtrl: FormControl = new FormControl();
+  firstNameController: FormControl = new FormControl();
+  secondNameController: FormControl = new FormControl();
+  thirdNameController: FormControl = new FormControl();
+  familyNameController: FormControl = new FormControl();
+
+  beneficiaryFileIdController: FormControl = new FormControl();
+  fullNameController: FormControl = new FormControl();
+  EHealthIdNameController: FormControl = new FormControl();
+
+  contactNumberController: FormControl = new FormControl();
+  emergencyPhoneNumberController: FormControl = new FormControl();
+  emailController: FormControl = new FormControl();
+  houseNumberController: FormControl = new FormControl();
+  streetNameController: FormControl = new FormControl();
+  cityNameController: FormControl = new FormControl();
+
+  expiryDateController: FormControl = new FormControl();
+  providerId="";
   _onDestroy = new Subject<void>();
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  errors={
-    dob:"",
-    documentType:"",
-    documentId:"",
-    gender:"",
+  errors = {
+    dob: "",
+    documentType: "",
+    documentId: "",
+    gender: "",
+    
   }
 
-  insurancePlans:{
-    iSsetPrimary:string,
-    selectePayer:string,
-    expiryDate:string,
-    memberCardId:FormControl,
-    payerErorr:string,
-    memberCardIdErorr:string,
-  }[]=[];
-  constructor() { }
-  
+  insurancePlans: {
+    iSsetPrimary: string,
+    selectePayer: string,
+    expiryDate: string,
+    memberCardId: FormControl,
+    payerErorr: string,
+    memberCardIdErorr: string,
+  }[] = [];
+  constructor( private sharedServices: SharedServices,private providersBeneficiariesService: ProvidersBeneficiariesService) { }
+
   ngOnInit() {
+   this.providerId=this.sharedServices.providerId;
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
 
     this.nationalityFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterNationality();
-    });
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterNationality();
+      });
   }
 
   filterNationality() {
-    
+
     if (!this.nationalities) {
       return;
     }
@@ -84,55 +117,76 @@ export class BeneficiaryComponent implements OnInit {
       this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
     );
   }
- 
 
-  checkError(){
-    let thereIsError=false;
-    this.errors.dob="";
-    this.errors.documentType="";
-    this.errors.documentId="";
-    this.errors.gender="";
-    if(this.selectedDocumentType==null || this.selectedDocumentType==""){
-      this.errors.documentType="Document Type must be specified"
-      thereIsError=true;
-    }
-    if(this.documentId.value==null || this.documentId.value.trim().length<=0){
-      this.errors.documentId="Document ID must be specified"
-      thereIsError=true;
-    }
-    if(this.dob.value==null || this.dob.value.trim().length<=0){
-      this.errors.dob="Date of Brith must be specified"
-      thereIsError=true;
-    }
-    if(this.selectedGender==null || this.selectedGender==""){
-      this.errors.gender="Gender must be specified"
-      thereIsError=true;
-    }
-    
 
-  for(let insurancePlan of this.insurancePlans){
-    if(insurancePlan.selectePayer==null || insurancePlan.selectePayer==""){
-      insurancePlan.memberCardIdErorr="Payer must be specified"
-      thereIsError=true;
-    }
-    if(insurancePlan.memberCardId.value==null ||  insurancePlan.memberCardId.value.trim().length<=0){
-      insurancePlan.memberCardIdErorr ="Member Card ID must be specified"
-      thereIsError=true;
-    }
-  
+  save(){
+    if(this.checkError()){return;}
+    this.providersBeneficiariesService.saveBeneficiaries(
+      this.beneficiaryModel,this.providerId
+     ).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            
+                 return event.body;}
+              }
+      , err => {
+          
+          if (err instanceof HttpErrorResponse) {
+              if (err.status == 404) {
+                 // this.error = 'No data found.';
+              }
+          } else {
+              console.log(err);
+              //this.error = 'Could not load data at the moment. Please try again later.';
+          }
+      });
   }
-  
-  
-      
-  
-    
+  checkError() {
+    let thereIsError = false;
+    this.errors.dob = "";
+    this.errors.documentType = "";
+    this.errors.documentId = "";
+    this.errors.gender = "";
+    if (this.selectedDocumentType == null || this.selectedDocumentType == "") {
+      this.errors.documentType = "Document Type must be specified"
+      thereIsError = true;
+    }
+    if (this.documentId.value == null || this.documentId.value.trim().length <= 0) {
+      this.errors.documentId = "Document ID must be specified"
+      thereIsError = true;
+    }
+    if (this.dob.value == null || this.dob.value.trim().length <= 0) {
+      this.errors.dob = "Date of Brith must be specified"
+      thereIsError = true;
+    }
+    if (this.selectedGender == null || this.selectedGender == "") {
+      this.errors.gender = "Gender must be specified"
+      thereIsError = true;
+    }
+
+
+    for (let insurancePlan of this.insurancePlans) {
+      if (insurancePlan.selectePayer == null || insurancePlan.selectePayer == "") {
+        insurancePlan.memberCardIdErorr = "Payer must be specified"
+        thereIsError = true;
+      }
+      if (insurancePlan.memberCardId.value == null || insurancePlan.memberCardId.value.trim().length <= 0) {
+        insurancePlan.memberCardIdErorr = "Member Card ID must be specified"
+        thereIsError = true;
+      }
+
+    }
+
+
+
+
+
 
     return thereIsError;
 
   }
 
-  
- 
+
+
 
 
 }
