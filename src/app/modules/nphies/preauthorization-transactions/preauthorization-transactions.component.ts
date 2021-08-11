@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { ViewPreauthorizationDetailsComponent } from '../view-preauthorization-details/view-preauthorization-details.component';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -14,10 +15,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   openDetailsDialog() {
-    // const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent,
-    //   {
-    //     panelClass: ['primary-dialog', 'dialog-xl']
-    //   });
+    const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent,
+      {
+        panelClass: ['primary-dialog', 'dialog-xl']
+      });
   }
 
 }
