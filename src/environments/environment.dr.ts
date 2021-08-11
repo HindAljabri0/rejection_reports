@@ -18,5 +18,6 @@ export const environment = {
   tawuniyaCreditReportService: `${host}/credit-report`,
   pbmValidationService: `${host}/pbm`,
   payerPaymentContractService: `${host}/payer-payment-contract`,
-  approvalDetailInquiryService: `${host}/approval-detail-inquiry`
+  approvalDetailInquiryService: `${host}/approval-detail-inquiry`,
+  providersBeneficiariesService: `${host}/beneficiaries`
 };
