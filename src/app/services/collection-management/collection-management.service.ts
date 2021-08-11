@@ -56,6 +56,11 @@ export class CollectionManagementService {
     const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, data, { headers: headers });
     return this.http.request(request);
   }
+  getAccountReceivableDetailsMonthly(providerId: any, payerId: string, month: string) {
+    const requestURL = `/providers/${providerId}/account/receivable/fetch/payments/by-month?month=${month}&payerId=${payerId}`;
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
 
 
 
