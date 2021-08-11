@@ -9,9 +9,9 @@ import { environment } from 'src/environments/environment';
 export class ProvidersBeneficiariesService {
   constructor(private httpClient: HttpClient) { }
 
-  saveManuallyCreatedClaim(BeneficiaryModel: BeneficiaryModel, providerId: string) {
+  saveBeneficiaries(beneficiaryModel: BeneficiaryModel, providerId: string) {
     const requestUrl = `/providers/${providerId}`;
-    let body: any = { ...BeneficiaryModel };
+    let body: any = { ...beneficiaryModel };
     const httpRequest = new HttpRequest('POST', environment.providersBeneficiariesService + requestUrl, body);
     return this.httpClient.request(httpRequest);
   }

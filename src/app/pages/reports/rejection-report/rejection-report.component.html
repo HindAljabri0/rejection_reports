@@ -8,7 +8,8 @@
         </mat-form-field>
     </div>
     <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+            (page)="paginatorAction($event)">
         </mat-paginator>
     </div>
     <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
@@ -28,7 +29,7 @@
                 <th>Policy Number</th>
                 <th>Claim Date</th>
                 <th>Net Amount</th>
-                <th>Rejected By</th>
+                <!-- <th>Rejected By</th> -->
                 <th>Status</th>
                 <th>Status Details</th>
             </tr>
@@ -43,7 +44,7 @@
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td>
+                <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
             </tr>
