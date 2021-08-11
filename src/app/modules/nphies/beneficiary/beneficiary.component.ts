@@ -5,7 +5,9 @@ import * as moment from 'moment';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -18,20 +20,20 @@ export class BeneficiaryComponent implements OnInit {
   addMode = false;
   editMode = false;
   viewMode = false;
-  
-  selectedNationality =null;
-  selectedMaritalStatus = null;
-  selectedDocumentType =null;
-  selectedGender = null
-  selectedPayer = null
-  selectedResidencyType=null
-  selectedBloodGroup =null;
-  selectedLanguage = null;
-  selectedState=null;
-  selectedCountry = null;
 
+  selectedNationality = "";
+  selectedMaritalStatus = "";
+  selectedDocumentType = "";
+  selectedGender = ""
+  selectedPayer = ""
+  selectedResidencyType = ""
+  selectedBloodGroup = "";
+  selectedLanguage = "";
+  selectedState = "";
+  selectedCountry = "";
+  selectedLanguages = "";
   isLoading = "";
-  
+
 
   dob: FormControl = new FormControl();
   documentId: FormControl = new FormControl();
@@ -64,7 +66,7 @@ export class BeneficiaryComponent implements OnInit {
 
 
   expiryDateController: FormControl = new FormControl();
-  providerId="";
+  providerId = "";
   _onDestroy = new Subject<void>();
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
@@ -73,7 +75,7 @@ export class BeneficiaryComponent implements OnInit {
     documentType: "",
     documentId: "",
     gender: "",
-    
+
   }
 
   addresses: {
@@ -84,12 +86,12 @@ export class BeneficiaryComponent implements OnInit {
     selectedState: string;
     selectedCountry: string;
     postalCodeController: FormControl
-   
-  }[] = [];
 
+  }[] = [];
+  dialogData: MessageDialogData
   insurancePlans: {
 
-    
+
     iSsetPrimary: string,
     selectePayer: string,
     expiryDate: string,
@@ -97,11 +99,11 @@ export class BeneficiaryComponent implements OnInit {
     payerErorr: string,
     memberCardIdErorr: string,
   }[] = [];
-   beneficiaryModel= new BeneficiaryModel();
-  constructor( private sharedServices: SharedServices,private providersBeneficiariesService: ProvidersBeneficiariesService) { }
+  beneficiaryModel = new BeneficiaryModel();
+  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private dialogService: DialogService) { }
 
   ngOnInit() {
-   this.providerId=this.sharedServices.providerId;
+    this.providerId = this.sharedServices.providerId;
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
 
@@ -133,67 +135,80 @@ export class BeneficiaryComponent implements OnInit {
 
 
 
-  setDate(){
-
-      this.beneficiaryModel.firstName=this.firstNameController.value;
-    this.beneficiaryModel.secondName=this.secondNameController.value;
-    this.beneficiaryModel.thirdName=this.thirdNameController.value;
-    this.beneficiaryModel.familyName=this.familyNameController.value;
-    this.beneficiaryModel.fullName=this.fullNameController.value;
-    this.beneficiaryModel.dateOfBirth=this.dob.value;
-    this.beneficiaryModel.gender=this.selectedGender;
-    this.beneficiaryModel.nationality=this.selectedNationality;
-    this.beneficiaryModel.contactNumber=this.contactNumberController.value;
-    this.beneficiaryModel.email=this.emailController.value;
-    this.beneficiaryModel.emergencyPhoneNumber=this.emergencyPhoneNumberController.value;
-    this.beneficiaryModel.documentType=this.selectedDocumentType;
-    this.beneficiaryModel.documentId=this.documentId.value;
-    this.beneficiaryModel.fileId=this.beneficiaryFileIdController.value;
-    this.beneficiaryModel.eHealthId=this.EHealthIdNameController.value;
-   this.beneficiaryModel. residencyType=this.selectedResidencyType;
-    this.beneficiaryModel.maritalStatus=this.selectedMaritalStatus;
-    this.beneficiaryModel.preferredLanguage=this.selectedLanguage;
-    this.beneficiaryModel.addresses= this.addresses.map(addresse=>({
-      addressLine:addresse.houseNumberController.value,
-      city:addresse.cityNameController.value,
-      contry:addresse.selectedCountry,
-      postalCode:addresse.postalCodeController.value,
-      state:addresse.selectedState,
-      streetNmae:addresse.streetNameController.value
+  setDate() {
+    this.beneficiaryModel.firstName = this.firstNameController.value;
+    this.beneficiaryModel.secondName = this.secondNameController.value;
+    this.beneficiaryModel.thirdName = this.thirdNameController.value;
+    this.beneficiaryModel.familyName = this.familyNameController.value;
+    this.beneficiaryModel.fullName = this.fullNameController.value;
+    this.beneficiaryModel.dateOfBirth = this.dob.value;
+    this.beneficiaryModel.gender = this.selectedGender;
+    this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
+    this.beneficiaryModel.contactNumber = this.contactNumberController.value;
+    this.beneficiaryModel.email = this.emailController.value;
+    this.beneficiaryModel.emergencyPhoneNumber = this.emergencyPhoneNumberController.value;
+    this.beneficiaryModel.documentType = this.selectedDocumentType;
+    this.beneficiaryModel.documentId = this.documentId.value;
+    this.beneficiaryModel.fileId = this.beneficiaryFileIdController.value;
+    this.beneficiaryModel.eHealthId = this.EHealthIdNameController.value;
+    this.beneficiaryModel.residencyType = this.selectedResidencyType == "" ? null : this.selectedResidencyType;
+    this.beneficiaryModel.maritalStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
+    this.beneficiaryModel.preferredLanguage = this.selectedLanguages == "" ? null : this.selectedLanguages;
+    this.beneficiaryModel.addresses = this.addresses.map(addresse => ({
+      addressLine: addresse.houseNumberController.value,
+      city: addresse.cityNameController.value,
+      contry: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
+      postalCode: addresse.postalCodeController.value,
+      state: addresse.selectedState == "" ? null : addresse.selectedState,
+      streetNmae: addresse.streetNameController.value
 
     }));
-    this.beneficiaryModel.insurancePlans= this.insurancePlans.map(insurancePlan => ({
-    expiryDate:this.expiryDateController.value,
-    payerId:insurancePlan.selectePayer,
-    memberCardId:insurancePlan.memberCardId.value,
-    isPrimary:true,
-  
+    this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
+      expiryDate: this.expiryDateController.value,
+      payerId: insurancePlan.selectePayer,
+      memberCardId: insurancePlan.memberCardId.value,
+      isPrimary: true,
+
     }));;
 
   }
-  save(){
-    if( this.checkError() ){return }
+  save() {
+
+
+
+    if (this.checkError()) { return }
+    this.sharedServices.loadingChanged.next(true);
     this.setDate()
     this.providersBeneficiariesService.saveBeneficiaries(
-      this.beneficiaryModel,this.providerId
-     ).subscribe(event => {
-          if (event instanceof HttpResponse) {
-            
-                 return event.body;}
-              }
+      this.beneficiaryModel, this.providerId
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: `successfully`,
+          isError: false
+        });
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }
       , err => {
-          
-          if (err instanceof HttpErrorResponse) {
-        
-              console.log("omm");
-             
-          }
+
+        if (err instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `${err.status}`,
+            isError: true
+          });
+          this.sharedServices.loadingChanged.next(false);
+
+        }
       });
   }
-  
+
   isValidDate(date): boolean {
     return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
-}
+  }
   checkError() {
     let thereIsError = false;
     this.errors.dob = "";
@@ -208,7 +223,7 @@ export class BeneficiaryComponent implements OnInit {
       this.errors.documentId = "Document ID must be specified"
       thereIsError = true;
     }
-    if (this.dob.value == null ) {
+    if (this.dob.value == null) {
       this.errors.dob = "Date of Brith must be specified"
       thereIsError = true;
     }

@@ -128,6 +128,10 @@ export class DialogService {
     });
   }
 
+  
+
+  
+
   closeAll() {
     this.dialog.closeAll();
   }
