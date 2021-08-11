@@ -256,7 +256,7 @@
                                 <span class="text">Eligibility Transactions</span>
                             </a>
                         </li>
-                        <li *ngIf="hasNphiesBeneficiaryPrivilege">
+                        <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
                             <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
                                 <span class="text">Beneficiary</span>
                             </a>
