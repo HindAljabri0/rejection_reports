@@ -220,8 +220,8 @@
                     <div class="form-group">
                         <label class="control-label">Preferred Language</label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedLanguage" 
-                            (selectionChange)="selectedLanguage = $event.value;" 
+                            <mat-select [value]="selectedLanguages" 
+                            (selectionChange)="selectedLanguages = $event.value;" 
                             #Language>
                                 <mat-option value="">Select Preferred Language</mat-option>
                                 <mat-option value="EN">English</mat-option>
@@ -278,7 +278,7 @@
                             <td>
                                 <mat-form-field class="form-control custom-select-control">
                                     <mat-select [value]="address.selectedCountry" 
-                                    (selectionChange)="selectedCountry = $event.value;" 
+                                    (selectionChange)="address.selectedCountry = $event.value;" 
                                     #Country>
                                         <mat-option>
                                             <ngx-mat-select-search placeholderLabel="Select Country"
@@ -324,7 +324,7 @@
                     <tbody>
                         <tr class="align-middle" *ngFor ="let insurancePlan  of insurancePlans , let i = index" >
                             <td class="text-center">
-                                <mat-radio-button color="primary" class="grid-radio" [(checked)]="insurancePlan.iSsetPrimary" ></mat-radio-button>
+                                <mat-radio-button  color="primary" class="grid-radio" (checked)="insurancePlan.iSsetPrimary" [value]="true"></mat-radio-button>
                             </td>
                             <td>
                                 <div class="form-group m-0" [matTooltip] ="insurancePlan.payerErorr" [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
@@ -342,7 +342,7 @@
                             <td>
                                 <div class="form-group m-0">
                                     <div class="date-picker">
-                                        <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" [formControl]="expiryDateController">
+                                        <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date" [formControl]="insurancePlan.expiryDateController">
                                         <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
                                         <mat-datepicker #expiryDate></mat-datepicker>
                                     </div>

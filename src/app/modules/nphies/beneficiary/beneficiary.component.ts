@@ -30,12 +30,10 @@ export class BeneficiaryComponent implements OnInit {
   selectedPayer = ""
   selectedResidencyType = ""
   selectedBloodGroup = "";
-  selectedLanguage = "";
   selectedState = "";
-  selectedCountry = "";
   selectedLanguages = "";
   payersListErorr = "";
-  //setPrimary=true;
+
  
 
 
@@ -70,8 +68,7 @@ export class BeneficiaryComponent implements OnInit {
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
-
-  expiryDateController: FormControl = new FormControl();
+ 
   providerId = "";
   _onDestroy = new Subject<void>();
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
@@ -100,12 +97,12 @@ export class BeneficiaryComponent implements OnInit {
   }
   addAddress(){
     this.addresses.push( {
-   houseNumberController:null,
-  streetNameController: null,
-   cityNameController: null,
-  stateController: null,
-   selectedCountry: "",
-  postalCodeController: null})
+   houseNumberController:new FormControl(),
+  streetNameController: new FormControl(),
+   cityNameController: new FormControl(),
+  stateController: new FormControl(),
+  selectedCountry: "",
+  postalCodeController: new FormControl()})
   }
   dialogData: MessageDialogData;
 
@@ -113,7 +110,7 @@ export class BeneficiaryComponent implements OnInit {
   insurancePlans: {
     iSsetPrimary: boolean,
     selectePayer: string,
-    expiryDate: string,
+    expiryDateController: FormControl
     memberCardId: FormControl,
     payerErorr: string,
     memberCardIdErorr: string,
@@ -125,8 +122,8 @@ export class BeneficiaryComponent implements OnInit {
     this.insurancePlans.push({ 
       iSsetPrimary: true,
       selectePayer: "",
-      expiryDate: null,
-      memberCardId: null,
+      expiryDateController:new FormControl(),
+      memberCardId:new FormControl(),
       payerErorr: null,
       memberCardIdErorr: null})
     }else{
@@ -214,18 +211,21 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.preferredLanguage = this.selectedLanguages == "" ? null : this.selectedLanguages;
     this.beneficiaryModel.addresses = this.addresses.map(addresse => ({
       addressLine: addresse.houseNumberController.value,
+      streetNmae: addresse.streetNameController.value,
       city: addresse.cityNameController.value,
-      contry: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
-      postalCode: addresse.postalCodeController.value,
       state: addresse.stateController .value ,
-      streetNmae: addresse.streetNameController.value
+      contry: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
+      
+     
+      postalCode: addresse.postalCodeController.value,
+     
 
     }));
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
-      expiryDate: this.expiryDateController.value,
-      payerId: insurancePlan.selectePayer,
+      expiryDate: insurancePlan.expiryDateController.value,
+      payerId: insurancePlan.selectePayer== "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
-      isPrimary: true,
+      isPrimary: insurancePlan.iSsetPrimary,
 
     }));;
 
