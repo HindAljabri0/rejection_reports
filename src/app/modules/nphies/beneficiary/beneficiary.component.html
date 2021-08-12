@@ -260,7 +260,7 @@
                     </thead>
                     <tbody>
                         
-                        <tr class="align-middle"  *ngFor ="let address  of addresses">
+                        <tr class="align-middle"  *ngFor ="let address  of addresses ; let i = index" >
                             <td>
                                 <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"  [formControl]="address.houseNumberController" />
                             </td>
@@ -295,7 +295,7 @@
                                 <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="address.postalCodeController" />
                             </td>
                             <td class="actions">
-                                <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                                <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteAddress(i)">
                                     <mat-icon>delete_outline</mat-icon>
                                 </button>
                             </td>
@@ -305,7 +305,7 @@
                 </table>
             </div>
             <div class="pb-2">
-                <a href="#" title="+ Add Address"  class="primary-link semibold" >+ Add Address</a>
+                <a  title="+ Add Address"  class="primary-link semibold"  (click)=" addAddress()">+ Add Address</a>
             </div>
 
 
@@ -322,9 +322,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="align-middle" *ngFor ="let insurancePlan  of insurancePlans" >
+                        <tr class="align-middle" *ngFor ="let insurancePlan  of insurancePlans , let i = index" >
                             <td class="text-center">
-                                <mat-radio-button color="primary" class="grid-radio" checked="true"></mat-radio-button>
+                                <mat-radio-button color="primary" class="grid-radio" [(checked)]="insurancePlan.iSsetPrimary" ></mat-radio-button>
                             </td>
                             <td>
                                 <div class="form-group m-0" [matTooltip] ="insurancePlan.payerErorr" [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
@@ -353,7 +353,7 @@
                                 <input type="text" class="form-control" placeholder="Enter member card ID"  [formControl]="insurancePlan.memberCardId" /></div>
                             </td>
                             <td class="actions">
-                                <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                                <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteInsurancePlan(i)">
                                     <mat-icon>delete_outline</mat-icon>
                                 </button>
                             </td>
@@ -362,7 +362,7 @@
                 </table>
             </div>
             <div class="pb-2">
-                <a href="#" title="+ Add Insurance Plan" class="primary-link semibold">+ Add Insurance Plan</a>
+                <a title="+ Add Insurance Plan" class="primary-link semibold" (click)="addInsurancePlan()">+ Add Insurance Plan</a>
             </div>
             <hr class="hr spaced">
             <div class="form-group btn-list">
