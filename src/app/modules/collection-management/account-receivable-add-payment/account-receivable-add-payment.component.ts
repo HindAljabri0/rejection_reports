@@ -49,7 +49,7 @@ export class AccountReceivableAddPaymentComponent implements OnInit {
       receivableDate: moment(this.data.
         rejectionDate).format('YYYY-MM-DD')
     }
-    this.collectionManagementService.addAccountReceivalble(
+    this.collectionManagementService.addAccountReceivable(
       this.sharedService.providerId,
       body
     ).subscribe(event => {

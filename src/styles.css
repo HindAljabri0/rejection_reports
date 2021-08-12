@@ -112,6 +112,7 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .page-top-loader.mat-progress-bar{position: fixed;top: 0;left: 0;z-index: 11;}
 .fixed-height{height: calc(100vh - 224px);}
 .fixed-height.fixed-height-sm{height: calc(100vh - 362px);}
+.fixed-height.fixed-height-lg{height: calc(100vh - 164px);}
 .primary-dialog .fixed-height{height: calc(100vh - 200px);}
 .block-title{font-weight: 500;padding-bottom: 10px;font-size:18px;line-height:22px;border-bottom:1px solid rgba(112,112,112,0.14);}
 .block-title.sm{font-size: 16px;line-height: 22px;}
