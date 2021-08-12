@@ -16,6 +16,12 @@ export class ProvidersBeneficiariesService {
     return this.httpClient.request(httpRequest);
   }
 
+  getPayers(){
+    const requestUrl = `/lov/payers`;
+    const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
+
  
 
 }
