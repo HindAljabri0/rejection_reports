@@ -33,7 +33,7 @@ export class BeneficiaryComponent implements OnInit {
   selectedState = "";
   selectedLanguages = "";
   payersListErorr = "";
-  //setPrimary=true;
+
  
 
 
@@ -68,10 +68,7 @@ export class BeneficiaryComponent implements OnInit {
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
-   v(b:boolean){
-     return b=!b;
-   }
-
+ 
   providerId = "";
   _onDestroy = new Subject<void>();
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
