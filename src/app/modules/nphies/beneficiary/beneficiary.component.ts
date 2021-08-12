@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
+import { payer } from 'src/app/models/nphies/payer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -32,13 +33,15 @@ export class BeneficiaryComponent implements OnInit {
   selectedState = "";
   selectedCountry = "";
   selectedLanguages = "";
-  isLoading = "";
+  payersListErorr = "";
+ 
 
 
   dob: FormControl = new FormControl();
   documentId: FormControl = new FormControl();
 
   nationalities = nationalities;
+  payersList:payer []= [];
   maritalStatuses: { Code: string, Name: string }[] = [
     { Code: 'A', Name: 'Annulled' },
     { Code: 'D', Name: 'Divorced' },
@@ -51,6 +54,7 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'U', Name: 'unmarried' },
     { Code: 'W', Name: 'Widowed' },];
   nationalityFilterCtrl: FormControl = new FormControl();
+  countryFilterCtrl: FormControl = new FormControl();
   firstNameController: FormControl = new FormControl();
   secondNameController: FormControl = new FormControl();
   thirdNameController: FormControl = new FormControl();
@@ -83,11 +87,21 @@ export class BeneficiaryComponent implements OnInit {
     houseNumberController: FormControl;
     streetNameController: FormControl;
     cityNameController: FormControl;
-    selectedState: string;
+    stateController: FormControl;
     selectedCountry: string;
     postalCodeController: FormControl
 
-  }[] = [];
+  }[] = [
+   { 
+     houseNumberController:null,
+    streetNameController: null,
+    cityNameController: null,
+    stateController: null,
+    selectedCountry: "",
+    postalCodeController: null
+  }
+
+  ];
   dialogData: MessageDialogData
   insurancePlans: {
 
@@ -98,11 +112,30 @@ export class BeneficiaryComponent implements OnInit {
     memberCardId: FormControl,
     payerErorr: string,
     memberCardIdErorr: string,
-  }[] = [];
+  }[] = [ {iSsetPrimary: null,
+    selectePayer: "",
+    expiryDate: null,
+    memberCardId: null,
+    payerErorr: null,
+    memberCardIdErorr: null,} ];
   beneficiaryModel = new BeneficiaryModel();
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.providersBeneficiariesService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+      if(event.body!=null && event.body instanceof Array)
+      this.payersList=event.body as payer[];
+      }
+    }
+      , err => {
+
+        if (err instanceof HttpErrorResponse) {
+          this.payersListErorr=err.message
+
+        }
+      });
+   // this.payersList = this.sharedServices.getPayersList();
     this.providerId = this.sharedServices.providerId;
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
@@ -159,7 +192,7 @@ export class BeneficiaryComponent implements OnInit {
       city: addresse.cityNameController.value,
       contry: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
       postalCode: addresse.postalCodeController.value,
-      state: addresse.selectedState == "" ? null : addresse.selectedState,
+      state: addresse.stateController .value ,
       streetNmae: addresse.streetNameController.value
 
     }));

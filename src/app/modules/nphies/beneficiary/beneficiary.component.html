@@ -259,7 +259,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="align-middle" *ngFor ="let address  of addresses">
+                        
+                        <tr class="align-middle"  *ngFor ="let address  of addresses">
                             <td>
                                 <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment"  [formControl]="address.houseNumberController" />
                             </td>
@@ -270,28 +271,23 @@
                                 <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="address.cityNameController"/>
                             </td>
                             <td>
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="address.selectedState" 
-                                    (selectionChange)="address.selectedState = $event.value;" 
-                                    #State>
-                                        <mat-option value="">Select State/Province</mat-option>
-                                        <mat-option value="State 1">State 1</mat-option>
-                                        <mat-option value="State 2">State 2</mat-option>
-                                        <mat-option value="State 3">State 3</mat-option>
-                                        <mat-option value="State 4">State 4</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+
+                                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="address.stateController"/>
+                            
                             </td>
                             <td>
                                 <mat-form-field class="form-control custom-select-control">
                                     <mat-select [value]="address.selectedCountry" 
                                     (selectionChange)="selectedCountry = $event.value;" 
                                     #Country>
+                                        <mat-option>
+                                            <ngx-mat-select-search placeholderLabel="Select Country"
+                                                noEntriesFoundLabel="No nationalities found" [formControl]="nationalityFilterCtrl"
+                                                name='address.selectedCountry'></ngx-mat-select-search>
+                                        </mat-option>
                                         <mat-option value="">Select Country</mat-option>
-                                        <mat-option value="Country 1">Country 1</mat-option>
-                                        <mat-option value="Country 2">Country 2</mat-option>
-                                        <mat-option value="Country 3">Country 3</mat-option>
-                                        <mat-option value="Country 4">Country 4</mat-option>
+                                        <mat-option *ngFor="let nationality of filteredNations | async" [value]="nationality.Code">
+                                            {{nationality.Name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </td>
@@ -304,11 +300,12 @@
                                 </button>
                             </td>
                         </tr>
+                    
                     </tbody>
                 </table>
             </div>
             <div class="pb-2">
-                <a href="#" title="+ Add Address" class="primary-link semibold">+ Add Address</a>
+                <a href="#" title="+ Add Address"  class="primary-link semibold" >+ Add Address</a>
             </div>
 
 
@@ -334,11 +331,10 @@
                                 <mat-form-field class="form-control custom-select-control">
                                     <mat-select [value]="insurancePlan.selectePayer"
                                     (selectionChange)="insurancePlan.selectePayer = $event.value;">
-                                        <mat-option value="">Select Payer</mat-option>
-                                        <mat-option value="Payer 1">Payer 1</mat-option>
-                                        <mat-option value="Payer 2">Payer 2</mat-option>
-                                        <mat-option value="Payer 3">Payer 3</mat-option>
-                                        <mat-option value="Payer 4">Payer 4</mat-option>
+
+                                    <mat-option value="">Select Payer</mat-option>
+                                    <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">{{payer.englistName}}({{payer.arabicName}})</mat-option>
+                                       
                                     </mat-select>
                                 </mat-form-field>
                             </div>
