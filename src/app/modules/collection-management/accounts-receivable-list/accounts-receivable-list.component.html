@@ -8,18 +8,18 @@
                 <div class="col-lg-5">
                     <div class="row small-gutter">
                         <div class="col">
-
-                            <label class="control-label">Year</label>
-                            <input autocomplete="off" placeholder="Select year " class="form-control date-picker"
-                                [(ngModel)]="accountReceivableModel.strYear" #strYear='ngModel' name="strYear"
-                                bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" required>
-                            <div *ngIf="createBatchForm.submitted && strYear.invalid">
-                                <span class="error-text">Please select a Year</span>
-                            </div>
-
-                        </div>
-                        <div class="col-auto align-self-end">
                             <div class="form-group">
+                                <label class="control-label">Year</label>
+                                <input autocomplete="off" placeholder="Select year " class="form-control date-picker" [(ngModel)]="accountReceivableModel.strYear"
+                                    #strYear='ngModel' name="strYear" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" required>
+                                <div *ngIf="createBatchForm.submitted && strYear.invalid">
+                                    <span class="error-text">Please select a Year</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="control-label">&nbsp;</label>
                                 <button type="submit" mat-flat-button color="primary">Search</button>
                             </div>
                         </div>
@@ -44,26 +44,20 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of yearData">
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.month}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.totalSubmittedAmount}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.totalPaidAmount}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.totalOutstandingAmount}}</td>
-                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details"
-                                    [queryParams]="{month: item.month}">
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details" [queryParams]="{month: item.month}">
                                     {{item.collecttionRatio}}</td>
                             </tr>
                             <tr>
                                 <td colspan="5" class="p-0">
-                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0"
-                                        class="claim-list-empty-state" message='No records found!'>
+                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0" class="claim-list-empty-state" message='No records found!'>
                                     </app-empty-state>
                                 </td>
                             </tr>
@@ -87,31 +81,25 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of payementData">
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.payerName}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.totalSubmittedAmount}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.totalReceivedAmount}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.outstandingAmount}}</td>
-                                <td class="row-click"
-                                    routerLink="/collection-management/accounts-receivable-details-payer"
+                                <td class="row-click" routerLink="/collection-management/accounts-receivable-details-payer"
                                     [queryParams]="{year: accountReceivableModel.strYear,payerId:item.payerId}">
                                     {{item.totalReceivedPerc}}</td>
                             </tr>
                             <tr>
                                 <td colspan="5" class="p-0">
-                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0"
-                                        class="claim-list-empty-state" message='No records found!'>
+                                    <app-empty-state *ngIf="payementData == null || payementData.length == 0" class="claim-list-empty-state" message='No records found!'>
                                     </app-empty-state>
                                 </td>
                             </tr>
