@@ -53,11 +53,12 @@
                             <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionAmount}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionPerc}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.outstandingAmount}}</td>
-                            <td class="row-click" (click)="toggleRow(i)">{{item.dueDate}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{item.dueDate | date: 'dd-MM-yyyy'}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.overDueDay}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.avgTat}}</td>
                             <td class="actions">
-                                <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="setSelcetedPayerAndDate(item)">
+                                <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                    (click)="setSelcetedPayerAndDate(item)">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
                             </td>
@@ -86,15 +87,17 @@
                                                     <td>{{innerData.paymentRatio}}</td>
                                                     <td>{{innerData.type}}</td>
                                                     <td>
-                                                        <button class="text-danger delete-btn" (click)="deletePayment(innerData.paymentId)">
+                                                        <button class="text-danger delete-btn"
+                                                            (click)="deletePayment(innerData.paymentId)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="6" class="p-0">
-                                                        <app-empty-state *ngIf="item.payments == null || item.payments.length == 0" class="claim-list-empty-state"
-                                                            message='No records found!'>
+                                                        <app-empty-state
+                                                            *ngIf="item.payments == null || item.payments.length == 0"
+                                                            class="claim-list-empty-state" message='No records found!'>
                                                         </app-empty-state>
                                                     </td>
                                                 </tr>
@@ -106,8 +109,9 @@
                         </tr>
                     </ng-container>
                     <tr>
-                        <td colspan="12">
-                            <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0" class="claim-list-empty-state" message='No records found!'>
+                        <td colspan="12" class="p-0">
+                            <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
                         </td>
                     </tr>

@@ -18,6 +18,8 @@ export class AccountsReceivableListComponent implements OnInit {
     payersList: { id: number, name: string, arName: string }[] = [];
     yearData: any = [];
     payementData: any = [];
+    strPayerYear: string;
+    monthlyYear: string;
     constructor(private collectionManagementService: CollectionManagementService, private sharedService: SharedServices, private routeActive: ActivatedRoute, private location: Location) { }
 
     ngOnInit() {
@@ -38,9 +40,9 @@ export class AccountsReceivableListComponent implements OnInit {
     getAccountReceivablePayerData() {
         if (this.accountReceivableModel.strYear === null || this.accountReceivableModel.strYear === undefined)
             return
-        const strYear = moment(this.accountReceivableModel.strYear).format('YYYY');
+        this.strPayerYear = moment(this.accountReceivableModel.strYear).format('YYYY');
         const obj = {
-            strYear: strYear
+            strYear: this.strPayerYear
         }
         this.sharedService.loadingChanged.next(true);
         this.collectionManagementService.getAccountReceivablePayer(
@@ -72,9 +74,9 @@ export class AccountsReceivableListComponent implements OnInit {
     getAccountReceivableYearData() {
         if (this.accountReceivableModel.strYear === null || this.accountReceivableModel.strYear === undefined)
             return
-        const strYear = moment(this.accountReceivableModel.strYear).format('YYYY');
+        this.monthlyYear = moment(this.accountReceivableModel.strYear).format('YYYY');
         const obj = {
-            year: strYear
+            year: this.monthlyYear
         }
         this.sharedService.loadingChanged.next(true);
         this.collectionManagementService.getAccountReceivableYear(

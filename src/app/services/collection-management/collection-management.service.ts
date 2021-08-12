@@ -9,7 +9,7 @@ export class CollectionManagementService {
 
   constructor(private http: HttpClient) { }
 
-  addAccountReceivalble(providerId: any, data: any) {
+  addAccountReceivable(providerId: any, data: any) {
     const requestURL = `/providers/${providerId}/payment/account/receivable/save?paymentIds=${data.paymentIds}&receivableDate=${data.receivableDate}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, {}, { headers: headers });
