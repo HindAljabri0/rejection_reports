@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
+import { add } from 'ngx-bootstrap/chronos';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
@@ -34,6 +35,7 @@ export class BeneficiaryComponent implements OnInit {
   selectedCountry = "";
   selectedLanguages = "";
   payersListErorr = "";
+  //setPrimary=true;
  
 
 
@@ -91,33 +93,56 @@ export class BeneficiaryComponent implements OnInit {
     selectedCountry: string;
     postalCodeController: FormControl
 
-  }[] = [
-   { 
-     houseNumberController:null,
-    streetNameController: null,
-    cityNameController: null,
-    stateController: null,
-    selectedCountry: "",
-    postalCodeController: null
+  }[] = [];
+
+  deleteAddress(i:number){
+    this.addresses.splice(i,1)
   }
+  addAddress(){
+    this.addresses.push( {
+   houseNumberController:null,
+  streetNameController: null,
+   cityNameController: null,
+  stateController: null,
+   selectedCountry: "",
+  postalCodeController: null})
+  }
+  dialogData: MessageDialogData;
 
-  ];
-  dialogData: MessageDialogData
+
   insurancePlans: {
-
-
-    iSsetPrimary: string,
+    iSsetPrimary: boolean,
     selectePayer: string,
     expiryDate: string,
     memberCardId: FormControl,
     payerErorr: string,
     memberCardIdErorr: string,
-  }[] = [ {iSsetPrimary: null,
-    selectePayer: "",
-    expiryDate: null,
-    memberCardId: null,
-    payerErorr: null,
-    memberCardIdErorr: null,} ];
+  }[] = [  ];
+  
+  addInsurancePlan(){
+
+   if(this.payersListErorr!=null && this.payersListErorr!=null){
+    this.insurancePlans.push({ 
+      iSsetPrimary: true,
+      selectePayer: "",
+      expiryDate: null,
+      memberCardId: null,
+      payerErorr: null,
+      memberCardIdErorr: null})
+    }else{
+      
+      this.dialogService.openMessageDialog({
+        title: '',
+        message: `We could not load required information to create insurance plan. Please add your beneficiary and try adding insurance plans later.`,
+        isError: true
+      });
+    }
+  }
+  
+  deleteInsurancePlan(i:number){
+    this.insurancePlans.splice(i,1)
+  }
+
   beneficiaryModel = new BeneficiaryModel();
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private dialogService: DialogService) { }
 
