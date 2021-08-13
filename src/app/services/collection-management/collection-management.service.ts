@@ -16,8 +16,8 @@ export class CollectionManagementService {
     return this.http.request(request);
   }
 
-  getAccountReceivalble(providerId: any, payerId: any) {
-    const requestURL = `/providers/${providerId}/payment/account/receivable/fetch?payerId=${payerId}`;
+  getAccountReceivalble(providerId: any, payerId: any, fromDate: string, toDate: string) {
+    const requestURL = `/providers/${providerId}/payment/account/receivable/fetch?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}`;
     const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
     return this.http.request(request);
   }
