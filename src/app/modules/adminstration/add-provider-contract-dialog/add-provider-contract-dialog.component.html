@@ -105,7 +105,7 @@
                     <label class="control-label">No. of Days</label>
                     <input class="form-control" placeholder="Select no. of days" [disabled]="isPayerSelected"
                         [(ngModel)]='paymentProviderContractModel.numberOfDays' #numberOfDays='ngModel'
-                        name="numberOfDays" [required]="isPromptPayment" />
+                        name="numberOfDays" required />
                     <div *ngIf="providerContractForm.submitted && numberOfDays.invalid">
                         <span class="error-text">Please choose number of days</span>
                     </div>

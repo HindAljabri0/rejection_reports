@@ -54,7 +54,7 @@ export class AddIntialRejectionDialogComponent implements OnInit {
   submit() {
     const body: AddInitialRejectionModel = {
       payerId: this.data.selectedPayerDataAndDate.payerId,
-      rejectionDate: moment(this.data.
+      rejectionDate: moment(this.data.selectedPayerDataAndDate.
         rejectionDate).format('YYYY-MM-DD'),
       amount: this.intitalRejectionModel.amount,
       unitOfAmount: this.intitalRejectionModel.unitOfAmount

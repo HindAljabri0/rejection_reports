@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input, Output, InjectionToken, Injector }
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatDialog } from '@angular/material';
 import { HttpResponse, HttpErrorResponse, } from '@angular/common/http';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EventEmitter } from '@angular/core';
@@ -10,10 +10,11 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { RejectionSummary } from 'src/app/models/rejectionSummary';
 import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/rejectionReportClaimDialogData';
 import { ClaimStatus } from 'src/app/models/claimStatus';
-
+import { Location } from '@angular/common';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { Observable, Subscription } from 'rxjs';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { EditClaimComponent } from '../../edit-claim/edit-claim.component';
 
 @Component({
   selector: 'app-rejection-report',
@@ -54,7 +55,9 @@ export class RejectionReportComponent implements OnInit {
     public routeActive: ActivatedRoute,
     public router: Router,
     private dialogService: DialogService,
-    private downloadService: DownloadService) { }
+    private downloadService: DownloadService,
+    private location: Location,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     // this.fetchData();
@@ -273,7 +276,14 @@ export class RejectionReportComponent implements OnInit {
       }
     );
   }
+  viewClaim(item) {
+    this.location.go(`${this.providerId}/claims?claimRefNo=${item.claimRefNo}&claimId=${item.claimId}`);
+    const dialogRef = this.dialog.open(EditClaimComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+      autoFocus: false, data: { claimId: item.claimId }
+    });
 
+  }
 
 }
 
