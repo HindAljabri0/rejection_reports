@@ -58,6 +58,7 @@
                             <td class="row-click" (click)="toggleRow(i)">{{item.avgTat}}</td>
                             <td class="actions">
                                 <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                    [disabled]="item.totalSubmitted===0 || item.totalSubmitted===null"
                                     (click)="setSelcetedPayerAndDate(item)">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>

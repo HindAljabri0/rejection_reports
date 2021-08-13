@@ -13,6 +13,7 @@ export class AccountReceivableDetailsComponent implements OnInit {
   month: string;
   payersList: { id: number, name: string, arName: string }[] = [];
   receivableData: any = [];
+  displayMonth: any;
   constructor(private collectionManagementService: CollectionManagementService, private sharedService: SharedServices, private routeActive: ActivatedRoute) {
   }
 
@@ -21,6 +22,7 @@ export class AccountReceivableDetailsComponent implements OnInit {
     this.routeActive.queryParams.subscribe(params => {
       if (params.month != null) {
         this.month = params.month;
+        this.displayMonth = params.month.replace('-', ' ');
       }
     });
     this.getAccountReceivableYearDetailsData();
