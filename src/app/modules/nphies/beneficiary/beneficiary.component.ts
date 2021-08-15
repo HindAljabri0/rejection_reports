@@ -33,54 +33,29 @@ export class BeneficiaryComponent implements OnInit {
   selectedState = "";
   selectedLanguages = "";
   payersListErorr = "";
-
- 
-
-
-  dob: FormControl = new FormControl();
-  documentId: FormControl = new FormControl();
-
+  messageError="";
+  setPrimary="0";
+  fullName="";
+  providerId = "";
   nationalities = nationalities;
   payersList:payer []= [];
-  maritalStatuses: { Code: string, Name: string }[] = [
-    { Code: 'A', Name: 'Annulled' },
-    { Code: 'D', Name: 'Divorced' },
-    { Code: 'I', Name: 'Interlocutory' },
-    { Code: 'L', Name: 'Legally Separated' },
-    { Code: 'M', Name: 'Married' },
-    { Code: 'P', Name: 'Polygamous' },
-    { Code: 'S', Name: 'Never Married' },
-    { Code: 'T', Name: 'Domestic partner' },
-    { Code: 'U', Name: 'unmarried' },
-    { Code: 'W', Name: 'Widowed' },];
+
+  dobFormControl: FormControl = new FormControl();
+  documentIdFormControl: FormControl = new FormControl();
   nationalityFilterCtrl: FormControl = new FormControl();
   countryFilterCtrl: FormControl = new FormControl();
   firstNameController: FormControl = new FormControl();
   secondNameController: FormControl = new FormControl();
   thirdNameController: FormControl = new FormControl();
   familyNameController: FormControl = new FormControl();
-
   beneficiaryFileIdController: FormControl = new FormControl();
   fullNameController: FormControl = new FormControl();
   EHealthIdNameController: FormControl = new FormControl();
-
   contactNumberController: FormControl = new FormControl();
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
  
-  providerId = "";
-  _onDestroy = new Subject<void>();
-  filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  errors = {
-    dob: "",
-    documentType: "",
-    documentId: "",
-    gender: "",
-
-  }
-
   addresses: {
 
     houseNumberController: FormControl;
@@ -92,6 +67,106 @@ export class BeneficiaryComponent implements OnInit {
 
   }[] = [];
 
+  insurancePlans: {
+    iSPrimary: boolean,
+    selectePayer: string,
+    expiryDateController: FormControl
+    memberCardId: FormControl,
+    payerErorr: string,
+    memberCardIdErorr: string,
+  }[] = [  ];
+ 
+  maritalStatuses: { Code: string, Name: string }[] = [
+    { Code: 'A', Name: 'Annulled' },
+    { Code: 'D', Name: 'Divorced' },
+    { Code: 'I', Name: 'Interlocutory' },
+    { Code: 'L', Name: 'Legally Separated' },
+    { Code: 'M', Name: 'Married' },
+    { Code: 'P', Name: 'Polygamous' },
+    { Code: 'S', Name: 'Never Married' },
+    { Code: 'T', Name: 'Domestic partner' },
+    { Code: 'U', Name: 'unmarried' },
+    { Code: 'W', Name: 'Widowed' },];
+ 
+
+   
+  
+  
+ngOnInit() {
+  this.providersBeneficiariesService.getPayers().subscribe(event => {
+    if (event instanceof HttpResponse) {
+    if(event.body!=null && event.body instanceof Array)
+    this.payersList=event.body as payer[];
+    }
+  }
+    , err => {
+
+      if (err instanceof HttpErrorResponse) {
+        this.payersListErorr=err.message
+
+      }
+    });
+
+  this.providerId = this.sharedServices.providerId;
+  this.filteredNations.next(this.nationalities.slice());
+  this.allMaritalStatuses.next(this.maritalStatuses.slice());
+
+  this.nationalityFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterNationality();
+    });
+    
+}
+
+onNameChanged(){
+  if((this.fullNameController.value!=null&&this.fullNameController.value.trim().length>0)){
+    this.firstNameController.disable();
+    this.secondNameController.disable();
+    this.thirdNameController.disable();
+    this.familyNameController.disable();
+  }else{
+    this.firstNameController.enable();
+    this.secondNameController.enable();
+    this.thirdNameController.enable();
+    this.familyNameController.enable();
+  }
+}
+
+
+
+ isFullNameDisabled(){
+if((this.firstNameController.value!=null&&this.firstNameController.value.trim().length>0)||
+(this.secondNameController.value!=null&&this.secondNameController.value.trim().length>0) ||
+(this.thirdNameController.value!=null&&this.thirdNameController.value.trim().length>0)||
+(this.familyNameController.value!=null&&this.familyNameController.value.trim().length>0)){
+this.fullNameController.setValue(
+  (this.firstNameController.value ==null?' ' : this.firstNameController.value)+
+(this.secondNameController.value  ==null?' ' : this.secondNameController.value)+
+(this.thirdNameController.value  ==null?' ' : this.thirdNameController.value)+
+(this.familyNameController.value  ==null?'' : this.familyNameController.value).trim());
+
+this.fullNameController.disable();
+
+}else{
+this.fullNameController.enable();
+}}
+ 
+  
+  _onDestroy = new Subject<void>();
+  filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  errors = {
+    dob: "",
+    documentType: "",
+    documentId: "",
+    gender: "",
+    fullName:"",
+
+  }
+
+  
+
   deleteAddress(i:number){
     this.addresses.splice(i,1)
   }
@@ -99,7 +174,7 @@ export class BeneficiaryComponent implements OnInit {
     this.addresses.push( {
    houseNumberController:new FormControl(),
   streetNameController: new FormControl(),
-   cityNameController: new FormControl(),
+  cityNameController: new FormControl(),
   stateController: new FormControl(),
   selectedCountry: "",
   postalCodeController: new FormControl()})
@@ -107,20 +182,13 @@ export class BeneficiaryComponent implements OnInit {
   dialogData: MessageDialogData;
 
 
-  insurancePlans: {
-    iSsetPrimary: boolean,
-    selectePayer: string,
-    expiryDateController: FormControl
-    memberCardId: FormControl,
-    payerErorr: string,
-    memberCardIdErorr: string,
-  }[] = [  ];
+ 
   
   addInsurancePlan(){
 
    if(this.payersListErorr!=null && this.payersListErorr!=null){
     this.insurancePlans.push({ 
-      iSsetPrimary: false,
+      iSPrimary: false,
       selectePayer: "",
       expiryDateController:new FormControl(),
       memberCardId:new FormControl(),
@@ -143,31 +211,6 @@ export class BeneficiaryComponent implements OnInit {
   beneficiaryModel = new BeneficiaryModel();
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private dialogService: DialogService) { }
 
-  ngOnInit() {
-    this.providersBeneficiariesService.getPayers().subscribe(event => {
-      if (event instanceof HttpResponse) {
-      if(event.body!=null && event.body instanceof Array)
-      this.payersList=event.body as payer[];
-      }
-    }
-      , err => {
-
-        if (err instanceof HttpErrorResponse) {
-          this.payersListErorr=err.message
-
-        }
-      });
-
-    this.providerId = this.sharedServices.providerId;
-    this.filteredNations.next(this.nationalities.slice());
-    this.allMaritalStatuses.next(this.maritalStatuses.slice());
-
-    this.nationalityFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterNationality();
-      });
-  }
 
   filterNationality() {
 
@@ -196,14 +239,14 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.thirdName = this.thirdNameController.value;
     this.beneficiaryModel.familyName = this.familyNameController.value;
     this.beneficiaryModel.fullName = this.fullNameController.value;
-    this.beneficiaryModel.dateOfBirth = this.dob.value;
+    this.beneficiaryModel.dateOfBirth = this.dobFormControl.value;
     this.beneficiaryModel.gender = this.selectedGender;
     this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
     this.beneficiaryModel.contactNumber = this.contactNumberController.value;
     this.beneficiaryModel.email = this.emailController.value;
     this.beneficiaryModel.emergencyPhoneNumber = this.emergencyPhoneNumberController.value;
     this.beneficiaryModel.documentType = this.selectedDocumentType;
-    this.beneficiaryModel.documentId = this.documentId.value;
+    this.beneficiaryModel.documentId = this.documentIdFormControl.value;
     this.beneficiaryModel.fileId = this.beneficiaryFileIdController.value;
     this.beneficiaryModel.eHealthId = this.EHealthIdNameController.value;
     this.beneficiaryModel.residencyType = this.selectedResidencyType == "" ? null : this.selectedResidencyType;
@@ -225,14 +268,22 @@ export class BeneficiaryComponent implements OnInit {
       expiryDate: insurancePlan.expiryDateController.value,
       payerId: insurancePlan.selectePayer== "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
-      isPrimary: insurancePlan.iSsetPrimary,
+      isPrimary: insurancePlan.iSPrimary,
 
     }));;
 
   }
   save() {
 
+if(this.insurancePlans!=null || this.insurancePlans.length!=0){
+  for(let plan of this.insurancePlans){
+    plan.iSPrimary=false;
 
+  }
+
+  this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary=true;
+  
+}
 
     if (this.checkError()) { return }
     this.sharedServices.loadingChanged.next(true);
@@ -253,9 +304,18 @@ export class BeneficiaryComponent implements OnInit {
       , err => {
 
         if (err instanceof HttpErrorResponse) {
+        
+          if(err.status==500){
+            this.messageError="could not reach server Please try again later "
+
+          }else{
+            this.messageError=err.message;
+          }
+        
           this.dialogService.openMessageDialog({
             title: '',
-            message: `${err.status}`,
+            
+            message: this.messageError,
             isError: true
           });
           this.sharedServices.loadingChanged.next(false);
@@ -277,11 +337,16 @@ export class BeneficiaryComponent implements OnInit {
       this.errors.documentType = "Document Type must be specified"
       thereIsError = true;
     }
-    if (this.documentId.value == null || this.documentId.value.trim().length <= 0) {
+    if (this.documentIdFormControl.value == null || this.documentIdFormControl.value.trim().length <= 0) {
       this.errors.documentId = "Document ID must be specified"
       thereIsError = true;
     }
-    if (this.dob.value == null) {
+
+    if (this.fullNameController.value == null || this.fullNameController.value.trim().length <= 0) {
+      this.errors.fullName = "Full Name ID must be specified"
+      thereIsError = true;
+    }
+    if (this.dobFormControl.value == null) {
       this.errors.dob = "Date of Brith must be specified"
       thereIsError = true;
     }
@@ -293,7 +358,7 @@ export class BeneficiaryComponent implements OnInit {
 
     for (let insurancePlan of this.insurancePlans) {
       if (insurancePlan.selectePayer == null || insurancePlan.selectePayer == "") {
-        insurancePlan.memberCardIdErorr = "Payer must be specified"
+        insurancePlan.payerErorr = "Payer must be specified"
         thereIsError = true;
       }
       if (insurancePlan.memberCardId.value == null || insurancePlan.memberCardId.value.trim().length <= 0) {
