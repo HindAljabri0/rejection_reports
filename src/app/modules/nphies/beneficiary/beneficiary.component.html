@@ -57,31 +57,31 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">First Name</label>
-                        <input placeholder="Enter first name" class="form-control" [formControl]="firstNameController" >
+                        <input placeholder="Enter first name" class="form-control"  (change)=" isFullNameDisabled()" [formControl]="firstNameController"  [(ngModel)] ="fullName" >
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Second Name</label>
-                        <input placeholder="Enter second name" class="form-control"  [formControl]="secondNameController">
+                        <input placeholder="Enter second name" class="form-control" (change)=" isFullNameDisabled()"  [formControl]="secondNameController">
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Third Name</label>
-                        <input placeholder="Enter third name" class="form-control" [formControl]="thirdNameController">
+                        <input placeholder="Enter third name" class="form-control" (change)=" isFullNameDisabled()"  [formControl]="thirdNameController">
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Family Name</label>
-                        <input placeholder="Enter family name" class="form-control" [formControl]="familyNameController">
+                        <input placeholder="Enter family name" class="form-control" (change)=" isFullNameDisabled()"  [formControl]="familyNameController">
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
-                    <div class="form-group">
+                    <div class="form-group" [matTooltip] ="errors.fullName" [class.has-error]="errors.fullName!=null&&errors.fullName.trim().length>0" >
                         <label class="control-label">Full Name<span class="asterisk">*</span></label>
-                        <input placeholder="Enter full name" class="form-control" [formControl]="fullNameController">
+                        <input   placeholder="Enter full name" class="form-control"  (change)="onNameChanged()" [formControl]="fullNameController">
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
@@ -94,7 +94,7 @@
                     <div class="form-group" [matTooltip] ="errors.dob" [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0" >
                         <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
                         <div class="date-picker">
-                            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dob">
+                            <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth" [formControl]="dobFormControl">
                             <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfBirth></mat-datepicker>
                         </div>
@@ -159,7 +159,7 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group" [matTooltip] ="errors.documentId" [class.has-error]="errors.documentId!=null&&errors.documentId.trim().length>0">
                         <label class="control-label">Document ID<span class="asterisk">*</span></label>
-                        <input placeholder="Enter document ID" class="form-control" [formControl]="documentId">
+                        <input placeholder="Enter document ID" class="form-control" [formControl]="documentIdFormControl">
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
@@ -311,6 +311,7 @@
 
             <h5 class="semibold pb-2 pt-3 mb-3 border-bottom">Insurance Plans</h5>
             <div class="table-responsive">
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="setPrimary">
                 <table class="primary-grid manual-row-color claim-view-table no-borders">
                     <thead>
                         <tr>
@@ -322,9 +323,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                    
                         <tr class="align-middle" *ngFor ="let insurancePlan  of insurancePlans , let i = index" >
                             <td class="text-center" >
-                                <mat-radio-button  color="primary" class="grid-radio" (checked)="insurancePlan.iSsetPrimary" ></mat-radio-button>
+                                <mat-radio-button  color="primary" class="grid-radio" [value]="i" [checked]="i+''==setPrimary"></mat-radio-button>
                             </td>
                             <td>
                                 <div class="form-group m-0" [matTooltip] ="insurancePlan.payerErorr" [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
@@ -358,8 +360,11 @@
                                 </button>
                             </td>
                         </tr>
+                   
                     </tbody>
+                    
                 </table>
+            </mat-radio-group>
             </div>
             <div class="pb-2">
                 <a title="+ Add Insurance Plan" class="primary-link semibold" (click)="addInsurancePlan()">+ Add Insurance Plan</a>
