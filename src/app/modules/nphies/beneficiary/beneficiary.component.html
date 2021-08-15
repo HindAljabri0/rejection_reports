@@ -323,8 +323,8 @@
                     </thead>
                     <tbody>
                         <tr class="align-middle" *ngFor ="let insurancePlan  of insurancePlans , let i = index" >
-                            <td class="text-center">
-                                <mat-radio-button  color="primary" class="grid-radio" (checked)="insurancePlan.iSsetPrimary" [value]="true"></mat-radio-button>
+                            <td class="text-center" >
+                                <mat-radio-button  color="primary" class="grid-radio" (checked)="insurancePlan.iSsetPrimary" ></mat-radio-button>
                             </td>
                             <td>
                                 <div class="form-group m-0" [matTooltip] ="insurancePlan.payerErorr" [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">

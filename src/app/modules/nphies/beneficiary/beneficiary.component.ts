@@ -120,7 +120,7 @@ export class BeneficiaryComponent implements OnInit {
 
    if(this.payersListErorr!=null && this.payersListErorr!=null){
     this.insurancePlans.push({ 
-      iSsetPrimary: true,
+      iSsetPrimary: false,
       selectePayer: "",
       expiryDateController:new FormControl(),
       memberCardId:new FormControl(),
@@ -157,7 +157,7 @@ export class BeneficiaryComponent implements OnInit {
 
         }
       });
-   // this.payersList = this.sharedServices.getPayersList();
+
     this.providerId = this.sharedServices.providerId;
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
