@@ -343,7 +343,7 @@ if(this.insurancePlans!=null && this.insurancePlans.length!=0){
     }
 
     if (this.fullNameController.value == null || this.fullNameController.value.trim().length <= 0) {
-      this.errors.fullName = "Full Name ID must be specified"
+      this.errors.fullName = "Full Name must be specified"
       thereIsError = true;
     }
     if (this.dobFormControl.value == null) {
