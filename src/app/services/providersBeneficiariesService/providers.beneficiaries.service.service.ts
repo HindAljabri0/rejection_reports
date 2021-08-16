@@ -22,6 +22,10 @@ export class ProvidersBeneficiariesService {
     return this.httpClient.request(httpRequest);
   }
 
- 
+  beneficiaryFullTextSearch(providerId: string, query:string){
+    const requestUrl = `/providers/${providerId}/search?query=${query}`;
+    const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(request);
+  }
 
 }

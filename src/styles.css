@@ -567,6 +567,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog-header.has-border{border-bottom:1px solid #e1e1e1;}
 .primary-dialog-footer.has-border{border-top:1px solid #e1e1e1;}
 .primary-dialog-body.fixed-body,.primary-dialog-body .dialog-table{overflow: auto;max-height: calc(100vh - 192px);min-height: 320px;}
+.primary-dialog-body .dialog-table.size-sm{ max-height: calc(100vh - 286px);}
 .primary-dialog.full-screen-dialog{width: 100%;max-width: 100%!important;}
 .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: 100vh;height: 100vh;border-radius: 0;}
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
@@ -1321,3 +1322,25 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     position: relative;
     overflow: hidden;
 }
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 15px 0;
+  }
+  
+  .separator::before,
+  .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e1e1e1;
+  }
+  
+  .separator:not(:empty)::before {
+    margin-right: .25em;
+  }
+  
+  .separator:not(:empty)::after {
+    margin-left: .25em;
+  }
