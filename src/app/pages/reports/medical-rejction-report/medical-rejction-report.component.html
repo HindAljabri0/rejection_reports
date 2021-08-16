@@ -84,7 +84,7 @@
         <img src="./assets/{{detailTopActionIcon}}" />
       </button>
     </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white"
+    <!-- <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white"
       *ngIf="!(claimStatusSummaryData === null || claimStatusSummaryData == undefined)">
       <div class="fixed-height">
         <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
@@ -178,10 +178,68 @@
           </tbody>
         </table>
       </div>
-    </ng-scrollbar>
-    <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
+    </ng-scrollbar> -->
+    <!-- <app-empty-state *ngIf="claimStatusSummaryData === null || claimStatusSummaryData == undefined"
       class="claim-list-empty-state" message='No reports found!'>
-    </app-empty-state>
+    </app-empty-state> -->
+    <div class="pagination-header">
+      <div class="form-group page-select">
+        <label class="control-label">Go to page: </label>
+        <mat-form-field class="form-control custom-select-control">
+          <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="material-paginator">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+          (page)="paginatorAction($event)">
+        </mat-paginator>
+      </div>
+      <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
+        <img src="./assets/{{detailTopActionIcon}}" />
+      </button>
+    </div>
+
+    <div class="table-responsive" *ngIf="errorMessage == null">
+      <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>Doctor Id</th>
+            <th>Patient Name</th>
+            <th>Claim Id</th>
+            <th>File Number</th>
+            <th>Memeber Id</th>
+            <th>Policy Number</th>
+            <th>Claim Date<i (click)="onSortClick($event,'claimdate')" class="my-icon fa fa-chevron-up"></i></th>
+            <th>Net Amount</th>
+            <!-- <th>Rejected By</th> -->
+            <th>Status<i (click)="onSortClick($event,'status')" class="my-icon fa fa-chevron-up"></i></th>
+            <th>Status Details</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let claim of medicalRejectedClaims">
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memeberId}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
+            <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
+            <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
+            <td class="row-click"><a class="primary-link" (click)="
+                    viewClaim(claim,$event)" href="#"> View Claim</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
 
     <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
       <p class="error-card m-0">{{errorMessage}}</p>
