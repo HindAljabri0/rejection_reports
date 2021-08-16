@@ -48,7 +48,7 @@ export class RejectionReportComponent implements OnInit {
 
   lastDownloadSubscriptions: Subscription;
 
-
+  sortDir = 1;
   constructor(
     public reportService: ReportsService,
     public commen: SharedServices,
@@ -276,13 +276,37 @@ export class RejectionReportComponent implements OnInit {
       }
     );
   }
-  viewClaim(item) {
+  viewClaim(item, e) {
+    e.preventDefault();
     this.location.go(`${this.providerId}/claims?claimRefNo=${item.claimRefNo}&claimId=${item.claimId}`);
     const dialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId: item.claimId }
     });
 
+  }
+  onSortClick(event, name) {
+    let target = event.currentTarget,
+      classList = target.classList;
+
+    if (classList.contains('fa-chevron-up')) {
+      classList.remove('fa-chevron-up');
+      classList.add('fa-chevron-down');
+      this.sortDir = -1;
+    } else {
+      classList.add('fa-chevron-up');
+      classList.remove('fa-chevron-down');
+      this.sortDir = 1;
+    }
+    this.sortArr(name);
+  }
+
+  sortArr(colName: any) {
+    this.rejectedClaims.sort((a, b) => {
+      a = a[colName].toLowerCase();
+      b = b[colName].toLowerCase();
+      return a.localeCompare(b) * this.sortDir;
+    });
   }
 
 }

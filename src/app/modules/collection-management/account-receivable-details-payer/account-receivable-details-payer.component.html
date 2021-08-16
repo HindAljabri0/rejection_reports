@@ -53,7 +53,9 @@
                             <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionAmount}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionPerc}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.outstandingAmount}}</td>
-                            <td class="row-click" (click)="toggleRow(i)">{{item.dueDate | date: 'dd-MM-yyyy'}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">
+                                {{item.dueDateMessage!==null && item.dueDateMessage!==''?item.dueDateMessage: item.dueDate | date: 'dd-MM-yyyy'}}
+                            </td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.overDueDay}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.avgTat}}</td>
                             <td class="actions">
