@@ -1316,3 +1316,31 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     width: 100%;
     height: 100%;
 }
+
+.claimDialog mat-dialog-container{
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 15px 0;
+  }
+  
+  .separator::before,
+  .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e1e1e1;
+  }
+  
+  .separator:not(:empty)::before {
+    margin-right: .25em;
+  }
+  
+  .separator:not(:empty)::after {
+    margin-left: .25em;
+  }

@@ -6,18 +6,49 @@
         <div class="block-filter-panel">
             <div class="row small-gutter">
                 <div class="col-8">
+                    <a routerLink="/nphies/beneficiary" title="Create New Beneficiary"
+                        class="primary-link medium d-inline-block mt-1">Create New Beneficiary</a>
+                </div>
+            </div>
+            <div class="separator">Or</div>
+            <div class="row small-gutter">
+                <div class="col-8">
                     <div class="form-group">
-                        <label class="control-label">Beneficiary<span class="asterisk">*</span></label>
+                        <label class="control-label">Select a Beneficiary</label>
+                        <input type="text" class="form-control"
+                            placeholder="Search for beneficiary by name or document ID..."
+                            [formControl]="beneficiarySearchController" [matAutocomplete]="auto"
+                            (keyup)="searchBeneficiaries()">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                                (click)="selectBeneficiary(beneficiary)">
+                                {{beneficiary.name}} ({{beneficiary.documentId}})
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="block-filter-panel" *ngIf="selectedBeneficiary != null">
+            <div class="row small-gutter">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">Beneficiary</label>
+                        <input class="form-control" type="text" disabled
+                            [value]="selectedBeneficiary.name + ' (' + selectedBeneficiary.documentId + ')'">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
                         <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="-1">
-                                <mat-option value="-1">Select Beneficiary</mat-option>
-                                <mat-option value="Beneficiary 1">Beneficiary 1</mat-option>
-                                <mat-option value="Beneficiary 2">Beneficiary 2</mat-option>
-                                <mat-option value="Beneficiary 3">Beneficiary 3</mat-option>
-                                <mat-option value="Beneficiary 4">Beneficiary 4</mat-option>
+                            <mat-select [value]="selectedPlanId">
+                                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
+                                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}} ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                                </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <a routerLink="/nphies/beneficiary" title="+ Add Beneficiary" class="primary-link medium d-inline-block mt-1">+ Add Beneficiary</a>
                     </div>
                 </div>
                 <div class="col-4">
@@ -52,7 +83,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="button" mat-flat-button color="primary" (click)="showDetails=true">Request Eligibility</button>
+                <button type="button" mat-flat-button color="primary" (click)="showDetails=true">Request
+                    Eligibility</button>
             </div>
         </div>
     </ng-container>
@@ -62,7 +94,8 @@
         </div>
         <div class="bg-white p-14">
             <app-eligibility-details class="d-block mb-14"></app-eligibility-details>
-            <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New Eligibility</button>
+            <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
+                Eligibility</button>
         </div>
     </ng-container>
 </div>
