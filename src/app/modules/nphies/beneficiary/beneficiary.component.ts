@@ -275,7 +275,7 @@ this.fullNameController.enable();
   }
   save() {
 
-if(this.insurancePlans!=null || this.insurancePlans.length!=0){
+if(this.insurancePlans!=null && this.insurancePlans.length!=0){
   for(let plan of this.insurancePlans){
     plan.iSPrimary=false;
 
