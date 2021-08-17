@@ -243,7 +243,7 @@
                 </mat-expansion-panel> -->
                 <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>NPHIES</mat-panel-title>
+                        <mat-panel-title>Eligibility</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
@@ -256,16 +256,13 @@
                                 <span class="text">Eligibility Transactions</span>
                             </a>
                         </li>
-                        <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
-                            <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
-                                <span class="text">Beneficiary</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">
-                                <span class="text">Insurance Plans</span>
-                            </a>
-                        </li>
+                    </ul>
+                </mat-expansion-panel>
+                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Pre Authorization</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
                         <li>
                             <a routerLink="/nphies/add-preauthorization" routerLinkActive="is-active">
                                 <span class="text">Request Pre Authorization</span>
@@ -285,6 +282,16 @@
 
             <ng-container *ngIf="isProviderAdmin">
                 <ul class="nav-list">
+                    <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
+                        <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
+                            <span class="text">Beneficiary</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">
+                            <span class="text">Insurance Plans</span>
+                        </a>
+                    </li>
                     <li i18n="@@configurations">
                         <a routerLink="/configurations" routerLinkActive="is-active">
                             <span class="text">Configurations</span>
