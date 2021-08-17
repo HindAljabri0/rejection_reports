@@ -1186,6 +1186,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .action-letter-btn{height: 20px;width: 20px;border-radius:50px;font-size: 12px;font-weight: 700;text-align: center;line-height: 16px;overflow: hidden;text-overflow: ellipsis;display: block;padding: 0;border:2px solid #909090;background:transparent;}
 .action-letter-btn.theme-success{border-color:#29bf24;color:#29bf24;}
 .action-letter-btn.theme-danger{border-color:#CC2F2F;color:#CC2F2F;}
+.action-letter-btn.theme-warning{border-color:#E6AE24;color: #E6AE24;}
 
 /* confirmation dialog body
 --------------------------------------------------------------------------------------------------------*/

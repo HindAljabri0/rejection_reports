@@ -511,9 +511,12 @@
                                             <span class="action-letter-btn theme-success"
                                                 matTooltip="Approval number is verified"
                                                 *ngIf="isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
+                                            <span class="action-letter-btn theme-warning"
+                                                matTooltip="{{claim.statusApproval}} {{claim.descApproval!==null && claim.descApproval!==undefined ? ': '+ claim.descApproval:'' }}"
+                                                *ngIf="isPartialApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
                                             <span class="action-letter-btn theme-danger"
                                                 matTooltip="{{claim.statusApproval}} {{claim.descApproval!==null && claim.descApproval!==undefined ? ': '+ claim.descApproval:'' }}"
-                                                *ngIf="claim.statusApproval != null && !isApprovalState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
+                                                *ngIf="isRejectedState(claim.statusApproval) && !claimIsWaitingApproval(claim.claimId)">A</span>
                                             <mat-spinner diameter="20" *ngIf="claimIsWaitingApproval(claim.claimId)">
                                             </mat-spinner>
 

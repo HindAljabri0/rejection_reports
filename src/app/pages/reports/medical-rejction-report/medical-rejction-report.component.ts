@@ -285,7 +285,7 @@ export class MedicalRejctionReportComponent implements OnInit {
   }
   viewClaim(item, e) {
     e.preventDefault();
-    this.location.go(this.location.path() + 'hasPrevious=1&isViewOnly');
+    this.location.go(this.location.path() + '&hasPrevious=1&isViewOnly');
     const dialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId: item.claimId }
