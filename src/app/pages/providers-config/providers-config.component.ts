@@ -909,7 +909,8 @@ export class ProvidersConfigComponent implements OnInit {
         const data = {
           payerId: id,
           mapPayerName: this.newPayerMappingValue[id],
-          payerName: this.newPayerName[id]
+          payerName: this.newPayerName[id],
+          enabled: true
         };
         selectedPayer.push(data);
       });
@@ -981,7 +982,7 @@ export class ProvidersConfigComponent implements OnInit {
           this.existingPayers = this.existingPayers.filter(payer => mappingList.findIndex(payer1 => payer1.payerId == payer.payerId));
           if (mappingList.length > 0) {
             mappingList.forEach(payer => {
-              this.newPayerMappingEnable[payer.payerId] = true;
+              this.newPayerMappingEnable[payer.payerId] = payer.enabled;
               this.newPayerMappingValue[payer.payerId] = payer.mappingName;
               this.payerMappingValue[payer.payerId] = payer.mappingName;
               this.newPayerName[payer.payerId] = payer.payerName;
