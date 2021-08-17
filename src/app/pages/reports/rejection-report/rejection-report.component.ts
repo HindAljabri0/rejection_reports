@@ -25,6 +25,10 @@ export class RejectionReportComponent implements OnInit {
   detailCardTitle = 'Submitted Invoices';
   detailTopActionIcon = 'ic-download.svg';
   detailAccentColor = 'primary';
+  sortStatusArray = {
+    claimdate: true,
+    status: true
+  };
   @Input() from: string;
   @Input() to: string;
   @Input() payerId: string[];
@@ -276,8 +280,7 @@ export class RejectionReportComponent implements OnInit {
       }
     );
   }
-  viewClaim(item, e) {
-    e.preventDefault();
+  viewClaim(item) {
     this.location.go(`${this.providerId}/claims?claimRefNo=${item.claimRefNo}&claimId=${item.claimId}`);
     const dialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
@@ -286,16 +289,13 @@ export class RejectionReportComponent implements OnInit {
 
   }
   onSortClick(event, name) {
-    let target = event.currentTarget,
-      classList = target.classList;
+    const target = event.currentTarget;
 
-    if (classList.contains('fa-chevron-up')) {
-      classList.remove('fa-chevron-up');
-      classList.add('fa-chevron-down');
+    if (this.sortStatusArray[name]) {
+      this.sortStatusArray[name] = false;
       this.sortDir = -1;
     } else {
-      classList.add('fa-chevron-up');
-      classList.remove('fa-chevron-down');
+      this.sortStatusArray[name] = true;
       this.sortDir = 1;
     }
     this.sortArr(name);

@@ -500,6 +500,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid .column-header-action .action-btn .mat-icon{font-size:18px;line-height: 18px;height: 18px;width: 18px;display: block;}
 .primary-grid .column-header-action.action-active .action-btn{opacity: 1;background: rgba(48, 96, 170,0.16);}
 .primary-grid.no-borders>thead>tr>th,.primary-grid.no-borders>thead>tr>td,.primary-grid.no-borders>tbody>tr>th,.primary-grid.no-borders>tbody>tr>td,.primary-grid.no-borders>thead>tr>th.mat-header-cell,.primary-grid.no-borders>thead>tr>td.mat-header-cell,.primary-grid.no-borders>tbody>tr>th.mat-cell,.primary-grid.no-borders>tbody>tr>td.mat-cell{border:0;}
+.primary-grid th .sort-btn,.primary-grid td .sort-btn{background: none;border:0;color:inherit;font-size: inherit;line-height: inherit;display: flex;font-weight: inherit;text-align: inherit;padding: 11px 6px;margin: -11px -6px;width: calc(100% + 12px);}
+.primary-grid th .sort-btn  .mat-icon,.primary-grid td .sort-btn .mat-icon{height: 18px;width: 18px;line-height: 18px;font-size: 18px;}
 .grid-checkbox .mat-checkbox-layout{padding: 10px;}
 .grid-checkbox{display: block;margin: -8px -10px;}
 .grid-radio .mat-radio-label-content{display: none;}

@@ -6,7 +6,7 @@ export class MedicalRejectionSummary extends Paginateable {
     patientName: string;
     claimRefNo: string;
     patientFileNumber: string;
-    memeberId: string;
+    memberId: string;
     policyNumber: string;
     claimdate: Date;
     netAmount: number;
@@ -22,7 +22,7 @@ export class MedicalRejectionSummary extends Paginateable {
         this.patientName = body['patientName'];
         this.claimRefNo = body['claimRefNo'];
         this.patientFileNumber = body['patientFileNumber'];
-        this.memeberId = body['memeberId'];
+        this.memberId = body['memberId'];
         this.policyNumber = body['policyNumber'];
         this.claimdate = body['claimdate'];
         this.netAmount = body['netAmount'];
