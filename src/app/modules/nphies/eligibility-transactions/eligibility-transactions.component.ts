@@ -147,7 +147,7 @@ export class EligibilityTransactionsComponent implements OnInit {
   openDetailsDialog() {
     const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent,
       {
-        panelClass: ['primary-dialog', 'dialog-xl']
+        panelClass: ['primary-dialog', 'full-screen-dialog']
       });
   }
 
