@@ -120,11 +120,11 @@
             (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)" required>
         </app-submitted-invoices>
 
-        <app-rejection-report #rejectionReport [ngClass]="{'d-none':paymentReference != null && showRejectionReport}"
+        <!-- <app-rejection-report #rejectionReport [ngClass]="{'d-none':paymentReference != null && showRejectionReport}"
             *ngIf="showRejectionReport" [providerId]="providerId" [from]="fromDate" [to]="toDate"
             [payerId]="payerIdControl.value" [criteriaType]="rejectionCriteriaControl.value" [queryPage]="page"
             [pageSize]="pageSize" (onPaymentClick)="onPaymentClick($event)"
             (onPaginationChange)="paginationChange($event)">
-        </app-rejection-report>
+        </app-rejection-report> -->
     </div>
 </div>

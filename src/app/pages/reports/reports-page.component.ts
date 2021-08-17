@@ -63,7 +63,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
-  @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: RejectionReportComponent;
+  // @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: RejectionReportComponent;
   @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
 
   payerId: number[];
@@ -194,9 +194,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.reportTypeControl.value == 2) {
       this.submittedInvoicesSearchResult.fetchData();
     }
-    if (this.reportTypeControl.value == 3) {
-      this.rejectionReportComponent.fetchData();
-    }
+    // if (this.reportTypeControl.value == 3) {
+    //   this.rejectionReportComponent.fetchData();
+    // }
 
   }
   searchSelect(event) {
