@@ -78,7 +78,8 @@
       </div>
       <div class="right-block btn-list" *ngIf="pageMode == 'VIEW'">
         <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
-        <button *ngIf="claim != null && editable" mat-flat-button color="primary" (click)="edit()">Edit</button>
+        <button *ngIf="claim != null && editable && !isViewOnly" mat-flat-button color="primary"
+          (click)="edit()">Edit</button>
       </div>
       <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
         <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
