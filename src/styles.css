@@ -72,6 +72,11 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .btn-action>.mat-icon{display: block;}
 .primary-text-btn{color: #3060AA;}
 .btn-block{width: 100%;}
+.btn-primary{background:#3060aa!important;color:#fff!important;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);border:0!important;box-shadow: none!important;}
+.btn-primary:hover,.btn-primary:focus,.btn-primary:active{color: #fff!important;background: #264d88!important;box-shadow: none!important;}
+.btn-icon{padding: 6px;border-radius: 6px;}
+.btn-icon .mat-icon{height: 20px;width: 20px;line-height: 20px;font-size: 20px;display: block;}
+.btn-icon img{display: block;height: 20px;width: 20px;}
 
 /* misc
 --------------------------------------------------------------------------------------------------------*/
@@ -186,6 +191,7 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .attachment-floating-actions>button:not(:last-child){margin-bottom: 8px;}
 .claim-attachment-table{min-height: 210px;}
 .mat-icon.size-20{font-size:20px;line-height:20px;height:20px;width:20px;}
+.form-title{font-weight: 600;padding-bottom: 8px;padding-top: 16px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -272,7 +278,9 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .sidebar .list-title {color: #878B96;list-style: none;padding: 10px;text-decoration: none;padding-left: 16px;}
 .sidebar .nav-list>li>a{display: flex;padding: 8px 10px 8px 15px;color: #4F5666;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position: relative;min-height:40px;}
 .sidebar .nav-list>li>a:hover,.sidebar .nav-list>li>a:focus,.sidebar .nav-list>li>a:active{background-color: rgba(0,0,0,0.04);}
-.sidebar .nav-list>li>a .text{align-self:center;-ms-flex-item-align: center;padding-left: 14px;}
+.sidebar .nav-list>li>a .text{align-self:center;-ms-flex-item-align: center;}
+.sidebar .nav-list>li>a .text,.sidebar .mat-expansion-panel-body .nav-list>li>a .text:first-child{padding-left: 14px;}
+.sidebar .nav-list>li>a .text:first-child{padding-left: 0;}
 .sidebar .nav-list>.new>a{padding-right: 24px;}
 .sidebar .nav-list>.new>a::after{content: '';background-color: #EB2A75;position: absolute;height: 6px;width: 6px;border-radius: 500px;display: block;top: 50%;right: 14px;transform: translate(0, -50%);}
 .sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
@@ -1324,25 +1332,3 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     position: relative;
     overflow: hidden;
 }
-
-.separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 15px 0;
-  }
-  
-  .separator::before,
-  .separator::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #e1e1e1;
-  }
-  
-  .separator:not(:empty)::before {
-    margin-right: .25em;
-  }
-  
-  .separator:not(:empty)::after {
-    margin-left: .25em;
-  }
