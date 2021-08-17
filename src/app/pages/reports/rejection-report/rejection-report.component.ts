@@ -280,8 +280,10 @@ export class RejectionReportComponent implements OnInit {
       }
     );
   }
-  viewClaim(item) {
-    this.location.go(`${this.providerId}/claims?claimRefNo=${item.claimRefNo}&claimId=${item.claimId}`);
+  viewClaim(item, e) {
+    e.preventDefault();
+    // this.location.go(`${this.providerId}/claims?claimRefNo=${item.claimRefNo}&hasPrevious=1`);
+    this.location.go(this.location.path() + '&hasPrevious=1');
     const dialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId: item.claimId }
