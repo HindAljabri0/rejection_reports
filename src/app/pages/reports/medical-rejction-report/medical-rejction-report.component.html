@@ -27,7 +27,8 @@
               >
             <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="datePickerConfig" placeholder="Select From Date" required
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate"
+              [bsConfig]="datePickerConfig" placeholder="Select From Date" required
               (bsValueChange)="dateValidation($event)" />
           </div>
           <div *ngIf="submitted && formCn.fromDate.errors">
@@ -43,8 +44,8 @@
               formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker> -->
-            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig" [minDate]="minDate"
-              placeholder="Select To Date" required />
+            <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate"
+              [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required />
           </div>
           <div *ngIf="submitted && formCn.toDate.errors">
             <span class="error-text" *ngIf="formCn.toDate.errors.required">Please choose a date</span>
@@ -191,7 +192,8 @@
         </mat-form-field>
       </div>
       <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+          (page)="paginatorAction($event)">
         </mat-paginator>
       </div>
       <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
@@ -243,7 +245,7 @@
             <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
             <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
             <td class="actions">
-              <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim)">
+              <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim,$event)">
                 <mat-icon class="material-icons-outlined">article</mat-icon>
               </button>
             </td>
