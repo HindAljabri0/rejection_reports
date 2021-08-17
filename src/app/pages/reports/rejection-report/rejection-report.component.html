@@ -25,12 +25,24 @@
                 <th>Patient Name</th>
                 <th>Claim Id</th>
                 <th>File Number</th>
-                <th>Memeber Id</th>
+                <th>Member Id</th>
                 <th>Policy Number</th>
-                <th>Claim Date<i (click)="onSortClick($event,'claimdate')" class="my-icon fa fa-chevron-up"></i></th>
+                <th>
+                    <button type="button" (click)="onSortClick($event,'claimdate')" class="sort-btn">
+                        <span>Claim Date</span>
+                        <mat-icon *ngIf="sortStatusArray.claimdate">expand_less</mat-icon>
+                        <mat-icon *ngIf="!sortStatusArray.claimdate">expand_more</mat-icon>
+                    </button>
+                </th>
                 <th>Net Amount</th>
                 <!-- <th>Rejected By</th> -->
-                <th>Status<i (click)="onSortClick($event,'status')" class="my-icon fa fa-chevron-up"></i></th>
+                <th>
+                    <button type="button" (click)="onSortClick($event,'status')" class="sort-btn">
+                        <span>Status</span>
+                        <mat-icon *ngIf="sortStatusArray.status">expand_less</mat-icon>
+                        <mat-icon *ngIf="!sortStatusArray.status">expand_more</mat-icon>
+                    </button>
+                </th>
                 <th>Status Details</th>
                 <th></th>
             </tr>
@@ -41,15 +53,17 @@
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memeberId}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memberId}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
+                <td class="row-click" (click)="onClaimClick(claim.claimId)" class="text-nowrap">{{claim.claimdate}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
                 <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
                 <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
-                <td class="row-click"><a class="primary-link" (click)="
-                    viewClaim(claim,$event)" href="#"> View Claim</a>
+                <td class="actions">
+                    <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim,$event)">
+                        <mat-icon class="material-icons-outlined">article</mat-icon>
+                    </button>
                 </td>
             </tr>
         </tbody>

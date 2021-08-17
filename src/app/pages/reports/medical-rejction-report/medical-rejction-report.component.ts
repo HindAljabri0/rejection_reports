@@ -28,6 +28,10 @@ export class MedicalRejctionReportComponent implements OnInit {
   medicalRejectionReportForm: FormGroup;
   submitted = false;
   errorMessage: string;
+  sortStatusArray = {
+    claimdate: true,
+    status: true
+  };
   detailTopActionIcon = 'ic-download.svg';
   claimStatusSummaryData: any;
   minDate: any;
@@ -48,11 +52,15 @@ export class MedicalRejctionReportComponent implements OnInit {
   manualPage = null;
   datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false, dateInputFormat: 'DD/MM/YYYY' };
   sortDir = 1;
-  constructor(public commen: SharedServices,
+  constructor(
+    public commen: SharedServices,
     private formBuilder: FormBuilder,
     private reportService: ReportsService,
     private location: Location,
-    private routeActive: ActivatedRoute, private dialogService: DialogService, public dialog: MatDialog, private downloadService: DownloadService) {
+    private routeActive: ActivatedRoute,
+    private dialogService: DialogService,
+    public dialog: MatDialog,
+    private downloadService: DownloadService) {
     this.page = 0;
     this.pageSize = 10;
   }
@@ -128,8 +136,9 @@ export class MedicalRejctionReportComponent implements OnInit {
   search() {
     this.submitted = true;
 
-    if (this.medicalRejectionReportForm.invalid)
-      return
+    if (this.medicalRejectionReportForm.invalid) {
+      return;
+    }
 
     this.detailTopActionIcon = 'ic-download.svg';
     if (this.lastDownloadSubscriptions != null && !this.lastDownloadSubscriptions.closed) {
@@ -276,7 +285,7 @@ export class MedicalRejctionReportComponent implements OnInit {
   }
   viewClaim(item, e) {
     e.preventDefault();
-    this.location.go(`${this.commen.providerId}/claims?claimRefNo=${item.claimRefNo}&claimId=${item.claimId}`);
+    this.location.go(this.location.path() + 'hasPrevious=1&isViewOnly');
     const dialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId: item.claimId }
@@ -310,7 +319,13 @@ export class MedicalRejctionReportComponent implements OnInit {
     const criteriaType = this.medicalRejectionReportForm.value.summaryCriteria.toString() === '1' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
       .startDownload(this.reportService
-        .downloadMedicalRejectionReport(this.commen.providerId, fromDate, toDate, this.medicalRejectionReportForm.value.payerId, criteriaType))
+        .downloadMedicalRejectionReport(
+          this.commen.providerId,
+          fromDate,
+          toDate,
+          this.medicalRejectionReportForm.value.payerId,
+          criteriaType
+        ))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -320,16 +335,14 @@ export class MedicalRejctionReportComponent implements OnInit {
       });
   }
   onSortClick(event, name) {
-    let target = event.currentTarget,
-      classList = target.classList;
+    const target = event.currentTarget;
+    const classList = target.classList;
 
-    if (classList.contains('fa-chevron-up')) {
-      classList.remove('fa-chevron-up');
-      classList.add('fa-chevron-down');
+    if (this.sortStatusArray[name]) {
+      this.sortStatusArray[name] = false;
       this.sortDir = -1;
     } else {
-      classList.add('fa-chevron-up');
-      classList.remove('fa-chevron-down');
+      this.sortStatusArray[name] = true;
       this.sortDir = 1;
     }
     this.sortArr(name);

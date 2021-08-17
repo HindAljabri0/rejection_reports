@@ -38,6 +38,7 @@ export class EditClaimComponent implements OnInit {
   };
   claimType = '';
   claimName: string;
+  isViewOnly: boolean = false;
 
 
   constructor(
@@ -102,6 +103,9 @@ export class EditClaimComponent implements OnInit {
       this.isLoading = loading;
       this.sharedService.loadingChanged.next(loading);
     });
+    if (this.location.path().includes('isViewOnly'))
+      this.isViewOnly = true;
+
 
     this.store.select(getPaginationControl).subscribe(control => {
       this.paginationControl = control;
@@ -196,7 +200,7 @@ export class EditClaimComponent implements OnInit {
   }
 
   close(result?) {
-    this.dialogRef.close(result != null?`${result}`:null);
+    this.dialogRef.close(result != null ? `${result}` : null);
   }
 
   getError() {
