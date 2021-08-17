@@ -1327,7 +1327,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   isApprovalState(status: string) {
     if (status == null) { return false; }
-    return status.toLowerCase() == 'Approval';
+    return status.toLowerCase() == 'approved';
+  }
+  isPartialApprovalState(status: string) {
+    if (status == null) { return false; }
+    return status.toLowerCase() == 'partially_approved' || status.toLowerCase() == 'limit_approved'
+      || status.toLowerCase() == 'conditionally_approved';
+  }
+  isRejectedState(status: string) {
+    if (status == null) { return false; }
+    return status.toLowerCase() == 'rejected' || status.toLowerCase() == 'invalid';
   }
 
   get showEligibilityButton() {
