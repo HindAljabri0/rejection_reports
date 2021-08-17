@@ -24,6 +24,7 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
   selectedPayerDataAndDate: any;
   sumOfTotalReceivableObj: any;
   payerName: string;
+  isAddOrEditRejectionLable: string = 'Add';
   constructor(public dialog: MatDialog, private collectionManagementService: CollectionManagementService, private sharedService: SharedServices, private dialogService: DialogService, private routeActive: ActivatedRoute) {
   }
 
@@ -77,7 +78,8 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
             const payerData = this.payersList.find(sele => sele.id === parseInt(ele.payerId));
             ele.payerName = payerData !== undefined ? payerData.name + ' ' + payerData.arName : ele.payerId;
             if (ele.initRejectionPerc !== null)
-              ele.initRejectionPerc = ele.initRejectionPerc + '%';
+              ele.initRejectionPerc1 = ele.initRejectionPerc;
+            ele.initRejectionPerc = ele.initRejectionPerc + '%';
 
             if (ele.totalReceivedPerc !== null)
               ele.totalReceivedPerc = ele.totalReceivedPerc + '%';
@@ -181,6 +183,7 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
       payerId: this.payerId,
       item: item
     }
+    this.isAddOrEditRejectionLable = item.initRejectionAmount > 0 || item.initRejectionPerc1 > 0 ? 'Edit' : 'Add';
   }
 
 }
