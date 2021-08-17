@@ -15,7 +15,8 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { Observable, Subscription } from 'rxjs';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { EditClaimComponent } from '../../edit-claim/edit-claim.component';
-
+import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
 @Component({
   selector: 'app-rejection-report',
   templateUrl: './rejection-report.component.html',
@@ -29,16 +30,21 @@ export class RejectionReportComponent implements OnInit {
     claimdate: true,
     status: true
   };
-  @Input() from: string;
-  @Input() to: string;
-  @Input() payerId: string[];
-  @Input() queryPage: number;
-  @Input() pageSize: number;
-  @Input() providerId: string;
-  @Input() criteriaType: string;
+  // @Input() from: string;
+  // @Input() to: string;
+  // @Input() payerId: string[];
+  // @Input() queryPage: number;
+  // @Input() pageSize: number;
+  // @Input() commen.providerId: string;
+  // @Input() criteriaType: string;
 
-  @Output() onPaymentClick = new EventEmitter();
-  @Output() onPaginationChange = new EventEmitter();
+  // @Output() onPaymentClick = new EventEmitter();
+  // @Output() onPaginationChange = new EventEmitter();
+
+  page: number;
+  pageSize: number;
+  tempPage = 0;
+  tempPageSize = 10;
 
   paginatorPagesNumbers: number[];
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
@@ -53,6 +59,28 @@ export class RejectionReportComponent implements OnInit {
   lastDownloadSubscriptions: Subscription;
 
   sortDir = 1;
+  payers: { id: string[] | string, name: string }[];
+
+  criterias: { id: number, name: string }[] = [
+    { id: 1, name: 'Upload Date' },
+    { id: 2, name: 'Claim Date' },
+  ];
+
+  actionIcon = 'ic-download.svg';
+
+
+  reportTypeControl: FormControl = new FormControl();
+  fromDateControl: FormControl = new FormControl();
+  fromDateHasError = false;
+
+  toDateControl: FormControl = new FormControl();
+  toDateHasError = false;
+
+  payerIdControl: FormControl = new FormControl();
+  payerIdHasError = false;
+
+  rejectionCriteriaControl: FormControl = new FormControl();
+  rejectionCriteriaHasError = false;
   constructor(
     public reportService: ReportsService,
     public commen: SharedServices,
@@ -64,14 +92,92 @@ export class RejectionReportComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit() {
-    // this.fetchData();
+    this.payers = [];
+    const allPayersIds = [];
+    this.commen.getPayersList().map(value => {
+      this.payers.push({
+        id: `${value.id}`,
+        name: value.name
+      });
+      allPayersIds.push(`${value.id}`);
+    });
+    this.payers.push({
+      id: allPayersIds,
+      name: 'All'
+    });
+    this.routeActive.queryParams.subscribe(value => {
+      if (value.from != undefined) {
+        const fromDate: Date = new Date(value.from);
+        this.fromDateControl.setValue(fromDate);
+      }
+      if (value.to != undefined) {
+        const toDate: Date = new Date(value.to);
+        this.toDateControl.setValue(toDate);
+      }
+      if (value.payer != undefined) {
+        if (value.payer instanceof Array && value.payer.length > 1) {
+          this.payerIdControl.setValue(allPayersIds);
+        } else {
+          this.payerIdControl.setValue(value.payer);
+        }
+      }
+      // if (value.type != undefined) {
+      //   this.reportTypeControl.setValue(Number.parseInt(value.type, 10));
+      // }
+      if (value.criteria != null) {
+        this.rejectionCriteriaControl.setValue(Number.parseInt(value.criteria, 10));
+        // this.criteria = value.criteria;
+      }
+      if (value.page != null) {
+        this.page = Number.parseInt(value.page, 10);
+      } else {
+        this.page = 0;
+      }
+      if (value.pageSize != null) {
+        this.pageSize = Number.parseInt(value.pageSize, 10);
+      } else {
+        this.pageSize = 10;
+      }
+    }).unsubscribe();
+    this.fetchData();
+
   }
 
   fetchData() {
+    this.fromDateHasError = false;
+    this.toDateHasError = false;
+    this.payerIdHasError = false;
+    this.rejectionCriteriaHasError = false;
+
+    if (this.reportTypeControl.invalid) {
+      return;
+    }
+
+    if (this.payerIdControl.invalid) {
+      this.payerIdHasError = true;
+      return;
+    }
+
+    if (this.fromDateControl.invalid) {
+      this.fromDateHasError = true;
+      return;
+    }
+
+    if (this.toDateControl.invalid) {
+      this.toDateHasError = true;
+      return;
+    }
+
+    if (this.reportTypeControl.value == 3 && this.rejectionCriteriaControl.invalid) {
+      this.rejectionCriteriaHasError = true;
+      return;
+    }
+
     if (this.commen.loading) {
       return;
     }
-    if (this.providerId == null || this.from == null || this.to == null || this.payerId == null || this.criteriaType == null) {
+
+    if (this.commen.providerId == null || this.fromDateControl.value == null || this.toDateControl.value == null || this.payerIdControl.value == null || this.rejectionCriteriaControl.value == null) {
       return;
     }
     this.commen.loadingChanged.next(true);
@@ -81,12 +187,12 @@ export class RejectionReportComponent implements OnInit {
     }
     this.errorMessage = null;
     // let event;
-    // event = await this.reportService.getRejectionSummary(this.providerId,
-    //   this.from,
-    //   this.to,
-    //   this.payerId,
-    //   this.criteriaType,
-    //   this.queryPage,
+    // event = await this.reportService.getRejectionSummary(this.commen.providerId,
+    //   this.fromDateControl.value,
+    //   this.toDateControl.value,
+    //   this.payerIdControl.value,
+    //   this.rejectionCriteriaControl.value,
+    //   this.page,
     //   this.pageSize).subscribe((event) => {
     //     if (event instanceof HttpResponse) {
     //       this.rejectionReportSummary = new PaginatedResult(event.body, RejectionSummary);
@@ -114,13 +220,16 @@ export class RejectionReportComponent implements OnInit {
     //     }
     //     this.commen.loadingChanged.next(false);
     //   });
-    const criteriaType = this.criteriaType.toString() === '1' ? 'extraction' : 'claim';
+    const fromDate = moment(this.fromDateControl.value).format('YYYY-MM-DD');
+    const toDate = moment(this.toDateControl.value).format('YYYY-MM-DD');
+    const criteriaType = this.rejectionCriteriaControl.value.toString() === '1' ? 'extraction' : 'claim';
+    this.editURL(fromDate, toDate);
     this.reportService.getTechinicalRejection(this.commen.providerId,
-      this.from,
-      this.to,
-      this.payerId,
+      fromDate,
+      toDate,
+      this.payerIdControl.value,
       criteriaType,
-      this.queryPage, this.pageSize).subscribe((event: any) => {
+      this.page, this.pageSize).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = JSON.parse(event.body);
           this.rejectionReportSummary = new PaginatedResult(body, RejectionSummary);
@@ -155,7 +264,7 @@ export class RejectionReportComponent implements OnInit {
       return;
     }
     // this.lastDownloadSubscriptions = this.downloadService
-    //   .startDownload(this.reportService.downloadRejectionAsCSV(this.providerId, this.from, this.to, this.payerId, this.criteriaType))
+    //   .startDownload(this.reportService.downloadRejectionAsCSV(this.commen.providerId, this.fromDateControl.value, this.toDateControl.value, this.payerIdControl.value, this.rejectionCriteriaControl.value))
     //   .subscribe(status => {
     //     if (status != DownloadStatus.ERROR) {
     //       this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -163,10 +272,10 @@ export class RejectionReportComponent implements OnInit {
     //       this.detailTopActionIcon = 'ic-download.svg';
     //     }
     //   });
-    const criteriaType = this.criteriaType.toString() === '1' ? 'extraction' : 'claim';
+    const criteriaType = this.rejectionCriteriaControl.value.toString() === '1' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
       .startDownload(this.reportService
-        .downloadTechnicalRejectionReport(this.providerId, this.from, this.to, this.payerId, criteriaType))
+        .downloadTechnicalRejectionReport(this.commen.providerId, this.fromDateControl.value, this.toDateControl.value, this.payerIdControl.value, criteriaType))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -178,8 +287,8 @@ export class RejectionReportComponent implements OnInit {
 
   paginatorAction(event) {
     this.manualPage = event['pageIndex'];
-    this.onPaginationChange.emit(event);
-    this.queryPage = event.pageIndex;
+    this.paginationChange(event);
+    this.page = event.pageIndex;
     this.pageSize = event.pageSize;
     this.fetchData();
   }
@@ -208,7 +317,7 @@ export class RejectionReportComponent implements OnInit {
   }
 
   onClaimClick(id) {
-    this.reportService.getClaimRejection(this.providerId, this.payerId, id).subscribe(
+    this.reportService.getClaimRejection(this.commen.providerId, this.payerIdControl.value, id).subscribe(
       event => {
         if (event instanceof HttpResponse) {
           const claim = new RejectionReportClaimDialogData();
@@ -280,8 +389,10 @@ export class RejectionReportComponent implements OnInit {
       }
     );
   }
-  viewClaim(item) {
-    this.location.go(`${this.providerId}/claims?claimRefNo=${item.claimRefNo}&claimId=${item.claimId}`);
+  viewClaim(item, e) {
+    e.preventDefault();
+    // this.location.go(`${this.commen.providerId}/claims?claimRefNo=${item.claimRefNo}&hasPrevious=1`);
+    this.location.go(this.location.path() + '&hasPrevious=1');
     const dialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId: item.claimId }
@@ -307,6 +418,30 @@ export class RejectionReportComponent implements OnInit {
       b = b[colName].toLowerCase();
       return a.localeCompare(b) * this.sortDir;
     });
+  }
+  paginationChange(event) {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    // this.resetURL();
+  }
+  editURL(fromDate?: string, toDate?: string) {
+    let path = '/reports/technical-rejection-report?';
+    if (this.payerIdControl.value != null) {
+      path += `payer=${this.payerIdControl.value}&`;
+    }
+    if (this.rejectionCriteriaControl.value != null) {
+      path += `criteria=${this.rejectionCriteriaControl.value}&`;
+    }
+    if (fromDate != null) {
+      path += `from=${fromDate}&`;
+    }
+    if (toDate != null) {
+      path += `to=${toDate}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 1);
+    }
+    this.location.go(path);
   }
 
 }

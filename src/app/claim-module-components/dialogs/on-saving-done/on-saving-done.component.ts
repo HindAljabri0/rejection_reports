@@ -1,12 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { OnSavingDoneDialogData } from './on-saving-done.data';
 import { SharedServices } from 'src/app/services/shared.services';
-import { viewThisMonthClaims, cancelClaim } from '../../store/claim.actions';
-import { Location } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { cancelClaim, viewThisMonthClaims } from '../../store/claim.actions';
+import { OnSavingDoneDialogData } from './on-saving-done.data';
 
 @Component({
   selector: 'app-on-saving-done',
@@ -21,7 +19,6 @@ export class OnSavingDoneComponent implements OnInit {
     private store: Store,
     private sharedServices: SharedServices,
     private location: Location,
-    private router: Router
   ) { }
 
   ngOnInit() {
@@ -73,8 +70,15 @@ export class OnSavingDoneComponent implements OnInit {
         }
       }).join(','));
     }
-    this.location.go(this.location.path().replace('#edit', ''));
-    location.reload();
+
+    const hasPreviousPage = this.location.path().includes('hasPrevious=1');
+    if (hasPreviousPage)
+      location.reload();
+    else {
+      this.location.go(this.location.path().replace('#edit', ''));
+      location.reload();
+    }
+
   }
 
   get isNotAccepted() {
