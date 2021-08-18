@@ -4,7 +4,7 @@
 </div>
 <div class="primary-dialog-body pb-0">
     <div class="row small-gutter">
-        <div class="col-5">
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Type<span class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
@@ -18,7 +18,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Code - Description<span class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
@@ -32,73 +32,76 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Non Standard Code</label>
+                <input class="form-control" placeholder="Enter non standard code">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Is Package?</label>
+                <mat-radio-group class="radio-group inline">
+                    <mat-radio-button color="primary" [value]="1">Yes</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="2">No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Quantity</label>
                 <input class="form-control" placeholder="Enter quantity">
             </div>
         </div>
-    </div>
-    <div class="row small-gutter">
-        <div class="col-xl-6">
-            <div class="row small-gutter">
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Unit Price<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter unit price">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Factor<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter factor">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Tax(%)<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter tax(%)">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Patient Share(%)<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter patient share(%)">
-                    </div>
-                </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Unit Price<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter unit price">
             </div>
         </div>
-        <div class="col-xl-6">
-            <div class="row small-gutter">
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Tax<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter tax">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Net<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter net">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Patient Share<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter patient share">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Payer Share<span class="asterisk">*</span></label>
-                        <input class="form-control" placeholder="Enter payer share">
-                    </div>
-                </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Discount<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter discount">
             </div>
         </div>
-    </div>
-    <div class="row small-gutter">
-        <div class="col-4 col-xxl-3">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Tax(%)<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter tax(%)">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Patient Share(%)<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter patient share(%)">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Tax</label>
+                <input class="form-control" placeholder="Enter tax" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Net</label>
+                <input class="form-control" placeholder="Enter net" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Patient Share</label>
+                <input class="form-control" placeholder="Enter patient share" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Payer Share</label>
+                <input class="form-control" placeholder="Enter payer share" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Start Date</label>
                 <div class="date-picker">
@@ -108,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4 col-xxl-3">
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Supporting Info</label>
                 <mat-form-field class="form-control custom-select-control">
@@ -122,7 +125,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="col-4 col-xxl-3">
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Diagnoses</label>
                 <mat-form-field class="form-control custom-select-control">
@@ -136,7 +139,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="col-4 col-xxl-3">
+        <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Care Teams</label>
                 <mat-form-field class="form-control custom-select-control">
@@ -148,27 +151,6 @@
                         <mat-option value="Care Team 4">Care Team 4</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-            <div class="form-group">
-                <label class="control-label">Non Standard Code</label>
-                <input class="form-control" placeholder="Enter non standard code">
-            </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-            <div class="form-group">
-                <label class="control-label">Display</label>
-                <input class="form-control" placeholder="Enter display">
-            </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-            <div class="form-group">
-                <label class="control-label">Is Package?</label>
-                <mat-radio-group class="radio-group inline">
-                    <mat-radio-button color="primary" [value]="1">Yes</mat-radio-button>
-                    <mat-radio-button color="primary" [value]="2">No</mat-radio-button>
-                </mat-radio-group>
             </div>
         </div>
     </div>

@@ -1,56 +1,150 @@
-<div class="pagination-header">
-    <div class="form-group page-select">
-        <label class="control-label">Go to page: </label>
-        <mat-form-field class="form-control custom-select-control">
-            <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-                <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-            </mat-select>
-        </mat-form-field>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Technical Rejection Report</p>
     </div>
-    <div class="material-paginator">
-        <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
-        </mat-paginator>
+    <div class="block-filter-panel has-border">
+        <div class="row small-gutter">
+            <div class="col">
+                <div class="form-group" [class.has-error]="payerIdHasError">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [formControl]="payerIdControl" (keyup.enter)="fetchData()" required>
+                            <mat-option *ngFor="let payer of payers" [value]="payer.id">
+                                {{payer.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="payerIdControl.invalid && payerIdHasError">
+                        <span class="error-text" *ngIf="payerIdControl.hasError('required')">Please select a
+                            Payer</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group" [class.has-error]="fromDateHasError">
+                    <label class="control-label">From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="fetchData()"
+                            required>
+                        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromPicker></mat-datepicker>
+                    </div>
+                    <div *ngIf="fromDateControl.invalid && fromDateHasError">
+                        <span class="error-text" *ngIf="fromDateControl.hasError('required')">Please choose a
+                            date</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group" [class.has-error]="toDateHasError">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="fetchData()" required>
+                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toPicker></mat-datepicker>
+                    </div>
+                    <div *ngIf="toDateControl.invalid && toDateHasError">
+                        <span class="error-text" *ngIf="toDateControl.hasError('required')">Please choose a date</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group" [class.has-error]="rejectionCriteriaHasError">
+                    <label class="control-label">Criteria</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [formControl]="rejectionCriteriaControl" (keyup.enter)="fetchData()" required>
+                            <mat-option *ngFor="let criteria of criterias" [value]="criteria.id">
+                                {{criteria.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="rejectionCriteriaControl.invalid && rejectionCriteriaHasError">
+                        <span class="error-text" *ngIf="rejectionCriteriaControl.hasError('required')">Please select a
+                            Criteria</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-auto">
+                <div class="form-group">
+                    <label class="control-label d-lg-block d-none">&nbsp;</label>
+                    <button color="primary" mat-flat-button (click)="fetchData()">Search</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
-        <img src="./assets/{{detailTopActionIcon}}" />
-    </button>
-</div>
+    <div class="pagination-header">
+        <div class="form-group page-select">
+            <label class="control-label">Go to page: </label>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="material-paginator">
+            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+            </mat-paginator>
+        </div>
+        <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
+            <img src="./assets/{{detailTopActionIcon}}" />
+        </button>
+    </div>
 
-<div class="table-responsive" *ngIf="errorMessage == null">
-    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-            <tr>
-                <th>Doctor Id</th>
-                <th>Patient Name</th>
-                <th>Claim Id</th>
-                <th>File Number</th>
-                <th>Memeber Id</th>
-                <th>Policy Number</th>
-                <th>Claim Date</th>
-                <th>Net Amount</th>
-                <th>Rejected By</th>
-                <th>Status</th>
-                <th>Status Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let claim of rejectedClaims">
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memeberId}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
-                <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="table-responsive" *ngIf="errorMessage == null">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Doctor Id</th>
+                    <th>Patient Name</th>
+                    <th>Claim Id</th>
+                    <th>File Number</th>
+                    <th>Member Id</th>
+                    <th>Policy Number</th>
+                    <th>
+                        <button type="button" (click)="onSortClick($event,'claimdate')" class="sort-btn">
+                            <span>Claim Date</span>
+                            <mat-icon *ngIf="sortStatusArray.claimdate">expand_less</mat-icon>
+                            <mat-icon *ngIf="!sortStatusArray.claimdate">expand_more</mat-icon>
+                        </button>
+                    </th>
+                    <th>Net Amount</th>
+                    <!-- <th>Rejected By</th> -->
+                    <th>
+                        <button type="button" (click)="onSortClick($event,'status')" class="sort-btn">
+                            <span>Status</span>
+                            <mat-icon *ngIf="sortStatusArray.status">expand_less</mat-icon>
+                            <mat-icon *ngIf="!sortStatusArray.status">expand_more</mat-icon>
+                        </button>
+                    </th>
+                    <th>Status Details</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let claim of rejectedClaims">
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.doctorId}}</td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientName}}</td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.claimRefNo}}</td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memberId}}</td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
+                    <td class="row-click text-nowrap" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}
+                    </td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
+                    <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.status}}</td>
+                    <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.statusDetails}}</td>
+                    <td class="actions">
+                        <button type="button" class="text-primary" mat-icon-button (click)="viewClaim(claim,$event)">
+                            <mat-icon class="material-icons-outlined">article</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
-    <p class="error-card m-0">{{errorMessage}}</p>
+    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+        <p class="error-card m-0">{{errorMessage}}</p>
+    </div>
 </div>

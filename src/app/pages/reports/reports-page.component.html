@@ -66,7 +66,7 @@
             </div>
             <div class="col" *ngIf="showRejectionReport">
                 <div class="form-group" [class.has-error]="rejectionCriteriaHasError">
-                    <label class="control-label">Rejection Criteria</label>
+                    <label class="control-label">Criteria</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select [formControl]="rejectionCriteriaControl" (keyup.enter)="search()" required>
                             <mat-option *ngFor="let criteria of criterias" [value]="criteria.id">
@@ -76,7 +76,7 @@
                     </mat-form-field>
                     <div *ngIf="rejectionCriteriaControl.invalid && rejectionCriteriaHasError">
                         <span class="error-text" *ngIf="rejectionCriteriaControl.hasError('required')">Please select a
-                            Rejection Criteria</span>
+                            Criteria</span>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 <img src="./assets/{{actionIcon}}" />
             </button>
         </div>
-        <app-payment-reference-report #paymentSearchResult [ngClass]="{'d-none':paymentReference != null}"
+        <!-- <app-payment-reference-report #paymentSearchResult [ngClass]="{'d-none':paymentReference != null}"
             *ngIf="showPaymentSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
             [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
             (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
@@ -111,7 +111,7 @@
         <app-payment-claim-summary-report #paymentClaimSummaryReport [ngClass]="{'d-none':paymentReference == null}"
             [providerId]="providerId" [paymentReference]="pRef" [page]="page" [pageSize]="pageSize"
             (onPaginationChange)="paginationChange($event)">
-        </app-payment-claim-summary-report>
+        </app-payment-claim-summary-report> -->
 
         <app-submitted-invoices #submittedInvoicesSearchResult
             [ngClass]="{'d-none':paymentReference != null && showSubmittedInvoicesSearch}"
@@ -120,11 +120,11 @@
             (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)" required>
         </app-submitted-invoices>
 
-        <app-rejection-report #rejectionReport [ngClass]="{'d-none':paymentReference != null && showRejectionReport}"
+        <!-- <app-rejection-report #rejectionReport [ngClass]="{'d-none':paymentReference != null && showRejectionReport}"
             *ngIf="showRejectionReport" [providerId]="providerId" [from]="fromDate" [to]="toDate"
             [payerId]="payerIdControl.value" [criteriaType]="rejectionCriteriaControl.value" [queryPage]="page"
             [pageSize]="pageSize" (onPaymentClick)="onPaymentClick($event)"
             (onPaginationChange)="paginationChange($event)">
-        </app-rejection-report>
+        </app-rejection-report> -->
     </div>
 </div>

@@ -21,9 +21,10 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
   payersList: { id: number, name: string, arName: string }[] = [];
   payerId: string;
   receivableDetailsData: any = [];
-  selectedPayerAndDate: any;
+  selectedPayerDataAndDate: any;
   sumOfTotalReceivableObj: any;
   payerName: string;
+  isAddOrEditRejectionLable: string = 'Add';
   constructor(public dialog: MatDialog, private collectionManagementService: CollectionManagementService, private sharedService: SharedServices, private dialogService: DialogService, private routeActive: ActivatedRoute) {
   }
 
@@ -47,7 +48,7 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
     const dialogRef = this.dialog.open(AccountReceivableAddPaymentComponent,
       {
         panelClass: ['primary-dialog'],
-        data: this.selectedPayerAndDate
+        data: this.selectedPayerDataAndDate
       });
     dialogRef.afterClosed().subscribe(result => {
       if (dialogRef.componentInstance.status) {
@@ -77,7 +78,8 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
             const payerData = this.payersList.find(sele => sele.id === parseInt(ele.payerId));
             ele.payerName = payerData !== undefined ? payerData.name + ' ' + payerData.arName : ele.payerId;
             if (ele.initRejectionPerc !== null)
-              ele.initRejectionPerc = ele.initRejectionPerc + '%';
+              ele.initRejectionPerc1 = ele.initRejectionPerc;
+            ele.initRejectionPerc = ele.initRejectionPerc + '%';
 
             if (ele.totalReceivedPerc !== null)
               ele.totalReceivedPerc = ele.totalReceivedPerc + '%';
@@ -120,6 +122,7 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
     }, err => {
       if (err instanceof HttpErrorResponse) {
         this.sharedService.loadingChanged.next(false);
+        this.receivableDetailsData = [];
         console.log(err);
       }
     });
@@ -129,7 +132,9 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
     const dialogRef = this.dialog.open(AddIntialRejectionDialogComponent,
       {
         panelClass: ['primary-dialog', 'dialog-sm'],
-        data: this.selectedPayerAndDate
+        data: {
+          selectedPayerDataAndDate: this.selectedPayerDataAndDate,
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       if (dialogRef.componentInstance.status) {
@@ -173,10 +178,12 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
         });
   }
   setSelcetedPayerAndDate(item) {
-    this.selectedPayerAndDate = {
+    this.selectedPayerDataAndDate = {
       rejectionDate: new Date(item.month),
-      payerId: this.payerId
+      payerId: this.payerId,
+      item: item
     }
+    this.isAddOrEditRejectionLable = item.initRejectionAmount > 0 || item.initRejectionPerc1 > 0 ? 'Edit' : 'Add';
   }
 
 }

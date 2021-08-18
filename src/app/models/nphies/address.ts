@@ -6,7 +6,7 @@ export class Address {
     state: string;
     contry: string;
     postalCode: string;
-
+  
 
     
 }

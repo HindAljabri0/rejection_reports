@@ -9,15 +9,15 @@ export class CollectionManagementService {
 
   constructor(private http: HttpClient) { }
 
-  addAccountReceivalble(providerId: any, data: any) {
+  addAccountReceivable(providerId: any, data: any) {
     const requestURL = `/providers/${providerId}/payment/account/receivable/save?paymentIds=${data.paymentIds}&receivableDate=${data.receivableDate}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
     const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, {}, { headers: headers });
     return this.http.request(request);
   }
 
-  getAccountReceivalble(providerId: any, payerId: any) {
-    const requestURL = `/providers/${providerId}/payment/account/receivable/fetch?payerId=${payerId}`;
+  getAccountReceivalble(providerId: any, payerId: any, fromDate: string, toDate: string) {
+    const requestURL = `/providers/${providerId}/payment/account/receivable/fetch?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}`;
     const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
     return this.http.request(request);
   }

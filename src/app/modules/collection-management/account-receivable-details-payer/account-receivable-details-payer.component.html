@@ -3,7 +3,7 @@
         <p>Accounts Receivables Monthly - {{payerName}}</p>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
+        <div class="fixed-height fixed-height-lg">
             <table class="primary-grid manual-row-color" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -12,7 +12,7 @@
                         <th rowspan="2">Total Submitted</th>
                         <th colspan="2" class="text-center">Total Received</th>
                         <th colspan="2" class="text-center">Initial Rejection</th>
-                        <th rowspan="2">Amount Outstanding</th>
+                        <th rowspan="2">Amount Outstanding(SR)</th>
                         <th rowspan="2">Due Date</th>
                         <th rowspan="2">Days Overdue</th>
                         <th rowspan="2">Avg. TAT</th>
@@ -53,11 +53,14 @@
                             <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionAmount}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.initRejectionPerc}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.outstandingAmount}}</td>
-                            <td class="row-click" (click)="toggleRow(i)">{{item.dueDate}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">
+                                {{item.dueDateMessage!==null && item.dueDateMessage!==''?item.dueDateMessage: item.dueDate | date: 'dd-MM-yyyy'}}
+                            </td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.overDueDay}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.avgTat}}</td>
                             <td class="actions">
                                 <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                    *ngIf="!(item.totalSubmitted===0 || item.totalSubmitted===null)"
                                     (click)="setSelcetedPayerAndDate(item)">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
@@ -109,7 +112,7 @@
                         </tr>
                     </ng-container>
                     <tr>
-                        <td colspan="10" class="p-0">
+                        <td colspan="12" class="p-0">
                             <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0"
                                 class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
@@ -141,7 +144,8 @@
     <mat-menu #actionsMenu xPosition="before">
         <ng-template matMenuContent>
             <button mat-menu-item (click)="openAddPaymentDialog()">Add Payment</button>
-            <button mat-menu-item (click)="openAddInitialRejectionDialog()">Add Initial Rejection</button>
+            <button mat-menu-item (click)="openAddInitialRejectionDialog()">{{isAddOrEditRejectionLable}} Initial
+                Rejection</button>
         </ng-template>
     </mat-menu>
 </div>

@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Accounts Receivables Monthly - Jan 2021</p>
+        <p>Accounts Receivables Monthly - {{displayMonth}}</p>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
@@ -11,7 +11,7 @@
                         <th rowspan="2">Total Submitted</th>
                         <th colspan="2" class="text-center">Total Received</th>
                         <th colspan="2" class="text-center">Initial Rejection</th>
-                        <th rowspan="2">Amount Outstanding</th>
+                        <th rowspan="2">Amount Outstanding(SR)</th>
                         <th rowspan="2">Due Date</th>
                         <th rowspan="2">Days Overdue</th>
                         <th rowspan="2">Avg. TAT</th>
@@ -32,7 +32,8 @@
                         <td>{{item.initRejectionAmount}}</td>
                         <td>{{item.initRejectionPerc}}</td>
                         <td>{{item.outstandingAmount}}</td>
-                        <td>{{item.dueDate}}</td>
+                        <td>{{item.dueDateMessage!==null && item.dueDateMessage!==''?item.dueDateMessage: item.dueDate | date: 'dd-MM-yyyy'}}
+                        </td>
                         <td>{{item.daysOverdue}}</td>
                         <td>{{item.avgTat}}</td>
                     </tr>

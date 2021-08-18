@@ -1,6 +1,6 @@
 import { Paginateable } from './paginateable';
 
-export class RejectionSummary extends Paginateable {
+export class MedicalRejectionSummary extends Paginateable {
     claimId: string;
     doctorId: string;
     patientName: string;

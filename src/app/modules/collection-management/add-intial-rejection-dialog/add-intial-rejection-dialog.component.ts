@@ -21,7 +21,29 @@ export class AddIntialRejectionDialogComponent implements OnInit {
 
   ngOnInit() {
     this.status = false;
-    this.dialogTitle = this.data.amount !== undefined ? 'Edit' : 'Add';
+    const rejectionData = this.data.selectedPayerDataAndDate.item;
+    if (rejectionData.initRejectionAmount !== null && rejectionData.initRejectionAmount === 0 && rejectionData.
+      initRejectionPerc !== null && rejectionData.
+        initRejectionPerc === '0%')
+      this.dialogTitle = 'Add';
+    else {
+      if (rejectionData.initRejectionPerc !== '0%' && rejectionData.initRejectionAmount !== 0 && rejectionData.initRejectionPerc !== null && rejectionData.initRejectionAmount !== null) {
+        this.intitalRejectionModel.amount = rejectionData.initRejectionAmount;
+        this.intitalRejectionModel.unitOfAmount = 'SAR';
+      }
+      else {
+        if (rejectionData.initRejectionAmount !== 0 && rejectionData.initRejectionAmount !== null) {
+          this.intitalRejectionModel.amount = rejectionData.initRejectionAmount;
+          this.intitalRejectionModel.unitOfAmount = 'SAR';
+        }
+        if (rejectionData.initRejectionPerc !== '0%' && rejectionData.initRejectionPerc !== null) {
+          this.intitalRejectionModel.unitOfAmount = 'PERCENT';
+          this.intitalRejectionModel.amount = rejectionData.initRejectionPerc.replace('%', '');
+        }
+      }
+      this.dialogTitle = 'Edit';
+    }
+
   }
 
   closeDialog(status = false) {
@@ -31,8 +53,8 @@ export class AddIntialRejectionDialogComponent implements OnInit {
 
   submit() {
     const body: AddInitialRejectionModel = {
-      payerId: this.data.payerId,
-      rejectionDate: moment(this.data.
+      payerId: this.data.selectedPayerDataAndDate.payerId,
+      rejectionDate: moment(this.data.selectedPayerDataAndDate.
         rejectionDate).format('YYYY-MM-DD'),
       amount: this.intitalRejectionModel.amount,
       unitOfAmount: this.intitalRejectionModel.unitOfAmount

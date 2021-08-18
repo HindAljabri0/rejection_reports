@@ -112,8 +112,6 @@ export class ProviderContractComponent implements OnInit {
         this.paymentData = data.map((ele) => {
           const data = this.associatedPayers.find((subele) => subele.switchAccountId === parseInt(ele.payerId, 10));
           ele.payerName = data.name;
-          ele.effectiveDate = ele.effectiveDate.substring(0, ele.effectiveDate.toLocaleString().indexOf(':') - 3);
-          ele.expiryDate = ele.expiryDate.substring(0, ele.expiryDate.toLocaleString().indexOf(':') - 3);
           return ele;
         });
         this.activePayments = this.paymentData.filter(ele => ele.isActive === '1');
