@@ -1,117 +1,122 @@
-<div class="header sub">
-    <button mat-icon-button [mat-dialog-close]="false">
-        <mat-icon>clear</mat-icon>
-    </button>
-    <p>Claim Status: {{claim.claimStatus}}</p>
-    <span class="spacer"></span>
-    <p>Provider Claim ID: {{claim.providerClaimId}}</p>
+<div class="primary-dialog-header">
+    <h5 class="primary-dialog-title">Rejection Report Details</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="content">
-    <div class="gInfo">
-        <table style="width: 72%; margin-right: 3%; background-color: unset;">
-            <tr>
-                <td>
-                    Patient Name<br>
-                    <span matTooltip="{{claim.patientName}}">{{claim.patientName}}</span>
-                </td>
-                <td>
-                    Dr. Name<br>
-                    <span>{{claim.drName}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Policy No<br>
-                    <span>{{claim.policyNumber}}</span>
-                </td>
-                <td>
-                    Patient File No<br>
-                    <span>{{claim.patientFileNumber}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><textarea rows="1" class="commentBox" disabled>{{claim.statusDescription}}</textarea></td>
-            </tr>
-        </table>
-        <table style="width: 25%; font-size: medium;">
-            <tr>
-                <td>
-                    Net Amount
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="">{{claim.netVatAmount}} <span class="currency">{{claim.netAmountUnit}}</span></label>
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    Vat
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="">{{claim.netVatAmount}} <span class="currency">{{claim.netvatAmountUnit}}</span></label>
-                </th>
-            </tr>
-        </table>
-    </div>
-    <div class="services" *ngIf="claim.services != null">
-        <p>Services</p>
-        <table>
-            <thead>
-                <th>Invoice No</th>
-                <th>Code</th>
-                <th>Decscription</th>
-                <th>
-                    <div style="width: 100%; display: flex;">
-                        <div>Requested NA</div>
-                        <div style="margin-left: auto;">Vat</div>
+<div class="p-14 bg-primary text-white d-flex align-items-center">
+    <p>Claim Status: <strong class="semibold">{{claim.claimStatus}}</strong></p>
+    <p class="ml-auto text-right">Provider Claim ID: <strong class="semibold">{{claim.providerClaimId}}</strong></p>
+</div>
+<div class="primary-dialog-body">
+    <div class="row">
+        <div class="col-8">
+            <div class="row small-gutter">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label">Patient Name</label>
+                        <span *ngIf="claim.patientName && claim.patientName!=''" class="form-control-static" matTooltip="{{claim.patientName}}">{{claim.patientName}}</span>
+                        <span *ngIf="!claim.patientName || claim.patientName==''" class="form-control-static">-</span>
                     </div>
-                </th>
-                <th>Different in computation</th>
-                <th>Rejected Am.</th>
-                <th>Status</th>
-                <th>Status Details</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let service of claim.services">
-                    <td>{{service.invoiceNmber}}</td>
-                    <td>{{service.code}}</td>
-                    <td>{{service.description}}</td>
-                    <td>
-                        <div style="width: 100%; display: flex;">
-                            <div>{{service.requestedNA}} <span class="currency">{{service.requestedNAUnit}}</span></div>
-                            <div style="margin-left: auto;">{{service.requestedNAVat}} <span class="currency">{{service.requestedNAVatUnit}}</span></div>
-                        </div>
-                    </td>
-                    <td>{{service.differentInComputation}}</td>
-                    <td>{{service.rejectedAmount}} <span class="currency">{{service.rejectedAmountUnit}}</span></td>
-                    <td>{{service.status}}</td>
-                    <td>{{service.statusDetails}}</td>
-                </tr>
-            </tbody>
-        </table>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label">Dr. Name</label>
+                        <span *ngIf="claim.drName && claim.drName!=''" class="form-control-static">{{claim.drName}}</span>
+                        <span *ngIf="!claim.drName || claim.drName==''" class="form-control-static">-</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label">Policy No</label>
+                        <span *ngIf="claim.policyNumber && claim.policyNumber!=''" class="form-control-static">{{claim.policyNumber}}</span>
+                        <span *ngIf="!claim.policyNumber || claim.policyNumber==''" class="form-control-static">-</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label">Patient File No</label>
+                        <span *ngIf="claim.patientFileNumber && claim.patientFileNumber!=''" class="form-control-static">{{claim.patientFileNumber}}</span>
+                        <span *ngIf="!claim.patientFileNumber || claim.patientFileNumber==''" class="form-control-static">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="claim.statusDescription">
+                <label class="control-label">Status Description</label>
+                <span class="form-control-static">{{claim.statusDescription}}</span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="pt-14 pl-14 pr-14 pb-1 light-bg-primary">
+                <div class="form-group">
+                    <label class="control-label">Net Amount</label>
+                    <span class="form-control-static">{{claim.netVatAmount}} <span class="currency">{{claim.netAmountUnit}}</span></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Vat</label>
+                    <span class="form-control-static">{{claim.netVatAmount}} <span class="currency">{{claim.netvatAmountUnit}}</span></span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="errors" *ngIf="claim.claimErrors != null">
-        <p>Claim Errors</p>
-        <table>
-            <thead>
-                <th>Error Code</th>
-                <th>Feild Name</th>
-                <th>Decscription</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let error of claim.claimErrors">
-                    <td>{{error.status}}</td>
-                    <td>{{error.feildName}}</td>
-                    <td>{{error.description}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="header footer">
-    <span class="spacer"></span>
-    <p></p>
+    <ng-container *ngIf="claim.services != null">
+        <h5 class="form-title">Services</h5>
+        <div class="table-responsive">
+            <table cellpadding="0" cellspacing="0" border="0" class="primary-grid no-borders">
+                <thead>
+                    <tr>
+                        <th>Invoice No</th>
+                        <th>Code</th>
+                        <th>Decscription</th>
+                        <th>
+                            <div class="d-flex">
+                                <div>Requested NA</div>
+                                <div class="ml-auto text-right">Vat</div>
+                            </div>
+                        </th>
+                        <th>Different in computation</th>
+                        <th>Rejected Am.</th>
+                        <th>Status</th>
+                        <th>Status Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let service of claim.services">
+                        <td>{{service.invoiceNmber}}</td>
+                        <td>{{service.code}}</td>
+                        <td>{{service.description}}</td>
+                        <td>
+                            <div class="d-flex">
+                                <div>{{service.requestedNA}} <span class="currency">{{service.requestedNAUnit}}</span></div>
+                                <div class="ml-auto text-right">{{service.requestedNAVat}} <span class="currency">{{service.requestedNAVatUnit}}</span></div>
+                            </div>
+                        </td>
+                        <td>{{service.differentInComputation}}</td>
+                        <td>{{service.rejectedAmount}} <span class="currency">{{service.rejectedAmountUnit}}</span></td>
+                        <td>{{service.status}}</td>
+                        <td>{{service.statusDetails}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="claim.claimErrors != null">
+        <h5 class="form-title">Claim Errors</h5>
+        <div class="table-responsive">
+            <table cellpadding="0" cellspacing="0" border="0" class="primary-grid no-borders">
+                <thead>
+                    <tr>
+                        <th>Error Code</th>
+                        <th>Feild Name</th>
+                        <th>Decscription</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let error of claim.claimErrors">
+                        <td>{{error.status}}</td>
+                        <td>{{error.feildName}}</td>
+                        <td>{{error.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
 </div>

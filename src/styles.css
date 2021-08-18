@@ -191,7 +191,7 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .attachment-floating-actions>button:not(:last-child){margin-bottom: 8px;}
 .claim-attachment-table{min-height: 210px;}
 .mat-icon.size-20{font-size:20px;line-height:20px;height:20px;width:20px;}
-.form-title{font-weight: 600;padding-bottom: 8px;padding-top: 16px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;}
+.form-title{font-weight: 600;padding-bottom: 8px;padding-top: 24px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;margin-bottom: 16px;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -580,6 +580,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog-body .dialog-table.size-sm{ max-height: calc(100vh - 286px);}
 .primary-dialog.full-screen-dialog{width: 100%;max-width: 100%!important;}
 .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: 100vh;height: 100vh;border-radius: 0;}
+.primary-dialog.full-screen-dialog .primary-dialog-body{height: calc(100vh - 128px);overflow: auto;}
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
 .error-dialog .mat-dialog-container{background-color: #fae9e9;}
 
@@ -1175,7 +1176,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .download-progress-view>.download-icon{display: grid;place-items: center;}
 .download-progress-view>.download-icon>*{width: 50px;}
 .download-progress-view .error-icon{height: 32px;width: 32px;font-size: 32px;line-height: 32px;color: #CC2F2F;}
-.download-progress-view .text {font-size: 16px;line-height: 24px;font-weight: 500;max-height: 48px;overflow: hidden;position: relative;}
+.download-progress-view .text {font-size: 16px;line-height: 24px;font-weight: 500;max-height: 48px;overflow: hidden;position: relative;word-break: break-all;}
 .download-progress-view .text:after {content: '';position: absolute;right: 0;top: 24px;width: 136px;display: block;height: 24px;background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );}
 .download-progress-view .size{color:#909090;}
 .download-progress-view .progress{margin-top: 8px;}
@@ -1185,6 +1186,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .action-letter-btn{height: 20px;width: 20px;border-radius:50px;font-size: 12px;font-weight: 700;text-align: center;line-height: 16px;overflow: hidden;text-overflow: ellipsis;display: block;padding: 0;border:2px solid #909090;background:transparent;}
 .action-letter-btn.theme-success{border-color:#29bf24;color:#29bf24;}
 .action-letter-btn.theme-danger{border-color:#CC2F2F;color:#CC2F2F;}
+.action-letter-btn.theme-warning{border-color:#E6AE24;color: #E6AE24;}
 
 /* confirmation dialog body
 --------------------------------------------------------------------------------------------------------*/
@@ -1325,10 +1327,4 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     margin: 0 10px;
     width: 100%;
     height: 100%;
-}
-
-.claimDialog mat-dialog-container{
-    padding: 0;
-    position: relative;
-    overflow: hidden;
 }

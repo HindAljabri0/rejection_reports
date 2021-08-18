@@ -297,7 +297,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     this.showValidationTab = false;
     const statusCode = await this.getSummaryOfStatus([ClaimStatus.ALL]);
-    if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null) {
+    if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
       const statuses = this.summaries[0].statuses;
       statuses.sort((s1, s2) => {
         if (this.isReadyForSubmissionStatus(s1) || s1 == 'NotAccepted' || s1 == 'Batched' || this.isUnderProcessingStatus(s1)) {
@@ -1327,16 +1327,25 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   isApprovalState(status: string) {
     if (status == null) { return false; }
-    return status.toLowerCase() == 'Approval';
+    return status.toLowerCase() == 'approved';
+  }
+  isPartialApprovalState(status: string) {
+    if (status == null) { return false; }
+    return status.toLowerCase() == 'partially_approved' || status.toLowerCase() == 'limit_approved'
+      || status.toLowerCase() == 'conditionally_approved';
+  }
+  isRejectedState(status: string) {
+    if (status == null) { return false; }
+    return status.toLowerCase() == 'rejected' || status.toLowerCase() == 'invalid';
   }
 
   get showEligibilityButton() {
-    return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
-      this.summaries[this.selectedCardKey].statuses.includes('all');
+    return this.summaries[this.selectedCardKey] != null && (this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
+      this.summaries[this.selectedCardKey].statuses.includes('all'));
   }
   get showApprovalButton() {
-    return this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
-      this.summaries[this.selectedCardKey].statuses.includes('all');
+    return this.summaries[this.selectedCardKey] != null && (this.summaries[this.selectedCardKey].statuses.includes('accepted') ||
+      this.summaries[this.selectedCardKey].statuses.includes('all'));
   }
   deleteClaimByUploadid() {
     if (this.commen.isAdmin && this.commen.isProvider && this.isAllCards) {

@@ -272,10 +272,12 @@ export class RejectionReportComponent implements OnInit {
     //       this.detailTopActionIcon = 'ic-download.svg';
     //     }
     //   });
+    const fromDate = moment(this.fromDateControl.value).format('YYYY-MM-DD');
+    const toDate = moment(this.toDateControl.value).format('YYYY-MM-DD');
     const criteriaType = this.rejectionCriteriaControl.value.toString() === '1' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
       .startDownload(this.reportService
-        .downloadTechnicalRejectionReport(this.commen.providerId, this.fromDateControl.value, this.toDateControl.value, this.payerIdControl.value, criteriaType))
+        .downloadTechnicalRejectionReport(this.commen.providerId, fromDate, toDate, this.payerIdControl.value, criteriaType))
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
           this.detailTopActionIcon = 'ic-check-circle.svg';
