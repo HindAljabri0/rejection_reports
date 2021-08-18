@@ -1,0 +1,130 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Authorization - LAV4FIYPZWKS</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body">
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Claim Type</div>
+                <p class="form-control-static">InPatient</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Related Claim Name</div>
+                <p class="form-control-static">NA</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Beneficiary Name</div>
+                <p class="form-control-static">Zahl Fathi Tareeq</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Payment Amount</div>
+                <p class="form-control-static">NA</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Transaction Date</div>
+                <p class="form-control-static">31/05/2021 10:22</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Pre-authorization Status</div>
+                <p class="form-control-static">Approved</p>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="form-title">
+        Diagnoses
+    </h5>
+    <div class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Code - Description</th>
+                    <th>On Admission</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pricipal Diagnosis</td>
+                    <td>A93.2 - Colorado tick fever</td>
+                    <td>Yes</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h5 class="form-title">
+        Supporting Info
+    </h5>
+    <div class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Value Type</th>
+                    <th>Reason</th>
+                    <th>Category</th>
+                    <th>Value</th>
+                    <th>Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5">
+                        <app-empty-state message='No supporting info found!'></app-empty-state>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h5 class="form-title">
+        Care Teams
+    </h5>
+    <div class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>Sequence</th>
+                    <th>Clinician</th>
+                    <th>Clinician Role</th>
+                    <th>Care Team Role</th>
+                    <th>Speciality</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Shadi</td>
+                    <td>Doctor</td>
+                    <td>Primary Provider</td>
+                    <td>Hair Implant Dermatology</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h5 class="form-title">
+        Items
+    </h5>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla amet quidem. Cumque voluptatem, maxime eos tenetur
+    saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam hic cupiditate odit aliquid labore quisquam
+    temporibus unde natus error laboriosam aspernatur reiciendis.
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-flat-button color="primary">Progress to Encounter</button>
+        <button mat-flat-button color="primary">Reuse</button>
+        <button mat-flat-button color="primary">Cancel</button>
+    </div>
+</div>

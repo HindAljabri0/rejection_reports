@@ -1,80 +1,97 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-        <p>Submit Eligibility</p>
-    </div>
-    <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Member ID</label>
-                    <input placeholder="Enter member ID" class="form-control">
+    <ng-container *ngIf="!showDetails">
+        <div class="block-header has-border">
+            <p>Request Eligibility</p>
+        </div>
+        <div class="block-filter-panel">
+            <div class="d-flex">
+                <div class="form-group flex-grow-1">
+                    <label class="control-label">Select a Beneficiary</label>
+                    <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." [formControl]="beneficiarySearchController"
+                        [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                            {{beneficiary.name}} ({{beneficiary.documentId}})
+                        </mat-option>
+                    </mat-autocomplete>
                 </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Policy No.</label>
-                    <input placeholder="Enter policy no." class="form-control">
+                <div class="form-group pl-3 pr-3">
+                    <label class="control-label">&nbsp;</label>
+                    <span class="pt-2 d-block semibold">OR</span>
                 </div>
-            </div>
-            <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">National ID / Iqama ID</label>
-                    <input placeholder="Enter national ID / iqama ID" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Referral Batch</label>
-                    <mat-radio-group class="radio-group inline">
-                        <mat-radio-button color="primary" [value]="1">Benefits</mat-radio-button>
-                        <mat-radio-button color="primary" [value]="2">Discovery</mat-radio-button>
-                        <mat-radio-button color="primary" [value]="3">Validation</mat-radio-button>
-                    </mat-radio-group>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Service Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date">
-                        <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
-                        <mat-datepicker #serviceDate></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">To Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date">
-                        <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
-                        <mat-datepicker #toDate></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Department Name</label>
-                    <input class="form-control" placeholder="Enter department name">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Department Role</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Department Role</mat-option>
-                            <mat-option value="Role 1">Role 1</mat-option>
-                            <mat-option value="Role 2">Role 2</mat-option>
-                            <mat-option value="Role 3">Role 3</mat-option>
-                            <mat-option value="Role 4">Role 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <label class="control-label">&nbsp;</label>
+                    <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Submit Eligibility</button>
+
+
+        <div class="block-filter-panel" *ngIf="selectedBeneficiary != null">
+            <div class="row small-gutter">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">Beneficiary</label>
+                        <input class="form-control" type="text" disabled [value]="selectedBeneficiary.name + ' (' + selectedBeneficiary.documentId + ')'">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
+                                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
+                                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}} ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">Service Date<span class="asterisk">*</span></label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date" [formControl]="serviceDateControl">
+                            <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
+                            <mat-datepicker #serviceDate></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">To Date</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" [formControl]="endDateControl">
+                            <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
+                            <mat-datepicker #toDate></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="form-group">
+                        <label class="control-label">Purpose<span class="asterisk">*</span></label>
+                        <div class="checkbox-group inline">
+                            <mat-checkbox color="primary" [(checked)]="isBenefits">Benefits</mat-checkbox>
+                            <mat-checkbox color="primary" [(checked)]="isDiscovery">Discovery</mat-checkbox>
+                            <mat-checkbox color="primary" [(checked)]="isValidation">Validation</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" mat-flat-button color="primary" (click)="sendRequest()">Request
+                    Eligibility</button>
+            </div>
         </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="showDetails">
+        <div class="block-header has-border">
+            <p>Eligibility - LAV4FIYPZWKS</p>
+        </div>
+        <div class="bg-white p-14">
+            <app-eligibility-details class="d-block mb-14"></app-eligibility-details>
+            <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
+                Eligibility</button>
+        </div>
+    </ng-container>
 </div>

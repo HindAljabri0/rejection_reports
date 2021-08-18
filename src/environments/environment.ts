@@ -20,7 +20,9 @@ export const environment = {
   tawuniyaCreditReportService: 'http://localhost:8491',
   pbmValidationService: 'http://localhost:8099',
   payerPaymentContractService: `http://localhost:8089`,
-  approvalDetailInquiryService: 'http://localhost:8333'
+  approvalDetailInquiryService: 'http://localhost:8333',
+  providersBeneficiariesService: `http://localhost:8995`,
+  providerNphiesEligibility: `http://localhost:8022`
 };
 
 /*

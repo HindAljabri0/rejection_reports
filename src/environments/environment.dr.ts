@@ -1,8 +1,9 @@
-const host = 'https://api.qa-eclaims.waseel.com';
+const host = window.location.protocol + '//api.' + window.location.hostname;
+const url = window.location.protocol + '//' + window.location.hostname;
 export const environment = {
   name: 'dr',
   production: true,
-  versionCheckURL: `https://qa-eclaims.waseel.com`,
+  versionCheckURL: `${url}`,
   uploaderHost: `${host}/upload`,
   claimSearchHost: `${host}/search`,
   claimServiceHost: `${host}/claims`,
@@ -17,5 +18,7 @@ export const environment = {
   tawuniyaCreditReportService: `${host}/credit-report`,
   pbmValidationService: `${host}/pbm`,
   payerPaymentContractService: `${host}/payer-payment-contract`,
-  approvalDetailInquiryService: `${host}/approval-detail-inquiry`
+  approvalDetailInquiryService: `${host}/approval-detail-inquiry`,
+  providersBeneficiariesService: `${host}/beneficiaries`,
+  providerNphiesEligibility: `${host}/coverage-eligibility`
 };

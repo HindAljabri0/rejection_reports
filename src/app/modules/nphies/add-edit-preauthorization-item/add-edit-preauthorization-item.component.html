@@ -1,0 +1,163 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add/Edit Preauthorization Item</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Type<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select Type</mat-option>
+                        <mat-option value="Type 1">Type 1</mat-option>
+                        <mat-option value="Type 2">Type 2</mat-option>
+                        <mat-option value="Type 3">Type 3</mat-option>
+                        <mat-option value="Type 4">Type 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Code - Description<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select Code - Description</mat-option>
+                        <mat-option value="Code 1">Code 1</mat-option>
+                        <mat-option value="Code 2">Code 2</mat-option>
+                        <mat-option value="Code 3">Code 3</mat-option>
+                        <mat-option value="Code 4">Code 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Non Standard Code</label>
+                <input class="form-control" placeholder="Enter non standard code">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Is Package?</label>
+                <mat-radio-group class="radio-group inline">
+                    <mat-radio-button color="primary" [value]="1">Yes</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="2">No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Quantity</label>
+                <input class="form-control" placeholder="Enter quantity">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Unit Price<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter unit price">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Discount<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter discount">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Tax(%)<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter tax(%)">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Patient Share(%)<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter patient share(%)">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Tax</label>
+                <input class="form-control" placeholder="Enter tax" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Net</label>
+                <input class="form-control" placeholder="Enter net" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Patient Share</label>
+                <input class="form-control" placeholder="Enter patient share" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Payer Share</label>
+                <input class="form-control" placeholder="Enter payer share" readonly>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Start Date</label>
+                <div class="date-picker">
+                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date">
+                    <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                    <mat-datepicker #startDate></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Supporting Info</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select supporting info</mat-option>
+                        <mat-option value="Supporting Info 1">Supporting Info 1</mat-option>
+                        <mat-option value="Supporting Info 2">Supporting Info 2</mat-option>
+                        <mat-option value="Supporting Info 3">Supporting Info 3</mat-option>
+                        <mat-option value="Supporting Info 4">Supporting Info 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Diagnoses</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select diagnose</mat-option>
+                        <mat-option value="Diagnose 1">Diagnose 1</mat-option>
+                        <mat-option value="Diagnose 2">Diagnose 2</mat-option>
+                        <mat-option value="Diagnose 3">Diagnose 3</mat-option>
+                        <mat-option value="Diagnose 4">Diagnose 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Care Teams</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select care team</mat-option>
+                        <mat-option value="Care Team 1">Care Team 1</mat-option>
+                        <mat-option value="Care Team 2">Care Team 2</mat-option>
+                        <mat-option value="Care Team 3">Care Team 3</mat-option>
+                        <mat-option value="Care Team 4">Care Team 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="primary">Add/Edit</button>
+    </div>
+</div>

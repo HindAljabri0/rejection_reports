@@ -1,4 +1,14 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
+import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
+import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
+import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-eligibility',
@@ -7,9 +17,124 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EligibilityComponent implements OnInit {
 
-  constructor() { }
+  beneficiarySearchController = new FormControl();
+
+  beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
+
+  selectedBeneficiary: BeneficiariesSearchResult;
+
+  selectedPlanId: string;
+  selectedPlanIdError: string;
+  serviceDateControl = new FormControl();
+  serviceDateError: string;
+  endDateControl = new FormControl();
+  endDateError: string;
+  isBenefits = false;
+  isDiscovery = false;
+  isValidation = false;
+
+  showDetails = false;
+  constructor(
+    private dialog: MatDialog,
+    private beneficiaryService: ProvidersBeneficiariesService,
+    private sharedServices: SharedServices,
+    private eligibilityService: ProvidersNphiesEligibilityService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+  }
+
+  searchBeneficiaries() {
+    this.beneficiaryService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        if (body instanceof Array) {
+          this.beneficiariesSearchResult = body;
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    })
+  }
+
+  selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
+    const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
+    if (primaryPlanIndex != -1) {
+      this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
+    }
+    this.selectedBeneficiary = beneficiary;
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { beneficiary: beneficiary.id }
+    })
+  }
+
+  isPlanExpired(date: Date) {
+    if (date != null) {
+      if (!(date instanceof Date)) {
+        date = new Date(date);
+      }
+      return date.getTime() > Date.now() ? ' (Active)' : ' (Expired)';
+    }
+    return '';
+  }
+
+  sendRequest() {
+    if (this.selectedBeneficiary == null) {
+      return;
+    }
+    let requestHasErrors = false;
+    if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
+      this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
+      requestHasErrors = true;
+    }
+    if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
+      this.selectedPlanIdError = "Please select an insurance plan first";
+      requestHasErrors = true;
+    }
+    if (!this._isValidDate(this.serviceDateControl.value)) {
+      this.serviceDateError = "Please select a valid service date";
+      requestHasErrors = true;
+    }
+    if (this._isValidDate(this.endDateControl.value) && this._isValidDate(this.serviceDateControl)) {
+      const startDate: Date = new Date(this.serviceDateControl.value);
+      const endDate: Date = new Date(this.endDateControl.value)
+      if (startDate.getTime() > endDate.getTime()) {
+        this.serviceDateError = "service date should be before the to date.";
+        this.endDateError = "To date should be after service date.";
+        requestHasErrors = true;
+      }
+    }
+
+    if (requestHasErrors) return;
+
+    const request: EligibilityRequestModel = {
+      beneficiaryId: this.selectedBeneficiary.id,
+      insurancePlanId: this.selectedPlanId,
+      serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
+      toDate: moment(this.endDateControl.value).format('YYYY-MM-DD'),
+      isBenefits: this.isBenefits,
+      isDiscovery: this.isDiscovery,
+      isValidation: this.isValidation
+    }
+    this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
+      if (event instanceof HttpResponse) {
+
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    });
+  }
+
+
+  private _isValidDate(date): boolean {
+    return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
   }
 
 }

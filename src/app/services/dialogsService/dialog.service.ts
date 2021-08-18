@@ -34,7 +34,7 @@ export class DialogService {
     private searchService: SearchService,
     private reportService: ReportsService) { }
 
-  openMessageDialog(dialogData: MessageDialogData, width?: string, height?: string): Observable<any> {
+  openMessageDialog(dialogData: MessageDialogData): Observable<any> {
     this.closeAll();
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       panelClass: ['primary-dialog', dialogData.isError ? 'error-dialog' : (!dialogData.withButtons ? 'success-dialog' : '')],
@@ -118,10 +118,8 @@ export class DialogService {
   openRejectionReportClaimDialog(claim: RejectionReportClaimDialogData) {
     this.closeAll();
     const dialogRef = this.dialog.open(RejectionReportClaimDialogComponent, {
-      width: '50%',
-      height: '70%',
-      panelClass: 'claimDialog',
-      data: claim,
+      panelClass: ['primary-dialog', 'dialog-xl'],
+      data: claim
     });
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);

@@ -278,18 +278,18 @@
 					</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit id="rejectionreport" datatype="html">
+			<trans-unit id="technicalrejectionreport" datatype="html">
 				<source>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
-					Rejection Report
+				Technical Rejection Report
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</source>
 				<target>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
 					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
-					تقرير المرفوضات
+					تقرير الرفض الفني
 					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
 					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
 				</target>
@@ -323,6 +323,30 @@
 					</context>
 					<context context-type="linenumber">
 						95
+					</context>
+				</context-group>
+			</trans-unit>
+			<trans-unit id="medicalrejectionport" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					Medical Rejection Report
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير رفض طبي
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						108
 					</context>
 				</context-group>
 			</trans-unit>
@@ -659,6 +683,30 @@
 					</context>
 					<context context-type="linenumber">
 						281
+					</context>
+				</context-group>
+			</trans-unit>
+				<trans-unit id="transactionsLog" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					Transactions Log
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					سجل النظام
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						361
 					</context>
 				</context-group>
 			</trans-unit>

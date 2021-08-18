@@ -4,7 +4,7 @@
     </div>
     <div class="block-filter-panel has-border">
         <div class="row small-gutter">
-            <div class="col" *ngIf="paymentReference == null">
+            <!-- <div class="col" *ngIf="paymentReference == null">
                 <div class="form-group" [class.has-error]="reportTypeControl.hasError('required')">
                     <label class="control-label">Report</label>
                     <mat-form-field class="form-control custom-select-control">
@@ -18,7 +18,7 @@
                         <span class="error-text" *ngIf="reportTypeControl.hasError('required')">Please select a Report</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col">
                 <div class="form-group" [class.has-error]="payerIdHasError">
                     <label class="control-label">Payer</label>
@@ -30,7 +30,8 @@
                         </mat-select>
                     </mat-form-field>
                     <div *ngIf="payerIdControl.invalid && payerIdHasError">
-                        <span class="error-text" *ngIf="payerIdControl.hasError('required')">Please select a Payer</span>
+                        <span class="error-text" *ngIf="payerIdControl.hasError('required')">Please select a
+                            Payer</span>
                     </div>
                 </div>
             </div>
@@ -38,12 +39,14 @@
                 <div class="form-group" [class.has-error]="fromDateHasError">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="search()" required>
+                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date"
+                            [formControl]="fromDateControl" (keyup.enter)="search()" required>
                         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromPicker></mat-datepicker>
                     </div>
                     <div *ngIf="fromDateControl.invalid && fromDateHasError">
-                        <span class="error-text" *ngIf="fromDateControl.hasError('required')">Please choose a date</span>
+                        <span class="error-text" *ngIf="fromDateControl.hasError('required')">Please choose a
+                            date</span>
                     </div>
                 </div>
             </div>
@@ -51,7 +54,8 @@
                 <div class="form-group" [class.has-error]="toDateHasError">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="search()" required>
+                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
+                            [formControl]="toDateControl" (keyup.enter)="search()" required>
                         <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                         <mat-datepicker #toPicker></mat-datepicker>
                     </div>
@@ -62,7 +66,7 @@
             </div>
             <div class="col" *ngIf="showRejectionReport">
                 <div class="form-group" [class.has-error]="rejectionCriteriaHasError">
-                    <label class="control-label">Rejection Criteria</label>
+                    <label class="control-label">Criteria</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select [formControl]="rejectionCriteriaControl" (keyup.enter)="search()" required>
                             <mat-option *ngFor="let criteria of criterias" [value]="criteria.id">
@@ -71,7 +75,8 @@
                         </mat-select>
                     </mat-form-field>
                     <div *ngIf="rejectionCriteriaControl.invalid && rejectionCriteriaHasError">
-                        <span class="error-text" *ngIf="rejectionCriteriaControl.hasError('required')">Please select a Rejection Criteria</span>
+                        <span class="error-text" *ngIf="rejectionCriteriaControl.hasError('required')">Please select a
+                            Criteria</span>
                     </div>
                 </div>
             </div>
@@ -92,27 +97,34 @@
                 </button>
                 <h5 class="pl-2 semibold">Payment Report</h5>
             </div>
-            <span class="text-medium-grey ml-auto">Payment Ref. No. <span class="text-primary semibold">{{paymentReference}}</span></span>
+            <span class="text-medium-grey ml-auto">Payment Ref. No. <span
+                    class="text-primary semibold">{{paymentReference}}</span></span>
             <button matRipple type="button" class="action-btn ml-3" (click)="download()" matTooltip="Download">
                 <img src="./assets/{{actionIcon}}" />
             </button>
         </div>
-        <app-payment-reference-report #paymentSearchResult [ngClass]="{'d-none':paymentReference != null}" *ngIf="showPaymentSearch" [providerId]="providerId" [from]="fromDate"
-            [to]="toDate" [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize" (onPaymentClick)="onPaymentClick($event)"
-            (onPaginationChange)="paginationChange($event)">
+        <!-- <app-payment-reference-report #paymentSearchResult [ngClass]="{'d-none':paymentReference != null}"
+            *ngIf="showPaymentSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
+            [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
+            (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
         </app-payment-reference-report>
-        <app-payment-claim-summary-report #paymentClaimSummaryReport [ngClass]="{'d-none':paymentReference == null}" [providerId]="providerId" [paymentReference]="pRef"
-            [page]="page" [pageSize]="pageSize" (onPaginationChange)="paginationChange($event)">
-        </app-payment-claim-summary-report>
+        <app-payment-claim-summary-report #paymentClaimSummaryReport [ngClass]="{'d-none':paymentReference == null}"
+            [providerId]="providerId" [paymentReference]="pRef" [page]="page" [pageSize]="pageSize"
+            (onPaginationChange)="paginationChange($event)">
+        </app-payment-claim-summary-report> -->
 
-        <app-submitted-invoices #submittedInvoicesSearchResult [ngClass]="{'d-none':paymentReference != null && showSubmittedInvoicesSearch}" *ngIf="showSubmittedInvoicesSearch"
-            [providerId]="providerId" [from]="fromDate" [to]="toDate" [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
+        <app-submitted-invoices #submittedInvoicesSearchResult
+            [ngClass]="{'d-none':paymentReference != null && showSubmittedInvoicesSearch}"
+            *ngIf="showSubmittedInvoicesSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
+            [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
             (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)" required>
         </app-submitted-invoices>
 
-        <app-rejection-report #rejectionReport [ngClass]="{'d-none':paymentReference != null && showRejectionReport}" *ngIf="showRejectionReport" [providerId]="providerId"
-            [from]="fromDate" [to]="toDate" [payerId]="payerIdControl.value" [criteriaType]="rejectionCriteriaControl.value" [queryPage]="page" [pageSize]="pageSize"
-            (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
-        </app-rejection-report>
+        <!-- <app-rejection-report #rejectionReport [ngClass]="{'d-none':paymentReference != null && showRejectionReport}"
+            *ngIf="showRejectionReport" [providerId]="providerId" [from]="fromDate" [to]="toDate"
+            [payerId]="payerIdControl.value" [criteriaType]="rejectionCriteriaControl.value" [queryPage]="page"
+            [pageSize]="pageSize" (onPaymentClick)="onPaymentClick($event)"
+            (onPaginationChange)="paginationChange($event)">
+        </app-rejection-report> -->
     </div>
 </div>

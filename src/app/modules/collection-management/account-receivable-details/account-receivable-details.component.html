@@ -1,6 +1,6 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Accounts Receivables Monthly - Jan 2021</p>
+        <p>Accounts Receivables Monthly - {{displayMonth}}</p>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height">
@@ -11,7 +11,7 @@
                         <th rowspan="2">Total Submitted</th>
                         <th colspan="2" class="text-center">Total Received</th>
                         <th colspan="2" class="text-center">Initial Rejection</th>
-                        <th rowspan="2">Amount Outstanding</th>
+                        <th rowspan="2">Amount Outstanding(SR)</th>
                         <th rowspan="2">Due Date</th>
                         <th rowspan="2">Days Overdue</th>
                         <th rowspan="2">Avg. TAT</th>
@@ -24,71 +24,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Bupa</td>
-                        <td>1985</td>
-                        <td>578</td>
-                        <td>49.85%</td>
-                        <td>540</td>
-                        <td>31.57%</td>
-                        <td>614</td>
-                        <td>12/5/2087</td>
-                        <td>1415</td>
-                        <td>12</td>
+                    <tr *ngFor="let item of receivableData">
+                        <td>{{item.payerName}}</td>
+                        <td>{{item.totalSubmittedAmount}}</td>
+                        <td>{{item.totalReceivedAmount}}</td>
+                        <td>{{item.totalReceivedPerc}}</td>
+                        <td>{{item.initRejectionAmount}}</td>
+                        <td>{{item.initRejectionPerc}}</td>
+                        <td>{{item.outstandingAmount}}</td>
+                        <td>{{item.dueDateMessage!==null && item.dueDateMessage!==''?item.dueDateMessage: item.dueDate | date: 'dd-MM-yyyy'}}
+                        </td>
+                        <td>{{item.daysOverdue}}</td>
+                        <td>{{item.avgTat}}</td>
                     </tr>
                     <tr>
-                        <td>MedGulf</td>
-                        <td>1265</td>
-                        <td>961</td>
-                        <td>41.20%</td>
-                        <td>899</td>
-                        <td>65.53%</td>
-                        <td>228</td>
-                        <td>26/7/2098</td>
-                        <td>1952</td>
-                        <td>11</td>
-                    </tr>
-                    <tr>
-                        <td>Nextcare</td>
-                        <td>1939</td>
-                        <td>158</td>
-                        <td>48.14%</td>
-                        <td>610</td>
-                        <td>21.22%</td>
-                        <td>412</td>
-                        <td>23/5/2094</td>
-                        <td>1659</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td class="pl-5">Allianz</td>
-                        <td>1504</td>
-                        <td>520</td>
-                        <td>74.15%</td>
-                        <td>562</td>
-                        <td>44.51%</td>
-                        <td>372</td>
-                        <td>20/2/2088</td>
-                        <td>1578</td>
-                        <td>49</td>
-                    </tr>
-                    <tr>
-                        <td class="pl-5">Walaa</td>
-                        <td>1866</td>
-                        <td>129</td>
-                        <td>24.18%</td>
-                        <td>349</td>
-                        <td>39.82%</td>
-                        <td>331</td>
-                        <td>16/2/2074</td>
-                        <td>1059</td>
-                        <td>12</td>
+                        <td colspan="10" class="p-0">
+                            <app-empty-state *ngIf="receivableData == null || receivableData.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
+    <!-- <div class="block-footer sticky-bottom">
         <div class="left-block custom-paginator">
             <button matRipple type="button" title="First Page">
                 <img src="./assets/ic-page-first.svg" alt="First" />
@@ -106,5 +66,5 @@
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>
-    </div>
+    </div> -->
 </div>
