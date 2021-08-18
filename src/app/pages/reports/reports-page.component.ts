@@ -60,7 +60,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   claimId: string;
   criteria: string;
 
-  @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
+  // @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
   @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
   @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
   // @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: RejectionReportComponent;
@@ -187,13 +187,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.pageSize > 10) {
       queryParams.pageSize = this.pageSize;
     }
-    this.router.navigate([this.providerId, 'reports'], { queryParams });
-    if (this.reportTypeControl.value == 1) {
-      this.paymentSearchResult.fetchData();
-    }
-    if (this.reportTypeControl.value == 2) {
-      this.submittedInvoicesSearchResult.fetchData();
-    }
+    // this.router.navigate([this.providerId, 'reports/submission-report'], { queryParams });
+    // if (this.reportTypeControl.value == 1) {
+    //   this.paymentSearchResult.fetchData();
+    // }
+    // if (this.reportTypeControl.value == 2) {
+    // this.editURL();
+    this.submittedInvoicesSearchResult.fetchData();
+    // }
     // if (this.reportTypeControl.value == 3) {
     //   this.rejectionReportComponent.fetchData();
     // }
@@ -233,11 +234,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.paymentReference = null;
     this.page = this.tempPage;
     this.pageSize = this.tempPageSize;
-    this.paymentSearchResult.queryPage = this.page;
-    this.paymentSearchResult.pageSize = this.pageSize;
-    if (this.paymentSearchResult.payments.length == 0) {
-      this.paymentSearchResult.fetchData();
-    }
+    // this.paymentSearchResult.queryPage = this.page;
+    // this.paymentSearchResult.pageSize = this.pageSize;
+    // if (this.paymentSearchResult.payments.length == 0) {
+    //   this.paymentSearchResult.fetchData();
+    // }
     this.resetURL();
   }
 
@@ -292,7 +293,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const toDate: Date = new Date(this.toDateControl.value);
     const from = `${(fromDate.getFullYear())}-${(fromDate.getMonth() + 1)}-${fromDate.getDate()}`;
     const to = `${(toDate.getFullYear())}-${(toDate.getMonth() + 1)}-${toDate.getDate()}`;
-    let URL = `${this.providerId}/reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
+    let URL = `${this.providerId}/submission-reports?from=${from}&to=${to}&payer=${this.payerIdControl.value}&type=${this.reportTypeControl.value}`;
     if (this.paymentReference != null) {
       URL += `&pRef=${this.paymentReference}`;
     }

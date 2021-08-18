@@ -10,6 +10,7 @@ export class RejectionReportClaimDialogData {
     netAmountUnit: string;
     netvatAmountUnit: string;
     claimDate: Date;
+    fullName: string;
 
     statusDescription: string;
 
