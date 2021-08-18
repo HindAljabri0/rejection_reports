@@ -11,7 +11,8 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
-
+import * as moment from 'moment';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-submitted-invoices',
   templateUrl: './submitted-invoices.component.html',
@@ -48,7 +49,8 @@ export class SubmittedInvoicesComponent implements OnInit {
     public routeActive: ActivatedRoute,
     public router: Router,
     private dialogService: DialogService,
-    private downloadService: DownloadService) { }
+    private downloadService: DownloadService,
+    private location: Location) { }
 
   ngOnInit() {
     // this.fetchData();
@@ -61,9 +63,12 @@ export class SubmittedInvoicesComponent implements OnInit {
     this.commen.loadingChanged.next(true);
     this.errorMessage = null;
     let event;
+    const fromDate = moment(this.from).format('YYYY-MM-DD');
+    const toDate = moment(this.to).format('YYYY-MM-DD');
+    this.editURL(fromDate, toDate);
     event = await this.reportService.getSubmittedInvoicesSummary(this.providerId,
-      this.from,
-      this.to,
+      fromDate,
+      toDate,
       this.payerId,
       this.queryPage,
       this.pageSize).subscribe((event) => {
@@ -138,6 +143,29 @@ export class SubmittedInvoicesComponent implements OnInit {
 
   mapPayer(payerId) {
     return this.commen.getPayersList().find(value => `${value.id}` == payerId).name;
+  }
+  editURL(fromDate?: string, toDate?: string) {
+    let path = `/${this.commen.providerId}/reports/submission-report?`;
+
+    if (this.payerId != null) {
+      path += `payer=${this.payerId}&`;
+    }
+    if (fromDate != null) {
+      path += `from=${fromDate}&`;
+    }
+    if (toDate != null) {
+      path += `to=${toDate}`;
+    }
+    if (this.queryPage > 0) {
+      path += `&page=${this.queryPage}`;
+    }
+    if (this.pageSize > 10) {
+      path += `&pageSize=${this.pageSize}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 1);
+    }
+    this.location.go(path);
   }
 
 }
