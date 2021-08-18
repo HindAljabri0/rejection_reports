@@ -81,13 +81,13 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@paymentreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '1'}"
-                                #paymentReport="routerLinkActive" routerLinkActive="is-active">
+                            <a routerLink="/{{providerId}}/reports/payment-report" #paymentReport="routerLinkActive"
+                                routerLinkActive="is-active">
                                 <span class="text">Payment Report</span>
                             </a>
                         </li>
                         <li i18n="@@submissionreport">
-                            <a routerLink="/{{providerId}}/reports" [queryParams]="{type: '2'}"
+                            <a routerLink="/{{providerId}}/reports/submission-report" [queryParams]="{type: '2'}"
                                 #submissionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Submission Report</span>
                             </a>

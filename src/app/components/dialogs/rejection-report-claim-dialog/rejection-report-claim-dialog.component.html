@@ -13,29 +13,34 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label class="control-label">Patient Name</label>
-                        <span *ngIf="claim.patientName && claim.patientName!=''" class="form-control-static" matTooltip="{{claim.patientName}}">{{claim.patientName}}</span>
-                        <span *ngIf="!claim.patientName || claim.patientName==''" class="form-control-static">-</span>
+                        <span *ngIf="claim.fullName && claim.fullName!=''" class="form-control-static"
+                            matTooltip="{{claim.fullName}}">{{claim.fullName}}</span>
+                        <span *ngIf="!claim.fullName || claim.fullName==''" class="form-control-static">-</span>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
                         <label class="control-label">Dr. Name</label>
-                        <span *ngIf="claim.drName && claim.drName!=''" class="form-control-static">{{claim.drName}}</span>
+                        <span *ngIf="claim.drName && claim.drName!=''"
+                            class="form-control-static">{{claim.drName}}</span>
                         <span *ngIf="!claim.drName || claim.drName==''" class="form-control-static">-</span>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
                         <label class="control-label">Policy No</label>
-                        <span *ngIf="claim.policyNumber && claim.policyNumber!=''" class="form-control-static">{{claim.policyNumber}}</span>
+                        <span *ngIf="claim.policyNumber && claim.policyNumber!=''"
+                            class="form-control-static">{{claim.policyNumber}}</span>
                         <span *ngIf="!claim.policyNumber || claim.policyNumber==''" class="form-control-static">-</span>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
                         <label class="control-label">Patient File No</label>
-                        <span *ngIf="claim.patientFileNumber && claim.patientFileNumber!=''" class="form-control-static">{{claim.patientFileNumber}}</span>
-                        <span *ngIf="!claim.patientFileNumber || claim.patientFileNumber==''" class="form-control-static">-</span>
+                        <span *ngIf="claim.patientFileNumber && claim.patientFileNumber!=''"
+                            class="form-control-static">{{claim.patientFileNumber}}</span>
+                        <span *ngIf="!claim.patientFileNumber || claim.patientFileNumber==''"
+                            class="form-control-static">-</span>
                     </div>
                 </div>
             </div>
@@ -48,11 +53,14 @@
             <div class="pt-14 pl-14 pr-14 pb-1 light-bg-primary">
                 <div class="form-group">
                     <label class="control-label">Net Amount</label>
+
                     <span class="form-control-static">{{claim.netAmount}} <span class="currency">{{claim.netAmountUnit}}</span></span>
+
                 </div>
                 <div class="form-group">
                     <label class="control-label">Vat</label>
-                    <span class="form-control-static">{{claim.netVatAmount}} <span class="currency">{{claim.netvatAmountUnit}}</span></span>
+                    <span class="form-control-static">{{claim.netVatAmount}} <span
+                            class="currency">{{claim.netvatAmountUnit}}</span></span>
                 </div>
             </div>
         </div>
@@ -85,8 +93,10 @@
                         <td>{{service.description}}</td>
                         <td>
                             <div class="d-flex">
-                                <div>{{service.requestedNA}} <span class="currency">{{service.requestedNAUnit}}</span></div>
-                                <div class="ml-auto text-right">{{service.requestedNAVat}} <span class="currency">{{service.requestedNAVatUnit}}</span></div>
+                                <div>{{service.requestedNA}} <span class="currency">{{service.requestedNAUnit}}</span>
+                                </div>
+                                <div class="ml-auto text-right">{{service.requestedNAVat}} <span
+                                        class="currency">{{service.requestedNAVatUnit}}</span></div>
                             </div>
                         </td>
                         <td>{{service.differentInComputation}}</td>

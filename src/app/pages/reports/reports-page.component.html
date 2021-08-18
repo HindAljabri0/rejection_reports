@@ -103,7 +103,7 @@
                 <img src="./assets/{{actionIcon}}" />
             </button>
         </div>
-        <app-payment-reference-report #paymentSearchResult [ngClass]="{'d-none':paymentReference != null}"
+        <!-- <app-payment-reference-report #paymentSearchResult [ngClass]="{'d-none':paymentReference != null}"
             *ngIf="showPaymentSearch" [providerId]="providerId" [from]="fromDate" [to]="toDate"
             [payerId]="payerIdControl.value" [queryPage]="page" [pageSize]="pageSize"
             (onPaymentClick)="onPaymentClick($event)" (onPaginationChange)="paginationChange($event)">
@@ -111,7 +111,7 @@
         <app-payment-claim-summary-report #paymentClaimSummaryReport [ngClass]="{'d-none':paymentReference == null}"
             [providerId]="providerId" [paymentReference]="pRef" [page]="page" [pageSize]="pageSize"
             (onPaginationChange)="paginationChange($event)">
-        </app-payment-claim-summary-report>
+        </app-payment-claim-summary-report> -->
 
         <app-submitted-invoices #submittedInvoicesSearchResult
             [ngClass]="{'d-none':paymentReference != null && showSubmittedInvoicesSearch}"
