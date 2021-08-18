@@ -21,7 +21,7 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 @Component({
   selector: 'app-medical-rejction-report',
   templateUrl: './medical-rejction-report.component.html',
-  styleUrls: ['./medical-rejction-report.component.css']
+  styles: []
 })
 export class MedicalRejctionReportComponent implements OnInit {
   payers: { id: string[] | string, name: string }[];
@@ -147,7 +147,7 @@ export class MedicalRejctionReportComponent implements OnInit {
     this.errorMessage = null;
     const fromDate = moment(this.medicalRejectionReportForm.value.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.medicalRejectionReportForm.value.toDate).format('YYYY-MM-DD');
-    const criteriaType = this.medicalRejectionReportForm.value.payerId.toString() === '1' ? 'extraction' : 'claim';
+    const criteriaType = this.medicalRejectionReportForm.value.summaryCriteria.toString() === 'uploaddate' ? 'extraction' : 'claim';
     this.editURL(fromDate, toDate);
     this.reportService.getMedicalRejection(this.commen.providerId,
       fromDate,
@@ -316,7 +316,7 @@ export class MedicalRejctionReportComponent implements OnInit {
     }
     const fromDate = moment(this.medicalRejectionReportForm.value.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.medicalRejectionReportForm.value.toDate).format('YYYY-MM-DD');
-    const criteriaType = this.medicalRejectionReportForm.value.summaryCriteria.toString() === '1' ? 'extraction' : 'claim';
+    const criteriaType = this.medicalRejectionReportForm.value.summaryCriteria.toString() === 'uploaddate' ? 'extraction' : 'claim';
     this.lastDownloadSubscriptions = this.downloadService
       .startDownload(this.reportService
         .downloadMedicalRejectionReport(

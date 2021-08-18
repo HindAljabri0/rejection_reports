@@ -14,8 +14,7 @@ export class AddPreauthorizationComponent implements OnInit {
   ngOnInit() {
   }
 
-  openAddEditItemDialog(e) {
-    e.preventDefault();
+  openAddEditItemDialog() {
     this.dialog.open(AddEditPreauthorizationItemComponent, {
       panelClass: ['primary-dialog', 'dialog-xl']
     });

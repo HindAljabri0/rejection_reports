@@ -75,7 +75,7 @@
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle
-                    [expanded]="paymentReport.isActive || submissionReport.isActive || rejectionReport.isActive">
+                    [expanded]="paymentReport.isActive || submissionReport.isActive || rejectionReport.isActive || medicalRejectionReport.isActive || claimStatusSummaryReport.isActive">
                     <mat-expansion-panel-header>
                         <mat-panel-title i18n="@@reports">Reports</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -92,23 +92,23 @@
                                 <span class="text">Submission Report</span>
                             </a>
                         </li>
+                        <!-- [queryParams]="{type: '3'}"  -->
                         <li i18n="@@technicalrejectionreport">
                             <a routerLink="/{{providerId}}/reports/technical-rejection-report"
-                                [queryParams]="{type: '3'}" #rejectionReport="routerLinkActive"
-                                routerLinkActive="is-active">
-                                <span class="text">Technical Rejection Report</span>
-                            </a>
-                        </li>
-                        <li i18n="@@claimstatussummaryport">
-                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report"
                                 #rejectionReport="routerLinkActive" routerLinkActive="is-active">
-                                <span class="text">Claim Status Summary Report</span>
+                                <span class="text">Technical Rejection Report</span>
                             </a>
                         </li>
                         <li i18n="@@medicalrejectionport">
                             <a routerLink="/{{providerId}}/reports/medical-rejection-report"
-                                #rejectionReport="routerLinkActive" routerLinkActive="is-active">
+                                #medicalRejectionReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">Medical Rejection Report</span>
+                            </a>
+                        </li>
+                        <li i18n="@@claimstatussummaryport">
+                            <a routerLink="/{{providerId}}/reports/claim-status-summary-report"
+                                #claimStatusSummaryReport="routerLinkActive" routerLinkActive="is-active">
+                                <span class="text">Claim Status Summary Report</span>
                             </a>
                         </li>
                     </ul>
