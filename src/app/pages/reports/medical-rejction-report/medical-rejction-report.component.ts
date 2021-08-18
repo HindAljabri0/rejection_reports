@@ -21,7 +21,7 @@ import { DownloadStatus } from 'src/app/models/downloadRequest';
 @Component({
   selector: 'app-medical-rejction-report',
   templateUrl: './medical-rejction-report.component.html',
-  styleUrls: ['./medical-rejction-report.component.css']
+  styles: []
 })
 export class MedicalRejctionReportComponent implements OnInit {
   payers: { id: string[] | string, name: string }[];

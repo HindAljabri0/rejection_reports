@@ -177,7 +177,8 @@ export class RejectionReportComponent implements OnInit {
       return;
     }
 
-    if (this.commen.providerId == null || this.fromDateControl.value == null || this.toDateControl.value == null || this.payerIdControl.value == null || this.rejectionCriteriaControl.value == null) {
+    if (this.commen.providerId == null || this.fromDateControl.value == null || this.toDateControl.value == null
+      || this.payerIdControl.value == null || this.rejectionCriteriaControl.value == null) {
       return;
     }
     this.commen.loadingChanged.next(true);
@@ -264,7 +265,9 @@ export class RejectionReportComponent implements OnInit {
       return;
     }
     // this.lastDownloadSubscriptions = this.downloadService
-    //   .startDownload(this.reportService.downloadRejectionAsCSV(this.commen.providerId, this.fromDateControl.value, this.toDateControl.value, this.payerIdControl.value, this.rejectionCriteriaControl.value))
+    //   .startDownload(this.reportService.downloadRejectionAsCSV(
+    //   this.commen.providerId, this.fromDateControl.value, this.toDateControl.value, this.payerIdControl.value,
+    //   this.rejectionCriteriaControl.value))
     //   .subscribe(status => {
     //     if (status != DownloadStatus.ERROR) {
     //       this.detailTopActionIcon = 'ic-check-circle.svg';
@@ -288,7 +291,7 @@ export class RejectionReportComponent implements OnInit {
   }
 
   paginatorAction(event) {
-    this.manualPage = event['pageIndex'];
+    this.manualPage = event.pageIndex;
     this.paginationChange(event);
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -323,21 +326,21 @@ export class RejectionReportComponent implements OnInit {
       event => {
         if (event instanceof HttpResponse) {
           const claim = new RejectionReportClaimDialogData();
-          claim.claimDate = new Date(event.body['wslGenInfo']['claimuploadeddate']);
-          claim.claimStatus = event.body['wslGenInfo']['claimprop']['statuscode'];
-          claim.drName = event.body['wslGenInfo']['physicianname'];
-          claim.netAmount = event.body['wslGenInfo']['net'];
-          claim.netVatAmount = event.body['wslGenInfo']['netvatamount'];
-          claim.netAmountUnit = event.body['wslGenInfo']['unitofnet'];
-          claim.netvatAmountUnit = event.body['wslGenInfo']['unitofnetvatamount'];
-          claim.patientFileNumber = event.body['wslGenInfo']['patientfilenumber'];
-          claim.patientName = `${(event.body['wslGenInfo']['firstname'] != null ?
-            event.body['wslGenInfo']['firstname'] : '')}
-          ${(event.body['wslGenInfo']['middlename'] != null ? event.body['wslGenInfo']['middlename'] : '')}
-          ${(event.body['wslGenInfo']['lastname'] != null ? event.body['wslGenInfo']['lastname'] : '')}`;
-          claim.policyNumber = event.body['wslGenInfo']['policynumber'];
-          claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
-          claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];
+          claim.claimDate = new Date(event.body['wslGenInfo'].claimuploadeddate);
+          claim.claimStatus = event.body['wslGenInfo'].claimprop.statuscode;
+          claim.drName = event.body['wslGenInfo'].physicianname;
+          claim.netAmount = event.body['wslGenInfo'].net;
+          claim.netVatAmount = event.body['wslGenInfo'].netvatamount;
+          claim.netAmountUnit = event.body['wslGenInfo'].unitofnet;
+          claim.netvatAmountUnit = event.body['wslGenInfo'].unitofnetvatamount;
+          claim.patientFileNumber = event.body['wslGenInfo'].patientfilenumber;
+          claim.patientName = `${(event.body['wslGenInfo'].firstname != null ?
+            event.body['wslGenInfo'].firstname : '')}
+          ${(event.body['wslGenInfo'].middlename != null ? event.body['wslGenInfo'].middlename : '')}
+          ${(event.body['wslGenInfo'].lastname != null ? event.body['wslGenInfo'].lastname : '')}`;
+          claim.policyNumber = event.body['wslGenInfo'].policynumber;
+          claim.providerClaimId = event.body['wslGenInfo'].provclaimno;
+          claim.statusDescription = event.body['wslGenInfo'].claimprop.statusdetail;
 
           switch (claim.claimStatus) {
             case ClaimStatus.NotAccepted:
@@ -345,9 +348,9 @@ export class RejectionReportComponent implements OnInit {
               if (errors instanceof Array) {
                 claim.claimErrors = errors.map(error => {
                   return {
-                    status: error['errorcode'],
-                    feildName: error['fieldcode'],
-                    description: error['errormessage'],
+                    status: error.errorcode,
+                    feildName: error.fieldcode,
+                    description: error.errormessage,
                   };
                 });
               }
@@ -355,26 +358,26 @@ export class RejectionReportComponent implements OnInit {
             case ClaimStatus.INVALID:
               break;
             default:
-              const invoices = event.body['wslGenInfo']['wslClaimInvoices'];
+              const invoices = event.body['wslGenInfo'].wslClaimInvoices;
               if (invoices instanceof Array) {
                 claim.services = [];
                 invoices.forEach(invoice => {
-                  const services = invoice['wslServiceDetails'];
+                  const services = invoice.wslServiceDetails;
                   if (services instanceof Array) {
                     services.forEach(service => {
                       claim.services.push({
-                        code: service['servicecode'],
-                        description: service['servicedescription'],
-                        differentInComputation: service['servicedecision']['pricecorrection'],
-                        invoiceNmber: invoice['invoicenumber'],
-                        rejectedAmount: service['servicedecision']['rejection'],
-                        rejectedAmountUnit: service['servicedecision']['unitofrejection'],
-                        requestedNA: service['net'],
-                        requestedNAUnit: service['unitofnet'],
-                        requestedNAVat: service['netvatamount'],
-                        requestedNAVatUnit: service['unitofnetvatamount'],
+                        code: service.servicecode,
+                        description: service.servicedescription,
+                        differentInComputation: service.servicedecision.pricecorrection,
+                        invoiceNmber: invoice.invoicenumber,
+                        rejectedAmount: service.servicedecision.rejection,
+                        rejectedAmountUnit: service.servicedecision.unitofrejection,
+                        requestedNA: service.net,
+                        requestedNAUnit: service.unitofnet,
+                        requestedNAVat: service.netvatamount,
+                        requestedNAVatUnit: service.unitofnetvatamount,
                         status: '',
-                        statusDetails: service['servicedecision']['decisioncomment']
+                        statusDetails: service.servicedecision.decisioncomment
                       });
                     });
                   }
