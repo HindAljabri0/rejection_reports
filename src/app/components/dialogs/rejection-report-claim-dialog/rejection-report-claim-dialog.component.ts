@@ -5,7 +5,7 @@ import { RejectionReportClaimDialogData } from 'src/app/models/dialogData/reject
 @Component({
   selector: 'app-rejection-report-claim-dialog',
   templateUrl: './rejection-report-claim-dialog.component.html',
-  styleUrls: ['./rejection-report-claim-dialog.component.css']
+  styles: []
 })
 export class RejectionReportClaimDialogComponent implements OnInit {
 
@@ -14,6 +14,10 @@ export class RejectionReportClaimDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public claim: RejectionReportClaimDialogData) { }
 
   ngOnInit() {
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
 }

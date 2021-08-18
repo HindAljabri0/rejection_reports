@@ -39,8 +39,8 @@
                 <div class="form-group" [class.has-error]="fromDateHasError">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date"
-                            [formControl]="fromDateControl" (keyup.enter)="fetchData()" required>
+                        <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="fetchData()"
+                            required>
                         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromPicker></mat-datepicker>
                     </div>
@@ -54,8 +54,7 @@
                 <div class="form-group" [class.has-error]="toDateHasError">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
-                            [formControl]="toDateControl" (keyup.enter)="fetchData()" required>
+                        <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="fetchData()" required>
                         <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                         <mat-datepicker #toPicker></mat-datepicker>
                     </div>
@@ -98,8 +97,7 @@
             </mat-form-field>
         </div>
         <div class="material-paginator">
-            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-                (page)="paginatorAction($event)">
+            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
             </mat-paginator>
         </div>
         <button matRipple type="button" class="action-btn ml-2" (click)="download()" matTooltip="Download">
@@ -145,7 +143,7 @@
                     <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.patientFileNumber}}</td>
                     <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.memberId}}</td>
                     <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.policyNumber}}</td>
-                    <td class="row-click" (click)="onClaimClick(claim.claimId)" class="text-nowrap">{{claim.claimdate}}
+                    <td class="row-click text-nowrap" (click)="onClaimClick(claim.claimId)">{{claim.claimdate}}
                     </td>
                     <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.netAmount}}</td>
                     <!-- <td class="row-click" (click)="onClaimClick(claim.claimId)">{{claim.rejectedBy}}</td> -->
