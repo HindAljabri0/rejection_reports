@@ -13,9 +13,9 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label class="control-label">Patient Name</label>
-                        <span *ngIf="claim.fullName && claim.fullName!=''" class="form-control-static"
-                            matTooltip="{{claim.fullName}}">{{claim.fullName}}</span>
-                        <span *ngIf="!claim.fullName || claim.fullName==''" class="form-control-static">-</span>
+                        <span *ngIf="claim.patientName && claim.patientName!=''" class="form-control-static"
+                            matTooltip="{{claim.patientName}}">{{claim.patientName}}</span>
+                        <span *ngIf="!claim.patientName || claim.patientName==''" class="form-control-static">-</span>
                     </div>
                 </div>
                 <div class="col-6">
