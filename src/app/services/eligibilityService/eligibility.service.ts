@@ -27,7 +27,7 @@ export class EligibilityService {
     invoiceNo: string,
     patientFileNo: string,
     policyNo: string,
-    casetype?: string, drname?: string,
+    casetype?: string[], drname?: string,
     nationalId?: string,
     claimDate?: string,
     netAmount?: string,
@@ -44,7 +44,7 @@ export class EligibilityService {
     } else if (policyNo != null) {
       requestUrl += `policyNo=${policyNo}`;
     } else if (casetype != null) {
-      requestUrl += `casetype=${casetype}`;
+      requestUrl += `casetype=${casetype.join(',')}`;
     }
     if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
       requestUrl += `&claimRefNo=${claimRefNo}`;
