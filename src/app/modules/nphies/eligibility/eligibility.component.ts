@@ -101,8 +101,8 @@ export class EligibilityComponent implements OnInit {
       requestHasErrors = true;
     }
     if (this._isValidDate(this.endDateControl.value) && this._isValidDate(this.serviceDateControl)) {
-      const startDate: Date = this.serviceDateControl.value;
-      const endDate: Date = this.endDateControl.value;
+      const startDate: Date = new Date(this.serviceDateControl.value);
+      const endDate: Date = new Date(this.endDateControl.value)
       if (startDate.getTime() > endDate.getTime()) {
         this.serviceDateError = "service date should be before the to date.";
         this.endDateError = "To date should be after service date.";
@@ -115,8 +115,8 @@ export class EligibilityComponent implements OnInit {
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
       insurancePlanId: this.selectedPlanId,
-      serviceDate: moment(this.serviceDateControl.value).format('dd/MM/yyyy'),
-      toDate: moment(this.endDateControl.value).format('dd/MM/yyyy'),
+      serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
+      toDate: moment(this.endDateControl.value).format('YYYY-MM-DD'),
       isBenefits: this.isBenefits,
       isDiscovery: this.isDiscovery,
       isValidation: this.isValidation

@@ -443,6 +443,12 @@ export class RejectionReportComponent implements OnInit {
     if (toDate != null) {
       path += `to=${toDate}`;
     }
+    if (this.page > 0) {
+      path += `&page=${this.page}`;
+    }
+    if (this.pageSize > 10) {
+      path += `&pageSize=${this.pageSize}`;
+    }
     if (path.endsWith('?') || path.endsWith('&')) {
       path = path.substr(0, path.length - 1);
     }

@@ -4,21 +4,6 @@
     </div>
     <div class="block-filter-panel has-border">
         <div class="row small-gutter">
-            <!-- <div class="col" *ngIf="paymentReference == null">
-                <div class="form-group" [class.has-error]="reportTypeControl.hasError('required')">
-                    <label class="control-label">Report</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select [formControl]="reportTypeControl" (selectionChange)="searchSelect($event)" required>
-                            <mat-option *ngFor="let report of reports" [value]="report.id">
-                                {{report.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div *ngIf="reportTypeControl.invalid">
-                        <span class="error-text" *ngIf="reportTypeControl.hasError('required')">Please select a Report</span>
-                    </div>
-                </div>
-            </div> -->
             <div class="col">
                 <div class="form-group" [class.has-error]="payerIdHasError">
                     <label class="control-label">Payer</label>
