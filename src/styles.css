@@ -192,6 +192,7 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .claim-attachment-table{min-height: 210px;}
 .mat-icon.size-20{font-size:20px;line-height:20px;height:20px;width:20px;}
 .form-title{font-weight: 600;padding-bottom: 8px;padding-top: 24px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;margin-bottom: 16px;}
+.mat-dialog-container{color: inherit;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
@@ -1201,6 +1202,24 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .inline-label-table{width: 100%;}
 .inline-label-table td{padding: 3px 0;font-weight: 500;}
 .inline-label-table .label{padding-right: 12px;color: #707070;font-weight: 400;width: 160px;}
+
+/* communication
+--------------------------------------------------------------------------------------------------------*/
+.communication>li{margin-bottom: 8px;}
+.communication .sent>.inner,.communication .received>.inner{max-width: 90%;padding: 14px;display: inline-block;vertical-align: top;border-radius: 16px;border:0;}
+.communication .time{opacity: 0.64;display: block;}
+.communication .sent{text-align: right;}
+.communication .sent>.inner{background: #ededed;border-bottom-right-radius: 0;}
+.communication .received>.inner{background: #3060AA;color: #fff;border-bottom-left-radius: 0;}
+.communication .date{opacity: 0.64;text-align: center;display: flex;align-items:center;}
+.communication .date>span{display: block;flex-shrink: 0;padding: 0 8px;}
+.communication .date:after,.communication .date:before{content:'';display: block;height: 1px;flex-grow: 1;background: #999;}
+.communication .sent button,.communication .received button{text-align: inherit;color:inherit;}
+.communication .sent button .time,.communication .received button .time{padding-bottom: 4px;}
+.communication .image{background-repeat: no-repeat;background-position: center top;background-size: cover;height: 256px;width: 256px;display: block;}
+.communication .file{background: #fff;display: flex;flex-direction: column;justify-content: center;text-align: center;font-weight: 500;padding: 14px;width: 256px;color: #212529;}
+.communication .file>img{display: block;height: 48px;width: 48px;margin: 0 auto 8px;}
+.communication .file>.size{opacity: 0.72;font-size: 12px;line-height: 16px;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
