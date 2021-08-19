@@ -1196,6 +1196,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .confirmation-dialog-body>.right-block .title{font-size: 16px;line-height: 22px;font-weight: 600;}
 .confirmation-dialog-body>.right-block .subtitle{color: #707070;display: block;}
 
+/* inline label table
+--------------------------------------------------------------------------------------------------------*/
+.inline-label-table{width: 100%;}
+.inline-label-table td{padding: 3px 0;font-weight: 500;}
+.inline-label-table .label{padding-right: 12px;color: #707070;font-weight: 400;width: 160px;}
+
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}
