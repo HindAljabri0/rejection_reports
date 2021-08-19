@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
@@ -25,7 +26,13 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
   sumOfTotalReceivableObj: any;
   payerName: string;
   isAddOrEditRejectionLable: string = 'Add';
-  constructor(public dialog: MatDialog, private collectionManagementService: CollectionManagementService, private sharedService: SharedServices, private dialogService: DialogService, private routeActive: ActivatedRoute) {
+  constructor(
+    public dialog: MatDialog,
+    private collectionManagementService: CollectionManagementService,
+    private sharedService: SharedServices,
+    private dialogService: DialogService,
+    private routeActive: ActivatedRoute,
+    private location: Location) {
   }
 
   ngOnInit() {
@@ -184,6 +191,10 @@ export class AccountReceivableDetailsPayerComponent implements OnInit {
       item: item
     }
     this.isAddOrEditRejectionLable = item.initRejectionAmount > 0 || item.initRejectionPerc1 > 0 ? 'Edit' : 'Add';
+  }
+
+  goBack() {
+    this.location.back()
   }
 
 }
