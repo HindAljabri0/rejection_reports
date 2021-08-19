@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Claim } from 'src/app/claim-module-components/models/claim.model';
 import { RetrievedClaimProps } from 'src/app/claim-module-components/models/retrievedClaimProps.model';
 import { ClaimPageMode, ClaimPageType, getPageMode, getPageType, getClaim, getRetrievedClaimProps, getClaimModuleError, getClaimModuleIsLoading, getPaginationControl } from 'src/app/claim-module-components/store/claim.reducer';
@@ -10,12 +10,15 @@ import { retrieveClaim, loadLOVs, openCreateByApprovalDialog, startCreatingNewCl
 import { getDepartments } from '../dashboard/store/dashboard.reducer';
 import { Location } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-edit-claim',
   templateUrl: './edit-claim.component.html',
   styles: []
 })
-export class EditClaimComponent implements OnInit {
+export class EditClaimComponent implements OnInit, OnDestroy {
 
 
 
@@ -40,6 +43,7 @@ export class EditClaimComponent implements OnInit {
   claimName: string;
   isViewOnly: boolean = false;
 
+  routerSubscription: Subscription;
 
   constructor(
     private dialogRef: MatDialogRef<EditClaimComponent>,
@@ -47,6 +51,8 @@ export class EditClaimComponent implements OnInit {
     private sharedService: SharedServices,
     private dialogService: DialogService,
     private location: Location,
+    private router: Router,
+    private activatedRouter: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data) {
     store.select(getPageMode).subscribe(claimPageMode => {
       this.pageMode = claimPageMode;
@@ -96,6 +102,9 @@ export class EditClaimComponent implements OnInit {
       }
     });
   }
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
+  }
 
 
   ngOnInit() {
@@ -113,6 +122,11 @@ export class EditClaimComponent implements OnInit {
 
     // const claimId = this.router.routerState.snapshot.url.split('/')[2];
     const claimId = this.data.claimId;
+    this.router.navigate([], {
+      relativeTo: this.activatedRouter,
+      queryParams: { claimId: claimId },
+      queryParamsHandling: 'merge'
+    });
     if (claimId != 'add') {
       this.store.dispatch(hideHeaderAndSideMenu());
       this.store.dispatch(retrieveClaim({ claimId: claimId, edit: location.href.includes('#edit') }));
@@ -126,6 +140,14 @@ export class EditClaimComponent implements OnInit {
           this.pharmacyDepartmentCode = departments.find(department => department.name == 'Pharmacy').departmentId + '';
         }
       });
+
+    this.routerSubscription = this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add')
+        && event.url.includes('#reload'))
+    ).subscribe((event) => {
+      this.cancel();
+      this.ngOnInit();
+    });
   }
 
 
@@ -216,31 +238,29 @@ export class EditClaimComponent implements OnInit {
 
   goToFirstPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
-      this.close(this.paginationControl.searchTabCurrentResults[0]);
-      // this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[0]}` }));
+      this.cancel();
+      this.data.claimId = this.paginationControl.searchTabCurrentResults[0];
+      this.ngOnInit();
     }
   }
   goToPrePage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex != 0) {
-      this.close(this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1]);
-      // this.store.dispatch(goToClaim({
-      //   claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1]}`
-      // }));
+      this.cancel();
+      this.data.claimId = this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex - 1];
+      this.ngOnInit();
     }
   }
   goToNextPage() {
     if (this.paginationControl != null && this.paginationControl.currentIndex + 1 < this.paginationControl.size) {
-      this.close(this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1]);
-      // this.store.dispatch(goToClaim({
-      //   claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1]}`
-      // }));
+      this.cancel();
+      this.data.claimId = this.paginationControl.searchTabCurrentResults[this.paginationControl.currentIndex + 1];
+      this.ngOnInit();
     }
   }
   goToLastPage() {
-    this.close(this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1]);
-    // if (this.paginationControl != null && this.paginationControl.currentIndex != this.paginationControl.size - 1) {
-    //   this.store.dispatch(goToClaim({ claimId: `${this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1]}` }));
-    // }
+    this.cancel();
+    this.data.claimId = this.paginationControl.searchTabCurrentResults[this.paginationControl.size - 1];
+    this.ngOnInit();
   }
 
   get editable() {

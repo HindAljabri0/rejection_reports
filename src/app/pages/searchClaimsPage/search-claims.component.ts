@@ -31,7 +31,7 @@ import { ClaimSubmittionService } from '../../services/claimSubmittionService/cl
 import { SearchService } from '../../services/serchService/search.service';
 import { SEARCH_TAB_RESULTS_KEY, SharedServices } from '../../services/shared.services';
 import { setSearchCriteria, storeClaims } from './store/search.actions';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { EditClaimComponent } from '../edit-claim/edit-claim.component';
 import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
 import { changePageTitle } from 'src/app/store/mainStore.actions';
@@ -147,6 +147,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
+
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -177,9 +178,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add')
-        && !event.url.includes('#'))
-    ).subscribe(() => {
-      this.fetchData();
+        && event.url.includes('#reload'))
+    ).subscribe((event) => {
+      const reloadFragment = event.url.split('#')[1]
+      if (reloadFragment.includes('..')) {
+        const statuses = reloadFragment.split('..');
+        statuses[0] = 'all';
+        this.loadStatues(statuses);
+      } else {
+        this.fetchData();
+      }
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null) {
@@ -239,46 +247,64 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         return 0;
       });
-      let underProcessingIsDone = false;
-      let rejectedByPayerIsDone = false;
-      let readyForSubmissionIsDone = false;
-      let paidIsDone = false;
-      let invalidIsDone = false;
-      for (const status of statuses) {
-        if (this.isUnderProcessingStatus(status)) {
-          if (!underProcessingIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
-          }
-          underProcessingIsDone = true;
-        } else if (this.isRejectedByPayerStatus(status)) {
-          if (!rejectedByPayerIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
-          }
-          rejectedByPayerIsDone = true;
-        } else if (this.isReadyForSubmissionStatus(status)) {
-          if (!readyForSubmissionIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
-          }
-          readyForSubmissionIsDone = true;
-        } else if (this.isPaidStatus(status)) {
-          if (!paidIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
-          }
-          paidIsDone = true;
-        } else if (this.isInvalidStatus(status)) {
-          if (!invalidIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
-          }
-          invalidIsDone = true;
-        } else {
-          await this.getSummaryOfStatus([status]);
-        }
-      }
+      await this.loadStatues(statuses);
     }
 
-    this.getResultsOfStatus(this.params.status, this.params.page);
+    // this.getResultsOfStatus(this.params.status, this.params.page);
 
     if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
+  }
+
+  async loadStatues(statuses: string[]) {
+    if (this.summaries != null && this.summaries.length > 1) {
+      if (statuses.includes('all')) {
+        this.summaries.splice(0, 1);
+      }
+      this.summaries = this.summaries.filter(summary => !summary.statuses.some(status => statuses.includes(status)));
+    }
+    let underProcessingIsDone = false;
+    let rejectedByPayerIsDone = false;
+    let readyForSubmissionIsDone = false;
+    let paidIsDone = false;
+    let invalidIsDone = false;
+
+    for (let status of statuses) {
+      if (this.isUnderProcessingStatus(status)) {
+        if (!underProcessingIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
+        }
+        underProcessingIsDone = true;
+      } else if (this.isRejectedByPayerStatus(status)) {
+        if (!rejectedByPayerIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
+        }
+        rejectedByPayerIsDone = true;
+      } else if (this.isReadyForSubmissionStatus(status)) {
+        if (!readyForSubmissionIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
+        }
+        readyForSubmissionIsDone = true;
+      } else if (this.isPaidStatus(status)) {
+        if (!paidIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
+        }
+        paidIsDone = true;
+      } else if (this.isInvalidStatus(status)) {
+        if (!invalidIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
+        }
+        invalidIsDone = true;
+      } else {
+        await this.getSummaryOfStatus([status]);
+      }
+    }
+    this.summaries.sort((a, b) => b.statuses.length - a.statuses.length);
+    if (this.params.status != null)
+      this.getResultsOfStatus(this.params.status, this.params.page);
+    else
+      this.getResultsOfStatus(this.selectedCardKey, this.params.page);
+
+    // if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
@@ -311,8 +337,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
-        const summary: any = new SearchStatusSummary(event.body);
+        const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
+          if (statuses.includes('all')) {
+            summary.statuses.push('all');
+          }
           this.summaries.push(summary);
         }
       }
@@ -384,7 +413,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.from,
       this.params.to,
       this.params.payerId,
-      this.summaries[key].statuses,
+      this.summaries[key].statuses.filter(status => status != 'all'),
       page,
       this.pageSize,
       this.params.batchId,
@@ -399,7 +428,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.params.filter_nationalId,
       this.params.filter_claimDate,
       this.params.filter_netAmount,
-      this.params.filter_batchNum || this.params.batchId).subscribe((event) =>{
+      this.params.filter_batchNum || this.params.batchId).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -485,6 +514,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.status = status === null ? this.status : status;
     this.getPBMValidation();
   }
+
+
+
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
       const claimsIds = this.claims.map(claim => claim.claimId);
@@ -711,7 +743,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.router.navigate([], {
       relativeTo: this.routeActive,
       queryParams: { ...this.params, editMode: null, size: null },
-      fragment: this.params.editMode == 'true' ? 'edit' : '',
+      fragment: this.params.editMode == 'true' ? 'edit' : null,
     });
   }
 
@@ -725,11 +757,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    const dialogRef = this.dialog.open(EditClaimComponent, {
+    const claimDialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    claimDialogRef.afterClosed().subscribe(result => {
       this.params.claimId = null;
       this.params.editMode = null;
       this.resetURL();
