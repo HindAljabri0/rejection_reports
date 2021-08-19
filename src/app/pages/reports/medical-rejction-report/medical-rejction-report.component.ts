@@ -205,23 +205,9 @@ export class MedicalRejctionReportComponent implements OnInit {
           claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
           claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];
 
+          const invoices = event.body['wslGenInfo']['wslClaimInvoices'];
           switch (claim.claimStatus) {
-            case ClaimStatus.NotAccepted:
-              const errors = event.body['claimError'];
-              if (errors instanceof Array) {
-                claim.claimErrors = errors.map(error => {
-                  return {
-                    status: error['errorcode'],
-                    feildName: error['fieldcode'],
-                    description: error['errormessage'],
-                  };
-                });
-              }
-              break;
-            case ClaimStatus.INVALID:
-              break;
-            default:
-              const invoices = event.body['wslGenInfo']['wslClaimInvoices'];
+            case ClaimStatus.PARTIALLY_PAID:
               if (invoices instanceof Array) {
                 claim.services = [];
                 invoices.forEach(invoice => {
@@ -231,21 +217,50 @@ export class MedicalRejctionReportComponent implements OnInit {
                       claim.services.push({
                         code: service['servicecode'],
                         description: service['servicedescription'],
-                        differentInComputation: service['servicedecision']['pricecorrection'],
+                        differentInComputation: service['servicedecision'] === null ? '' : service['servicedecision']['pricecorrection'],
                         invoiceNmber: invoice['invoicenumber'],
-                        rejectedAmount: service['servicedecision']['rejection'],
-                        rejectedAmountUnit: service['servicedecision']['unitofrejection'],
+                        rejectedAmount: service['servicedecision'] === null ? '' : service['servicedecision']['rejection'],
+                        rejectedAmountUnit: service['servicedecision'] === null ? '' : service['servicedecision']['unitofrejection'],
                         requestedNA: service['net'],
                         requestedNAUnit: service['unitofnet'],
                         requestedNAVat: service['netvatamount'],
                         requestedNAVatUnit: service['unitofnetvatamount'],
                         status: '',
-                        statusDetails: service['servicedecision']['decisioncomment']
+                        statusDetails: service['servicedecision'] === null ? '' : service['servicedecision']['decisioncomment']
                       });
                     });
                   }
                 });
               }
+              break;
+            case ClaimStatus.REJECTED:
+              if (invoices instanceof Array) {
+                claim.services = [];
+                invoices.forEach(invoice => {
+                  const services = invoice['wslServiceDetails'];
+                  if (services instanceof Array) {
+                    services.forEach(service => {
+                      claim.services.push({
+                        code: service['servicecode'],
+                        description: service['servicedescription'],
+                        differentInComputation: service['servicedecision'] === null ? '' : service['servicedecision']['pricecorrection'],
+                        invoiceNmber: invoice['invoicenumber'],
+                        rejectedAmount: service['servicedecision'] === null ? '' : service['servicedecision']['rejection'],
+                        rejectedAmountUnit: service['servicedecision'] === null ? '' : service['servicedecision']['unitofrejection'],
+                        requestedNA: service['net'],
+                        requestedNAUnit: service['unitofnet'],
+                        requestedNAVat: service['netvatamount'],
+                        requestedNAVatUnit: service['unitofnetvatamount'],
+                        status: '',
+                        statusDetails: service['servicedecision'] === null ? '' : service['servicedecision']['decisioncomment']
+                      });
+                    });
+                  }
+                });
+              }
+              break;
+            default:
+              break;
           }
 
           this.dialogService.openRejectionReportClaimDialog(claim);

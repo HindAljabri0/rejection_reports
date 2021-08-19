@@ -171,7 +171,7 @@
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMREFNO)">
                                             <span>Claim Ref. No.</span>
                                             <button
-                                                *ngIf="claimRefNo===undefined || claimRefNo==='' || claimRefNo===null"
+                                                *ngIf="params.claimRefNo===undefined || params.claimRefNo==='' || params.claimRefNo===null"
                                                 type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="claimRefFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
@@ -231,7 +231,7 @@
                                         <div class="column-header-action"
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.MEMBERID)">
                                             <span>Member ID</span>
-                                            <button *ngIf="memberId===undefined || memberId==='' || memberId===null"
+                                            <button *ngIf="params.memberId===undefined || params.memberId==='' || params.memberId===null"
                                                 type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="memberIDFilter" (click)="checkReloadedFilter()">
                                                 <mat-icon>filter_list_outline</mat-icon>
@@ -293,7 +293,7 @@
                                             [ngClass]="checkAppliedFilter(claimSearchSelection.PATIENTFILENO)">
                                             <span>Patient File No.</span>
                                             <button
-                                                *ngIf="patientFileNo===undefined || patientFileNo==='' || patientFileNo===null"
+                                                *ngIf="params.patientFileNo===undefined || params.patientFileNo==='' || params.patientFileNo===null"
                                                 type="button" class="action-btn" matRipple
                                                 [matMenuTriggerFor]="patientFileNoFilter"
                                                 (click)="checkReloadedFilter()">
