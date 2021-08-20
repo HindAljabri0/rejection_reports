@@ -37,18 +37,6 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
-                                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
-                                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}} ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
                         <label class="control-label">Service Date<span class="asterisk">*</span></label>
                         <div class="date-picker">
                             <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date" [formControl]="serviceDateControl">
@@ -65,6 +53,18 @@
                             <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker>
                         </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
+                                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
+                                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}} ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="col-8">
