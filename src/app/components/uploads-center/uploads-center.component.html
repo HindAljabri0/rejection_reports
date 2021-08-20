@@ -4,7 +4,7 @@
 <div class="aside-panel upload-history-list" [ngClass]="{'show':showCenter}">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
         <div *ngFor="let data of dataList">
-            <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" [queryParams]="{uploadId: data.uploadId}" (click)="hideCenter()">
+            <div class="uplaoded-card clickable" [routerLink]="['/',providerId,'claims']" fragment="reload" [queryParams]="{uploadId: data.uploadId}" (click)="hideCenter()">
                 <p class="medium text-primary">{{data.uploadName}}</p>
                 <span class="text-medium-grey">{{data.uploadDate | date : 'yyyy/MM/dd hh:mm:ss'}}</span>
             </div>
