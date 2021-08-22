@@ -96,10 +96,11 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.toDateHasError = false;
       this.router.navigate([this.commen.providerId, 'claims'], {
         queryParams: {
-          payer: this.selectedPayer.id,
+          payerId: this.selectedPayer.id,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
-          to: this.toDateControl.value.format('DD-MM-yyyy')
-        }
+          to: this.toDateControl.value.format('DD-MM-yyyy'),
+        },
+        fragment: 'reload'
       });
     } else {
       if (this.searchControl.value == null || this.searchControl.value.trim().length == 0) {

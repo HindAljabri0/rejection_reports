@@ -770,9 +770,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
-      if (result != null) {
-        this.showClaim(null, result);
-      }
     });
   }
 
