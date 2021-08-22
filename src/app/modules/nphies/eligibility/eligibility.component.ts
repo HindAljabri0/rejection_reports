@@ -32,6 +32,7 @@ export class EligibilityComponent implements OnInit {
   isBenefits = false;
   isDiscovery = false;
   isValidation = false;
+  purposeError: string;
 
   showDetails = false;
   constructor(
@@ -88,6 +89,10 @@ export class EligibilityComponent implements OnInit {
       return;
     }
     let requestHasErrors = false;
+    this.selectedPlanIdError = null;
+    this.serviceDateError = null;
+    this.endDateError = null;
+    this.purposeError = null;
     if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
       this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
       requestHasErrors = true;
@@ -108,6 +113,11 @@ export class EligibilityComponent implements OnInit {
         this.endDateError = "To date should be after service date.";
         requestHasErrors = true;
       }
+    }
+
+    if(!this.isBenefits && !this.isDiscovery && !this.isValidation){
+      this.purposeError = "Select at least one purpose for this request."
+      requestHasErrors = true;
     }
 
     if (requestHasErrors) return;
