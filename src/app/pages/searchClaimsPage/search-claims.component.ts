@@ -148,6 +148,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
 
+  claimDialogRef: MatDialogRef<any, any>;
+
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -483,7 +485,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             }
 
           }
-          if (this.params.claimId != null) {
+          if (this.params.claimId != null && this.claimDialogRef == null) {
             const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
             if (index != -1) {
               this.showClaim(this.claims[index].status, this.params.claimId, (this.params.editMode != null && this.params.editMode == 'true'));
@@ -757,11 +759,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    const claimDialogRef = this.dialog.open(EditClaimComponent, {
+    this.claimDialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId }
     });
-    claimDialogRef.afterClosed().subscribe(result => {
+    this.claimDialogRef.afterClosed().subscribe(result => {
+      this.claimDialogRef = null;
       this.params.claimId = null;
       this.params.editMode = null;
       this.resetURL();

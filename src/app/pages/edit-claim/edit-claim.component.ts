@@ -145,7 +145,7 @@ export class EditClaimComponent implements OnInit, OnDestroy {
       filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add')
         && event.url.includes('#reload'))
     ).subscribe((event) => {
-      this.cancel();
+      this.routerSubscription.unsubscribe();
       this.ngOnInit();
     });
   }
