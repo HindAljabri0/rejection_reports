@@ -85,8 +85,11 @@ export class OnSavingDoneComponent implements OnInit {
           fragment: `reload..${this.data.oldStatus.toLowerCase()}..${this.data.status.toLowerCase()}`
         });
       } else {
-        this.location.go(this.location.path().replace('#edit', ''));
-        location.reload();
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParamsHandling: 'preserve',
+          fragment: `reload..${this.data.status.toLowerCase()}`
+        });
       }
     }
 
