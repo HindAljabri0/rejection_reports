@@ -416,6 +416,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     if (withService == null || withService) {
       this.addService(this.controllers.length - 1);
     }
+    this.claimGDPNNeedsRecalculation = true;
   }
 
   addService(invoiceIndex, updateClaim?: boolean) {
@@ -447,6 +448,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       net: 0,
       gross: 0
     });
+    this.controllers[invoiceIndex].needsRecalculation = true;
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
     }
