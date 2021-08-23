@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { SharedServices } from 'src/app/services/shared.services';
   templateUrl: './eligibility.component.html',
   styles: []
 })
-export class EligibilityComponent implements OnInit {
+export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
 
@@ -32,6 +32,7 @@ export class EligibilityComponent implements OnInit {
   isBenefits = false;
   isDiscovery = false;
   isValidation = false;
+  purposeError: string;
 
   showDetails = false;
   constructor(
@@ -42,6 +43,31 @@ export class EligibilityComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) { }
+
+
+  ngAfterContentInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      const beneficiaryId = params.beneficiary;
+      if (beneficiaryId != null && beneficiaryId.trim().length > 0) {
+        this.sharedServices.loadingChanged.next(true);
+        this.beneficiaryService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            this.sharedServices.loadingChanged.next(false);
+            try {
+              this.selectBeneficiary(event.body as BeneficiariesSearchResult);
+            } catch (e) {
+
+            }
+          }
+        }, errorEvent => {
+          this.sharedServices.loadingChanged.next(false);
+          if (errorEvent instanceof HttpErrorResponse) {
+
+          }
+        })
+      }
+    }).unsubscribe();
+  }
 
   ngOnInit() {
   }
@@ -84,10 +110,15 @@ export class EligibilityComponent implements OnInit {
   }
 
   sendRequest() {
-    if (this.selectedBeneficiary == null) {
+    if (this.selectedBeneficiary == null || this.sharedServices.loading) {
       return;
     }
+    this.sharedServices.loadingChanged.next(true);
     let requestHasErrors = false;
+    this.selectedPlanIdError = null;
+    this.serviceDateError = null;
+    this.endDateError = null;
+    this.purposeError = null;
     if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
       this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
       requestHasErrors = true;
@@ -110,7 +141,15 @@ export class EligibilityComponent implements OnInit {
       }
     }
 
-    if (requestHasErrors) return;
+    if (!this.isBenefits && !this.isDiscovery && !this.isValidation) {
+      this.purposeError = "Select at least one purpose for this request."
+      requestHasErrors = true;
+    }
+
+    if (requestHasErrors) {
+      this.sharedServices.loadingChanged.next(false);
+      return;
+    }
 
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
@@ -123,9 +162,10 @@ export class EligibilityComponent implements OnInit {
     }
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
-
+        this.sharedServices.loadingChanged.next(false);
       }
     }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
 
       }

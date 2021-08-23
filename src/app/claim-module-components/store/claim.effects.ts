@@ -29,7 +29,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ClaimValidationService } from '../services/claimValidationService/claim-validation.service';
 import { ClaimService } from 'src/app/services/claimService/claim.service';
 import { Store } from '@ngrx/store';
-import { getClaim, getClaimObjectErrors, getDepartments, getPageMode, getPaginationControl, getRetrievedClaimId } from './claim.reducer';
+import { getClaim, getClaimObjectErrors, getDepartments, getPageMode, getPaginationControl, getRetrievedClaimId, getRetrievedClaimProps } from './claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -181,7 +181,7 @@ export class ClaimEffects {
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.store.dispatch(setLoading({ loading: false }));
-                return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, value[1].claimIdentities.uploadID));
+                return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, value[1].claimIdentities.uploadID, null));
             }),
             catchError(err => {
                 let status = '';
@@ -202,12 +202,13 @@ export class ClaimEffects {
         ofType(saveClaimChanges),
         withLatestFrom(this.store.select(getClaim)),
         withLatestFrom(this.store.select(getRetrievedClaimId)),
-        map(values => ({ claim: values[0][1], id: values[1] })),
+        withLatestFrom(this.store.select(getRetrievedClaimProps)),
+        map(values => ({ claim: values[0][0][1], id: values[0][1], currentStatus: values[1].statusCode })),
         switchMap(values => this.claimService.saveChangesToExistingClaim(values.claim, this.sharedServices.providerId, values.id).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
             map(response => {
                 this.store.dispatch(setLoading({ loading: false }));
-                return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, values.claim.claimIdentities.uploadID));
+                return showOnSaveDoneDialog(OnSavingDoneDialogData.fromResponse(response, values.claim.claimIdentities.uploadID, values.currentStatus));
             }),
             catchError(err => {
                 let status = '';

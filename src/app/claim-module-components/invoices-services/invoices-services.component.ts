@@ -46,6 +46,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
 
   isRetrievedClaim = false;
 
+  claimGDPNNeedsRecalculation = false;
   controllers: {
     invoice: Invoice,
     invoiceNumber: FormControl,
@@ -415,6 +416,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     if (withService == null || withService) {
       this.addService(this.controllers.length - 1);
     }
+    this.claimGDPNNeedsRecalculation = true;
   }
 
   addService(invoiceIndex, updateClaim?: boolean) {
@@ -446,6 +448,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       net: 0,
       gross: 0
     });
+    this.controllers[invoiceIndex].needsRecalculation = true;
     if (updateClaim == null || updateClaim) {
       this.updateClaim();
     }
@@ -670,7 +673,8 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
-    this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice), recalculateClaimGDPN: this.controllers.some(control => control.needsRecalculation) }));
+    this.store.dispatch(updateInvoices_Services({ invoices: this.controllers.map(control => control.invoice), recalculateClaimGDPN: this.controllers.some(control => control.needsRecalculation) || this.claimGDPNNeedsRecalculation }));
+    this.claimGDPNNeedsRecalculation = false;
   }
 
   onSelectRetrievedServiceClick(event, invoiceIndex, serviceIndex) {
@@ -719,6 +723,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       }
     });
     this.controllers.splice(i, 1);
+    this.claimGDPNNeedsRecalculation = true;
     this.updateClaim();
     this.emptyOptions = false;
     this.serviceCodeSearchError = null;
@@ -732,6 +737,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       this.store.dispatch(makeRetrievedServiceUnused({ serviceNumber: this.controllers[i].services[j].serviceNumber }));
     }
     this.controllers[i].services.splice(j, 1);
+    this.controllers[i].needsRecalculation = true;
     this.createInvoiceFromControl(i);
     this.emptyOptions = false;
     this.expandedService = -1;

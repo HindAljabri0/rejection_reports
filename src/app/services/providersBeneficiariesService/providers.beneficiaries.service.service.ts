@@ -9,6 +9,12 @@ import { environment } from 'src/environments/environment';
 export class ProvidersBeneficiariesService {
   constructor(private httpClient: HttpClient) { }
 
+  getBeneficiaryById(providerId: string, beneficiaryId: string) {
+    const requestUrl = `/providers/${providerId}/${beneficiaryId}`;
+    const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
+
   saveBeneficiaries(beneficiaryModel: BeneficiaryModel, providerId: string) {
     const requestUrl = `/providers/${providerId}`;
     let body: any = { ...beneficiaryModel };
@@ -16,13 +22,13 @@ export class ProvidersBeneficiariesService {
     return this.httpClient.request(httpRequest);
   }
 
-  getPayers(){
+  getPayers() {
     const requestUrl = `/lov/payers`;
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(httpRequest);
   }
 
-  beneficiaryFullTextSearch(providerId: string, query:string){
+  beneficiaryFullTextSearch(providerId: string, query: string) {
     const requestUrl = `/providers/${providerId}/search?query=${query}`;
     const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(request);

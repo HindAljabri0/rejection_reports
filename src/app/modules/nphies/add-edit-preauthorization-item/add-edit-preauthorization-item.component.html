@@ -67,6 +67,12 @@
         </div>
         <div class="col-4 col-lg-3">
             <div class="form-group">
+                <label class="control-label">Factor<span class="asterisk">*</span></label>
+                <input class="form-control" placeholder="Enter factor">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
                 <label class="control-label">Tax(%)<span class="asterisk">*</span></label>
                 <input class="form-control" placeholder="Enter tax(%)">
             </div>
@@ -103,7 +109,7 @@
         </div>
         <div class="col-4 col-lg-3">
             <div class="form-group">
-                <label class="control-label">Start Date</label>
+                <label class="control-label">Start Date<span class="asterisk">*</span></label>
                 <div class="date-picker">
                     <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date">
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
@@ -141,7 +147,7 @@
         </div>
         <div class="col-4 col-lg-3">
             <div class="form-group">
-                <label class="control-label">Care Teams</label>
+                <label class="control-label">Care Teams<span class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
                     <mat-select value="-1">
                         <mat-option value="-1">Select care team</mat-option>

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SharedServices } from 'src/app/services/shared.services';
 import { cancelClaim, viewThisMonthClaims } from '../../store/claim.actions';
@@ -19,6 +20,8 @@ export class OnSavingDoneComponent implements OnInit {
     private store: Store,
     private sharedServices: SharedServices,
     private location: Location,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -75,8 +78,19 @@ export class OnSavingDoneComponent implements OnInit {
     if (hasPreviousPage)
       location.reload();
     else {
-      this.location.go(this.location.path().replace('#edit', ''));
-      location.reload();
+      if (this.location.path().includes("claimId=") && (this.data.oldStatus != null && this.data.oldStatus.toLowerCase() != this.data.status.toLowerCase())) {
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParamsHandling: 'preserve',
+          fragment: `reload..${this.data.oldStatus.toLowerCase()}..${this.data.status.toLowerCase()}`
+        });
+      } else {
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParamsHandling: 'preserve',
+          fragment: `reload..${this.data.status.toLowerCase()}`
+        });
+      }
     }
 
   }

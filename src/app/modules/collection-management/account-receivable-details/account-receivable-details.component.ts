@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CollectionManagementService } from 'src/app/services/collection-management/collection-management.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-account-receivable-details',
   templateUrl: './account-receivable-details.component.html',
@@ -14,7 +14,11 @@ export class AccountReceivableDetailsComponent implements OnInit {
   payersList: { id: number, name: string, arName: string }[] = [];
   receivableData: any = [];
   displayMonth: any;
-  constructor(private collectionManagementService: CollectionManagementService, private sharedService: SharedServices, private routeActive: ActivatedRoute) {
+  constructor(
+    private collectionManagementService: CollectionManagementService,
+    private sharedService: SharedServices,
+    private routeActive: ActivatedRoute,
+    private location: Location) {
   }
 
   ngOnInit() {
@@ -22,7 +26,8 @@ export class AccountReceivableDetailsComponent implements OnInit {
     this.routeActive.queryParams.subscribe(params => {
       if (params.month != null) {
         this.month = params.month;
-        this.displayMonth = params.month.replace('-', ' ');
+        this.displayMonth = params.month.replace('-',
+          ' ');
       }
     });
     this.getAccountReceivableYearDetailsData();
@@ -59,6 +64,10 @@ export class AccountReceivableDetailsComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  goBack() {
+    this.location.back()
   }
 
 }

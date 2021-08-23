@@ -68,7 +68,7 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         if (policyNo != null && policyNo != '') {
           return true;
         }
-        payerId = route.queryParamMap.get('payer');
+        payerId = route.queryParamMap.get('payerId');
         authority = localStorage.getItem(providerId + payerId);
         if (providerId == null || providerId == '' || payerId == null || payerId == '' || authority == null) {
           return this.router.createUrlTree(['/']);
