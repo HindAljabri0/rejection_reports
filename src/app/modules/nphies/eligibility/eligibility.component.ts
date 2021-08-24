@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
 import { EligibilityResponseModel } from 'src/app/models/nphies/eligibilityResponseModel';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -37,6 +38,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   showDetails = false;
   constructor(
+    private dialogService: DialogService,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
     private sharedServices: SharedServices,
@@ -110,7 +112,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
-  eligibilityResponseModel:EligibilityResponseModel ; 
+  eligibilityResponseModel:EligibilityResponseModel=null ; 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
       return;
@@ -164,23 +166,21 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     }
 
    
-   // eligibilityResponseModel=any[];
+
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
         this.eligibilityResponseModel=event.body as EligibilityResponseModel
-          // this.dialogService.openMessageDialog({
-          //   title: '',
-          //   message: `successfully`,
-          //   isError: false
-          // });
-      //  EligibilityResponseModel
-
+        this.showDetails=true;
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-
+  this.dialogService.openMessageDialog({
+            title: '',
+           message: `Error`,
+          isError: true
+         });
       }
     });
   }

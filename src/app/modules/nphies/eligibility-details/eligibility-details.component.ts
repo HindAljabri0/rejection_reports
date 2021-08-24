@@ -10,13 +10,17 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class EligibilityDetailsComponent implements OnInit {
 
-  @Input() eligibilityResponseModel: EligibilityResponseModel;  
+  @Input() eligibilityResponse: EligibilityResponseModel;  
 
-  constructor(private sharedServices: SharedServices, private providersNphiesEligibilityService: ProvidersNphiesEligibilityService) { }
+
+
+
+
+  constructor() { }
 
   ngOnInit() {
 
-    
+    console.log("Test   "+this.eligibilityResponse.eligibilityStatus)
   }
 
 }
