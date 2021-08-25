@@ -546,10 +546,9 @@ export class SharedServices {
   }
 
   kFormatter(num) {
-
     return Math.abs(num) > 999
       ? Math.sign(num) * (((Math.abs(num) / 1000).toFixed(1)) as any) + 'k'
-      : Math.sign(num) * Math.abs(num);
+      : parseFloat((Math.sign(num) * Math.abs(num)).toFixed(2));
   }
   dataURItoBlob(dataURI, type) {
     const byteString = window.atob(dataURI);

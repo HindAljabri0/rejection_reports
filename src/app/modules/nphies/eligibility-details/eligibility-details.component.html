@@ -2,13 +2,13 @@
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Beneficiary Name</div>
-            <p class="form-control-static">Sara Basheer Assi</p>
+            <p class="form-control-static">{{eligibilityResponse.banificiaryName}}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Service Date</div>
-            <p class="form-control-static">21/01/2021</p>
+            <p class="form-control-static">{{eligibilityResponse.serviceDate}}</p>
         </div>
     </div>
     <div class="col-4">
@@ -20,19 +20,19 @@
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Transaction Date</div>
-            <p class="form-control-static">21/01/2021 10:35</p>
+            <p class="form-control-static">{{eligibilityResponse.transactionDate}}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Eligibility Purpose</div>
-            <p class="form-control-static">Validation, Benefits</p>
+            <p class="form-control-static" *ngFor="let Purpose of eligibilityResponse.eligibilityPurpose" >{{Purpose}}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Eligibility Status</div>
-            <p class="form-control-static">Approved</p>
+            <p class="form-control-static">{{eligibilityResponse.eligibilityStatus?"Eligible":"InEligible"}}</p>
         </div>
     </div>
 </div>
