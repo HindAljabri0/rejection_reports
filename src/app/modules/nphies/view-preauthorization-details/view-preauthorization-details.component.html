@@ -2,366 +2,397 @@
     <h5 class="primary-dialog-title">Authorization - LAV4FIYPZWKS</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body">
-    <div class="row">
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Claim Type</div>
-                <p class="form-control-static">InPatient</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Related Claim Name</div>
-                <p class="form-control-static">NA</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Beneficiary Name</div>
-                <p class="form-control-static">Zahl Fathi Tareeq</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Payment Amount</div>
-                <p class="form-control-static">NA</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Transaction Date</div>
-                <p class="form-control-static">31/05/2021 10:22</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Pre-authorization Status</div>
-                <p class="form-control-static">Approved</p>
-            </div>
-        </div>
-    </div>
+<div class="primary-dialog-body p-0">
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span>Details</span>
+            </ng-template>
+            <div class="pre-auth-info-wrapper">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="control-label">Claim Type</div>
+                            <p class="form-control-static">InPatient</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="control-label">Related Claim Name</div>
+                            <p class="form-control-static">NA</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="control-label">Beneficiary Name</div>
+                            <p class="form-control-static">Zahl Fathi Tareeq</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="control-label">Payment Amount</div>
+                            <p class="form-control-static">NA</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="control-label">Transaction Date</div>
+                            <p class="form-control-static">31/05/2021 10:22</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="control-label">Pre-authorization Status</div>
+                            <p class="form-control-static">Approved</p>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Diagnoses start -->
-    <h5 class="form-title">
-        Diagnoses
-    </h5>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Code - Description</th>
-                    <th>On Admission</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Pricipal Diagnosis</td>
-                    <td>A93.2 - Colorado tick fever</td>
-                    <td>Yes</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- Diagnoses end -->
+                <!-- Diagnosis start -->
+                <h5 class="form-title">
+                    Diagnosis
+                </h5>
+                <div class="table-responsive">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Code - Description</th>
+                                <th>On Admission</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pricipal Diagnosis</td>
+                                <td>A93.2 - Colorado tick fever</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Diagnosis end -->
 
-    <!-- Supporting Info start -->
-    <h5 class="form-title">
-        Supporting Info
-    </h5>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Reason</th>
-                    <th>Category</th>
-                    <th>Value</th>
-                    <th>Code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="5">
-                        <app-empty-state message='No supporting info found!'></app-empty-state>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- Supporting Info end -->
+                <!-- Supporting Info start -->
+                <h5 class="form-title">
+                    Supporting Info
+                </h5>
+                <div class="table-responsive">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Reason</th>
+                                <th>Category</th>
+                                <th>Value</th>
+                                <th>Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <app-empty-state message='No supporting info found!'></app-empty-state>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Supporting Info end -->
 
-    <!-- Care Teams start -->
-    <h5 class="form-title">
-        Care Teams
-    </h5>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Sequence</th>
-                    <th>Clinician</th>
-                    <th>Clinician Role</th>
-                    <th>Care Team Role</th>
-                    <th>Speciality</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Shadi</td>
-                    <td>Doctor</td>
-                    <td>Primary Provider</td>
-                    <td>Hair Implant Dermatology</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- Care Teams end -->
+                <!-- Care Teams start -->
+                <h5 class="form-title">
+                    Care Teams
+                </h5>
+                <div class="table-responsive">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Sequence</th>
+                                <th>Clinician</th>
+                                <th>Clinician Role</th>
+                                <th>Care Team Role</th>
+                                <th>Speciality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Shadi</td>
+                                <td>Doctor</td>
+                                <td>Primary Provider</td>
+                                <td>Hair Implant Dermatology</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Care Teams end -->
 
-    <!-- Items start -->
-    <h5 class="form-title">
-        Items
-    </h5>
-    <div class="row">
-        <div class="col-4">
-            <table class="inline-label-table">
-                <tbody>
-                    <tr>
-                        <td class="label">Type</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Code - Description</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Non Standard Code</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Is Package?</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Quantity</td>
-                        <td>56</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Unit Price</td>
-                        <td>526</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-4">
-            <table class="inline-label-table">
-                <tbody>
-                    <tr>
-                        <td class="label">Discount</td>
-                        <td>44</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tax(%)</td>
-                        <td>21</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Patient Share(%)</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tax</td>
-                        <td>25</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Net</td>
-                        <td>58</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Patient Share</td>
-                        <td>268</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-4">
-            <table class="inline-label-table">
-                <tbody>
-                    <tr>
-                        <td class="label">Payer Share</td>
-                        <td>478</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Start Date</td>
-                        <td>29/7/2105</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Supporting Info</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Diagnoses</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Care Teams</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <hr class="hr spaced">
-    <div class="row">
-        <div class="col-4">
-            <table class="inline-label-table">
-                <tbody>
-                    <tr>
-                        <td class="label">Type</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Code - Description</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Non Standard Code</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Is Package?</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Quantity</td>
-                        <td>56</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Unit Price</td>
-                        <td>526</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-4">
-            <table class="inline-label-table">
-                <tbody>
-                    <tr>
-                        <td class="label">Discount</td>
-                        <td>44</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tax(%)</td>
-                        <td>21</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Patient Share(%)</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tax</td>
-                        <td>25</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Net</td>
-                        <td>58</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Patient Share</td>
-                        <td>268</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-4">
-            <table class="inline-label-table">
-                <tbody>
-                    <tr>
-                        <td class="label">Payer Share</td>
-                        <td>478</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Start Date</td>
-                        <td>29/7/2105</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Supporting Info</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Diagnoses</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Care Teams</td>
-                        <td>Lorem, ipsum dolor.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!-- Items end -->
-
-    <!-- Communication start -->
-    <h5 class="form-title">
-        Communication
-    </h5>
-    <ul class="communication">
-        <li class="date">
-            <span>26 April 2021</span>
-        </li>
-        <li class="sent">
-            <div class="inner">
-                <span class="time">02:30 PM</span>
-                <p class="message">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!</p>
+                <!-- Items start -->
+                <h5 class="form-title">
+                    Items
+                </h5>
+                <div class="row">
+                    <div class="col-4">
+                        <table class="inline-label-table">
+                            <tbody>
+                                <tr>
+                                    <td class="label">Type</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Code - Description</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Non Standard Code</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Is Package?</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Quantity</td>
+                                    <td>56</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Unit Price</td>
+                                    <td>526</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table class="inline-label-table">
+                            <tbody>
+                                <tr>
+                                    <td class="label">Discount</td>
+                                    <td>44</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Tax(%)</td>
+                                    <td>21</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Patient Share(%)</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Tax</td>
+                                    <td>25</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Net</td>
+                                    <td>58</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Patient Share</td>
+                                    <td>268</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table class="inline-label-table">
+                            <tbody>
+                                <tr>
+                                    <td class="label">Payer Share</td>
+                                    <td>478</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Start Date</td>
+                                    <td>29/7/2105</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Supporting Info</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Diagnosis</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Care Teams</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr class="hr spaced">
+                <div class="row">
+                    <div class="col-4">
+                        <table class="inline-label-table">
+                            <tbody>
+                                <tr>
+                                    <td class="label">Type</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Code - Description</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Non Standard Code</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Is Package?</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Quantity</td>
+                                    <td>56</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Unit Price</td>
+                                    <td>526</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table class="inline-label-table">
+                            <tbody>
+                                <tr>
+                                    <td class="label">Discount</td>
+                                    <td>44</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Tax(%)</td>
+                                    <td>21</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Patient Share(%)</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Tax</td>
+                                    <td>25</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Net</td>
+                                    <td>58</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Patient Share</td>
+                                    <td>268</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table class="inline-label-table">
+                            <tbody>
+                                <tr>
+                                    <td class="label">Payer Share</td>
+                                    <td>478</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Start Date</td>
+                                    <td>29/7/2105</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Supporting Info</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Diagnosis</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Care Teams</td>
+                                    <td>Lorem, ipsum dolor.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Items end -->
             </div>
-        </li>
-        <li class="received">
-            <div class="inner">
-                <span class="time">02:56 PM</span>
-                <p class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, doloribus nam quod necessitatibus sapiente deserunt quis voluptatem et
-                    similique
-                    nesciunt a, atque id laborum odit fugit omnis ipsum tempora soluta? Cum, quisquam! Ducimus, quis! Modi totam quas adipisci sunt exercitationem in, voluptates id
-                    praesentium cupiditate, ullam distinctio quae laudantium optio.</p>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                    <span>Communication</span>
+                    <span class="alert-marker ml-2"></span>
+                </div>
+            </ng-template>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                <div class="communication-wrapper">
+                    <ul class="communication">
+                        <li class="date">
+                            <span>26 April 2021</span>
+                        </li>
+                        <li class="sent">
+                            <div class="inner">
+                                <span class="time">02:30 PM</span>
+                                <p class="message">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!</p>
+                            </div>
+                        </li>
+                        <li class="received">
+                            <div class="inner">
+                                <span class="time">02:56 PM</span>
+                                <p class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, doloribus nam quod necessitatibus sapiente deserunt quis
+                                    voluptatem et
+                                    similique
+                                    nesciunt a, atque id laborum odit fugit omnis ipsum tempora soluta? Cum, quisquam! Ducimus, quis! Modi totam quas adipisci sunt exercitationem
+                                    in,
+                                    voluptates id
+                                    praesentium cupiditate, ullam distinctio quae laudantium optio.</p>
+                            </div>
+                        </li>
+                        <li class="date">
+                            <span>28 April 2021</span>
+                        </li>
+                        <li class="sent">
+                            <button type="button" class="inner">
+                                <span class="time">06:48 PM</span>
+                                <span class="image"
+                                    style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
+                            </button>
+                        </li>
+                        <li class="sent">
+                            <button type="button" class="inner">
+                                <span class="time">06:56 PM</span>
+                                <span class="file">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span class="name">Radiology Report.pdf</span>
+                                    <span class="size">24.14 MB</span>
+                                </span>
+                            </button>
+                        </li>
+                        <li class="received">
+                            <button type="button" class="inner">
+                                <span class="time">08:48 PM</span>
+                                <span class="image"
+                                    style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
+                            </button>
+                        </li>
+                        <li class="received">
+                            <button type="button" class="inner">
+                                <span class="time">08:56 PM</span>
+                                <span class="file">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span class="name">Radiology Report.pdf</span>
+                                    <span class="size">24.14 MB</span>
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </ng-scrollbar>
+            <div class="add-communication-block">
+                <div class="inner">
+                    <div class="text-wrapper">
+                        <input type="text" class="text-control" placeholder="Type a message" />
+                        <button type="button" class="attachment-btn">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                    </div>
+                    <button type="button" color="primary" mat-flat-button>Send</button>
+                </div>
             </div>
-        </li>
-        <li class="date">
-            <span>28 April 2021</span>
-        </li>
-        <li class="sent">
-            <button type="button" class="inner">
-                <span class="time">06:48 PM</span>
-                <span class="image" style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
-            </button>
-        </li>
-        <li class="sent">
-            <button type="button" class="inner">
-                <span class="time">06:56 PM</span>
-                <span class="file">
-                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                    <span class="name">Radiology Report.pdf</span>
-                    <span class="size">24.14 MB</span>
-                </span>
-            </button>
-        </li>
-        <li class="received">
-            <button type="button" class="inner">
-                <span class="time">08:48 PM</span>
-                <span class="image" style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
-            </button>
-        </li>
-        <li class="received">
-            <button type="button" class="inner">
-                <span class="time">08:56 PM</span>
-                <span class="file">
-                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                    <span class="name">Radiology Report.pdf</span>
-                    <span class="size">24.14 MB</span>
-                </span>
-            </button>
-        </li>
-    </ul>
-    <!-- Communication end -->
+        </mat-tab>
+    </mat-tab-group>
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
