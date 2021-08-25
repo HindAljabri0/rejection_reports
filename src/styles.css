@@ -283,6 +283,7 @@ button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-b
 .sidebar .nav-list>li>a .text{align-self:center;-ms-flex-item-align: center;}
 .sidebar .nav-list>li>a .text,.sidebar .mat-expansion-panel-body .nav-list>li>a .text:first-child{padding-left: 14px;}
 .sidebar .nav-list>li>a .text:first-child{padding-left: 0;}
+.sidebar .nav-list>li>a .alert-marker{margin-right: 6px;margin-left: 6px;align-self: center;-ms-flex-item-align:center;}
 .sidebar .nav-list>.new>a{padding-right: 24px;}
 .sidebar .nav-list>.new>a::after{content: '';background-color: #EB2A75;position: absolute;height: 6px;width: 6px;border-radius: 500px;display: block;top: 50%;right: 14px;transform: translate(0, -50%);}
 .sidebar .nav-list>li>.is-active {background-color: #E8E8E8;font-weight: 600;}
