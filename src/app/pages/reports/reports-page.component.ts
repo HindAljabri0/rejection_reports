@@ -10,10 +10,11 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { PaymentReferenceReportComponent } from './payment-reference-report/payment-reference-report.component';
 import { PaymentClaimSummaryReportComponent } from './payment-claim-summary-report/payment-claim-summary-report.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
-import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { RejectionReportComponent } from './rejection-report/rejection-report.component';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
+import { EditClaimComponent } from '../edit-claim/edit-claim.component';
 
 
 @Component({
@@ -38,6 +39,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   actionIcon = 'ic-download.svg';
 
 
+  @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
+  @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
+
   reportTypeControl: FormControl = new FormControl();
   fromDateControl: FormControl = new FormControl();
   fromDateHasError = false;
@@ -59,13 +63,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   paymentReference: string;
   claimId: string;
   criteria: string;
-
-  // @ViewChild('paymentSearchResult', { static: false }) paymentSearchResult: PaymentReferenceReportComponent;
-  @ViewChild('paymentClaimSummaryReport', { static: false }) paymentClaimSummaryReport: PaymentClaimSummaryReportComponent;
-  @ViewChild('submittedInvoicesSearchResult', { static: false }) submittedInvoicesSearchResult: SubmittedInvoicesComponent;
-  // @ViewChild('rejectionReport', { static: false }) rejectionReportComponent: RejectionReportComponent;
-  @ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
-
   payerId: number[];
 
 
@@ -76,6 +73,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     private commen: SharedServices,
     private reportsService: ReportsService,
     private dialogService: DialogService,
+    public dialog: MatDialog,
     private downloadService: DownloadService) { }
 
   ngOnInit() {
@@ -133,10 +131,15 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
     }).unsubscribe();
 
+    if (this.reportTypeControl.value) {
+      this.search();
+    }
   }
 
   ngAfterViewInit() {
-    this.search();
+    if (!this.reportTypeControl.value) {
+      this.search();
+    }
   }
 
   search() {
@@ -169,8 +172,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-
-
     const queryParams: Params = {};
     const fromDate: Date = new Date(this.fromDateControl.value);
     const toDate: Date = new Date(this.toDateControl.value);
@@ -187,41 +188,21 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (this.pageSize > 10) {
       queryParams.pageSize = this.pageSize;
     }
-    // this.router.navigate([this.providerId, 'reports/submission-report'], { queryParams });
-    // if (this.reportTypeControl.value == 1) {
-    //   this.paymentSearchResult.fetchData();
-    // }
-    // if (this.reportTypeControl.value == 2) {
-    // this.editURL();
-    this.submittedInvoicesSearchResult.fetchData();
-    // }
-    // if (this.reportTypeControl.value == 3) {
-    //   this.rejectionReportComponent.fetchData();
-    // }
+
+
+    if (this.submittedInvoicesSearchResult) {
+      this.submittedInvoicesSearchResult.fetchData();
+    }
 
   }
+
   searchSelect(event) {
     this.search();
   }
 
-  onPaymentClick(ref) {
-    if (this.reportTypeControl.value == 1) {
-      this.tempPage = this.page;
-      this.tempPageSize = this.pageSize;
-      this.page = 0;
-      this.pageSize = 10;
-      this.paymentClaimSummaryReport.page = 0;
-      this.paymentClaimSummaryReport.pageSize = 10;
-      this.resetURL();
-      this.paymentReference = ref;
-      this.paymentClaimSummaryReport.fetchData(this.paymentReference);
-      this.location.go(`${this.location.path()}&pRef=${ref}`);
-    } else if (this.reportTypeControl.value == 2) {
-      this.claimId = ref;
-    } else if (this.reportTypeControl.value == 3) {
-      this.criteria = ref;
-    }
-
+  onPaymentClick(data) {
+    this.claimId = data.claimId;
+    this.viewClaim(data.claimId, data.event);
   }
 
   paginationChange(event) {
@@ -234,11 +215,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.paymentReference = null;
     this.page = this.tempPage;
     this.pageSize = this.tempPageSize;
-    // this.paymentSearchResult.queryPage = this.page;
-    // this.paymentSearchResult.pageSize = this.pageSize;
-    // if (this.paymentSearchResult.payments.length == 0) {
-    //   this.paymentSearchResult.fetchData();
-    // }
     this.resetURL();
   }
 
@@ -348,6 +324,16 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   get height() {
     return `${this.pageSize * 55 + 275}px`;
+  }
+
+  viewClaim(claimId, e) {
+    e.preventDefault();
+    // this.location.go(`${this.commen.providerId}/claims?claimRefNo=${item.claimRefNo}&hasPrevious=1`);
+    this.location.go(this.location.path() + '&hasPrevious=1');
+    const dialogRef = this.dialog.open(EditClaimComponent, {
+      panelClass: ['primary-dialog', 'full-screen-dialog'],
+      autoFocus: false, data: { claimId: claimId }
+    });
   }
 
 }
