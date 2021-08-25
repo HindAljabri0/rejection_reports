@@ -1,11 +1,13 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
+import { EligibilityResponseModel } from 'src/app/models/nphies/eligibilityResponseModel';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -15,7 +17,7 @@ import { SharedServices } from 'src/app/services/shared.services';
   templateUrl: './eligibility.component.html',
   styles: []
 })
-export class EligibilityComponent implements OnInit {
+export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiarySearchController = new FormControl();
 
@@ -32,9 +34,11 @@ export class EligibilityComponent implements OnInit {
   isBenefits = false;
   isDiscovery = false;
   isValidation = false;
+  purposeError: string;
 
   showDetails = false;
   constructor(
+    private dialogService: DialogService,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
     private sharedServices: SharedServices,
@@ -42,6 +46,31 @@ export class EligibilityComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) { }
+
+
+  ngAfterContentInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      const beneficiaryId = params.beneficiary;
+      if (beneficiaryId != null && beneficiaryId.trim().length > 0) {
+        this.sharedServices.loadingChanged.next(true);
+        this.beneficiaryService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+          if (event instanceof HttpResponse) {
+            this.sharedServices.loadingChanged.next(false);
+            try {
+              this.selectBeneficiary(event.body as BeneficiariesSearchResult);
+            } catch (e) {
+
+            }
+          }
+        }, errorEvent => {
+          this.sharedServices.loadingChanged.next(false);
+          if (errorEvent instanceof HttpErrorResponse) {
+
+          }
+        })
+      }
+    }).unsubscribe();
+  }
 
   ngOnInit() {
   }
@@ -83,11 +112,17 @@ export class EligibilityComponent implements OnInit {
     return '';
   }
 
+  eligibilityResponseModel:EligibilityResponseModel=null ; 
   sendRequest() {
-    if (this.selectedBeneficiary == null) {
+    if (this.selectedBeneficiary == null || this.sharedServices.loading) {
       return;
     }
+    this.sharedServices.loadingChanged.next(true);
     let requestHasErrors = false;
+    this.selectedPlanIdError = null;
+    this.serviceDateError = null;
+    this.endDateError = null;
+    this.purposeError = null;
     if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
       this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
       requestHasErrors = true;
@@ -110,24 +145,42 @@ export class EligibilityComponent implements OnInit {
       }
     }
 
-    if (requestHasErrors) return;
+    if (!this.isBenefits && !this.isDiscovery && !this.isValidation) {
+      this.purposeError = "Select at least one purpose for this request."
+      requestHasErrors = true;
+    }
+
+    if (requestHasErrors) {
+      this.sharedServices.loadingChanged.next(false);
+      return;
+    }
 
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
       insurancePlanId: this.selectedPlanId,
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: moment(this.endDateControl.value).format('YYYY-MM-DD'),
-      isBenefits: this.isBenefits,
-      isDiscovery: this.isDiscovery,
-      isValidation: this.isValidation
+      benefits: this.isBenefits,
+      discovery: this.isDiscovery,
+      validation: this.isValidation
     }
+
+   
+
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
-
+        this.sharedServices.loadingChanged.next(false);
+        this.eligibilityResponseModel=event.body as EligibilityResponseModel
+        this.showDetails=true;
       }
     }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-
+  this.dialogService.openMessageDialog({
+            title: '',
+           message: `Error`,
+          isError: true
+         });
       }
     });
   }

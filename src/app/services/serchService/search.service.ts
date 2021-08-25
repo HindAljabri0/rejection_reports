@@ -27,9 +27,9 @@ export class SearchService {
     let requestURL = `/providers/${providerId}/claims?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId;
+        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&';
       if (casetype != null) {
-        requestURL += '&casetype=' + casetype.join(',');
+        requestURL += 'casetype=' + casetype.join(',') + '&';
       }
     }
     if (batchId != null) {
@@ -96,8 +96,8 @@ export class SearchService {
     let requestURL = `/providers/${providerId}/claims/details?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId;
-      if (casetype != null) { requestURL += '&casetype=' + casetype.join(','); }
+        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&';
+      if (casetype != null) { requestURL += 'casetype=' + casetype.join(',') + '&'; }
     }
     if (batchId != null) {
       if (batchId.includes('-')) {
