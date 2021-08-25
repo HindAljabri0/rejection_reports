@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-view-preauthorization-details',
@@ -8,7 +8,9 @@ import { MatDialogRef } from '@angular/material';
 })
 export class ViewPreauthorizationDetailsComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>) { }
+  constructor(
+    private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>
+  ) { }
 
   ngOnInit() {
   }

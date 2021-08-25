@@ -86,10 +86,10 @@
     </ng-container>
     <ng-container *ngIf="showDetails">
         <div class="block-header has-border">
-            <p>Eligibility - LAV4FIYPZWKS</p>
+            <p>Eligibility - {{eligibilityResponseModel.eligibilityRequestId}}</p>
         </div>
         <div class="bg-white p-14">
-            <app-eligibility-details class="d-block mb-14"></app-eligibility-details>
+            <app-eligibility-details class="d-block mb-14" [eligibilityResponse]='eligibilityResponseModel'></app-eligibility-details>
             <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
                 Eligibility</button>
         </div>

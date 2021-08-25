@@ -33,15 +33,15 @@
         </thead>
         <tbody>
             <tr *ngFor="let claim of claims">
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{mapPayer(claim.payerId)}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{mapPayer(claim.payerId)}}</td>
                 <!-- <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.claimId}}</td> -->
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.visitDate}}</td>
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.submissionDate}}</td>
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.provClaimNo}}</td>
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.payerClaimRefNo}}</td>
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.batchid}}</td>
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.policyHolderCode}}</td>
-                <td class="row-click" (click)="onPaymentClick.emit(claim.claimId)">{{claim.status}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.visitDate}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.submissionDate}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.provClaimNo}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.payerClaimRefNo}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.batchid}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.policyHolderCode}}</td>
+                <td class="row-click" (click)="openClaim(claim.claimId, $event)">{{claim.status}}</td>
             </tr>
         </tbody>
     </table>

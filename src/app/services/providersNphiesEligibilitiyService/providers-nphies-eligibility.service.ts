@@ -11,7 +11,7 @@ export class ProvidersNphiesEligibilityService {
   constructor(private http: HttpClient) { }
 
   sendEligibilityRequest(providerId: string, eligibilityRequest: EligibilityRequestModel){
-    const requestUrl = `/providers/${providerId}/sendRequest`;
+    const requestUrl = `/providers/${providerId}/request`;
     const request = new HttpRequest('POST', environment.providerNphiesEligibility + requestUrl, eligibilityRequest);
     return this.http.request(request);
   }

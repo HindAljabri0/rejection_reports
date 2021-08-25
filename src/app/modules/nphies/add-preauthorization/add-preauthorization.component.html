@@ -1,363 +1,370 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-        <p>Request Pre Authorization</p>
+  <div class="block-header has-border">
+    <p>Request Pre Authorization</p>
+  </div>
+  <div class="block-filter-panel">
+    <h5 class="form-title pt-0">Beneficary Info</h5>
+    <div class="d-flex">
+      <div class="form-group flex-grow-1">
+        <label class="control-label">Select a Beneficiary</label>
+        <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID...">
+      </div>
+      <div class="form-group pl-3 pr-3">
+        <label class="control-label">&nbsp;</label>
+        <span class="pt-2 d-block semibold">OR</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label">&nbsp;</label>
+        <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+          color="primary">Create New Beneficiary</button>
+      </div>
     </div>
-    <div class="block-filter-panel">
-        <h5 class="form-title pt-0">Beneficary Info</h5>
-        <div class="d-flex">
-            <div class="form-group flex-grow-1">
-                <label class="control-label">Select a Beneficiary</label>
-                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID...">
-            </div>
-            <div class="form-group pl-3 pr-3">
-                <label class="control-label">&nbsp;</label>
-                <span class="pt-2 d-block semibold">OR</span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">&nbsp;</label>
-                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
-            </div>
-        </div>
 
-        <h5 class="form-title">Pre Authorization Info</h5>
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Date Ordered</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="dateOrdered" class="form-control" placeholder="Select date ordered">
-                        <mat-datepicker-toggle [for]="dateOrdered"></mat-datepicker-toggle>
-                        <mat-datepicker #dateOrdered></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Type</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Type</mat-option>
-                            <mat-option value="Type 1">Type 1</mat-option>
-                            <mat-option value="Type 2">Type 2</mat-option>
-                            <mat-option value="Type 3">Type 3</mat-option>
-                            <mat-option value="Type 4">Type 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Sub Type</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Sub Type</mat-option>
-                            <mat-option value="Sub Type 1">Sub Type 1</mat-option>
-                            <mat-option value="Sub Type 2">Sub Type 2</mat-option>
-                            <mat-option value="Sub Type 3">Sub Type 3</mat-option>
-                            <mat-option value="Sub Type 4">Sub Type 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-
-        <h5 class="form-title">
-            <span>Diagnoses</span>
-            <button type="button" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Code - Description</th>
-                        <th>Type</th>
-                        <th>On Admission</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Code - Description</mat-option>
-                                    <mat-option value="Code 1">Code 1</mat-option>
-                                    <mat-option value="Code 2">Code 2</mat-option>
-                                    <mat-option value="Code 3">Code 3</mat-option>
-                                    <mat-option value="Code 4">Code 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Type</mat-option>
-                                    <mat-option value="Type 1">Type 1</mat-option>
-                                    <mat-option value="Type 2">Type 2</mat-option>
-                                    <mat-option value="Type 3">Type 3</mat-option>
-                                    <mat-option value="Type 4">Type 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select On Admission</mat-option>
-                                    <mat-option value="On Admission 1">On Admission 1</mat-option>
-                                    <mat-option value="On Admission 2">On Admission 2</mat-option>
-                                    <mat-option value="On Admission 3">On Admission 3</mat-option>
-                                    <mat-option value="On Admission 4">On Admission 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="form-title">
-            <span>Supporting Info</span>
-            <button type="button" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Reason</th>
-                        <th>Category</th>
-                        <th>Value</th>
-                        <th>Code</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Reason</mat-option>
-                                    <mat-option value="Reason 1">Reason 1</mat-option>
-                                    <mat-option value="Reason 2">Reason 2</mat-option>
-                                    <mat-option value="Reason 3">Reason 3</mat-option>
-                                    <mat-option value="Reason 4">Reason 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Category</mat-option>
-                                    <mat-option value="Category 1">Category 1</mat-option>
-                                    <mat-option value="Category 2">Category 2</mat-option>
-                                    <mat-option value="Category 3">Category 3</mat-option>
-                                    <mat-option value="Category 4">Category 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control minw145" placeholder="Enter value" />
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Code</mat-option>
-                                    <mat-option value="Code 1">Code 1</mat-option>
-                                    <mat-option value="Code 2">Code 2</mat-option>
-                                    <mat-option value="Code 3">Code 3</mat-option>
-                                    <mat-option value="Code 4">Code 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="form-title">Accident</h5>
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Accident Type</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Accident Type</mat-option>
-                            <mat-option value="Accident Type 1">Accident Type 1</mat-option>
-                            <mat-option value="Accident Type 2">Accident Type 2</mat-option>
-                            <mat-option value="Accident Type 3">Accident Type 3</mat-option>
-                            <mat-option value="Accident Type 4">Accident Type 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Street Name</label>
-                    <input placeholder="Enter street name" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">City</label>
-                    <input placeholder="Enter city" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">State/Province</label>
-                    <input placeholder="Enter state/province" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Country</label>
-                    <input placeholder="Enter country" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date">
-                        <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
-                        <mat-datepicker #accidentDate></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h5 class="form-title">
-            <span>Care Team</span>
-            <button type="button" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Practitioner</th>
-                        <th>Practitioner Role</th>
-                        <th>Care Team Role</th>
-                        <th>Speciality</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Practitioner</mat-option>
-                                    <mat-option value="Practitioner 1">Practitioner 1</mat-option>
-                                    <mat-option value="Practitioner 2">Practitioner 2</mat-option>
-                                    <mat-option value="Practitioner 3">Practitioner 3</mat-option>
-                                    <mat-option value="Practitioner 4">Practitioner 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Practitioner Role</mat-option>
-                                    <mat-option value="Role 1">Role 1</mat-option>
-                                    <mat-option value="Role 2">Role 2</mat-option>
-                                    <mat-option value="Role 3">Role 3</mat-option>
-                                    <mat-option value="Role 4">Role 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Care Team Role</mat-option>
-                                    <mat-option value="Care Team Role 1">Care Team Role 1</mat-option>
-                                    <mat-option value="Care Team Role 2">Care Team Role 2</mat-option>
-                                    <mat-option value="Care Team Role 3">Care Team Role 3</mat-option>
-                                    <mat-option value="Care Team Role 4">Care Team Role 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Speciality</mat-option>
-                                    <mat-option value="Speciality 1">Speciality 1</mat-option>
-                                    <mat-option value="Speciality 2">Speciality 2</mat-option>
-                                    <mat-option value="Speciality 3">Speciality 3</mat-option>
-                                    <mat-option value="Speciality 4">Speciality 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="form-title">
-            <span>Items</span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Code - Description</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Net</th>
-                        <th>Non Standard Code</th>
-                        <th>Display</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Medication Codes</td>
-                        <td>Lorem, ipsum dolor.</td>
-                        <td>5</td>
-                        <td class="text-nowrap">25 <span class="currency">SR</span></td>
-                        <td class="text-nowrap">536 <span class="currency">SR</span></td>
-                        <td>Lorem, ipsum dolor.</td>
-                        <td>Lorem ipsum dolor sit amet.</td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Edit" (click)="openAddEditItemDialog()" class="text-primary">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <hr class="hr spaced" />
-
+    <h5 class="form-title">Pre Authorization Info</h5>
+    <div class="row small-gutter">
+      <div class="col-4 col-xxl-3">
         <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Request Authorization</button>
+          <label class="control-label">Date Ordered</label>
+          <div class="date-picker">
+            <input [matDatepicker]="dateOrdered" class="form-control" placeholder="Select date ordered">
+            <mat-datepicker-toggle [for]="dateOrdered"></mat-datepicker-toggle>
+            <mat-datepicker #dateOrdered></mat-datepicker>
+          </div>
         </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">Type</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select value="-1">
+              <mat-option value="-1">Select Type</mat-option>
+              <mat-option value="Type 1">Type 1</mat-option>
+              <mat-option value="Type 2">Type 2</mat-option>
+              <mat-option value="Type 3">Type 3</mat-option>
+              <mat-option value="Type 4">Type 4</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">Sub Type</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select value="-1">
+              <mat-option value="-1">Select Sub Type</mat-option>
+              <mat-option value="Sub Type 1">Sub Type 1</mat-option>
+              <mat-option value="Sub Type 2">Sub Type 2</mat-option>
+              <mat-option value="Sub Type 3">Sub Type 3</mat-option>
+              <mat-option value="Sub Type 4">Sub Type 4</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
+
+    <h5 class="form-title">
+      <span>Diagnosis</span>
+      <button type="button" class="btn-icon btn-primary ml-auto">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h5>
+    <div class="table-responsive">
+      <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <thead>
+          <tr>
+            <th>Code - Description</th>
+            <th>Type</th>
+            <th>On Admission</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="align-middle">
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Code - Description</mat-option>
+                  <mat-option value="Code 1">Code 1</mat-option>
+                  <mat-option value="Code 2">Code 2</mat-option>
+                  <mat-option value="Code 3">Code 3</mat-option>
+                  <mat-option value="Code 4">Code 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Type</mat-option>
+                  <mat-option value="Type 1">Type 1</mat-option>
+                  <mat-option value="Type 2">Type 2</mat-option>
+                  <mat-option value="Type 3">Type 3</mat-option>
+                  <mat-option value="Type 4">Type 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select On Admission</mat-option>
+                  <mat-option value="On Admission 1">On Admission 1</mat-option>
+                  <mat-option value="On Admission 2">On Admission 2</mat-option>
+                  <mat-option value="On Admission 3">On Admission 3</mat-option>
+                  <mat-option value="On Admission 4">On Admission 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="actions">
+              <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="form-title">
+      <span>Supporting Info</span>
+      <button type="button" class="btn-icon btn-primary ml-auto">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h5>
+    <div class="table-responsive">
+      <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <thead>
+          <tr>
+            <th>Reason</th>
+            <th>Category</th>
+            <th>Value</th>
+            <th>Code</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="align-middle">
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Reason</mat-option>
+                  <mat-option value="Reason 1">Reason 1</mat-option>
+                  <mat-option value="Reason 2">Reason 2</mat-option>
+                  <mat-option value="Reason 3">Reason 3</mat-option>
+                  <mat-option value="Reason 4">Reason 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Category</mat-option>
+                  <mat-option value="Category 1">Category 1</mat-option>
+                  <mat-option value="Category 2">Category 2</mat-option>
+                  <mat-option value="Category 3">Category 3</mat-option>
+                  <mat-option value="Category 4">Category 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <input type="text" class="form-control minw145" placeholder="Enter value" />
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Code</mat-option>
+                  <mat-option value="Code 1">Code 1</mat-option>
+                  <mat-option value="Code 2">Code 2</mat-option>
+                  <mat-option value="Code 3">Code 3</mat-option>
+                  <mat-option value="Code 4">Code 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="actions">
+              <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="form-title">Accident</h5>
+    <div class="row small-gutter">
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">Accident Type</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select value="-1">
+              <mat-option value="-1">Select Accident Type</mat-option>
+              <mat-option value="Accident Type 1">Accident Type 1</mat-option>
+              <mat-option value="Accident Type 2">Accident Type 2</mat-option>
+              <mat-option value="Accident Type 3">Accident Type 3</mat-option>
+              <mat-option value="Accident Type 4">Accident Type 4</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">Street Name</label>
+          <input placeholder="Enter street name" class="form-control">
+        </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">City</label>
+          <input placeholder="Enter city" class="form-control">
+        </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">State/Province</label>
+          <input placeholder="Enter state/province" class="form-control">
+        </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">Country</label>
+          <input placeholder="Enter country" class="form-control">
+        </div>
+      </div>
+      <div class="col-4 col-xxl-3">
+        <div class="form-group">
+          <label class="control-label">Date</label>
+          <div class="date-picker">
+            <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date">
+            <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
+            <mat-datepicker #accidentDate></mat-datepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h5 class="form-title">
+      <span>Care Team</span>
+      <button type="button" class="btn-icon btn-primary ml-auto">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h5>
+    <div class="table-responsive">
+      <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <thead>
+          <tr>
+            <th>Practitioner</th>
+            <th>Practitioner Role</th>
+            <th>Care Team Role</th>
+            <th>Speciality</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="align-middle">
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select [value]="selectedPractitioner" (selectionChange)="selectedPractitioner = $event.value;"
+                  required #practitionerSelect>
+                  <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Search Practitioner"
+                      noEntriesFoundLabel="No practitioners found" [formControl]="Practitioner"
+                      name='searchedPractitioner'></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option value="">Select Practitioner</mat-option>
+                  <mat-option *ngFor="let practitioner of filteredPractitioner  | async"
+                    [value]="practitioner.physicianId.physicianCode">
+                    {{practitioner.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Practitioner Role</mat-option>
+                  <mat-option value="Role 1">Role 1</mat-option>
+                  <mat-option value="Role 2">Role 2</mat-option>
+                  <mat-option value="Role 3">Role 3</mat-option>
+                  <mat-option value="Role 4">Role 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Care Team Role</mat-option>
+                  <mat-option value="Care Team Role 1">Care Team Role 1</mat-option>
+                  <mat-option value="Care Team Role 2">Care Team Role 2</mat-option>
+                  <mat-option value="Care Team Role 3">Care Team Role 3</mat-option>
+                  <mat-option value="Care Team Role 4">Care Team Role 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select value="-1">
+                  <mat-option value="-1">Select Speciality</mat-option>
+                  <mat-option value="Speciality 1">Speciality 1</mat-option>
+                  <mat-option value="Speciality 2">Speciality 2</mat-option>
+                  <mat-option value="Speciality 3">Speciality 3</mat-option>
+                  <mat-option value="Speciality 4">Speciality 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="actions">
+              <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="form-title">
+      <span>Items</span>
+      <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h5>
+    <div class="table-responsive">
+      <table class="primary-grid manual-row-color claim-view-table no-borders">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Code - Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Net</th>
+            <th>Non Standard Code</th>
+            <th>Display</th>
+            <th width="10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Medication Codes</td>
+            <td>Lorem, ipsum dolor.</td>
+            <td>5</td>
+            <td class="text-nowrap">25 <span class="currency">SR</span></td>
+            <td class="text-nowrap">536 <span class="currency">SR</span></td>
+            <td>Lorem, ipsum dolor.</td>
+            <td>Lorem ipsum dolor sit amet.</td>
+            <td class="actions">
+              <button mat-icon-button matTooltip="Edit" (click)="openAddEditItemDialog()" class="text-primary">
+                <mat-icon>create</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Delete" class="text-primary">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="hr spaced" />
+
+    <div class="form-group">
+      <button type="button" mat-flat-button color="primary">Request Authorization</button>
+    </div>
+  </div>
 </div>

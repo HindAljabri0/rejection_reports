@@ -18,7 +18,7 @@ import { Location } from '@angular/common';
   templateUrl: './submitted-invoices.component.html',
   styles: []
 })
-export class SubmittedInvoicesComponent implements OnInit {
+export class SubmittedInvoicesComponent {
 
   detailCardTitle = 'Submitted Invoices';
   detailTopActionIcon = 'ic-download.svg';
@@ -52,8 +52,8 @@ export class SubmittedInvoicesComponent implements OnInit {
     private downloadService: DownloadService,
     private location: Location) { }
 
-  ngOnInit() {
-    // this.fetchData();
+  openClaim(claimId, e) {
+    this.onPaymentClick.emit({ claimId: claimId, event: e });
   }
 
   async fetchData() {

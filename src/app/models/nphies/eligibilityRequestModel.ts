@@ -6,8 +6,8 @@ export class EligibilityRequestModel {
 	serviceDate: string;
 	toDate: string;
 	insurancePlanId: string;
-	isBenefits: boolean;
-	isDiscovery: boolean;
-	isValidation: boolean;
+	benefits: boolean;
+	discovery: boolean;
+	validation: boolean;
 
 }

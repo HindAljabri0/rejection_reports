@@ -267,7 +267,12 @@
                 </mat-expansion-panel>
                 <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Pre Authorization</mat-panel-title>
+                        <mat-panel-title>
+                            <span class="d-flex align-items-center">
+                                <span>Pre Authorization</span>
+                                <span class="alert-marker ml-auto"></span>
+                            </span>
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
@@ -278,6 +283,7 @@
                         <li>
                             <a routerLink="/nphies/preauthorization-transactions" routerLinkActive="is-active">
                                 <span class="text">Pre Authorization Transactions</span>
+                                <span class="alert-marker"></span>
                             </a>
                         </li>
                     </ul>
