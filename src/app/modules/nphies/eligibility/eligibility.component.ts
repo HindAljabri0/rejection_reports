@@ -112,7 +112,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
-  eligibilityResponseModel:EligibilityResponseModel=null ; 
+  eligibilityResponseModel: EligibilityResponseModel = null;
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
       return;
@@ -165,22 +165,22 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       validation: this.isValidation
     }
 
-   
+
 
     this.eligibilityService.sendEligibilityRequest(this.sharedServices.providerId, request).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
-        this.eligibilityResponseModel=event.body as EligibilityResponseModel
-        this.showDetails=true;
+        this.eligibilityResponseModel = event.body as EligibilityResponseModel
+        this.showDetails = true;
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-  this.dialogService.openMessageDialog({
-            title: '',
-           message: `Error`,
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: errorEvent.message,
           isError: true
-         });
+        });
       }
     });
   }
