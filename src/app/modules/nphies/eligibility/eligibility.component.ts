@@ -35,6 +35,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   isDiscovery = false;
   isValidation = false;
   purposeError: string;
+  payerNphiesId:string;
 
   showDetails = false;
   constructor(
@@ -157,9 +158,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
-      insurancePlanId: this.selectedPlanId,
+      memberCardId: this.selectedPlanId,
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: moment(this.endDateControl.value).format('YYYY-MM-DD'),
+      payerNphiesId: this.selectedPlanId,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation

@@ -17,7 +17,9 @@ import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorizatio
 import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
 import { EligibilityDetailsComponent } from './eligibility-details/eligibility-details.component';
 import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-details/view-preauthorization-details.component';
+import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
+// tslint:disable-next-line:max-line-length
 import { PaymentReconciliationDetailsDialogComponent } from './payment-reconciliation-details-dialog/payment-reconciliation-details-dialog.component';
 
 @NgModule({
@@ -32,6 +34,8 @@ import { PaymentReconciliationDetailsDialogComponent } from './payment-reconcili
     AddEditPreauthorizationItemComponent,
     PreauthorizationTransactionsComponent,
     EligibilityDetailsComponent,
+    ViewPreauthorizationDetailsComponent,
+    AddEditCareTeamModalComponent,
     ViewPreauthorizationDetailsComponent,
     PaymentReconciliationComponent,
     PaymentReconciliationDetailsDialogComponent
@@ -51,6 +55,8 @@ import { PaymentReconciliationDetailsDialogComponent } from './payment-reconcili
     ViewEligibilityDetailsComponent,
     AddInsurancePlanDialogComponent,
     AddEditPreauthorizationItemComponent,
+    ViewPreauthorizationDetailsComponent,
+    AddEditCareTeamModalComponent,
     ViewPreauthorizationDetailsComponent,
     PaymentReconciliationDetailsDialogComponent
   ]
