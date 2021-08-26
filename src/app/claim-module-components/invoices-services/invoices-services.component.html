@@ -365,7 +365,7 @@
                                                                         <span class="input-group-append">
                                                                             <span
                                                                                 class="input-group-text clickable medium"
-                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR'))">{{service.serviceDiscountUnit
+                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')); service.net = null; controllers[i].needsRecalculation = true">{{service.serviceDiscountUnit
                                                                                 == 'SAR'? 'SAR':'%'}}</span>
                                                                         </span>
                                                                     </div>

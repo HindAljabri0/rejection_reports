@@ -1,13 +1,13 @@
 
 export class EligibilityResponseModel {
-
+    eligibilityRequestId:string;
     banificiaryName: string;
 	deptName: string;
 	eligibilityStatus: string;
 	serviceDate: string;
 	transactionDate: string;
 	eligibilityPurpose: string[];
-    EligibilityResponseError: {
+    error: {
         status: string;
         reasonCode: string;
         massage: string;

@@ -10,9 +10,21 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class EligibilityDetailsComponent implements OnInit {
 
-  @Input() eligibilityResponse: EligibilityResponseModel;  
+  @Input() eligibilityResponse: EligibilityResponseModel;
 
+  getReasonError() {
+    switch (this.eligibilityResponse.error.reasonCode) {
+      case "NC":
+        return "No coverage inforce";
+      case "ALC":
+        return "Annual limit consumed";
+      case "ONW":
+        return "Provider outside member Network";
+      default:
+        return null
+    }
 
+  }
 
 
 
@@ -20,7 +32,7 @@ export class EligibilityDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log("Test   "+this.eligibilityResponse.eligibilityStatus)
+
   }
 
 }
