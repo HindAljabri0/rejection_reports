@@ -197,7 +197,7 @@ export class MedicalRejctionReportComponent implements OnInit {
           claim.netAmountUnit = event.body['wslGenInfo']['unitofnet'];
           claim.netvatAmountUnit = event.body['wslGenInfo']['unitofnetvatamount'];
           claim.patientFileNumber = event.body['wslGenInfo']['patientfilenumber'];
-          claim.patientName = `${(event.body['wslGenInfo']['firstname'] != null ?
+          claim.patientName = event.body['wslGenInfo'].fullname != null ? event.body['wslGenInfo'].fullname : `${(event.body['wslGenInfo']['firstname'] != null ?
             event.body['wslGenInfo']['firstname'] : '')}
           ${(event.body['wslGenInfo']['middlename'] != null ? event.body['wslGenInfo']['middlename'] : '')}
           ${(event.body['wslGenInfo']['lastname'] != null ? event.body['wslGenInfo']['lastname'] : '')}`;
