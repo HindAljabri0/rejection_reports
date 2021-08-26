@@ -7,7 +7,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
   styles: []
 })
 export class ViewPreauthorizationDetailsComponent implements OnInit {
-
+  currentSelectedItem = -1;
   constructor(
     private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>
   ) { }
@@ -17,6 +17,14 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  toggleItem(index) {
+    if (this.currentSelectedItem == index) {
+      this.currentSelectedItem = -1;
+    } else {
+      this.currentSelectedItem = index;
+    }
   }
 
 }
