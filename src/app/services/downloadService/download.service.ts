@@ -45,7 +45,7 @@ export class DownloadService {
             navigator.msSaveBlob(blob, exportedFilename);
           } else {
             const a = document.createElement('a');
-            a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURI(event.body + '');
+            a.href = 'data:attachment/csv;charset=ISO-8859-1,' + encodeURIComponent(event.body + '');
             a.target = '_blank';
             a.download = downloadRequest.filename;
             a.click();

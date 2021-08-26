@@ -625,12 +625,13 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     if (gross == null) {
       gross = this.calcGross(service);
     }
-    let net = gross - service.patientShare.value;
+    let net = gross;
     if (service.serviceDiscountUnit == 'PERCENT') {
       net -= (net * (service.serviceDiscount.value / 100));
     } else {
       net -= service.serviceDiscount.value;
     }
+    net -= service.patientShare.value;
     net += service.priceCorrection;
     net -= service.rejection;
     net = Number.parseFloat(net.toPrecision(net.toFixed().length + 2));
