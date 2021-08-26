@@ -15,8 +15,7 @@
       </div>
       <div class="form-group">
         <label class="control-label">&nbsp;</label>
-        <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
-          color="primary">Create New Beneficiary</button>
+        <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
       </div>
     </div>
 
@@ -261,16 +260,13 @@
           <tr class="align-middle">
             <td>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select [value]="selectedPractitioner" (selectionChange)="selectedPractitioner = $event.value;"
-                  required #practitionerSelect>
+                <mat-select [value]="selectedPractitioner" (selectionChange)="selectedPractitioner = $event.value;" required #practitionerSelect>
                   <mat-option>
-                    <ngx-mat-select-search placeholderLabel="Search Practitioner"
-                      noEntriesFoundLabel="No practitioners found" [formControl]="Practitioner"
+                    <ngx-mat-select-search placeholderLabel="Search Practitioner" noEntriesFoundLabel="No practitioners found" [formControl]="Practitioner"
                       name='searchedPractitioner'></ngx-mat-select-search>
                   </mat-option>
                   <mat-option value="">Select Practitioner</mat-option>
-                  <mat-option *ngFor="let practitioner of filteredPractitioner  | async"
-                    [value]="practitioner.physicianId.physicianCode">
+                  <mat-option *ngFor="let practitioner of filteredPractitioner  | async" [value]="practitioner.physicianId.physicianCode">
                     {{practitioner.name}}
                   </mat-option>
                 </mat-select>
@@ -326,7 +322,7 @@
       </button>
     </h5>
     <div class="table-responsive">
-      <table class="primary-grid manual-row-color claim-view-table no-borders">
+      <table class="primary-grid no-borders">
         <thead>
           <tr>
             <th>Type</th>

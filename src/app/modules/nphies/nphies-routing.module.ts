@@ -6,6 +6,7 @@ import { EligibilityTransactionsComponent } from './eligibility-transactions/eli
 import { EligibilityComponent } from './eligibility/eligibility.component';
 import { InsurancePlanComponent } from './insurance-plan/insurance-plan.component';
 import { PreauthorizationTransactionsComponent } from './preauthorization-transactions/preauthorization-transactions.component';
+import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'beneficiary', component: BeneficiaryComponent },
   { path: 'add-preauthorization', component: AddPreauthorizationComponent },
   { path: 'preauthorization-transactions', component: PreauthorizationTransactionsComponent },
-  { path: 'insurance-plans', component: InsurancePlanComponent }
+  { path: 'insurance-plans', component: InsurancePlanComponent },
+  { path: 'payment-reconciliation', component: PaymentReconciliationComponent }
 ];
 
 @NgModule({
