@@ -18,7 +18,7 @@ import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add
 import { EligibilityDetailsComponent } from './eligibility-details/eligibility-details.component';
 import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-details/view-preauthorization-details.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
-import { PaymentReconciliationDetailsDialogComponent } from './payment-reconciliation-details-dialog/payment-reconciliation-details-dialog.component';
+import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { PaymentReconciliationDetailsDialogComponent } from './payment-reconcili
     EligibilityDetailsComponent,
     ViewPreauthorizationDetailsComponent,
     PaymentReconciliationComponent,
-    PaymentReconciliationDetailsDialogComponent
+    PaymentReconciliationDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -51,8 +51,7 @@ import { PaymentReconciliationDetailsDialogComponent } from './payment-reconcili
     ViewEligibilityDetailsComponent,
     AddInsurancePlanDialogComponent,
     AddEditPreauthorizationItemComponent,
-    ViewPreauthorizationDetailsComponent,
-    PaymentReconciliationDetailsDialogComponent
+    ViewPreauthorizationDetailsComponent
   ]
 })
 export class NphiesModule { }

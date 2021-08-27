@@ -296,9 +296,10 @@
             <ng-container *ngIf="isProviderAdmin">
                 <ul class="nav-list">
                     <li>
-                        <a routerLink="/nphies/payment-reconciliation" routerLinkActive="is-active">
+                        <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
                             <span class="text">Payment Reconciliation</span>
                         </a>
+                        <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
                     </li>
                     <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
                         <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
