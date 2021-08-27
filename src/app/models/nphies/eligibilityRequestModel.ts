@@ -1,3 +1,4 @@
+import { LongDateFormatKey } from "moment";
 
 
 export class EligibilityRequestModel {
@@ -5,7 +6,8 @@ export class EligibilityRequestModel {
     beneficiaryId: number;
 	serviceDate: string;
 	toDate: string;
-	insurancePlanId: string;
+	payerNphiesId:string;
+	memberCardId: string;
 	benefits: boolean;
 	discovery: boolean;
 	validation: boolean;
