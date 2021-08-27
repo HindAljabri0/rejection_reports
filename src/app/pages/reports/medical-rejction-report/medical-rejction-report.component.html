@@ -54,7 +54,7 @@
       </div>
       <div class="col">
         <div class="form-group" [class.has-error]="submitted && formCn.summaryCriteria.errors">
-          <label class="control-label">Summary Criteria</label>
+          <label class="control-label">Criteria</label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="summaryCriteria">
               <mat-option *ngFor="let criterias of criterias" [value]="criterias.id">
