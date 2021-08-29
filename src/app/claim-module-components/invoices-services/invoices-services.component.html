@@ -224,14 +224,14 @@
                                                                 <div
                                                                     class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
                                                                     <label>Actual Deducted Amount</label>
-                                                                    <h3>{{acutalDeductedAmount}}</h3>
+                                                                    <h3>{{controllers[i].services[j].acutalDeductedAmount}}</h3>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto" *ngIf="statusCode != undefined">
                                                                 <div
                                                                     class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
                                                                     <label>Actual Paid Amount</label>
-                                                                    <h3>{{calcNet(controllers[i].services[j]) - acutalDeductedAmount}}
+                                                                    <h3>{{calcNet(controllers[i].services[j]) - controllers[i].services[j].acutalDeductedAmount}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
