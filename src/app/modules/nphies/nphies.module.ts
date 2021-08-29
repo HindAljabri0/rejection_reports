@@ -19,8 +19,7 @@ import { EligibilityDetailsComponent } from './eligibility-details/eligibility-d
 import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-details/view-preauthorization-details.component';
 import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
-// tslint:disable-next-line:max-line-length
-import { PaymentReconciliationDetailsDialogComponent } from './payment-reconciliation-details-dialog/payment-reconciliation-details-dialog.component';
+import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,7 @@ import { PaymentReconciliationDetailsDialogComponent } from './payment-reconcili
     AddEditCareTeamModalComponent,
     ViewPreauthorizationDetailsComponent,
     PaymentReconciliationComponent,
-    PaymentReconciliationDetailsDialogComponent
+    PaymentReconciliationDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -57,8 +56,7 @@ import { PaymentReconciliationDetailsDialogComponent } from './payment-reconcili
     AddEditPreauthorizationItemComponent,
     ViewPreauthorizationDetailsComponent,
     AddEditCareTeamModalComponent,
-    ViewPreauthorizationDetailsComponent,
-    PaymentReconciliationDetailsDialogComponent
+    ViewPreauthorizationDetailsComponent
   ]
 })
 export class NphiesModule { }

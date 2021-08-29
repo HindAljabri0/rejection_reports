@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { PaymentReconciliationDetailsDialogComponent } from '../payment-reconciliation-details-dialog/payment-reconciliation-details-dialog.component';
 
 @Component({
   selector: 'app-payment-reconciliation',
@@ -9,15 +7,9 @@ import { PaymentReconciliationDetailsDialogComponent } from '../payment-reconcil
 })
 export class PaymentReconciliationComponent implements OnInit {
 
-  constructor(private dialog: MatDialog) { }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  showClaims() {
-    const dialogRef = this.dialog.open(PaymentReconciliationDetailsDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-xl']
-    });
   }
 
 }
