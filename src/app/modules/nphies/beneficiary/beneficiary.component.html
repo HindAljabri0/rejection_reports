@@ -27,12 +27,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="row-click" (click)="viewMode=true">Lawrence Garcia</td>
-                            <td class="row-click" (click)="viewMode=true">J6NJTTVH3CKB</td>
-                            <td class="row-click" (click)="viewMode=true">9118073864</td>
+                        <tr *ngFor="let Beneficiary of Beneficiaries" >
+                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.fullName}}</td>
+                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.nationality}}</td>
+                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.contractNumber}}</td>
                             <td class="row-click" (click)="viewMode=true">PB6B2</td>
-                            <td class="row-click" (click)="viewMode=true">3TDFSEMG</td>
+                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.memberCardId}}</td>
                             <td class="actions">
                                 <button mat-icon-button matTooltip="Edit" class="text-primary" (click)="editMode=true">
                                     <mat-icon>create</mat-icon>
