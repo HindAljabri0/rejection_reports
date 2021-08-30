@@ -10,7 +10,7 @@ export class ProvidersBeneficiariesService {
   constructor(private httpClient: HttpClient) { }
 
   getBeneficiaryById(providerId: string, beneficiaryId: string) {
-    const requestUrl = `/providers/${providerId}/${beneficiaryId}`;
+    const requestUrl = `/providers/${providerId}/beneficiaryId/${beneficiaryId}`;
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(httpRequest);
   }

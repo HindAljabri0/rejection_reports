@@ -1,3 +1,4 @@
+import { X } from '@angular/cdk/keycodes';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -43,6 +44,8 @@ export class BeneficiaryComponent implements OnInit {
   nationalities = nationalities;
   Beneficiaries: BeneficiarySearch[];
   payersList: payer[] = [];
+  beneficiaryinfo:BeneficiaryModel;
+
 
   dobFormControl: FormControl = new FormControl();
   documentIdFormControl: FormControl = new FormControl();
@@ -72,7 +75,7 @@ export class BeneficiaryComponent implements OnInit {
   }[] = [];
 
   insurancePlans: {
-    iSPrimary: boolean,
+    iSPrimary: string,
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
@@ -91,9 +94,73 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'T', Name: 'Domestic partner' },
     { Code: 'U', Name: 'unmarried' },
     { Code: 'W', Name: 'Widowed' },];
+    f="";
+
+    get(h:string){
+  
 
 
+      for(let maritalStatus of this.maritalStatuses ){
+        if(maritalStatus.Code==h){
+          return maritalStatus.Name
+        }
+      }
+  //  return this.maritalStatuses[0].Name;
+  //  return this.allMaritalStatuses.next(this.maritalStatuses.filter(maritalStatuse => maritalStatuse.Code.toLowerCase()));
+      // this.allMaritalStatuses.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)ext(
+      //   this.maritalStatuses.forEach(function (value){
+      //   this.f=";;"
+      //    if(value.Code==h.trim()){
+      //     return value.Name;
+      //     }
+     // this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
+  //   }))
+  // return this.f}
+    }
+fun(h:string):any{
+ 
+// nationalities.forEach(function (value){
 
+//    if(value.Code==h.trim()){
+//    //  return value.Name;
+//   }
+//      this.f= "kjjhsjfhfh"
+//  });
+ return h;
+  // nationalities.filter(item=>){
+  //   if(item.Code==h.trim()){
+  //   return "lnjgd";}
+  //   return "gslj";
+    //else{
+     // return 'omar'
+    
+
+
+}
+
+
+    getBeneficiary(beneficiaryId:string){
+     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId,beneficiaryId).subscribe(event=>{
+     if(event instanceof HttpResponse){
+      this.beneficiaryinfo=event.body as BeneficiaryModel;
+     // this.beneficiaryinfo.nationality= this.fun(this.beneficiaryinfo.nationality)
+     
+
+      
+    }
+    
+      }, err=>{
+
+      if (err instanceof HttpErrorResponse) {
+        console.log(err.message)
+      
+
+      }
+     });
+
+    
+     return true
+    }
 
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
@@ -213,7 +280,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: false,
+        iSPrimary: "false",
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
@@ -261,31 +328,29 @@ export class BeneficiaryComponent implements OnInit {
 
   setDate() {
     this.beneficiaryModel.firstName = this.firstNameController.value;
-    this.beneficiaryModel.secondName = this.secondNameController.value;
-    this.beneficiaryModel.thirdName = this.thirdNameController.value;
+    this.beneficiaryModel.middleName = this.secondNameController.value;
+    this.beneficiaryModel.lastName = this.thirdNameController.value;
     this.beneficiaryModel.familyName = this.familyNameController.value;
     this.beneficiaryModel.fullName = this.fullNameController.value;
-    this.beneficiaryModel.dateOfBirth = this.dobFormControl.value;
+    this.beneficiaryModel.dob = this.dobFormControl.value;
     this.beneficiaryModel.gender = this.selectedGender;
     this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
     this.beneficiaryModel.contactNumber = this.contactNumberController.value;
     this.beneficiaryModel.email = this.emailController.value;
-    this.beneficiaryModel.emergencyPhoneNumber = this.emergencyPhoneNumberController.value;
+    this.beneficiaryModel.emergencyNumber = this.emergencyPhoneNumberController.value;
     this.beneficiaryModel.documentType = this.selectedDocumentType;
     this.beneficiaryModel.documentId = this.documentIdFormControl.value;
-    this.beneficiaryModel.fileId = this.beneficiaryFileIdController.value;
+    this.beneficiaryModel.beneficiaryField = this.beneficiaryFileIdController.value;
     this.beneficiaryModel.eHealthId = this.EHealthIdNameController.value;
     this.beneficiaryModel.residencyType = this.selectedResidencyType == "" ? null : this.selectedResidencyType;
-    this.beneficiaryModel.maritalStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
+    this.beneficiaryModel.martialStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
     this.beneficiaryModel.preferredLanguage = this.selectedLanguages == "" ? null : this.selectedLanguages;
     this.beneficiaryModel.addresses = this.addresses.map(addresse => ({
       addressLine: addresse.houseNumberController.value,
-      streetNmae: addresse.streetNameController.value,
+      streetLine: addresse.streetNameController.value,
       city: addresse.cityNameController.value,
       state: addresse.stateController.value,
-      contry: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
-
-
+      country: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
       postalCode: addresse.postalCodeController.value,
 
 
@@ -303,11 +368,11 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.insurancePlans != null && this.insurancePlans.length != 0) {
       for (let plan of this.insurancePlans) {
-        plan.iSPrimary = false;
+        plan.iSPrimary = "false";
 
       }
 
-      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = true;
+      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = "true";
 
     }
 

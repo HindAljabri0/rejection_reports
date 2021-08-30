@@ -1,10 +1,10 @@
 export class Address {
 
     addressLine: string;
-    streetNmae: string;
+    streetLine: string;
     city: string;
     state: string;
-    contry: string;
+    country: string;
     postalCode: string;
   
 
