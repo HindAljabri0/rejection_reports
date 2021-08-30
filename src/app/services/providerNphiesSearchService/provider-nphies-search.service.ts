@@ -16,7 +16,7 @@ export class ProviderNphiesSearchService {
   }
 
   NphisBeneficiarySearchByCriteria(
-    providerId: string, nationality: string, fullName: string, memberCardId: string,
+    providerId: string, nationality: string, fullName: string, memberCardId: string,fileId:string,
     contractNumber: string) {
 
     let requestURL = `/providers/${providerId}/nphies/search/BeneficiarySearch`;
@@ -32,6 +32,9 @@ export class ProviderNphiesSearchService {
     }
     if (contractNumber != null) {
       requestURL += `contractNumber=${contractNumber}&`;
+    }
+    if (fileId != null) {
+      requestURL += `fileId=${fileId}&`;
     }
     const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(httpRequest);

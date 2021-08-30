@@ -1,9 +1,9 @@
 export class BeneficiarySearch {
 
-    nationality: string;
+    documentId: string;
     fullName: string;
     memberCardId: string;
-    providerId: string;
+    fileId: string;
     contractNumber: string;
 
 

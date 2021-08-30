@@ -100,7 +100,7 @@ export class BeneficiaryComponent implements OnInit {
 
 
     
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,null, null,null,null).subscribe(event => {
+    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,null, null,null,null, null).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.Beneficiaries = event.body as BeneficiarySearch [];
