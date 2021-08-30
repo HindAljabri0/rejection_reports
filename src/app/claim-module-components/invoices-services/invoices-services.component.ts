@@ -57,7 +57,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       retrieved: boolean,
       statusCode?: string,
       statusDescription?: string,
-      acutalDeductedAmount?: string,
+      acutalDeductedAmount?: number,
       serviceNumber: number,
       serviceId?: number,
       serviceDate: FormControl,
@@ -116,7 +116,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     { key: 'SUPPLY', value: 'SUPPLY' },
     { key: 'RADIOLOGY', value: 'RADIOLOGY' },
   ];
-  acutalDeductedAmount: any;
   statusCode: any;
   claimProps: RetrievedClaimProps;
   isPBMValidationVisible = false;
@@ -236,8 +235,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
           this.controllers[index].services[serviceIndex].statusCode = decision.serviceStatusCode;
           this.controllers[index].services[serviceIndex].statusDescription = decision.decisioncomment;
           this.controllers[index].services[serviceIndex].acutalDeductedAmount =
-            (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
-          this.acutalDeductedAmount =
             (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
           this.statusCode = decision.serviceStatusCode;
 
@@ -441,7 +438,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       isOpen: false,
       serviceType: new FormControl(),
       statusCode: '',
-      acutalDeductedAmount: '',
+      acutalDeductedAmount: 0,
       daysOfSupply: new FormControl(0),
       pbmServiceError: [],
       pbmServiceStatus: '',
