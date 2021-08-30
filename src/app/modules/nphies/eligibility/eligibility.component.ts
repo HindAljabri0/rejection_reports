@@ -93,9 +93,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
-    if (primaryPlanIndex != -1) {
+   if (primaryPlanIndex != -1) {
       this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
-    }
+  }
     this.selectedBeneficiary = beneficiary;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -155,13 +155,14 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.sharedServices.loadingChanged.next(false);
       return;
     }
-
+    
+    debugger;
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
-      memberCardId: this.selectedPlanId,
+      memberCardId: this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId,
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: moment(this.endDateControl.value).format('YYYY-MM-DD'),
-      payerNphiesId: this.selectedPlanId,
+      payerNphiesId:this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation

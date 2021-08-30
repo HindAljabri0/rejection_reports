@@ -12,5 +12,7 @@ export class BeneficiariesSearchResult {
         expiryDate: Date;
         memberCardId: string;
         primary: boolean;
+        payerNphiesId:string;
+
     }[];
 }
