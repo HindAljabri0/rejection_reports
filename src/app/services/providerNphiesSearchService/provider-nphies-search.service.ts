@@ -19,7 +19,7 @@ export class ProviderNphiesSearchService {
     providerId: string, nationality: string, fullName: string, memberCardId: string,fileId:string,
     contractNumber: string) {
 
-    let requestURL = `/providers/${providerId}/nphies/search/BeneficiarySearch`;
+    let requestURL = `/providers/${providerId}/beneficiaries/criteria`;
 
     if (nationality != null) {
       requestURL += `nationality=${nationality}&`;
@@ -38,6 +38,12 @@ export class ProviderNphiesSearchService {
     }
     const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(httpRequest);
+  }
+
+  beneficiaryFullTextSearch(providerId: string, query: string) {
+    const requestUrl = `/providers/${providerId}/beneficiaries?query=${query}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
   }
 
 }

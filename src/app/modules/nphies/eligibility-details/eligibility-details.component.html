@@ -29,9 +29,9 @@
             <div class="control-label">Eligibility Status</div>
             <p class="form-control-static">{{eligibilityResponse.eligibilityStatus=="true"?"Eligible":"Ineligible"}}</p>
 
-            <div *ngIf="eligibilityResponse.eligibilityStatus=='false'">
-                <p class="form-control-static">{{getReasonError()}}</p>
-                <p class="form-control-static">{{eligibilityResponse.error.massage}}</p>
+            <div >
+                <p *ngIf="eligibilityResponse.error.reasonCode != null" class="form-control-static">{{getReasonError()}}</p>
+                <p *ngIf="eligibilityResponse.error.massage != null" class="form-control-static">{{eligibilityResponse.error.massage}}</p>
             </div>
         </div>
     </div>

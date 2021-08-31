@@ -8,6 +8,7 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
 import { EligibilityResponseModel } from 'src/app/models/nphies/eligibilityResponseModel';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -35,13 +36,14 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   isDiscovery = false;
   isValidation = false;
   purposeError: string;
-  payerNphiesId:string;
+  payerNphiesId: string;
 
   showDetails = false;
   constructor(
     private dialogService: DialogService,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
+    private nphiesSearchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices,
     private eligibilityService: ProvidersNphiesEligibilityService,
     private router: Router,
@@ -77,7 +79,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   searchBeneficiaries() {
-    this.beneficiaryService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
+    this.nphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.beneficiarySearchController.value).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
@@ -93,9 +95,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
-   if (primaryPlanIndex != -1) {
+    if (primaryPlanIndex != -1) {
       this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
-  }
+    }
     this.selectedBeneficiary = beneficiary;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -128,9 +130,11 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
       requestHasErrors = true;
     }
-    if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
-      this.selectedPlanIdError = "Please select an insurance plan first";
-      requestHasErrors = true;
+    if (this.isBenefits || this.isValidation) {
+      if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
+        this.selectedPlanIdError = "Please select an insurance plan first";
+        requestHasErrors = true;
+      }
     }
     if (!this._isValidDate(this.serviceDateControl.value)) {
       this.serviceDateError = "Please select a valid service date";
@@ -155,14 +159,13 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.sharedServices.loadingChanged.next(false);
       return;
     }
-    
-    debugger;
+
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
       memberCardId: this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId,
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
-      toDate: moment(this.endDateControl.value).format('YYYY-MM-DD'),
-      payerNphiesId:this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId,
+      toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
+      payerNphiesId: this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation

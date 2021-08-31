@@ -121,7 +121,8 @@
                                 <mat-option value="RESIDENT_CARD">Resident Card</mat-option>
                                 <mat-option value="PASSPORT">Passport</mat-option>
                                 <mat-option value="GCC_ID">GCC ID</mat-option>
-                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">National Card or Border Number</mat-option>
+                                <mat-option value="NATIONAL_CARD">National Card</mat-option>
+                                <mat-option value="BORDER_NUMBER">Border Number</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -192,14 +193,8 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [value]="selectedBloodGroup" (selectionChange)="selectedBloodGroup = $event.value;" #BloodGroupe>
                                 <mat-option value="">Select Blood Group</mat-option>
-                                <mat-option value="O_PLUS">O+</mat-option>
-                                <mat-option value="O_MINUS">O-</mat-option>
-                                <mat-option value="A_PLUS">A+</mat-option>
-                                <mat-option value="A_MINUS">A-</mat-option>
-                                <mat-option value="B_PLUS">B+</mat-option>
-                                <mat-option value="B_MINUS">B-</mat-option>
-                                <mat-option value="AB_PLUS">AB+</mat-option>
-                                <mat-option value="AB_MINUS">AB-</mat-option>
+                                <mat-option *ngFor="let bloodTybe  of allBloodType | async" [value]="bloodTybe.Code">
+                                    {{bloodTybe.Name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -418,7 +413,7 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Beneficiary File ID</label>
-                        <span class="form-control-static">{{beneficiaryinfo.beneficiaryField}}</span>
+                        <span class="form-control-static">{{beneficiaryinfo.beneficiaryFileld}}</span>
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
@@ -436,7 +431,7 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Natiionality</label>
-                        <span class="form-control-static">{{fun(beneficiaryinfo.nationality)}}</span>
+                        <span class="form-control-static">{{getNationalitiesName(beneficiaryinfo.nationality)}}</span>
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
@@ -466,7 +461,7 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Marital Status</label>
-                        <span class="form-control-static">{{get(beneficiaryinfo.martialStatus)}}</span>
+                        <span class="form-control-static">{{getMaritalStatusName(beneficiaryinfo.martialStatus)}}</span>
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
@@ -478,13 +473,13 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Blood Group</label>
-                        <span class="form-control-static">{{beneficiaryinfo.bloodGroup}}</span>
+                        <span class="form-control-static">{{getBloodTypeName(beneficiaryinfo.bloodGroup)}}</span>
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Preferred Language</label>
-                        <span class="form-control-static">{{beneficiaryinfo.preferredLanguage}}</span>
+                        <span class="form-control-static">{{beneficiaryinfo.preferredLanguage =='EN' ? 'English' :'Arabic'}}</span>
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">
@@ -520,7 +515,7 @@
                             <td>{{address.streetLine}}</td>
                             <td>{{address.city}}</td>
                             <td>{{address.state}}</td>
-                            <td>{{address.country}}</td>
+                            <td>{{getNationalitiesName(address.country)}}</td>
                             <td>{{address.postalCode}}</td>
                         </tr>
                     </tbody>
@@ -541,10 +536,10 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
-                            <td class="text-center align-middle" *ngIf="insurancePlans.isPrimary =='true'">
-                                <mat-icon class="text-primary">done</mat-icon>
+                            <td class="text-center align-middle" >
+                                <mat-icon class="text-primary">{{insurancePlans.isPrimary ==true?'done':' '}}</mat-icon>
                             </td>
-                            <td>{{insurancePlans.payerId}}</td>
+                            <td>{{getPayerName(insurancePlans.payerId)}}</td>
                             <td>{{insurancePlans.expiryDate}}</td>
                             <td>{{insurancePlans.memberCardId}}</td>
                         </tr>
