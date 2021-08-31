@@ -34,4 +34,13 @@ export class ProvidersBeneficiariesService {
     return this.httpClient.request(request);
   }
 
+
+  editBeneficiaries(providerId: string, beneficiaryId: string , beneficiaryModel: BeneficiaryModel){
+    const requestUrl = `/providers/${providerId}/beneficiaryId/${beneficiaryId}`;
+    let body: any = { ...beneficiaryModel };
+    const httpRequest = new HttpRequest('PUT', environment.providersBeneficiariesService + requestUrl, body);
+    return this.httpClient.request(httpRequest);
+
+  }
+
 }

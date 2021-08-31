@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { add } from 'ngx-bootstrap/chronos';
-import { ReplaySubject, Subject } from 'rxjs';
+import { from, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
@@ -40,7 +40,7 @@ export class BeneficiaryComponent implements OnInit {
   setPrimary = "0";
   fullName = "";
   providerId = "";
-
+  beneficiaryId: string;
   nationalities = nationalities;
   Beneficiaries: BeneficiarySearch[];
   payersList: payer[] = [];
@@ -97,7 +97,7 @@ export class BeneficiaryComponent implements OnInit {
 
   bloodGroup: { Code: string, Name: string }[] = [
     { Code: 'O_PLUS', Name: 'O+' },
-    { Code: 'O_MINUS', Name: 'O' },
+    { Code: 'O_MINUS', Name: 'O-' },
     { Code: 'A_PLUS', Name: 'A+' },
     { Code: 'A_MINUS', Name: 'A-' },
     { Code: 'B_PLUS', Name: 'B+' },
@@ -105,6 +105,7 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'AB_PLUS', Name: 'AB+' },
     { Code: 'AB_MINUS', Name: 'AB-' },
   ];
+
 
 
 
@@ -148,10 +149,12 @@ export class BeneficiaryComponent implements OnInit {
 
   }
   getBeneficiary(beneficiaryId: string) {
+    this.beneficiaryId = beneficiaryId;
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
-
+        this.getdate(this.beneficiaryinfo);
+      
       }
 
     }, err => {
@@ -162,11 +165,66 @@ export class BeneficiaryComponent implements OnInit {
 
       }
     });
-
+ 
 
     return true
   }
 
+  get showbeneficiaryForm(){
+    return this.addMode || this.editMode;
+  }
+  getdate(beneficiaryinfo: BeneficiaryModel) {
+    
+    this.addresses = [];
+    this.insurancePlans = [];
+    this.fullName = beneficiaryinfo.firstName;
+    this.secondNameController.setValue(beneficiaryinfo.middleName);
+    this.thirdNameController.setValue(beneficiaryinfo.lastName);
+    this.familyNameController.setValue(beneficiaryinfo.familyName);
+    this.fullNameController.setValue(beneficiaryinfo.fullName);
+    this.dobFormControl.setValue(beneficiaryinfo.dob);
+    this.selectedGender = beneficiaryinfo.gender;
+    this.selectedNationality = beneficiaryinfo.nationality;
+    this.contactNumberController.setValue(beneficiaryinfo.contactNumber);
+    this.emailController.setValue(beneficiaryinfo.email);
+    this.emergencyPhoneNumberController.setValue(beneficiaryinfo.emergencyNumber);
+    this.selectedDocumentType = beneficiaryinfo.documentType;
+    this.documentIdFormControl.setValue(beneficiaryinfo.documentId);
+    this.beneficiaryFileIdController.setValue(beneficiaryinfo.beneficiaryFileld);
+    this.EHealthIdNameController.setValue(beneficiaryinfo.eHealthId);
+    this.selectedResidencyType = beneficiaryinfo.residencyType;
+    this.selectedBloodGroup = beneficiaryinfo.bloodGroup;
+    this.selectedMaritalStatus = beneficiaryinfo.martialStatus;
+    this.selectedLanguages = beneficiaryinfo.preferredLanguage;
+
+
+    for (let address of beneficiaryinfo.addresses) {
+      this.addresses.push(
+        {
+          houseNumberController: new FormControl(address.addressLine), streetNameController: new FormControl(address.streetLine), cityNameController: new FormControl(address.city),
+          stateController: new FormControl(address.state),
+          selectedCountry: address.country,
+          postalCodeController: new FormControl(address.postalCode)
+        }
+      )
+    }
+
+
+    for (let insurancePlans of beneficiaryinfo.insurancePlans) {
+      this.insurancePlans.push(
+        {
+          iSPrimary: insurancePlans.isPrimary,
+          selectePayer: insurancePlans.payerId,
+          expiryDateController: new FormControl(insurancePlans.expiryDate),
+          memberCardId: new FormControl(insurancePlans.memberCardId),
+          payerErorr: null, memberCardIdErorr: null
+        }
+      )
+    }
+
+    this.editMode = true
+
+  }
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
 
@@ -329,6 +387,62 @@ export class BeneficiaryComponent implements OnInit {
     this.filteredNations.next(
       this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
     );
+  }
+
+
+  updateDate() {
+    if (this.insurancePlans != null && this.insurancePlans.length != 0) {
+      for (let plan of this.insurancePlans) {
+        plan.iSPrimary = false;
+
+      }
+
+      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = true;
+
+    }
+
+    if (this.checkError()) { return }
+    this.sharedServices.loadingChanged.next(true);
+    this.setDate()
+    this.providersBeneficiariesService.editBeneficiaries(
+      this.providerId, this.beneficiaryId, this.beneficiaryModel
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: `successfully`,
+          isError: false
+        });
+        this.sharedServices.loadingChanged.next(false);
+
+
+      }
+    }
+      , err => {
+
+        if (err instanceof HttpErrorResponse) {
+
+          if (err.status == 500) {
+            this.messageError = "could not reach server Please try again later "
+
+          } else {
+            this.messageError = err.message;
+          }
+
+          this.dialogService.openMessageDialog({
+            title: '',
+
+            message: this.messageError,
+            isError: true
+          });
+
+          this.sharedServices.loadingChanged.next(false);
+
+        }
+      });
+    this.editMode = false;
+
   }
 
 
