@@ -44,7 +44,7 @@ export class BeneficiaryComponent implements OnInit {
   nationalities = nationalities;
   Beneficiaries: BeneficiarySearch[];
   payersList: payer[] = [];
-  beneficiaryinfo:BeneficiaryModel;
+  beneficiaryinfo: BeneficiaryModel;
 
 
   dobFormControl: FormControl = new FormControl();
@@ -75,7 +75,7 @@ export class BeneficiaryComponent implements OnInit {
   }[] = [];
 
   insurancePlans: {
-    iSPrimary: string,
+    iSPrimary: boolean,
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
@@ -94,90 +94,96 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'T', Name: 'Domestic partner' },
     { Code: 'U', Name: 'unmarried' },
     { Code: 'W', Name: 'Widowed' },];
-    f="";
-
-    get(h:string){
-  
 
 
-      for(let maritalStatus of this.maritalStatuses ){
-        if(maritalStatus.Code==h){
-          return maritalStatus.Name
-        }
+  bloodGroup: { Code: string, Name: string }[] = [
+    { Code: 'O_PLUS', Name: 'O+' },
+    { Code: 'O_MINUS', Name: 'O' },
+    { Code: 'A_PLUS', Name: 'A+' },
+    { Code: 'A_MINUS', Name: 'A-' },
+    { Code: 'B_PLUS', Name: 'B+' },
+    { Code: 'B_MINUS', Name: 'B-' },
+    { Code: 'AB_PLUS', Name: 'AB+' },
+    { Code: 'AB_MINUS', Name: 'AB-' },
+  ];
+
+
+
+
+  getBloodTypeName(BloodCode: string) {
+    for (let blodType of this.bloodGroup) {
+      if (blodType.Code == BloodCode) {
+        return blodType.Name
       }
-  //  return this.maritalStatuses[0].Name;
-  //  return this.allMaritalStatuses.next(this.maritalStatuses.filter(maritalStatuse => maritalStatuse.Code.toLowerCase()));
-      // this.allMaritalStatuses.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)ext(
-      //   this.maritalStatuses.forEach(function (value){
-      //   this.f=";;"
-      //    if(value.Code==h.trim()){
-      //     return value.Name;
-      //     }
-     // this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
-  //   }))
-  // return this.f}
     }
-fun(h:string):any{
- 
-// nationalities.forEach(function (value){
 
-//    if(value.Code==h.trim()){
-//    //  return value.Name;
-//   }
-//      this.f= "kjjhsjfhfh"
-//  });
- return h;
-  // nationalities.filter(item=>){
-  //   if(item.Code==h.trim()){
-  //   return "lnjgd";}
-  //   return "gslj";
-    //else{
-     // return 'omar'
-    
+  }
 
-
-}
-
-
-    getBeneficiary(beneficiaryId:string){
-     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId,beneficiaryId).subscribe(event=>{
-     if(event instanceof HttpResponse){
-      this.beneficiaryinfo=event.body as BeneficiaryModel;
-     // this.beneficiaryinfo.nationality= this.fun(this.beneficiaryinfo.nationality)
-     
-
-      
+  getPayerName(PayerId: string) {
+    for (let payer of this.payersList) {
+      if (payer.payerId == PayerId) {
+        return payer.englistName
+      }
     }
-    
-      }, err=>{
+
+  }
+
+  getMaritalStatusName(maritalStatusCode: string) {
+    for (let maritalStatus of this.maritalStatuses) {
+      if (maritalStatus.Code == maritalStatusCode) {
+        return maritalStatus.Name
+      }
+    }
+
+  }
+  getNationalitiesName(NationalitiesName: string) {
+
+
+    for (let nationality of this.nationalities) {
+      if (nationality.Code == NationalitiesName) {
+        return nationality.Name
+      }
+    }
+
+
+
+  }
+  getBeneficiary(beneficiaryId: string) {
+    this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.beneficiaryinfo = event.body as BeneficiaryModel;
+
+      }
+
+    }, err => {
 
       if (err instanceof HttpErrorResponse) {
         console.log(err.message)
-      
+
 
       }
-     });
+    });
 
-    
-     return true
-    }
+
+    return true
+  }
 
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
 
 
-    
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,null, null,null,null, null).subscribe(event => {
+
+    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
-          this.Beneficiaries = event.body as BeneficiarySearch [];
+          this.Beneficiaries = event.body as BeneficiarySearch[];
       }
     }
       , err => {
 
         if (err instanceof HttpErrorResponse) {
           console.log(err.message)
-        
+
 
         }
       });
@@ -200,6 +206,7 @@ fun(h:string):any{
     this.providerId = this.sharedServices.providerId;
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
+    this.allBloodType.next(this.bloodGroup);
 
     this.nationalityFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -247,6 +254,7 @@ fun(h:string):any{
   _onDestroy = new Subject<void>();
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   errors = {
     dob: "",
     documentType: "",
@@ -280,7 +288,7 @@ fun(h:string):any{
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: "false",
+        iSPrimary: false,
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
@@ -340,9 +348,10 @@ fun(h:string):any{
     this.beneficiaryModel.emergencyNumber = this.emergencyPhoneNumberController.value;
     this.beneficiaryModel.documentType = this.selectedDocumentType;
     this.beneficiaryModel.documentId = this.documentIdFormControl.value;
-    this.beneficiaryModel.beneficiaryField = this.beneficiaryFileIdController.value;
+    this.beneficiaryModel.beneficiaryFileld = this.beneficiaryFileIdController.value;
     this.beneficiaryModel.eHealthId = this.EHealthIdNameController.value;
     this.beneficiaryModel.residencyType = this.selectedResidencyType == "" ? null : this.selectedResidencyType;
+    this.beneficiaryModel.bloodGroup = this.selectedBloodGroup == "" ? null : this.selectedBloodGroup;
     this.beneficiaryModel.martialStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
     this.beneficiaryModel.preferredLanguage = this.selectedLanguages == "" ? null : this.selectedLanguages;
     this.beneficiaryModel.addresses = this.addresses.map(addresse => ({
@@ -368,11 +377,11 @@ fun(h:string):any{
 
     if (this.insurancePlans != null && this.insurancePlans.length != 0) {
       for (let plan of this.insurancePlans) {
-        plan.iSPrimary = "false";
+        plan.iSPrimary = false;
 
       }
 
-      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = "true";
+      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = true;
 
     }
 
