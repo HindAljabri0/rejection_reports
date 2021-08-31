@@ -130,11 +130,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
       requestHasErrors = true;
     }
-    if (this.isBenefits || this.isValidation) {
-      if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
-        this.selectedPlanIdError = "Please select an insurance plan first";
-        requestHasErrors = true;
-      }
+    if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
+      this.selectedPlanIdError = "Please select an insurance plan first";
+      requestHasErrors = true;
     }
     if (!this._isValidDate(this.serviceDateControl.value)) {
       this.serviceDateError = "Please select a valid service date";
