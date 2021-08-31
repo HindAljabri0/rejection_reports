@@ -7,10 +7,13 @@
             <div class="d-flex">
                 <div class="form-group flex-grow-1">
                     <label class="control-label">Select a Beneficiary</label>
-                    <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." [formControl]="beneficiarySearchController"
-                        [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                    <input type="text" class="form-control"
+                        placeholder="Search for beneficiary by name or document ID..."
+                        [formControl]="beneficiarySearchController" [matAutocomplete]="auto"
+                        (keyup)="searchBeneficiaries()">
                     <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                        <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
+                            (click)="selectBeneficiary(beneficiary)">
                             {{beneficiary.name}} ({{beneficiary.documentId}})
                         </mat-option>
                     </mat-autocomplete>
@@ -21,8 +24,9 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">&nbsp;</label>
-                    
-                    <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+
+                    <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+                        color="primary">Create New Beneficiary</button>
                 </div>
             </div>
         </div>
@@ -33,49 +37,82 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="control-label">Beneficiary</label>
-                        <input class="form-control" type="text" disabled [value]="selectedBeneficiary.name + ' (' + selectedBeneficiary.documentId + ')'">
+                        <input class="form-control" type="text" disabled
+                            [value]="selectedBeneficiary.name + ' (' + selectedBeneficiary.documentId + ')'">
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="form-group" [class.has-error]="serviceDateError?.trim().length > 0" [matTooltip]="serviceDateError">
+                    <div class="form-group" [class.has-error]="serviceDateError?.trim().length > 0"
+                        [matTooltip]="serviceDateError">
                         <label class="control-label">Service Date<span class="asterisk">*</span></label>
                         <div class="date-picker">
-                            <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date" [formControl]="serviceDateControl">
+                            <input [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date"
+                                [formControl]="serviceDateControl">
                             <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
                             <mat-datepicker #serviceDate></mat-datepicker>
                         </div>
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="form-group"  [class.has-error]="endDateError?.trim().length > 0" [matTooltip]="endDateError">
+                    <div class="form-group" [class.has-error]="endDateError?.trim().length > 0"
+                        [matTooltip]="endDateError">
                         <label class="control-label">To Date</label>
                         <div class="date-picker">
-                            <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" [formControl]="endDateControl">
+                            <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date"
+                                [formControl]="endDateControl">
                             <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="form-group" [class.has-error]="selectedPlanIdError?.trim().length > 0" [matTooltip]="selectedPlanIdError">
+                <div class="col-12">
+                    <div class="form-group" [class.has-error]="purposeError?.trim().length > 0"
+                        [matTooltip]="purposeError">
+                        <label class="control-label">Purpose<span class="asterisk">*</span></label>
+                        <div class="checkbox-group inline">
+                            <mat-radio-group [(ngModel)]="purposeRadioButton">
+                                <mat-radio-button value="1" [checked]="purposeRadioButton == '1'">
+                                </mat-radio-button>
+                                <mat-checkbox color="primary" [checked]="isBenefits"
+                                    (change)="isBenefits = $event.checked" [disabled]="purposeRadioButton != '1'">
+                                    Benefits</mat-checkbox>
+                                <mat-checkbox color="primary" [checked]="isValidation"
+                                    (change)="isValidation = $event.checked" [disabled]="purposeRadioButton != '1'">
+                                    Validation</mat-checkbox>
+                                <mat-radio-button value="2" [checked]="purposeRadioButton == '2'">Discovery
+                                </mat-radio-button>
+                            </mat-radio-group>
+                            <!-- 
+                            <mat-checkbox color="primary" [checked]="isDiscovery"
+                                (change)="isDiscovery = $event.checked">Discovery</mat-checkbox> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4" *ngIf="purposeRadioButton == '1'">
+                    <div class="form-group" [class.has-error]="selectedPlanIdError?.trim().length > 0"
+                        [matTooltip]="selectedPlanIdError">
                         <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
                                 <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
-                                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}} ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
+                                    ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="col-8">
-                    <div class="form-group"  [class.has-error]="purposeError?.trim().length > 0" [matTooltip]="purposeError">
-                        <label class="control-label">Purpose<span class="asterisk">*</span></label>
-                        <div class="checkbox-group inline">
-                            <mat-checkbox color="primary" [checked]="isBenefits" (change)="isBenefits = $event.checked">Benefits</mat-checkbox>
-                            <mat-checkbox color="primary" [checked]="isDiscovery" (change)="isDiscovery = $event.checked">Discovery</mat-checkbox>
-                            <mat-checkbox color="primary" [checked]="isValidation" (change)="isValidation = $event.checked">Validation</mat-checkbox>
-                        </div>
+                <div class="col-4" *ngIf="purposeRadioButton == '2'">
+                    <div class="form-group" [class.has-error]="selectedPayerError?.trim().length > 0"
+                        [matTooltip]="selectedPayerError">
+                        <label class="control-label">Payer<span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [value]="selectedPayer" (selectionChange)="selectedPayer = $event.value">
+                                <mat-option *ngFor="let payer of payers" [value]="payer.nphiesId">
+                                    {{payer.englistName}} ({{payer.arabicName}})
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
@@ -90,7 +127,8 @@
             <p>Eligibility - {{eligibilityResponseModel.eligibilityRequestId}}</p>
         </div>
         <div class="bg-white p-14">
-            <app-eligibility-details class="d-block mb-14" [eligibilityResponse]='eligibilityResponseModel'></app-eligibility-details>
+            <app-eligibility-details class="d-block mb-14" [eligibilityResponse]='eligibilityResponseModel'>
+            </app-eligibility-details>
             <button type="button" color="primary" mat-flat-button (click)="showDetails=false">Request New
                 Eligibility</button>
         </div>

@@ -29,12 +29,12 @@
                     <tbody>
                         <tr *ngFor="let Beneficiary of Beneficiaries" >
                             <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.fullName}}</td>
-                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.documentId}}</td>
-                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.contractNumber}}</td>
-                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.fileId}}</td>
-                            <td class="row-click" (click)="viewMode=true">{{Beneficiary.memberCardId}}</td>
+                            <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.documentId}}</td>
+                            <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.contractNumber}}</td>
+                            <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.fileId}}</td>
+                            <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.memberCardId}}</td>
                             <td class="actions">
-                                <button mat-icon-button matTooltip="Edit" class="text-primary" (click)="editMode=true">
+                                <button mat-icon-button matTooltip="Edit" class="text-primary" (click)=" getBeneficiary(Beneficiary.beneficiaryId) ">
                                     <mat-icon>create</mat-icon>
                                 </button>
                             </td>
@@ -47,7 +47,7 @@
             <mat-icon>add</mat-icon>
         </button>
     </ng-container>
-    <ng-container *ngIf="addMode || editMode">
+    <ng-container *ngIf= 'showbeneficiaryForm'>
         <div class="block-header has-border">
             <p>Add/Edit Beneficiary</p>
         </div>
@@ -359,7 +359,7 @@
             <hr class="hr spaced">
             <div class="form-group btn-list">
                 <button type="button" mat-flat-button color="primary" *ngIf="addMode" (click)="save()">Add Beneficiary</button>
-                <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)="editMode=false">Save</button>
+                <button type="button" mat-flat-button color="primary" *ngIf="editMode" (click)=" updateDate()">Save</button>
                 <button type="button" mat-flat-button (click)="addMode=false;editMode=false">Cancel</button>
             </div>
         </div>
