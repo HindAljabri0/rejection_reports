@@ -14,4 +14,30 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+
+  NphisBeneficiarySearchByCriteria(
+    providerId: string, nationality: string, fullName: string, memberCardId: string,fileId:string,
+    contractNumber: string) {
+
+    let requestURL = `/providers/${providerId}/nphies/search/BeneficiarySearch`;
+
+    if (nationality != null) {
+      requestURL += `nationality=${nationality}&`;
+    }
+    if (fullName != null) {
+      requestURL += `fullName=${fullName}&`;
+    }
+    if (memberCardId != null) {
+      requestURL += `memberCardId=${memberCardId}&`;
+    }
+    if (contractNumber != null) {
+      requestURL += `contractNumber=${contractNumber}&`;
+    }
+    if (fileId != null) {
+      requestURL += `fileId=${fileId}&`;
+    }
+    const httpRequest = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(httpRequest);
+  }
+
 }

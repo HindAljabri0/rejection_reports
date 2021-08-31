@@ -6,23 +6,23 @@ export class BeneficiaryModel {
 
 
     firstName: string;
-    secondName: string;
-    thirdName: string;
+    middleName: string;
+    lastName: string;
     familyName: string;
     fullName: string;
-    dateOfBirth: string;
+    dob: string;
     gender: string;
     nationality: string;
     contactNumber: string;
     email: string;
-    emergencyPhoneNumber: string;
+    emergencyNumber: string;
     bloodGroup: string;
     documentType: string;
     documentId: string;
-    fileId: string;
+    beneficiaryField: string;
     eHealthId: string;
     residencyType: string;
-    maritalStatus: string;
+    martialStatus: string;
     preferredLanguage: string;
     addresses: Array<Address>;
     insurancePlans: Array<InsurancePlan>;
