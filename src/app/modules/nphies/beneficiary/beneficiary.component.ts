@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
-import { BeneficiarySearch } from 'src/app/models/nphies/BeneficiarySearch';
+import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
 import { payer } from 'src/app/models/nphies/payer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
