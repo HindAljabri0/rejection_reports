@@ -10,7 +10,7 @@ import { nationalities } from 'src/app/claim-module-components/store/claim.reduc
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
 import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
-import { payer } from 'src/app/models/nphies/payer';
+import { Payer } from 'src/app/models/nphies/payer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
@@ -43,7 +43,7 @@ export class BeneficiaryComponent implements OnInit {
   beneficiaryId: string;
   nationalities = nationalities;
   Beneficiaries: BeneficiarySearch[];
-  payersList: payer[] = [];
+  payersList: Payer[] = [];
   beneficiaryinfo: BeneficiaryModel;
 
 
@@ -251,7 +251,7 @@ export class BeneficiaryComponent implements OnInit {
     this.providersBeneficiariesService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
-          this.payersList = event.body as payer[];
+          this.payersList = event.body as Payer[];
       }
     }
       , err => {

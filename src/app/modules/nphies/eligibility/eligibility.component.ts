@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
 import { EligibilityResponseModel } from 'src/app/models/nphies/eligibilityResponseModel';
+import { Payer } from 'src/app/models/nphies/payer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
@@ -24,6 +25,8 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
 
+  payers: Payer[] = [];
+
   selectedBeneficiary: BeneficiariesSearchResult;
 
   selectedPlanId: string;
@@ -32,6 +35,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   serviceDateError: string;
   endDateControl = new FormControl();
   endDateError: string;
+  selectedPayer: string;
+  selectedPayerError: string;
+  purposeRadioButton: string;
   isBenefits = false;
   isDiscovery = false;
   isValidation = false;
@@ -56,13 +62,13 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       const beneficiaryId = params.beneficiary;
       if (beneficiaryId != null && beneficiaryId.trim().length > 0) {
         this.sharedServices.loadingChanged.next(true);
-        this.beneficiaryService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+        this.beneficiaryService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId, true).subscribe(event => {
           if (event instanceof HttpResponse) {
             this.sharedServices.loadingChanged.next(false);
             try {
               this.selectBeneficiary(event.body as BeneficiariesSearchResult);
             } catch (e) {
-
+              console.log(e);
             }
           }
         }, errorEvent => {
@@ -76,6 +82,21 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
+    this.sharedServices.loadingChanged.next(true);
+    this.beneficiaryService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.sharedServices.loadingChanged.next(false);
+        const body = event.body;
+        if (body instanceof Array) {
+          this.payers = body;
+        }
+      }
+    }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+    })
   }
 
   searchBeneficiaries() {
@@ -94,9 +115,14 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
-    const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
-    if (primaryPlanIndex != -1) {
-      this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
+    if (beneficiary.plans != null && beneficiary.plans instanceof Array && beneficiary.plans.length > 0) {
+      this.purposeRadioButton = '1';
+      const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
+      if (primaryPlanIndex != -1) {
+        this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
+      }
+    } else {
+      this.purposeRadioButton = '2';
     }
     this.selectedBeneficiary = beneficiary;
     this.router.navigate([], {
@@ -116,6 +142,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
   }
 
   eligibilityResponseModel: EligibilityResponseModel = null;
+
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
       return;
@@ -123,17 +150,35 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     this.sharedServices.loadingChanged.next(true);
     let requestHasErrors = false;
     this.selectedPlanIdError = null;
+    this.selectedPayerError = null;
     this.serviceDateError = null;
     this.endDateError = null;
     this.purposeError = null;
-    if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
-      this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
-      requestHasErrors = true;
+
+    if (this.purposeRadioButton == '1') {
+      this.isDiscovery = false;
+      if (this.selectedBeneficiary.plans == null || this.selectedBeneficiary.plans.length == 0) {
+        this.selectedPlanIdError = "Selected beneficiary does not have any insurance plan.";
+        requestHasErrors = true;
+      }
+      if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
+        this.selectedPlanIdError = "Please select an insurance plan first";
+        requestHasErrors = true;
+      }
+      if (!this.isBenefits && !this.isValidation) {
+        this.purposeError = "Select at least one purpose for this request."
+        requestHasErrors = true;
+      }
+    } else {
+      this.isDiscovery = true;
+      this.isBenefits = false;
+      this.isValidation = false;
+      if (this.selectedPayer == null || this.payers.findIndex(payer => payer.nphiesId == this.selectedPayer) == -1) {
+        this.selectedPayerError = "Please select a payer first";
+        requestHasErrors = true;
+      }
     }
-    if (this.selectedPlanId == null || this.selectedBeneficiary.plans.findIndex(plan => plan.planId == this.selectedPlanId) == -1) {
-      this.selectedPlanIdError = "Please select an insurance plan first";
-      requestHasErrors = true;
-    }
+
     if (!this._isValidDate(this.serviceDateControl.value)) {
       this.serviceDateError = "Please select a valid service date";
       requestHasErrors = true;
@@ -148,10 +193,6 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
       }
     }
 
-    if (!this.isBenefits && !this.isDiscovery && !this.isValidation) {
-      this.purposeError = "Select at least one purpose for this request."
-      requestHasErrors = true;
-    }
 
     if (requestHasErrors) {
       this.sharedServices.loadingChanged.next(false);
@@ -160,10 +201,10 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
-      memberCardId: this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId,
+      memberCardId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId : null,
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
-      payerNphiesId: this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId,
+      payerNphiesId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId : this.selectedPayer,
       benefits: this.isBenefits,
       discovery: this.isDiscovery,
       validation: this.isValidation
