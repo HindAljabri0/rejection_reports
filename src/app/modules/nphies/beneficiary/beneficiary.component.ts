@@ -44,7 +44,7 @@ export class BeneficiaryComponent implements OnInit {
   nationalities = nationalities;
   Beneficiaries: BeneficiarySearch[];
   payersList: payer[] = [];
-  beneficiaryinfo:BeneficiaryModel;
+  beneficiaryinfo: BeneficiaryModel;
 
 
   dobFormControl: FormControl = new FormControl();
@@ -94,90 +94,90 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'T', Name: 'Domestic partner' },
     { Code: 'U', Name: 'unmarried' },
     { Code: 'W', Name: 'Widowed' },];
-    f="";
+  f = "";
 
-    get(h:string){
-  
+  get(h: string) {
 
 
-      for(let maritalStatus of this.maritalStatuses ){
-        if(maritalStatus.Code==h){
-          return maritalStatus.Name
-        }
+
+    for (let maritalStatus of this.maritalStatuses) {
+      if (maritalStatus.Code == h) {
+        return maritalStatus.Name
       }
-  //  return this.maritalStatuses[0].Name;
-  //  return this.allMaritalStatuses.next(this.maritalStatuses.filter(maritalStatuse => maritalStatuse.Code.toLowerCase()));
-      // this.allMaritalStatuses.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)ext(
-      //   this.maritalStatuses.forEach(function (value){
-      //   this.f=";;"
-      //    if(value.Code==h.trim()){
-      //     return value.Name;
-      //     }
-     // this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
-  //   }))
-  // return this.f}
     }
-fun(h:string):any{
- 
-// nationalities.forEach(function (value){
+    //  return this.maritalStatuses[0].Name;
+    //  return this.allMaritalStatuses.next(this.maritalStatuses.filter(maritalStatuse => maritalStatuse.Code.toLowerCase()));
+    // this.allMaritalStatuses.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)ext(
+    //   this.maritalStatuses.forEach(function (value){
+    //   this.f=";;"
+    //    if(value.Code==h.trim()){
+    //     return value.Name;
+    //     }
+    // this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
+    //   }))
+    // return this.f}
+  }
+  fun(h: string): any {
 
-//    if(value.Code==h.trim()){
-//    //  return value.Name;
-//   }
-//      this.f= "kjjhsjfhfh"
-//  });
- return h;
-  // nationalities.filter(item=>){
-  //   if(item.Code==h.trim()){
-  //   return "lnjgd";}
-  //   return "gslj";
+    // nationalities.forEach(function (value){
+
+    //    if(value.Code==h.trim()){
+    //    //  return value.Name;
+    //   }
+    //      this.f= "kjjhsjfhfh"
+    //  });
+    return h;
+    // nationalities.filter(item=>){
+    //   if(item.Code==h.trim()){
+    //   return "lnjgd";}
+    //   return "gslj";
     //else{
-     // return 'omar'
-    
+    // return 'omar'
 
 
-}
+
+  }
 
 
-    getBeneficiary(beneficiaryId:string){
-     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId,beneficiaryId).subscribe(event=>{
-     if(event instanceof HttpResponse){
-      this.beneficiaryinfo=event.body as BeneficiaryModel;
-     // this.beneficiaryinfo.nationality= this.fun(this.beneficiaryinfo.nationality)
-     
+  getBeneficiary(beneficiaryId: string) {
+    this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.beneficiaryinfo = event.body as BeneficiaryModel;
+        // this.beneficiaryinfo.nationality= this.fun(this.beneficiaryinfo.nationality)
 
-      
-    }
-    
-      }, err=>{
+
+
+      }
+
+    }, err => {
 
       if (err instanceof HttpErrorResponse) {
         console.log(err.message)
-      
+
 
       }
-     });
+    });
 
-    
-     return true
-    }
+
+    return true
+  }
 
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
 
 
-    
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,null, null,null,null, null).subscribe(event => {
+
+    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
-          this.Beneficiaries = event.body as BeneficiarySearch [];
+          this.Beneficiaries = event.body as BeneficiarySearch[];
       }
     }
       , err => {
 
         if (err instanceof HttpErrorResponse) {
           console.log(err.message)
-        
+
 
         }
       });
