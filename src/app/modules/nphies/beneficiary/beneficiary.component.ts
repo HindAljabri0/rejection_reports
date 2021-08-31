@@ -149,12 +149,14 @@ export class BeneficiaryComponent implements OnInit {
 
   }
   getBeneficiary(beneficiaryId: string) {
+    this.addMode = false;
+    this.editMode = false;
     this.beneficiaryId = beneficiaryId;
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
         this.getdate(this.beneficiaryinfo);
-      
+
       }
 
     }, err => {
@@ -165,16 +167,16 @@ export class BeneficiaryComponent implements OnInit {
 
       }
     });
- 
+
 
     return true
   }
 
-  get showbeneficiaryForm(){
+  get showbeneficiaryForm() {
     return this.addMode || this.editMode;
   }
   getdate(beneficiaryinfo: BeneficiaryModel) {
-    
+
     this.addresses = [];
     this.insurancePlans = [];
     this.fullName = beneficiaryinfo.firstName;
@@ -222,7 +224,7 @@ export class BeneficiaryComponent implements OnInit {
       )
     }
 
-    this.editMode = true
+  
 
   }
   constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }

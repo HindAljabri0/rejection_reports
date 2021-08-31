@@ -34,7 +34,7 @@
                             <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.fileId}}</td>
                             <td class="row-click" (click)="viewMode=true && getBeneficiary(Beneficiary.beneficiaryId)">{{Beneficiary.memberCardId}}</td>
                             <td class="actions">
-                                <button mat-icon-button matTooltip="Edit" class="text-primary" (click)=" getBeneficiary(Beneficiary.beneficiaryId) ">
+                                <button mat-icon-button matTooltip="Edit" class="text-primary" (click)="editMode=true && getBeneficiary(Beneficiary.beneficiaryId) ">
                                     <mat-icon>create</mat-icon>
                                 </button>
                             </td>
@@ -47,7 +47,7 @@
             <mat-icon>add</mat-icon>
         </button>
     </ng-container>
-    <ng-container *ngIf= 'showbeneficiaryForm'>
+    <ng-container *ngIf= 'addMode || editMode'>
         <div class="block-header has-border">
             <p>Add/Edit Beneficiary</p>
         </div>
