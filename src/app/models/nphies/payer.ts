@@ -1,4 +1,4 @@
-export class payer {
+export class Payer {
 
     payerId: string;
     nphiesId: string;

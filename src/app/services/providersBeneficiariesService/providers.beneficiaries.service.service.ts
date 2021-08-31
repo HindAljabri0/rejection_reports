@@ -9,8 +9,8 @@ import { environment } from 'src/environments/environment';
 export class ProvidersBeneficiariesService {
   constructor(private httpClient: HttpClient) { }
 
-  getBeneficiaryById(providerId: string, beneficiaryId: string) {
-    const requestUrl = `/providers/${providerId}/beneficiaryId/${beneficiaryId}`;
+  getBeneficiaryById(providerId: string, beneficiaryId: string, simplified: boolean = false) {
+    const requestUrl = `/providers/${providerId}/beneficiaryId/${beneficiaryId}?simplified=${simplified}`;
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(httpRequest);
   }
