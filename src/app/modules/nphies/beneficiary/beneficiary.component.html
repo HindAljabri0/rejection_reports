@@ -1,5 +1,5 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <ng-container *ngIf='addMode || editMode'>
+    <ng-container *ngIf=' showbeneficiaryForm'>
         <div class="block-header has-border">
             <p>Add/Edit Beneficiary</p>
         </div>
@@ -211,7 +211,7 @@
             </h5>
             <app-empty-state [className]="'mb-2'" *ngIf="addresses.length==0" [message]="'No addresses found!'">
             </app-empty-state>
-            <div class="table-responsive" *ngIf="addresses.length>0">
+            <div class="table-responsive" *ngIf="addresses.length>0  ">
                 <table class="primary-grid manual-row-color claim-view-table no-borders">
                     <thead>
                         <tr>
@@ -256,7 +256,7 @@
                                             </ngx-mat-select-search>
                                         </mat-option>
                                         <mat-option value="">Select Country</mat-option>
-                                        <mat-option *ngFor="let nationality of filteredNations | async"
+                                        <mat-option *ngFor="let nationality of filteredNations | async "
                                             [value]="nationality.Code">
                                             {{nationality.Name}}</mat-option>
                                     </mat-select>

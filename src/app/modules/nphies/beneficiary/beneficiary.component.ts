@@ -179,6 +179,8 @@ export class BeneficiaryComponent implements OnInit {
   get showbeneficiaryForm() {
     return this.addMode || this.editMode;
   }
+
+
   getdate(beneficiaryinfo: BeneficiaryModel) {
 
     this.addresses = [];
@@ -233,22 +235,12 @@ export class BeneficiaryComponent implements OnInit {
 
 
 
+
   }
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
-    this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
-    var url = this.router.url;
-    if (this.beneficiaryId != null && url.endsWith(this.beneficiaryId)) {
-      this.viewMode = true
-      this.getBeneficiary(this.beneficiaryId);
-    } if (url.endsWith('add')) {
-      this.viewMode = false
-      this.addMode = true;
-    } if (this.beneficiaryId != null && url.endsWith('edit')) {
-      this.getBeneficiary(this.beneficiaryId);
-      this.editMode = true;
-    }
+
 
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
@@ -291,6 +283,19 @@ export class BeneficiaryComponent implements OnInit {
       .subscribe(() => {
         this.filterNationality();
       });
+
+    this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
+    var url = this.router.url;
+    if (this.beneficiaryId != null && url.endsWith(this.beneficiaryId)) {
+      this.viewMode = true
+      this.getBeneficiary(this.beneficiaryId);
+    } if (url.endsWith('add')) {
+      this.viewMode = false
+      this.addMode = true;
+    } if (this.beneficiaryId != null && url.endsWith('edit')) {
+      this.getBeneficiary(this.beneficiaryId);
+      this.editMode = true;
+    }
 
   }
 
