@@ -20,6 +20,10 @@ import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-de
 import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
+// tslint:disable-next-line:max-line-length
+import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+// tslint:disable-next-line:max-line-length
+import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +37,12 @@ import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-
     AddEditPreauthorizationItemComponent,
     PreauthorizationTransactionsComponent,
     EligibilityDetailsComponent,
-    ViewPreauthorizationDetailsComponent,
     AddEditCareTeamModalComponent,
     ViewPreauthorizationDetailsComponent,
     PaymentReconciliationComponent,
-    PaymentReconciliationDetailsComponent
+    PaymentReconciliationDetailsComponent,
+    AddEditDiagnosisModalComponent,
+    AddEditSupportingInfoModalComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +61,7 @@ import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-
     AddEditPreauthorizationItemComponent,
     ViewPreauthorizationDetailsComponent,
     AddEditCareTeamModalComponent,
-    ViewPreauthorizationDetailsComponent
+    AddEditDiagnosisModalComponent
   ]
 })
 export class NphiesModule { }

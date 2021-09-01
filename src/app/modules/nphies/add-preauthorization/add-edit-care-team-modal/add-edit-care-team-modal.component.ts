@@ -31,11 +31,6 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   onDestroy = new Subject<void>();
 
-  // practitioner: FormControl = new FormControl();
-  // practitionerRole: FormControl = new FormControl();
-  // careTeamRole: FormControl = new FormControl();
-  // speciality: FormControl = new FormControl();
-
   FormCareTeam: FormGroup = this.formBuilder.group({
     practitioner: ['', Validators.required],
     practitionerFilter: [''],
@@ -47,6 +42,25 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   isSubmitted = false;
 
+  practitionerRoleList = [
+    { value: 'doctor', name: 'Doctor' },
+    { value: 'nurse', name: 'Nurse' },
+    { value: 'pharmacist', name: 'Pharmacist' },
+    { value: 'researcher', name: 'Researcher' },
+    { value: 'teacher', name: 'Teacher/educator' },
+    { value: 'dentist', name: 'Dentist' },
+    { value: 'physio', name: 'Physiotherapist' },
+    { value: 'speech', name: 'Speechtherapist' },
+    { value: 'ict', name: 'ICT professional' },
+  ];
+
+  careTeamRoleList = [
+    { value: 'primary', name: 'Primary provider' },
+    { value: 'assist', name: 'Assisting Provider' },
+    { value: 'supervisor', name: 'Supervising Provider' },
+    { value: 'other', name: 'Other' },
+  ];
+
   constructor(
     private dialogRef: MatDialogRef<AddEditCareTeamModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
     private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService,
@@ -57,8 +71,8 @@ export class AddEditCareTeamModalComponent implements OnInit {
   ngOnInit() {
     if (this.data.item && this.data.item.practitionerName) {
       this.FormCareTeam.patchValue({
-        practitionerRole: this.data.item.practitionerRole,
-        careTeamRole: this.data.item.careTeamRole,
+        practitionerRole: this.practitionerRoleList.filter(x => x.value === this.data.item.practitionerRole)[0],
+        careTeamRole: this.careTeamRoleList.filter(x => x.value === this.data.item.careTeamRole)[0],
       });
     }
     this.getPractitionerList();
@@ -156,37 +170,21 @@ export class AddEditCareTeamModalComponent implements OnInit {
     );
   }
 
-  setInitialValueOfPractitioner() {
-    this.filteredPractitioner
-      .pipe(take(1), takeUntil(this.onDestroy))
-      .subscribe(() => {
-        this.practitionerSelect.compareWith = (
-          a: { physicianId: { physicianCode: string }, name: string },
-          b: { physicianId: { physicianCode: string }, name: string }) =>
-          a && b && a.physicianId.physicianCode === b.physicianId.physicianCode;
-      });
-  }
-
-  setInitialValueOfSpeciality() {
-    this.filteredSpeciality
-      .pipe(take(1), takeUntil(this.onDestroy))
-      .subscribe(() => {
-        this.specialitySelect.compareWith = (
-          a: { speciallityCode: string, speciallityName: string },
-          b: { speciallityCode: string, speciallityName: string }) =>
-          a && b && a.speciallityCode === b.speciallityCode;
-      });
-  }
-
   onSubmit() {
+    debugger;
     this.isSubmitted = true;
     if (this.FormCareTeam.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;
       model.practitionerName = this.FormCareTeam.controls.practitioner.value.name;
-      model.practitionerRole = this.FormCareTeam.controls.practitionerRole.value;
-      model.careTeamRole = this.FormCareTeam.controls.careTeamRole.value;
+      model.physicianCode = this.FormCareTeam.controls.practitioner.value.physicianId.physicianCode;
+      model.practitionerRole = this.FormCareTeam.controls.practitionerRole.value.value;
+      model.careTeamRole = this.FormCareTeam.controls.careTeamRole.value.value;
       model.speciality = this.FormCareTeam.controls.speciality.value.speciallityName;
+      model.speciallityCode = this.FormCareTeam.controls.speciality.value.speciallityCode;
+
+      model.practitionerRoleName = this.FormCareTeam.controls.practitionerRole.value.name;
+      model.careTeamRoleName = this.FormCareTeam.controls.careTeamRole.value.name;
       this.dialogRef.close(model);
     }
   }

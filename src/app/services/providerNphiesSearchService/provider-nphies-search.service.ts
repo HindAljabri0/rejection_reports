@@ -46,4 +46,9 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
+  getCodeDescriptionList(providerId: string, itemType: string) {
+    const requestURL = '/providers/' + providerId + '/approval/itemcodes?itemType=' + itemType;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
+    return this.http.request(request);
+  }
 }
