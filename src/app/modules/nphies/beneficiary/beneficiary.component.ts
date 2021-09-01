@@ -27,13 +27,13 @@ export class BeneficiaryComponent implements OnInit {
   addMode = false;
   editMode = false;
   viewMode = false;
-  mode="";
+  mode = "";
 
   selectedNationality = "";
   selectedMaritalStatus = "";
   selectedDocumentType = "";
   selectedGender = ""
-  selectedPayer = ""
+
   selectedResidencyType = ""
   selectedBloodGroup = "";
   selectedState = "";
@@ -80,6 +80,7 @@ export class BeneficiaryComponent implements OnInit {
   insurancePlans: {
     iSPrimary: boolean,
     selectePayer: string,
+    selectedPayer: FormControl;
     expiryDateController: FormControl
     memberCardId: FormControl,
     payerErorr: string,
@@ -152,9 +153,9 @@ export class BeneficiaryComponent implements OnInit {
 
   }
   getBeneficiary(beneficiaryId: string) {
-   // this.addMode = false;
-   // this.editMode = false;
-    
+    // this.addMode = false;
+    // this.editMode = false;
+
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
@@ -206,7 +207,9 @@ export class BeneficiaryComponent implements OnInit {
     for (let address of beneficiaryinfo.addresses) {
       this.addresses.push(
         {
-          houseNumberController: new FormControl(address.addressLine), streetNameController: new FormControl(address.streetLine), cityNameController: new FormControl(address.city),
+          houseNumberController: new FormControl(address.addressLine),
+          streetNameController: new FormControl(address.streetLine),
+          cityNameController: new FormControl(address.city),
           stateController: new FormControl(address.state),
           selectedCountry: address.country,
           postalCodeController: new FormControl(address.postalCode)
@@ -220,6 +223,7 @@ export class BeneficiaryComponent implements OnInit {
         {
           iSPrimary: insurancePlans.isPrimary,
           selectePayer: insurancePlans.payerId,
+          selectedPayer: new FormControl(insurancePlans.payerId),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
           payerErorr: null, memberCardIdErorr: null
@@ -227,25 +231,25 @@ export class BeneficiaryComponent implements OnInit {
       )
     }
 
-  
+
 
   }
- 
-  constructor(private router: Router,private activatedRoute: ActivatedRoute,private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
-    this.beneficiaryId =this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
-   var url= this.router.url;
-    if( this.beneficiaryId!=null && url.endsWith(this.beneficiaryId) ){
-      this.viewMode=true
+    this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
+    var url = this.router.url;
+    if (this.beneficiaryId != null && url.endsWith(this.beneficiaryId)) {
+      this.viewMode = true
       this.getBeneficiary(this.beneficiaryId);
-    } if (url.endsWith('add')){
-      this.viewMode=false
-      this.addMode=true;
-    } if(this.beneficiaryId!=null && url.endsWith('edit') ){
+    } if (url.endsWith('add')) {
+      this.viewMode = false
+      this.addMode = true;
+    } if (this.beneficiaryId != null && url.endsWith('edit')) {
       this.getBeneficiary(this.beneficiaryId);
-      this.editMode=true;
+      this.editMode = true;
     }
-   
+
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -364,6 +368,7 @@ export class BeneficiaryComponent implements OnInit {
       this.insurancePlans.push({
         iSPrimary: false,
         selectePayer: "",
+        selectedPayer: new FormControl(),
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
         payerErorr: null,
