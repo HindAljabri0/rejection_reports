@@ -44,15 +44,7 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="practitionerRole">
               <mat-option value="">Select Type</mat-option>
-              <mat-option value="doctor">Doctor</mat-option>
-              <mat-option value="nurse">Nurse</mat-option>
-              <mat-option value="pharmacist">Pharmacist</mat-option>
-              <mat-option value="researcher">Researcher</mat-option>
-              <mat-option value="teacher">Teacher/educator</mat-option>
-              <mat-option value="dentist">Dentist</mat-option>
-              <mat-option value="physio">Physiotherapist</mat-option>
-              <mat-option value="speech">Speechtherapist</mat-option>
-              <mat-option value="ict">ICT professional</mat-option>
+              <mat-option *ngFor="let prt of practitionerRoleList" [value]="prt">{{prt.name}}</mat-option>
             </mat-select>
           </mat-form-field>
           <div
@@ -68,10 +60,7 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="careTeamRole">
               <mat-option value="">Select Type</mat-option>
-              <mat-option value="primary">Primary provider</mat-option>
-              <mat-option value="assist">Assisting Provider</mat-option>
-              <mat-option value="supervisor">Supervising Provider</mat-option>
-              <mat-option value="other">Other</mat-option>
+              <mat-option *ngFor="let ctr of careTeamRoleList" [value]="ctr">{{ctr.name}}</mat-option>
             </mat-select>
           </mat-form-field>
           <div
