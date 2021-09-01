@@ -1,7 +1,7 @@
 import { X } from '@angular/cdk/keycodes';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { url } from 'inspector';
 import * as moment from 'moment';
@@ -177,7 +177,9 @@ export class BeneficiaryComponent implements OnInit {
   }
 
   get showbeneficiaryForm() {
+    
     return this.addMode || this.editMode;
+    
   }
 
 
@@ -225,7 +227,7 @@ export class BeneficiaryComponent implements OnInit {
         {
           iSPrimary: insurancePlans.isPrimary,
           selectePayer: insurancePlans.payerId,
-          selectedPayer: new FormControl(insurancePlans.payerId),
+          selectedPayer: new FormControl(insurancePlans.payerId ,Validators.required),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
           payerErorr: null, memberCardIdErorr: null
@@ -240,24 +242,6 @@ export class BeneficiaryComponent implements OnInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
-
-
-
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array)
-          this.Beneficiaries = event.body as BeneficiarySearch[];
-      }
-    }
-      , err => {
-
-        if (err instanceof HttpErrorResponse) {
-          console.log(err.message)
-
-
-        }
-      });
-
 
     this.providersBeneficiariesService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -277,6 +261,7 @@ export class BeneficiaryComponent implements OnInit {
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
     this.allBloodType.next(this.bloodGroup);
+   
 
     this.nationalityFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -338,6 +323,8 @@ export class BeneficiaryComponent implements OnInit {
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+
+
   errors = {
     dob: "",
     documentType: "",

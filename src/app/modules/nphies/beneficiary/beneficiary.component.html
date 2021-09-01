@@ -247,7 +247,7 @@
                             </td>
                             <td>
                                 <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="address.selectedCountry"
+                                    <mat-select   [value]="address.selectedCountry"
                                         (selectionChange)="address.selectedCountry = $event.value;" #Country>
                                         <mat-option>
                                             <ngx-mat-select-search placeholderLabel="Select Country"
@@ -306,17 +306,19 @@
                                     <mat-radio-button color="primary" class="grid-radio" [value]="i"
                                         [checked]="i+''==setPrimary"></mat-radio-button>
                                 </td>
+
+
                                 <td>
                                     <div class="form-group m-0" [matTooltip]="insurancePlan.payerErorr"
                                         [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
-                                        <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [formControl]="insurancePlan.selectedPayer"
+                                        <mat-form-field class="form-control custom-select-control"  >
+                                            <mat-select 
                                                 [value]="insurancePlan.selectePayer"
-                                                [(ngModel)]="insurancePlan.selectePayer"
-                                                (selectionChange)="insurancePlan.selectePayer = $event.value;">
-
+                                                (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                                               
                                                 <mat-option value="">Select Payer</mat-option>
-                                                <mat-option *ngFor="let payer of payersList" [value]="payer.payerId">
+                                                <mat-option *ngFor="let payer of payersList  "
+                                                    [value]="payer.payerId">
                                                     {{payer.englistName}}({{payer.arabicName}})</mat-option>
 
                                             </mat-select>
