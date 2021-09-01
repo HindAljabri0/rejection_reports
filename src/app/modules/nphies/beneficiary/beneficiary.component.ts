@@ -2,6 +2,8 @@ import { X } from '@angular/cdk/keycodes';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { url } from 'inspector';
 import * as moment from 'moment';
 import { add } from 'ngx-bootstrap/chronos';
 import { from, ReplaySubject, Subject } from 'rxjs';
@@ -25,6 +27,7 @@ export class BeneficiaryComponent implements OnInit {
   addMode = false;
   editMode = false;
   viewMode = false;
+  mode="";
 
   selectedNationality = "";
   selectedMaritalStatus = "";
@@ -149,9 +152,9 @@ export class BeneficiaryComponent implements OnInit {
 
   }
   getBeneficiary(beneficiaryId: string) {
-    this.addMode = false;
-    this.editMode = false;
-    this.beneficiaryId = beneficiaryId;
+   // this.addMode = false;
+   // this.editMode = false;
+    
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
@@ -227,10 +230,22 @@ export class BeneficiaryComponent implements OnInit {
   
 
   }
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
+ 
+  constructor(private router: Router,private activatedRoute: ActivatedRoute,private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
-
-
+    this.beneficiaryId =this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
+   var url= this.router.url;
+    if( this.beneficiaryId!=null && url.endsWith(this.beneficiaryId) ){
+      this.viewMode=true
+      this.getBeneficiary(this.beneficiaryId);
+    } if (url.endsWith('add')){
+      this.viewMode=false
+      this.addMode=true;
+    } if(this.beneficiaryId!=null && url.endsWith('edit') ){
+      this.getBeneficiary(this.beneficiaryId);
+      this.editMode=true;
+    }
+   
 
     this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
       if (event instanceof HttpResponse) {

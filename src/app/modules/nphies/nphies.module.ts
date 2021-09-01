@@ -24,6 +24,7 @@ import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-
 import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 // tslint:disable-next-line:max-line-length
 import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-
     PaymentReconciliationComponent,
     PaymentReconciliationDetailsComponent,
     AddEditDiagnosisModalComponent,
-    AddEditSupportingInfoModalComponent
+    AddEditSupportingInfoModalComponent,
+    SearchBeneficiaryComponent
   ],
   imports: [
     CommonModule,
