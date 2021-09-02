@@ -304,7 +304,7 @@
                             <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                                 <td class="text-center">
                                     <mat-radio-button color="primary" class="grid-radio" [value]="i"
-                                        [checked]="i+''==setPrimary"></mat-radio-button>
+                                        [checked]="i+''==setPrimary ||insurancePlan.iSPrimary==false"></mat-radio-button>
                                 </td>
 
 

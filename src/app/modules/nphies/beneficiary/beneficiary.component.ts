@@ -80,7 +80,7 @@ export class BeneficiaryComponent implements OnInit {
   insurancePlans: {
     iSPrimary: boolean,
     selectePayer: string,
-    selectedPayer: FormControl;
+
     expiryDateController: FormControl
     memberCardId: FormControl,
     payerErorr: string,
@@ -177,9 +177,9 @@ export class BeneficiaryComponent implements OnInit {
   }
 
   get showbeneficiaryForm() {
-    
+
     return this.addMode || this.editMode;
-    
+
   }
 
 
@@ -226,17 +226,13 @@ export class BeneficiaryComponent implements OnInit {
       this.insurancePlans.push(
         {
           iSPrimary: insurancePlans.isPrimary,
-          selectePayer: insurancePlans.payerId,
-          selectedPayer: new FormControl(insurancePlans.payerId ,Validators.required),
+          selectePayer: insurancePlans.payerId.trim(),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
           payerErorr: null, memberCardIdErorr: null
         }
       )
     }
-
-
-
 
   }
 
@@ -247,6 +243,9 @@ export class BeneficiaryComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.payersList = event.body as Payer[];
+
+
+
       }
     }
       , err => {
@@ -261,7 +260,8 @@ export class BeneficiaryComponent implements OnInit {
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
     this.allBloodType.next(this.bloodGroup);
-   
+
+
 
     this.nationalityFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -276,10 +276,13 @@ export class BeneficiaryComponent implements OnInit {
       this.getBeneficiary(this.beneficiaryId);
     } if (url.endsWith('add')) {
       this.viewMode = false
-      this.addMode = true;
-    } if (this.beneficiaryId != null && url.endsWith('edit')) {
-      this.getBeneficiary(this.beneficiaryId);
       this.editMode = true;
+    }
+    if (this.beneficiaryId != null && url.endsWith('edit')) {
+      this.editMode = true;
+      this.getBeneficiary(this.beneficiaryId);
+
+
     }
 
   }
@@ -323,6 +326,8 @@ export class BeneficiaryComponent implements OnInit {
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  // allPayer: ReplaySubject<{ payerId: string, nphiesId: string,englistName: string, arabicName: string }[]> = new ReplaySubject<{ payerId: string, nphiesId: string,englistName: string, arabicName: string }[]>(1);
+
 
 
   errors = {
@@ -358,9 +363,8 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: false,
+        iSPrimary: null,
         selectePayer: "",
-        selectedPayer: new FormControl(),
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
         payerErorr: null,
