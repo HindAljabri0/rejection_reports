@@ -8,19 +8,19 @@
 
       <h5 class="form-title pt-0">Beneficary Info</h5>
       <div class="d-flex">
-        <div class="form-group flex-grow-1"  [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
+        <div class="form-group flex-grow-1"
+          [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
           <label class="control-label">Select a Beneficiary</label>
-          <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
-            formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+          <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
+            (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
               {{beneficiary.name}} ({{beneficiary.documentId}})
             </mat-option>
           </mat-autocomplete>
-          <div
-          *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
-          <span class="error-text">Please select a Beneficiary</span>
-        </div>
+          <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+            <span class="error-text">Please select a Beneficiary</span>
+          </div>
         </div>
         <div class="form-group pl-3 pr-3">
           <label class="control-label">&nbsp;</label>
@@ -28,15 +28,14 @@
         </div>
         <div class="form-group">
           <label class="control-label">&nbsp;</label>
-          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
-            color="primary">Create New Beneficiary</button>
+          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
         </div>
       </div>
 
       <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
         <div class="col-md-4">
-          <div class="form-group"
-            [matTooltip]="selectedPlanIdError" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
+          <div class="form-group" [matTooltip]="selectedPlanIdError"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
             <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="insurancePlanId">
@@ -47,10 +46,9 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div
-            *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
-            <span class="error-text">Please select an Insurance Plan</span>
-          </div>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+              <span class="error-text">Please select an Insurance Plan</span>
+            </div>
           </div>
         </div>
       </div>
@@ -59,17 +57,16 @@
 
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
             <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
-                formControlName="dateOrdered">
+              <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" formControlName="dateOrdered">
               <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
               <mat-datepicker #dateOrderedCtrl></mat-datepicker>
-              <div
-            *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
-            <span class="error-text">Please enter Date Ordered</span>
-          </div>
+              <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+                <span class="error-text">Please enter Date Ordered</span>
+              </div>
             </div>
           </div>
         </div>
@@ -86,10 +83,9 @@
                 <mat-option value="vision">Optical</mat-option>
               </mat-select>
             </mat-form-field>
-            <div
-            *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
-            <span class="error-text">Please select a Type</span>
-          </div>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+              <span class="error-text">Please select a Type</span>
+            </div>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -146,6 +142,139 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <h5 class="form-title">
+        Vision Prescription
+      </h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Date Written</label>
+            <div class="date-picker">
+              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written">
+              <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
+              <mat-datepicker #visionWrittenDate></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Prescriber</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select value="-1">
+                <mat-option value="-1">Select Prescriber</mat-option>
+                <mat-option value="Prescriber 1">Prescriber 1</mat-option>
+                <mat-option value="Prescriber 2">Prescriber 2</mat-option>
+                <mat-option value="Prescriber 3">Prescriber 3</mat-option>
+                <mat-option value="Prescriber 4">Prescriber 4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Product</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select value="-1">
+                <mat-option value="-1">Select Product</mat-option>
+                <mat-option value="Product 1">Product 1</mat-option>
+                <mat-option value="Product 2">Product 2</mat-option>
+                <mat-option value="Product 3">Product 3</mat-option>
+                <mat-option value="Product 4">Product 4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Eye</label>
+            <mat-radio-group class="radio-group inline">
+              <mat-radio-button value="1" color="primary">Right</mat-radio-button>
+              <mat-radio-button value="0" color="primary">Left</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Sphere</label>
+            <input class="form-control" placeholder="Enter sphere">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Cyclinder</label>
+            <input class="form-control" placeholder="Enter cyclinder">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Axis</label>
+            <input class="form-control" placeholder="Enter axis">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Prism Amount</label>
+            <input class="form-control" placeholder="Enter prism amount">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Prism Base</label>
+            <input class="form-control" placeholder="Enter prism base">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Add</label>
+            <input class="form-control" placeholder="Enter add">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Power</label>
+            <input class="form-control" placeholder="Enter power">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Back Curve</label>
+            <input class="form-control" placeholder="Enter back curve">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Diameter</label>
+            <input class="form-control" placeholder="Enter diameter">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Duration</label>
+            <input class="form-control" placeholder="Enter duration">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Color</label>
+            <input class="form-control" placeholder="Enter color">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Brand</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select value="-1">
+                <mat-option value="-1">Select Brand</mat-option>
+                <mat-option value="Brand 1">Brand 1</mat-option>
+                <mat-option value="Brand 2">Brand 2</mat-option>
+                <mat-option value="Brand 3">Brand 3</mat-option>
+                <mat-option value="Brand 4">Brand 4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
 
       <h5 class="form-title">
@@ -216,7 +345,8 @@
       <h5 class="form-title">Accident</h5>
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')}">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')}">
             <label class="control-label">Accident Type</label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="accidentType">
@@ -227,10 +357,9 @@
                 <mat-option value="WPA">Workplace accident</mat-option>
               </mat-select>
             </mat-form-field>
-            <div
-            *ngIf="(isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')">
-            <span class="error-text">Please select an Accident Type</span>
-          </div>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')">
+              <span class="error-text">Please select an Accident Type</span>
+            </div>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
@@ -264,10 +393,9 @@
               <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
               <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
               <mat-datepicker #accidentDate></mat-datepicker>
-              <div
-              *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
-              <span class="error-text">Please enter date</span>
-            </div>
+              <div *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
+                <span class="error-text">Please enter date</span>
+              </div>
             </div>
           </div>
         </div>
