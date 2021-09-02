@@ -1,9 +1,9 @@
 import { X } from '@angular/cdk/keycodes';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { add } from 'ngx-bootstrap/chronos';
 import { from, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
@@ -26,11 +26,12 @@ export class BeneficiaryComponent implements OnInit {
   editMode = false;
   viewMode = false;
 
+
   selectedNationality = "";
   selectedMaritalStatus = "";
   selectedDocumentType = "";
   selectedGender = ""
-  selectedPayer = ""
+
   selectedResidencyType = ""
   selectedBloodGroup = "";
   selectedState = "";
@@ -77,6 +78,7 @@ export class BeneficiaryComponent implements OnInit {
   insurancePlans: {
     iSPrimary: boolean,
     selectePayer: string,
+
     expiryDateController: FormControl
     memberCardId: FormControl,
     payerErorr: string,
@@ -149,13 +151,11 @@ export class BeneficiaryComponent implements OnInit {
 
   }
   getBeneficiary(beneficiaryId: string) {
-    this.addMode = false;
-    this.editMode = false;
-    this.beneficiaryId = beneficiaryId;
+
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
-        this.getdate(this.beneficiaryinfo);
+        this.setDateforView(this.beneficiaryinfo);
 
       }
 
@@ -173,9 +173,13 @@ export class BeneficiaryComponent implements OnInit {
   }
 
   get showbeneficiaryForm() {
+
     return this.addMode || this.editMode;
+
   }
-  getdate(beneficiaryinfo: BeneficiaryModel) {
+
+
+  setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
     this.addresses = [];
     this.insurancePlans = [];
@@ -203,7 +207,9 @@ export class BeneficiaryComponent implements OnInit {
     for (let address of beneficiaryinfo.addresses) {
       this.addresses.push(
         {
-          houseNumberController: new FormControl(address.addressLine), streetNameController: new FormControl(address.streetLine), cityNameController: new FormControl(address.city),
+          houseNumberController: new FormControl(address.addressLine),
+          streetNameController: new FormControl(address.streetLine),
+          cityNameController: new FormControl(address.city),
           stateController: new FormControl(address.state),
           selectedCountry: address.country,
           postalCodeController: new FormControl(address.postalCode)
@@ -216,42 +222,26 @@ export class BeneficiaryComponent implements OnInit {
       this.insurancePlans.push(
         {
           iSPrimary: insurancePlans.isPrimary,
-          selectePayer: insurancePlans.payerId,
+          selectePayer: insurancePlans.payerId.trim(),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
           payerErorr: null, memberCardIdErorr: null
         }
       )
     }
-
-  
-
+    console.log(this.insurancePlans[0].iSPrimary)
   }
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
   ngOnInit() {
-
-
-
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array)
-          this.Beneficiaries = event.body as BeneficiarySearch[];
-      }
-    }
-      , err => {
-
-        if (err instanceof HttpErrorResponse) {
-          console.log(err.message)
-
-
-        }
-      });
-
 
     this.providersBeneficiariesService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array)
           this.payersList = event.body as Payer[];
+
+
+
       }
     }
       , err => {
@@ -267,11 +257,31 @@ export class BeneficiaryComponent implements OnInit {
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
     this.allBloodType.next(this.bloodGroup);
 
+
+
     this.nationalityFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterNationality();
       });
+
+
+    this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
+    console.log(this.beneficiaryId);
+    var url = this.router.url;
+    if (url.endsWith('add')) {
+      this.addMode = true;
+    }
+    else if (this.beneficiaryId != null && url.endsWith('edit')) {
+      this.editMode = true;
+      this.getBeneficiary(this.beneficiaryId);
+
+
+    } else {
+      this.getBeneficiary(this.beneficiaryId);
+
+      this.viewMode = true;
+    }
 
   }
 
@@ -314,6 +324,9 @@ export class BeneficiaryComponent implements OnInit {
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+
+
+
   errors = {
     dob: "",
     documentType: "",
@@ -405,7 +418,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.checkError()) { return }
     this.sharedServices.loadingChanged.next(true);
-    this.setDate()
+    this.setDateforSaveBeneficiary()
     this.providersBeneficiariesService.editBeneficiaries(
       this.providerId, this.beneficiaryId, this.beneficiaryModel
     ).subscribe(event => {
@@ -449,7 +462,7 @@ export class BeneficiaryComponent implements OnInit {
 
 
 
-  setDate() {
+  setDateforSaveBeneficiary() {
     this.beneficiaryModel.firstName = this.firstNameController.value;
     this.beneficiaryModel.middleName = this.secondNameController.value;
     this.beneficiaryModel.lastName = this.thirdNameController.value;
@@ -502,7 +515,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.checkError()) { return }
     this.sharedServices.loadingChanged.next(true);
-    this.setDate()
+    this.setDateforSaveBeneficiary()
     this.providersBeneficiariesService.saveBeneficiaries(
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {

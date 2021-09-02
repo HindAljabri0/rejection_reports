@@ -8,16 +8,20 @@ import { InsurancePlanComponent } from './insurance-plan/insurance-plan.componen
 import { PreauthorizationTransactionsComponent } from './preauthorization-transactions/preauthorization-transactions.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
+import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
   { path: 'eligibility-transactions', component: EligibilityTransactionsComponent },
-  { path: 'beneficiary', component: BeneficiaryComponent },
+  { path: 'beneficiary/:beneficiaryId/edit' ,component: BeneficiaryComponent },
+  { path: 'beneficiary/:beneficiaryId', component: BeneficiaryComponent },
+  { path: 'beneficiary/add', component: BeneficiaryComponent },
   { path: 'add-preauthorization', component: AddPreauthorizationComponent },
   { path: 'preauthorization-transactions', component: PreauthorizationTransactionsComponent },
   { path: 'insurance-plans', component: InsurancePlanComponent },
   { path: 'payment-reconciliation', component: PaymentReconciliationComponent },
-  { path: 'payment-reconciliation-details', component: PaymentReconciliationDetailsComponent }
+  { path: 'payment-reconciliation-details', component: PaymentReconciliationDetailsComponent },
+  { path: 'beneficiary', component: SearchBeneficiaryComponent }
 ];
 
 @NgModule({
