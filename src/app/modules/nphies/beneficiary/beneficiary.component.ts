@@ -25,7 +25,7 @@ export class BeneficiaryComponent implements OnInit {
   addMode = false;
   editMode = false;
   viewMode = false;
-  mode = "";
+
 
   selectedNationality = "";
   selectedMaritalStatus = "";
@@ -151,13 +151,11 @@ export class BeneficiaryComponent implements OnInit {
 
   }
   getBeneficiary(beneficiaryId: string) {
-    // this.addMode = false;
-    // this.editMode = false;
 
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.beneficiaryinfo = event.body as BeneficiaryModel;
-        this.getdate(this.beneficiaryinfo);
+        this.setDateforView(this.beneficiaryinfo);
 
       }
 
@@ -181,7 +179,7 @@ export class BeneficiaryComponent implements OnInit {
   }
 
 
-  getdate(beneficiaryinfo: BeneficiaryModel) {
+  setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
     this.addresses = [];
     this.insurancePlans = [];
@@ -231,7 +229,7 @@ export class BeneficiaryComponent implements OnInit {
         }
       )
     }
-
+    console.log(this.insurancePlans[0].iSPrimary)
   }
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
@@ -267,20 +265,22 @@ export class BeneficiaryComponent implements OnInit {
         this.filterNationality();
       });
 
+
     this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
+    console.log(this.beneficiaryId);
     var url = this.router.url;
-    if (this.beneficiaryId != null && url.endsWith(this.beneficiaryId)) {
-      this.viewMode = true
-      this.getBeneficiary(this.beneficiaryId);
-    } if (url.endsWith('add')) {
-      this.viewMode = false
-      this.editMode = true;
+    if (url.endsWith('add')) {
+      this.addMode = true;
     }
-    if (this.beneficiaryId != null && url.endsWith('edit')) {
+    else if (this.beneficiaryId != null && url.endsWith('edit')) {
       this.editMode = true;
       this.getBeneficiary(this.beneficiaryId);
 
 
+    } else {
+      this.getBeneficiary(this.beneficiaryId);
+
+      this.viewMode = true;
     }
 
   }
@@ -324,7 +324,6 @@ export class BeneficiaryComponent implements OnInit {
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
-  // allPayer: ReplaySubject<{ payerId: string, nphiesId: string,englistName: string, arabicName: string }[]> = new ReplaySubject<{ payerId: string, nphiesId: string,englistName: string, arabicName: string }[]>(1);
 
 
 
@@ -361,7 +360,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: null,
+        iSPrimary: false,
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
@@ -419,7 +418,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.checkError()) { return }
     this.sharedServices.loadingChanged.next(true);
-    this.setDate()
+    this.setDateforSaveBeneficiary()
     this.providersBeneficiariesService.editBeneficiaries(
       this.providerId, this.beneficiaryId, this.beneficiaryModel
     ).subscribe(event => {
@@ -463,7 +462,7 @@ export class BeneficiaryComponent implements OnInit {
 
 
 
-  setDate() {
+  setDateforSaveBeneficiary() {
     this.beneficiaryModel.firstName = this.firstNameController.value;
     this.beneficiaryModel.middleName = this.secondNameController.value;
     this.beneficiaryModel.lastName = this.thirdNameController.value;
@@ -516,7 +515,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.checkError()) { return }
     this.sharedServices.loadingChanged.next(true);
-    this.setDate()
+    this.setDateforSaveBeneficiary()
     this.providersBeneficiariesService.saveBeneficiaries(
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
