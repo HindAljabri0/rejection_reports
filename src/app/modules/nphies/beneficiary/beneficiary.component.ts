@@ -65,7 +65,6 @@ export class BeneficiaryComponent implements OnInit {
 
 
   addresses: {
-
     houseNumberController: FormControl;
     streetNameController: FormControl;
     cityNameController: FormControl;
@@ -78,7 +77,6 @@ export class BeneficiaryComponent implements OnInit {
   insurancePlans: {
     iSPrimary: boolean,
     selectePayer: string,
-
     expiryDateController: FormControl
     memberCardId: FormControl,
     payerErorr: string,
@@ -267,7 +265,6 @@ export class BeneficiaryComponent implements OnInit {
 
 
     this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
-    console.log(this.beneficiaryId);
     var url = this.router.url;
     if (url.endsWith('add')) {
       this.addMode = true;
