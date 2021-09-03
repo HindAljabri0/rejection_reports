@@ -11,7 +11,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 @Component({
   selector: 'app-add-edit-care-team-modal',
   templateUrl: './add-edit-care-team-modal.component.html',
-  styleUrls: ['./add-edit-care-team-modal.component.css']
+  styles: []
 })
 export class AddEditCareTeamModalComponent implements OnInit {
 

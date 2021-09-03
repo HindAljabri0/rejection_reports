@@ -172,108 +172,115 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Product</label>
-            <mat-form-field class="form-control custom-select-control">
-              <mat-select value="-1">
-                <mat-option value="-1">Select Product</mat-option>
-                <mat-option value="Product 1">Product 1</mat-option>
-                <mat-option value="Product 2">Product 2</mat-option>
-                <mat-option value="Product 3">Product 3</mat-option>
-                <mat-option value="Product 4">Product 4</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Eye</label>
-            <mat-radio-group class="radio-group inline">
-              <mat-radio-button value="1" color="primary">Right</mat-radio-button>
-              <mat-radio-button value="0" color="primary">Left</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Sphere</label>
-            <input class="form-control" placeholder="Enter sphere">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Cyclinder</label>
-            <input class="form-control" placeholder="Enter cyclinder">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Axis</label>
-            <input class="form-control" placeholder="Enter axis">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Prism Amount</label>
-            <input class="form-control" placeholder="Enter prism amount">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Prism Base</label>
-            <input class="form-control" placeholder="Enter prism base">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Add</label>
-            <input class="form-control" placeholder="Enter add">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Power</label>
-            <input class="form-control" placeholder="Enter power">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Back Curve</label>
-            <input class="form-control" placeholder="Enter back curve">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Diameter</label>
-            <input class="form-control" placeholder="Enter diameter">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Duration</label>
-            <input class="form-control" placeholder="Enter duration">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Color</label>
-            <input class="form-control" placeholder="Enter color">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Brand</label>
-            <mat-form-field class="form-control custom-select-control">
-              <mat-select value="-1">
-                <mat-option value="-1">Select Brand</mat-option>
-                <mat-option value="Brand 1">Brand 1</mat-option>
-                <mat-option value="Brand 2">Brand 2</mat-option>
-                <mat-option value="Brand 3">Brand 3</mat-option>
-                <mat-option value="Brand 4">Brand 4</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+      </div>
+      <div class="box">
+        <h5 class="d-flex align-items-center mb-3">
+          <strong class="medium">Lens Specifications</strong>
+          <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h5>
+        <div class="table-responsive">
+          <table class="primary-grid manual-row-color no-borders">
+            <thead>
+              <tr>
+                <th>Eye</th>
+                <th>Sphere</th>
+                <th>Cyclinder</th>
+                <th>Axis</th>
+                <th>Add</th>
+                <th>Power</th>
+                <th>Back Curve</th>
+                <th>Diameter</th>
+                <th>Duration</th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="seperator-row">
+                <td colspan="10">Lens</td>
+              </tr>
+              <tr>
+                <td>Right</td>
+                <td>35.72</td>
+                <td>53.55</td>
+                <td>19.90</td>
+                <td>58.10</td>
+                <td>54.48</td>
+                <td>23.44</td>
+                <td>1.78</td>
+                <td>72.39</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Left</td>
+                <td>83.07</td>
+                <td>5.97</td>
+                <td>57.42</td>
+                <td>33.68</td>
+                <td>3.39</td>
+                <td>95.32</td>
+                <td>17.12</td>
+                <td>75.99</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr class="seperator-row">
+                <td colspan="10">Contact</td>
+              </tr>
+              <tr>
+                <td>Right</td>
+                <td>35.72</td>
+                <td>53.55</td>
+                <td>19.90</td>
+                <td>58.10</td>
+                <td>54.48</td>
+                <td>23.44</td>
+                <td>1.78</td>
+                <td>72.39</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Left</td>
+                <td>83.07</td>
+                <td>5.97</td>
+                <td>57.42</td>
+                <td>33.68</td>
+                <td>3.39</td>
+                <td>95.32</td>
+                <td>17.12</td>
+                <td>75.99</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 

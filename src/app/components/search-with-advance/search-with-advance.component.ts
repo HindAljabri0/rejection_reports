@@ -9,7 +9,7 @@ import { Moment } from 'moment';
 @Component({
   selector: 'app-search-with-advance',
   templateUrl: './search-with-advance.component.html',
-  styleUrls: ['./search-with-advance.component.css']
+  styles: []
 })
 export class SearchWithAdvanceComponent implements OnInit {
 

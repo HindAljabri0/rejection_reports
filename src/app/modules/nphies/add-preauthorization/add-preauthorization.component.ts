@@ -10,6 +10,7 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { DatePipe } from '@angular/common';
 import { AddEditDiagnosisModalComponent } from './add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { X } from '@angular/cdk/keycodes';
+import { AddEditVisionLensSpecificationsComponent } from '../add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -258,7 +259,7 @@ export class AddPreauthorizationComponent implements OnInit {
             if (x.sequence === result.sequence) {
               x.type = result.type;
               x.typeName = result.typeName,
-              x.itemCode = result.itemCode;
+                x.itemCode = result.itemCode;
               x.itemDescription = result.itemDescription;
               x.nonStandardCode = result.nonStandardCode;
               x.isPackage = result.isPackage;
@@ -360,6 +361,12 @@ export class AddPreauthorizationComponent implements OnInit {
       console.log('FormValue', this.FormPreAuthorization.value);
       console.log('Model', this.model);
     }
+  }
+
+  openAddEditVisionLensDialog() {
+    const dialogRef = this.dialog.open(AddEditVisionLensSpecificationsComponent, {
+      panelClass: ['primary-dialog', 'dialog-xl']
+    });
   }
 
 }
