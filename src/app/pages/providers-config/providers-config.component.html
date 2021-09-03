@@ -161,19 +161,29 @@
                 style="margin-top: 20px;">
                 <table style="width: 100%; margin: 10px">
                     <thead>
-                        <th>Provider</th>
-                        <th style="text-align: center; width: 33%;">Provider Code</th>
-                        <th style="width:33%;text-align: center">Mapped Value</th>
+                        <th style="width:25%;">Provider</th>
+                        <th style="text-align: center; width: 24%;">Provider Code</th>
+                        <th style="width:25%;text-align: center">Mapped Value</th>
+                        <th style="width:25%;text-align: center">Restrict Extraction Date</th>
                     </thead>
                     <tr>
-                        <td>{{selectedProviderName}}</td>
-                        <td style="text-align: center; width: 33%;">{{selectedProviderCode}}</td>
-                        <td style="text-align: center; width: 33%;">
+                        <td style="width:25%;">{{selectedProviderName}}</td>
+                        <td style="text-align: center; width: 24%;">{{selectedProviderCode}}</td>
+                        <td style="text-align: center; width: 25%;">
                             <mat-form-field appearance="outline">
                                 <mat-label>value</mat-label>
                                 <input matInput [formControl]="providerMappingController" placeholder="mapped value"
                                     type="text">
                             </mat-form-field>
+                        </td>
+                        <td style="text-align: center; width: 25%;">
+                            <div class="date-picker">
+                                <input id="restrictExtractionDate" [matDatepicker]="restrictExtractionDatePicker"
+                                    placeholder="Select Date" class="form-control"
+                                    [formControl]="restrictExtractionDateController">
+                                <mat-datepicker-toggle [for]="restrictExtractionDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #restrictExtractionDatePicker></mat-datepicker>
+                            </div>
                         </td>
                     </tr>
                 </table>
