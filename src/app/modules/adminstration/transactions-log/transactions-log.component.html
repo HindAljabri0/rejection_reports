@@ -1,0 +1,100 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Transactions Log</p>
+    </div>
+    <div class="block-filter-panel">
+        <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Provider ID</label>
+                    <input placeholder="Enter Provider ID" class="form-control">
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Payer</mat-option>
+                            <mat-option *ngFor="let payer of payers" value="payer.nphiesId">{{payer.englistName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Type</mat-option>
+                            <mat-option value="Type 1">Type 1</mat-option>
+                            <mat-option value="Type 2">Type 2</mat-option>
+                            <mat-option value="Type 3">Type 3</mat-option>
+                            <mat-option value="Type 4">Type 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">From Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                        <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filterFromDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                    <label class="control-label">To Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                        <mat-datepicker #filterToDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+        <div class="fixed-height">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Transaction</th>
+                        <th>Provider</th>
+                        <th>Payer Name</th>
+                        <th>Type</th>
+                        <th>Request Date</th>
+                        <th>Member ID</th>
+                        <th>Request Status Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let log of transactions">
+                        <tr>
+                            <td>{{log.providerTransactionId}}</td>
+                            <td>{{log.providerId}}</td>
+                            <td>{{getPayerName(log.payerNphiesId)}}</td>
+                            <td>{{log.transactionType}}</td>
+                            <td>{{log.requestDate | date : 'MMM, dd yyyy   hh:mm:ss a'}}</td>
+                            <td>{{log.memberCardId}}</td>
+                            <td>{{log.waseelResponseStatusCode}}</td>
+                        </tr>
+                    </ng-container>
+                    <tr>
+                        <td colspan="7" class="p-0">
+                            <app-empty-state *ngIf="transactions == null || transactions.length == 0"
+                                class="claim-list-empty-state" message='No records found!'>
+                            </app-empty-state>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+</div>
