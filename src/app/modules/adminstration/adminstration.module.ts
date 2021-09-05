@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
-import { AuditTrailComponent } from 'src/app/pages/audit-trail/audit-trail.component';
+import { AuditTrailComponent } from 'src/app/modules/adminstration/audit-trail/audit-trail.component';
 import { ProviderMappingComponent } from 'src/app/pages/provider-mapping/provider-mapping.component';
 import { ProvidersConfigComponent } from 'src/app/pages/providers-config/providers-config.component';
 import { RequestInterceptorService } from 'src/app/services/RequestInterceptorService/request-interceptor.service';
@@ -13,6 +13,7 @@ import { SharedModule } from '../shared.module';
 import { ProviderContractComponent } from './provider-contract/provider-contract.component';
 import { AddProviderContractDialogComponent } from './add-provider-contract-dialog/add-provider-contract-dialog.component';
 import { SwitchProviderComponentComponent } from './switch-provider/switch-provider-component/switch-provider-component.component';
+import { TransactionsLogComponent } from './transactions-log/transactions-log.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +22,14 @@ import { SwitchProviderComponentComponent } from './switch-provider/switch-provi
     ProviderMappingComponent,
     ProviderContractComponent,
     AddProviderContractDialogComponent,
-    SwitchProviderComponentComponent
+    SwitchProviderComponentComponent,
+    TransactionsLogComponent
   ],
   imports: [
     RouterModule.forChild([
       { path: '', redirectTo: 'auditLogs' },
       { path: 'auditLogs', component: AuditTrailComponent },
+      { path: 'transactions', component: TransactionsLogComponent },
       { path: 'config/providers', component: ProvidersConfigComponent },
       { path: 'config/providerMapping', component: ProviderMappingComponent },
       { path: 'config/providers/:providerId', component: ProvidersConfigComponent },
