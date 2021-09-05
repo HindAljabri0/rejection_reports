@@ -281,13 +281,13 @@
                                     <div class="form-group m-0" [matTooltip]="insurancePlan.payerErorr"
                                         [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
                                         <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                                            <mat-select  [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
                                                 <!-- <mat-option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
                                                     {{selectedPayer}}</mat-option> -->
-                                                <!-- <mat-option [value]="insurancePlan.selectePayer">{{getgid(insurancePlan.selectePayer)}}</mat-option> -->
+                                                <!-- <mat-option [value]="insurancePlan.selectePayer">{{selectedPayer(insurancePlan.selectePayer)}}</mat-option> -->
                                                 
                                                 <mat-option [value]="">Select Payer</mat-option>
-                                                <mat-option *ngFor="let payer of payersList  " [value]="payer.payerId">
+                                                <mat-option *ngFor="let payer of payersList"  [value]="payer.payerId"   >
                                                     {{payer.englistName}}({{payer.arabicName}})</mat-option>
 
                                             </mat-select>

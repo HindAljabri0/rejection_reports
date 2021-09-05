@@ -174,9 +174,10 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
-  getgid(id: string) {
-    var s = this.payersList.find(e => e.arabicName);
-    return s.englistName;
+  selectedPayer(payerid: string) {
+    var payerName = this.payersList.find(e => e.arabicName);
+    
+    return payerName.englistName+"("+payerName.arabicName+")";
 
   }
 
