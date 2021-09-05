@@ -134,7 +134,7 @@
                                 <span class="text">Credit Report Create</span>
                             </a>
                         </li> -->
-                        <li i18n="@@cleanClaimProgress" *ngIf="!envProd">
+                        <li i18n="@@cleanClaimProgress">
                             <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports"
                                 routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports"
@@ -144,7 +144,7 @@
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
+                        <li i18n="@@rejectedClaimProgress">
                             <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
                                 routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
@@ -152,7 +152,7 @@
                                 <span class="text">Rejected Claim Progress Report</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectionTrackingReport" *ngIf="!envStaging && !envProd">
+                        <li i18n="@@rejectionTrackingReport">
                             <a routerLink="/reports/{{providerId}}/rejection-tracking-report"
                                 routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
@@ -163,7 +163,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
+                <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>Collection Management</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -309,7 +309,7 @@
                             <span class="text">Beneficiary</span>
                         </a>
                     </li>
-                    <li>
+                    <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
                         <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">
                             <span class="text">Insurance Plans</span>
                         </a>
