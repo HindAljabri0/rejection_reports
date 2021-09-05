@@ -180,13 +180,15 @@
 
             <h5 class="form-title">
                 <span>Address</span>
-                <button type="button" (click)="addAddress()" class="btn-icon btn-primary ml-auto">
+                <!-- <button type="button" (click)="addAddress()" class="btn-icon btn-primary ml-auto">
                     <mat-icon>add</mat-icon>
-                </button>
+                </button> -->
             </h5>
-            <app-empty-state [className]="'mb-2'" *ngIf="addresses.length==0" [message]="'No addresses found!'">
-            </app-empty-state>
-            <div class="table-responsive" *ngIf="addresses.length>0  ">
+            <!-- *ngIf="addresses.length==0" [message]="'No addresses found!'" -->
+            <!-- <app-empty-state [className]="'mb-2'" > -->
+            <!-- </app-empty-state> -->
+            <!-- *ngIf="addresses.length>0  -->
+            <div class="table-responsive ">
                 <table class="primary-grid manual-row-color claim-view-table no-borders">
                     <thead>
                         <tr>
@@ -201,27 +203,27 @@
                     </thead>
                     <tbody>
 
-                        <tr class="align-middle" *ngFor="let address  of addresses ; let i = index">
+                        <tr class="align-middle">
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="address.houseNumberController" />
+                                <input type="text" class="form-control minw145" placeholder="Enter House No./Appartment" [formControl]="houseNumberController" />
                             </td>
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="address.streetNameController" />
+                                <input type="text" class="form-control minw145" placeholder="Enter Street Name" [formControl]="streetNameController" />
                             </td>
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="address.cityNameController" />
+                                <input type="text" class="form-control minw145" placeholder="Enter City" [formControl]="cityNameController" />
                             </td>
                             <td>
 
-                                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="address.stateController" />
+                                <input type="text" class="form-control minw145" placeholder="Enter State/Province" [formControl]="stateController" />
 
                             </td>
                             <td>
                                 <mat-form-field class="form-control custom-select-control">
-                                    <mat-select [value]="address.selectedCountry" (selectionChange)="address.selectedCountry = $event.value;" #Country>
+                                    <mat-select [value]="selectedCountry" (selectionChange)="selectedCountry = $event.value;" #Country>
                                         <mat-option>
                                             <ngx-mat-select-search placeholderLabel="Select Country" noEntriesFoundLabel="No nationalities found"
-                                                [formControl]="nationalityFilterCtrl" name='address.selectedCountry'>
+                                                [formControl]="nationalityFilterCtrl" name='selectedCountry'>
                                             </ngx-mat-select-search>
                                         </mat-option>
                                         <mat-option value="">Select Country</mat-option>
@@ -231,13 +233,13 @@
                                 </mat-form-field>
                             </td>
                             <td>
-                                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="address.postalCodeController" />
+                                <input type="text" class="form-control minw145" placeholder="Enter Postal Code" [formControl]="postalCodeController" />
                             </td>
-                            <td class="actions">
+                            <!-- <td class="actions">
                                 <button mat-icon-button matTooltip="Delete" class="text-primary m-0" (click)="deleteAddress(i)">
                                     <mat-icon>delete_outline</mat-icon>
                                 </button>
-                            </td>
+                            </td> -->
                         </tr>
 
                     </tbody>
@@ -279,10 +281,13 @@
                                     <div class="form-group m-0" [matTooltip]="insurancePlan.payerErorr"
                                         [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
                                         <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
-
-                                                <mat-option value="">Select Payer</mat-option>
-                                                <mat-option *ngFor="let payer of payersList  " [value]="payer.payerId">
+                                            <mat-select  [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
+                                                <!-- <mat-option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
+                                                    {{selectedPayer}}</mat-option> -->
+                                                <!-- <mat-option [value]="insurancePlan.selectePayer">{{selectedPayer(insurancePlan.selectePayer)}}</mat-option> -->
+                                                
+                                                <mat-option [value]="">Select Payer</mat-option>
+                                                <mat-option *ngFor="let payer of payersList"  [value]="payer.payerId"   >
                                                     {{payer.englistName}}({{payer.arabicName}})</mat-option>
 
                                             </mat-select>
@@ -499,13 +504,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let address of beneficiaryinfo.addresses ">
-                            <td>{{address.addressLine}}</td>
-                            <td>{{address.streetLine}}</td>
-                            <td>{{address.city}}</td>
-                            <td>{{address.state}}</td>
-                            <td>{{getNationalitiesName(address.country)}}</td>
-                            <td>{{address.postalCode}}</td>
+                        <tr >
+                            <td>{{beneficiaryinfo.addressLine}}</td>
+                            <td>{{beneficiaryinfo.streetLine}}</td>
+                            <td>{{beneficiaryinfo.city}}</td>
+                            <td>{{beneficiaryinfo.state}}</td>
+                            <td>{{getNationalitiesName(beneficiaryinfo.country)}}</td>
+                            <td>{{beneficiaryinfo.postalCode}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -528,7 +533,7 @@
                     <tbody>
                         <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
                             <td class="text-center align-middle">
-                                <mat-icon class="text-primary">{{insurancePlans.isPrimary?'done':''}}</mat-icon>
+                                <mat-icon class="text-primary">{{insurancePlans.isPrimary==true?'done':''}}</mat-icon>
                             </td>
                             <td>{{getPayerName(insurancePlans.payerId)}}</td>
                             <td>{{insurancePlans.expiryDate}}</td>

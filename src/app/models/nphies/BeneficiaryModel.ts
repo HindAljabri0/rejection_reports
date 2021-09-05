@@ -1,4 +1,4 @@
-import { Address } from "./address";
+
 import { InsurancePlan } from "./insurancePlan";
 
 export class BeneficiaryModel {
@@ -24,7 +24,12 @@ export class BeneficiaryModel {
     residencyType: string;
     martialStatus: string;
     preferredLanguage: string;
-    addresses: Array<Address>;
+    addressLine: string;
+    streetLine: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: string;
     insurancePlans: Array<InsurancePlan>;
 
 
