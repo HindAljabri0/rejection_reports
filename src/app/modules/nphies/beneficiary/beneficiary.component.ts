@@ -1,4 +1,4 @@
-import { X } from '@angular/cdk/keycodes';
+
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -31,7 +31,6 @@ export class BeneficiaryComponent implements OnInit {
   selectedMaritalStatus = "";
   selectedDocumentType = "";
   selectedGender = ""
-
   selectedResidencyType = ""
   selectedBloodGroup = "";
   selectedState = "";
@@ -63,16 +62,12 @@ export class BeneficiaryComponent implements OnInit {
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
-
-  addresses: {
-    houseNumberController: FormControl;
-    streetNameController: FormControl;
-    cityNameController: FormControl;
-    stateController: FormControl;
-    selectedCountry: string;
-    postalCodeController: FormControl
-
-  }[] = [];
+  houseNumberController = new FormControl();
+  streetNameController = new FormControl();
+  cityNameController = new FormControl();
+  stateController = new FormControl();
+  selectedCountry = "";
+  postalCodeController = new FormControl();
 
   insurancePlans: {
     iSPrimary: boolean,
@@ -150,7 +145,7 @@ export class BeneficiaryComponent implements OnInit {
   }
 
 
-   
+
   getBeneficiary(beneficiaryId: string) {
 
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
@@ -179,10 +174,15 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
+  getgid(id: string) {
+    var s = this.payersList.find(e => e.arabicName);
+    return s.englistName;
+
+  }
 
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
-    this.addresses = [];
+
     this.insurancePlans = [];
     this.fullName = beneficiaryinfo.firstName;
     this.secondNameController.setValue(beneficiaryinfo.middleName);
@@ -203,21 +203,12 @@ export class BeneficiaryComponent implements OnInit {
     this.selectedBloodGroup = beneficiaryinfo.bloodGroup;
     this.selectedMaritalStatus = beneficiaryinfo.martialStatus;
     this.selectedLanguages = beneficiaryinfo.preferredLanguage;
-
-
-    for (let address of beneficiaryinfo.addresses) {
-      this.addresses.push(
-        {
-          houseNumberController: new FormControl(address.addressLine),
-          streetNameController: new FormControl(address.streetLine),
-          cityNameController: new FormControl(address.city),
-          stateController: new FormControl(address.state),
-          selectedCountry: address.country,
-          postalCodeController: new FormControl(address.postalCode)
-        }
-      )
-    }
-
+    this.houseNumberController.setValue(beneficiaryinfo.addressLine);
+    this.streetNameController.setValue(beneficiaryinfo.streetLine);
+    this.cityNameController.setValue(beneficiaryinfo.city);
+    this.stateController.setValue(beneficiaryinfo.state);
+    this.selectedCountry = beneficiaryinfo.country;
+    this.postalCodeController.setValue(beneficiaryinfo.postalCode)
 
     for (let insurancePlans of beneficiaryinfo.insurancePlans) {
       this.insurancePlans.push(
@@ -230,7 +221,7 @@ export class BeneficiaryComponent implements OnInit {
         }
       )
     }
-    
+
     console.log(this.insurancePlans[0].iSPrimary)
   }
 
@@ -268,6 +259,7 @@ export class BeneficiaryComponent implements OnInit {
       });
 
 
+
     this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
     var url = this.router.url;
     if (url.endsWith('add')) {
@@ -280,8 +272,8 @@ export class BeneficiaryComponent implements OnInit {
 
     } else {
       this.getBeneficiary(this.beneficiaryId)
-     // console.log("oooo"+this.beneficiaryinfo.insurancePlans[0].isPrimary)
-    this.viewMode = true;
+      // console.log("oooo"+this.beneficiaryinfo.insurancePlans[0].isPrimary)
+      this.viewMode = true;
     }
 
   }
@@ -327,7 +319,7 @@ export class BeneficiaryComponent implements OnInit {
   allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
 
-
+  dialogData: MessageDialogData;
   errors = {
     dob: "",
     documentType: "",
@@ -336,25 +328,6 @@ export class BeneficiaryComponent implements OnInit {
     fullName: "",
 
   }
-
-
-
-  deleteAddress(i: number) {
-    this.addresses.splice(i, 1)
-  }
-  addAddress() {
-    this.addresses.push({
-      houseNumberController: new FormControl(),
-      streetNameController: new FormControl(),
-      cityNameController: new FormControl(),
-      stateController: new FormControl(),
-      selectedCountry: "",
-      postalCodeController: new FormControl()
-    })
-  }
-  dialogData: MessageDialogData;
-
-
 
 
   addInsurancePlan() {
@@ -483,16 +456,13 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.bloodGroup = this.selectedBloodGroup == "" ? null : this.selectedBloodGroup;
     this.beneficiaryModel.martialStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
     this.beneficiaryModel.preferredLanguage = this.selectedLanguages == "" ? null : this.selectedLanguages;
-    this.beneficiaryModel.addresses = this.addresses.map(addresse => ({
-      addressLine: addresse.houseNumberController.value,
-      streetLine: addresse.streetNameController.value,
-      city: addresse.cityNameController.value,
-      state: addresse.stateController.value,
-      country: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
-      postalCode: addresse.postalCodeController.value,
-
-
-    }));
+    this.beneficiaryModel.addressLine = this.houseNumberController.value;
+    this.beneficiaryModel.streetLine = this.streetNameController.value;
+    this.beneficiaryModel.city = this.cityNameController.value;
+    this.beneficiaryModel.state = this.stateController.value;
+    this.beneficiaryModel.documentId = this.documentIdFormControl.value;
+    this.beneficiaryModel.country = this.selectedCountry == "" ? null : this.selectedCountry;
+    this.beneficiaryModel.postalCode = this.postalCodeController.value;
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
       expiryDate: insurancePlan.expiryDateController.value,
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
