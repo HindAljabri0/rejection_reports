@@ -174,19 +174,19 @@
                                 <span class="text">Accounts Receivables</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/accounts-receivable-breakdown-report"
                                 routerLinkActive="is-active">
                                 <span class="text">AR Breakdown Report</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/accounts-receivable-tracking-report"
                                 routerLinkActive="is-active">
                                 <span class="text">AR Tracking Report</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/aging-report" routerLinkActive="is-active">
                                 <span class="text">Aging Report</span>
                             </a>
@@ -199,12 +199,12 @@
                             <a routerLink="/collection-management/statement-of-accounts-details" class="d-none"
                                 routerLinkActive="is-active" #statementAccountDetails="routerLinkActive"></a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/reconciliation" routerLinkActive="is-active">
                                 <span class="text">Reconciliation</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/reconciliation-report" routerLinkActive="is-active">
                                 <span class="text">Reconciliation Report</span>
                             </a>
