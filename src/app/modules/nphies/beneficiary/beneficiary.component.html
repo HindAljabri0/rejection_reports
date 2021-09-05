@@ -280,7 +280,8 @@
                                         [class.has-error]="insurancePlan.payerErorr!=null&&insurancePlan.payerErorr.trim().length>0">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selectePayer" (selectionChange)="insurancePlan.selectePayer = $event.value;" #Payer>
-
+                                                <!-- <mat-option *ngIf="!payersListHasId(selectedPayer) && pageMode == 'VIEW'" [value]="selectedPayer">
+                                                    {{selectedPayer}}</mat-option> -->
                                                 <mat-option value="">Select Payer</mat-option>
                                                 <mat-option *ngFor="let payer of payersList  " [value]="payer.payerId">
                                                     {{payer.englistName}}({{payer.arabicName}})</mat-option>
@@ -528,7 +529,7 @@
                     <tbody>
                         <tr *ngFor="let insurancePlans of beneficiaryinfo.insurancePlans">
                             <td class="text-center align-middle">
-                                <mat-icon class="text-primary">{{insurancePlans.isPrimary?'done':''}}</mat-icon>
+                                <mat-icon class="text-primary">{{insurancePlans.isPrimary==true?'done':''}}</mat-icon>
                             </td>
                             <td>{{getPayerName(insurancePlans.payerId)}}</td>
                             <td>{{insurancePlans.expiryDate}}</td>

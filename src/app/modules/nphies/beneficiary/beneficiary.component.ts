@@ -148,6 +148,9 @@ export class BeneficiaryComponent implements OnInit {
 
 
   }
+
+
+   
   getBeneficiary(beneficiaryId: string) {
 
     this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
@@ -227,6 +230,7 @@ export class BeneficiaryComponent implements OnInit {
         }
       )
     }
+    
     console.log(this.insurancePlans[0].iSPrimary)
   }
 
@@ -275,9 +279,9 @@ export class BeneficiaryComponent implements OnInit {
 
 
     } else {
-      this.getBeneficiary(this.beneficiaryId);
-
-      this.viewMode = true;
+      this.getBeneficiary(this.beneficiaryId)
+     // console.log("oooo"+this.beneficiaryinfo.insurancePlans[0].isPrimary)
+    this.viewMode = true;
     }
 
   }
