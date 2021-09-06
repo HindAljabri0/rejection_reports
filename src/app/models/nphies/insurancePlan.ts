@@ -4,6 +4,8 @@ export class InsurancePlan {
     expiryDate: string;
     memberCardId: string;
     isPrimary: boolean;
+    relationWithSubscriber: string;
+    coverageType: string;
 
 
 

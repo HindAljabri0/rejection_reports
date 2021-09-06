@@ -25,6 +25,7 @@ import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-
 // tslint:disable-next-line:max-line-length
 import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
+// tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pre-authorization-details.component';
 
@@ -68,7 +69,8 @@ import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pr
     ViewPreauthorizationDetailsComponent,
     AddEditCareTeamModalComponent,
     AddEditDiagnosisModalComponent,
-    AddEditVisionLensSpecificationsComponent
+    AddEditVisionLensSpecificationsComponent,
+    AddEditSupportingInfoModalComponent
   ]
 })
 export class NphiesModule { }

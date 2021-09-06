@@ -74,6 +74,8 @@ export class BeneficiaryComponent implements OnInit {
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
+    selecteSubscriberRelationship:string
+    selecteCoverageType:string,
     payerErorr: string,
     memberCardIdErorr: string,
   }[] = [];
@@ -99,6 +101,17 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'B_MINUS', Name: 'B-' },
     { Code: 'AB_PLUS', Name: 'AB+' },
     { Code: 'AB_MINUS', Name: 'AB-' },
+  ];
+
+  
+  SubscriberRelationship: { Code: string, Name: string }[] = [
+    { Code: 'CHILD', Name: 'Child' },
+    { Code: 'PARENT', Name: 'Parent' },
+    { Code: 'SPOUSE', Name: 'Spouse' },
+    { Code: 'COMMON', Name: 'Common Law Spouse' },
+    { Code: 'SELF', Name: 'Self' },
+    { Code: 'INJURED', Name: 'Injured Party' },
+    { Code: 'OTHER', Name: 'Other' },
   ];
 
 
@@ -190,6 +203,7 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
+
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
 
@@ -227,6 +241,8 @@ export class BeneficiaryComponent implements OnInit {
           selectePayer: insurancePlans.payerId.trim(),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
+          selecteSubscriberRelationship:insurancePlans.relationWithSubscriber,
+          selecteCoverageType:insurancePlans.coverageType,
           payerErorr: null, memberCardIdErorr: null
         }
       )
@@ -261,6 +277,7 @@ export class BeneficiaryComponent implements OnInit {
     this.filteredNations.next(this.nationalities.slice());
     this.allMaritalStatuses.next(this.maritalStatuses.slice());
     this.allBloodType.next(this.bloodGroup);
+    this.allSubscriberRelationship.next(this.SubscriberRelationship);
 
 
 
@@ -328,6 +345,7 @@ export class BeneficiaryComponent implements OnInit {
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allSubscriberRelationship: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
 
   dialogData: MessageDialogData;
@@ -349,6 +367,8 @@ export class BeneficiaryComponent implements OnInit {
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
+        selecteSubscriberRelationship:"",
+        selecteCoverageType:"",
         payerErorr: null,
         memberCardIdErorr: null
       })
@@ -478,6 +498,8 @@ export class BeneficiaryComponent implements OnInit {
       expiryDate: insurancePlan.expiryDateController.value,
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
+      relationWithSubscriber: "12",
+      coverageType: "re",
       isPrimary: insurancePlan.iSPrimary,
 
     }));;
