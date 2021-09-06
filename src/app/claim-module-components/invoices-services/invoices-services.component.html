@@ -230,8 +230,16 @@
                                                             <div class="col-auto" *ngIf="statusCode != undefined">
                                                                 <div
                                                                     class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
-                                                                    <label>Actual Paid Amount</label>
+                                                                    <label>Actual Paid Net Amount</label>
                                                                     <h3>{{calcNet(controllers[i].services[j]) - controllers[i].services[j].acutalDeductedAmount}}
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-auto" *ngIf="statusCode != undefined">
+                                                                <div
+                                                                    class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
+                                                                    <label>Actual Paid VAT Amount</label>
+                                                                    <h3>{{controllers[i].services[j].acutalPaidVatAmount}}
                                                                     </h3>
                                                                 </div>
                                                             </div>

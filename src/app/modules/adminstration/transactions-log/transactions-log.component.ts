@@ -13,31 +13,57 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class TransactionsLogComponent implements OnInit, AfterContentInit {
 
-  payers:Payer[] = [];
+  payers: Payer[] = [];
+  transactionTypes: { code: string, display: string }[] = [];
+
   transactions: TransactionLog[] = [];
 
-  constructor(private searchService: ProviderNphiesSearchService, private sharedServices: SharedServices, private beneficiaryService: ProvidersBeneficiariesService) { }
-  
+  constructor(private searchService: ProviderNphiesSearchService,
+    private sharedServices: SharedServices) { }
 
-  ngOnInit() {
+
+  async ngOnInit() {
     this.sharedServices.loadingChanged.next(true);
-    this.beneficiaryService.getPayers().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        this.sharedServices.loadingChanged.next(false);
-        const body = event.body;
-        if (body instanceof Array) {
-          this.payers = body;
-        }
-      }
-    }, errorEvent => {
-      this.sharedServices.loadingChanged.next(false);
-      if (errorEvent instanceof HttpErrorResponse) {
 
-      }
-    });
+    await this.loadPayers();
+    await this.loadTransactionTypes();
+
+    this.sharedServices.loadingChanged.next(false);
+    this.searchTransactions();
+
   }
 
-  ngAfterContentInit(): void {
+  ngAfterContentInit() {
+  }
+
+  async loadPayers() {
+    const event = await this.searchService.getPayers().toPromise();
+    if (event instanceof HttpResponse) {
+      const body = event.body;
+      if (body instanceof Array) {
+        this.payers = body;
+      }
+    } else if (event instanceof HttpErrorResponse) {
+
+    }
+  }
+
+  async loadTransactionTypes() {
+    const event = await this.searchService.getTransactionTypes().toPromise();
+    if (event instanceof HttpResponse) {
+      const body = event.body;
+      if (body instanceof Array) {
+        this.transactionTypes = body;
+      }
+    } else if (event instanceof HttpErrorResponse) {
+
+    }
+  }
+
+  searchTransactions() {
+    if (this.sharedServices.loading) {
+      return;
+    }
     this.sharedServices.loadingChanged.next(true);
     this.searchService.searchTransactionsLog().subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -59,9 +85,11 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     });
   }
 
-  getPayerName(id){
+
+
+  getPayerName(id) {
     const index = this.payers.findIndex(payer => payer.nphiesId == `${id}`);
-    if(index != -1){
+    if (index != -1) {
       return this.payers[index].englistName;
     }
     return id;
