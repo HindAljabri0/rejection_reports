@@ -74,8 +74,8 @@ export class BeneficiaryComponent implements OnInit {
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
-    selecteSubscriberRelationship:string
-    selecteCoverageType:string,
+    selecteSubscriberRelationship: string
+    selecteCoverageType: string,
     payerErorr: string,
     memberCardIdErorr: string,
   }[] = [];
@@ -103,7 +103,7 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'AB_MINUS', Name: 'AB-' },
   ];
 
-  
+
   SubscriberRelationship: { Code: string, Name: string }[] = [
     { Code: 'CHILD', Name: 'Child' },
     { Code: 'PARENT', Name: 'Parent' },
@@ -115,7 +115,27 @@ export class BeneficiaryComponent implements OnInit {
   ];
 
 
+  getCoverageTypeName(CoverageTypeCode: string) {
 
+    switch (CoverageTypeCode) {
+      case "EHCPOL":
+        return "extended healthcare"
+
+      case "PUBLICPOL":
+        return "public healthcare"
+
+      default:
+        return ""
+    }
+  }
+
+  getSubscriberRelationshipName(SubscriberRelationshipCode: string) {
+    for (let SubscriberRelationship of this.SubscriberRelationship) {
+      if (SubscriberRelationship.Code == SubscriberRelationshipCode) {
+        return SubscriberRelationship.Name
+      }
+    }
+  }
 
 
   getBloodTypeName(BloodCode: string) {
@@ -241,8 +261,8 @@ export class BeneficiaryComponent implements OnInit {
           selectePayer: insurancePlans.payerId.trim(),
           expiryDateController: new FormControl(insurancePlans.expiryDate),
           memberCardId: new FormControl(insurancePlans.memberCardId),
-          selecteSubscriberRelationship:insurancePlans.relationWithSubscriber,
-          selecteCoverageType:insurancePlans.coverageType,
+          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber,
+          selecteCoverageType: insurancePlans.coverageType,
           payerErorr: null, memberCardIdErorr: null
         }
       )
@@ -367,8 +387,8 @@ export class BeneficiaryComponent implements OnInit {
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
-        selecteSubscriberRelationship:"",
-        selecteCoverageType:"",
+        selecteSubscriberRelationship: "",
+        selecteCoverageType: "",
         payerErorr: null,
         memberCardIdErorr: null
       })
@@ -498,8 +518,8 @@ export class BeneficiaryComponent implements OnInit {
       expiryDate: insurancePlan.expiryDateController.value,
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
-      relationWithSubscriber: "12",
-      coverageType: "re",
+      relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == "" ? null : insurancePlan.selecteSubscriberRelationship,
+      coverageType: insurancePlan.selecteCoverageType == "" ? null : insurancePlan.selecteCoverageType,
       isPrimary: insurancePlan.iSPrimary,
 
     }));;
