@@ -11,7 +11,7 @@ import {
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
@@ -108,6 +108,7 @@ export class ProvidersConfigComponent implements OnInit {
   netAmountValue: number;
 
   constructor(
+    public datepipe: DatePipe,
     private superAdmin: SuperAdminService,
     private router: Router,
     private sharedServices: SharedServices,
@@ -1044,13 +1045,13 @@ export class ProvidersConfigComponent implements OnInit {
       const body = {
         providerCode: this.selectedProviderCode,
         mappingProviderCode: this.providerMappingController.value,
-        restrictExtractionDate: this.restrictExtractionDateController.value
+        restrictExtractionDate: this.datepipe.transform(new Date(this.restrictExtractionDateController.value), 'yyyy-MM-dd')
       };
       this.componentLoading.providerMapping = true;
       this.dbMapping.setProviderMapping(body, this.selectedProvider).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.providerMappingValue = body.mappingProviderCode;
-          this.restrictExtractionDateValue = body.restrictExtractionDate;
+          this.restrictExtractionDateValue = new Date(body.restrictExtractionDate);
           const data = event.body['message'];
           if (data != null) {
             this.getProviderMapping();
