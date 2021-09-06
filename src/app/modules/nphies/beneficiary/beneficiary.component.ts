@@ -119,10 +119,10 @@ export class BeneficiaryComponent implements OnInit {
 
     switch (CoverageTypeCode) {
       case "EHCPOL":
-        return "extended healthcare"
+        return "Extended healthcare"
 
       case "PUBLICPOL":
-        return "public healthcare"
+        return "Public healthcare"
 
       default:
         return ""
