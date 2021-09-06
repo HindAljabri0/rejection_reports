@@ -54,7 +54,6 @@
       </div>
 
       <h5 class="form-title">Pre Authorization Info</h5>
-
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
           <div class="form-group"
@@ -65,15 +64,13 @@
               <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
               <mat-datepicker #dateOrderedCtrl></mat-datepicker>
             </div>
-            <div
-              *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
               <span class="error-text">Please enter Date Ordered</span>
             </div>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
             <label class="control-label">Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="type">
@@ -107,6 +104,53 @@
 
 
       <h5 class="form-title">
+        <span>Care Team</span>
+        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <div *ngIf="CareTeams.length > 0" class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>Practitioner</th>
+              <th>Practitioner Role</th>
+              <th>Care Team Role</th>
+              <th>Speciality</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="align-middle" *ngFor="let careTeam of CareTeams; let i = index">
+              <td>
+                {{careTeam.practitionerName}}
+              </td>
+              <td>
+                {{careTeam.practitionerRoleName}}
+              </td>
+              <td>
+                {{careTeam.careTeamRoleName}}
+              </td>
+              <td>
+                {{careTeam.speciality}}
+              </td>
+              <td class="actions">
+                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="CareTeams.length === 0" message='No Care Team found!'>
+      </app-empty-state>
+
+
+      <h5 class="form-title">
         <span>Diagnosis</span>
         <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()">
           <mat-icon>add</mat-icon>
@@ -134,12 +178,10 @@
                 {{diagnosis.onAdmissionName}}
               </td>
               <td class="actions">
-                <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)"
-                  class="text-primary">
+                <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
                   <mat-icon>create</mat-icon>
                 </button>
-                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
-                  (click)="deleteDiagnosis(i)">
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(i)">
                   <mat-icon>delete_outline</mat-icon>
                 </button>
               </td>
@@ -190,6 +232,7 @@
           <table class="primary-grid manual-row-color no-borders">
             <thead>
               <tr>
+                <th>Product</th>
                 <th>Eye</th>
                 <th>Sphere</th>
                 <th>Cyclinder</th>
@@ -198,26 +241,22 @@
                 <th>Power</th>
                 <th>Back Curve</th>
                 <th>Diameter</th>
-                <th>Duration</th>
                 <th>Prism</th>
                 <th width="10"></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="seperator-row">
-                <td colspan="10">Lens</td>
-              </tr>
               <tr>
-                <td>Right</td>
-                <td>+35.72</td>
-                <td>+53.55</td>
-                <td>-19.90</td>
-                <td>-58.10</td>
-                <td>-54.48</td>
-                <td>+23.44</td>
-                <td>+1.78</td>
-                <td>+72.39</td>
-                <td>Amount/Base</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Lens</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Right</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+35.72</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+53.55</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-19.90</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-58.10</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+23.44</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+1.78</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+72.39</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
                 <td class="actions">
                   <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
                     <mat-icon>create</mat-icon>
@@ -228,39 +267,16 @@
                 </td>
               </tr>
               <tr>
-                <td>Left</td>
-                <td>+83.07</td>
-                <td>+5.97</td>
-                <td>+57.42</td>
-                <td>+33.68</td>
-                <td>-3.39</td>
-                <td>-95.32</td>
-                <td>-17.12</td>
-                <td>-75.99</td>
-                <td>Amount/Base</td>
-                <td class="actions">
-                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr class="seperator-row">
-                <td colspan="10">Contact</td>
-              </tr>
-              <tr>
-                <td>Right</td>
-                <td>+35.72</td>
-                <td>+53.55</td>
-                <td>+19.90</td>
-                <td>-58.10</td>
-                <td>-54.48</td>
-                <td>-23.44</td>
-                <td>+1.78</td>
-                <td>+72.39</td>
-                <td>+Amount/Base</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Lens</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Left</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+83.07</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+5.97</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+33.68</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-3.39</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-95.32</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-17.12</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-75.99</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
                 <td class="actions">
                   <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
                     <mat-icon>create</mat-icon>
@@ -271,16 +287,36 @@
                 </td>
               </tr>
               <tr>
-                <td>Left</td>
-                <td>-83.07</td>
-                <td>-5.97</td>
-                <td>-57.42</td>
-                <td>+33.68</td>
-                <td>+3.39</td>
-                <td>+95.32</td>
-                <td>-17.12</td>
-                <td>-75.99</td>
-                <td>Amount/Base</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Contact</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Right</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+35.72</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+53.55</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-58.10</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-54.48</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-23.44</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+1.78</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+72.39</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Contact</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Left</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-83.07</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-5.97</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-57.42</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+33.68</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+95.32</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-17.12</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-75.99</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
                 <td class="actions">
                   <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
                     <mat-icon>create</mat-icon>
@@ -301,7 +337,7 @@
           <mat-icon>add</mat-icon>
         </button>
       </h5>
-      <div  *ngIf="SupportingInfo.length > 0" class="table-responsive">
+      <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
         <table class="primary-grid manual-row-color claim-view-table no-borders">
           <thead>
             <tr>
@@ -333,12 +369,10 @@
                 {{s.reasonName}}
               </td>
               <td class="actions">
-                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
-                  (click)="openAddEditSupportInfoDialog(s)">
+                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
                   <mat-icon>create</mat-icon>
                 </button>
-                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
-                  (click)="deleteSupportingInfo(i)">
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(i)">
                   <mat-icon>delete_outline</mat-icon>
                 </button>
               </td>
@@ -394,75 +428,23 @@
           </div>
         </div>
         <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')}">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')}">
             <label class="control-label">Date<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
-                formControlName="date">
+              <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
               <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
               <mat-datepicker #accidentDate></mat-datepicker>
             </div>
-            <div
-            *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
-            <span class="error-text">Please enter date</span>
-          </div>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
+              <span class="error-text">Please enter date</span>
+            </div>
           </div>
         </div>
       </div>
 
       <h5 class="form-title">
-        <span>Care Team</span>
-        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </h5>
-      <div *ngIf="CareTeams.length > 0" class="table-responsive">
-        <table class="primary-grid manual-row-color claim-view-table no-borders">
-          <thead>
-            <tr>
-              <th>Practitioner</th>
-              <th>Practitioner Role</th>
-              <th>Care Team Role</th>
-              <th>Speciality</th>
-              <th width="10"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="align-middle" *ngFor="let careTeam of CareTeams; let i = index">
-              <td>
-                {{careTeam.practitionerName}}
-              </td>
-              <td>
-                {{careTeam.practitionerRoleName}}
-              </td>
-              <td>
-                {{careTeam.careTeamRoleName}}
-              </td>
-              <td>
-                {{careTeam.speciality}}
-              </td>
-              <td class="actions">
-                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)"
-                  class="text-primary">
-                  <mat-icon>create</mat-icon>
-                </button>
-                <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)"
-                  class="text-primary m-0">
-                  <mat-icon>delete_outline</mat-icon>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <app-empty-state *ngIf="CareTeams.length === 0" message='No Care Team found!'>
-      </app-empty-state>
-
-      <h5 class="form-title">
         <span>Items</span>
-        <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-          [disabled]="CareTeams.length === 0">
+        <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="CareTeams.length === 0">
           <mat-icon>add</mat-icon>
         </button>
       </h5>
@@ -488,8 +470,7 @@
               <td class="text-nowrap">{{item.net}} <span class="currency">SR</span></td>
               <td>{{item.nonStandardCode}}</td>
               <td class="actions">
-                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditItemDialog(item)"
-                  class="text-primary">
+                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditItemDialog(item)" class="text-primary">
                   <mat-icon>create</mat-icon>
                 </button>
                 <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
@@ -511,4 +492,18 @@
 
     </form>
   </div>
+
+  <!-- <div class="block-header has-border">
+    <div class="d-flex align-items-center">
+      <div class="actions mr-2 my-n2 ml-n1">
+        <button matRipple type="button" class="action-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <p>Authorization - LAV4FIYPZWKS</p>
+    </div>
+  </div>
+  <div class="bg-white p-14">
+    <app-pre-authorization-details></app-pre-authorization-details>
+  </div> -->
 </div>
