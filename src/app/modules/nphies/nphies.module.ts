@@ -25,7 +25,9 @@ import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-
 // tslint:disable-next-line:max-line-length
 import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
+// tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pre-authorization-details.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens
     AddEditDiagnosisModalComponent,
     AddEditSupportingInfoModalComponent,
     SearchBeneficiaryComponent,
-    AddEditVisionLensSpecificationsComponent
+    AddEditVisionLensSpecificationsComponent,
+    PreAuthorizationDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +69,8 @@ import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens
     ViewPreauthorizationDetailsComponent,
     AddEditCareTeamModalComponent,
     AddEditDiagnosisModalComponent,
-    AddEditVisionLensSpecificationsComponent
+    AddEditVisionLensSpecificationsComponent,
+    AddEditSupportingInfoModalComponent
   ]
 })
 export class NphiesModule { }

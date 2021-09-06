@@ -9,8 +9,11 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { DatePipe } from '@angular/common';
 import { AddEditDiagnosisModalComponent } from './add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
-import { X } from '@angular/cdk/keycodes';
+// tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from '../add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { AddEditSupportingInfoModalComponent } from './add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -40,7 +43,7 @@ export class AddPreauthorizationComponent implements OnInit {
     date: ['', Validators.required],
   });
 
-  SupportingInfos = [];
+  SupportingInfo = [];
   CareTeams = [];
   Diagnosises = [];
   Items = [];
@@ -50,80 +53,11 @@ export class AddPreauthorizationComponent implements OnInit {
   isSubmitted = false;
   constructor(
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
-    private beneficiaryService: ProvidersBeneficiariesService) {
+    private beneficiaryService: ProvidersBeneficiariesService, private providerNphiesApprovalService: ProviderNphiesApprovalService) {
 
   }
 
   ngOnInit() {
-
-    // let x: any = {};
-    // x.sequence = 1;
-    // x.practitionerName = 'asd';
-    // x.practitionerRole = 'asd';
-    // x.careTeamRole = 'asd';
-    // x.speciality = 'asd';
-
-    // this.CareTeams.push(x);
-
-    // let y: any = {};
-    // y.sequence = 2;
-    // y.practitionerName = 'bbb';
-    // y.practitionerRole = 'bbb';
-    // y.careTeamRole = 'bbb';
-    // y.speciality = 'bbb';
-    // this.CareTeams.push(y);
-
-    // let z: any = {};
-    // z.sequence = 3;
-    // z.practitionerName = 'xxx';
-    // z.practitionerRole = 'xxx';
-    // z.careTeamRole = 'xxx';
-    // z.speciality = 'xxx';
-    // this.CareTeams.push(z);
-
-    // const diagnosisModel: any = {};
-    // diagnosisModel.sequence = '';
-    // diagnosisModel.codeDescription = '';
-    // diagnosisModel.type = '';
-    // diagnosisModel.onAdmission = '';
-    // this.model.diagnosis = [diagnosisModel, diagnosisModel];
-
-    // const supportingInfoModel: any = {};
-    // supportingInfoModel.sequence = '';
-    // supportingInfoModel.reason = '';
-    // supportingInfoModel.category = '';
-    // supportingInfoModel.value = '';
-    // supportingInfoModel.code = '';
-    // supportingInfoModel.attachment = '';
-    // this.model.supportingInfo = [supportingInfoModel, supportingInfoModel];
-
-
-
-
-
-    // const ItemModel: any = {};
-    // ItemModel.sequence = '';
-    // ItemModel.type = '';
-    // ItemModel.codeDescription = '';
-    // ItemModel.nonStandardCode = '';
-    // ItemModel.isPackage = '';
-    // ItemModel.quantity = '';
-    // ItemModel.unitPrice = '';
-    // ItemModel.discount = '';
-    // ItemModel.factor = '';
-    // ItemModel.taxPercent = '';
-    // ItemModel.patientSharePercent = '';
-    // ItemModel.tax = '';
-    // ItemModel.net = '';
-    // ItemModel.patientShare = '';
-    // ItemModel.payerShare = '';
-    // ItemModel.startDate = '';
-    // ItemModel.supportingInfoSequence = [1, 2, 3];
-    // ItemModel.diagnosisSequence = [1, 2, 3];
-    // ItemModel.careTeamSequence = [1, 2, 3];
-    // this.model.Items = [ItemModel, ItemModel];
-
-    // console.log(this.model);
 
   }
 
@@ -198,8 +132,30 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-  deleteCareTeam(index: number) {
-    this.CareTeams.splice(index, 1);
+  deleteCareTeam(sequence: number, index: number) {
+
+    if (this.Items.find(x => x.careTeamSequence.find(y => y === sequence))) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+      dialogConfig.data = {
+        // tslint:disable-next-line:max-line-length
+        mainMessage: 'Are you sure you want to delete this Care Team?',
+        subMessage: 'This care team is referenced in some of the Items',
+        mode: 'warning',
+        hideNoButton: false
+      };
+
+      const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.Items.find(x => x.careTeamSequence.splice(x.careTeamSequence.indexOf(sequence), 1));
+          this.CareTeams.splice(index, 1);
+        }
+      });
+    } else {
+      this.CareTeams.splice(index, 1);
+    }
   }
 
   openAddEditDiagnosis(diagnosis: any = null) {
@@ -238,7 +194,6 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   openAddEditItemDialog(itemModel: any = null) {
-    debugger;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -247,7 +202,7 @@ export class AddPreauthorizationComponent implements OnInit {
       item: itemModel,
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
-      supportingInfos: this.SupportingInfos
+      supportingInfos: this.SupportingInfo
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -275,7 +230,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
               x.supportingInfoSequence = result.supportingInfoSequence;
-              x.careTeamSequence = result.careTeamSequence;
+              x.bnvm = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
             }
           });
@@ -286,13 +241,58 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
+  deleteItem(index: number) {
+    this.Items.splice(index, 1);
+  }
+
+  openAddEditSupportInfoDialog(supportInfoModel: any = null) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      Sequence: (supportInfoModel !== null) ? supportInfoModel.sequence : (this.SupportingInfo.length === 0 ? 1 : (this.SupportingInfo[this.SupportingInfo.length - 1].sequence + 1)),
+      item: supportInfoModel
+    };
+
+    const dialogRef = this.dialog.open(AddEditSupportingInfoModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (this.SupportingInfo.find(x => x.sequence === result.sequence)) {
+          this.SupportingInfo.map(x => {
+            if (x.sequence === result.sequence) {
+              x.category = result.category;
+              x.code = result.code;
+              x.fromDate = result.fromDate;
+              x.toDate = result.toDate;
+              x.value = result.value;
+              x.reason = result.reason;
+              x.attachment = result.attachment;
+              x.codeName = result.codeName;
+              x.reasonName = result.reasonName;
+              x.fromDateStr = result.fromDateStr;
+              x.toDateStr = result.toDateStr;
+              x.unit = result.unit;
+              x.byteArray = result.byteArray;
+            }
+          });
+        } else {
+          this.SupportingInfo.push(result);
+        }
+      }
+    });
+  }
+
+  deleteSupportingInfo(index: number) {
+    this.SupportingInfo.splice(index, 1);
+  }
+
   onSubmit() {
-    debugger;
     this.isSubmitted = true;
     if (this.FormPreAuthorization.valid) {
 
 
-      this.model.beneficaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
+      this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.insurancePlanId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
       const preAuthorizationModel: any = {};
@@ -301,6 +301,18 @@ export class AddPreauthorizationComponent implements OnInit {
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
+      this.model.supportingInfo = this.SupportingInfo.map(x => {
+        const model: any = {};
+        model.sequence = x.sequence;
+        model.category = x.category;
+        model.code = x.code;
+        model.fromDate = x.fromDate;
+        model.toDate = x.toDate;
+        model.value = x.value;
+        model.reason = x.reason;
+        model.attachment = x.byteArray;
+        return model;
+      });
 
       this.model.diagnosis = this.Diagnosises.map(x => {
         const model: any = {};
@@ -329,7 +341,7 @@ export class AddPreauthorizationComponent implements OnInit {
         model.practitionerRole = x.practitionerRole;
         model.careTeamRole = x.careTeamRole;
         model.speciality = x.speciality;
-        model.speciallityCode = x.speciallityCode;
+        model.specialityCode = x.speciallityCode;
         return model;
       });
 
@@ -360,6 +372,21 @@ export class AddPreauthorizationComponent implements OnInit {
 
       console.log('FormValue', this.FormPreAuthorization.value);
       console.log('Model', this.model);
+
+      this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(res => {
+        if (event instanceof HttpResponse) {
+          debugger;
+        }
+      }, error => {
+        debugger;
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 404) {
+
+          } else if (error.status < 500) {
+
+          }
+        }
+      });
     }
   }
 

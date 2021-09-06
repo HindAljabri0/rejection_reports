@@ -27,7 +27,8 @@ export const environment = {
   approvalDetailInquiryService: `${host}:8333`,
   providersBeneficiariesService: `${host}:8995`,
   providerNphiesEligibility: `${host}:8022`,
-  providerNphiesSearch: `${host}:8090`
+  providerNphiesSearch: `${host}:8090`,
+  providerNphiesApproval: `${host}:8025`
 };
 
 /*
