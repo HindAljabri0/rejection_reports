@@ -3,7 +3,6 @@ import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { Payer } from 'src/app/models/nphies/payer';
 import { TransactionLog } from 'src/app/models/nphies/transactionLog';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
-import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
