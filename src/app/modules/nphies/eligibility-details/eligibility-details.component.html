@@ -2,41 +2,41 @@
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Beneficiary Name</div>
-            <p class="form-control-static">Sara Basheer Assi</p>
+            <p class="form-control-static">{{eligibilityResponse.banificiaryName}}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Service Date</div>
-            <p class="form-control-static">21/01/2021</p>
-        </div>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            <div class="control-label">Department Name</div>
-            <p class="form-control-static">NA</p>
+            <p class="form-control-static">{{eligibilityResponse.serviceDate | date :'dd/MM/yyyy'}}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Transaction Date</div>
-            <p class="form-control-static">21/01/2021 10:35</p>
+            <p class="form-control-static">{{eligibilityResponse.transactionDate | date :'dd/MM/yyyy hh:mm:ss'}}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Eligibility Purpose</div>
-            <p class="form-control-static">Validation, Benefits</p>
+            <p class="form-control-static" *ngFor="let Purpose of eligibilityResponse.eligibilityPurpose">{{Purpose}}
+            </p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Eligibility Status</div>
-            <p class="form-control-static">Approved</p>
+            <p class="form-control-static">{{eligibilityResponse.eligibilityStatus=="true"?"Eligible":"Ineligible"}}</p>
+
+            <div >
+                <p *ngIf="eligibilityResponse.error.reasonCode != null" class="form-control-static">{{getReasonError()}}</p>
+                <p *ngIf="eligibilityResponse.error.massage != null" class="form-control-static">{{eligibilityResponse.error.massage}}</p>
+            </div>
         </div>
     </div>
 </div>
-
+<!-- 
 <h5 class="form-title">
     Benefit Category - Medical Coverage
 </h5>
@@ -82,27 +82,37 @@
 <h5 class="form-title">
     Benefit Category - Diagnostic X-ray
 </h5>
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla amet quidem. Cumque voluptatem, maxime eos tenetur
-saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam hic cupiditate odit aliquid labore quisquam
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla
+amet quidem. Cumque voluptatem, maxime eos tenetur
+saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam
+hic cupiditate odit aliquid labore quisquam
 temporibus unde natus error laboriosam aspernatur reiciendis.
 
 <h5 class="form-title">
     Benefit Category - Consultation
 </h5>
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla amet quidem. Cumque voluptatem, maxime eos tenetur
-saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam hic cupiditate odit aliquid labore quisquam
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla
+amet quidem. Cumque voluptatem, maxime eos tenetur
+saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam
+hic cupiditate odit aliquid labore quisquam
 temporibus unde natus error laboriosam aspernatur reiciendis.
 
 <h5 class="form-title">
     Benefit Category - Surgical
 </h5>
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla amet quidem. Cumque voluptatem, maxime eos tenetur
-saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam hic cupiditate odit aliquid labore quisquam
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla
+amet quidem. Cumque voluptatem, maxime eos tenetur
+saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam
+hic cupiditate odit aliquid labore quisquam
 temporibus unde natus error laboriosam aspernatur reiciendis.
 
 <h5 class="form-title">
     Benefit Category - Medical Care
 </h5>
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla amet quidem. Cumque voluptatem, maxime eos tenetur
-saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam hic cupiditate odit aliquid labore quisquam
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla
+amet quidem. Cumque voluptatem, maxime eos tenetur
+saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam
+hic cupiditate odit aliquid labore quisquam
 temporibus unde natus error laboriosam aspernatur reiciendis.
+
+ -->

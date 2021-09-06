@@ -2,169 +2,429 @@
     <div class="block-header has-border">
         <p>Preauthorization Transactions</p>
     </div>
-    <div class="block-filter-panel">
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">From Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
-                        <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterFromDate></mat-datepicker>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span>Requests</span>
+            </ng-template>
+            <div class="block-filter-panel">
+                <div class="row small-gutter">
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">From Date</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                                <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                                <mat-datepicker #filterFromDate></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">To Date</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                                <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                                <mat-datepicker #filterToDate></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Pre Authorization ID</label>
+                            <input placeholder="Enter pre authorization ID" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Payer</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Payer</mat-option>
+                                    <mat-option value="Payer 1">Payer 1</mat-option>
+                                    <mat-option value="Payer 2">Payer 2</mat-option>
+                                    <mat-option value="Payer 3">Payer 3</mat-option>
+                                    <mat-option value="Payer 4">Payer 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Beneficiary</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Beneficiary</mat-option>
+                                    <mat-option value="Beneficiary 1">Beneficiary 1</mat-option>
+                                    <mat-option value="Beneficiary 2">Beneficiary 2</mat-option>
+                                    <mat-option value="Beneficiary 3">Beneficiary 3</mat-option>
+                                    <mat-option value="Beneficiary 4">Beneficiary 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Status</mat-option>
+                                    <mat-option value="Status 1">Status 1</mat-option>
+                                    <mat-option value="Status 2">Status 2</mat-option>
+                                    <mat-option value="Status 3">Status 3</mat-option>
+                                    <mat-option value="Status 4">Status 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">To Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
-                        <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-                        <mat-datepicker #filterToDate></mat-datepicker>
+                    <button type="button" mat-flat-button color="primary">Search</button>
+                </div>
+            </div>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Member Card ID</th>
+                                <th>Pre Authorization ID</th>
+                                <th>Transaction Date/Time</th>
+                                <th>Payer</th>
+                                <th>Status</th>
+                                <th>Processing Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">496661</td>
+                                <td class="row-click" (click)="openDetailsDialog()">LAV4FIYPZWKS</td>
+                                <td class="row-click" (click)="openDetailsDialog()">22/4/2026</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Tawuniya</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Pending</td>
+                                <td class="actions text-left text-wrap">
+                                    <div class="d-flex align-items-center">
+                                        <button mat-icon-button matTooltip="Check Status" class="text-primary">
+                                            <mat-icon>refresh</mat-icon>
+                                        </button>
+                                        <span class="pl-1">Processing Payment</span>
+                                    </div>
+                                </td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">106823</td>
+                                <td class="row-click" (click)="openDetailsDialog()">3CL3UHRA4OJZ</td>
+                                <td class="row-click" (click)="openDetailsDialog()">9/5/2076</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Tawuniya</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Approved</td>
+                                <td class="actions text-left text-wrap"></td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">729978</td>
+                                <td class="row-click" (click)="openDetailsDialog()">X1NBKAKAU0CK</td>
+                                <td class="row-click" (click)="openDetailsDialog()">25/3/2037</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Tawuniya</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Pending</td>
+                                <td class="actions text-left text-wrap">
+                                    <button mat-icon-button matTooltip="Check Status" class="text-primary">
+                                        <mat-icon>refresh</mat-icon>
+                                    </button>
+                                </td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">285297</td>
+                                <td class="row-click" (click)="openDetailsDialog()">TX7DBH9MGLSN</td>
+                                <td class="row-click" (click)="openDetailsDialog()">25/7/2063</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Tawuniya</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Pending</td>
+                                <td class="actions text-left text-wrap">
+                                    <button mat-icon-button matTooltip="Check Status" class="text-primary">
+                                        <mat-icon>refresh</mat-icon>
+                                    </button>
+                                </td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-scrollbar>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                    <span>Processed</span>
+                    <span class="alert-marker ml-2"></span>
+                </div>
+            </ng-template>
+            <div class="block-filter-panel">
+                <div class="row small-gutter">
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">From Date</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="filterProcessedFromDate" class="form-control" placeholder="Select from date">
+                                <mat-datepicker-toggle [for]="filterProcessedFromDate"></mat-datepicker-toggle>
+                                <mat-datepicker #filterProcessedFromDate></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">To Date</label>
+                            <div class="date-picker">
+                                <input [matDatepicker]="filterProcessedToDate" class="form-control" placeholder="Select to date">
+                                <mat-datepicker-toggle [for]="filterProcessedToDate"></mat-datepicker-toggle>
+                                <mat-datepicker #filterProcessedToDate></mat-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Pre Authorization ID</label>
+                            <input placeholder="Enter pre authorization ID" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Insurance Plan</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Insurance Plan</mat-option>
+                                    <mat-option value="Insurance Plan 1">Insurance Plan 1</mat-option>
+                                    <mat-option value="Insurance Plan 2">Insurance Plan 2</mat-option>
+                                    <mat-option value="Insurance Plan 3">Insurance Plan 3</mat-option>
+                                    <mat-option value="Insurance Plan 4">Insurance Plan 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Beneficiary</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Beneficiary</mat-option>
+                                    <mat-option value="Beneficiary 1">Beneficiary 1</mat-option>
+                                    <mat-option value="Beneficiary 2">Beneficiary 2</mat-option>
+                                    <mat-option value="Beneficiary 3">Beneficiary 3</mat-option>
+                                    <mat-option value="Beneficiary 4">Beneficiary 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select Status</mat-option>
+                                    <mat-option value="Status 1">Status 1</mat-option>
+                                    <mat-option value="Status 2">Status 2</mat-option>
+                                    <mat-option value="Status 3">Status 3</mat-option>
+                                    <mat-option value="Status 4">Status 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Pre Authorization ID</label>
-                    <input placeholder="Enter pre authorization ID" class="form-control">
+                    <button type="button" mat-flat-button color="primary">Search</button>
                 </div>
             </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Insurance Plan</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Insurance Plan</mat-option>
-                            <mat-option value="Insurance Plan 1">Insurance Plan 1</mat-option>
-                            <mat-option value="Insurance Plan 2">Insurance Plan 2</mat-option>
-                            <mat-option value="Insurance Plan 3">Insurance Plan 3</mat-option>
-                            <mat-option value="Insurance Plan 4">Insurance Plan 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Member Card ID</th>
+                                <th>Pre Authorization ID</th>
+                                <th>Transaction Date/Time</th>
+                                <th>Insurance Plan</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">496661</td>
+                                <td class="row-click" (click)="openDetailsDialog()">LAV4FIYPZWKS</td>
+                                <td class="row-click" (click)="openDetailsDialog()">22/4/2026</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">106823</td>
+                                <td class="row-click" (click)="openDetailsDialog()">3CL3UHRA4OJZ</td>
+                                <td class="row-click" (click)="openDetailsDialog()">9/5/2022</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Approved</td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">729978</td>
+                                <td class="row-click" (click)="openDetailsDialog()">X1NBKAKAU0CK</td>
+                                <td class="row-click" (click)="openDetailsDialog()">25/3/2021</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">285297</td>
+                                <td class="row-click" (click)="openDetailsDialog()">TX7DBH9MGLSN</td>
+                                <td class="row-click" (click)="openDetailsDialog()">25/7/2012</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
+                                <td class="actions">
+                                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                                        <button mat-menu-item><span>Reuse</span></button>
+                                        <button mat-menu-item><span>Cancel</span></button>
+                                        <button mat-menu-item><span>Nullify/Soft Delete</span></button>
+                                        <button mat-menu-item><span>Add New Related Claim</span></button>
+                                    </mat-menu>
+                                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Beneficiary</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Beneficiary</mat-option>
-                            <mat-option value="Beneficiary 1">Beneficiary 1</mat-option>
-                            <mat-option value="Beneficiary 2">Beneficiary 2</mat-option>
-                            <mat-option value="Beneficiary 3">Beneficiary 3</mat-option>
-                            <mat-option value="Beneficiary 4">Beneficiary 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            </ng-scrollbar>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                    <span>Communication Request</span>
+                    <span class="alert-marker ml-2"></span>
                 </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Status</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Status</mat-option>
-                            <mat-option value="Status 1">Status 1</mat-option>
-                            <mat-option value="Status 2">Status 2</mat-option>
-                            <mat-option value="Status 3">Status 3</mat-option>
-                            <mat-option value="Status 4">Status 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            </ng-template>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+                <div class="fixed-height">
+                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Communication ID</th>
+                                <th>Category</th>
+                                <th>Claim ID/Pre-Auth ID</th>
+                                <th>Sender</th>
+                                <th>Reason Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">496661</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
+                                <td class="row-click" (click)="openDetailsDialog()">XQFBDA</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Cecilia Brock</td>
+                                <td class="row-click" (click)="openDetailsDialog()">5</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">660052</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
+                                <td class="row-click" (click)="openDetailsDialog()">JNIK95867EQLGAHKR1</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Keith Hawkins</td>
+                                <td class="row-click" (click)="openDetailsDialog()">45</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">913500</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Claim</td>
+                                <td class="row-click" (click)="openDetailsDialog()">CI3FQJK9BZJC9PUYAT24</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Alex Moran</td>
+                                <td class="row-click" (click)="openDetailsDialog()">26</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">884114</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Claim</td>
+                                <td class="row-click" (click)="openDetailsDialog()">PHGETRCGLXM</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Lou Graves</td>
+                                <td class="row-click" (click)="openDetailsDialog()">62</td>
+                            </tr>
+                            <tr>
+                                <td class="row-click" (click)="openDetailsDialog()">807591</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
+                                <td class="row-click" (click)="openDetailsDialog()">KC4GJ4DP</td>
+                                <td class="row-click" (click)="openDetailsDialog()">Christina Caldwell</td>
+                                <td class="row-click" (click)="openDetailsDialog()">15</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Search</button>
-        </div>
-    </div>
-    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
-            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                <thead>
-                    <tr>
-                        <th>Member Card ID</th>
-                        <th>Pre Authorization ID</th>
-                        <th>Transaction Date/Time</th>
-                        <th>Insurance Plan</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-click" (click)="openDetailsDialog()">496661</td>
-                        <td class="row-click" (click)="openDetailsDialog()">LAV4FIYPZWKS</td>
-                        <td class="row-click" (click)="openDetailsDialog()">22/4/2026</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
-                        <td class="actions">
-                            <mat-menu #moreMenu="matMenu" xPosition="before">
-                                <button mat-menu-item><span>Reuse</span></button>
-                                <button mat-menu-item><span>Cancel</span></button>
-                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                                <button mat-menu-item><span>Add New Related Claim</span></button>
-                            </mat-menu>
-                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" (click)="openDetailsDialog()">106823</td>
-                        <td class="row-click" (click)="openDetailsDialog()">3CL3UHRA4OJZ</td>
-                        <td class="row-click" (click)="openDetailsDialog()">9/5/2076</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
-                        <td class="actions">
-                            <mat-menu #moreMenu="matMenu" xPosition="before">
-                                <button mat-menu-item><span>Reuse</span></button>
-                                <button mat-menu-item><span>Cancel</span></button>
-                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                                <button mat-menu-item><span>Add New Related Claim</span></button>
-                            </mat-menu>
-                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" (click)="openDetailsDialog()">729978</td>
-                        <td class="row-click" (click)="openDetailsDialog()">X1NBKAKAU0CK</td>
-                        <td class="row-click" (click)="openDetailsDialog()">25/3/2037</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
-                        <td class="actions">
-                            <mat-menu #moreMenu="matMenu" xPosition="before">
-                                <button mat-menu-item><span>Reuse</span></button>
-                                <button mat-menu-item><span>Cancel</span></button>
-                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                                <button mat-menu-item><span>Add New Related Claim</span></button>
-                            </mat-menu>
-                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-click" (click)="openDetailsDialog()">285297</td>
-                        <td class="row-click" (click)="openDetailsDialog()">TX7DBH9MGLSN</td>
-                        <td class="row-click" (click)="openDetailsDialog()">25/7/2063</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                        <td class="row-click" (click)="openDetailsDialog()">Approved</td>
-                        <td class="actions">
-                            <mat-menu #moreMenu="matMenu" xPosition="before">
-                                <button mat-menu-item><span>Reuse</span></button>
-                                <button mat-menu-item><span>Cancel</span></button>
-                                <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                                <button mat-menu-item><span>Add New Related Claim</span></button>
-                            </mat-menu>
-                            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </ng-scrollbar>
+            </ng-scrollbar>
+        </mat-tab>
+    </mat-tab-group>
 </div>

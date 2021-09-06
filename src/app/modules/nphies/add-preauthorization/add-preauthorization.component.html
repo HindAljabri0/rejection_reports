@@ -1,375 +1,509 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <div class="block-header has-border">
-        <p>Request Pre Authorization</p>
-    </div>
-    <div class="block-filter-panel">
-        <h5 class="form-title pt-0">Beneficary Info</h5>
-        <div class="d-flex">
-            <div class="form-group flex-grow-1">
-                <label class="control-label">Select a Beneficiary</label>
-                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID...">
-            </div>
-            <div class="form-group pl-3 pr-3">
-                <label class="control-label">&nbsp;</label>
-                <span class="pt-2 d-block semibold">OR</span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">&nbsp;</label>
-                <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
-            </div>
+  <div class="block-header has-border">
+    <p>Request Pre Authorization</p>
+  </div>
+  <div class="block-filter-panel">
+    <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
+
+
+      <h5 class="form-title pt-0">Beneficary Info</h5>
+      <div class="d-flex">
+        <div class="form-group flex-grow-1"
+          [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
+          <label class="control-label">Select a Beneficiary</label>
+          <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
+            (keyup)="searchBeneficiaries()">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+              {{beneficiary.name}} ({{beneficiary.documentId}})
+            </mat-option>
+          </mat-autocomplete>
+          <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+            <span class="error-text">Please select a Beneficiary</span>
+          </div>
         </div>
-
-        <h5 class="form-title">Pre Authorization Info</h5>
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Date Ordered</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="dateOrdered" class="form-control" placeholder="Select date ordered">
-                        <mat-datepicker-toggle [for]="dateOrdered"></mat-datepicker-toggle>
-                        <mat-datepicker #dateOrdered></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Type</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Type</mat-option>
-                            <mat-option value="Type 1">Type 1</mat-option>
-                            <mat-option value="Type 2">Type 2</mat-option>
-                            <mat-option value="Type 3">Type 3</mat-option>
-                            <mat-option value="Type 4">Type 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Sub Type</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Sub Type</mat-option>
-                            <mat-option value="Sub Type 1">Sub Type 1</mat-option>
-                            <mat-option value="Sub Type 2">Sub Type 2</mat-option>
-                            <mat-option value="Sub Type 3">Sub Type 3</mat-option>
-                            <mat-option value="Sub Type 4">Sub Type 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
+        <div class="form-group pl-3 pr-3">
+          <label class="control-label">&nbsp;</label>
+          <span class="pt-2 d-block semibold">OR</span>
         </div>
-
-        <h5 class="form-title">
-            <span>Diagnoses</span>
-            <button type="button" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Code - Description</th>
-                        <th>Type</th>
-                        <th>On Admission</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Code - Description</mat-option>
-                                    <mat-option value="Code 1">Code 1</mat-option>
-                                    <mat-option value="Code 2">Code 2</mat-option>
-                                    <mat-option value="Code 3">Code 3</mat-option>
-                                    <mat-option value="Code 4">Code 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Type</mat-option>
-                                    <mat-option value="Type 1">Type 1</mat-option>
-                                    <mat-option value="Type 2">Type 2</mat-option>
-                                    <mat-option value="Type 3">Type 3</mat-option>
-                                    <mat-option value="Type 4">Type 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select On Admission</mat-option>
-                                    <mat-option value="On Admission 1">On Admission 1</mat-option>
-                                    <mat-option value="On Admission 2">On Admission 2</mat-option>
-                                    <mat-option value="On Admission 3">On Admission 3</mat-option>
-                                    <mat-option value="On Admission 4">On Admission 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="form-title">
-            <span>Supporting Info</span>
-            <button type="button" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Value Type</th>
-                        <th>Reason</th>
-                        <th>Category</th>
-                        <th>Value</th>
-                        <th>Code</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Value Type</mat-option>
-                                    <mat-option value="Value Type 1">Value Type 1</mat-option>
-                                    <mat-option value="Value Type 2">Value Type 2</mat-option>
-                                    <mat-option value="Value Type 3">Value Type 3</mat-option>
-                                    <mat-option value="Value Type 4">Value Type 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Reason</mat-option>
-                                    <mat-option value="Reason 1">Reason 1</mat-option>
-                                    <mat-option value="Reason 2">Reason 2</mat-option>
-                                    <mat-option value="Reason 3">Reason 3</mat-option>
-                                    <mat-option value="Reason 4">Reason 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Category</mat-option>
-                                    <mat-option value="Category 1">Category 1</mat-option>
-                                    <mat-option value="Category 2">Category 2</mat-option>
-                                    <mat-option value="Category 3">Category 3</mat-option>
-                                    <mat-option value="Category 4">Category 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control minw145" placeholder="Enter value" />
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Code</mat-option>
-                                    <mat-option value="Code 1">Code 1</mat-option>
-                                    <mat-option value="Code 2">Code 2</mat-option>
-                                    <mat-option value="Code 3">Code 3</mat-option>
-                                    <mat-option value="Code 4">Code 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="form-title">Accident</h5>
-        <div class="row small-gutter">
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Accident Type</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select value="-1">
-                            <mat-option value="-1">Select Accident Type</mat-option>
-                            <mat-option value="Accident Type 1">Accident Type 1</mat-option>
-                            <mat-option value="Accident Type 2">Accident Type 2</mat-option>
-                            <mat-option value="Accident Type 3">Accident Type 3</mat-option>
-                            <mat-option value="Accident Type 4">Accident Type 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Street Name</label>
-                    <input placeholder="Enter street name" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">City</label>
-                    <input placeholder="Enter city" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">State/Province</label>
-                    <input placeholder="Enter state/province" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Country</label>
-                    <input placeholder="Enter country" class="form-control">
-                </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                    <label class="control-label">Date</label>
-                    <div class="date-picker">
-                        <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date">
-                        <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
-                        <mat-datepicker #accidentDate></mat-datepicker>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h5 class="form-title">
-            <span>Care Team</span>
-            <button type="button" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Practitioner</th>
-                        <th>Practitioner Role</th>
-                        <th>Care Team Role</th>
-                        <th>Speciality</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Practitioner</mat-option>
-                                    <mat-option value="Practitioner 1">Practitioner 1</mat-option>
-                                    <mat-option value="Practitioner 2">Practitioner 2</mat-option>
-                                    <mat-option value="Practitioner 3">Practitioner 3</mat-option>
-                                    <mat-option value="Practitioner 4">Practitioner 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Practitioner Role</mat-option>
-                                    <mat-option value="Role 1">Role 1</mat-option>
-                                    <mat-option value="Role 2">Role 2</mat-option>
-                                    <mat-option value="Role 3">Role 3</mat-option>
-                                    <mat-option value="Role 4">Role 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Care Team Role</mat-option>
-                                    <mat-option value="Care Team Role 1">Care Team Role 1</mat-option>
-                                    <mat-option value="Care Team Role 2">Care Team Role 2</mat-option>
-                                    <mat-option value="Care Team Role 3">Care Team Role 3</mat-option>
-                                    <mat-option value="Care Team Role 4">Care Team Role 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="-1">
-                                    <mat-option value="-1">Select Speciality</mat-option>
-                                    <mat-option value="Speciality 1">Speciality 1</mat-option>
-                                    <mat-option value="Speciality 2">Speciality 2</mat-option>
-                                    <mat-option value="Speciality 3">Speciality 3</mat-option>
-                                    <mat-option value="Speciality 4">Speciality 4</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Delete" class="text-primary m-0">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="form-title">
-            <span>Items</span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
-            </button>
-        </h5>
-        <div class="table-responsive">
-            <table class="primary-grid manual-row-color claim-view-table no-borders">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Code - Description</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Net</th>
-                        <th>Non Standard Code</th>
-                        <th>Display</th>
-                        <th width="10"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Medication Codes</td>
-                        <td>Lorem, ipsum dolor.</td>
-                        <td>5</td>
-                        <td class="text-nowrap">25 <span class="currency">SR</span></td>
-                        <td class="text-nowrap">536 <span class="currency">SR</span></td>
-                        <td>Lorem, ipsum dolor.</td>
-                        <td>Lorem ipsum dolor sit amet.</td>
-                        <td class="actions">
-                            <button mat-icon-button matTooltip="Edit" (click)="openAddEditItemDialog()" class="text-primary">
-                                <mat-icon>create</mat-icon>
-                            </button>
-                            <button mat-icon-button matTooltip="Delete" class="text-primary">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <hr class="hr spaced" />
-
         <div class="form-group">
-            <button type="button" mat-flat-button color="primary">Request Authorization</button>
+          <label class="control-label">&nbsp;</label>
+          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
         </div>
+      </div>
+
+      <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
+        <div class="col-md-4">
+          <div class="form-group" [matTooltip]="selectedPlanIdError"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
+            <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="insurancePlanId">
+                <mat-option value="">Select Insurance Plan</mat-option>
+                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
+                  {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
+                  ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+              <span class="error-text">Please select an Insurance Plan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="form-title">Pre Authorization Info</h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
+            <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
+            <div class="date-picker">
+              <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" formControlName="dateOrdered">
+              <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
+              <mat-datepicker #dateOrderedCtrl></mat-datepicker>
+            </div>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+              <span class="error-text">Please enter Date Ordered</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+            <label class="control-label">Type<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="type">
+                <mat-option value="">Select Type</mat-option>
+                <mat-option value="institutional">institutional</mat-option>
+                <mat-option value="oral ">Dental</mat-option>
+                <mat-option value="pharmacy">Pharmacy</mat-option>
+                <mat-option value="professional">professional</mat-option>
+                <mat-option value="vision">Optical</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+              <span class="error-text">Please select a Type</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Sub Type</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="subType">
+                <mat-option value="">Select Sub Type</mat-option>
+                <mat-option value="ip">InPatient</mat-option>
+                <mat-option value="op">OutPatient</mat-option>
+                <mat-option value="emr">Emergency</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+
+      <h5 class="form-title">
+        <span>Care Team</span>
+        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <div *ngIf="CareTeams.length > 0" class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>Practitioner</th>
+              <th>Practitioner Role</th>
+              <th>Care Team Role</th>
+              <th>Speciality</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="align-middle" *ngFor="let careTeam of CareTeams; let i = index">
+              <td>
+                {{careTeam.practitionerName}}
+              </td>
+              <td>
+                {{careTeam.practitionerRoleName}}
+              </td>
+              <td>
+                {{careTeam.careTeamRoleName}}
+              </td>
+              <td>
+                {{careTeam.speciality}}
+              </td>
+              <td class="actions">
+                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="CareTeams.length === 0" message='No Care Team found!'>
+      </app-empty-state>
+
+
+      <h5 class="form-title">
+        <span>Diagnosis</span>
+        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <div *ngIf="Diagnosises.length > 0" class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>Code - Description</th>
+              <th>Type</th>
+              <th>On Admission</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="align-middle" *ngFor="let diagnosis of Diagnosises; let i = index">
+              <td>
+                {{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}
+              </td>
+              <td>
+                {{diagnosis.typeName}}
+              </td>
+              <td>
+                {{diagnosis.onAdmissionName}}
+              </td>
+              <td class="actions">
+                <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="Diagnosises.length === 0" message='No Diagnosis found!'>
+      </app-empty-state>
+
+      <h5 class="form-title">
+        Vision Prescription
+      </h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Date Written</label>
+            <div class="date-picker">
+              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written">
+              <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
+              <mat-datepicker #visionWrittenDate></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Prescriber</label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select value="-1">
+                <mat-option value="-1">Select Prescriber</mat-option>
+                <mat-option value="Prescriber 1">Prescriber 1</mat-option>
+                <mat-option value="Prescriber 2">Prescriber 2</mat-option>
+                <mat-option value="Prescriber 3">Prescriber 3</mat-option>
+                <mat-option value="Prescriber 4">Prescriber 4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <h5 class="d-flex align-items-center mb-3">
+          <strong class="medium">Lens Specifications</strong>
+          <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h5>
+        <div class="table-responsive">
+          <table class="primary-grid manual-row-color no-borders">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Eye</th>
+                <th>Sphere</th>
+                <th>Cylinder</th>
+                <th>Axis</th>
+                <th>Add</th>
+                <th>Power</th>
+                <th>Back Curve</th>
+                <th>Diameter</th>
+                <th>Prism</th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Lens</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Right</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+35.72</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+53.55</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-19.90</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-58.10</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+23.44</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+1.78</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+72.39</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Lens</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Left</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+83.07</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+5.97</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+33.68</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-3.39</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-95.32</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-17.12</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-75.99</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Contact</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Right</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+35.72</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+53.55</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-58.10</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-54.48</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-23.44</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+1.78</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+72.39</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Contact</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Left</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-83.07</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-5.97</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-57.42</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+33.68</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">+95.32</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-17.12</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">-75.99</td>
+                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
+                <td class="actions">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h5 class="form-title">
+        <span>Supporting Info</span>
+        <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Code</th>
+              <th>Timing</th>
+              <th>Value</th>
+              <th>Reason</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="align-middle" *ngFor="let s of SupportingInfo; let i = index">
+              <td>
+                {{s.categoryName}}
+              </td>
+              <td>
+                <!-- {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span> -->
+                {{s.codeName}}
+              </td>
+              <td>
+                <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
+                <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
+              </td>
+              <td>
+                {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+              </td>
+              <td>
+                {{s.reasonName}}
+              </td>
+              <td class="actions">
+                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
+      </app-empty-state>
+
+      <h5 class="form-title">Accident</h5>
+      <div class="row small-gutter">
+        <div class="col-4 col-xxl-3">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')}">
+            <label class="control-label">Accident Type<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select formControlName="accidentType">
+                <mat-option value="">Select Accident Type</mat-option>
+                <mat-option value="MVA">Motor vehicle accident</mat-option>
+                <mat-option value="SCHOOL">School Accident</mat-option>
+                <mat-option value="SPT">Sporting Accident</mat-option>
+                <mat-option value="WPA">Workplace accident</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')">
+              <span class="error-text">Please select an Accident Type</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Street Name</label>
+            <input placeholder="Enter street name" class="form-control" formControlName="streetName">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">City</label>
+            <input placeholder="Enter city" class="form-control" formControlName="city">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">State/Province</label>
+            <input placeholder="Enter state/province" class="form-control" formControlName="state">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group">
+            <label class="control-label">Country</label>
+            <input placeholder="Enter country" class="form-control" formControlName="country">
+          </div>
+        </div>
+        <div class="col-4 col-xxl-3">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')}">
+            <label class="control-label">Date<span class="asterisk">*</span></label>
+            <div class="date-picker">
+              <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+              <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
+              <mat-datepicker #accidentDate></mat-datepicker>
+            </div>
+            <div *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
+              <span class="error-text">Please enter date</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="form-title">
+        <span>Items</span>
+        <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="CareTeams.length === 0">
+          <mat-icon>add</mat-icon>
+        </button>
+      </h5>
+      <div *ngIf="Items.length > 0" class="table-responsive">
+        <table class="primary-grid manual-row-color claim-view-table no-borders">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Code - Description</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Net</th>
+              <th>Non Standard Code</th>
+              <th width="10"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of Items; let i = index;" [ngClass]="{'text-danger': item.careTeamSequence.length === 0}">
+              <td>{{item.typeName}}</td>
+              <td>{{item.itemCode}} - {{item.itemDescription}}</td>
+              <td>{{item.quantity}}</td>
+              <td class="text-nowrap">{{item.unitPrice}} <span class="currency">SR</span></td>
+              <td class="text-nowrap">{{item.net}} <span class="currency">SR</span></td>
+              <td>{{item.nonStandardCode}}</td>
+              <td class="actions">
+                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditItemDialog(item)" class="text-primary">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-empty-state *ngIf="Items.length === 0" message='No Item found!'>
+      </app-empty-state>
+
+      <hr class="hr spaced" />
+
+      <div class="form-group">
+        <button type="submit" mat-flat-button color="primary">Request Authorization</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- <div class="block-header has-border">
+    <div class="d-flex align-items-center">
+      <div class="actions mr-2 my-n2 ml-n1">
+        <button matRipple type="button" class="action-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <p>Authorization - LAV4FIYPZWKS</p>
     </div>
+  </div>
+  <div class="bg-white p-14">
+    <app-pre-authorization-details></app-pre-authorization-details>
+  </div> -->
 </div>

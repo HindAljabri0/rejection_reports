@@ -59,4 +59,16 @@ export class AdminService {
     }
     return date;
   }
+
+  getPractitionerList(providerId: string) {
+    const requestURL = '/providers/' + providerId + '/practitioner';
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
+
+  getCodeDescriptionList(){
+    const requestURL = '/diagnosis/search';
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
 }

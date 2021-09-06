@@ -1,6 +1,13 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <div class="block-header has-border">
-        <p>Accounts Receivables Monthly - {{payerName}}</p>
+        <div class="d-flex align-items-center">
+            <div class="actions mr-2 my-n2 ml-n1">
+                <button matRipple type="button" (click)="goBack()" class="action-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <p>Accounts Receivables Monthly - {{payerName}}</p>
+        </div>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
         <div class="fixed-height fixed-height-lg">
@@ -59,8 +66,7 @@
                             <td class="row-click" (click)="toggleRow(i)">{{item.overDueDay}}</td>
                             <td class="row-click" (click)="toggleRow(i)">{{item.avgTat}}</td>
                             <td class="actions">
-                                <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
-                                    *ngIf="!(item.totalSubmitted===0 || item.totalSubmitted===null)"
+                                <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu" *ngIf="!(item.totalSubmitted===0 || item.totalSubmitted===null)"
                                     (click)="setSelcetedPayerAndDate(item)">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
@@ -90,17 +96,15 @@
                                                     <td>{{innerData.paymentRatio}}</td>
                                                     <td>{{innerData.type}}</td>
                                                     <td>
-                                                        <button class="text-danger delete-btn"
-                                                            (click)="deletePayment(innerData.paymentId)">
+                                                        <button class="text-danger delete-btn" (click)="deletePayment(innerData.paymentId)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="6" class="p-0">
-                                                        <app-empty-state
-                                                            *ngIf="item.payments == null || item.payments.length == 0"
-                                                            class="claim-list-empty-state" message='No records found!'>
+                                                        <app-empty-state *ngIf="item.payments == null || item.payments.length == 0" class="claim-list-empty-state"
+                                                            message='No records found!'>
                                                         </app-empty-state>
                                                     </td>
                                                 </tr>
@@ -113,8 +117,7 @@
                     </ng-container>
                     <tr>
                         <td colspan="12" class="p-0">
-                            <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0"
-                                class="claim-list-empty-state" message='No records found!'>
+                            <app-empty-state *ngIf="receivableDetailsData == null || receivableDetailsData.length == 0" class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
                         </td>
                     </tr>

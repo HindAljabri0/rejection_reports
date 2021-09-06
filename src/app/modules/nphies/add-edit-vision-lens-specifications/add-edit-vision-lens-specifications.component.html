@@ -1,0 +1,137 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">Add/Edit Vision Lens Specification</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Product</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select Product</mat-option>
+                        <mat-option value="Lens">Lens</mat-option>
+                        <mat-option value="Contact">Contact</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Eye</label>
+                <mat-radio-group class="radio-group inline">
+                    <mat-radio-button value="1" color="primary">Right</mat-radio-button>
+                    <mat-radio-button value="0" color="primary">Left</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Color</label>
+                <input class="form-control" placeholder="Enter color">
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Brand</label>
+                <mat-form-field class="form-control custom-select-control">
+                    <mat-select value="-1">
+                        <mat-option value="-1">Select Brand</mat-option>
+                        <mat-option value="Brand 1">Brand 1</mat-option>
+                        <mat-option value="Brand 2">Brand 2</mat-option>
+                        <mat-option value="Brand 3">Brand 3</mat-option>
+                        <mat-option value="Brand 4">Brand 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row small-gutter">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Sphere</label>
+                        <input class="form-control" placeholder="Enter sphere">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Cylinder</label>
+                        <input class="form-control" placeholder="Enter cylinder">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Axis</label>
+                        <input class="form-control" placeholder="Enter axis">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Add</label>
+                        <input class="form-control" placeholder="Enter add">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row small-gutter">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Power</label>
+                        <input class="form-control" placeholder="Enter power">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Back Curve</label>
+                        <input class="form-control" placeholder="Enter back curve">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Diameter</label>
+                        <input class="form-control" placeholder="Enter diameter">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Duration</label>
+                        <input class="form-control" placeholder="Enter duration">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Prism</label>
+                <div class="row extra-small-gutter">
+                    <div class="col">
+                        <input class="form-control" placeholder="Prism amount">
+                    </div>
+                    <div class="col-auto">
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="-1">
+                                <mat-option value="-1">Select base</mat-option>
+                                <mat-option value="Base 1">Base 1</mat-option>
+                                <mat-option value="Base 2">Base 2</mat-option>
+                                <mat-option value="Base 3">Base 3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="control-label">Notes</label>
+                <textarea placeholder="Enter notes" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+        <button type="button" mat-button (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit">Add</button>
+    </div>
+</div>

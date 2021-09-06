@@ -31,12 +31,13 @@ import { ClaimSubmittionService } from '../../services/claimSubmittionService/cl
 import { SearchService } from '../../services/serchService/search.service';
 import { SEARCH_TAB_RESULTS_KEY, SharedServices } from '../../services/shared.services';
 import { setSearchCriteria, storeClaims } from './store/search.actions';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { EditClaimComponent } from '../edit-claim/edit-claim.component';
 import { cancelClaim } from 'src/app/claim-module-components/store/claim.actions';
 import { changePageTitle } from 'src/app/store/mainStore.actions';
 import { ApprovalDetailInquiryService } from 'src/app/services/approvalDetailInquiryService/approval-detail-inquiry.service';
 import { ClaimCriteriaModel } from 'src/app/models/ClaimCriteriaModel';
+import { SearchPageQueryParams } from 'src/app/models/searchPageQueryParams';
 
 
 @Component({
@@ -83,20 +84,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   detailCardTitle: string;
   detailTopActionIcon = 'ic-download.svg';
 
+  params: SearchPageQueryParams = new SearchPageQueryParams();
+
   providerId: string;
-  from: string;
-  to: string;
-  payerId: string;
-  batchId: string;
-  uploadId: string;
-  casetype: string;
-  claimId: string;
-  claimRefNo: string;
-  memberId: string;
-  invoiceNo: string;
-  patientFileNo: string;
-  policyNo: string;
-  editMode: string;
+
   routerSubscription: Subscription;
 
   summaries: SearchStatusSummary[];
@@ -119,9 +110,6 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   errorMessage: string;
 
   submittionErrors: Map<string, string>;
-
-  queryStatus: number;
-  queryPage: number;
 
   waitingEligibilityCheck = false;
   waitingApprovalCheck = false;
@@ -155,18 +143,13 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     { key: 'BATCHNUM', value: 'batchNo' },
   ];
   appliedFilters: any = [];
-  fdrname = '';
-  fnationalid = '';
-  fclaimdate = '';
-  fclaimRefNo = '';
-  fmemberId = '';
-  fpatientFileNo = '';
-  fclaimNet = '';
-  fbatchNum = '';
 
   isPBMValidationVisible = false;
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
+
+  claimDialogRef: MatDialogRef<any, any>;
+
   constructor(
     public dialog: MatDialog,
     public location: Location,
@@ -193,41 +176,30 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
-    //console.log(this.claims[0].statusApproval);
     this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
     this.fetchData();
     this.routerSubscription = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add'))
-    ).subscribe(() => {
-      this.fetchData();
+      filter((event: RouterEvent) => event instanceof NavigationEnd && event.url.includes('/claims') && !event.url.includes('/add')
+        && event.url.includes('#reload'))
+    ).subscribe((event) => {
+      const reloadFragment = event.url.split('#')[1]
+      if (reloadFragment.includes('..')) {
+        const statuses = reloadFragment.split('..');
+        statuses[0] = 'all';
+        this.loadStatues(statuses);
+      } else {
+        this.fetchData();
+      }
     });
     this.dialogService.onClaimDialogClose.subscribe(value => {
       if (value != null) {
         this.reloadClaim(value);
       }
-      this.claimId = null;
-      this.editMode = null;
+      this.params.claimId = null;
+      this.params.editMode = null;
       this.resetURL();
     });
     this.submittionErrors = new Map();
-    // this.actions$.pipe(
-    //   ofType(requestClaimsPage),
-    // ).subscribe(data => {
-    //   switch (data.action) {
-    //     case SearchPaginationAction.firstPage:
-    //       this.getResultsOfStatus(this.selectedCardKey, this.pageIndex, this.pageSize);
-    //       break;
-    //     case SearchPaginationAction.previousPage:
-    //       this.goToPrePage();
-    //       break;
-    //     case SearchPaginationAction.nextPage:
-    //       this.goToNextPage();
-    //       break;
-    //     case SearchPaginationAction.lastPage:
-    //       this.goToLastPage();
-    //       break;
-    //   }
-    // });
   }
 
   ngAfterViewChecked() {
@@ -246,52 +218,22 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       this.providerId = value.providerId;
     }).unsubscribe();
     this.routeActive.queryParams.subscribe(value => {
-      this.from = value.from;
-      this.to = value.to;
-      this.payerId = value.payer;
-      this.batchId = value.batchId;
-      this.uploadId = value.uploadId;
-      this.queryStatus = value.status == null ? 0 : Number.parseInt(value.status, 10);
-      this.queryPage = value.page == null ? 0 : Number.parseInt(value.page, 10) - 1;
-      if (Number.isNaN(this.queryStatus) || this.queryStatus < 0) { this.queryStatus = 0; }
-      if (Number.isNaN(this.queryPage) || this.queryPage < 0) { this.queryPage = 0; }
-      this.casetype = value.casetype;
-      this.claimId = value.claimId;
-      this.claimRefNo = value.claimRefNo;
-      this.memberId = value.memberId;
-      this.invoiceNo = value.invoiceNo;
-      this.patientFileNo = value.patientFileNo;
-      this.policyNo = value.policyNo;
-      this.editMode = value.editMode || location.href.includes('#edit');
-      this.fdrname = value.drname;
-      this.fnationalid = value.nationalId;
-      this.fclaimdate = value.claimDate;
-
-      this.reloadFilterParams(value);
-
-
+      this.params = SearchPageQueryParams.fromParams(value);
       this.store.dispatch(setSearchCriteria({
-        batchId: this.batchId,
-        fromDate: this.from,
-        memberId: this.memberId,
-        invoiceNo: this.invoiceNo,
-        patientFileNo: this.patientFileNo,
-        policyNo: this.policyNo,
-        payerId: this.payerId,
-        provClaimNum: this.claimRefNo,
-        toDate: this.to,
-        uploadId: this.uploadId,
+        batchId: this.params.batchId,
+        fromDate: this.params.from,
+        memberId: this.params.memberId,
+        invoiceNo: this.params.invoiceNo,
+        patientFileNo: this.params.patientFileNo,
+        policyNo: this.params.policyNo,
+        payerId: this.params.payerId,
+        provClaimNum: this.params.claimRefNo,
+        toDate: this.params.to,
+        uploadId: this.params.uploadId,
         statuses: ['All']
       }));
     }).unsubscribe();
-    if ((this.payerId == null || this.from == null || this.to == null || this.payerId == '' || this.from == '' || this.to == '') &&
-      (this.batchId == null || this.batchId == '') &&
-      (this.uploadId == null || this.uploadId == '') &&
-      (this.claimRefNo == null || this.claimRefNo == '') &&
-      (this.memberId == null || this.memberId == '') &&
-      (this.invoiceNo == null || this.invoiceNo == '') &&
-      (this.patientFileNo == null || this.patientFileNo == '') &&
-      (this.policyNo == null || this.policyNo == '')) {
+    if (this.params.hasNoQueryParams()) {
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
@@ -307,57 +249,64 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         return 0;
       });
-      let underProcessingIsDone = false;
-      let rejectedByPayerIsDone = false;
-      let readyForSubmissionIsDone = false;
-      let paidIsDone = false;
-      let invalidIsDone = false;
-      for (const status of statuses) {
-        if (this.isUnderProcessingStatus(status)) {
-          if (!underProcessingIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
-          }
-          underProcessingIsDone = true;
-        } else if (this.isRejectedByPayerStatus(status)) {
-          if (!rejectedByPayerIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
-          }
-          rejectedByPayerIsDone = true;
-        } else if (this.isReadyForSubmissionStatus(status)) {
-          if (!readyForSubmissionIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
-          }
-          readyForSubmissionIsDone = true;
-        } else if (this.isPaidStatus(status)) {
-          if (!paidIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
-          }
-          paidIsDone = true;
-        } else if (this.isInvalidStatus(status)) {
-          if (!invalidIsDone) {
-            await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
-          }
-          invalidIsDone = true;
-        } else {
-          await this.getSummaryOfStatus([status]);
-        }
-      }
+      await this.loadStatues(statuses);
     }
 
-    this.getResultsOfStatus(this.queryStatus, this.queryPage);
+    // this.getResultsOfStatus(this.params.status, this.params.page);
 
     if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
-  reloadFilterParams(params) {
-    this.fclaimRefNo = params.filter_claimRefNo !== undefined
-      && params.filter_claimRefNo !== null
-      && params.filter_claimRefNo !== '' ? params.filter_claimRefNo : this.claimRefNo;
-    this.fmemberId = params.filter_memberId !== undefined
-      && params.filter_memberId !== null
-      && params.filter_memberId !== '' ? params.filter_memberId : this.memberId;
-    this.fpatientFileNo = params.filter_patientFileNo !== undefined
-      && params.filter_patientFileNo !== null
-      && params.filter_patientFileNo !== '' ? params.filter_patientFileNo : this.patientFileNo;
+
+  async loadStatues(statuses: string[]) {
+    if (this.summaries != null && this.summaries.length > 1) {
+      if (statuses.includes('all')) {
+        this.summaries.splice(0, 1);
+      }
+      this.summaries = this.summaries.filter(summary => !summary.statuses.some(status => statuses.includes(status)));
+    }
+    let underProcessingIsDone = false;
+    let rejectedByPayerIsDone = false;
+    let readyForSubmissionIsDone = false;
+    let paidIsDone = false;
+    let invalidIsDone = false;
+
+    for (let status of statuses) {
+      if (this.isUnderProcessingStatus(status)) {
+        if (!underProcessingIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
+        }
+        underProcessingIsDone = true;
+      } else if (this.isRejectedByPayerStatus(status)) {
+        if (!rejectedByPayerIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.REJECTED, 'DUPLICATE']);
+        }
+        rejectedByPayerIsDone = true;
+      } else if (this.isReadyForSubmissionStatus(status)) {
+        if (!readyForSubmissionIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.Accepted, 'Failed']);
+        }
+        readyForSubmissionIsDone = true;
+      } else if (this.isPaidStatus(status)) {
+        if (!paidIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
+        }
+        paidIsDone = true;
+      } else if (this.isInvalidStatus(status)) {
+        if (!invalidIsDone) {
+          await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
+        }
+        invalidIsDone = true;
+      } else {
+        await this.getSummaryOfStatus([status]);
+      }
+    }
+    this.summaries.sort((a, b) => b.statuses.length - a.statuses.length);
+    if (this.params.status != null)
+      this.getResultsOfStatus(this.params.status, this.params.page);
+    else
+      this.getResultsOfStatus(this.selectedCardKey, this.params.page);
+
+    // if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
   }
 
   async getSummaryOfStatus(statuses: string[]): Promise<number> {
@@ -365,17 +314,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let event;
     event = await this.searchService.getSummaries(this.providerId,
       statuses,
-      this.from,
-      this.to,
-      this.payerId,
-      this.batchId,
-      this.uploadId,
-      this.casetype,
-      this.claimRefNo,
-      this.memberId,
-      this.invoiceNo,
-      this.patientFileNo,
-      this.policyNo).toPromise().catch(error => {
+      this.params.from,
+      this.params.to,
+      this.params.payerId,
+      this.params.batchId,
+      this.params.uploadId,
+      this.params.caseTypes,
+      this.params.claimRefNo,
+      this.params.memberId,
+      this.params.invoiceNo,
+      this.params.patientFileNo,
+      this.params.policyNo).toPromise().catch(error => {
         this.commen.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if ((error.status / 100).toFixed() == '4') {
@@ -390,8 +339,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       });
     if (event instanceof HttpResponse) {
       if ((event.status / 100).toFixed() == '2') {
-        const summary: any = new SearchStatusSummary(event.body);
+        const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
+          if (statuses.includes('all')) {
+            summary.statuses.push('all');
+          }
           this.summaries.push(summary);
         }
       }
@@ -460,25 +412,25 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.currentSelectedTab = 0;
     this.validationDetails = [];
     this.searchService.getResults(this.providerId,
-      this.from,
-      this.to,
-      this.payerId,
-      this.summaries[key].statuses,
+      this.params.from,
+      this.params.to,
+      this.params.payerId,
+      this.summaries[key].statuses.filter(status => status != 'all'),
       page,
       this.pageSize,
-      this.batchId,
-      this.uploadId,
-      this.casetype,
-      this.fclaimRefNo,
-      this.fmemberId,
-      this.invoiceNo,
-      this.fpatientFileNo,
-      this.policyNo,
-      this.fdrname,
-      this.fnationalid,
-      this.fclaimdate,
-      this.fclaimNet,
-      this.fbatchNum).subscribe((event) => {
+      this.params.batchId,
+      this.params.uploadId,
+      this.params.caseTypes,
+      this.params.filter_claimRefNo || this.params.claimRefNo,
+      this.params.filter_memberId || this.params.memberId,
+      this.params.invoiceNo,
+      this.params.filter_patientFileNo || this.params.patientFileNo,
+      this.params.policyNo,
+      this.params.filter_drName,
+      this.params.filter_nationalId,
+      this.params.filter_claimDate,
+      this.params.filter_netAmount,
+      this.params.filter_batchNum || this.params.batchId).subscribe((event) => {
         if (event instanceof HttpResponse) {
           if ((event.status / 100).toFixed() == '2') {
             this.searchResult = new PaginatedResult(event.body, SearchedClaim);
@@ -533,12 +485,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             }
 
           }
-          if (this.claimId != null) {
-            const index = this.claims.findIndex(claim => claim.claimId == this.claimId);
+          if (this.params.claimId != null && this.claimDialogRef == null) {
+            const index = this.claims.findIndex(claim => claim.claimId == this.params.claimId);
             if (index != -1) {
-              this.showClaim(this.claims[index].status, this.claimId, (this.editMode != null && this.editMode == 'true'));
-              this.claimId = null;
-              this.editMode = null;
+              this.showClaim(this.claims[index].status, this.params.claimId, (this.params.editMode != null && this.params.editMode == 'true'));
+              this.params.claimId = null;
+              this.params.editMode = null;
             }
           }
           this.commen.loadingChanged.next(false);
@@ -564,6 +516,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.status = status === null ? this.status : status;
     this.getPBMValidation();
   }
+
+
+
   storeSearchResultsForClaimViewPagination() {
     if (this.claims != null && this.claims.length > 0) {
       const claimsIds = this.claims.map(claim => claim.claimId);
@@ -628,9 +583,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
     this.commen.loadingChanged.next(true);
-    this.submittionService.submitAllClaims(this.providerId, this.from, this.to, this.payerId, this.batchId, this.uploadId, [this.casetype],
-      null, this.fclaimRefNo, this.fmemberId, this.invoiceNo, this.fpatientFileNo, this.policyNo, this.fdrname, this.fnationalid,
-      this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe((event) => {
+    this.submittionService.submitAllClaims(this.providerId, this.params.from, this.params.to, this.params.payerId, this.params.batchId, this.params.uploadId, this.params.caseTypes,
+      null, this.params.filter_claimRefNo, this.params.filter_memberId, this.params.invoiceNo, this.params.filter_patientFileNo, this.params.policyNo, this.params.filter_drName, this.params.filter_nationalId,
+      this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
           if (event.body['queuedStatus'] == 'QUEUED') {
@@ -668,17 +623,17 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.commen.loadingChanged.next(true);
     this.validationService.reValidateClaims(this.providerId,
       null,
-      this.batchId,
-      this.uploadId,
+      this.params.batchId,
+      this.params.uploadId,
       null,
-      this.fclaimRefNo,
-      this.fpatientFileNo,
-      this.invoiceNo,
-      this.policyNo,
+      this.params.filter_claimRefNo,
+      this.params.filter_patientFileNo,
+      this.params.invoiceNo,
+      this.params.policyNo,
       this.summaries[this.selectedCardKey].statuses,
-      this.fmemberId,
+      this.params.filter_memberId,
       this.selectedClaims,
-      this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum)
+      this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           const numberOfClaims = event.body['numberOfClaims'];
@@ -785,90 +740,36 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   resetURL() {
     if (this.routerSubscription.closed) { return; }
-    let claimInfo = '';
-    let path = '';
-    if (this.claimId != null) {
-      claimInfo = `&claimId=${this.claimId}`;
-      if (this.editMode != null && this.editMode == 'true') {
-        claimInfo += '#edit';
-      }
-    }
-    if (this.from != null && this.to != null && this.payerId != null && this.uploadId === null) {
-      path = `/${this.providerId}/claims?from=${this.from}&to=${this.to}&payer=${this.payerId}`
-        + (this.casetype != null ? `&casetype=${this.casetype}` : '') + claimInfo;
-
-    } else if (this.batchId != null && this.uploadId === null) {
-      path = `/${this.providerId}/claims?batchId=${this.batchId}` + claimInfo;
-    } else if (this.uploadId != null) {
-      path = `/${this.providerId}/claims?uploadId=${this.uploadId}` + claimInfo;
-
-    } else if (this.claimRefNo != null) {
-      path = `/${this.providerId}/claims?claimRefNo=${this.claimRefNo}` + claimInfo;
-    } else if (this.memberId != null) {
-      path = `/${this.providerId}/claims?memberId=${this.memberId}` + claimInfo;
-    } else if (this.invoiceNo != null) {
-      path = `/${this.providerId}/claims?invoiceNo=${this.invoiceNo}` + claimInfo;
-    } else if (this.patientFileNo != null) {
-      path = `/${this.providerId}/claims?patientFileNo=${this.patientFileNo}` + claimInfo;
-    } else if (this.policyNo != null) {
-      path = `/${this.providerId}/claims?policyNo=${this.policyNo}` + claimInfo;
-    }
-
-    if (this.fclaimRefNo != null && this.fclaimRefNo !== '' && this.fclaimRefNo !== undefined &&
-      (this.claimRefNo === null || this.claimRefNo === undefined || this.claimRefNo === '')) {
-      path += `&filter_claimRefNo=${this.fclaimRefNo}`;
-    }
-    if (this.fmemberId != null && this.fmemberId !== '' && this.fmemberId !== undefined &&
-      (this.memberId === null || this.memberId === undefined || this.memberId === '')) {
-      path += `&filter_memberId=${this.fmemberId}`;
-    }
-    if (this.fpatientFileNo != null && this.fpatientFileNo !== '' && this.fpatientFileNo !== undefined &&
-      (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
-      path += `&filter_patientFileNo=${this.fpatientFileNo}`;
-    }
-    if (this.fdrname != null && this.fdrname !== '' && this.fdrname !== undefined) {
-      path += `&drname=${this.fdrname}`;
-    }
-    if (this.fnationalid != null && this.fnationalid !== '' && this.fnationalid !== undefined) {
-      path += `&nationalId=${this.fnationalid}`;
-    }
-    if (this.fclaimdate != null && this.fclaimdate !== '' && this.fclaimdate !== undefined) {
-      path += `&claimDate=${this.fclaimdate}`;
-    }
-    if (this.selectedCardKey != 0) {
-      path += `&status=${this.selectedCardKey}`;
-    }
-    if (this.pageIndex != null && this.pageIndex > 0) {
-      path += `&page=${(this.pageIndex)}`;
-    }
-    if (path !== '') {
-      this.location.go(path);
-    }
+    this.params.status = this.selectedCardKey > 0 ? this.selectedCardKey : null;
+    this.params.page = this.pageIndex > 0 ? this.pageIndex : null;
+    this.router.navigate([], {
+      relativeTo: this.routeActive,
+      queryParams: { ...this.params, editMode: null, size: null },
+      fragment: this.params.editMode == 'true' ? 'edit' : null,
+    });
   }
 
 
   showClaim(claimStatus: string, claimId: string, edit?: boolean) {
-    this.claimId = claimId;
+    this.params.claimId = claimId;
     if (edit) {
-      this.editMode = `${edit}`;
+      this.params.editMode = `${edit}`;
     } else {
-      this.editMode = null;
+      this.params.editMode = null;
     }
     this.resetURL();
     this.store.dispatch(cancelClaim());
-    const dialogRef = this.dialog.open(EditClaimComponent, {
+    this.claimDialogRef = this.dialog.open(EditClaimComponent, {
       panelClass: ['primary-dialog', 'full-screen-dialog'],
       autoFocus: false, data: { claimId }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      this.claimId = null;
-      this.editMode = null;
+    this.claimDialogRef.afterClosed().subscribe(result => {
+      this.claimDialogRef = null;
+      this.params.claimId = null;
+      this.params.editMode = null;
       this.resetURL();
       this.store.dispatch(cancelClaim());
       this.store.dispatch(changePageTitle({ title: 'Waseel E-Claims' }));
-      if (result != null) {
-        this.showClaim(null, result);
-      }
     });
   }
 
@@ -930,7 +831,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
   checkClaim(id: string) {
     this.eligibilityWaitingList[id] = { result: '', waiting: true };
-    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.payerId, [Number.parseInt(id, 10)]));
+    this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId, this.params.payerId, [Number.parseInt(id, 10)]));
   }
 
   checkClaimForApproval(id: string) {
@@ -944,7 +845,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.selectedClaims.forEach(claimid => this.eligibilityWaitingList[claimid] = { result: '', waiting: true });
     this.waitingEligibilityCheck = true;
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibility(this.providerId,
-      this.payerId,
+      this.params.payerId,
       this.selectedClaims.map(id => Number.parseInt(id, 10))));
   }
 
@@ -952,22 +853,22 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     this.waitingEligibilityCheck = true;
 
     this.handleEligibilityCheckRequest(this.eligibilityService.checkEligibilityByDateOrUploadId(this.providerId,
-      this.payerId,
-      this.from,
-      this.to,
-      this.batchId,
-      this.uploadId,
-      this.fclaimRefNo,
-      this.fmemberId,
-      this.invoiceNo,
-      this.fpatientFileNo,
-      this.policyNo,
-      this.casetype,
-      this.fdrname,
-      this.fnationalid,
-      this.fclaimdate,
-      this.fclaimNet,
-      this.fbatchNum
+      this.params.payerId,
+      this.params.from,
+      this.params.to,
+      this.params.batchId,
+      this.params.uploadId,
+      this.params.filter_claimRefNo,
+      this.params.filter_memberId,
+      this.params.invoiceNo,
+      this.params.filter_patientFileNo,
+      this.params.policyNo,
+      this.params.caseTypes,
+      this.params.filter_drName,
+      this.params.filter_nationalId,
+      this.params.filter_claimDate,
+      this.params.filter_netAmount,
+      this.params.filter_batchNum
     ));
   }
 
@@ -977,7 +878,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     else
       this.claims.forEach(claim => this.approvalWaitingList[claim.claimId] = { result: '', waiting: true });
     this.waitingApprovalCheck = true;
-    this.handleApprovalCheckRequest(this.approvalService.verifyApprovalByCriteria(this.providerId, this.getClaimQueryParams()));
+    this.handleApprovalCheckRequest(this.approvalService.verifyApprovalByCriteria(this.providerId, this.getClaimQueryParams(true)));
   }
 
 
@@ -1206,21 +1107,21 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
     event = this.searchService.downloadSummaries(this.providerId,
       this.summaries[this.selectedCardKey].statuses,
-      this.from,
-      this.to,
-      this.payerId,
-      this.batchId,
-      this.uploadId,
-      this.fclaimRefNo,
-      this.memberId,
-      this.invoiceNo,
-      this.fpatientFileNo,
-      this.policyNo,
-      this.fdrname,
-      this.fnationalid,
-      this.fclaimdate,
-      this.fclaimNet,
-      this.fbatchNum);
+      this.params.from,
+      this.params.to,
+      this.params.payerId,
+      this.params.batchId,
+      this.params.uploadId,
+      this.params.filter_claimRefNo,
+      this.params.memberId,
+      this.params.invoiceNo,
+      this.params.filter_patientFileNo,
+      this.params.policyNo,
+      this.params.filter_drName,
+      this.params.filter_nationalId,
+      this.params.filter_claimDate,
+      this.params.filter_netAmount,
+      this.params.filter_batchNum);
     if (event != null) {
       this.downloadService.startDownload(event)
         .subscribe(status => {
@@ -1240,21 +1141,21 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let event;
     event = this.searchService.downloadExcelSummaries(this.providerId,
       this.summaries[this.selectedCardKey].statuses,
-      this.from,
-      this.to,
-      this.payerId,
-      this.batchId,
-      this.uploadId,
-      this.fclaimRefNo,
-      this.memberId,
-      this.invoiceNo,
-      this.fpatientFileNo,
-      this.policyNo,
-      this.fdrname,
-      this.fnationalid,
-      this.fclaimdate,
-      this.fclaimNet,
-      this.fbatchNum);
+      this.params.from,
+      this.params.to,
+      this.params.payerId,
+      this.params.batchId,
+      this.params.uploadId,
+      this.params.filter_claimRefNo,
+      this.params.memberId,
+      this.params.invoiceNo,
+      this.params.filter_patientFileNo,
+      this.params.policyNo,
+      this.params.filter_drName,
+      this.params.filter_nationalId,
+      this.params.filter_claimDate,
+      this.params.filter_netAmount,
+      this.params.filter_batchNum);
     this.downloadService.startDownload(event)
       .subscribe(status => {
         if (status != DownloadStatus.ERROR) {
@@ -1361,10 +1262,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 if (result === true) {
                   this.commen.loadingChanged.next(true);
                   const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-                  this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null,
-                    this.fclaimRefNo, this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims,
-                    this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet,
-                    this.fbatchNum).subscribe(event => {
+                  this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null,
+                    this.params.filter_claimRefNo, this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims,
+                    this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount,
+                    this.params.filter_batchNum).subscribe(event => {
                       if (event instanceof HttpResponse) {
                         this.commen.loadingChanged.next(false);
                         const status = event.body['status'];
@@ -1412,9 +1313,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
             break;
           case 'confirm':
             this.commen.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
-              this.fpatientFileNo, this.invoiceNo, this.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.fmemberId,
-              this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum)
+            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo,
+              this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], this.params.filter_memberId,
+              this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);
@@ -1473,9 +1374,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           if (result === true) {
             this.commen.loadingChanged.next(true);
             const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
-            this.claimService.deleteClaimByCriteria(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo,
-              this.fpatientFileNo, this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to,
-              this.fdrname, this.fnationalid, this.fclaimdate, this.fclaimNet, this.fbatchNum).subscribe(event => {
+            this.claimService.deleteClaimByCriteria(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo,
+              this.params.filter_patientFileNo, this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to,
+              this.params.filter_drName, this.params.filter_nationalId, this.params.filter_claimDate, this.params.filter_netAmount, this.params.filter_batchNum).subscribe(event => {
                 if (event instanceof HttpResponse) {
                   this.commen.loadingChanged.next(false);
                   const status = event.body['status'];
@@ -1568,29 +1469,29 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     };
     switch (key) {
       case ClaimListFilterSelection.MEMBERID:
-        this.fmemberId = this.claimList.memberID;
+        this.params.filter_memberId = this.claimList.memberID;
         break;
       case ClaimListFilterSelection.PATIENTFILENO:
-        this.fpatientFileNo = this.claimList.patientFileNO;
+        this.params.filter_patientFileNo = this.claimList.patientFileNO;
         break;
       case ClaimListFilterSelection.DR_NAME:
-        this.fdrname = this.claimList.drName;
+        this.params.filter_drName = this.claimList.drName;
         break;
       case ClaimListFilterSelection.NATIONALID:
-        this.fnationalid = this.claimList.nationalId;
+        this.params.filter_nationalId = this.claimList.nationalId;
         break;
       case ClaimListFilterSelection.CLAIMDATE:
         const dates: any = this.claimList.claimDate;
-        this.fclaimdate = dates.format('DD-MM-yyyy');
+        this.params.filter_claimDate = dates.format('DD-MM-yyyy');
         break;
       case ClaimListFilterSelection.CLAIMREFNO:
-        this.fclaimRefNo = this.claimList.claimRefNO;
+        this.params.filter_claimRefNo = this.claimList.claimRefNO;
         break;
       case ClaimListFilterSelection.CLAIMNET:
-        this.fclaimNet = this.claimList.netAmount;
+        this.params.filter_netAmount = this.claimList.netAmount;
         break;
       case ClaimListFilterSelection.BATCHNUM:
-        this.fbatchNum = this.claimList.batchNo;
+        this.params.filter_batchNum = this.claimList.batchNo;
         break;
     }
 
@@ -1602,16 +1503,16 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   setParamsValueSummary(key: string) {
-    this.fmemberId = key === ClaimListFilterSelection.MEMBERID ? this.claimList.memberID : this.memberId;
-    this.fpatientFileNo = key === ClaimListFilterSelection.PATIENTFILENO ? this.claimList.patientFileNO : this.patientFileNo;
-    this.fclaimRefNo = key === ClaimListFilterSelection.CLAIMREFNO ? this.claimList.claimRefNO : this.claimRefNo;
-    this.fdrname = ClaimListFilterSelection.DR_NAME ? this.claimList.drName : this.fdrname;
-    this.fnationalid = ClaimListFilterSelection.NATIONALID ? this.claimList.nationalId : this.fnationalid;
+    this.params.filter_memberId = key === ClaimListFilterSelection.MEMBERID ? this.claimList.memberID : this.params.memberId;
+    this.params.filter_patientFileNo = key === ClaimListFilterSelection.PATIENTFILENO ? this.claimList.patientFileNO : this.params.patientFileNo;
+    this.params.filter_claimRefNo = key === ClaimListFilterSelection.CLAIMREFNO ? this.claimList.claimRefNO : this.params.claimRefNo;
+    this.params.filter_drName = ClaimListFilterSelection.DR_NAME ? this.claimList.drName : this.params.filter_drName;
+    this.params.filter_nationalId = ClaimListFilterSelection.NATIONALID ? this.claimList.nationalId : this.params.filter_nationalId;
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
       this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
-    this.fclaimdate = ClaimListFilterSelection.CLAIMDATE ? dates : this.fclaimdate;
-    this.fclaimNet = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.fclaimNet;
-    this.fbatchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.fbatchNum;
+    this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
+    this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
+    this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
   }
 
 
@@ -1622,31 +1523,31 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         this.claimList[findKey.value] = '';
         switch (findKey.key) {
           case ClaimListFilterSelection.MEMBERID:
-            this.fmemberId = this.claimList.memberID;
+            this.params.filter_memberId = this.claimList.memberID;
             break;
           case ClaimListFilterSelection.PATIENTFILENO:
-            this.fpatientFileNo = this.claimList.patientFileNO;
+            this.params.filter_patientFileNo = this.claimList.patientFileNO;
             break;
           case ClaimListFilterSelection.DR_NAME:
-            this.fdrname = this.claimList.drName;
+            this.params.filter_drName = this.claimList.drName;
             break;
           case ClaimListFilterSelection.NATIONALID:
-            this.fnationalid = this.claimList.nationalId;
+            this.params.filter_nationalId = this.claimList.nationalId;
             break;
           case ClaimListFilterSelection.CLAIMDATE:
             const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
               this.claimList.claimDate !== '' &&
               typeof this.claimList.claimDate !== 'string' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
-            this.fclaimdate = ClaimListFilterSelection.CLAIMDATE ? dates : this.fclaimdate;
+            this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
             break;
           case ClaimListFilterSelection.CLAIMREFNO:
-            this.fclaimRefNo = this.claimList.claimRefNO;
+            this.params.filter_claimRefNo = this.claimList.claimRefNO;
             break;
           case ClaimListFilterSelection.CLAIMNET:
-            this.fclaimNet = this.claimList.netAmount;
+            this.params.filter_netAmount = this.claimList.netAmount;
             break;
           case ClaimListFilterSelection.BATCHNUM:
-            this.fbatchNum = this.claimList.batchNo;
+            this.params.filter_batchNum = this.claimList.batchNo;
             break;
         }
         this.appliedFilters = this.appliedFilters.filter(sele => sele.key !== findKey.key);
@@ -1672,32 +1573,32 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   reloadFilters() {
     this.appliedFilters = [];
     this.claimList = new ClaimListModel();
-    if (this.fdrname != null && this.fdrname !== '' && this.fdrname !== undefined) {
+    if (this.params.filter_drName != null && this.params.filter_drName !== '' && this.params.filter_drName !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.DR_NAME);
     }
-    if (this.fnationalid != null && this.fnationalid !== '' && this.fnationalid !== undefined) {
+    if (this.params.filter_nationalId != null && this.params.filter_nationalId !== '' && this.params.filter_nationalId !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.NATIONALID);
     }
-    if (this.fclaimdate != null && this.fclaimdate !== '' && this.fclaimdate !== undefined &&
+    if (this.params.filter_claimDate != null && this.params.filter_claimDate !== '' && this.params.filter_claimDate !== undefined &&
       typeof this.claimList.claimDate !== 'string') {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMDATE);
     }
-    if (this.fclaimRefNo != null && this.fclaimRefNo !== '' && this.fclaimRefNo !== undefined &&
-      (this.claimRefNo === null || this.claimRefNo === undefined || this.claimRefNo === '')) {
+    if (this.params.filter_claimRefNo != null && this.params.filter_claimRefNo !== '' && this.params.filter_claimRefNo !== undefined &&
+      (this.params.claimRefNo === null || this.params.claimRefNo === undefined || this.params.claimRefNo === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMREFNO);
     }
-    if (this.fmemberId != null && this.fmemberId !== '' && this.fmemberId !== undefined &&
-      (this.memberId === null || this.memberId === undefined || this.memberId === '')) {
+    if (this.params.filter_memberId != null && this.params.filter_memberId !== '' && this.params.filter_memberId !== undefined &&
+      (this.params.memberId === null || this.params.memberId === undefined || this.params.memberId === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.MEMBERID);
     }
-    if (this.fpatientFileNo != null && this.fpatientFileNo !== '' && this.fpatientFileNo !== undefined &&
-      (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
+    if (this.params.filter_patientFileNo != null && this.params.filter_patientFileNo !== '' && this.params.filter_patientFileNo !== undefined &&
+      (this.params.patientFileNo === null || this.params.patientFileNo === undefined || this.params.patientFileNo === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.PATIENTFILENO);
     }
-    if (this.fclaimNet != null && this.fclaimNet !== '' && this.fclaimNet !== undefined) {
+    if (this.params.filter_netAmount != null && this.params.filter_netAmount !== '' && this.params.filter_netAmount !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMNET);
     }
-    if (this.fbatchNum != null && this.fbatchNum !== '' && this.fbatchNum !== undefined) {
+    if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
       this.setReloadedFilters(ClaimListFilterSelection.BATCHNUM);
     }
   }
@@ -1710,37 +1611,37 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   reloadInputFilters() {
-    if (this.fdrname != null && this.fdrname !== '' && this.fdrname !== undefined) {
-      this.setReloadedInputFilters('drName', this.fdrname);
+    if (this.params.filter_drName != null && this.params.filter_drName !== '' && this.params.filter_drName !== undefined) {
+      this.setReloadedInputFilters('drName', this.params.filter_drName);
     }
-    if (this.fnationalid != null && this.fnationalid !== '' && this.fnationalid !== undefined) {
-      this.setReloadedInputFilters('nationalId', this.fnationalid);
+    if (this.params.filter_nationalId != null && this.params.filter_nationalId !== '' && this.params.filter_nationalId !== undefined) {
+      this.setReloadedInputFilters('nationalId', this.params.filter_nationalId);
     }
-    if (this.fclaimdate != null && this.fclaimdate !== '' && this.fclaimdate !== undefined) {
-      const splitDate = this.fclaimdate.split('-');
+    if (this.params.filter_claimDate != null && this.params.filter_claimDate !== '' && this.params.filter_claimDate !== undefined) {
+      const splitDate = this.params.filter_claimDate.split('-');
       if (splitDate.length > 2) {
         const finaldate = splitDate[1] + '-' + splitDate[0] + '-' + splitDate[2];
         const dates = new Date(finaldate);
         this.claimList.claimDate = moment(dates);
       }
     }
-    if (this.fclaimRefNo != null && this.fclaimRefNo !== '' && this.fclaimRefNo !== undefined &&
-      (this.claimRefNo === null || this.claimRefNo === undefined || this.claimRefNo === '')) {
-      this.setReloadedInputFilters('claimRefNO', this.fclaimRefNo);
+    if (this.params.filter_claimRefNo != null && this.params.filter_claimRefNo !== '' && this.params.filter_claimRefNo !== undefined &&
+      (this.params.claimRefNo === null || this.params.claimRefNo === undefined || this.params.claimRefNo === '')) {
+      this.setReloadedInputFilters('claimRefNO', this.params.filter_claimRefNo);
     }
-    if (this.fmemberId != null && this.fmemberId !== '' && this.fmemberId !== undefined &&
-      (this.memberId === null || this.memberId === undefined || this.memberId === '')) {
-      this.setReloadedInputFilters('memberID', this.fmemberId);
+    if (this.params.filter_memberId != null && this.params.filter_memberId !== '' && this.params.filter_memberId !== undefined &&
+      (this.params.memberId === null || this.params.memberId === undefined || this.params.memberId === '')) {
+      this.setReloadedInputFilters('memberID', this.params.filter_memberId);
     }
-    if (this.fpatientFileNo != null && this.fpatientFileNo !== '' && this.fpatientFileNo !== undefined &&
-      (this.patientFileNo === null || this.patientFileNo === undefined || this.patientFileNo === '')) {
-      this.setReloadedInputFilters('patientFileNO', this.fpatientFileNo);
+    if (this.params.filter_patientFileNo != null && this.params.filter_patientFileNo !== '' && this.params.filter_patientFileNo !== undefined &&
+      (this.params.patientFileNo === null || this.params.patientFileNo === undefined || this.params.patientFileNo === '')) {
+      this.setReloadedInputFilters('patientFileNO', this.params.filter_patientFileNo);
     }
-    if (this.fclaimNet != null && this.fclaimNet !== '' && this.fclaimNet !== undefined) {
-      this.setReloadedInputFilters('netAmount', this.fclaimNet);
+    if (this.params.filter_netAmount != null && this.params.filter_netAmount !== '' && this.params.filter_netAmount !== undefined) {
+      this.setReloadedInputFilters('netAmount', this.params.filter_netAmount);
     }
-    if (this.fbatchNum != null && this.fbatchNum !== '' && this.fbatchNum !== undefined) {
-      this.setReloadedInputFilters('batchNo', this.fbatchNum);
+    if (this.params.filter_batchNum != null && this.params.filter_batchNum !== '' && this.params.filter_batchNum !== undefined) {
+      this.setReloadedInputFilters('batchNo', this.params.filter_batchNum);
     }
   }
 
@@ -1771,9 +1672,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     // const status = this.isAllCards ? null : this.summaries[this.selectedCardKey].statuses;
     // const status = this.isPBMValidationVisible ? [ClaimStatus.Accepted] : null;
     const status = this.isPBMValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
-    this.claimService.PBMValidation(this.providerId, this.payerId, this.batchId, this.uploadId, null, this.fclaimRefNo, this.fpatientFileNo,
-      this.invoiceNo, this.policyNo, status, this.fmemberId, this.selectedClaims, this.from, this.to, this.fdrname, this.fnationalid,
-      this.fpatientFileNo).subscribe(event => {
+    this.claimService.PBMValidation(this.providerId, this.params.payerId, this.params.batchId, this.params.uploadId, null, this.params.filter_claimRefNo, this.params.filter_patientFileNo,
+      this.params.invoiceNo, this.params.policyNo, status, this.params.filter_memberId, this.selectedClaims, this.params.from, this.params.to, this.params.filter_drName, this.params.filter_nationalId,
+      this.params.filter_patientFileNo).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
           if (event.body['response']) {
@@ -1812,26 +1713,13 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     return ClaimStatus;
   }
 
-  getClaimQueryParams() {
-    let params: ClaimCriteriaModel = new ClaimCriteriaModel();
-    params.batchId = this.batchId;
-    params.batchNo = this.fbatchNum;
-    params.claimDate = this.fclaimdate;
-    params.claimIds = this.selectedClaims;
-    params.claimRefNo = this.claimRefNo;
-    params.drname = this.fdrname;
-    params.fromDate = this.from;
-    params.toDate = this.to;
-    params.invoiceNo = this.invoiceNo;
-    params.memberId = this.memberId;
-    params.nationalId = this.fnationalid;
-    params.netAmount = this.fclaimNet;
-    params.patientFileNo = this.patientFileNo;
-    params.payerId = this.payerId;
-    params.policyNo = this.policyNo;
-    params.statuses = this.summaries[this.selectedCardKey].statuses;
-    params.uploadId = this.uploadId;
-    return params;
+  getClaimQueryParams(withoutPagination: boolean): ClaimCriteriaModel {
+    let criteria = this.params.toClaimCriteria(this.summaries[this.selectedCardKey].statuses);
+    if (withoutPagination) {
+      criteria.page = null;
+      criteria.size = null;
+    }
+    return criteria;
   }
 
   isReadyForSubmission() {
