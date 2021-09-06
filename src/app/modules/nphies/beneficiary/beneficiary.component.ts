@@ -479,6 +479,8 @@ export class BeneficiaryComponent implements OnInit {
       expiryDate: insurancePlan.expiryDateController.value,
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
+      relationWithSubscriber:null,
+      coverageType:null,
       isPrimary: insurancePlan.iSPrimary,
 
     }));;
