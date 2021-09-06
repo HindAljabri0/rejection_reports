@@ -16,7 +16,7 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Payer</mat-option>
-                            <mat-option *ngFor="let payer of payers" value="payer.nphiesId">{{payer.englistName}}</mat-option>
+                            <mat-option *ngFor="let payer of payers" [value]="payer.nphiesId">{{payer.englistName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -27,10 +27,7 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="-1">
                             <mat-option value="-1">Select Type</mat-option>
-                            <mat-option value="Type 1">Type 1</mat-option>
-                            <mat-option value="Type 2">Type 2</mat-option>
-                            <mat-option value="Type 3">Type 3</mat-option>
-                            <mat-option value="Type 4">Type 4</mat-option>
+                            <mat-option *ngFor="let type of transactionTypes" [value]="type.code">{{type.display}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
