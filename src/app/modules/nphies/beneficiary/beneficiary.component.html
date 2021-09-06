@@ -366,8 +366,8 @@
                                             <mat-select [value]="insurancePlan.selecteCoverageType"
                                             (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
                                                 <mat-option value="">Select Coverage Type</mat-option>
-                                                <mat-option value="EHCPOL">extended healthcare</mat-option>
-                                                <mat-option value="PUBLICPOL">public healthcare</mat-option>
+                                                <mat-option value="EHCPOL">Extended healthcare</mat-option>
+                                                <mat-option value="PUBLICPOL">Public healthcare</mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
@@ -576,8 +576,8 @@
                             <td>{{getPayerName(insurancePlans.payerId)}}</td>
                             <td>{{insurancePlans.expiryDate}}</td>
                             <td>{{insurancePlans.memberCardId}}</td>
-                            <td>Dummy data</td>
-                            <td>Dummy data</td>
+                            <td>{{getSubscriberRelationshipName(insurancePlans.relationWithSubscriber)}}</td>
+                            <td>{{getCoverageTypeName(insurancePlans.coverageType)}}</td>
                         </tr>
                     </tbody>
                 </table>
