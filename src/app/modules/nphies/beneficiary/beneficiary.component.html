@@ -349,25 +349,25 @@
                                 <td>
                                     <div class="form-group m-0">
                                         <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="-1">
-                                                <mat-option value="-1">Select Relation with Subscriber</mat-option>
-                                                <mat-option value="Relation 1">Relation 1</mat-option>
-                                                <mat-option value="Relation 2">Relation 2</mat-option>
-                                                <mat-option value="Relation 3">Relation 3</mat-option>
-                                                <mat-option value="Relation 4">Relation 4</mat-option>
+                                            <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
+                                            (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;" #selecteSubscriberRelationship>
+                                                <mat-option value="">Select Relation with Subscriber</mat-option>
+                                                <mat-option *ngFor="let subscriberRelationship of SubscriberRelationship" [value]="subscriberRelationship.Code">
+                                                    {{subscriberRelationship.Name}}</mat-option>
+
                                             </mat-select>
+                                              
                                         </mat-form-field>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="form-group m-0">
                                         <mat-form-field class="form-control custom-select-control">
-                                            <mat-select [value]="-1">
-                                                <mat-option value="-1">Select Coverage Type</mat-option>
-                                                <mat-option value="Type 1">Type 1</mat-option>
-                                                <mat-option value="Type 2">Type 2</mat-option>
-                                                <mat-option value="Type 3">Type 3</mat-option>
-                                                <mat-option value="Type 4">Type 4</mat-option>
+                                            <mat-select [value]="insurancePlan.selecteCoverageType"
+                                            (selectionChange)="insurancePlan.selecteCoverageType = $event.value;" #selecteCoverageType>
+                                                <mat-option value="">Select Coverage Type</mat-option>
+                                                <mat-option value="EHCPOL">extended healthcare</mat-option>
+                                                <mat-option value="PUBLICPOL">public healthcare</mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
