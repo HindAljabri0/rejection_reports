@@ -21,5 +21,6 @@ export const environment = {
   approvalDetailInquiryService: `${host}/approval-detail-inquiry`,
   providersBeneficiariesService: `${host}/beneficiaries`,
   providerNphiesEligibility: `${host}/coverage-eligibility`,
-  providerNphiesSearch: `${host}/provider-nphies-search`
+  providerNphiesSearch: `${host}/provider-nphies-search`,
+  providerNphiesApproval: `${host}/provider_nphies_approval`
 };

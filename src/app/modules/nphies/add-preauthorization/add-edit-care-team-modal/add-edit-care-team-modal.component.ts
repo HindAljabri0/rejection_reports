@@ -171,7 +171,6 @@ export class AddEditCareTeamModalComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     this.isSubmitted = true;
     if (this.FormCareTeam.valid) {
       const model: any = {};

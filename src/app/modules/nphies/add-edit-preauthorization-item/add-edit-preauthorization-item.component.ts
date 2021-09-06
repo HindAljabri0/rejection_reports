@@ -21,6 +21,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   itemList: any = [];
   // tslint:disable-next-line:max-line-length
   filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  filteredSupportingInfo: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   IsItemLoading = false;
@@ -47,7 +48,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     payerShare: [''],
     startDate: ['', Validators.required],
     supportingInfoSequence: [''],
-    supportingFilter: [''],
+    supportingInfoFilter: [''],
     careTeamSequence: ['', Validators.required],
     careTeamFilter: [''],
     diagnosisSequence: [''],
@@ -59,12 +60,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   typeList = [
     { value: 'medicalDevices', name: 'Medical Devices' },
     { value: 'medicationCode', name: 'MedicationCodes' },
-    { value: 'transporationService', name: 'Transportation Srca' },
+    { value: 'transporationService', name: 'Transportation SRCA' },
     { value: 'imagingService', name: 'Imaging' },
     { value: 'procedures', name: 'Procedures' },
     { value: 'services', name: 'Services' },
     { value: 'laboratory', name: 'Laboratory' },
-    { value: 'oralHealth', name: 'Oral Health Op' },
+    { value: 'oralHealthOp', name: 'Oral Health OP' },
+    { value: 'oralHealthIp', name: 'Oral Health IP' },
   ];
 
   constructor(
@@ -111,6 +113,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
 
       this.getItemList();
+    }
+
+    if (this.data.supportingInfos) {
+      this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
+      this.FormItem.controls.supportingInfoFilter.valueChanges
+        .pipe(takeUntil(this.onDestroy))
+        .subscribe(() => {
+          this.filterSupportingInfo();
+        });
     }
 
     if (this.data.careTeams) {
@@ -175,7 +186,25 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
     // filter the nations
     this.filteredItem.next(
-      this.itemList.filter(item => item.name.toLowerCase().indexOf(search) > -1)
+      this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  filterSupportingInfo() {
+    if (!this.data.supportingInfos) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormItem.controls.careTeamFilter.value;
+    if (!search) {
+      this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredSupportingInfo.next(
+      this.data.supportingInfos.filter(item => item.categoryName.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -300,7 +329,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     this.isSubmitted = true;
     if (this.FormItem.valid) {
       const model: any = {};
