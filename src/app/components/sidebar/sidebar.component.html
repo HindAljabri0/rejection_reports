@@ -349,9 +349,9 @@
             </mat-accordion>
 
             <mat-accordion displayMode="flat">
-                <mat-expansion-panel hideToggle [expanded]="auditTrail.isActive">
+                <mat-expansion-panel hideToggle [expanded]="auditTrail.isActive || transactionsLog.isActive">
                     <mat-expansion-panel-header>
-                        <mat-panel-title i18n="@@audit">Audit</mat-panel-title>
+                        <mat-panel-title i18n="@@audit">Logs</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li i18n="@@audittrail">
@@ -360,7 +360,7 @@
                             </a>
                         </li>
                         <li i18n="@@transactionsLog">
-                            <a routerLink="/administration/Transactions" routerLinkActive="is-active" #transactionsLog="routerLinkActive">
+                            <a routerLink="/administration/transactions" routerLinkActive="is-active" #transactionsLog="routerLinkActive">
                                 <span class="text">Transactions Log</span>
                             </a>
                         </li>

@@ -174,10 +174,19 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
+
+  isPrimary(index: string) {
+
+    if (index == "true") {
+      return true;
+    } else {
+      return false;
+    }
+  }
   selectedPayer(payerid: string) {
-    var payerName = this.payersList.find(e => e.arabicName);
-    
-    return payerName.englistName+"("+payerName.arabicName+")";
+    var payerName = this.payersList.find(e => e.payerId == payerid);
+
+    return payerName.englistName + "(" + payerName.arabicName + ")";
 
   }
 
@@ -223,7 +232,9 @@ export class BeneficiaryComponent implements OnInit {
       )
     }
 
-    console.log(this.insurancePlans[0].iSPrimary)
+    console.log(beneficiaryinfo.insurancePlans[0].isPrimary)
+
+
   }
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
@@ -273,7 +284,6 @@ export class BeneficiaryComponent implements OnInit {
 
     } else {
       this.getBeneficiary(this.beneficiaryId)
-      // console.log("oooo"+this.beneficiaryinfo.insurancePlans[0].isPrimary)
       this.viewMode = true;
     }
 
