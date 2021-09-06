@@ -1017,7 +1017,7 @@ export class ProvidersConfigComponent implements OnInit {
     if (this.providerMappingController.value != null &&
       this.restrictExtractionDateController.value != null
       && (this.providerMappingController.value != this.providerMappingValue ||
-        this.restrictExtractionDateController.value.getTime() != this.restrictExtractionDateValue.getTime())) {
+        new Date(this.restrictExtractionDateController.value).getTime() != this.restrictExtractionDateValue.getTime())) {
       if (this.providerMappingController.value.trim() == '') {
         this.componentLoading.providerMapping = true;
         this.dbMapping.deleteProviderMapping(this.selectedProvider).subscribe(event => {
