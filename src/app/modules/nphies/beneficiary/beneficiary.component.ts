@@ -190,6 +190,7 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
+  
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
 
