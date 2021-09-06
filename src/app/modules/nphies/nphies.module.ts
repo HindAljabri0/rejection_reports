@@ -17,6 +17,17 @@ import { AddEditPreauthorizationItemComponent } from './add-edit-preauthorizatio
 import { AddInsurancePlanDialogComponent } from './add-insurance-plan-dialog/add-insurance-plan-dialog.component';
 import { EligibilityDetailsComponent } from './eligibility-details/eligibility-details.component';
 import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-details/view-preauthorization-details.component';
+import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
+import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
+import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
+// tslint:disable-next-line:max-line-length
+import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+// tslint:disable-next-line:max-line-length
+import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
+// tslint:disable-next-line:max-line-length
+import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pre-authorization-details.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +41,15 @@ import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-de
     AddEditPreauthorizationItemComponent,
     PreauthorizationTransactionsComponent,
     EligibilityDetailsComponent,
-    ViewPreauthorizationDetailsComponent
+    AddEditCareTeamModalComponent,
+    ViewPreauthorizationDetailsComponent,
+    PaymentReconciliationComponent,
+    PaymentReconciliationDetailsComponent,
+    AddEditDiagnosisModalComponent,
+    AddEditSupportingInfoModalComponent,
+    SearchBeneficiaryComponent,
+    AddEditVisionLensSpecificationsComponent,
+    PreAuthorizationDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +66,11 @@ import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-de
     ViewEligibilityDetailsComponent,
     AddInsurancePlanDialogComponent,
     AddEditPreauthorizationItemComponent,
-    ViewPreauthorizationDetailsComponent
+    ViewPreauthorizationDetailsComponent,
+    AddEditCareTeamModalComponent,
+    AddEditDiagnosisModalComponent,
+    AddEditVisionLensSpecificationsComponent,
+    AddEditSupportingInfoModalComponent
   ]
 })
 export class NphiesModule { }

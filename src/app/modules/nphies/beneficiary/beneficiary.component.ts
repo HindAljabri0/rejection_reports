@@ -1,15 +1,18 @@
+
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { add } from 'ngx-bootstrap/chronos';
-import { ReplaySubject, Subject } from 'rxjs';
+import { from, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { BeneficiaryModel } from 'src/app/models/nphies/BeneficiaryModel';
-import { payer } from 'src/app/models/nphies/payer';
+import { BeneficiarySearch } from 'src/app/models/nphies/beneficiarySearch';
+import { Payer } from 'src/app/models/nphies/payer';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -23,22 +26,26 @@ export class BeneficiaryComponent implements OnInit {
   editMode = false;
   viewMode = false;
 
+
   selectedNationality = "";
   selectedMaritalStatus = "";
   selectedDocumentType = "";
   selectedGender = ""
-  selectedPayer = ""
   selectedResidencyType = ""
   selectedBloodGroup = "";
   selectedState = "";
   selectedLanguages = "";
   payersListErorr = "";
-  messageError="";
-  setPrimary="0";
-  fullName="";
+  messageError = "";
+  setPrimary = "0";
+  fullName = "";
   providerId = "";
+  beneficiaryId: string;
   nationalities = nationalities;
-  payersList:payer []= [];
+  Beneficiaries: BeneficiarySearch[];
+  payersList: Payer[] = [];
+  beneficiaryinfo: BeneficiaryModel;
+
 
   dobFormControl: FormControl = new FormControl();
   documentIdFormControl: FormControl = new FormControl();
@@ -55,27 +62,24 @@ export class BeneficiaryComponent implements OnInit {
   emergencyPhoneNumberController: FormControl = new FormControl();
   emailController: FormControl = new FormControl();
 
- 
-  addresses: {
-
-    houseNumberController: FormControl;
-    streetNameController: FormControl;
-    cityNameController: FormControl;
-    stateController: FormControl;
-    selectedCountry: string;
-    postalCodeController: FormControl
-
-  }[] = [];
+  houseNumberController = new FormControl();
+  streetNameController = new FormControl();
+  cityNameController = new FormControl();
+  stateController = new FormControl();
+  selectedCountry = "";
+  postalCodeController = new FormControl();
 
   insurancePlans: {
     iSPrimary: boolean,
     selectePayer: string,
     expiryDateController: FormControl
     memberCardId: FormControl,
+    selecteSubscriberRelationship: string
+    selecteCoverageType: string,
     payerErorr: string,
     memberCardIdErorr: string,
-  }[] = [  ];
- 
+  }[] = [];
+
   maritalStatuses: { Code: string, Name: string }[] = [
     { Code: 'A', Name: 'Annulled' },
     { Code: 'D', Name: 'Divorced' },
@@ -87,115 +91,309 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'T', Name: 'Domestic partner' },
     { Code: 'U', Name: 'unmarried' },
     { Code: 'W', Name: 'Widowed' },];
- 
 
-   
-  
-  
-ngOnInit() {
-  this.providersBeneficiariesService.getPayers().subscribe(event => {
-    if (event instanceof HttpResponse) {
-    if(event.body!=null && event.body instanceof Array)
-    this.payersList=event.body as payer[];
+  bloodGroup: { Code: string, Name: string }[] = [
+    { Code: 'O_PLUS', Name: 'O+' },
+    { Code: 'O_MINUS', Name: 'O-' },
+    { Code: 'A_PLUS', Name: 'A+' },
+    { Code: 'A_MINUS', Name: 'A-' },
+    { Code: 'B_PLUS', Name: 'B+' },
+    { Code: 'B_MINUS', Name: 'B-' },
+    { Code: 'AB_PLUS', Name: 'AB+' },
+    { Code: 'AB_MINUS', Name: 'AB-' },
+  ];
+
+
+  SubscriberRelationship: { Code: string, Name: string }[] = [
+    { Code: 'CHILD', Name: 'Child' },
+    { Code: 'PARENT', Name: 'Parent' },
+    { Code: 'SPOUSE', Name: 'Spouse' },
+    { Code: 'COMMON', Name: 'Common Law Spouse' },
+    { Code: 'SELF', Name: 'Self' },
+    { Code: 'INJURED', Name: 'Injured Party' },
+    { Code: 'OTHER', Name: 'Other' },
+  ];
+
+
+  getCoverageTypeName(CoverageTypeCode: string) {
+
+    switch (CoverageTypeCode) {
+      case "EHCPOL":
+        return "Extended healthcare"
+
+      case "PUBLICPOL":
+        return "Public healthcare"
+
+      default:
+        return ""
     }
   }
-    , err => {
+
+  getSubscriberRelationshipName(SubscriberRelationshipCode: string) {
+    for (let SubscriberRelationship of this.SubscriberRelationship) {
+      if (SubscriberRelationship.Code == SubscriberRelationshipCode) {
+        return SubscriberRelationship.Name
+      }
+    }
+  }
+
+
+  getBloodTypeName(BloodCode: string) {
+    for (let blodType of this.bloodGroup) {
+      if (blodType.Code == BloodCode) {
+        return blodType.Name
+      }
+    }
+
+  }
+
+  getPayerName(PayerId: string) {
+    for (let payer of this.payersList) {
+      if (payer.payerId == PayerId) {
+        return payer.englistName
+      }
+    }
+
+  }
+
+  getMaritalStatusName(maritalStatusCode: string) {
+    for (let maritalStatus of this.maritalStatuses) {
+      if (maritalStatus.Code == maritalStatusCode) {
+        return maritalStatus.Name
+      }
+    }
+
+  }
+  getNationalitiesName(NationalitiesName: string) {
+
+
+    for (let nationality of this.nationalities) {
+      if (nationality.Code == NationalitiesName) {
+        return nationality.Name
+      }
+    }
+
+
+
+  }
+
+
+
+  getBeneficiary(beneficiaryId: string) {
+
+    this.providersBeneficiariesService.getBeneficiaryById(this.sharedServices.providerId, beneficiaryId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.beneficiaryinfo = event.body as BeneficiaryModel;
+        this.setDateforView(this.beneficiaryinfo);
+
+      }
+
+    }, err => {
 
       if (err instanceof HttpErrorResponse) {
-        this.payersListErorr=err.message
+        console.log(err.message)
+
 
       }
     });
 
-  this.providerId = this.sharedServices.providerId;
-  this.filteredNations.next(this.nationalities.slice());
-  this.allMaritalStatuses.next(this.maritalStatuses.slice());
 
-  this.nationalityFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterNationality();
-    });
-    
-}
-
-onNameChanged(){
-  if((this.fullNameController.value!=null&&this.fullNameController.value.trim().length>0)){
-    this.firstNameController.disable();
-    this.secondNameController.disable();
-    this.thirdNameController.disable();
-    this.familyNameController.disable();
-  }else{
-    this.firstNameController.enable();
-    this.secondNameController.enable();
-    this.thirdNameController.enable();
-    this.familyNameController.enable();
+    return true
   }
-}
+
+  get showbeneficiaryForm() {
+
+    return this.addMode || this.editMode;
+
+  }
+
+
+  isPrimary(index: string) {
+
+    if (index == "true") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  selectedPayer(payerid: string) {
+    var payerName = this.payersList.find(e => e.payerId == payerid);
+
+    return payerName.englistName + "(" + payerName.arabicName + ")";
+
+  }
+
+
+  setDateforView(beneficiaryinfo: BeneficiaryModel) {
+
+
+    this.insurancePlans = [];
+    this.fullName = beneficiaryinfo.firstName;
+    this.secondNameController.setValue(beneficiaryinfo.middleName);
+    this.thirdNameController.setValue(beneficiaryinfo.lastName);
+    this.familyNameController.setValue(beneficiaryinfo.familyName);
+    this.fullNameController.setValue(beneficiaryinfo.fullName);
+    this.dobFormControl.setValue(beneficiaryinfo.dob);
+    this.selectedGender = beneficiaryinfo.gender;
+    this.selectedNationality = beneficiaryinfo.nationality;
+    this.contactNumberController.setValue(beneficiaryinfo.contactNumber);
+    this.emailController.setValue(beneficiaryinfo.email);
+    this.emergencyPhoneNumberController.setValue(beneficiaryinfo.emergencyNumber);
+    this.selectedDocumentType = beneficiaryinfo.documentType;
+    this.documentIdFormControl.setValue(beneficiaryinfo.documentId);
+    this.beneficiaryFileIdController.setValue(beneficiaryinfo.beneficiaryFileld);
+    this.EHealthIdNameController.setValue(beneficiaryinfo.eHealthId);
+    this.selectedResidencyType = beneficiaryinfo.residencyType;
+    this.selectedBloodGroup = beneficiaryinfo.bloodGroup;
+    this.selectedMaritalStatus = beneficiaryinfo.martialStatus;
+    this.selectedLanguages = beneficiaryinfo.preferredLanguage;
+    this.houseNumberController.setValue(beneficiaryinfo.addressLine);
+    this.streetNameController.setValue(beneficiaryinfo.streetLine);
+    this.cityNameController.setValue(beneficiaryinfo.city);
+    this.stateController.setValue(beneficiaryinfo.state);
+    this.selectedCountry = beneficiaryinfo.country;
+    this.postalCodeController.setValue(beneficiaryinfo.postalCode)
+
+    for (let insurancePlans of beneficiaryinfo.insurancePlans) {
+      this.insurancePlans.push(
+        {
+          iSPrimary: insurancePlans.isPrimary,
+          selectePayer: insurancePlans.payerId.trim(),
+          expiryDateController: new FormControl(insurancePlans.expiryDate),
+          memberCardId: new FormControl(insurancePlans.memberCardId),
+          selecteSubscriberRelationship: insurancePlans.relationWithSubscriber,
+          selecteCoverageType: insurancePlans.coverageType,
+          payerErorr: null, memberCardIdErorr: null
+        }
+      )
+    }
+
+    console.log(beneficiaryinfo.insurancePlans[0].isPrimary)
+
+
+  }
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService) { }
+  ngOnInit() {
+
+    this.providersBeneficiariesService.getPayers().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null && event.body instanceof Array)
+          this.payersList = event.body as Payer[];
 
 
 
- isFullNameDisabled(){
-if((this.firstNameController.value!=null&&this.firstNameController.value.trim().length>0)||
-(this.secondNameController.value!=null&&this.secondNameController.value.trim().length>0) ||
-(this.thirdNameController.value!=null&&this.thirdNameController.value.trim().length>0)||
-(this.familyNameController.value!=null&&this.familyNameController.value.trim().length>0)){
-this.fullNameController.setValue(
-  (this.firstNameController.value ==null?' ' : this.firstNameController.value)+
-(this.secondNameController.value  ==null?' ' : this.secondNameController.value)+
-(this.thirdNameController.value  ==null?' ' : this.thirdNameController.value)+
-(this.familyNameController.value  ==null?'' : this.familyNameController.value).trim());
+      }
+    }
+      , err => {
 
-this.fullNameController.disable();
+        if (err instanceof HttpErrorResponse) {
+          this.payersListErorr = err.message
 
-}else{
-this.fullNameController.enable();
-}}
- 
-  
+        }
+      });
+
+    this.providerId = this.sharedServices.providerId;
+    this.filteredNations.next(this.nationalities.slice());
+    this.allMaritalStatuses.next(this.maritalStatuses.slice());
+    this.allBloodType.next(this.bloodGroup);
+    this.allSubscriberRelationship.next(this.SubscriberRelationship);
+
+
+
+    this.nationalityFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterNationality();
+      });
+
+
+
+    this.beneficiaryId = this.activatedRoute.snapshot.paramMap.get("beneficiaryId")
+    var url = this.router.url;
+    if (url.endsWith('add')) {
+      this.addMode = true;
+    }
+    else if (this.beneficiaryId != null && url.endsWith('edit')) {
+      this.editMode = true;
+      this.getBeneficiary(this.beneficiaryId);
+
+
+    } else {
+      this.getBeneficiary(this.beneficiaryId)
+      this.viewMode = true;
+    }
+
+  }
+
+  onNameChanged() {
+    if ((this.fullNameController.value != null && this.fullNameController.value.trim().length > 0)) {
+      this.firstNameController.disable();
+      this.secondNameController.disable();
+      this.thirdNameController.disable();
+      this.familyNameController.disable();
+    } else {
+      this.firstNameController.enable();
+      this.secondNameController.enable();
+      this.thirdNameController.enable();
+      this.familyNameController.enable();
+    }
+  }
+
+
+
+  isFullNameDisabled() {
+    if ((this.firstNameController.value != null && this.firstNameController.value.trim().length > 0) ||
+      (this.secondNameController.value != null && this.secondNameController.value.trim().length > 0) ||
+      (this.thirdNameController.value != null && this.thirdNameController.value.trim().length > 0) ||
+      (this.familyNameController.value != null && this.familyNameController.value.trim().length > 0)) {
+      this.fullNameController.setValue(
+        (this.firstNameController.value == null ? ' ' : this.firstNameController.value) +
+        (this.secondNameController.value == null ? ' ' : this.secondNameController.value) +
+        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value) +
+        (this.familyNameController.value == null ? '' : this.familyNameController.value).trim());
+
+      this.fullNameController.disable();
+
+    } else {
+      this.fullNameController.enable();
+    }
+  }
+
+
   _onDestroy = new Subject<void>();
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
   allMaritalStatuses: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allBloodType: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+  allSubscriberRelationship: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+
+
+  dialogData: MessageDialogData;
   errors = {
     dob: "",
     documentType: "",
     documentId: "",
     gender: "",
-    fullName:"",
+    fullName: "",
 
   }
 
-  
 
-  deleteAddress(i:number){
-    this.addresses.splice(i,1)
-  }
-  addAddress(){
-    this.addresses.push( {
-   houseNumberController:new FormControl(),
-  streetNameController: new FormControl(),
-  cityNameController: new FormControl(),
-  stateController: new FormControl(),
-  selectedCountry: "",
-  postalCodeController: new FormControl()})
-  }
-  dialogData: MessageDialogData;
+  addInsurancePlan() {
 
+    if (this.payersListErorr != null && this.payersListErorr != null) {
+      this.insurancePlans.push({
+        iSPrimary: false,
+        selectePayer: "",
+        expiryDateController: new FormControl(),
+        memberCardId: new FormControl(),
+        selecteSubscriberRelationship: "",
+        selecteCoverageType: "",
+        payerErorr: null,
+        memberCardIdErorr: null
+      })
+    } else {
 
- 
-  
-  addInsurancePlan(){
-
-   if(this.payersListErorr!=null && this.payersListErorr!=null){
-    this.insurancePlans.push({ 
-      iSPrimary: false,
-      selectePayer: "",
-      expiryDateController:new FormControl(),
-      memberCardId:new FormControl(),
-      payerErorr: null,
-      memberCardIdErorr: null})
-    }else{
-      
       this.dialogService.openMessageDialog({
         title: '',
         message: `We could not load required information to create insurance plan. Please add your beneficiary and try adding insurance plans later.`,
@@ -203,13 +401,13 @@ this.fullNameController.enable();
       });
     }
   }
-  
-  deleteInsurancePlan(i:number){
-    this.insurancePlans.splice(i,1)
+
+  deleteInsurancePlan(i: number) {
+    this.insurancePlans.splice(i, 1)
   }
 
   beneficiaryModel = new BeneficiaryModel();
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private dialogService: DialogService) { }
+
 
 
   filterNationality() {
@@ -232,42 +430,96 @@ this.fullNameController.enable();
   }
 
 
+  updateDate() {
+    if (this.insurancePlans != null && this.insurancePlans.length != 0) {
+      for (let plan of this.insurancePlans) {
+        plan.iSPrimary = false;
 
-  setDate() {
+      }
+
+      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = true;
+
+    }
+
+    if (this.checkError()) { return }
+    this.sharedServices.loadingChanged.next(true);
+    this.setDateforSaveBeneficiary()
+    this.providersBeneficiariesService.editBeneficiaries(
+      this.providerId, this.beneficiaryId, this.beneficiaryModel
+    ).subscribe(event => {
+      if (event instanceof HttpResponse) {
+
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: `successfully`,
+          isError: false
+        });
+        this.sharedServices.loadingChanged.next(false);
+
+
+      }
+    }
+      , err => {
+
+        if (err instanceof HttpErrorResponse) {
+
+          if (err.status == 500) {
+            this.messageError = "could not reach server Please try again later "
+
+          } else {
+            this.messageError = err.message;
+          }
+
+          this.dialogService.openMessageDialog({
+            title: '',
+
+            message: this.messageError,
+            isError: true
+          });
+
+          this.sharedServices.loadingChanged.next(false);
+
+        }
+      });
+    this.editMode = false;
+
+  }
+
+
+
+  setDateforSaveBeneficiary() {
     this.beneficiaryModel.firstName = this.firstNameController.value;
-    this.beneficiaryModel.secondName = this.secondNameController.value;
-    this.beneficiaryModel.thirdName = this.thirdNameController.value;
+    this.beneficiaryModel.middleName = this.secondNameController.value;
+    this.beneficiaryModel.lastName = this.thirdNameController.value;
     this.beneficiaryModel.familyName = this.familyNameController.value;
     this.beneficiaryModel.fullName = this.fullNameController.value;
-    this.beneficiaryModel.dateOfBirth = this.dobFormControl.value;
+    this.beneficiaryModel.dob = this.dobFormControl.value;
     this.beneficiaryModel.gender = this.selectedGender;
     this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
     this.beneficiaryModel.contactNumber = this.contactNumberController.value;
     this.beneficiaryModel.email = this.emailController.value;
-    this.beneficiaryModel.emergencyPhoneNumber = this.emergencyPhoneNumberController.value;
+    this.beneficiaryModel.emergencyNumber = this.emergencyPhoneNumberController.value;
     this.beneficiaryModel.documentType = this.selectedDocumentType;
     this.beneficiaryModel.documentId = this.documentIdFormControl.value;
-    this.beneficiaryModel.fileId = this.beneficiaryFileIdController.value;
+    this.beneficiaryModel.beneficiaryFileld = this.beneficiaryFileIdController.value;
     this.beneficiaryModel.eHealthId = this.EHealthIdNameController.value;
     this.beneficiaryModel.residencyType = this.selectedResidencyType == "" ? null : this.selectedResidencyType;
-    this.beneficiaryModel.maritalStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
+    this.beneficiaryModel.bloodGroup = this.selectedBloodGroup == "" ? null : this.selectedBloodGroup;
+    this.beneficiaryModel.martialStatus = this.selectedMaritalStatus == "" ? null : this.selectedMaritalStatus;
     this.beneficiaryModel.preferredLanguage = this.selectedLanguages == "" ? null : this.selectedLanguages;
-    this.beneficiaryModel.addresses = this.addresses.map(addresse => ({
-      addressLine: addresse.houseNumberController.value,
-      streetNmae: addresse.streetNameController.value,
-      city: addresse.cityNameController.value,
-      state: addresse.stateController .value ,
-      contry: addresse.selectedCountry == "" ? null : addresse.selectedCountry,
-      
-     
-      postalCode: addresse.postalCodeController.value,
-     
-
-    }));
+    this.beneficiaryModel.addressLine = this.houseNumberController.value;
+    this.beneficiaryModel.streetLine = this.streetNameController.value;
+    this.beneficiaryModel.city = this.cityNameController.value;
+    this.beneficiaryModel.state = this.stateController.value;
+    this.beneficiaryModel.documentId = this.documentIdFormControl.value;
+    this.beneficiaryModel.country = this.selectedCountry == "" ? null : this.selectedCountry;
+    this.beneficiaryModel.postalCode = this.postalCodeController.value;
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
       expiryDate: insurancePlan.expiryDateController.value,
-      payerId: insurancePlan.selectePayer== "" ? null : insurancePlan.selectePayer,
+      payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
+      relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == "" ? null : insurancePlan.selecteSubscriberRelationship,
+      coverageType: insurancePlan.selecteCoverageType == "" ? null : insurancePlan.selecteCoverageType,
       isPrimary: insurancePlan.iSPrimary,
 
     }));;
@@ -275,19 +527,19 @@ this.fullNameController.enable();
   }
   save() {
 
-if(this.insurancePlans!=null && this.insurancePlans.length!=0){
-  for(let plan of this.insurancePlans){
-    plan.iSPrimary=false;
+    if (this.insurancePlans != null && this.insurancePlans.length != 0) {
+      for (let plan of this.insurancePlans) {
+        plan.iSPrimary = false;
 
-  }
+      }
 
-  this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary=true;
-  
-}
+      this.insurancePlans[Number.parseInt(this.setPrimary)].iSPrimary = true;
+
+    }
 
     if (this.checkError()) { return }
     this.sharedServices.loadingChanged.next(true);
-    this.setDate()
+    this.setDateforSaveBeneficiary()
     this.providersBeneficiariesService.saveBeneficiaries(
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
@@ -304,17 +556,17 @@ if(this.insurancePlans!=null && this.insurancePlans.length!=0){
       , err => {
 
         if (err instanceof HttpErrorResponse) {
-        
-          if(err.status==500){
-            this.messageError="could not reach server Please try again later "
 
-          }else{
-            this.messageError=err.message;
+          if (err.status == 500) {
+            this.messageError = "could not reach server Please try again later "
+
+          } else {
+            this.messageError = err.message;
           }
-        
+
           this.dialogService.openMessageDialog({
             title: '',
-            
+
             message: this.messageError,
             isError: true
           });

@@ -19,5 +19,7 @@ export const environment = {
   payerPaymentContractService: `${host}`,
   approvalDetailInquiryService: `${host}/approval-detail-inquiry`,
   providersBeneficiariesService: `${host}/beneficiaries`,
-  providerNphiesEligibility: `${host}/coverage-eligibility`
+  providerNphiesEligibility: `${host}/eligibilities`,
+  providerNphiesSearch: `${host}/provider-nphies-search`,
+  providerNphiesApproval: `${host}/provider_nphies_approval`
 };

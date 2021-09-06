@@ -18,7 +18,7 @@ export class SearchService {
     payerId?: string,
     batchId?: string,
     uploadId?: string,
-    casetype?: string,
+    casetype?: string[],
     claimRefNo?: string,
     memberId?: string,
     invoiceNo?: string,
@@ -27,38 +27,38 @@ export class SearchService {
     let requestURL = `/providers/${providerId}/claims?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId;
+        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&';
       if (casetype != null) {
-        requestURL += '&casetype=' + casetype;
+        requestURL += 'casetype=' + casetype.join(',') + '&';
       }
     }
     if (batchId != null) {
       if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
-      requestURL += 'batchId=' + batchId;
+      requestURL += `batchId=${batchId}&`;
     }
     if (uploadId != null) {
-      requestURL += 'uploadId=' + uploadId;
+      requestURL += `uploadId=${uploadId}&`;
     }
 
     if (invoiceNo != null) {
-      requestURL += `invoiceNo=${invoiceNo}`;
+      requestURL += `invoiceNo=${invoiceNo}&`;
     }
 
     if (policyNo != null) {
-      requestURL += `policyNo=${policyNo}`;
+      requestURL += `policyNo=${policyNo}&`;
     }
     if (claimRefNo != null) {
-      requestURL += `&claimRefNo=${claimRefNo}`;
+      requestURL += `claimRefNo=${claimRefNo}&`;
     }
     if (memberId != null) {
-      requestURL += `&memberId=${memberId}`;
+      requestURL += `memberId=${memberId}&`;
     }
     if (patientFileNo != null) {
-      requestURL += `&patientFileNo=${patientFileNo}`;
+      requestURL += `patientFileNo=${patientFileNo}&`;
     }
-    requestURL += '&status=' + statuses.toString();
+    requestURL += `status=${statuses.toString()}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
@@ -80,7 +80,7 @@ export class SearchService {
     pageSize?: number,
     batchId?: string,
     uploadId?: string,
-    casetype?: string,
+    casetype?: string[],
     claimRefNo?: string,
     memberId?: string,
     invoiceNo?: string,
@@ -96,61 +96,36 @@ export class SearchService {
     let requestURL = `/providers/${providerId}/claims/details?`;
     if (fromDate != null && toDate != null && payerId != null) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId;
-      if (casetype != null) { requestURL += '&casetype=' + casetype; }
+        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&';
+      if (casetype != null) { requestURL += 'casetype=' + casetype.join(',') + '&'; }
     }
     if (batchId != null) {
       if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
       }
-      requestURL += 'batchId=' + batchId;
+      requestURL += `batchId=${batchId}&`;
     }
     if (uploadId != null) {
-      requestURL += 'uploadId=' + uploadId;
+      requestURL += `uploadId=${uploadId}&`;
+    }
 
-      // if (claimRefNo != null && claimRefNo !== '' && claimRefNo !== undefined) {
-      //   requestURL += `&claimRefNo=${claimRefNo}`;
-      // }
-      // if (memberId != null && memberId !== '' && memberId !== undefined) {
-      //   requestURL += `&memberId=${memberId}`;
-      // }
-      // if (patientFileNo != null && patientFileNo !== '' && patientFileNo !== undefined) {
-      //   requestURL += `&patientFileNo=${patientFileNo}`;
-      // }
-    }
-    if (policyNo != null) {
-      requestURL += `policyNo=${policyNo}`;
-    }
     if (invoiceNo != null) {
-      requestURL += `invoiceNo=${invoiceNo}`;
-    }
-    if (claimRefNo != null && claimRefNo !== undefined && claimRefNo !== '') {
-      requestURL += `&claimRefNo=${claimRefNo}`;
-    }
-    if (memberId != null && memberId !== undefined && memberId !== '') {
-      requestURL += `&memberId=${memberId}`;
+      requestURL += `invoiceNo=${invoiceNo}&`;
     }
 
-    if (patientFileNo != null && patientFileNo !== undefined && patientFileNo !== '') {
-      requestURL += `&patientFileNo=${patientFileNo}`;
+    if (policyNo != null) {
+      requestURL += `policyNo=${policyNo}&`;
     }
-
-    if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `&drname=${drname}`;
+    if (claimRefNo != null) {
+      requestURL += `claimRefNo=${claimRefNo}&`;
     }
-    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-      requestURL += `&nationalId=${nationalId}`;
+    if (memberId != null) {
+      requestURL += `memberId=${memberId}&`;
     }
-    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
-      requestURL += `&claimDate=${claimDate}`;
+    if (patientFileNo != null) {
+      requestURL += `patientFileNo=${patientFileNo}&`;
     }
-    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
-      requestURL += `&netAmount=${netAmount}`;
-    }
-    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
-      requestURL += `&batchNo=${batchNo}`;
-    }
-    requestURL += '&status=' + statuses.toString() + '&page=' + page + '&size=' + pageSize;
+    requestURL += `status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }

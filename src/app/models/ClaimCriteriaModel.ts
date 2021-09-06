@@ -37,6 +37,10 @@ export class ClaimCriteriaModel {
 
     batchNo?: string;
 
+    page?: string;
+
+    size?: string;
+
     constructor() {
 
     }
@@ -97,6 +101,12 @@ export class ClaimCriteriaModel {
         }
         if(this.batchNo != null && this.batchNo.trim().length > 0){
             params += `batchNo=${this.batchNo}&`
+        }
+        if(this.page != null && this.page.trim().length > 0){
+            params += `page=${this.page}&`
+        }
+        if(this.size != null && this.size.trim().length > 0){
+            params += `size=${this.size}&`
         }
         if(params.endsWith('&')){
             params = params.substr(0, params.length-1);

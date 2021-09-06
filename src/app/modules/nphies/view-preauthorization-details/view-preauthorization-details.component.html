@@ -2,124 +2,100 @@
     <h5 class="primary-dialog-title">Authorization - LAV4FIYPZWKS</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body">
-    <div class="row">
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Claim Type</div>
-                <p class="form-control-static">InPatient</p>
+<div class="primary-dialog-body p-0">
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span>Details</span>
+            </ng-template>
+            <div class="pre-auth-info-wrapper">
+                <app-pre-authorization-details></app-pre-authorization-details>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Related Claim Name</div>
-                <p class="form-control-static">NA</p>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                    <span>Communication</span>
+                    <span class="alert-marker ml-2"></span>
+                </div>
+            </ng-template>
+            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                <div class="communication-wrapper">
+                    <ul class="communication">
+                        <li class="date">
+                            <span>26 April 2021</span>
+                        </li>
+                        <li class="sent">
+                            <div class="inner">
+                                <span class="time">02:30 PM</span>
+                                <p class="message">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!</p>
+                            </div>
+                        </li>
+                        <li class="received">
+                            <div class="inner">
+                                <span class="time">02:56 PM</span>
+                                <p class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, doloribus nam quod necessitatibus sapiente deserunt quis
+                                    voluptatem et
+                                    similique
+                                    nesciunt a, atque id laborum odit fugit omnis ipsum tempora soluta? Cum, quisquam! Ducimus, quis! Modi totam quas adipisci sunt exercitationem
+                                    in,
+                                    voluptates id
+                                    praesentium cupiditate, ullam distinctio quae laudantium optio.</p>
+                            </div>
+                        </li>
+                        <li class="date">
+                            <span>28 April 2021</span>
+                        </li>
+                        <li class="sent">
+                            <button type="button" class="inner">
+                                <span class="time">06:48 PM</span>
+                                <span class="image"
+                                    style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
+                            </button>
+                        </li>
+                        <li class="sent">
+                            <button type="button" class="inner">
+                                <span class="time">06:56 PM</span>
+                                <span class="file">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span class="name">Radiology Report.pdf</span>
+                                    <span class="size">24.14 MB</span>
+                                </span>
+                            </button>
+                        </li>
+                        <li class="received">
+                            <button type="button" class="inner">
+                                <span class="time">08:48 PM</span>
+                                <span class="image"
+                                    style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
+                            </button>
+                        </li>
+                        <li class="received">
+                            <button type="button" class="inner">
+                                <span class="time">08:56 PM</span>
+                                <span class="file">
+                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                    <span class="name">Radiology Report.pdf</span>
+                                    <span class="size">24.14 MB</span>
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </ng-scrollbar>
+            <div class="add-communication-block">
+                <div class="inner">
+                    <div class="text-wrapper">
+                        <input type="text" class="text-control" placeholder="Type a message" />
+                        <button type="button" class="attachment-btn">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                    </div>
+                    <button type="button" color="primary" mat-flat-button>Send</button>
+                </div>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Beneficiary Name</div>
-                <p class="form-control-static">Zahl Fathi Tareeq</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Payment Amount</div>
-                <p class="form-control-static">NA</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Transaction Date</div>
-                <p class="form-control-static">31/05/2021 10:22</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <div class="control-label">Pre-authorization Status</div>
-                <p class="form-control-static">Approved</p>
-            </div>
-        </div>
-    </div>
-
-    <h5 class="form-title">
-        Diagnoses
-    </h5>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Code - Description</th>
-                    <th>On Admission</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Pricipal Diagnosis</td>
-                    <td>A93.2 - Colorado tick fever</td>
-                    <td>Yes</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <h5 class="form-title">
-        Supporting Info
-    </h5>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Value Type</th>
-                    <th>Reason</th>
-                    <th>Category</th>
-                    <th>Value</th>
-                    <th>Code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="5">
-                        <app-empty-state message='No supporting info found!'></app-empty-state>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <h5 class="form-title">
-        Care Teams
-    </h5>
-    <div class="table-responsive">
-        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-                <tr>
-                    <th>Sequence</th>
-                    <th>Clinician</th>
-                    <th>Clinician Role</th>
-                    <th>Care Team Role</th>
-                    <th>Speciality</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Shadi</td>
-                    <td>Doctor</td>
-                    <td>Primary Provider</td>
-                    <td>Hair Implant Dermatology</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <h5 class="form-title">
-        Items
-    </h5>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla amet quidem. Cumque voluptatem, maxime eos tenetur
-    saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam hic cupiditate odit aliquid labore quisquam
-    temporibus unde natus error laboriosam aspernatur reiciendis.
+        </mat-tab>
+    </mat-tab-group>
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
