@@ -115,4 +115,8 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
   }
 
+  get isLoading(){
+    return this.sharedServices.loading;
+  }
+
 }

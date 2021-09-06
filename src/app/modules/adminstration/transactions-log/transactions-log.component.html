@@ -95,7 +95,7 @@
                     </ng-container>
                     <tr>
                         <td colspan="7" class="p-0">
-                            <app-empty-state *ngIf="transactions == null || transactions.length == 0"
+                            <app-empty-state *ngIf="isLoading && (transactions == null || transactions.length == 0)"
                                 class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
                         </td>
