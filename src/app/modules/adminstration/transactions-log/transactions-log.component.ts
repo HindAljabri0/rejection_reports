@@ -111,11 +111,21 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     return id;
   }
 
+  getTypeName(code: string) {
+    if (code != null) {
+      const index = this.transactionTypes.findIndex(type => type.code.toLowerCase() == code.toLowerCase());
+      if (index != -1) {
+        return this.transactionTypes[index].display;
+      }
+    }
+    return code;
+  }
+
   _isValidDate(date): boolean {
     return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
   }
 
-  get isLoading(){
+  get isLoading() {
     return this.sharedServices.loading;
   }
 
