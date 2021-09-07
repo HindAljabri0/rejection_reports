@@ -27,7 +27,9 @@
             <p *ngIf="claimProps.payerbatchrefno !=null"><span>Payer Batch Reference
                 No.:</span>&nbsp;<strong>{{claimProps.payerbatchrefno}}</strong>
             </p>
-
+            <p *ngIf="claimProps.payerclaimrefno !=null"><span>Payer Claim Reference
+                No.:</span>&nbsp;<strong>{{claimProps.payerclaimrefno}}</strong>
+            </p>
 
             <p><span>Status:</span>&nbsp;<strong>{{getClaimStatusLabel(claimProps.statusCode)}}</strong>
             </p>
