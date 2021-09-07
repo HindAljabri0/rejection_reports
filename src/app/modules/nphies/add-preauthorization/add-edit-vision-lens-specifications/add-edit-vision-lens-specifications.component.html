@@ -1,0 +1,142 @@
+<div class="primary-dialog-header has-border">
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Vision Lens Specification</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Vision Lens Specification</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<form [formGroup]="FormVisionSpecification" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+      <div class="col-4 col-lg-3">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormVisionSpecification.get('product').touched) && FormVisionSpecification.get('product').hasError('required')}">
+          <label class="control-label">Product<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="product">
+              <mat-option value="">Select Product</mat-option>
+              <mat-option *ngFor="let product of productList" [value]="product">{{product.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div
+            *ngIf="(isSubmitted || FormVisionSpecification.get('product').touched) && FormVisionSpecification.get('product').hasError('required')">
+            <span class="error-text">Please select Product</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Eye</label>
+          <mat-radio-group class="radio-group inline" formControlName="eye">
+            <mat-radio-button value="1" color="primary">Right</mat-radio-button>
+            <mat-radio-button value="0" color="primary">Left</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Color</label>
+          <input class="form-control" placeholder="Enter color" formControlName="lenseColor">
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Brand</label>
+          <input class="form-control" placeholder="Enter brand" formControlName="lenseBrand">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row small-gutter">
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Sphere</label>
+              <input type="number" class="form-control" placeholder="Enter sphere" formControlName="sphere">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Cylinder</label>
+              <input type="number" class="form-control" placeholder="Enter cylinder" formControlName="cyclinder">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Axis</label>
+              <input type="number" class="form-control" placeholder="Enter axis" formControlName="axis">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Add</label>
+              <input type="number" class="form-control" placeholder="Enter add" formControlName="multifocalPower">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row small-gutter">
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Power</label>
+              <input type="number" class="form-control" placeholder="Enter power" formControlName="lensePower">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Back Curve</label>
+              <input type="number" class="form-control" placeholder="Enter back curve" formControlName="lenseBackCurve">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Diameter</label>
+              <input type="number" class="form-control" placeholder="Enter diameter" formControlName="lenseDiameter">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="control-label">Duration</label>
+              <input type="number" class="form-control" placeholder="Enter duration" formControlName="lenseDuration">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Prism</label>
+          <div class="row extra-small-gutter">
+            <div class="col">
+              <input type="number" class="form-control" placeholder="Prism amount" formControlName="prismAmount">
+            </div>
+            <div class="col-auto"
+              [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')}">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="prismBase">
+                  <mat-option value="">Select base</mat-option>
+                  <mat-option *ngFor="let base of baseList" [value]="base">{{base.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div
+                *ngIf="(isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')">
+                <span class="error-text">Please select Base</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="control-label">Notes</label>
+          <textarea placeholder="Enter notes" class="form-control" formControlName="lenseNote"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+      <button type="button" mat-button (click)="closeDialog()">Cancel</button>
+      <button mat-flat-button color="primary" type="submit">
+        <span *ngIf="!data.item">Add</span>
+        <span *ngIf="data.item">Edit</span>
+      </button>
+    </div>
+  </div>
+</form>
