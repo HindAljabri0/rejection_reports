@@ -343,6 +343,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         if (summary.totalClaims > 0) {
           if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
+            summary.statuses.push('All');
+            summary.statuses.push('ALL');
           }
           this.summaries.push(summary);
         }
