@@ -87,7 +87,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     this.isSubmitted = true;
     if (this.FormVisionSpecification.valid) {
       const model: any = {};
-      debugger;
+      model.sequence = this.data.Sequence;
       model.product = this.FormVisionSpecification.controls.product.value.value;
       model.productName = this.FormVisionSpecification.controls.product.value.name;
       model.eye = this.FormVisionSpecification.controls.eye.value;
