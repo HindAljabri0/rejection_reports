@@ -11,14 +11,15 @@
         <div class="form-group flex-grow-1"
           [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
           <label class="control-label">Select a Beneficiary</label>
-          <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
-            (keyup)="searchBeneficiaries()">
+          <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
+            formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
               {{beneficiary.name}} ({{beneficiary.documentId}})
             </mat-option>
           </mat-autocomplete>
-          <div *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+          <div
+            *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
             <span class="error-text">Please select a Beneficiary</span>
           </div>
         </div>
@@ -28,7 +29,8 @@
         </div>
         <div class="form-group">
           <label class="control-label">&nbsp;</label>
-          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+          <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
+            color="primary">Create New Beneficiary</button>
         </div>
       </div>
 
@@ -46,7 +48,8 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
               <span class="error-text">Please select an Insurance Plan</span>
             </div>
           </div>
@@ -60,29 +63,33 @@
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
             <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" formControlName="dateOrdered">
+              <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                formControlName="dateOrdered">
               <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
               <mat-datepicker #dateOrderedCtrl></mat-datepicker>
             </div>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
               <span class="error-text">Please enter Date Ordered</span>
             </div>
           </div>
         </div>
         <div class="col-4 col-xxl-3">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
             <label class="control-label">Type<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="type">
                 <mat-option value="">Select Type</mat-option>
                 <mat-option value="institutional">institutional</mat-option>
-                <mat-option value="oral ">Dental</mat-option>
+                <mat-option value="oral">Dental</mat-option>
                 <mat-option value="pharmacy">Pharmacy</mat-option>
                 <mat-option value="professional">professional</mat-option>
                 <mat-option value="vision">Optical</mat-option>
               </mat-select>
             </mat-form-field>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
               <span class="error-text">Please select a Type</span>
             </div>
           </div>
@@ -93,9 +100,12 @@
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="subType">
                 <mat-option value="">Select Sub Type</mat-option>
-                <mat-option value="ip">InPatient</mat-option>
-                <mat-option value="op">OutPatient</mat-option>
-                <mat-option value="emr">Emergency</mat-option>
+                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient</mat-option>
+                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
+                FormPreAuthorization.controls.type.value === 'oral' ||
+                FormPreAuthorization.controls.type.value === 'vision' ||
+                FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
+                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -135,10 +145,12 @@
                 {{careTeam.speciality}}
               </td>
               <td class="actions">
-                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)" class="text-primary">
+                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)"
+                  class="text-primary">
                   <mat-icon>create</mat-icon>
                 </button>
-                <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)" class="text-primary m-0">
+                <button mat-icon-button type="button" matTooltip="Delete" (click)="deleteCareTeam(careTeam.sequence, i)"
+                  class="text-primary m-0">
                   <mat-icon>delete_outline</mat-icon>
                 </button>
               </td>
@@ -178,10 +190,12 @@
                 {{diagnosis.onAdmissionName}}
               </td>
               <td class="actions">
-                <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
+                <button type="button" mat-icon-button matTooltip="Edit" (click)="openAddEditDiagnosis(diagnosis)"
+                  class="text-primary">
                   <mat-icon>create</mat-icon>
                 </button>
-                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteDiagnosis(i)">
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
+                  (click)="deleteDiagnosis(i)">
                   <mat-icon>delete_outline</mat-icon>
                 </button>
               </td>
@@ -197,29 +211,37 @@
       </h5>
       <div class="row small-gutter">
         <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Date Written</label>
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required')}">
+            <label class="control-label">Date Written<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written">
+              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                formControlName="dateWritten">
               <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
               <mat-datepicker #visionWrittenDate></mat-datepicker>
             </div>
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required')">
+              <span class="error-text">Please select a Date Written</span>
+            </div>
           </div>
         </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Prescriber</label>
+        <!-- <div class="col-4 col-xxl-3">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required')}">
+            <label class="control-label">Prescriber<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select value="-1">
-                <mat-option value="-1">Select Prescriber</mat-option>
-                <mat-option value="Prescriber 1">Prescriber 1</mat-option>
-                <mat-option value="Prescriber 2">Prescriber 2</mat-option>
-                <mat-option value="Prescriber 3">Prescriber 3</mat-option>
-                <mat-option value="Prescriber 4">Prescriber 4</mat-option>
+              <mat-select formControlName="prescriber">
+                <mat-option value="">Select Prescriber</mat-option>
+                <mat-option *ngFor="let pre of CareTeams" [value]="pre.physicianCode">{{pre.physicianCode}}</mat-option>
               </mat-select>
             </mat-form-field>
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required')">
+              <span class="error-text">Please select a Prescriber</span>
+            </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="box">
         <h5 class="d-flex align-items-center mb-3">
@@ -228,7 +250,7 @@
             <mat-icon>add</mat-icon>
           </button>
         </h5>
-        <div class="table-responsive">
+        <div *ngIf="VisionSpecifications" class="table-responsive">
           <table class="primary-grid manual-row-color no-borders">
             <thead>
               <tr>
@@ -246,82 +268,24 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Lens</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Right</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+35.72</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+53.55</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-19.90</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-58.10</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+23.44</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+1.78</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+72.39</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
+              <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
+                <td>{{visionSpecification.productName}}</td>
+                <td>{{visionSpecification.eye}}</td>
+                <td>{{visionSpecification.sphere}}</td>
+                <td>{{visionSpecification.cyclinder}}</td>
+                <td>{{visionSpecification.axis}}</td>
+                <td>{{visionSpecification.multifocalPower}}</td>
+                <td>{{visionSpecification.lensePower}}</td>
+                <td>{{visionSpecification.lenseBackCurve}}</td>
+                <td>{{visionSpecification.lenseDiameter}}</td>
+                <td>{{visionSpecification.prismAmount}}/{{visionSpecification.prismBaseName}}</td>
                 <td class="actions">
-                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
+                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
+                    matTooltip="Edit" class="text-primary">
                     <mat-icon>create</mat-icon>
                   </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Lens</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Left</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+83.07</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+5.97</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+33.68</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-3.39</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-95.32</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-17.12</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-75.99</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
-                <td class="actions">
-                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Contact</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Right</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+35.72</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+53.55</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-58.10</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-54.48</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-23.44</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+1.78</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+72.39</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
-                <td class="actions">
-                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Contact</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Left</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-83.07</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-5.97</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-57.42</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+33.68</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">+95.32</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-17.12</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">-75.99</td>
-                <td class="row-click" (click)="openAddEditVisionLensDialog()">Amount/Base</td>
-                <td class="actions">
-                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog()" matTooltip="Edit" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                  <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete"
+                    class="text-primary">
                     <mat-icon>delete_outline</mat-icon>
                   </button>
                 </td>
@@ -329,6 +293,8 @@
             </tbody>
           </table>
         </div>
+        <app-empty-state *ngIf="VisionSpecifications.length === 0" message='No Lens Specifications found!'>
+        </app-empty-state>
       </div>
 
       <h5 class="form-title">
@@ -369,10 +335,12 @@
                 {{s.reasonName}}
               </td>
               <td class="actions">
-                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" (click)="openAddEditSupportInfoDialog(s)">
+                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
+                  (click)="openAddEditSupportInfoDialog(s)">
                   <mat-icon>create</mat-icon>
                 </button>
-                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0" (click)="deleteSupportingInfo(i)">
+                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
+                  (click)="deleteSupportingInfo(i)">
                   <mat-icon>delete_outline</mat-icon>
                 </button>
               </td>
@@ -398,7 +366,8 @@
                 <mat-option value="WPA">Workplace accident</mat-option>
               </mat-select>
             </mat-form-field>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required')">
               <span class="error-text">Please select an Accident Type</span>
             </div>
           </div>
@@ -428,14 +397,17 @@
           </div>
         </div>
         <div class="col-4 col-xxl-3">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')}">
+          <div class="form-group"
+            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')}">
             <label class="control-label">Date<span class="asterisk">*</span></label>
             <div class="date-picker">
-              <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
+              <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
+                formControlName="date">
               <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
               <mat-datepicker #accidentDate></mat-datepicker>
             </div>
-            <div *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
+            <div
+              *ngIf="(isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required')">
               <span class="error-text">Please enter date</span>
             </div>
           </div>
@@ -444,7 +416,8 @@
 
       <h5 class="form-title">
         <span>Items</span>
-        <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="CareTeams.length === 0">
+        <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
+          [disabled]="CareTeams.length === 0">
           <mat-icon>add</mat-icon>
         </button>
       </h5>
@@ -462,7 +435,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of Items; let i = index;" [ngClass]="{'text-danger': item.careTeamSequence.length === 0}">
+            <tr *ngFor="let item of Items; let i = index;"
+              [ngClass]="{'text-danger': item.careTeamSequence.length === 0}">
               <td>{{item.typeName}}</td>
               <td>{{item.itemCode}} - {{item.itemDescription}}</td>
               <td>{{item.quantity}}</td>
@@ -470,7 +444,8 @@
               <td class="text-nowrap">{{item.net}} <span class="currency">SR</span></td>
               <td>{{item.nonStandardCode}}</td>
               <td class="actions">
-                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditItemDialog(item)" class="text-primary">
+                <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditItemDialog(item)"
+                  class="text-primary">
                   <mat-icon>create</mat-icon>
                 </button>
                 <button mat-icon-button type="button" matTooltip="Delete" class="text-primary" (click)="deleteItem(i)">
