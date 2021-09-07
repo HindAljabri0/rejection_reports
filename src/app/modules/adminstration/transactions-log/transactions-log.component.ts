@@ -1,5 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
 import { Payer } from 'src/app/models/nphies/payer';
 import { TransactionLog } from 'src/app/models/nphies/transactionLog';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
@@ -16,6 +18,14 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
   transactionTypes: { code: string, display: string }[] = [];
 
   transactions: TransactionLog[] = [];
+
+  transactionIdControl: FormControl = new FormControl();
+  providerIdControl: FormControl = new FormControl();
+  fromDateControl: FormControl = new FormControl();
+  toDateControl: FormControl = new FormControl();
+
+  selectedPayer: string = 'none';
+  selectedType: string = 'none';
 
   constructor(private searchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices) { }
@@ -63,8 +73,15 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     if (this.sharedServices.loading) {
       return;
     }
+    const transactionId: string = this.transactionIdControl.value != null && this.transactionIdControl.value.trim().length > 0 ? this.transactionIdControl.value : null;
+    const providerId: string = this.providerIdControl.value != null && this.providerIdControl.value.trim().length > 0 ? this.providerIdControl.value : null;
+    const payer: string = this.selectedPayer != 'none' ? this.selectedPayer : null;
+    const type: string = this.selectedType != 'none' ? this.selectedType : null;
+    const fromDate: string = this._isValidDate(this.fromDateControl.value) ? moment(this.fromDateControl.value).format('YYYY-MM-DD') : null;
+    const toDate: string = this._isValidDate(this.toDateControl.value) ? moment(this.toDateControl.value).format('YYYY-MM-DD') : null;
     this.sharedServices.loadingChanged.next(true);
-    this.searchService.searchTransactionsLog().subscribe(event => {
+    this.transactions = [];
+    this.searchService.searchTransactionsLog(transactionId, providerId, payer, type, fromDate, toDate).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
         const body = event.body;
@@ -92,6 +109,14 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
       return this.payers[index].englistName;
     }
     return id;
+  }
+
+  _isValidDate(date): boolean {
+    return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());
+  }
+
+  get isLoading(){
+    return this.sharedServices.loading;
   }
 
 }
