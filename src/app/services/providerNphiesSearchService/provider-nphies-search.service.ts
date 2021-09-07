@@ -52,11 +52,15 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
-  searchTransactionsLog(providerId?: string, payerId?: string, type?: string, fromDate?: string, toDate?: string, page?: number, size?: number) {
+  searchTransactionsLog(transactionId?:string,providerId?: string, payerId?: string, type?: string, fromDate?: string, toDate?: string, page?: number, size?: number) {
     let requestUrl = '/transactions?';
 
+    if (transactionId != null) {
+      requestUrl += `transactionId=${transactionId}`;
+    }
+
     if (providerId != null) {
-      requestUrl += `providerId=${providerId}`;
+      requestUrl += `&providerId=${providerId}`;
     }
 
     if (payerId != null) {
