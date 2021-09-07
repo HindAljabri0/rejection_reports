@@ -9,11 +9,10 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { DatePipe } from '@angular/common';
 import { AddEditDiagnosisModalComponent } from './add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditVisionLensSpecificationsComponent } from '../add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditSupportingInfoModalComponent } from './add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -41,8 +40,11 @@ export class AddPreauthorizationComponent implements OnInit {
     state: [''],
     country: [''],
     date: ['', Validators.required],
+    dateWritten: ['', Validators.required],
+    // prescriber: ['', Validators.required],
   });
 
+  VisionSpecifications = [];
   SupportingInfo = [];
   CareTeams = [];
   Diagnosises = [];
@@ -97,6 +99,53 @@ export class AddPreauthorizationComponent implements OnInit {
       return date.getTime() > Date.now() ? ' (Active)' : ' (Expired)';
     }
     return '';
+  }
+
+  openAddEditVisionLensDialog(visionSpecification: any = null) {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      Sequence: (visionSpecification !== null) ? visionSpecification.sequence : (this.VisionSpecifications.length === 0 ? 1 : (this.VisionSpecifications[this.VisionSpecifications.length - 1].sequence + 1)),
+      item: visionSpecification
+    };
+
+    const dialogRef = this.dialog.open(AddEditVisionLensSpecificationsComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (this.VisionSpecifications.find(x => x.sequence === result.sequence)) {
+          this.VisionSpecifications.map(x => {
+            if (x.sequence === result.sequence) {
+              x.product = result.product;
+              x.productName = result.productName;
+              x.eye = result.eye;
+              x.sphere = result.sphere;
+              x.cyclinder = result.cyclinder;
+              x.axis = result.axis;
+              x.prismAmount = result.prismAmount;
+              x.prismBase = result.prismBase;
+              x.multifocalPower = result.multifocalPower;
+              x.lensePower = result.lensePower;
+              x.lenseBackCurve = result.lenseBackCurve;
+              x.lenseDiameter = result.lenseDiameter;
+              x.lenseDuration = result.lenseDuration;
+              x.lenseColor = result.lenseColor;
+              x.lenseBrand = result.lenseBrand;
+              x.prismBaseName = result.prismBaseName;
+              x.lenseNote = result.lenseNote;
+            }
+          });
+        } else {
+          this.VisionSpecifications.push(result);
+        }
+      }
+    });
+  }
+
+  deleteVisionLens(index: number) {
+    this.VisionSpecifications.splice(index, 1);
   }
 
   openAddEditCareTeam(careTeam: any = null) {
@@ -288,6 +337,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('Model', this.model);
     this.isSubmitted = true;
     if (this.FormPreAuthorization.valid) {
 
@@ -345,6 +395,31 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
+      this.model.visionPrescription = {};
+      // tslint:disable-next-line:max-line-length
+      this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
+      // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+      this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
+        const model: any = {};
+        model.sequence = x.sequence;
+        model.product = x.product;
+        model.eye = x.eye;
+        model.sphere = x.sphere;
+        model.cyclinder = x.cyclinder;
+        model.axis = x.axis;
+        model.prismAmount = x.prismAmount;
+        model.prismBase = x.prismBase;
+        model.multifocalPower = x.multifocalPower;
+        model.lensePower = x.lensePower;
+        model.lenseBackCurve = x.lenseBackCurve;
+        model.lenseDiameter = x.lenseDiameter;
+        model.lenseDuration = x.lenseDuration;
+        model.lenseColor = x.lenseColor;
+        model.lenseBrand = x.lenseBrand;
+        model.lenseNote = x.model;
+        return model;
+      });
+
       this.model.items = this.Items.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -370,15 +445,13 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      console.log('FormValue', this.FormPreAuthorization.value);
       console.log('Model', this.model);
-
+      debugger;
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(res => {
         if (event instanceof HttpResponse) {
           debugger;
         }
       }, error => {
-        debugger;
         if (error instanceof HttpErrorResponse) {
           if (error.status === 404) {
 
@@ -390,10 +463,6 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  openAddEditVisionLensDialog() {
-    const dialogRef = this.dialog.open(AddEditVisionLensSpecificationsComponent, {
-      panelClass: ['primary-dialog', 'dialog-xl']
-    });
-  }
+
 
 }

@@ -184,7 +184,8 @@
                                                             <div class="col-auto">
                                                                 <div class="statistic-box">
                                                                     <label>Gross Amount</label>
-                                                                    <h3>{{calcGross(controllers[i].services[j]) | number : '1.2-2'}}
+                                                                    <h3>{{calcGross(controllers[i].services[j]) | number
+                                                                        : '1.2-2'}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
@@ -220,26 +221,31 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-auto" *ngIf="statusCode != undefined">
+                                                            <div class="col-auto"
+                                                                *ngIf="controllers[i].services[j].statusCode != null && controllers[i].services[j].statusCode != ''">
                                                                 <div
-                                                                    class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
+                                                                    class="statistic-box text-{{getStatusColor(controllers[i].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i].services[j].statusCode)}}">
                                                                     <label>Actual Deducted Amount</label>
-                                                                    <h3>{{controllers[i].services[j].acutalDeductedAmount}}</h3>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto" *ngIf="statusCode != undefined">
-                                                                <div
-                                                                    class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
-                                                                    <label>Actual Paid Net Amount</label>
-                                                                    <h3>{{calcNet(controllers[i].services[j]) - controllers[i].services[j].acutalDeductedAmount}}
+                                                                    <h3>{{controllers[i].services[j].acutalDeductedAmount}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-auto" *ngIf="statusCode != undefined">
+                                                            <div class="col-auto"
+                                                                *ngIf="controllers[i].services[j].statusCode != null && controllers[i].services[j].statusCode != ''">
                                                                 <div
-                                                                    class="statistic-box text-{{getStatusColor(statusCode)}} light-bg-{{getStatusColor(statusCode)}}">
+                                                                    class="statistic-box text-{{getStatusColor(controllers[i].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i].services[j].statusCode)}}">
+                                                                    <label>Actual Paid Net Amount</label>
+                                                                    <h3>{{(calcNet(controllers[i].services[j]) -
+                                                                        controllers[i].services[j].acutalDeductedAmount) | number : '1.2-2'}}
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-auto"
+                                                                *ngIf="controllers[i].services[j].statusCode != null && controllers[i].services[j].statusCode != ''">
+                                                                <div
+                                                                    class="statistic-box text-{{getStatusColor(controllers[i].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i].services[j].statusCode)}}">
                                                                     <label>Actual Paid VAT Amount</label>
-                                                                    <h3>{{controllers[i].services[j].acutalPaidVatAmount}}
+                                                                    <h3>{{controllers[i].services[j].acutalPaidVatAmount  | number : '1.2-2'}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
