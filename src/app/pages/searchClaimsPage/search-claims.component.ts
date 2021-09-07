@@ -341,7 +341,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if ((event.status / 100).toFixed() == '2') {
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
-          if (statuses.includes('all')) {
+          if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
           }
           this.summaries.push(summary);
