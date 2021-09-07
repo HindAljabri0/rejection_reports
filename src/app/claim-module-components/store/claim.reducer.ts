@@ -103,7 +103,7 @@ const _claimReducer = createReducer(
             statusCode: body['statusCode'],
             statusDetail: body['statusDetail'],
             payerbatchrefno: body['payerbatchrefno'],
-
+            payerclaimrefno: body['payerclaimrefno']
 
         };
         const editable = state.mode == 'EDIT' &&
