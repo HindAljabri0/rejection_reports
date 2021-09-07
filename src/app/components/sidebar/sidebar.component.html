@@ -123,7 +123,6 @@
                                 <span class="text">Credit Report Create</span>
                             </a>
                         </li> -->
-
                         <li i18n="@@cleanClaimProgress">
                             <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports"
                                 routerLinkActive="is-active">
@@ -137,7 +136,6 @@
                         <li i18n="@@rejectedClaimProgress">
                             <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
                                 routerLinkActive="is-active">
-
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejected Claim Progress Report</span>
@@ -171,7 +169,6 @@
                             <a routerLink="/collection-management/accounts-receivable-details-payer" class="d-none" routerLinkActive="is-active"
                                 #accountsReceivableDetailsPayer="routerLinkActive"></a>
                         </li>
-
                         <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/accounts-receivable-breakdown-report"
                                 routerLinkActive="is-active">
