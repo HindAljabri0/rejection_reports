@@ -269,12 +269,12 @@
                     </thead>
                     <tr *ngFor="let payer of associatedPayers" style="width: 100%">
                         <td style="widows: 42%">
-                            <p [ngStyle]="{'color': (payer.hasAssociatedPriceList)? 'black':'gray'}">{{payer.name}}
+                            <p>{{payer.name}}
                             </p>
                         </td>
                         <td>
                             <mat-slide-toggle style="z-index: 0; display: block; margin-left: auto; margin-right: auto;
-                                        width: 15%" [disabled]="!payer.hasAssociatedPriceList" color="primary"
+                                        width: 15%" color="primary"
                                 [(ngModel)]="newICD10ValidationSettings[payer.switchAccountId]">
                             </mat-slide-toggle>
                         </td>
