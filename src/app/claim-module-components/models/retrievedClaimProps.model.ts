@@ -13,5 +13,6 @@ export class RetrievedClaimProps {
     claimDecisionGDPN: GDPN;
     eligibilityCheck: string;
     payerbatchrefno: string;
+    payerclaimrefno: string;
 
 }

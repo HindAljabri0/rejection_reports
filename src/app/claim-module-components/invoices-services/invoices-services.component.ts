@@ -58,6 +58,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       statusCode?: string,
       statusDescription?: string,
       acutalDeductedAmount?: number,
+      acutalPaidVatAmount?: number,
       serviceNumber: number,
       serviceId?: number,
       serviceDate: FormControl,
@@ -116,7 +117,6 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     { key: 'SUPPLY', value: 'SUPPLY' },
     { key: 'RADIOLOGY', value: 'RADIOLOGY' },
   ];
-  statusCode: any;
   claimProps: RetrievedClaimProps;
   isPBMValidationVisible = false;
   selectedInvoiceIndex: any;
@@ -236,7 +236,8 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
           this.controllers[index].services[serviceIndex].statusDescription = decision.decisioncomment;
           this.controllers[index].services[serviceIndex].acutalDeductedAmount =
             (decision.gdpn.rejection != null ? decision.gdpn.rejection.value : 0);
-          this.statusCode = decision.serviceStatusCode;
+          this.controllers[index].services[serviceIndex].acutalPaidVatAmount =
+            (decision.gdpn.netVATamount != null ? decision.gdpn.netVATamount.value : 0);
 
         }
         this.controllers[index].services[serviceIndex].serviceNumber = service.serviceNumber;

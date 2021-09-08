@@ -249,7 +249,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         return 0;
       });
-      await this.loadStatues(statuses);
+      await this.loadStatues(statuses.filter(status => status.toUpperCase() != 'ALL'));
     }
 
     // this.getResultsOfStatus(this.params.status, this.params.page);
@@ -269,7 +269,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     let readyForSubmissionIsDone = false;
     let paidIsDone = false;
     let invalidIsDone = false;
-
+    let isAllDone = false;
     for (let status of statuses) {
       if (this.isUnderProcessingStatus(status)) {
         if (!underProcessingIsDone) {
@@ -296,6 +296,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
           await this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
         }
         invalidIsDone = true;
+      } else if(this.isAllStatus(status)) {
+        if(!isAllDone){
+          this.getSummaryOfStatus([status]);
+        }
+        isAllDone = true;
       } else {
         await this.getSummaryOfStatus([status]);
       }
@@ -341,8 +346,10 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
       if ((event.status / 100).toFixed() == '2') {
         const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
         if (summary.totalClaims > 0) {
-          if (statuses.includes('all')) {
+          if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
             summary.statuses.push('all');
+            summary.statuses.push('All');
+            summary.statuses.push('ALL');
           }
           this.summaries.push(summary);
         }
@@ -1450,6 +1457,11 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   isInvalidStatus(status: string) {
     status = status.toUpperCase();
     return status == ClaimStatus.INVALID.toUpperCase() || status == 'RETURNED';
+  }
+
+  isAllStatus(status: string) {
+    status = status.toUpperCase();
+    return status == 'ALL';
   }
 
   handlePageEvent(event: PageEvent) {

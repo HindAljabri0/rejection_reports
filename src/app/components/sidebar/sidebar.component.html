@@ -45,7 +45,7 @@
                                 <span class="text">Claims History</span>
                             </a>
                         </li>
-                        <li [class.d-none]="envProd || envStaging">
+                        <li>
                             <a routerLink="/collection-management/create-batch" routerLinkActive="is-active" #createBatch="routerLinkActive">
                                 <img src="assets/ic-create-batch.svg" alt="Create Batch" class="default-icon" />
                                 <img src="assets/ic-create-batch-active.svg" alt="Create Batch" class="active-icon" />
@@ -123,22 +123,29 @@
                                 <span class="text">Credit Report Create</span>
                             </a>
                         </li> -->
-                        <li i18n="@@cleanClaimProgress" *ngIf="!envProd">
-                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active">
-                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
-                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
+                        <li i18n="@@cleanClaimProgress">
+                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports"
+                                routerLinkActive="is-active">
+                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports"
+                                    class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports"
+                                    class="active-icon" />
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
                         <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
-                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active">
+                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
+                                routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejected Claim Progress Report</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectionTrackingReport" *ngIf="!envStaging && !envProd">
-                            <a routerLink="/reports/{{providerId}}/rejection-tracking-report" routerLinkActive="is-active">
+
+                        <li i18n="@@rejectionTrackingReport" *ngIf="hasRcmPrivilege">
+                            <a routerLink="/reports/{{providerId}}/rejection-tracking-report"
+                                routerLinkActive="is-active">
+
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejection Tracking Report</span>
@@ -147,7 +154,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging">
+                <mat-expansion-panel hideToggle *ngIf="hasRcmPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Collection Management</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -162,17 +169,19 @@
                             <a routerLink="/collection-management/accounts-receivable-details-payer" class="d-none" routerLinkActive="is-active"
                                 #accountsReceivableDetailsPayer="routerLinkActive"></a>
                         </li>
-                        <li>
-                            <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active">
+                        <li *ngIf="!envStaging && !envProd">
+                            <a routerLink="/collection-management/accounts-receivable-breakdown-report"
+                                routerLinkActive="is-active">
                                 <span class="text">AR Breakdown Report</span>
                             </a>
                         </li>
-                        <li>
-                            <a routerLink="/collection-management/accounts-receivable-tracking-report" routerLinkActive="is-active">
+                        <li *ngIf="!envStaging && !envProd">
+                            <a routerLink="/collection-management/accounts-receivable-tracking-report"
+                                routerLinkActive="is-active">
                                 <span class="text">AR Tracking Report</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/aging-report" routerLinkActive="is-active">
                                 <span class="text">Aging Report</span>
                             </a>
@@ -184,12 +193,12 @@
                             <a routerLink="/collection-management/statement-of-accounts-details" class="d-none" routerLinkActive="is-active"
                                 #statementAccountDetails="routerLinkActive"></a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/reconciliation" routerLinkActive="is-active">
                                 <span class="text">Reconciliation</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envStaging && !envProd">
                             <a routerLink="/collection-management/reconciliation-report" routerLinkActive="is-active">
                                 <span class="text">Reconciliation Report</span>
                             </a>
@@ -202,7 +211,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="!envProd && isRevenueVisible">
+                <mat-expansion-panel hideToggle *ngIf="isRevenueVisible">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Revenue Reports</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -225,7 +234,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <!-- 
+                <!--
                 <mat-expansion-panel hideToggle *ngIf="!envProd"
                     [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
@@ -295,7 +304,7 @@
 
             <ng-container *ngIf="isProviderAdmin">
                 <ul class="nav-list">
-                    <li>
+                    <li *ngIf="!envProd && !envStaging">
                         <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
                             <span class="text">Payment Reconciliation</span>
                         </a>
@@ -306,7 +315,7 @@
                             <span class="text">Beneficiary</span>
                         </a>
                     </li>
-                    <li>
+                    <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
                         <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">
                             <span class="text">Insurance Plans</span>
                         </a>
