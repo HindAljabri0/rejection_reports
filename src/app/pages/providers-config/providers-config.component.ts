@@ -1016,8 +1016,7 @@ export class ProvidersConfigComponent implements OnInit {
     this.errors.providerMappingSaveError = null;
     this.success.providerMappingSaveSuccess = null;
     if (this.providerMappingController.value != null &&
-      this.restrictExtractionDateController.value != null
-      && (this.providerMappingController.value != this.providerMappingValue ||
+      (this.providerMappingController.value != this.providerMappingValue ||
         new Date(this.restrictExtractionDateController.value).getTime() != this.restrictExtractionDateValue.getTime())) {
       if (this.providerMappingController.value.trim() == '') {
         this.componentLoading.providerMapping = true;
@@ -1045,7 +1044,8 @@ export class ProvidersConfigComponent implements OnInit {
       const body = {
         providerCode: this.selectedProviderCode,
         mappingProviderCode: this.providerMappingController.value,
-        restrictExtractionDate: this.datepipe.transform(new Date(this.restrictExtractionDateController.value), 'yyyy-MM-dd')
+        restrictExtractionDate: this.restrictExtractionDateController.value == null ? null
+          : this.datepipe.transform(new Date(this.restrictExtractionDateController.value), 'yyyy-MM-dd')
       };
       this.componentLoading.providerMapping = true;
       this.dbMapping.setProviderMapping(body, this.selectedProvider).subscribe(event => {

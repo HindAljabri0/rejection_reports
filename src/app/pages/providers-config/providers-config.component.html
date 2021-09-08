@@ -148,7 +148,7 @@
         <mat-expansion-panel expanded="false">
             <mat-expansion-panel-header style="background-color: #fbfbfb;">
                 <mat-panel-title style="color: #3060AA;">
-                    Provider Code Mapping
+                    Provider Code Mapping and Extraction Date Config
                 </mat-panel-title>
                 <mat-panel-description *ngIf="errors.providerMappingSaveError != null">
                     <span style="color: #ac4040;">{{errors.providerMappingSaveError}}</span>
@@ -164,7 +164,7 @@
                         <th style="width:25%;">Provider</th>
                         <th style="text-align: center; width: 24%;">Provider Code</th>
                         <th style="width:25%;text-align: center">Mapped Value</th>
-                        <th style="width:25%;text-align: center">Restrict Extraction Date</th>
+                        <th style="width:25%;text-align: center">Restrict Extraction Prior to</th>
                     </thead>
                     <tr>
                         <td style="width:25%;">{{selectedProviderName}}</td>
