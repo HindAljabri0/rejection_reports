@@ -142,7 +142,7 @@
                             </a>
                         </li>
 
-                        <li i18n="@@rejectionTrackingReport">
+                        <li i18n="@@rejectionTrackingReport" *ngIf="isRcmUser">
                             <a routerLink="/reports/{{providerId}}/rejection-tracking-report"
                                 routerLinkActive="is-active">
 
@@ -154,7 +154,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle>
+                <mat-expansion-panel hideToggle *ngIf="isRcmUser">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Collection Management</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -234,7 +234,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <!-- 
+                <!--
                 <mat-expansion-panel hideToggle *ngIf="!envProd"
                     [expanded]="summaryReport.isActive || ebillingReport.isActive">
                     <mat-expansion-panel-header>
@@ -304,7 +304,7 @@
 
             <ng-container *ngIf="isProviderAdmin">
                 <ul class="nav-list">
-                    <li>
+                    <li *ngIf="!envProd && !envStaging">
                         <a routerLink="/nphies/payment-reconciliation" [class.is-active]="paymentReconciliationDetails.isActive" routerLinkActive="is-active">
                             <span class="text">Payment Reconciliation</span>
                         </a>
