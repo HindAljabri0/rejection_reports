@@ -95,20 +95,22 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       if (this.data.careTeams) {
         this.FormItem.patchValue({
-          careTeamSequence: this.data.careTeams.filter(x => this.data.item.careTeamSequence.find(y => y === x.sequence) !== undefined)
+          // tslint:disable-next-line:max-line-length
+          careTeamSequence: this.data.item.careTeamSequence ? this.data.careTeams.filter(x => this.data.item.careTeamSequence.find(y => y === x.sequence) !== undefined) : []
         });
       }
 
       if (this.data.diagnosises) {
         this.FormItem.patchValue({
-          diagnosisSequence: this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined)
+          // tslint:disable-next-line:max-line-length
+          diagnosisSequence: this.data.item.diagnosisSequence ? this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined) : []
         });
       }
 
       if (this.data.supportingInfos) {
         this.FormItem.patchValue({
           // tslint:disable-next-line:max-line-length
-          supportingInfoSequence: this.data.supportingInfos.filter(x => this.data.item.supportingInfoSequence.find(y => y === x.sequence) !== undefined)
+          supportingInfoSequence: this.data.item.supportingInfoSequence ? this.data.supportingInfos.filter(x => this.data.item.supportingInfoSequence.find(y => y === x.sequence) !== undefined) : []
         });
       }
 
