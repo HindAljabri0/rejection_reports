@@ -83,7 +83,7 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let log of transactions">
-                        <tr>
+                        <tr (click)="viewJSONs(log)" style="cursor: pointer;">
                             <td>{{log.providerTransactionId}}</td>
                             <td>{{log.providerId}}</td>
                             <td>{{getPayerName(log.payerNphiesId)}}</td>
