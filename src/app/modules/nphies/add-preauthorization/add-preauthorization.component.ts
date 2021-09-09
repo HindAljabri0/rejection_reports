@@ -341,10 +341,9 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-    debugger;
     if (this.FormPreAuthorization.valid) {
 
-      if(this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0){
+      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
         this.IsLensSpecificationRequired = true;
         return;
       }
