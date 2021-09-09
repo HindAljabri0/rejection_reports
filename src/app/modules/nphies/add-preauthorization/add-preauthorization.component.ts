@@ -251,7 +251,8 @@ export class AddPreauthorizationComponent implements OnInit {
       item: itemModel,
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
-      supportingInfos: this.SupportingInfo
+      supportingInfos: this.SupportingInfo,
+      type: this.FormPreAuthorization.controls.type.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -337,11 +338,10 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Model', this.model);
     this.isSubmitted = true;
     if (this.FormPreAuthorization.valid) {
-
-
+      this.model = {};
+      this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.insurancePlanId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
@@ -395,30 +395,33 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      this.model.visionPrescription = {};
-      // tslint:disable-next-line:max-line-length
-      this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
-      // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
-      this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.product = x.product;
-        model.eye = x.eye;
-        model.sphere = x.sphere;
-        model.cyclinder = x.cyclinder;
-        model.axis = x.axis;
-        model.prismAmount = x.prismAmount;
-        model.prismBase = x.prismBase;
-        model.multifocalPower = x.multifocalPower;
-        model.lensePower = x.lensePower;
-        model.lenseBackCurve = x.lenseBackCurve;
-        model.lenseDiameter = x.lenseDiameter;
-        model.lenseDuration = x.lenseDuration;
-        model.lenseColor = x.lenseColor;
-        model.lenseBrand = x.lenseBrand;
-        model.lenseNote = x.model;
-        return model;
-      });
+      debugger
+      if (this.FormPreAuthorization.controls.type.value === 'vision') {
+        this.model.visionPrescription = {};
+        // tslint:disable-next-line:max-line-length
+        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
+        // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+        this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.product = x.product;
+          model.eye = x.eye;
+          model.sphere = x.sphere;
+          model.cyclinder = x.cyclinder;
+          model.axis = x.axis;
+          model.prismAmount = x.prismAmount;
+          model.prismBase = x.prismBase;
+          model.multifocalPower = x.multifocalPower;
+          model.lensePower = x.lensePower;
+          model.lenseBackCurve = x.lenseBackCurve;
+          model.lenseDiameter = x.lenseDiameter;
+          model.lenseDuration = x.lenseDuration;
+          model.lenseColor = x.lenseColor;
+          model.lenseBrand = x.lenseBrand;
+          model.lenseNote = x.model;
+          return model;
+        });
+      }
 
       this.model.items = this.Items.map(x => {
         const model: any = {};
@@ -446,23 +449,56 @@ export class AddPreauthorizationComponent implements OnInit {
       });
 
       console.log('Model', this.model);
-      debugger;
-      this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(res => {
+      this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
-          debugger;
+          if (event.status === 200) {
+            const body: any = event.body;
+            if (body.status === 'OK') {
+              if (body.errors && body.errors.length > 0) {
+                const errors: any[] = [];
+                body.errors.forEach(err => {
+                  if (err.code && err.code.coding && err.code.coding.length > 0) {
+                    err.code.coding.forEach(codeObj => {
+                      errors.push(codeObj.code + ' : ' + codeObj.display);
+                    });
+                  }
+                });
+                this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+              } else {
+                this.showMessage('Success', body.message, 'success', true, 'OK');
+              }
+            }
+          }
+          this.sharedServices.loadingChanged.next(false);
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          if (error.status === 404) {
-
-          } else if (error.status < 500) {
-
+          if (error.status === 400) {
+            this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          } else if (error.status === 500) {
+            this.showMessage('Error', error.error.message, 'alert', true, 'OK');
           }
+          this.sharedServices.loadingChanged.next(false);
         }
       });
     }
   }
 
-
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      mainMessage: _mainMessage,
+      subMessage: _subMessage,
+      mode: _mode,
+      hideNoButton: _hideNoButton,
+      yesButtonText: _yesButtonText,
+      errors: _errors
+    };
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+  }
 
 }

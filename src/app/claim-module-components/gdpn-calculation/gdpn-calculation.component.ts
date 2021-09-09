@@ -25,6 +25,20 @@ export class GdpnCalculationComponent implements OnInit {
     });
   }
 
+  getSelectedInvoiceActualPaidVatAmount() {
+    if (this.selectedInvoice != -1 && this.claim.invoice[this.selectedInvoice] !== undefined &&
+      this.claim.invoice[this.selectedInvoice].service.some(service => service.hasOwnProperty('serviceDecision') &&
+        service['serviceDecision'] != null)) {
+      return this.claim.invoice[this.selectedInvoice].service
+        .filter(service => service.hasOwnProperty('serviceDecision') &&
+          service['serviceDecision'] != null)
+        .map(service => service['serviceDecision'].gdpn.netVATamount != null ? service['serviceDecision'].gdpn.netVATamount.value : 0)
+        .reduce((amount1, amount2) => amount1 + amount2);
+    } else {
+      return -1;
+    }
+  }
+
   getSelectedInvoiceActualDeductedAmount() {
     if (this.selectedInvoice != -1 && this.claim.invoice[this.selectedInvoice] !== undefined &&
       this.claim.invoice[this.selectedInvoice].service.some(service => service.hasOwnProperty('serviceDecision') &&
@@ -34,6 +48,26 @@ export class GdpnCalculationComponent implements OnInit {
           service['serviceDecision'] != null)
         .map(service => service['serviceDecision'].gdpn.rejection != null ? service['serviceDecision'].gdpn.rejection.value : 0)
         .reduce((amount1, amount2) => amount1 + amount2);
+    } else {
+      return -1;
+    }
+  }
+
+  getClaimActualPaidVatAmount() {
+    if (this.claim.invoice.some(inv => inv.service.some(service => service.hasOwnProperty('serviceDecision') &&
+      service['serviceDecision'] != null))) {
+      let count = 0;
+      this.claim.invoice.forEach(inv => {
+        inv.service.forEach(ser => {
+          if (ser.hasOwnProperty('serviceDecision') &&
+            ser['serviceDecision'] != null &&
+            ser['serviceDecision'].gdpn != null &&
+            ser['serviceDecision'].gdpn.netVATamount != null) {
+            count += ser['serviceDecision'].gdpn.netVATamount.value;
+          }
+        });
+      });
+      return count;
     } else {
       return -1;
     }

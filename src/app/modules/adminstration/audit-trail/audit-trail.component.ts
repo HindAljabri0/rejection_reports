@@ -177,7 +177,12 @@ export class AuditTrailComponent implements OnInit {
       panelClass: ['primary-dialog', 'dialog-lg'],
       data: {
         title: `JSON of Claim [${objectId}]`,
-        json
+        tabs: [
+          {
+            title: objectId,
+            json
+          }
+        ]
       }
     });
   }
