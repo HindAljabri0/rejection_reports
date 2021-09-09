@@ -1,4 +1,4 @@
-import { ResponseBenefitModel } from "./ResponseBenefitModel";
+import { ResponseBenefitModel } from './ResponseBenefitModel';
 
 export class ResponseItemModel {
 
@@ -8,6 +8,6 @@ export class ResponseItemModel {
     network: string;
     unti: boolean;
     term: string;
-    benefits: ResponseBenefitModel [];
+    benefits: ResponseBenefitModel[];
 
 }
