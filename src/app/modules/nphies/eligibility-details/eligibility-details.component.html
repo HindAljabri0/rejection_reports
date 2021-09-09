@@ -1,53 +1,58 @@
-<div class="row">
-    <div class="col-4">
-        <div class="form-group">
-            <div class="control-label">Beneficiary Name</div>
-            <p class="form-control-static">{{eligibilityResponse.banificiaryName}}</p>
+<div *ngIf="eligibilityResponse.responseCoverage.length<=0" class="bg-white p-14">
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Beneficiary Name</div>
+                <p class="form-control-static">{{eligibilityResponse.banificiaryName}}</p>
+            </div>
         </div>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            <div class="control-label">Service Date</div>
-            <p class="form-control-static">{{eligibilityResponse.serviceDate | date :'dd/MM/yyyy'}}</p>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Service Date</div>
+                <p class="form-control-static">{{eligibilityResponse.serviceDate | date :'dd/MM/yyyy'}}</p>
+            </div>
         </div>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            <div class="control-label">Transaction Date</div>
-            <p class="form-control-static">{{eligibilityResponse.transactionDate | date :'dd/MM/yyyy hh:mm:ss'}}</p>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Transaction Date</div>
+                <p class="form-control-static">{{eligibilityResponse.transactionDate | date :'dd/MM/yyyy hh:mm:ss'}}</p>
+            </div>
         </div>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            <div class="control-label">Eligibility Purpose</div>
-            <p class="form-control-static" *ngFor="let Purpose of eligibilityResponse.eligibilityPurpose">
-                {{Purpose}}
-            </p>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Eligibility Purpose</div>
+                <p class="form-control-static" *ngFor="let Purpose of eligibilityResponse.eligibilityPurpose">
+                    {{Purpose}}
+                </p>
+            </div>
         </div>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            <div class="control-label">Eligibility Status</div>
-            <p class="form-control-static">{{eligibilityResponse.eligibilityStatus=="true"?"Eligible":"Ineligible"}}
-            </p>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="control-label">Eligibility Status</div>
+                <p class="form-control-static">{{eligibilityResponse.eligibilityStatus=="true"?"Eligible":"Ineligible"}}
+                </p>
 
-            <div>
-                <p *ngIf="eligibilityResponse.error.reasonCode != null" class="form-control-static">
-                    {{getReasonError()}}</p>
-                <p *ngIf="eligibilityResponse.error.massage != null" class="form-control-static">
-                    {{eligibilityResponse.error.massage}}</p>
+                <div>
+                    <p *ngIf="eligibilityResponse.error.reasonCode != null" class="form-control-static">
+                        {{getReasonError()}}</p>
+                    <p *ngIf="eligibilityResponse.error.massage != null" class="form-control-static">
+                        {{eligibilityResponse.error.massage}}</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- <div class="bg-white p-14">
+<div *ngIf="eligibilityResponse.responseCoverage.length>0" class="bg-white p-14">
     <div class="row justify-content-between">
         <div class="col-4">
             <div class="form-group">
                 <div class="control-label">Beneficiary Name</div>
-                <p class="form-control-static">{{eligibilityResponse.banificiaryName}}</p>
+                <p class="form-control-static">{{eligibilityResponse.banificiaryName +"
+                    "}}<span
+                        style="color: green;">{{eligibilityResponse.eligibilityStatus.toLowerCase().charAt(0).toUpperCase()+eligibilityResponse.eligibilityStatus.toLowerCase().substring(1)}}</span>
+                </p>
+                <p></p>
             </div>
         </div>
         <div class="col-2">
@@ -57,80 +62,42 @@
             </div>
         </div>
     </div>
+
+
+
+    <h5 class="form-title">
+        Benefit Category - Medical Coverage
+    </h5>
+    <div class="table-responsive">
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>inforce</th>
+                    <th>Benefit Start Date</th>
+                    <th>Benefit End Date</th>
+                    <th>Identifier Value</th>
+                    <th>Type</th>
+                    <th>Relationship</th>
+                    <th>Subscriber MemberId</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let responseCoverage of eligibilityResponse.responseCoverage ">
+                    <td>{{responseCoverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
+                    <td>{{responseCoverage.benefitStartDate | date :'dd/MM/yyyy'}}</td>
+                    <td>{{responseCoverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
+                    <td>{{responseCoverage.identifierValue}}</td>
+                    <td>{{responseCoverage.type}}</td>
+                    <td>{{responseCoverage.relationship}}</td>
+                    <td>{{responseCoverage.subscriberMemberId}}</td>
+                    <td>{{responseCoverage.status.toLowerCase().charAt(0).toUpperCase()
+                        +responseCoverage.status.toLowerCase().substring(1)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-
-<h5 class="form-title">
-    Benefit Category - Medical Coverage
-</h5>
-<div class="table-responsive">
-    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-            <tr>
-                <th>inforce</th>   
-                <th>Benefit Start Date</th>   
-                <th>Benefit End Date</th>   
-                <th>Identifier Value</th>   
-                <th>Type</th>
-                <th>Relationship</th>
-                <th>Subscriber MemberId</th>
-                <th>Status</th>   
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-               <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-            </tr>
-            <tr>
-                <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-               <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-            </tr>
-            <tr>
-                <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-               <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-            </tr>
-            <tr> <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-               <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-            </tr>
-            <tr>
-                <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-               <td>copay</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-                <td>10-SAR</td>
-                <td>Copayment per service</td>
-            </tr>
-        </tbody>
-    </table>
-</div> -->
-
 <!-- <h5 class="form-title">
     Benefit Category - Diagnostic X-ray
 </h5>
