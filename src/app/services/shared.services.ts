@@ -155,6 +155,16 @@ export class SharedServices {
     return privilege != null && (privilege.includes('|24') || privilege.startsWith('24'));
   }
 
+  get hasRcmPrivilege() {
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      // tslint:disable-next-line:max-line-length
+      return userPrivileges != null && (userPrivileges.includes('|24.0') || userPrivileges.startsWith('24.0') || userPrivileges.includes('|24.1') || userPrivileges.startsWith('24.1'));
+    } catch (error) {
+      return false;
+    }
+  }
 
   get hasAllNphiesPrivilege() {
     const providerId = localStorage.getItem('provider_id');
@@ -489,7 +499,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -507,7 +517,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

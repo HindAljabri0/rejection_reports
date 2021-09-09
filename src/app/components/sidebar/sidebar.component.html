@@ -133,7 +133,7 @@
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
-                        <li i18n="@@rejectedClaimProgress">
+                        <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
                             <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
                                 routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
@@ -142,7 +142,7 @@
                             </a>
                         </li>
 
-                        <li i18n="@@rejectionTrackingReport" *ngIf="isRcmUser">
+                        <li i18n="@@rejectionTrackingReport" *ngIf="hasRcmPrivilege">
                             <a routerLink="/reports/{{providerId}}/rejection-tracking-report"
                                 routerLinkActive="is-active">
 
@@ -154,7 +154,7 @@
                     </ul>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel hideToggle *ngIf="isRcmUser">
+                <mat-expansion-panel hideToggle *ngIf="hasRcmPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Collection Management</mat-panel-title>
                     </mat-expansion-panel-header>

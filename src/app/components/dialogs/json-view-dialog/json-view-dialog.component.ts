@@ -8,23 +8,25 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class JsonViewDialogComponent implements OnInit {
   copyText = 'Copy JSON';
-  json: any;
 
   constructor(
     private dialogRef: MatDialogRef<JsonViewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string, json: string },
+    @Inject(MAT_DIALOG_DATA) public data: { title: string, tabs: { title: string, json: string }[] },
   ) { }
 
   ngOnInit() {
-    this.json = this.getAsObject();
+    this.data.tabs = this.data.tabs.filter(tabData => tabData.json != null && tabData.json.trim().length > 0).map(tabData => {
+      tabData.json = this.getAsObject(tabData.json);
+      return tabData;
+    });
   }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
-  getAsObject() {
-    return JSON.parse(this.data.json);
+  getAsObject(json: string) {
+    return JSON.parse(json);
   }
 
   clickCopy() {
