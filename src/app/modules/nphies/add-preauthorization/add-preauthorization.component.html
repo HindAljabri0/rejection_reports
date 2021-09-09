@@ -214,18 +214,13 @@
         </h5>
         <div class="row small-gutter">
           <div class="col-4 col-xxl-3">
-            <div class="form-group"
-              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required')}">
+            <div class="form-group">
               <label class="control-label">Date Written<span class="asterisk">*</span></label>
               <div class="date-picker">
                 <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
                   formControlName="dateWritten">
                 <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                 <mat-datepicker #visionWrittenDate></mat-datepicker>
-              </div>
-              <div
-                *ngIf="(isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required')">
-                <span class="error-text">Please select a Date Written</span>
               </div>
             </div>
           </div>
@@ -246,7 +241,7 @@
           </div>
         </div> -->
         </div>
-        <div class="box">
+        <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
           <h5 class="d-flex align-items-center mb-3">
             <strong class="medium">Lens Specifications</strong>
             <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">

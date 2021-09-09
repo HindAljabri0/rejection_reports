@@ -52,6 +52,11 @@ strong,.bold{font-weight: 700;}
 .text-sm{font-size: 12px;line-height: 16px;}
 .text-monospace{font-family: 'Courier Prime', monospace!important;font-size: 111%;letter-spacing: -0.6px;line-height: 111%;}
 input:disabled,input[disabled],button:disabled,button[disabled]{cursor: not-allowed;}
+.w-130{width: 130px;}
+.w-160{width: 160px;}
+.w-190{width: 190px;}
+.w-200{width: 200px;}
+.w-260{width: 260px;}
 
 /* custom scrollbar
 --------------------------------------------------------------------------------------------------------*/
@@ -65,6 +70,7 @@ button.mat-button, button.mat-flat-button, button.mat-icon-button,a.mat-button, 
 button.mat-stroked-button, a.mat-stroked-button{line-height: 38px;}
 button.mat-stroked-button.mat-primary:not([disabled]){border-color:#3060AA;}
 button.mat-button[disabled], button.mat-flat-button[disabled], button.mat-icon-button[disabled], button.mat-stroked-button[disabled],a.mat-button[disabled], a.mat-flat-button[disabled], a.mat-icon-button[disabled], a.mat-stroked-button[disabled]{cursor: not-allowed;}
+button.size-sm.mat-button, button.size-sm.mat-flat-button, button.size-sm.mat-icon-button,a.size-sm.mat-button, a.size-sm.mat-flat-button, a.size-sm.mat-icon-button{line-height: 34px;min-width: auto;}
 .btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}

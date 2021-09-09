@@ -201,7 +201,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
-      memberCardId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId : null,
+      memberCardId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId : "123467",
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       payerNphiesId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId : this.selectedPayer,

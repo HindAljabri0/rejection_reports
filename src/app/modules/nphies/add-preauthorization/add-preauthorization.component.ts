@@ -12,6 +12,7 @@ import { AddEditDiagnosisModalComponent } from './add-edit-diagnosis-modal/add-e
 import { AddEditSupportingInfoModalComponent } from './add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+// tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 
 @Component({
@@ -53,6 +54,7 @@ export class AddPreauthorizationComponent implements OnInit {
   model: any = {};
 
   isSubmitted = false;
+  IsLensSpecificationRequired = false;
   constructor(
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private beneficiaryService: ProvidersBeneficiariesService, private providerNphiesApprovalService: ProviderNphiesApprovalService) {
@@ -339,7 +341,13 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+    debugger;
     if (this.FormPreAuthorization.valid) {
+
+      if(this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0){
+        this.IsLensSpecificationRequired = true;
+        return;
+      }
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
