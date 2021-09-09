@@ -451,7 +451,7 @@ export class BeneficiaryComponent implements OnInit {
 
         this.dialogService.openMessageDialog({
           title: '',
-          message: `successfully`,
+          message: `Beneficiary update successfully`,
           isError: false
         });
         this.sharedServices.loadingChanged.next(false);
@@ -544,13 +544,14 @@ export class BeneficiaryComponent implements OnInit {
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
-
+      
         this.dialogService.openMessageDialog({
           title: '',
-          message: `successfully`,
+          message: `Beneficiary added successfully`,
           isError: false
-        });
+        }).subscribe( event=>{ window.location.reload();});
         this.sharedServices.loadingChanged.next(false);
+        
       }
     }
       , err => {

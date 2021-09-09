@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <ng-container *ngIf=' showbeneficiaryForm'>
         <div class="block-header has-border">
-            <p>Add/Edit Beneficiary</p>
+            <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
         </div>
         <div class="block-filter-panel">
             <h5 class="form-title pt-0">Personal Information</h5>
