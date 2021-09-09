@@ -624,7 +624,16 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
-
+  getSelectedPayerName(index) {
+    const retval = this.payersList.find((p) => {
+      return p.payerId == this.insurancePlans[index].selectePayer;
+    });
+    if (retval) {
+      return `${retval.englistName}(${retval.arabicName})`;
+    } else {
+      return null;
+    }
+  }
 
 
 
