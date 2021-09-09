@@ -3,7 +3,7 @@
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="primary-dialog-body">
-    <app-eligibility-details></app-eligibility-details>
+    <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
 </div>
 <div class="primary-dialog-footer has-border">
     <div class="d-flex">
