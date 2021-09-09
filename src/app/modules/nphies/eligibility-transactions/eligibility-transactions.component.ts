@@ -2,7 +2,7 @@ import { Location, DatePipe } from '@angular/common';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
@@ -309,11 +309,23 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   }
 
-  openDetailsDialog() {
-    const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent,
-      {
-        panelClass: ['primary-dialog', 'full-screen-dialog']
-      });
+  openDetailsDialog(transactionResponseId: number) {
+
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+      dialogConfig.data = {
+        // tslint:disable-next-line:max-line-length
+        responseId: transactionResponseId,
+        providerId: this.sharedServices.providerId
+      };
+
+      const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
+
+      // dialogRef.afterClosed().subscribe(result => {
+      //   if (result) {
+
+      //   }
+      // });
   }
 
 }

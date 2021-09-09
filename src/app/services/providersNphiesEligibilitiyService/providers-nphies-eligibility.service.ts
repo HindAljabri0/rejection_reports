@@ -21,4 +21,10 @@ export class ProvidersNphiesEligibilityService {
     const request = new HttpRequest('POST', environment.providerNphiesEligibility + requestUrl, body);
     return this.http.request(request);
   }
+
+  getEligibilityTransactionDetails(providerId: string, responseId: number) {
+    const requestUrl = `/providers/${providerId}/nphies/eligibility?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesEligibility + requestUrl);
+    return this.http.request(request);
+  }
 }

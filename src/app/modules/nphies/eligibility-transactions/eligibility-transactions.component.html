@@ -100,12 +100,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let transaction of transactions">
-            <td (click)="openDetailsDialog()" class="row-click">{{transaction.memberId}}</td>
-            <td (click)="openDetailsDialog()" class="row-click">{{transaction.eligibilityId}}</td>
-            <td (click)="openDetailsDialog()" class="row-click">{{transaction.transactionDate | date:
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.memberId}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
               'dd/MM/yyyy hh:mm:ss aa'}}</td>
-            <td (click)="openDetailsDialog()" class="row-click">{{transaction.insurancePlan}}</td>
-            <td (click)="openDetailsDialog()" class="row-click">{{transaction.status}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.insurancePlan}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
             <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">
                 <mat-icon>refresh</mat-icon>

@@ -251,7 +251,8 @@ export class AddPreauthorizationComponent implements OnInit {
       item: itemModel,
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
-      supportingInfos: this.SupportingInfo
+      supportingInfos: this.SupportingInfo,
+      type: this.FormPreAuthorization.controls.type.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -337,9 +338,9 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Model', this.model);
     this.isSubmitted = true;
     if (this.FormPreAuthorization.valid) {
+      this.model = {};
       this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.insurancePlanId = this.FormPreAuthorization.controls.insurancePlanId.value;
@@ -394,30 +395,33 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      this.model.visionPrescription = {};
-      // tslint:disable-next-line:max-line-length
-      this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
-      // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
-      this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.product = x.product;
-        model.eye = x.eye;
-        model.sphere = x.sphere;
-        model.cyclinder = x.cyclinder;
-        model.axis = x.axis;
-        model.prismAmount = x.prismAmount;
-        model.prismBase = x.prismBase;
-        model.multifocalPower = x.multifocalPower;
-        model.lensePower = x.lensePower;
-        model.lenseBackCurve = x.lenseBackCurve;
-        model.lenseDiameter = x.lenseDiameter;
-        model.lenseDuration = x.lenseDuration;
-        model.lenseColor = x.lenseColor;
-        model.lenseBrand = x.lenseBrand;
-        model.lenseNote = x.model;
-        return model;
-      });
+      debugger
+      if (this.FormPreAuthorization.controls.type.value === 'vision') {
+        this.model.visionPrescription = {};
+        // tslint:disable-next-line:max-line-length
+        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
+        // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+        this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.product = x.product;
+          model.eye = x.eye;
+          model.sphere = x.sphere;
+          model.cyclinder = x.cyclinder;
+          model.axis = x.axis;
+          model.prismAmount = x.prismAmount;
+          model.prismBase = x.prismBase;
+          model.multifocalPower = x.multifocalPower;
+          model.lensePower = x.lensePower;
+          model.lenseBackCurve = x.lenseBackCurve;
+          model.lenseDiameter = x.lenseDiameter;
+          model.lenseDuration = x.lenseDuration;
+          model.lenseColor = x.lenseColor;
+          model.lenseBrand = x.lenseBrand;
+          model.lenseNote = x.model;
+          return model;
+        });
+      }
 
       this.model.items = this.Items.map(x => {
         const model: any = {};

@@ -20,23 +20,23 @@
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Eligibility Purpose</div>
-            <p class="form-control-static" *ngFor="let Purpose of eligibilityResponse.eligibilityPurpose">{{Purpose}}
+            <p class="form-control-static" *ngFor="let purpose of eligibilityResponse.eligibilityPurpose">{{purpose}}
             </p>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
             <div class="control-label">Eligibility Status</div>
-            <p class="form-control-static">{{eligibilityResponse.eligibilityStatus=="true"?"Eligible":"Ineligible"}}</p>
+            <p class="form-control-static">{{eligibilityResponse.eligibilityStatus == "true" ? "Eligible" : "Ineligible"}}</p>
 
-            <div >
+            <div *ngIf="eligibilityResponse.error">
                 <p *ngIf="eligibilityResponse.error.reasonCode != null" class="form-control-static">{{getReasonError()}}</p>
                 <p *ngIf="eligibilityResponse.error.massage != null" class="form-control-static">{{eligibilityResponse.error.massage}}</p>
             </div>
         </div>
     </div>
 </div>
-<!-- 
+<!--
 <h5 class="form-title">
     Benefit Category - Medical Coverage
 </h5>
@@ -44,9 +44,14 @@
     <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Value</th>
-                <th>Name</th>
+                <th>inforce</th>
+                <th>Benefit Start Date</th>
+                <th>Benefit End Date</th>
+                <th>Identifier Value</th>
+                <th>Type</th>
+                <th>Relationship</th>
+                <th>Subscriber MemberId</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -54,32 +59,56 @@
                 <td>copay</td>
                 <td>10-SAR</td>
                 <td>Copayment per service</td>
+               <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
             </tr>
             <tr>
-                <td>lifetime</td>
-                <td>Lifetime</td>
-                <td>Benefit Term</td>
+                <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+               <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
             </tr>
             <tr>
-                <td>lifetime</td>
-                <td></td>
-                <td>Benefit Unit</td>
+                <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+               <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+            </tr>
+            <tr> <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+               <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
             </tr>
             <tr>
-                <td>in</td>
-                <td>in network</td>
-                <td>Benefit Network</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Insurance Group E</td>
-                <td>Benefit Name</td>
+                <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+               <td>copay</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
+                <td>10-SAR</td>
+                <td>Copayment per service</td>
             </tr>
         </tbody>
     </table>
-</div>
+</div> -->
 
-<h5 class="form-title">
+<!-- <h5 class="form-title">
     Benefit Category - Diagnostic X-ray
 </h5>
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollitia alias sequi soluta explicabo nulla
@@ -113,6 +142,10 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex deleniti mollit
 amet quidem. Cumque voluptatem, maxime eos tenetur
 saepe temporibus dolores explicabo nesciunt exercitationem. Necessitatibus, illum minus dolorem voluptatem enim numquam
 hic cupiditate odit aliquid labore quisquam
+<<<<<<< Updated upstream
+temporibus unde natus error laboriosam aspernatur reiciendis. -->
+=======
 temporibus unde natus error laboriosam aspernatur reiciendis.
 
  -->
+>>>>>>> Stashed changes
