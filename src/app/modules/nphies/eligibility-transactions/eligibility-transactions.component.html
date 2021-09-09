@@ -11,7 +11,7 @@
             <label class="control-label">From Date</label>
             <div class="date-picker">
               <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                formControlName="fromDate" (bsValueChange)="dateValidation($event)">
+                formControlName="fromDate">
               <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
               <mat-datepicker #filterFromDate></mat-datepicker>
             </div>

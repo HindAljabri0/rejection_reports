@@ -291,18 +291,6 @@ export class EligibilityTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  dateValidation(event: any) {
-    if (event !== null) {
-      const startDate = moment(event).format('YYYY-MM-DD');
-      const endDate = moment(this.FormEligibilityTransaction.value.toDate).format('YYYY-MM-DD');
-      if (startDate > endDate) {
-        this.FormEligibilityTransaction.controls['toDate'].patchValue('');
-      }
-    }
-    this.minDate = new Date(event);
-
-  }
-
   openDetailsDialog(transactionResponseId: number) {
 
     const dialogConfig = new MatDialogConfig();
