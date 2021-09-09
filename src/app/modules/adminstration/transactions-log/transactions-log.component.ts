@@ -29,6 +29,10 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
   selectedPayer: string = 'none';
   selectedType: string = 'none';
 
+  page: number = 0;
+  size: number = 10;
+  totalPages: number;
+
   constructor(
     private searchService: ProviderNphiesSearchService,
     private sharedServices: SharedServices,
@@ -86,13 +90,14 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     const toDate: string = this._isValidDate(this.toDateControl.value) ? moment(this.toDateControl.value).format('YYYY-MM-DD') : null;
     this.sharedServices.loadingChanged.next(true);
     this.transactions = [];
-    this.searchService.searchTransactionsLog(transactionId, providerId, payer, type, fromDate, toDate).subscribe(event => {
+    this.searchService.searchTransactionsLog(transactionId, providerId, payer, type, fromDate, toDate, this.page, this.size).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
-        const body = event.body;
-        if (body instanceof Array) {
-          this.transactions = body;
+        const content = event.body['content'];
+        if (content instanceof Array) {
+          this.transactions = content;
         }
+        this.totalPages = event.body['totalPages'];
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -106,7 +111,25 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     });
   }
 
+  goToFirstPage() {
+    this.page = 0;
+    this.searchTransactions();
+  }
 
+  goToPrePage() {
+    this.page -= 1;
+    this.searchTransactions();
+  }
+
+  goToNextPage() {
+    this.page += 1;
+    this.searchTransactions();
+  }
+
+  goToLastPage() {
+    this.page = this.totalPages - 1;
+    this.searchTransactions();
+  }
 
   getPayerName(id) {
     const index = this.payers.findIndex(payer => payer.nphiesId == `${id}`);

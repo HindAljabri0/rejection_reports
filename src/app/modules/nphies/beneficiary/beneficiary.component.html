@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
     <ng-container *ngIf=' showbeneficiaryForm'>
         <div class="block-header has-border">
-            <p>Add/Edit Beneficiary</p>
+            <p>{{addMode?"Add Beneficiary" :"Edit Beneficiary"}}</p>
         </div>
         <div class="block-filter-panel">
             <h5 class="form-title pt-0">Personal Information</h5>
@@ -73,8 +73,8 @@
                                 <mat-option value="RESIDENT_CARD">Resident Card</mat-option>
                                 <mat-option value="PASSPORT">Passport</mat-option>
                                 <mat-option value="GCC_ID">GCC ID</mat-option>
-                                <mat-option value="NATIONAL_CARD">National Card</mat-option>
-                                <mat-option value="BORDER_NUMBER">Border Number</mat-option>
+                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">National Card</mat-option>
+                                <mat-option value="NATIONAL_CARD_OR_BORDER_NUMBER">Border Number</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
