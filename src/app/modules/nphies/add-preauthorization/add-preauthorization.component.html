@@ -81,10 +81,10 @@
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="type">
                 <mat-option value="">Select Type</mat-option>
-                <mat-option value="institutional">institutional</mat-option>
+                <mat-option value="institutional">Institutional</mat-option>
                 <mat-option value="oral">Dental</mat-option>
                 <mat-option value="pharmacy">Pharmacy</mat-option>
-                <mat-option value="professional">professional</mat-option>
+                <mat-option value="professional">Professional</mat-option>
                 <mat-option value="vision">Optical</mat-option>
               </mat-select>
             </mat-form-field>
@@ -100,12 +100,14 @@
             <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="subType">
                 <mat-option value="">Select Sub Type</mat-option>
-                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient</mat-option>
+                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
+                </mat-option>
                 <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
                 FormPreAuthorization.controls.type.value === 'oral' ||
                 FormPreAuthorization.controls.type.value === 'vision' ||
                 FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
-                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency</mat-option>
+                <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -206,27 +208,23 @@
       <app-empty-state *ngIf="Diagnosises.length === 0" message='No Diagnosis found!'>
       </app-empty-state>
 
-      <h5 class="form-title">
-        Vision Prescription
-      </h5>
-      <div class="row small-gutter">
-        <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required')}">
-            <label class="control-label">Date Written<span class="asterisk">*</span></label>
-            <div class="date-picker">
-              <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
-                formControlName="dateWritten">
-              <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
-              <mat-datepicker #visionWrittenDate></mat-datepicker>
-            </div>
-            <div
-              *ngIf="(isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required')">
-              <span class="error-text">Please select a Date Written</span>
+      <ng-container *ngIf="FormPreAuthorization.controls.type.value === 'vision'">
+        <h5 class="form-title">
+          Vision Prescription
+        </h5>
+        <div class="row small-gutter">
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Date Written<span class="asterisk">*</span></label>
+              <div class="date-picker">
+                <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
+                  formControlName="dateWritten">
+                <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
+                <mat-datepicker #visionWrittenDate></mat-datepicker>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- <div class="col-4 col-xxl-3">
+          <!-- <div class="col-4 col-xxl-3">
           <div class="form-group"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required')}">
             <label class="control-label">Prescriber<span class="asterisk">*</span></label>
@@ -242,60 +240,61 @@
             </div>
           </div>
         </div> -->
-      </div>
-      <div class="box">
-        <h5 class="d-flex align-items-center mb-3">
-          <strong class="medium">Lens Specifications</strong>
-          <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
-            <mat-icon>add</mat-icon>
-          </button>
-        </h5>
-        <div *ngIf="VisionSpecifications" class="table-responsive">
-          <table class="primary-grid manual-row-color no-borders">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Eye</th>
-                <th>Sphere</th>
-                <th>Cylinder</th>
-                <th>Axis</th>
-                <th>Add</th>
-                <th>Power</th>
-                <th>Back Curve</th>
-                <th>Diameter</th>
-                <th>Prism</th>
-                <th width="10"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
-                <td>{{visionSpecification.productName}}</td>
-                <td>{{visionSpecification.eye}}</td>
-                <td>{{visionSpecification.sphere}}</td>
-                <td>{{visionSpecification.cyclinder}}</td>
-                <td>{{visionSpecification.axis}}</td>
-                <td>{{visionSpecification.multifocalPower}}</td>
-                <td>{{visionSpecification.lensePower}}</td>
-                <td>{{visionSpecification.lenseBackCurve}}</td>
-                <td>{{visionSpecification.lenseDiameter}}</td>
-                <td>{{visionSpecification.prismAmount}}/{{visionSpecification.prismBaseName}}</td>
-                <td class="actions">
-                  <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
-                    matTooltip="Edit" class="text-primary">
-                    <mat-icon>create</mat-icon>
-                  </button>
-                  <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete"
-                    class="text-primary">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
-        <app-empty-state *ngIf="VisionSpecifications.length === 0" message='No Lens Specifications found!'>
-        </app-empty-state>
-      </div>
+        <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
+          <h5 class="d-flex align-items-center mb-3">
+            <strong class="medium">Lens Specifications</strong>
+            <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+              <mat-icon>add</mat-icon>
+            </button>
+          </h5>
+          <div *ngIf="VisionSpecifications" class="table-responsive">
+            <table class="primary-grid manual-row-color no-borders">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Eye</th>
+                  <th>Sphere</th>
+                  <th>Cylinder</th>
+                  <th>Axis</th>
+                  <th>Add</th>
+                  <th>Power</th>
+                  <th>Back Curve</th>
+                  <th>Diameter</th>
+                  <th>Prism</th>
+                  <th width="10"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
+                  <td>{{visionSpecification.productName}}</td>
+                  <td>{{visionSpecification.eye | titlecase}} Eye</td>
+                  <td>{{visionSpecification.sphere}}</td>
+                  <td>{{visionSpecification.cyclinder}}</td>
+                  <td>{{visionSpecification.axis}}</td>
+                  <td>{{visionSpecification.multifocalPower}}</td>
+                  <td>{{visionSpecification.lensePower}}</td>
+                  <td>{{visionSpecification.lenseBackCurve}}</td>
+                  <td>{{visionSpecification.lenseDiameter}}</td>
+                  <td>{{visionSpecification.prismAmount}}/{{visionSpecification.prismBaseName}}</td>
+                  <td class="actions">
+                    <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
+                      matTooltip="Edit" class="text-primary">
+                      <mat-icon>create</mat-icon>
+                    </button>
+                    <button mat-icon-button type="button" (click)="deleteVisionLens(i)" matTooltip="Delete"
+                      class="text-primary">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <app-empty-state *ngIf="VisionSpecifications.length === 0" message='No Lens Specifications found!'>
+          </app-empty-state>
+        </div>
+      </ng-container>
 
       <h5 class="form-title">
         <span>Supporting Info</span>

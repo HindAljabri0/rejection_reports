@@ -13,6 +13,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { SharedServices } from 'src/app/services/shared.services';
+import { ApiErrorsDialogComponent } from '../api-errors-dialog/api-errors-dialog.component';
 
 @Component({
   selector: 'app-eligibility',
@@ -46,7 +47,6 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   showDetails = false;
   constructor(
-    private dialogService: DialogService,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
     private nphiesSearchService: ProviderNphiesSearchService,
@@ -221,10 +221,9 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
-        this.dialogService.openMessageDialog({
-          title: '',
-          message: errorEvent.message,
-          isError: true
+        this.dialog.open(ApiErrorsDialogComponent, {
+          panelClass: ['primary-dialog', 'dialog-lg'],
+          data: errorEvent.error
         });
       }
     });

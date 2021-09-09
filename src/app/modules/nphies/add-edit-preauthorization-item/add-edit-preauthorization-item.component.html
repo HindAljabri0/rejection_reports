@@ -58,22 +58,22 @@
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('isPackage').touched) && FormItem.get('isPackage').hasError('required')}">
-                <label class="control-label">Is Package?<span class="asterisk">*</span></label>
+            <div class="form-group">
+                <label class="control-label">Is Package?</label>
                 <mat-radio-group class="radio-group inline" formControlName="isPackage">
                     <mat-radio-button color="primary" [value]="1">Yes</mat-radio-button>
                     <mat-radio-button color="primary" [value]="2">No</mat-radio-button>
                 </mat-radio-group>
-                <div
-                *ngIf="(isSubmitted || FormItem.get('isPackage').touched) && FormItem.get('isPackage').hasError('required')">
-                <span class="error-text">Please select a package option</span>
-              </div>
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group">
-                <label class="control-label">Quantity</label>
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')}">
+                <label class="control-label">Quantity<span class="asterisk">*</span></label>
                 <input class="form-control" placeholder="Enter quantity" formControlName="quantity" (blur)="Calculate('Other')">
+                <div
+                *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
+                <span class="error-text">Please enter Quantity</span>
+              </div>
             </div>
         </div>
         <div class="col-4 col-lg-3">
@@ -87,23 +87,15 @@
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('discount').touched) && FormItem.get('discount').hasError('required')}" >
-                <label class="control-label">Discount(%)<span class="asterisk">*</span></label>
+            <div class="form-group">
+                <label class="control-label">Discount(%)</label>
                 <input class="form-control" placeholder="Enter discount" formControlName="discount" (blur)="Calculate('Factor')">
-                <div
-                *ngIf="(isSubmitted || FormItem.get('discount').touched) && FormItem.get('discount').hasError('required')">
-                <span class="error-text">Please enter Discount(%)</span>
-              </div>
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group"[ngClass]="{'has-error' : (isSubmitted || FormItem.get('factor').touched) && FormItem.get('factor').hasError('required')}">
-                <label class="control-label">Factor<span class="asterisk">*</span></label>
+            <div class="form-group">
+                <label class="control-label">Factor</label>
                 <input class="form-control" placeholder="Enter factor" formControlName="factor" readonly>
-                <div
-                *ngIf="(isSubmitted || FormItem.get('factor').touched) && FormItem.get('factor').hasError('required')">
-                <span class="error-text">Please enter Factor</span>
-              </div>
             </div>
         </div>
         <div class="col-4 col-lg-3">
@@ -117,13 +109,9 @@
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('patientSharePercent').touched) && FormItem.get('patientSharePercent').hasError('required')}">
-                <label class="control-label">Patient Share(%)<span class="asterisk">*</span></label>
+            <div class="form-group">
+                <label class="control-label">Patient Share(%)</label>
                 <input class="form-control" placeholder="Enter patient share(%)" formControlName="patientSharePercent" (blur)="Calculate('PatientShare')">
-                <div
-                *ngIf="(isSubmitted || FormItem.get('patientSharePercent').touched) && FormItem.get('patientSharePercent').hasError('required')">
-                <span class="error-text">Please enter Patient Share(%)</span>
-              </div>
             </div>
         </div>
         <div class="col-4 col-lg-3">
@@ -147,7 +135,7 @@
         <div class="col-4 col-lg-3">
             <div class="form-group">
                 <label class="control-label">Payer Share</label>
-                <input class="form-control" placeholder="Enter payer share" formControlName="payerShare">
+                <input class="form-control" type="number" placeholder="Enter payer share" formControlName="payerShare">
             </div>
         </div>
         <div class="col-4 col-lg-3">

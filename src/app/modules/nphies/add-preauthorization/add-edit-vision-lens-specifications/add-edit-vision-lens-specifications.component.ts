@@ -30,10 +30,8 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
   });
 
   productList = [
-    { value: 'up', name: 'Up' },
-    { value: 'down', name: 'Down' },
-    { value: 'in', name: 'In' },
-    { value: 'out', name: 'Out' }
+    { value: 'lens', name: 'Lens' },
+    { value: 'contact', name: 'Contact' },
   ];
 
   baseList = [
