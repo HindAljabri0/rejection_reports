@@ -1,7 +1,9 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
+import { JsonViewDialogComponent } from 'src/app/components/dialogs/json-view-dialog/json-view-dialog.component';
 import { Payer } from 'src/app/models/nphies/payer';
 import { TransactionLog } from 'src/app/models/nphies/transactionLog';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
@@ -27,8 +29,15 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
   selectedPayer: string = 'none';
   selectedType: string = 'none';
 
-  constructor(private searchService: ProviderNphiesSearchService,
-    private sharedServices: SharedServices) { }
+  page: number = 0;
+  size: number = 10;
+  totalPages: number;
+
+  constructor(
+    private searchService: ProviderNphiesSearchService,
+    private sharedServices: SharedServices,
+    private dialog: MatDialog
+  ) { }
 
 
   async ngOnInit() {
@@ -81,13 +90,14 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     const toDate: string = this._isValidDate(this.toDateControl.value) ? moment(this.toDateControl.value).format('YYYY-MM-DD') : null;
     this.sharedServices.loadingChanged.next(true);
     this.transactions = [];
-    this.searchService.searchTransactionsLog(transactionId, providerId, payer, type, fromDate, toDate).subscribe(event => {
+    this.searchService.searchTransactionsLog(transactionId, providerId, payer, type, fromDate, toDate, this.page, this.size).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.sharedServices.loadingChanged.next(false);
-        const body = event.body;
-        if (body instanceof Array) {
-          this.transactions = body;
+        const content = event.body['content'];
+        if (content instanceof Array) {
+          this.transactions = content;
         }
+        this.totalPages = event.body['totalPages'];
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
@@ -101,7 +111,25 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     });
   }
 
+  goToFirstPage() {
+    this.page = 0;
+    this.searchTransactions();
+  }
 
+  goToPrePage() {
+    this.page -= 1;
+    this.searchTransactions();
+  }
+
+  goToNextPage() {
+    this.page += 1;
+    this.searchTransactions();
+  }
+
+  goToLastPage() {
+    this.page = this.totalPages - 1;
+    this.searchTransactions();
+  }
 
   getPayerName(id) {
     const index = this.payers.findIndex(payer => payer.nphiesId == `${id}`);
@@ -120,6 +148,34 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
     }
     return code;
   }
+
+  viewJSONs(transaction: TransactionLog) {
+    this.dialog.open(JsonViewDialogComponent, {
+      panelClass: ['primary-dialog', 'dialog-lg'],
+      data: {
+        title: `JSONs of Transaction [${transaction.providerTransactionId}]`,
+        tabs: [
+          {
+            title: `Provider Request`,
+            json: transaction.providerRequest
+          },
+          {
+            title: `Waseel Request`,
+            json: transaction.waseelRequest
+          },
+          {
+            title: `NPHIES Response`,
+            json: transaction.nphiesResponse
+          },
+          {
+            title: `Waseel Response`,
+            json: transaction.waseelResponse
+          }
+        ]
+      }
+    });
+  }
+
 
   _isValidDate(date): boolean {
     return date != null && !Number.isNaN(new Date(moment(date).format('YYYY-MM-DD')).getTime());

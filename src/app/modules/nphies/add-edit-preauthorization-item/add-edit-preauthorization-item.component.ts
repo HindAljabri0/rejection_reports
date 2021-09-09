@@ -35,13 +35,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
-    isPackage: ['', Validators.required],
-    quantity: [''],
+    isPackage: [''],
+    quantity: ['', Validators.required],
     unitPrice: ['', Validators.required],
-    discount: ['', Validators.required],
+    discount: [''],
     factor: ['', Validators.required],
     taxPercent: ['', Validators.required],
-    patientSharePercent: ['', Validators.required],
+    patientSharePercent: [''],
     tax: [''],
     net: [''],
     patientShare: [''],
@@ -83,7 +83,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
-        factor: this.data.item.factor,
+        factor: this.data.item.factor ? this.data.item.factor : 1,
         taxPercent: this.data.item.taxPercent,
         patientSharePercent: this.data.item.patientSharePercent,
         tax: this.data.item.tax,
@@ -95,24 +95,36 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       if (this.data.careTeams) {
         this.FormItem.patchValue({
-          careTeamSequence: this.data.careTeams.filter(x => this.data.item.careTeamSequence.find(y => y === x.sequence) !== undefined)
+          // tslint:disable-next-line:max-line-length
+          careTeamSequence: this.data.item.careTeamSequence ? this.data.careTeams.filter(x => this.data.item.careTeamSequence.find(y => y === x.sequence) !== undefined) : []
         });
       }
 
       if (this.data.diagnosises) {
         this.FormItem.patchValue({
-          diagnosisSequence: this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined)
+          // tslint:disable-next-line:max-line-length
+          diagnosisSequence: this.data.item.diagnosisSequence ? this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined) : []
         });
       }
 
       if (this.data.supportingInfos) {
         this.FormItem.patchValue({
           // tslint:disable-next-line:max-line-length
-          supportingInfoSequence: this.data.supportingInfos.filter(x => this.data.item.supportingInfoSequence.find(y => y === x.sequence) !== undefined)
+          supportingInfoSequence: this.data.item.supportingInfoSequence ? this.data.supportingInfos.filter(x => this.data.item.supportingInfoSequence.find(y => y === x.sequence) !== undefined) : []
         });
       }
 
       this.getItemList();
+    } else {
+      this.FormItem.controls.factor.setValue(1);
+    }
+
+    if (this.data.type && this.data.type === 'vision') {
+      this.typeList = [
+        { value: 'medicalDevices', name: 'Medical Devices' },
+        { value: 'procedures', name: 'Procedures' },
+        { value: 'services', name: 'Services' }
+      ];
     }
 
     if (this.data.supportingInfos) {
@@ -252,7 +264,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const factorValue: number = (1 - (parseFloat(this.FormItem.controls.discount.value) / 100));
           this.FormItem.controls.factor.setValue(parseFloat(factorValue.toFixed(2)));
         } else {
-          this.FormItem.controls.factor.setValue('');
+          this.FormItem.controls.factor.setValue(1);
         }
 
         // tslint:disable-next-line:max-line-length
@@ -342,14 +354,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       // tslint:disable-next-line:radix
       model.quantity = parseInt(this.FormItem.controls.quantity.value);
       model.unitPrice = parseFloat(this.FormItem.controls.unitPrice.value);
-      model.discount = parseFloat(this.FormItem.controls.discount.value);
+      model.discount = this.FormItem.controls.discount.value ? parseFloat(this.FormItem.controls.discount.value) : 0;
       model.factor = this.FormItem.controls.factor.value;
       model.taxPercent = parseFloat(this.FormItem.controls.taxPercent.value);
-      model.patientSharePercent = parseFloat(this.FormItem.controls.patientSharePercent.value);
+      // tslint:disable-next-line:max-line-length
+      model.patientSharePercent = this.FormItem.controls.patientSharePercent.value ? parseFloat(this.FormItem.controls.patientSharePercent.value) : 0;
       model.tax = this.FormItem.controls.tax.value;
       model.net = this.FormItem.controls.net.value;
-      model.patientShare = this.FormItem.controls.patientShare.value;
-      model.payerShare = parseFloat(this.FormItem.controls.payerShare.value);
+      model.patientShare = this.FormItem.controls.patientShare.value ? parseFloat(this.FormItem.controls.patientShare.value) : 0;
+      model.payerShare = this.FormItem.controls.payerShare.value ? parseFloat(this.FormItem.controls.payerShare.value) : 0;
       model.startDate = this.datePipe.transform(this.FormItem.controls.startDate.value, 'yyyy-MM-dd');
 
       if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {

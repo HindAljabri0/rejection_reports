@@ -83,7 +83,7 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let log of transactions">
-                        <tr>
+                        <tr (click)="viewJSONs(log)" style="cursor: pointer;">
                             <td>{{log.providerTransactionId}}</td>
                             <td>{{log.providerId}}</td>
                             <td>{{getPayerName(log.payerNphiesId)}}</td>
@@ -95,7 +95,7 @@
                     </ng-container>
                     <tr>
                         <td colspan="7" class="p-0">
-                            <app-empty-state *ngIf="isLoading && (transactions == null || transactions.length == 0)"
+                            <app-empty-state *ngIf="!isLoading && (transactions == null || transactions.length == 0)"
                                 class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
                         </td>
@@ -104,4 +104,27 @@
             </table>
         </div>
     </ng-scrollbar>
+    <div class="block-footer sticky-bottom">
+        <div class="left-block custom-paginator">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
+                [disabled]="page==0 || isLoading">
+                <img src="./assets/ic-page-first.svg" alt="First" />
+            </button>
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
+                [disabled]="page==0 || isLoading">
+                <img src="./assets/ic-page-prev.svg" alt="Previous" />
+            </button>
+            <p class="page-info">
+                {{(page+1)}}<small>/{{totalPages}}</small>
+            </p>
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
+                [disabled]="(page+1)==totalPages || isLoading">
+                <img src="./assets/ic-page-next.svg" alt="Next" />
+            </button>
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
+                [disabled]="(page+1)==totalPages || isLoading ">
+                <img src="./assets/ic-page-last.svg" alt="Last" />
+            </button>
+        </div>
+    </div>
 </div>
