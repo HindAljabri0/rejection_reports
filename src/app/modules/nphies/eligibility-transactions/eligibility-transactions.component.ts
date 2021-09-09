@@ -51,7 +51,6 @@ export class EligibilityTransactionsComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   transactionModel: PaginatedResult<EligibilityTransaction>;
   transactions = [];
-  datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false };
   minDate: any;
 
   constructor(
@@ -79,18 +78,20 @@ export class EligibilityTransactionsComponent implements OnInit {
     // model.value = 'All';
 
     // this.payersList.splice(0, 0, model);
+    this.FormEligibilityTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormEligibilityTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+
     this.getPayerList();
-    this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
 
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.fromDate != null) {
-        this.FormEligibilityTransaction.controls.fromDate.patchValue(params.fromDate);
+        this.FormEligibilityTransaction.controls.fromDate.patchValue(this.datePipe.transform(params.fromDate, 'yyyy-MM-dd'));
       }
 
       if (params.toDate != null) {
         // const toDate = moment(params.toDate, 'YYYY-MM-DD').toDate();
-        this.FormEligibilityTransaction.controls.toDate.patchValue(params.toDate);
+        this.FormEligibilityTransaction.controls.toDate.patchValue(this.datePipe.transform(params.toDate, 'yyyy-MM-dd'));
       }
 
       if (params.payerId != null) {
@@ -258,11 +259,11 @@ export class EligibilityTransactionsComponent implements OnInit {
     let path = '/nphies/eligibility-transactions?';
 
     if (this.FormEligibilityTransaction.controls.fromDate.value) {
-      path += `fromDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'yyyy-MM-dd')}&`;
+      path += `fromDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.toDate.value) {
-      path += `toDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd')}&`;
+      path += `toDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.payerId.value) {
