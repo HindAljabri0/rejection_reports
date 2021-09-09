@@ -51,7 +51,6 @@ export class EligibilityTransactionsComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   transactionModel: PaginatedResult<EligibilityTransaction>;
   transactions = [];
-  minDate: any;
 
   constructor(
     public sharedServices: SharedServices,
@@ -72,12 +71,7 @@ export class EligibilityTransactionsComponent implements OnInit {
   ];
 
   ngOnInit() {
-    // this.payersList = this.sharedServices.getPayersList();
-    // const model: any = {};
-    // model.id = 'all';
-    // model.value = 'All';
 
-    // this.payersList.splice(0, 0, model);
     this.FormEligibilityTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.FormEligibilityTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
@@ -90,7 +84,6 @@ export class EligibilityTransactionsComponent implements OnInit {
       }
 
       if (params.toDate != null) {
-        // const toDate = moment(params.toDate, 'YYYY-MM-DD').toDate();
         this.FormEligibilityTransaction.controls.toDate.patchValue(this.datePipe.transform(params.toDate, 'yyyy-MM-dd'));
       }
 
@@ -259,11 +252,11 @@ export class EligibilityTransactionsComponent implements OnInit {
     let path = '/nphies/eligibility-transactions?';
 
     if (this.FormEligibilityTransaction.controls.fromDate.value) {
-      path += `fromDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
+      path += `fromDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.toDate.value) {
-      path += `toDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
+      path += `toDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.payerId.value) {
@@ -312,21 +305,21 @@ export class EligibilityTransactionsComponent implements OnInit {
 
   openDetailsDialog(transactionResponseId: number) {
 
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
-      dialogConfig.data = {
-        // tslint:disable-next-line:max-line-length
-        responseId: transactionResponseId,
-        providerId: this.sharedServices.providerId
-      };
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      responseId: transactionResponseId,
+      providerId: this.sharedServices.providerId
+    };
 
-      const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
 
-      // dialogRef.afterClosed().subscribe(result => {
-      //   if (result) {
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
 
-      //   }
-      // });
+    //   }
+    // });
   }
 
 }
