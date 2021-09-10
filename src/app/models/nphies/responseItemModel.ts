@@ -1,4 +1,4 @@
-import { ResponseBenefitModel } from './ResponseBenefitModel';
+import { ResponseBenefitModel } from './responseBenefitModel';
 
 export class ResponseItemModel {
 
