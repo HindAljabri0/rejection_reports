@@ -11,7 +11,7 @@
             <label class="control-label">From Date</label>
             <div class="date-picker">
               <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                formControlName="fromDate" (bsValueChange)="dateValidation($event)">
+                formControlName="fromDate">
               <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
               <mat-datepicker #filterFromDate></mat-datepicker>
             </div>
@@ -26,7 +26,7 @@
             [ngClass]="{'has-error' : (isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')}">
             <label class="control-label">To Date</label>
             <div class="date-picker">
-              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
+              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormEligibilityTransaction.controls.fromDate.value"
                 formControlName="toDate">
               <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
               <mat-datepicker #filterToDate></mat-datepicker>
