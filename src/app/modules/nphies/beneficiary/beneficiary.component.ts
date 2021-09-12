@@ -114,6 +114,12 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'OTHER', Name: 'Other' },
   ];
 
+changeMode(){ 
+  this.viewMode= !this.viewMode;
+  this.editMode=!this.editMode;
+  this.getBeneficiary(this.beneficiaryId);
+}
+
 
   getCoverageTypeName(CoverageTypeCode: string) {
 
@@ -125,7 +131,7 @@ export class BeneficiaryComponent implements OnInit {
         return "Public healthcare"
 
       default:
-        return ""
+        return null
     }
   }
 
@@ -203,7 +209,7 @@ export class BeneficiaryComponent implements OnInit {
 
   get showbeneficiaryForm() {
 
-    return this.addMode || this.editMode;
+    return this.viewMode || this.editMode;
 
   }
 
@@ -216,13 +222,19 @@ export class BeneficiaryComponent implements OnInit {
       return false;
     }
   }
-  selectedPayer(payerid: string) {
-    var payerName = this.payersList.find(e => e.payerId == payerid);
-
-    return payerName.englistName + "(" + payerName.arabicName + ")";
+  selectedPayer(payerId: string) {
+    for(let payer of this.payersList){
+      if(payer.payerId==payerId){
+        return payer.englistName + "(" + payer.arabicName + ")";
+      }
+    }
+   
+    
 
   }
-
+isNull(value:string){
+return value==null?"_":value;
+}
 
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
@@ -314,12 +326,13 @@ export class BeneficiaryComponent implements OnInit {
     if (url.endsWith('add')) {
       this.addMode = true;
     }
-    else if (this.beneficiaryId != null && url.endsWith('edit')) {
-      this.editMode = true;
-      this.getBeneficiary(this.beneficiaryId);
+    // else if (this.beneficiaryId != null && url.endsWith('edit')) {
+    //   this.editMode = true;
+    //   this.getBeneficiary(this.beneficiaryId);
 
 
-    } else {
+    // }
+     else {
       this.getBeneficiary(this.beneficiaryId)
       this.viewMode = true;
     }
@@ -453,7 +466,7 @@ export class BeneficiaryComponent implements OnInit {
           title: '',
           message: `Beneficiary update successfully`,
           isError: false
-        });
+        }).subscribe( event=>{this.router.navigateByUrl("/nphies/beneficiary")});;
         this.sharedServices.loadingChanged.next(false);
 
 
@@ -481,7 +494,7 @@ export class BeneficiaryComponent implements OnInit {
 
         }
       });
-    this.editMode = false;
+ 
 
   }
 
