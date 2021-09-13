@@ -93,9 +93,9 @@
             <th>Member Card ID</th>
             <th>Eligibility ID</th>
             <th>Transaction Date/Time</th>
-            <th>Insurance Plan</th>
+            <th>Payer</th>
             <th>Status</th>
-            <th></th>
+            <!-- <th></th> -->
           </tr>
         </thead>
         <tbody>
@@ -103,14 +103,14 @@
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.memberId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
-              'dd/MM/yyyy hh:mm:ss aa'}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.insurancePlan}}</td>
+              'dd-MM-yyyy hh:mm:ss aa'}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.body.payerId.englistName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
-            <td class="actions">
+            <!-- <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">
                 <mat-icon>refresh</mat-icon>
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>

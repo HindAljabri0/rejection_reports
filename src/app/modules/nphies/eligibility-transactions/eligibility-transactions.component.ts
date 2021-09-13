@@ -80,11 +80,13 @@ export class EligibilityTransactionsComponent implements OnInit {
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.fromDate != null) {
-        this.FormEligibilityTransaction.controls.fromDate.patchValue(this.datePipe.transform(params.fromDate, 'yyyy-MM-dd'));
+        const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
+        this.FormEligibilityTransaction.controls.fromDate.patchValue(this.datePipe.transform(d1, 'yyyy-MM-dd'));
       }
 
       if (params.toDate != null) {
-        this.FormEligibilityTransaction.controls.toDate.patchValue(this.datePipe.transform(params.toDate, 'yyyy-MM-dd'));
+        const d2 = moment(moment(params.toDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
+        this.FormEligibilityTransaction.controls.toDate.patchValue(this.datePipe.transform(d2, 'yyyy-MM-dd'));
       }
 
       if (params.payerId != null) {
@@ -233,6 +235,7 @@ export class EligibilityTransactionsComponent implements OnInit {
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, EligibilityTransaction);
           this.transactions = this.transactionModel.content;
+          console.log(this.transactions);
           const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;

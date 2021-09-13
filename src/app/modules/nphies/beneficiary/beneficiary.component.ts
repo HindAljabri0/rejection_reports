@@ -116,7 +116,7 @@ export class BeneficiaryComponent implements OnInit {
 
 changeMode(){ 
   this.viewMode= !this.viewMode;
-  this.editMode=!this.editMode;
+  this.editMode=!this.editMode;   
   this.getBeneficiary(this.beneficiaryId);
 }
 
@@ -464,11 +464,11 @@ return value==null?"_":value;
 
         this.dialogService.openMessageDialog({
           title: '',
-          message: `Beneficiary update successfully`,
+          message: `Beneficiary updated successfully`,
           isError: false
-        }).subscribe( event=>{this.router.navigateByUrl("/nphies/beneficiary")});;
+        }).subscribe( event=>{this.changeMode()});;
         this.sharedServices.loadingChanged.next(false);
-
+      
 
       }
     }
