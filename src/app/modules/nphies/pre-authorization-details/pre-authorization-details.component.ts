@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreAuthorizationDetailsComponent implements OnInit {
 
+  @Input() data: any;
   currentSelectedItem = -1;
   constructor() { }
 

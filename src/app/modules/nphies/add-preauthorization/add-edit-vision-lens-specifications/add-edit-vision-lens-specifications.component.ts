@@ -80,6 +80,9 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     if (this.FormVisionSpecification.controls.prismAmount.value) {
       this.FormVisionSpecification.controls.prismBase.setValidators([Validators.required]);
       this.FormVisionSpecification.controls.prismBase.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.prismBase.clearValidators();
+      this.FormVisionSpecification.controls.prismBase.updateValueAndValidity();
     }
 
     this.isSubmitted = true;

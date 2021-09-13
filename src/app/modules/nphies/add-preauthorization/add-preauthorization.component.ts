@@ -35,13 +35,13 @@ export class AddPreauthorizationComponent implements OnInit {
     dateOrdered: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
-    accidentType: ['', Validators.required],
+    accidentType: [''],
     streetName: [''],
     city: [''],
     state: [''],
     country: [''],
-    date: ['', Validators.required],
-    dateWritten: ['', Validators.required],
+    date: [''],
+    dateWritten: [''],
     // prescriber: ['', Validators.required],
   });
 
@@ -52,9 +52,17 @@ export class AddPreauthorizationComponent implements OnInit {
   Items = [];
 
   model: any = {};
+  detailsModel: any = {};
 
   isSubmitted = false;
   IsLensSpecificationRequired = false;
+  IsDiagnosisRequired = false;
+  IsCareTeamRequired = false;
+  IsItemRequired = false;
+
+  IsDateRequired = false;
+  IsAccidentTypeRequired = false;
+  IsJSONPosted = false;
   constructor(
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private beneficiaryService: ProvidersBeneficiariesService, private providerNphiesApprovalService: ProviderNphiesApprovalService) {
@@ -84,7 +92,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
     if (primaryPlanIndex !== -1) {
-      this.selectedPlanId = beneficiary.plans[primaryPlanIndex].planId;
+      this.selectedPlanId = beneficiary.plans[primaryPlanIndex].payerNphiesId;
     }
     this.selectedBeneficiary = beneficiary;
     this.FormPreAuthorization.patchValue({
@@ -178,6 +186,7 @@ export class AddPreauthorizationComponent implements OnInit {
           });
         } else {
           this.CareTeams.push(result);
+          this.checkCareTeamValidation();
         }
       }
     });
@@ -202,10 +211,12 @@ export class AddPreauthorizationComponent implements OnInit {
         if (result) {
           this.Items.find(x => x.careTeamSequence.splice(x.careTeamSequence.indexOf(sequence), 1));
           this.CareTeams.splice(index, 1);
+          this.checkCareTeamValidation();
         }
       });
     } else {
       this.CareTeams.splice(index, 1);
+      this.checkCareTeamValidation();
     }
   }
 
@@ -235,6 +246,7 @@ export class AddPreauthorizationComponent implements OnInit {
           });
         } else {
           this.Diagnosises.push(result);
+          this.checkDiagnosisValidation();
         }
       }
     });
@@ -242,6 +254,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   deleteDiagnosis(index: number) {
     this.Diagnosises.splice(index, 1);
+    this.checkDiagnosisValidation();
   }
 
   openAddEditItemDialog(itemModel: any = null) {
@@ -288,6 +301,7 @@ export class AddPreauthorizationComponent implements OnInit {
           });
         } else {
           this.Items.push(result);
+          this.checkItemValidation();
         }
       }
     });
@@ -295,6 +309,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   deleteItem(index: number) {
     this.Items.splice(index, 1);
+    this.checkItemValidation();
   }
 
   openAddEditSupportInfoDialog(supportInfoModel: any = null) {
@@ -339,18 +354,76 @@ export class AddPreauthorizationComponent implements OnInit {
     this.SupportingInfo.splice(index, 1);
   }
 
+  checkCareTeamValidation() {
+    if (this.CareTeams.length === 0) {
+      this.IsCareTeamRequired = true;
+    } else {
+      this.IsCareTeamRequired = false;
+    }
+  }
+
+  checkDiagnosisValidation() {
+    if (this.Diagnosises.length === 0) {
+      this.IsDiagnosisRequired = true;
+    } else {
+      this.IsDiagnosisRequired = false;
+    }
+  }
+
+  checkItemValidation() {
+    if (this.Items.length === 0) {
+      this.IsItemRequired = true;
+    } else {
+      this.IsItemRequired = false;
+    }
+  }
+
   onSubmit() {
+    debugger;
+
+    this.checkCareTeamValidation();
+    this.checkDiagnosisValidation();
+    this.checkItemValidation();
+
+    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
+      return;
+    }
+
+    if (this.FormPreAuthorization.controls.date.value && !this.FormPreAuthorization.controls.accidentType.value) {
+      this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
+      this.IsAccidentTypeRequired = true;
+    } else {
+      this.FormPreAuthorization.controls.accidentType.clearValidators();
+      this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
+      this.IsAccidentTypeRequired = false;
+    }
+
+    if (this.FormPreAuthorization.controls.accidentType.value && !this.FormPreAuthorization.controls.date.value) {
+      this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.date.updateValueAndValidity();
+      this.IsDateRequired = true;
+    } else {
+      this.FormPreAuthorization.controls.date.clearValidators();
+      this.FormPreAuthorization.controls.date.updateValueAndValidity();
+      this.IsDateRequired = false;
+    }
+
+    if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+      this.IsLensSpecificationRequired = true;
+      return;
+    } else {
+      this.IsLensSpecificationRequired = false;
+    }
+
     this.isSubmitted = true;
+
     if (this.FormPreAuthorization.valid) {
 
-      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
-        this.IsLensSpecificationRequired = true;
-        return;
-      }
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
-      this.model.insurancePlanId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
@@ -381,14 +454,16 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      const accidentModel: any = {};
-      accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value;
-      accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
-      accidentModel.city = this.FormPreAuthorization.controls.city.value;
-      accidentModel.state = this.FormPreAuthorization.controls.state.value;
-      accidentModel.country = this.FormPreAuthorization.controls.country.value;
-      accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'yyyy-MM-dd');
-      this.model.accident = accidentModel;
+      if (this.FormPreAuthorization.controls.accidentType.value) {
+        const accidentModel: any = {};
+        accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value;
+        accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
+        accidentModel.city = this.FormPreAuthorization.controls.city.value;
+        accidentModel.state = this.FormPreAuthorization.controls.state.value;
+        accidentModel.country = this.FormPreAuthorization.controls.country.value;
+        accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'yyyy-MM-dd');
+        this.model.accident = accidentModel;
+      }
 
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
@@ -402,7 +477,6 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      debugger
       if (this.FormPreAuthorization.controls.type.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
@@ -434,7 +508,7 @@ export class AddPreauthorizationComponent implements OnInit {
         const model: any = {};
         model.sequence = x.sequence;
         model.type = x.type;
-        model.itemCode = x.itemCode;
+        model.itemCode = x.itemCode.toString();
         model.itemDescription = x.itemDescription;
         model.nonStandardCode = x.nonStandardCode;
         model.isPackage = x.isPackage;
@@ -472,6 +546,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 });
                 this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
               } else {
+                this.IsJSONPosted = true;
                 this.showMessage('Success', body.message, 'success', true, 'OK');
               }
             }
@@ -491,6 +566,39 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       });
     }
+  }
+
+  prepareDetailsModel() {
+    this.detailsModel = {};
+    this.detailsModel.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
+    this.detailsModel.nphiesPayerId = this.FormPreAuthorization.controls.insurancePlanId.value;
+
+    const preAuthorizationModel: any = {};
+    preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'dd-MM-yyyy');
+    preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value;
+    preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value;
+    this.detailsModel.preAuthorizationInfo = preAuthorizationModel;
+    this.detailsModel.supportingInfo = this.SupportingInfo;
+    this.detailsModel.diagnosis = this.Diagnosises;
+
+    const accidentModel: any = {};
+    accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value;
+    accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
+    accidentModel.city = this.FormPreAuthorization.controls.city.value;
+    accidentModel.state = this.FormPreAuthorization.controls.state.value;
+    accidentModel.country = this.FormPreAuthorization.controls.country.value;
+    accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'dd-MM-yyyy');
+    this.detailsModel.accident = accidentModel;
+
+    this.detailsModel.careTeam = this.CareTeams;
+    if (this.FormPreAuthorization.controls.type.value === 'vision') {
+      this.detailsModel.visionPrescription = {};
+      // tslint:disable-next-line:max-line-length
+      this.detailsModel.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'dd-MM-yyyy');
+      // this.detailsModel.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+      this.detailsModel.visionPrescription.lensSpecifications = this.VisionSpecifications;
+    }
+    this.detailsModel.items = this.Items;
   }
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
