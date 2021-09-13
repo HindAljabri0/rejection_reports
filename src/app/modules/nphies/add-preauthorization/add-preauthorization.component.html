@@ -82,13 +82,9 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
               <label class="control-label">Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select formControlName="type">
+                <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
                   <mat-option value="">Select Type</mat-option>
-                  <mat-option value="institutional">Institutional</mat-option>
-                  <mat-option value="oral">Dental</mat-option>
-                  <mat-option value="pharmacy">Pharmacy</mat-option>
-                  <mat-option value="professional">Professional</mat-option>
-                  <mat-option value="vision">Optical</mat-option>
+                  <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <div
@@ -103,6 +99,7 @@
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="subType">
                   <mat-option value="">Select Sub Type</mat-option>
+                  <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
                   <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
                   </mat-option>
                   <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
@@ -218,7 +215,7 @@
           </app-empty-state>
         </div>
 
-        <ng-container *ngIf="FormPreAuthorization.controls.type.value === 'vision'">
+        <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
           <h5 class="form-title">
             Vision Prescription
           </h5>
@@ -278,7 +275,7 @@
                 <tbody>
                   <tr *ngFor="let visionSpecification of VisionSpecifications; let i = index">
                     <td>{{visionSpecification.productName}}</td>
-                    <td>{{visionSpecification.eye | titlecase}} Eye</td>
+                    <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span></td>
                     <td>{{visionSpecification.sphere}}</td>
                     <td>{{visionSpecification.cyclinder}}</td>
                     <td>{{visionSpecification.axis}}</td>
@@ -374,10 +371,7 @@
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="accidentType">
                   <mat-option value="">Select Accident Type</mat-option>
-                  <mat-option value="MVA">Motor vehicle accident</mat-option>
-                  <mat-option value="SCHOOL">School Accident</mat-option>
-                  <mat-option value="SPT">Sporting Accident</mat-option>
-                  <mat-option value="WPA">Workplace accident</mat-option>
+                  <mat-option *ngFor="let type of accidentTypeList" [value]="type">{{type.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <div
@@ -500,7 +494,7 @@
       </div>
     </div>
     <div class="bg-white p-14">
-      <app-pre-authorization-details [data]="model"></app-pre-authorization-details>
+      <app-pre-authorization-details [data]="detailsModel"></app-pre-authorization-details>
     </div>
   </ng-container>
 

@@ -12,6 +12,13 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (this.data.items) {
+      this.data.items.map(x => {
+        x.supportingInfoSequence = x.supportingInfoSequence.toString();
+        x.careTeamSequence = x.careTeamSequence.toString();
+        x.diagnosisSequence = x.diagnosisSequence.toString();
+      });
+    }
   }
 
   toggleItem(index) {

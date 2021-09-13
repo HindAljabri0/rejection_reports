@@ -45,6 +45,23 @@ export class AddPreauthorizationComponent implements OnInit {
     // prescriber: ['', Validators.required],
   });
 
+  typeList = [
+    { value: 'institutional', name: 'Institutional' },
+    { value: 'oral', name: 'Dental' },
+    { value: 'pharmacy', name: 'Pharmacy' },
+    { value: 'professional', name: 'Professional' },
+    { value: 'vision', name: 'Optical' },
+  ];
+
+  subTypeList = [];
+
+  accidentTypeList = [
+    { value: 'MVA', name: 'Motor vehicle accident' },
+    { value: 'SCHOOL', name: 'School Accident' },
+    { value: 'SPT', name: 'Sporting Accident' },
+    { value: 'WPA', name: 'Workplace accident' },
+  ];
+
   VisionSpecifications = [];
   SupportingInfo = [];
   CareTeams = [];
@@ -71,6 +88,25 @@ export class AddPreauthorizationComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  onTypeChange($event) {
+    switch ($event.value.value) {
+      case 'institutional':
+        this.subTypeList = [
+          { value: 'ip', name: 'InPatient' },
+          { value: 'emr', name: 'Emergency' },
+        ];
+        break;
+      case 'professional':
+      case 'vision':
+      case 'pharmacy':
+      case 'oral':
+        this.subTypeList = [
+          { value: 'op', name: 'OutPatient' },
+        ];
+        break;
+    }
   }
 
   searchBeneficiaries() {
@@ -295,7 +331,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
               x.supportingInfoSequence = result.supportingInfoSequence;
-              x.bnvm = result.careTeamSequence;
+              x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
             }
           });
@@ -379,7 +415,8 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
+
+    this.isSubmitted = true;
 
     this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
@@ -389,7 +426,7 @@ export class AddPreauthorizationComponent implements OnInit {
       return;
     }
 
-    if (this.FormPreAuthorization.controls.date.value && !this.FormPreAuthorization.controls.accidentType.value) {
+    if (this.FormPreAuthorization.controls.date.value && !this.FormPreAuthorization.controls.accidentType.value.value) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = true;
@@ -399,7 +436,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.IsAccidentTypeRequired = false;
     }
 
-    if (this.FormPreAuthorization.controls.accidentType.value && !this.FormPreAuthorization.controls.date.value) {
+    if (this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
       this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = true;
@@ -416,8 +453,6 @@ export class AddPreauthorizationComponent implements OnInit {
       this.IsLensSpecificationRequired = false;
     }
 
-    this.isSubmitted = true;
-
     if (this.FormPreAuthorization.valid) {
 
       this.model = {};
@@ -427,8 +462,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
-      preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value;
-      preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value;
+      preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
+      preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {
@@ -454,9 +489,9 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPreAuthorization.controls.accidentType.value) {
+      if (this.FormPreAuthorization.controls.accidentType.value.value) {
         const accidentModel: any = {};
-        accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value;
+        accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value.value;
         accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
         accidentModel.city = this.FormPreAuthorization.controls.city.value;
         accidentModel.state = this.FormPreAuthorization.controls.state.value;
@@ -477,7 +512,7 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPreAuthorization.controls.type.value === 'vision') {
+      if (this.FormPreAuthorization.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
@@ -547,6 +582,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
               } else {
                 this.IsJSONPosted = true;
+                this.prepareDetailsModel();
                 this.showMessage('Success', body.message, 'success', true, 'OK');
               }
             }
@@ -575,14 +611,15 @@ export class AddPreauthorizationComponent implements OnInit {
 
     const preAuthorizationModel: any = {};
     preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'dd-MM-yyyy');
-    preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value;
-    preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value;
+    preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
+    preAuthorizationModel.typeName = this.FormPreAuthorization.controls.type.value.name;
+    preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
+    preAuthorizationModel.subTypeName = this.FormPreAuthorization.controls.subType.value.name;
     this.detailsModel.preAuthorizationInfo = preAuthorizationModel;
-    this.detailsModel.supportingInfo = this.SupportingInfo;
-    this.detailsModel.diagnosis = this.Diagnosises;
 
     const accidentModel: any = {};
-    accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value;
+    accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value.value;
+    accidentModel.accidentTypeName = this.FormPreAuthorization.controls.accidentType.value.name;
     accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
     accidentModel.city = this.FormPreAuthorization.controls.city.value;
     accidentModel.state = this.FormPreAuthorization.controls.state.value;
@@ -590,7 +627,6 @@ export class AddPreauthorizationComponent implements OnInit {
     accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'dd-MM-yyyy');
     this.detailsModel.accident = accidentModel;
 
-    this.detailsModel.careTeam = this.CareTeams;
     if (this.FormPreAuthorization.controls.type.value === 'vision') {
       this.detailsModel.visionPrescription = {};
       // tslint:disable-next-line:max-line-length
@@ -598,7 +634,15 @@ export class AddPreauthorizationComponent implements OnInit {
       // this.detailsModel.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
       this.detailsModel.visionPrescription.lensSpecifications = this.VisionSpecifications;
     }
-    this.detailsModel.items = this.Items;
+
+    this.detailsModel.careTeam = this.CareTeams;
+    this.detailsModel.supportingInfo = this.SupportingInfo;
+    this.detailsModel.diagnosis = this.Diagnosises;
+    // this.detailsModel.items = this.Items.map(x => {
+    //   x.supportingInfoSequence = x.supportingInfoSequence.toString();
+    //   x.careTeamSequence = x.careTeamSequence.toString();
+    //   x.diagnosisSequence = x.diagnosisSequence.toString();
+    // });
   }
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
