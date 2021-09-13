@@ -10,7 +10,7 @@ export class BeneficiaryModel {
     lastName: string;
     familyName: string;
     fullName: string;
-    dob: string;
+    dob: Date;
     gender: string;
     nationality: string;
     contactNumber: string;
