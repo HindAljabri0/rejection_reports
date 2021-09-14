@@ -91,11 +91,13 @@ export class EligibilityTransactionsComponent implements OnInit {
       }
 
       if (params.eligibilityId != null) {
-        this.FormEligibilityTransaction.controls.eligibilityId.patchValue(params.eligibilityId);
+        // tslint:disable-next-line:radix
+        this.FormEligibilityTransaction.controls.eligibilityId.patchValue(parseInt(params.eligibilityId));
       }
 
       if (params.beneficiaryId != null) {
-        this.FormEligibilityTransaction.controls.beneficiaryId.patchValue(params.beneficiaryId);
+        // tslint:disable-next-line:radix
+        this.FormEligibilityTransaction.controls.beneficiaryId.patchValue(parseInt(params.beneficiaryId));
       }
 
       if (params.beneficiaryName != null) {
@@ -206,15 +208,15 @@ export class EligibilityTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
-        model.eligibilityId = this.FormEligibilityTransaction.controls.eligibilityId.value;
+        model.eligibilityId = parseInt(this.FormEligibilityTransaction.controls.eligibilityId.value);
       }
 
       if (this.FormEligibilityTransaction.controls.payerId.value) {
-        model.payerId = this.FormEligibilityTransaction.controls.payerId.value;
+        model.payerId = parseInt(this.FormEligibilityTransaction.controls.payerId.value);
       }
 
-      if (this.FormEligibilityTransaction.controls.beneficiaryId.value) {
-        model.beneficiaryId = this.FormEligibilityTransaction.controls.beneficiaryId.value;
+      if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
+        model.beneficiaryId = parseInt(this.FormEligibilityTransaction.controls.beneficiaryId.value);
       }
 
       if (this.FormEligibilityTransaction.controls.status.value) {
