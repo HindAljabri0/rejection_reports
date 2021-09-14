@@ -488,6 +488,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-grid>thead>tr>th .mat-icon-button .mat-icon,.primary-grid>thead>tr>td .mat-icon-button .mat-icon{font-size: 22px;line-height: 22px;}
 .primary-grid tr.mat-header-row,.primary-grid tr.mat-footer-row,.primary-grid tr.mat-row{height:auto;}
 .primary-grid:not(.contextful)>thead>tr>th,.primary-grid:not(.contextful)>thead>tr>td,.primary-grid .header-cell{background-color: #D5E4FC;color:#3060AA;border-color:#b2d0ff;}
+.primary-grid .header-cell-error{background-color: #dc354517 !important;color:#dc3545!important;}
 .primary-grid:not(.contextful)>thead>tr>th[colspan],.primary-grid:not(.contextful)>thead>tr>td[colspan],.primary-grid .header-cell[colspan]{border-bottom:1px solid #b2d0ff;}
 .primary-grid:not(.contextful)>.header-primary>tr>th,.primary-grid:not(.contextful)>.header-primary>tr>td{color:#fff;background-color: #3060AA;}
 .primary-grid>thead>tr>th:first-child:not(.not-first-child),.primary-grid>thead>tr>td:first-child:not(.not-first-child),.primary-grid>tbody>tr>th:first-child:not(.not-first-child),.primary-grid>tbody>tr>td:first-child:not(.not-first-child){padding-left: 12px;border-left: 0;}
@@ -1379,4 +1380,12 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
     margin: 0 10px;
     width: 100%;
     height: 100%;
+}
+
+.item-benefit {
+    background-color: #f7f7f7 !important;
+}
+
+.item-benefit td {
+    border: 0  !important;
 }
