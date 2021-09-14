@@ -8,7 +8,6 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
 import { EligibilityResponseModel } from 'src/app/models/nphies/eligibilityResponseModel';
 import { Payer } from 'src/app/models/nphies/payer';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
@@ -32,7 +31,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectedPlanId: string;
   selectedPlanIdError: string;
-  serviceDateControl = new FormControl();
+  serviceDateControl = new FormControl(new Date());
   serviceDateError: string;
   endDateControl = new FormControl();
   endDateError: string;
@@ -141,7 +140,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
-  eligibilityResponseModel: EligibilityResponseModel = null;
+  eligibilityResponseModel: EligibilityResponseModel;
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {

@@ -12,22 +12,6 @@ export class EligibilityDetailsComponent implements OnInit {
 
   @Input() eligibilityResponse: EligibilityResponseModel;
 
-  getReasonError() {
-    switch (this.eligibilityResponse.error.reasonCode) {
-      case "NC":
-        return "No coverage inforce";
-      case "ALC":
-        return "Annual limit consumed";
-      case "ONW":
-        return "Provider outside member Network";
-      default:
-        return null
-    }
-
-  }
-
-
-
   constructor() { }
 
   ngOnInit() {
