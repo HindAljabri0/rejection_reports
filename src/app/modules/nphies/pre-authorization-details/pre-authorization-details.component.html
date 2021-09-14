@@ -20,7 +20,7 @@
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Payment Amount</div>
-      <p class="form-control-static">NA</p>
+      <p class="form-control-static">{{paymentAmount}} SR</p>
     </div>
   </div>
   <div class="col-4">
@@ -57,7 +57,10 @@
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Sub Type</div>
-      <p class="form-control-static">{{data.preAuthorizationInfo.subType}}</p>
+      <p class="form-control-static">
+        <span *ngIf="data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subType}}</span>
+        <span *ngIf="!data.preAuthorizationInfo.subType">-</span>
+      </p>
     </div>
   </div>
 </div>
@@ -179,7 +182,7 @@
 <!-- Vision prescription end -->
 
 <!-- Supporting Info start -->
-<h5 class="form-title">
+<h5 class="form-title" *ngIf="data.supportingInfo.length > 0">
   Supporting Info
 </h5>
 <div class="table-responsive">
@@ -196,7 +199,7 @@
     </thead>
     <tbody>
       <tr *ngIf="data.supportingInfo.length === 0">
-        <td colspan="5">
+        <td colspan="6">
           <app-empty-state message='No supporting info found!'></app-empty-state>
         </td>
       </tr>
@@ -230,7 +233,7 @@
 <!-- Supporting Info end -->
 
 <!-- accident start -->
-<h5 class="form-title">
+<h5 class="form-title" *ngIf="data.accident.accidentTypeName && data.accident.date">
   Accident
 </h5>
 <div class="row">
@@ -319,9 +322,9 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let item of data.items">
+      <ng-container *ngFor="let item of data.items; let i = index">
         <tr>
-          <td class="text-primary text-center row-click" (click)="toggleItem(0)" width="10">
+          <td class="text-primary text-center row-click" (click)="toggleItem(i)" width="10">
             <mat-icon *ngIf="currentSelectedItem!=0" class="size-21">add_circle_outline</mat-icon>
             <mat-icon *ngIf="currentSelectedItem==0" class="size-21">remove_circle_outline</mat-icon>
           </td>
@@ -332,7 +335,7 @@
           <td class="text-nowrap row-click" (click)="toggleItem(0)">{{item.net}} <span class="currency">SR</span></td>
           <td class="row-click" (click)="toggleItem(0)">{{item.nonStandardCode}}</td>
         </tr>
-        <tr *ngIf="currentSelectedItem==0">
+        <tr *ngIf="currentSelectedItem == i">
           <td colspan="8">
             <div class="box">
               <h5 class="align-self-center medium pb-2">Details</h5>
@@ -389,15 +392,15 @@
                     <tbody>
                       <tr>
                         <td class="label">Supporting Info</td>
-                        <td>{{item.supportingInfoSequence}}</td>
+                        <td>{{item.supportingInfoNames}}</td>
                       </tr>
                       <tr>
                         <td class="label">Diagnosis</td>
-                        <td>{{item.careTeamSequence}}</td>
+                        <td>{{item.diagnosisNames}}</td>
                       </tr>
                       <tr>
                         <td class="label">Care Teams</td>
-                        <td>{{item.diagnosisSequence}}</td>
+                        <td>{{item.careTeamNames}}</td>
                       </tr>
                     </tbody>
                   </table>

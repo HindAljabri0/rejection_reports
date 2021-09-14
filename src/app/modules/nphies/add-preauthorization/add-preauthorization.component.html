@@ -201,7 +201,7 @@
                       <mat-icon>create</mat-icon>
                     </button>
                     <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
-                      (click)="deleteDiagnosis(i)">
+                      (click)="deleteDiagnosis(diagnosis.sequence, i)">
                       <mat-icon>delete_outline</mat-icon>
                     </button>
                   </td>
@@ -350,7 +350,7 @@
                     <mat-icon>create</mat-icon>
                   </button>
                   <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0"
-                    (click)="deleteSupportingInfo(i)">
+                    (click)="deleteSupportingInfo(s.sequence, i)">
                     <mat-icon>delete_outline</mat-icon>
                   </button>
                 </td>
@@ -482,7 +482,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="IsJSONPosted && detailsModel.outgoingTransactionId">
+  <ng-container *ngIf="IsJSONPosted">
     <div class="block-header has-border">
       <div class="d-flex align-items-center">
         <p>Authorization - {{detailsModel.outgoingTransactionId}}</p>
