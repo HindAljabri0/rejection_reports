@@ -718,7 +718,7 @@
                             <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                                 <td class="text-center">
                                     <mat-radio-button color="primary" class="grid-radio" [value]="i"
-                                        [checked]="i+''==setPrimary && editMode ||insurancePlan.iSPrimary">
+                                        [checked]="i+''==setPrimary && addMode ||insurancePlan.iSPrimary">
                                     </mat-radio-button>
                                 </td>
 
@@ -853,7 +853,7 @@
                 <div class="col-4 col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Date of Birth</label>
-                        <span class="form-control-static">{{isNull(beneficiaryinfo.dob)}}</span>
+                        <span class="form-control-static">{{beneficiaryinfo.dob}}</span>
                     </div>
                 </div>
                 <div class="col-4 col-lg-3">

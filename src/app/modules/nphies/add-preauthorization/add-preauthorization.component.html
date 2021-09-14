@@ -66,7 +66,7 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
               <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today"
                   formControlName="dateOrdered">
                 <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #dateOrderedCtrl></mat-datepicker>
@@ -331,8 +331,8 @@
                   {{s.categoryName}}
                 </td>
                 <td>
-                  <!-- {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span> -->
-                  {{s.codeName}}
+                  {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
+                  <!-- {{s.codeName}} -->
                 </td>
                 <td>
                   <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
@@ -422,7 +422,7 @@
           </div>
         </div>
 
-        <div [ngClass]="{'text-danger': IsCareTeamRequired}">
+        <div [ngClass]="{'text-danger': IsItemRequired}">
           <h5 class="form-title">
             <span>Items<span class="asterisk">*</span></span>
             <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
@@ -466,9 +466,9 @@
               </tbody>
             </table>
           </div>
-          <app-empty-state *ngIf="!IsCareTeamRequired && Items.length === 0" message='No Item found!'>
+          <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
           </app-empty-state>
-          <app-empty-state *ngIf="IsCareTeamRequired && Items.length === 0" message='Item required!'>
+          <app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
           </app-empty-state>
         </div>
 
@@ -482,15 +482,10 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="IsJSONPosted">
+  <ng-container *ngIf="IsJSONPosted && detailsModel.outgoingTransactionId">
     <div class="block-header has-border">
       <div class="d-flex align-items-center">
-        <div class="actions mr-2 my-n2 ml-n1">
-          <button matRipple type="button" class="action-btn">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-        </div>
-        <p>Authorization - LAV4FIYPZWKS</p>
+        <p>Authorization - {{detailsModel.outgoingTransactionId}}</p>
       </div>
     </div>
     <div class="bg-white p-14">

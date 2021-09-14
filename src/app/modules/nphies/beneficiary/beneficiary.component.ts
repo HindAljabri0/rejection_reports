@@ -506,7 +506,7 @@ return value==null?"_":value;
     this.beneficiaryModel.lastName = this.thirdNameController.value;
     this.beneficiaryModel.familyName = this.familyNameController.value;
     this.beneficiaryModel.fullName = this.fullNameController.value;
-    this.beneficiaryModel.dob = this.dobFormControl.value;
+    this.beneficiaryModel.dob = new Date(moment( this.dobFormControl.value).format('YYYY-MM-DD'));
     this.beneficiaryModel.gender = this.selectedGender;
     this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
     this.beneficiaryModel.contactNumber = this.contactNumberController.value;
@@ -528,7 +528,7 @@ return value==null?"_":value;
     this.beneficiaryModel.country = this.selectedCountry == "" ? null : this.selectedCountry;
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
-      expiryDate: insurancePlan.expiryDateController.value,
+      expiryDate:new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == "" ? null : insurancePlan.selecteSubscriberRelationship,
