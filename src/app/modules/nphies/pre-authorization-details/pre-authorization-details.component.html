@@ -26,13 +26,13 @@
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Transaction Date</div>
-      <p class="form-control-static">31/05/2021 10:22</p>
+      <p class="form-control-static">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm'}}</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Pre-authorization Status</div>
-      <p class="form-control-static">Approved</p>
+      <p class="form-control-static">{{data.outcome}}</p>
     </div>
   </div>
 </div>

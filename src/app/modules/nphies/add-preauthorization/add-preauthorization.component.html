@@ -482,15 +482,10 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="IsJSONPosted">
+  <ng-container *ngIf="IsJSONPosted && detailsModel.outgoingTransactionId">
     <div class="block-header has-border">
       <div class="d-flex align-items-center">
-        <div class="actions mr-2 my-n2 ml-n1">
-          <button matRipple type="button" class="action-btn">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-        </div>
-        <p>Authorization - LAV4FIYPZWKS</p>
+        <p>Authorization - {{detailsModel.outgoingTransactionId}}</p>
       </div>
     </div>
     <div class="bg-white p-14">
