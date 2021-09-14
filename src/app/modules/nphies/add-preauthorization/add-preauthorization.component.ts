@@ -4,7 +4,6 @@ import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorizati
 import { AddEditCareTeamModalComponent } from './add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
-import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { DatePipe } from '@angular/common';
@@ -14,6 +13,8 @@ import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesAp
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 // tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import * as moment from 'moment';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -80,10 +81,13 @@ export class AddPreauthorizationComponent implements OnInit {
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
   IsJSONPosted = false;
+
+  today: Date;
   constructor(
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
-    private beneficiaryService: ProvidersBeneficiariesService, private providerNphiesApprovalService: ProviderNphiesApprovalService) {
-
+    private providerNphiesSearchService: ProviderNphiesSearchService,
+    private providerNphiesApprovalService: ProviderNphiesApprovalService) {
+    this.today = new Date();
   }
 
   ngOnInit() {
@@ -111,7 +115,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    this.beneficiaryService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthorization.controls.beneficiaryName.value).subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthorization.controls.beneficiaryName.value).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
@@ -460,6 +464,11 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
+      this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].coverageType;
+      this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].memberCardId;
+      this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].payerNphiesId;
+      this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].relationWithSubscriber;
+
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
@@ -570,14 +579,10 @@ export class AddPreauthorizationComponent implements OnInit {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.status === 'OK') {
-              if (body.errors && body.errors.length > 0) {
+              if (body.errors && body.errors.coding && body.errors.coding.length > 0) {
                 const errors: any[] = [];
-                body.errors.forEach(err => {
-                  if (err.code && err.code.coding && err.code.coding.length > 0) {
-                    err.code.coding.forEach(codeObj => {
-                      errors.push(codeObj.code + ' : ' + codeObj.display);
-                    });
-                  }
+                body.errors.coding.forEach(err => {
+                  errors.push(err.code + ' : ' + err.display);
                 });
                 this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
               } else {
@@ -585,6 +590,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 this.prepareDetailsModel();
                 this.showMessage('Success', body.message, 'success', true, 'OK');
               }
+
             }
           }
           this.sharedServices.loadingChanged.next(false);
@@ -607,6 +613,14 @@ export class AddPreauthorizationComponent implements OnInit {
   prepareDetailsModel() {
     this.detailsModel = {};
     this.detailsModel.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
+    this.detailsModel.beneficiaryName = this.FormPreAuthorization.controls.beneficiaryName.value;
+    this.detailsModel.transactionDate = moment(new Date()).format('DD-MM-YYYY');
+    this.detailsModel.coverageType = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].coverageType;
+    this.detailsModel.memberCardId = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].memberCardId;
+    this.detailsModel.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].payerNphiesId;
+    this.detailsModel.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].relationWithSubscriber;
+
+
     this.detailsModel.nphiesPayerId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
     const preAuthorizationModel: any = {};
@@ -638,11 +652,7 @@ export class AddPreauthorizationComponent implements OnInit {
     this.detailsModel.careTeam = this.CareTeams;
     this.detailsModel.supportingInfo = this.SupportingInfo;
     this.detailsModel.diagnosis = this.Diagnosises;
-    // this.detailsModel.items = this.Items.map(x => {
-    //   x.supportingInfoSequence = x.supportingInfoSequence.toString();
-    //   x.careTeamSequence = x.careTeamSequence.toString();
-    //   x.diagnosisSequence = x.diagnosisSequence.toString();
-    // });
+    this.detailsModel.items = this.Items;
   }
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {

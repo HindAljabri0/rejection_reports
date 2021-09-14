@@ -4,11 +4,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
-import { DownloadStatus } from 'src/app/models/downloadRequest';
-import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ViewEligibilityDetailsComponent } from '../view-eligibility-details/view-eligibility-details.component';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
@@ -17,6 +12,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EligibilityTransaction } from 'src/app/models/eligibility-transaction';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-eligibility-transactions',

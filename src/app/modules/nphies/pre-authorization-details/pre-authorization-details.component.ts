@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -12,8 +13,9 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.data.items) {
-      this.data.items.map(x => {
+    if (this.data && this.data.items) {
+      this.data.items.forEach(x => {
+        x.startDate =  moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
         x.supportingInfoSequence = x.supportingInfoSequence.toString();
         x.careTeamSequence = x.careTeamSequence.toString();
         x.diagnosisSequence = x.diagnosisSequence.toString();
@@ -22,7 +24,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   }
 
   toggleItem(index) {
-    if (this.currentSelectedItem == index) {
+    if (this.currentSelectedItem === index) {
       this.currentSelectedItem = -1;
     } else {
       this.currentSelectedItem = index;

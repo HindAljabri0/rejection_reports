@@ -142,7 +142,7 @@
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')}">
                 <label class="control-label">Start Date<span class="asterisk">*</span></label>
                 <div class="date-picker">
-                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDate">
+                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDate" [max]="today">
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                     <mat-datepicker #startDate></mat-datepicker>
                 </div>

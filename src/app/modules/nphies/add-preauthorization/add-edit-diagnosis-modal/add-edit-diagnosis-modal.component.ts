@@ -94,7 +94,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   addICDDiagnosis(diag: ICDDiagnosis) {
     this.FormDiagnosis.controls.code.setValue(diag.diagnosisCode);
-    this.FormDiagnosis.controls.description.setValue(diag.diagnosisDescription);
+    this.FormDiagnosis.controls.description.setValue(diag.diagnosisCode + ' - ' +diag.diagnosisDescription);
   }
 
   diagnosisHasErrorForAllList() {
@@ -118,7 +118,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
       const model: any = {};
       model.sequence = this.data.Sequence;
       model.diagnosisCode = this.FormDiagnosis.controls.code.value;
-      model.diagnosisDescription = this.FormDiagnosis.controls.description.value;
+      model.diagnosisDescription = this.FormDiagnosis.controls.description.value.replace(model.diagnosisCode + ' - ', '');
       model.type = this.FormDiagnosis.controls.type.value.value;
       model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
 
