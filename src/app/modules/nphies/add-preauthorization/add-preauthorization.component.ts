@@ -130,10 +130,6 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
-    const primaryPlanIndex = beneficiary.plans.findIndex(plan => plan.primary);
-    if (primaryPlanIndex !== -1) {
-      this.selectedPlanId = beneficiary.plans[primaryPlanIndex].payerNphiesId;
-    }
     this.selectedBeneficiary = beneficiary;
     this.FormPreAuthorization.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
@@ -249,7 +245,9 @@ export class AddPreauthorizationComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.Items.find(x => x.careTeamSequence.splice(x.careTeamSequence.indexOf(sequence), 1));
+          this.Items.filter(x => x.careTeamSequence.find(y => y === sequence)).forEach(z => {
+            z.careTeamSequence.splice(z.careTeamSequence.indexOf(sequence), 1);
+          });
           this.CareTeams.splice(index, 1);
           this.checkCareTeamValidation();
         }
@@ -292,9 +290,34 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-  deleteDiagnosis(index: number) {
-    this.Diagnosises.splice(index, 1);
-    this.checkDiagnosisValidation();
+  deleteDiagnosis(sequence: number, index: number) {
+
+    if (this.Items.find(x => x.diagnosisSequence.find(y => y === sequence))) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+      dialogConfig.data = {
+        // tslint:disable-next-line:max-line-length
+        mainMessage: 'Are you sure you want to delete this Diagnosis?',
+        subMessage: 'This diagnosis is referenced in some of the Items',
+        mode: 'warning',
+        hideNoButton: false
+      };
+
+      const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.Items.filter(x => x.diagnosisSequence.find(y => y === sequence)).forEach(z => {
+            z.diagnosisSequence.splice(z.diagnosisSequence.indexOf(sequence), 1);
+          });
+          this.Diagnosises.splice(index, 1);
+          this.checkDiagnosisValidation();
+        }
+      });
+    } else {
+      this.Diagnosises.splice(index, 1);
+      this.checkDiagnosisValidation();
+    }
   }
 
   openAddEditItemDialog(itemModel: any = null) {
@@ -390,8 +413,32 @@ export class AddPreauthorizationComponent implements OnInit {
     });
   }
 
-  deleteSupportingInfo(index: number) {
-    this.SupportingInfo.splice(index, 1);
+  deleteSupportingInfo(sequence: number, index: number) {
+
+    if (this.Items.find(x => x.supportingInfoSequence.find(y => y === sequence))) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+      dialogConfig.data = {
+        // tslint:disable-next-line:max-line-length
+        mainMessage: 'Are you sure you want to delete this Supporting Info?',
+        subMessage: 'This supporting info is referenced in some of the Items',
+        mode: 'warning',
+        hideNoButton: false
+      };
+
+      const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.Items.filter(x => x.supportingInfoSequence.find(y => y === sequence)).forEach(z => {
+            z.supportingInfoSequence.splice(z.supportingInfoSequence.indexOf(sequence), 1);
+          });
+          this.SupportingInfo.splice(index, 1);
+        }
+      });
+    } else {
+      this.SupportingInfo.splice(index, 1);
+    }
   }
 
   checkCareTeamValidation() {
@@ -418,13 +465,25 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  checkItemCareTeams() {
+    if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length > 0))) {
+      return true;
+    } else {
+      this.showMessage('Error', 'Items must have atleast one care team', 'alert', true, 'OK');
+      return false;
+    }
+  }
 
+  onSubmit() {
+    debugger;
     this.isSubmitted = true;
 
     this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
+    if (!this.checkItemCareTeams()) {
+      return;
+    }
 
     if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
       return;
@@ -464,10 +523,10 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
-      this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].coverageType;
-      this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].memberCardId;
-      this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].payerNphiesId;
-      this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.selectedPlanId)[0].relationWithSubscriber;
+      this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
+      this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
+      this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+      this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
@@ -549,32 +608,36 @@ export class AddPreauthorizationComponent implements OnInit {
       }
 
       this.model.items = this.Items.map(x => {
-        const model: any = {};
-        model.sequence = x.sequence;
-        model.type = x.type;
-        model.itemCode = x.itemCode.toString();
-        model.itemDescription = x.itemDescription;
-        model.nonStandardCode = x.nonStandardCode;
-        model.isPackage = x.isPackage;
-        model.quantity = x.quantity;
-        model.unitPrice = x.unitPrice;
-        model.discount = x.discount;
-        model.factor = x.factor;
-        model.taxPercent = x.taxPercent;
-        model.patientSharePercent = x.patientSharePercent;
-        model.tax = x.tax;
-        model.net = x.net;
-        model.patientShare = x.patientShare;
-        model.payerShare = x.payerShare;
-        model.startDate = x.startDate;
-        model.supportingInfoSequence = x.supportingInfoSequence;
-        model.careTeamSequence = x.careTeamSequence;
-        model.diagnosisSequence = x.diagnosisSequence;
-        return model;
-      });
+        if (x.careTeamSequence && x.careTeamSequence.length > 0) {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.type = x.type;
+          model.itemCode = x.itemCode.toString();
+          model.itemDescription = x.itemDescription;
+          model.nonStandardCode = x.nonStandardCode;
+          model.isPackage = x.isPackage;
+          model.quantity = x.quantity;
+          model.unitPrice = x.unitPrice;
+          model.discount = x.discount;
+          model.factor = x.factor;
+          model.taxPercent = x.taxPercent;
+          model.patientSharePercent = x.patientSharePercent;
+          model.tax = x.tax;
+          model.net = x.net;
+          model.patientShare = x.patientShare;
+          model.payerShare = x.payerShare;
+          model.startDate = x.startDate;
+          model.supportingInfoSequence = x.supportingInfoSequence;
+          model.careTeamSequence = x.careTeamSequence;
+          model.diagnosisSequence = x.diagnosisSequence;
+          return model;
+        }
+      }).filter(x => x !== undefined);
 
       debugger;
       console.log('Model', this.model);
+      // this.IsJSONPosted = true;
+      // this.prepareDetailsModel();
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
@@ -616,20 +679,22 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  prepareDetailsModel(body: any) {
+  prepareDetailsModel(body: any = null) {
     this.detailsModel = {};
     this.detailsModel.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
     this.detailsModel.beneficiaryName = this.FormPreAuthorization.controls.beneficiaryName.value;
-    this.detailsModel.transactionDate = moment(new Date()).format('DD-MM-YYYY');
-    this.detailsModel.coverageType = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].coverageType;
-    this.detailsModel.memberCardId = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].memberCardId;
-    this.detailsModel.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].payerNphiesId;
-    this.detailsModel.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].relationWithSubscriber;
+    this.detailsModel.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
-    this.detailsModel.disposition = body.disposition;
-    this.detailsModel.outgoingTransactionId = body.outgoingTransactionId;
-    this.detailsModel.transactionLogDate = body.transactionLogDate;
-    this.detailsModel.outcome = body.outcome;
+    this.detailsModel.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.detailsModel.payerNphiesId)[0].coverageType;
+    this.detailsModel.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.detailsModel.payerNphiesId)[0].memberCardId;
+    this.detailsModel.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.detailsModel.payerNphiesId)[0].relationWithSubscriber;
+
+    if (body) {
+      this.detailsModel.disposition = body.disposition;
+      this.detailsModel.outgoingTransactionId = body.outgoingTransactionId;
+      this.detailsModel.transactionLogDate = body.transactionLogDate;
+      this.detailsModel.outcome = body.outcome;
+    }
 
     this.detailsModel.nphiesPayerId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
