@@ -392,6 +392,7 @@ export class AddPreauthorizationComponent implements OnInit {
           this.SupportingInfo.map(x => {
             if (x.sequence === result.sequence) {
               x.category = result.category;
+              x.categoryName = result.categoryName;
               x.code = result.code;
               x.fromDate = result.fromDate;
               x.toDate = result.toDate;
@@ -475,7 +476,6 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     this.isSubmitted = true;
 
     this.checkCareTeamValidation();
@@ -634,7 +634,6 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      debugger;
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();

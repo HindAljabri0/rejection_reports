@@ -16,7 +16,6 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   ngOnInit() {
     if (this.data && this.data.items) {
       this.data.items.forEach(x => {
-        debugger;
         this.paymentAmount += x.net;
         x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
 
@@ -27,7 +26,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         if (x.supportingInfoSequence) {
           x.supportingInfoNames = '';
           x.supportingInfoSequence.forEach(s => {
-            x.supportingInfoNames = ', [' + this.data.supportingInfo.filter(y => y.sequence === s)[0].category + ']';
+            x.supportingInfoNames += ', [' + this.data.supportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
           });
           x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
         }
