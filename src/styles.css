@@ -373,6 +373,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .form-control.custom-select-control.mat-form-field .mat-select.mat-select-disabled .mat-select-trigger{cursor: not-allowed;}
 .mat-select-panel-wrap .mat-select-panel .mat-option{height:auto;line-height:inherit;white-space:normal;overflow:visible;padding:11px 16px;}
 .form-control.custom-select-control.mat-form-field .mat-form-field-label{top: 20px;left: 12px;color: rgba(48, 96, 170,0.6);width: calc(100% - 40px);transition: none;}
+.has-error .form-control.custom-select-control.mat-form-field .mat-form-field-label{color: rgba(204, 47, 47,0.6);}
 .form-control.custom-select-control.mat-form-field.mat-form-field-should-float .mat-form-field-label{display: none;}
 
 /* form error
