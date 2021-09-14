@@ -69,10 +69,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     { value: 'oralHealthIp', name: 'Oral Health IP' },
   ];
 
+  today: Date;
   constructor(
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
     private sharedServices: SharedServices, private formBuilder: FormBuilder,
-    private providerNphiesSearchService: ProviderNphiesSearchService) { }
+    private providerNphiesSearchService: ProviderNphiesSearchService) {
+    this.today = new Date();
+  }
 
   ngOnInit() {
     if (this.data.item && this.data.item.itemCode) {
@@ -271,17 +274,26 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
-          this.FormItem.controls.net.setValue(netValue);
+          this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
         } else {
           this.FormItem.controls.net.setValue('');
         }
+
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientSharePercent.value) {
+          // tslint:disable-next-line:max-line-length
+          const patientShareValue = (parseFloat(this.FormItem.controls.net.value) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
+          this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
+        } else {
+          this.FormItem.controls.patientShare.setValue('');
+        }
+
         break;
       case 'Tax':
         // tslint:disable-next-line:max-line-length
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.taxPercent.value) {
           // tslint:disable-next-line:max-line-length
           const taxValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
-          this.FormItem.controls.tax.setValue(taxValue);
+          this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
         } else {
           this.FormItem.controls.tax.setValue('');
         }
@@ -290,20 +302,46 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
-          this.FormItem.controls.net.setValue(netValue);
+          this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
         } else {
           this.FormItem.controls.net.setValue('');
+        }
+
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientSharePercent.value) {
+          // tslint:disable-next-line:max-line-length
+          const patientShareValue = (parseFloat(this.FormItem.controls.net.value) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
+          this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
+        } else {
+          this.FormItem.controls.patientShare.setValue('');
+        }
+
+        // tslint:disable-next-line:max-line-length
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
+          // tslint:disable-next-line:max-line-length
+          const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
+          this.FormItem.controls.payerShare.setValue(payerShareValue);
+        } else {
+          this.FormItem.controls.payerShare.setValue('');
         }
 
         break;
       case 'PatientShare':
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.patientSharePercent.value) {
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientSharePercent.value) {
           // tslint:disable-next-line:max-line-length
-          const patientShareValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
-          this.FormItem.controls.patientShare.setValue(patientShareValue);
+          const patientShareValue = (parseFloat(this.FormItem.controls.net.value) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
+          this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
         } else {
           this.FormItem.controls.patientShare.setValue('');
+        }
+
+        // tslint:disable-next-line:max-line-length
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
+          // tslint:disable-next-line:max-line-length
+          const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
+          this.FormItem.controls.payerShare.setValue(payerShareValue);
+        } else {
+          this.FormItem.controls.payerShare.setValue('');
         }
 
         break;
@@ -313,7 +351,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.taxPercent.value) {
           // tslint:disable-next-line:max-line-length
           const taxValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
-          this.FormItem.controls.tax.setValue(taxValue);
+          this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
         } else {
           this.FormItem.controls.tax.setValue('');
         }
@@ -322,18 +360,27 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
-          this.FormItem.controls.net.setValue(netValue);
+          this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
         } else {
           this.FormItem.controls.net.setValue('');
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.patientSharePercent.value) {
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientSharePercent.value) {
           // tslint:disable-next-line:max-line-length
-          const patientShareValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
-          this.FormItem.controls.patientShare.setValue(patientShareValue);
+          const patientShareValue = (parseFloat(this.FormItem.controls.net.value) * parseFloat(this.FormItem.controls.patientSharePercent.value)) / 100;
+          this.FormItem.controls.patientShare.setValue(parseFloat(patientShareValue.toFixed(2)));
         } else {
           this.FormItem.controls.patientShare.setValue('');
+        }
+
+        // tslint:disable-next-line:max-line-length
+        if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
+          // tslint:disable-next-line:max-line-length
+          const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
+          this.FormItem.controls.payerShare.setValue(payerShareValue);
+        } else {
+          this.FormItem.controls.payerShare.setValue('');
         }
 
         break;
