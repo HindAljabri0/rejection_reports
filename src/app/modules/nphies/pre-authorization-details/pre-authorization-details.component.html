@@ -2,7 +2,7 @@
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Claim Type</div>
-      <p class="form-control-static">{{data.preAuthorizationInfo.type}} </p>
+      <p class="form-control-static">{{data.preAuthorizationInfo.typeName}} </p>
     </div>
   </div>
   <!-- <div class="col-4">
@@ -51,14 +51,14 @@
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Type</div>
-      <p class="form-control-static">{{data.preAuthorizationInfo.type}}</p>
+      <p class="form-control-static">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Sub Type</div>
       <p class="form-control-static">
-        <span *ngIf="data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subType}}</span>
+        <span *ngIf="data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="!data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
@@ -352,7 +352,7 @@
                       </tr>
                       <tr>
                         <td class="label">Discount</td>
-                        <td>{{item.discount}} <span class="currency">SR</span></td>
+                        <td>{{item.discount}} %</td>
                       </tr>
                       <tr>
                         <td class="label">Tax(%)</td>
