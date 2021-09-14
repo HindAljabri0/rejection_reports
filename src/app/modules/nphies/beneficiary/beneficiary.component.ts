@@ -240,7 +240,7 @@ return value==null?"_":value;
 
 
     this.insurancePlans = [];
-    this.fullName = beneficiaryinfo.firstName;
+    this.firstNameController.setValue(beneficiaryinfo.firstName);
     this.secondNameController.setValue(beneficiaryinfo.middleName);
     this.thirdNameController.setValue(beneficiaryinfo.lastName);
     this.familyNameController.setValue(beneficiaryinfo.familyName);
@@ -361,10 +361,10 @@ return value==null?"_":value;
       (this.thirdNameController.value != null && this.thirdNameController.value.trim().length > 0) ||
       (this.familyNameController.value != null && this.familyNameController.value.trim().length > 0)) {
       this.fullNameController.setValue(
-        (this.firstNameController.value == null ? ' ' : this.firstNameController.value) +
-        (this.secondNameController.value == null ? ' ' : this.secondNameController.value) +
-        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value) +
-        (this.familyNameController.value == null ? '' : this.familyNameController.value).trim());
+        (this.firstNameController.value == null ? ' ' : this.firstNameController.value+" ") +
+        (this.secondNameController.value == null ? ' ' : this.secondNameController.value+" ") +
+        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value+" ") +
+        (this.familyNameController.value == null ? ' ' : this.familyNameController.value+" ").trim());
 
       this.fullNameController.disable();
 
@@ -396,7 +396,7 @@ return value==null?"_":value;
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: false,
+        iSPrimary:false,
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
@@ -405,6 +405,8 @@ return value==null?"_":value;
         payerErorr: null,
         memberCardIdErorr: null
       })
+
+      
     } else {
 
       this.dialogService.openMessageDialog({

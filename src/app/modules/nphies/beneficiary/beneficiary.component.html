@@ -306,8 +306,8 @@
 
                             <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                                 <td class="text-center">
-                                    <mat-radio-button color="primary" class="grid-radio" [value]="i"
-                                        [checked]="i+''==setPrimary && addMode ||insurancePlan.iSPrimary">
+                                    <mat-radio-button color="primary" class="grid-radio" [value]="i" 
+                                        [checked]="((i+''==setPrimary && addMode) || insurancePlans.length===0)">
                                     </mat-radio-button>
                                 </td>
 
@@ -718,7 +718,7 @@
                             <tr class="align-middle" *ngFor="let insurancePlan  of insurancePlans , let i = index">
                                 <td class="text-center">
                                     <mat-radio-button color="primary" class="grid-radio" [value]="i"
-                                        [checked]="i+''==setPrimary && addMode ||insurancePlan.iSPrimary">
+                                        [checked]="(i+''==setPrimary && addMode) ||insurancePlan.iSPrimary">
                                     </mat-radio-button>
                                 </td>
 
