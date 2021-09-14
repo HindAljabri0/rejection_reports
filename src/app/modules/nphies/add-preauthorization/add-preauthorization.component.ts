@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddEditCareTeamModalComponent } from './add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -573,21 +573,27 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
+      debugger;
       console.log('Model', this.model);
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
             const body: any = event.body;
             if (body.status === 'OK') {
-              if (body.errors && body.errors.coding && body.errors.coding.length > 0) {
+              if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
-                body.errors.coding.forEach(err => {
-                  errors.push(err.code + ' : ' + err.display);
-                });
-                this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+                if (body.errors && body.errors.coding && body.errors.coding.length > 0) {
+                  body.errors.coding.forEach(err => {
+                    errors.push(err.code + ' : ' + err.display);
+                  });
+                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+                } else {
+                  errors.push(body.disposition);
+                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+                }
               } else {
                 this.IsJSONPosted = true;
-                this.prepareDetailsModel();
+                this.prepareDetailsModel(body);
                 this.showMessage('Success', body.message, 'success', true, 'OK');
               }
 
@@ -610,7 +616,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  prepareDetailsModel() {
+  prepareDetailsModel(body: any) {
     this.detailsModel = {};
     this.detailsModel.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
     this.detailsModel.beneficiaryName = this.FormPreAuthorization.controls.beneficiaryName.value;
@@ -620,6 +626,10 @@ export class AddPreauthorizationComponent implements OnInit {
     this.detailsModel.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].payerNphiesId;
     this.detailsModel.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.planId === this.selectedPlanId)[0].relationWithSubscriber;
 
+    this.detailsModel.disposition = body.disposition;
+    this.detailsModel.outgoingTransactionId = body.outgoingTransactionId;
+    this.detailsModel.transactionLogDate = body.transactionLogDate;
+    this.detailsModel.outcome = body.outcome;
 
     this.detailsModel.nphiesPayerId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
