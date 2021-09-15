@@ -142,7 +142,7 @@
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')}">
                 <label class="control-label">Start Date<span class="asterisk">*</span></label>
                 <div class="date-picker">
-                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDate" [max]="today">
+                    <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date" formControlName="startDate" [max]="today" [min]="data.dateOrdered">
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                     <mat-datepicker #startDate></mat-datepicker>
                 </div>
@@ -194,7 +194,7 @@
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required')}">
                 <label class="control-label">Care Teams<span class="asterisk">*</span></label>
 
                 <mat-form-field class="form-control custom-select-control">
@@ -212,7 +212,10 @@
 
                   </mat-select>
                 </mat-form-field>
-
+                <div
+                *ngIf="(isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required')">
+                <span class="error-text">Please select Care Team</span>
+              </div>
             </div>
         </div>
     </div>
