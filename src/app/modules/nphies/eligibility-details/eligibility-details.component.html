@@ -124,7 +124,7 @@
                                     <td>{{item.term}}</td>
                                 </tr>
                                 <tr *ngFor="let benefit of item.benefits" class="item-benefit">
-                                    <td colspan="4">{{benefit.type}}</td>
+                                    <td colspan="4" [matTooltip]="benefit.typeDisplay">{{benefit.type}}</td>
                                     <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
                                 </tr>
                             </tbody>
