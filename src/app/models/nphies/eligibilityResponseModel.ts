@@ -37,6 +37,7 @@ export class EligibilityResponseModel {
             term: string;
             benefits: {
                 type: string;
+                typeDisplay: string;
                 value: string;
                 currency: string;
             }[];
