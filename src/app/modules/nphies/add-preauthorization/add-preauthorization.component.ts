@@ -330,7 +330,8 @@ export class AddPreauthorizationComponent implements OnInit {
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
-      type: this.FormPreAuthorization.controls.type.value
+      type: this.FormPreAuthorization.controls.type.value,
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -636,7 +637,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
-      // this.prepareDetailsModel();
+      // this.prepareDetailsModel();      
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
@@ -644,9 +645,11 @@ export class AddPreauthorizationComponent implements OnInit {
             if (body.status === 'OK') {
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
-                if (body.errors && body.errors.coding && body.errors.coding.length > 0) {
-                  body.errors.coding.forEach(err => {
-                    errors.push(err.code + ' : ' + err.display);
+                if (body.errors && body.errors.length > 0) {
+                    body.errors.forEach(err => {
+                      err.coding.forEach(codex => {
+                      errors.push(codex.code + ' : ' + codex.display);
+                    });                    
                   });
                   this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
                 } else {
@@ -726,7 +729,11 @@ export class AddPreauthorizationComponent implements OnInit {
     this.detailsModel.careTeam = this.CareTeams;
     this.detailsModel.supportingInfo = this.SupportingInfo;
     this.detailsModel.diagnosis = this.Diagnosises;
-    this.detailsModel.items = this.Items;
+    this.detailsModel.items = this.Items.map(x => {
+      if (x.careTeamSequence && x.careTeamSequence.length > 0) {
+        return x;
+      }
+    }).filter(x => x !== undefined);
   }
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {

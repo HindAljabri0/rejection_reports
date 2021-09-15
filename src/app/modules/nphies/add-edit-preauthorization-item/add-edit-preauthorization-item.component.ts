@@ -319,7 +319,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
           // tslint:disable-next-line:max-line-length
           const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
-          this.FormItem.controls.payerShare.setValue(payerShareValue);
+          this.FormItem.controls.payerShare.setValue(parseFloat(payerShareValue.toFixed(2)));
         } else {
           this.FormItem.controls.payerShare.setValue('');
         }
@@ -339,7 +339,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
           // tslint:disable-next-line:max-line-length
           const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
-          this.FormItem.controls.payerShare.setValue(payerShareValue);
+          this.FormItem.controls.payerShare.setValue(parseFloat(payerShareValue.toFixed(2)));
         } else {
           this.FormItem.controls.payerShare.setValue('');
         }
@@ -378,7 +378,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.net.value && this.FormItem.controls.patientShare.value) {
           // tslint:disable-next-line:max-line-length
           const payerShareValue = parseFloat(this.FormItem.controls.net.value) - parseFloat(this.FormItem.controls.patientShare.value);
-          this.FormItem.controls.payerShare.setValue(payerShareValue);
+          this.FormItem.controls.payerShare.setValue(parseFloat(payerShareValue.toFixed(2)));
         } else {
           this.FormItem.controls.payerShare.setValue('');
         }
