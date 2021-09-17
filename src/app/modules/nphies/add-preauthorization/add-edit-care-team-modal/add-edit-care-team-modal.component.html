@@ -97,6 +97,11 @@
         </div>
       </div>
     </div>
+    <div class="row" *ngIf="primaryValidationMsg">
+      <div class="col-12 text-danger">
+        <b>Note: {{primaryValidationMsg}}</b>
+      </div>
+    </div>
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
