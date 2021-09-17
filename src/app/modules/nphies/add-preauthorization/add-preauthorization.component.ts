@@ -669,9 +669,10 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      //console.log('Model', this.model);
+      // console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
+
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
@@ -679,17 +680,21 @@ export class AddPreauthorizationComponent implements OnInit {
             if (body.status === 'OK') {
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
+
+                if (body.disposition) {
+                  errors.push(body.disposition);
+                }
+
                 if (body.errors && body.errors.length > 0) {
                   body.errors.forEach(err => {
                     err.coding.forEach(codex => {
                       errors.push(codex.code + ' : ' + codex.display);
                     });
                   });
-                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-                } else {
-                  errors.push(body.disposition);
-                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
                 }
+
+                this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+
               } else {
                 this.IsJSONPosted = true;
                 this.prepareDetailsModel(body);
