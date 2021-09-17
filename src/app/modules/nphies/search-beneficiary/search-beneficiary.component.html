@@ -4,10 +4,40 @@
             <p>Beneficiary</p>
         </div>
         <div class="block-filter-panel has-border">
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Name</label>
+                        <input class="form-control" placeholder="Enter name" />
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">National ID</label>
+                        <input class="form-control" placeholder="Enter national ID" />
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Contact no.</label>
+                        <input class="form-control" placeholder="Enter contact no." />
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">File ID</label>
+                        <input class="form-control" placeholder="Enter file ID" />
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Member Card ID</label>
+                        <input class="form-control" placeholder="Enter member card ID" />
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
-                <label class="control-label">Search Beneficiary</label>
-                <input placeholder="Search by Name, National ID, Contact no., File ID, Member Card ID"
-                    class="form-control">
+                <button type="button" mat-flat-button color="primary">Search</button>
             </div>
         </div>
 
@@ -15,7 +45,7 @@
             <app-empty-state message='Search Beneficiary' icon="ic-empty-search.svg">
             </app-empty-state>
         </div> -->
-        <ng-scrollbar smoothScroll  [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" style="height: 480px;">
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" style="height: 480px;">
             <div class="fixed-height">
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                     <thead>
@@ -25,7 +55,6 @@
                             <th>Contact No.</th>
                             <th>File ID</th>
                             <th>Member Card ID</th>
-                            <th width="10"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,19 +72,18 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
             </div>
-         
+
         </ng-scrollbar>
         <div class="block-footer sticky-bottom">
             <div class="left-block">
-                <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)"  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" 
-                [pageIndex]="pageIndex"
-                aria-label="Select page">
-            </mat-paginator>
+                <mat-paginator #paginator class="primary-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                    [pageIndex]="pageIndex" aria-label="Select page">
+                </mat-paginator>
             </div>
-            </div>
-   
+        </div>
+
         <button mat-fab color="primary" routerLink="/nphies/beneficiary/add" class="page-fab">
             <mat-icon>add</mat-icon>
         </button>

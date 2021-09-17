@@ -439,7 +439,7 @@
           <h5 class="form-title">
             <span>Items<span class="asterisk">*</span></span>
             <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-              [disabled]="CareTeams.length === 0">
+              [disabled]="CareTeams.length === 0 || !(this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value)">
               <mat-icon>add</mat-icon>
             </button>
           </h5>
@@ -489,14 +489,13 @@
 
         <div class="form-group">
           <button type="submit" mat-flat-button color="primary">Request Authorization</button>
-          <button type="button" mat-flat-button color="primary" (click)="reset()">Reset</button>
         </div>
 
       </form>
     </div>
   </ng-container>
 
-  <ng-container *ngIf="IsJSONPosted">
+  <ng-container *ngIf="IsJSONPosted && detailsModel">
     <div class="block-header has-border">
       <div class="d-flex align-items-center">
         <p>Authorization - {{detailsModel.outgoingTransactionId}}</p>
@@ -505,9 +504,7 @@
     <div class="bg-white p-14">
       <app-pre-authorization-details [data]="detailsModel"></app-pre-authorization-details>
     </div>
-    <div class="form-group">
-      <button type="button" mat-flat-button color="primary" (click)="reset()">OK</button>
-    </div>
+    <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New Authorization</button>
   </ng-container>
 
 </div>

@@ -123,7 +123,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onTypeChange($event) {
-    switch ($event.value.value) {
+    switch ($event.value && $event.value.value) {
       case 'institutional':
         this.subTypeList = [
           { value: 'ip', name: 'InPatient' },
@@ -511,8 +511,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-
-    if (this.FormPreAuthorization.controls.date.value && !this.FormPreAuthorization.controls.accidentType.value.value) {
+    console.log('Model', this.model);
+    if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = true;
@@ -522,7 +522,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.IsAccidentTypeRequired = false;
     }
 
-    if (this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
+    if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
       this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = true;
@@ -669,9 +669,10 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      console.log('Model', this.model);
+      // console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
+
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
@@ -679,17 +680,21 @@ export class AddPreauthorizationComponent implements OnInit {
             if (body.status === 'OK') {
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
+
+                if (body.disposition) {
+                  errors.push(body.disposition);
+                }
+
                 if (body.errors && body.errors.length > 0) {
                   body.errors.forEach(err => {
                     err.coding.forEach(codex => {
                       errors.push(codex.code + ' : ' + codex.display);
                     });
                   });
-                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-                } else {
-                  errors.push(body.disposition);
-                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
                 }
+
+                this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+
               } else {
                 this.IsJSONPosted = true;
                 this.prepareDetailsModel(body);
@@ -789,11 +794,20 @@ export class AddPreauthorizationComponent implements OnInit {
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();
-
+    this.FormPreAuthorization.patchValue({
+      insurancePlanId: '',
+      type: '',
+      subType: '',
+      accidentType: '',
+      country: ''
+    });
     this.CareTeams = [];
     this.Diagnosises = [];
     this.SupportingInfo = [];
     this.VisionSpecifications = [];
+    this.Items = [];
+    this.isSubmitted = false;
+    this.IsJSONPosted = false;
   }
 
 }
