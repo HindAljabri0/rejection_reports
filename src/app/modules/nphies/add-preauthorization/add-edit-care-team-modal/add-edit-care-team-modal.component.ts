@@ -61,8 +61,6 @@ export class AddEditCareTeamModalComponent implements OnInit {
     { value: 'other', name: 'Other' },
   ];
 
-  primaryValidationMsg = '';
-
   constructor(
     private dialogRef: MatDialogRef<AddEditCareTeamModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
     private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService,
@@ -174,14 +172,6 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-
-    // tslint:disable-next-line:max-line-length
-    if (this.FormCareTeam.controls.careTeamRole.value.value === 'primary' && this.data.careTeams.find(x => x === this.FormCareTeam.controls.careTeamRole.value.value)) {
-      this.primaryValidationMsg = 'There can be only one primary Practitioner';
-      return;
-    } else {
-      this.primaryValidationMsg = '';
-    }
 
     if (this.FormCareTeam.valid) {
       const model: any = {};

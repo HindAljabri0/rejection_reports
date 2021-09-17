@@ -228,10 +228,7 @@ export class AddPreauthorizationComponent implements OnInit {
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       Sequence: (careTeam !== null) ? careTeam.sequence : (this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1)),
-      item: careTeam,
-      careTeams: this.CareTeams.map(x => {
-        return x.careTeamRole;
-      })
+      item: careTeam
     };
 
     const dialogRef = this.dialog.open(AddEditCareTeamModalComponent, dialogConfig);
@@ -295,7 +292,10 @@ export class AddPreauthorizationComponent implements OnInit {
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       Sequence: (diagnosis !== null) ? diagnosis.sequence : (this.Diagnosises.length === 0 ? 1 : (this.Diagnosises[this.Diagnosises.length - 1].sequence + 1)),
-      item: diagnosis
+      item: diagnosis,
+      itemTypes: this.Diagnosises.map(x => {
+        return x.type;
+      })
     };
 
     const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);
