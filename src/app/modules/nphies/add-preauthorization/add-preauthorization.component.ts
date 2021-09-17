@@ -672,46 +672,46 @@ export class AddPreauthorizationComponent implements OnInit {
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
-      // this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
-      //   if (event instanceof HttpResponse) {
-      //     if (event.status === 200) {
-      //       const body: any = event.body;
-      //       if (body.status === 'OK') {
-      //         if (body.outcome.toString().toLowerCase() === 'error') {
-      //           const errors: any[] = [];
-      //           if (body.errors && body.errors.length > 0) {
-      //             body.errors.forEach(err => {
-      //               err.coding.forEach(codex => {
-      //                 errors.push(codex.code + ' : ' + codex.display);
-      //               });
-      //             });
-      //             this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-      //           } else {
-      //             errors.push(body.disposition);
-      //             this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-      //           }
-      //         } else {
-      //           this.IsJSONPosted = true;
-      //           this.prepareDetailsModel(body);
-      //           this.showMessage('Success', body.message, 'success', true, 'OK');
-      //         }
+      this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          if (event.status === 200) {
+            const body: any = event.body;
+            if (body.status === 'OK') {
+              if (body.outcome.toString().toLowerCase() === 'error') {
+                const errors: any[] = [];
+                if (body.errors && body.errors.length > 0) {
+                  body.errors.forEach(err => {
+                    err.coding.forEach(codex => {
+                      errors.push(codex.code + ' : ' + codex.display);
+                    });
+                  });
+                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+                } else {
+                  errors.push(body.disposition);
+                  this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+                }
+              } else {
+                this.IsJSONPosted = true;
+                this.prepareDetailsModel(body);
+                this.showMessage('Success', body.message, 'success', true, 'OK');
+              }
 
-      //       }
-      //     }
-      //     this.sharedServices.loadingChanged.next(false);
-      //   }
-      // }, error => {
-      //   if (error instanceof HttpErrorResponse) {
-      //     if (error.status === 400) {
-      //       this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
-      //     } else if (error.status === 404) {
-      //       this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-      //     } else if (error.status === 500) {
-      //       this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-      //     }
-      //     this.sharedServices.loadingChanged.next(false);
-      //   }
-      // });
+            }
+          }
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 400) {
+            this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+          } else if (error.status === 404) {
+            this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          } else if (error.status === 500) {
+            this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          }
+          this.sharedServices.loadingChanged.next(false);
+        }
+      });
     }
   }
 
