@@ -123,7 +123,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   onTypeChange($event) {
-    switch ($event.value.value) {
+    switch ($event.value && $event.value.value) {
       case 'institutional':
         this.subTypeList = [
           { value: 'ip', name: 'InPatient' },
@@ -511,8 +511,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-
-    if (this.FormPreAuthorization.controls.date.value && !this.FormPreAuthorization.controls.accidentType.value.value) {
+    console.log('Model', this.model);
+    if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = true;
@@ -522,7 +522,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.IsAccidentTypeRequired = false;
     }
 
-    if (this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
+    if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
       this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = true;
@@ -669,7 +669,7 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      console.log('Model', this.model);
+      //console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
@@ -789,11 +789,20 @@ export class AddPreauthorizationComponent implements OnInit {
     this.model = {};
     this.detailsModel = {};
     this.FormPreAuthorization.reset();
-
+    this.FormPreAuthorization.patchValue({
+      insurancePlanId: '',
+      type: '',
+      subType: '',
+      accidentType: '',
+      country: ''
+    });
     this.CareTeams = [];
     this.Diagnosises = [];
     this.SupportingInfo = [];
     this.VisionSpecifications = [];
+    this.Items = [];
+    this.isSubmitted = false;
+    this.IsJSONPosted = false;
   }
 
 }

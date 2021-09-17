@@ -58,8 +58,8 @@
     <div class="form-group">
       <div class="control-label">Sub Type</div>
       <p class="form-control-static">
-        <span *ngIf="data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
-        <span *ngIf="!data.preAuthorizationInfo.subType">-</span>
+        <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
   </div>
