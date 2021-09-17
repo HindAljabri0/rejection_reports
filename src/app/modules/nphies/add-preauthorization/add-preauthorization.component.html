@@ -12,7 +12,7 @@
         <div class="d-flex">
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
-            <label class="control-label">Select a Beneficiary</label>
+            <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
             <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
               formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">
@@ -66,8 +66,8 @@
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
               <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
               <div class="date-picker">
-                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" [max]="today"
-                  formControlName="dateOrdered">
+                <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
+                  [max]="today" formControlName="dateOrdered">
                 <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
                 <mat-datepicker #dateOrderedCtrl></mat-datepicker>
               </div>
@@ -215,14 +215,15 @@
           </app-empty-state>
         </div>
 
-        <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
+        <ng-container
+          *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
           <h5 class="form-title">
             Vision Prescription
           </h5>
           <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Date Written<span class="asterisk">*</span></label>
+                <label class="control-label">Date Written</label>
                 <div class="date-picker">
                   <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
                     formControlName="dateWritten">
@@ -401,7 +402,19 @@
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Country</label>
-              <input placeholder="Enter country" class="form-control" formControlName="country">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select [value]="selectedCountry" formControlName="country"
+                  (selectionChange)="selectedCountry = $event.value;" #Country>
+                  <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Select Country"
+                      noEntriesFoundLabel="No nationalities found" formControlName="countryName" name='selectedCountry'>
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option value="">Select Country</mat-option>
+                  <mat-option *ngFor="let nationality of filteredNations | async " [value]="nationality.Name">
+                    {{nationality.Name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
           <div class="col-4 col-xxl-3">
@@ -476,6 +489,7 @@
 
         <div class="form-group">
           <button type="submit" mat-flat-button color="primary">Request Authorization</button>
+          <button type="button" mat-flat-button color="primary" (click)="reset()">Reset</button>
         </div>
 
       </form>
@@ -490,6 +504,9 @@
     </div>
     <div class="bg-white p-14">
       <app-pre-authorization-details [data]="detailsModel"></app-pre-authorization-details>
+    </div>
+    <div class="form-group">
+      <button type="button" mat-flat-button color="primary" (click)="reset()">OK</button>
     </div>
   </ng-container>
 

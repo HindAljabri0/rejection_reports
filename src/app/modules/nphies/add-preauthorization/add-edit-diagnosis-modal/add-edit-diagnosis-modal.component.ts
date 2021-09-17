@@ -53,7 +53,9 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     { value: 'y', name: 'Yes' },
     { value: 'n', name: 'No' },
     { value: 'u', name: 'Unknown' },
-  ]
+  ];
+
+  primaryValidationMsg = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddEditDiagnosisModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
@@ -94,7 +96,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   addICDDiagnosis(diag: ICDDiagnosis) {
     this.FormDiagnosis.controls.code.setValue(diag.diagnosisCode);
-    this.FormDiagnosis.controls.description.setValue(diag.diagnosisCode + ' - ' +diag.diagnosisDescription);
+    this.FormDiagnosis.controls.description.setValue(diag.diagnosisCode + ' - ' + diag.diagnosisDescription);
   }
 
   diagnosisHasErrorForAllList() {
@@ -114,6 +116,13 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+    // tslint:disable-next-line:max-line-length
+    if (this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
+      this.primaryValidationMsg = 'There can be only one principal Type';
+      return;
+    } else {
+      this.primaryValidationMsg = '';
+    }
     if (this.FormDiagnosis.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;

@@ -15,6 +15,8 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
 import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -29,6 +31,8 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanId: string;
   selectedPlanIdError: string;
 
+  filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
+
   FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
@@ -41,6 +45,7 @@ export class AddPreauthorizationComponent implements OnInit {
     city: [''],
     state: [''],
     country: [''],
+    countryName: [''],
     date: [''],
     dateWritten: [''],
     // prescriber: ['', Validators.required],
@@ -77,12 +82,16 @@ export class AddPreauthorizationComponent implements OnInit {
   IsDiagnosisRequired = false;
   IsCareTeamRequired = false;
   IsItemRequired = false;
+  IsDateWrittenRequired = false;
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
   IsJSONPosted = false;
 
   today: Date;
+  nationalities = nationalities;
+  selectedCountry = '';
+
   constructor(
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
@@ -91,7 +100,26 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filteredNations.next(this.nationalities.slice());
+  }
 
+  filterNationality() {
+
+    if (!this.nationalities) {
+      return;
+    }
+    // get the search keyword
+    let search = this.FormPreAuthorization.controls.nationalityFilterCtrl.value;
+    if (!search) {
+      this.filteredNations.next(this.nationalities.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the nations
+    this.filteredNations.next(
+      this.nationalities.filter(nation => nation.Name.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   onTypeChange($event) {
@@ -215,7 +243,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.practitionerRole = result.practitionerRole;
               x.careTeamRole = result.careTeamRole;
               x.speciality = result.speciality;
-              x.speciallityCode = result.practitionerName;
+              x.speciallityCode = result.speciallityCode;
               x.practitionerRoleName = result.practitionerRoleName;
               x.careTeamRoleName = result.careTeamRoleName;
             }
@@ -264,7 +292,10 @@ export class AddPreauthorizationComponent implements OnInit {
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       Sequence: (diagnosis !== null) ? diagnosis.sequence : (this.Diagnosises.length === 0 ? 1 : (this.Diagnosises[this.Diagnosises.length - 1].sequence + 1)),
-      item: diagnosis
+      item: diagnosis,
+      itemTypes: this.Diagnosises.map(x => {
+        return x.type;
+      })
     };
 
     const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);
@@ -468,27 +499,18 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   checkItemCareTeams() {
-    if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length > 0))) {
-      return true;
-    } else {
-      this.showMessage('Error', 'Items must have atleast one care team', 'alert', true, 'OK');
-      return false;
+    if (this.Items.length > 0) {
+      if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
+        this.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
   onSubmit() {
     this.isSubmitted = true;
-
-    this.checkCareTeamValidation();
-    this.checkDiagnosisValidation();
-    this.checkItemValidation();
-    if (!this.checkItemCareTeams()) {
-      return;
-    }
-
-    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
-      return;
-    }
 
     if (this.FormPreAuthorization.controls.date.value && !this.FormPreAuthorization.controls.accidentType.value.value) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
@@ -510,11 +532,23 @@ export class AddPreauthorizationComponent implements OnInit {
       this.IsDateRequired = false;
     }
 
+    this.checkCareTeamValidation();
+    this.checkDiagnosisValidation();
+    this.checkItemValidation();
+
+    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
+      return;
+    }
+
     if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
       this.IsLensSpecificationRequired = true;
       return;
     } else {
       this.IsLensSpecificationRequired = false;
+    }
+
+    if (!this.checkItemCareTeams()) {
+      return;
     }
 
     if (this.FormPreAuthorization.valid) {
@@ -637,7 +671,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
-      // this.prepareDetailsModel();      
+      // this.prepareDetailsModel();
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
@@ -646,10 +680,10 @@ export class AddPreauthorizationComponent implements OnInit {
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
                 if (body.errors && body.errors.length > 0) {
-                    body.errors.forEach(err => {
-                      err.coding.forEach(codex => {
+                  body.errors.forEach(err => {
+                    err.coding.forEach(codex => {
                       errors.push(codex.code + ' : ' + codex.display);
-                    });                    
+                    });
                   });
                   this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
                 } else {
@@ -749,6 +783,17 @@ export class AddPreauthorizationComponent implements OnInit {
       errors: _errors
     };
     const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
+  }
+
+  reset() {
+    this.model = {};
+    this.detailsModel = {};
+    this.FormPreAuthorization.reset();
+
+    this.CareTeams = [];
+    this.Diagnosises = [];
+    this.SupportingInfo = [];
+    this.VisionSpecifications = [];
   }
 
 }
