@@ -361,7 +361,7 @@ export class AddPreauthorizationComponent implements OnInit {
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
-      type: this.FormPreAuthorization.controls.type.value,
+      type: this.FormPreAuthorization.controls.type.value.value,
       dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value
     };
 
@@ -615,7 +615,7 @@ export class AddPreauthorizationComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPreAuthorization.controls.type.value.value === 'vision') {
+      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
@@ -757,7 +757,7 @@ export class AddPreauthorizationComponent implements OnInit {
     accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'dd-MM-yyyy');
     this.detailsModel.accident = accidentModel;
 
-    if (this.FormPreAuthorization.controls.type.value === 'vision') {
+    if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
       this.detailsModel.visionPrescription = {};
       // tslint:disable-next-line:max-line-length
       this.detailsModel.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'dd-MM-yyyy');
