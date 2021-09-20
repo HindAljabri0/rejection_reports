@@ -36,17 +36,18 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   typeList = [
     { value: 'admitting', name: 'Admitting Diagnosis' },
-    { value: 'clinical', name: 'Clinical Diagnosis' },
+    // { value: 'clinical', name: 'Clinical Diagnosis' },
     { value: 'differential', name: 'Differential Diagnosis' },
+    { value: 'secondary', name: 'Secondary Diagnosis' },
     { value: 'discharge', name: 'Discharge Diagnosis' },
-    { value: 'laboratory', name: 'Laboratory Diagnosis' },
-    { value: 'nursing', name: 'Nursing Diagnosis' },
-    { value: 'prenatal', name: 'Prenatal Diagnosis' },
+    // { value: 'laboratory', name: 'Laboratory Diagnosis' },
+    // { value: 'nursing', name: 'Nursing Diagnosis' },
+    // { value: 'prenatal', name: 'Prenatal Diagnosis' },
     { value: 'principal', name: 'Principal Diagnosis' },
-    { value: 'radiology', name: 'Radiology Diagnosis' },
-    { value: 'remote', name: 'Remote Diagnosis' },
-    { value: 'retrospective', name: 'Retrospective Diagnosis' },
-    { value: 'self', name: 'Self Diagnosis' },
+    // { value: 'radiology', name: 'Radiology Diagnosis' },
+    // { value: 'remote', name: 'Remote Diagnosis' },
+    // { value: 'retrospective', name: 'Retrospective Diagnosis' },
+    // { value: 'self', name: 'Self Diagnosis' },
   ];
 
   onAdmissionList = [
