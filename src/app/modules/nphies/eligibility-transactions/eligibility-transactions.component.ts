@@ -233,6 +233,10 @@ export class EligibilityTransactionsComponent implements OnInit {
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, EligibilityTransaction);
           this.transactions = this.transactionModel.content;
+          this.transactions.forEach(x => {
+            // tslint:disable-next-line:max-line-length
+            x.payerName =  this.payersList.find(y => y.nphiesId === x.payer) ? this.payersList.filter(y => y.nphiesId === x.payer)[0].englistName : '';
+          });
           console.log(this.transactions);
           const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
@@ -268,11 +272,8 @@ export class EligibilityTransactionsComponent implements OnInit {
       path += `eligibilityId=${this.FormEligibilityTransaction.controls.eligibilityId.value}&`;
     }
 
-    if (this.FormEligibilityTransaction.controls.beneficiaryId.value) {
+    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
       path += `beneficiaryId=${this.FormEligibilityTransaction.controls.beneficiaryId.value}&`;
-    }
-
-    if (this.FormEligibilityTransaction.controls.beneficiaryName.value) {
       path += `beneficiaryName=${this.FormEligibilityTransaction.controls.beneficiaryName.value}&`;
     }
 

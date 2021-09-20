@@ -107,7 +107,7 @@
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
               'dd-MM-yyyy hh:mm:ss aa'}}</td>
             <!-- <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.body.payerId.englistName}}</td> -->
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payer}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
             <!-- <td class="actions">
