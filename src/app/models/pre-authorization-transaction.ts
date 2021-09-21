@@ -1,9 +1,9 @@
 import { Paginateable } from './paginateable';
 
-export class EligibilityTransaction extends Paginateable {
+export class PreAuthorizationTransaction extends Paginateable{
   responseId: number;
   memberId: string;
-  eligibilityId: string;
+  preAuthorizationRequestId: string;
   transactionDate: string;
   // insurancePlan: string;
   beneficiaryName: string;
@@ -15,7 +15,7 @@ export class EligibilityTransaction extends Paginateable {
     super(body);
     this.responseId = body['responseId'];
     this.memberId = body['memberId'];
-    this.eligibilityId = body['eligibilityId'];
+    this.preAuthorizationRequestId = body['eligibilityId'];
     this.transactionDate = body['transactionDate'];
     // this.insurancePlan = body['insurancePlan'];
     this.beneficiaryName = body['beneficairyName'];

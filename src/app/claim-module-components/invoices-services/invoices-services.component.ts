@@ -593,18 +593,27 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       toothNumber: service.toothNumber.value,
       daysOfSupply: service.daysOfSupply.value,
       serviceGDPN: {
-        patientShare: { value: service.patientShare.value, type: 'SAR' },
-        discount: { value: service.serviceDiscount.value, type: service.serviceDiscountUnit },
-        netVATrate: { value: service.netVatRate.value, type: 'PERCENT' },
-        patientShareVATrate: { value: service.patientShareVatRate.value, type: 'PERCENT' },
-        gross: { value: gross, type: 'SAR' },
-        net: { value: net, type: 'SAR' },
-        netVATamount: { value: netVat, type: 'SAR' },
-        patientShareVATamount: { value: patientShareVATamount, type: 'SAR' },
+        patientShare: { value: this.getAsNumber(service.patientShare.value), type: 'SAR' },
+        discount: { value: this.getAsNumber(service.serviceDiscount.value), type: service.serviceDiscountUnit },
+        netVATrate: { value: this.getAsNumber(service.netVatRate.value), type: 'PERCENT' },
+        patientShareVATrate: { value: this.getAsNumber(service.patientShareVatRate.value), type: 'PERCENT' },
+        gross: { value: this.getAsNumber(gross), type: 'SAR' },
+        net: { value: this.getAsNumber(net), type: 'SAR' },
+        netVATamount: { value: this.getAsNumber(netVat), type: 'SAR' },
+        patientShareVATamount: { value: this.getAsNumber(patientShareVATamount), type: 'SAR' },
 
       },
     };
     return newService;
+  }
+
+  getAsNumber(value): number {
+    try {
+      value = Number.parseFloat(value);
+    } catch (e) {
+      value = 0;
+    }
+    return value;
   }
 
   calcGross(service) {

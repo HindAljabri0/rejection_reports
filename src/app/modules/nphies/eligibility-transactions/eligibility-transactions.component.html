@@ -92,20 +92,24 @@
           <tr>
             <th>Member Card ID</th>
             <th>Eligibility ID</th>
+            <th>Beneficiary Name</th>
             <th>Transaction Date/Time</th>
             <th>Payer</th>
             <th>Status</th>
-            <!-- <th></th> -->
+            <th>Purpose</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let transaction of transactions">
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.memberId}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
               'dd-MM-yyyy hh:mm:ss aa'}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.body.payerId.englistName}}</td>
+            <!-- <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.body.payerId.englistName}}</td> -->
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
             <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
+            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
             <!-- <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">
                 <mat-icon>refresh</mat-icon>
