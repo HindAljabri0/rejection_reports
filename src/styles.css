@@ -280,6 +280,7 @@ button.size-sm.mat-button, button.size-sm.mat-flat-button, button.size-sm.mat-ic
 .language-picker-panel .menuItem:hover {text-decoration: none;background-color: rgba(0,0,0,0.06);}
 .language-picker .text{padding-left: 6px;}
 .language-picker.mat-button{font-weight: 400;padding: 0 8px;}
+.language-picker.whiteText {color: white !important;}
 
 /* sidebar
 --------------------------------------------------------------------------------------------------------*/
@@ -689,6 +690,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 /* login
 --------------------------------------------------------------------------------------------------------*/
 .login-outer{display:table;height:100vh;width:100%;table-layout: fixed;}
+.login-outer.national-day{background: #273A7B 0% 0% no-repeat padding-box;}
 .login-inner{display:table-cell;vertical-align: middle;padding: 80px 15px;}
 .login-card{max-width: 400px;margin: 0 auto;background: #fff;border-radius: 6px;padding:32px;box-shadow: 0 5px 10px rgba(0,0,0,0.16);position: relative;}
 .login-card .loader-block{background-color: rgba(255,255,255,0.48);display: flex;align-items: center;justify-content: center;position: absolute;top: 0;left: 0;right: 0;bottom: 0;border-radius: 6px;}
@@ -697,7 +699,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-card .mat-form-field{display:block;}
 .login-card .mat-form-field .mat-icon{color:#909090;}
 .login-card .submit-btn{display:block;width:calc(100% + 64px);margin:16px -32px -32px -32px;border-radius: 0 0 6px 6px;height: 56px;}
+.login-card .submit-btn.national-day{background: #1B7F69;}
 .login-card .error-block{background-color: rgba(204, 47, 47, 0.1);color: #CC2F2F;border-radius: 6px;padding: 10px 16px;text-align: left;margin-bottom: 24px;}
+.login-card .identity-image {position: relative; top: 22px; right: 33px;}
 .login-language-switch{position: absolute;top: 8px;right: 8px;}
 
 /* tour
@@ -1390,4 +1394,16 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 .item-benefit td {
     border: 0  !important;
+}
+
+.login-page-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 98.5vw;
+}
+
+.copyright-message {
+    text-align: center;
+    letter-spacing: 0px;
+    color: #B1B1B1;
 }

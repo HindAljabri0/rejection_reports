@@ -12,6 +12,8 @@ export class LanguageSwitcherComponent implements OnInit {
 
   @Input() languageList;
 
+  @Input() isWhite: boolean = false;
+
   constructor() { }
 
   ngOnInit() {

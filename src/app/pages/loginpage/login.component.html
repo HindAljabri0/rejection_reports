@@ -1,9 +1,10 @@
-<app-language-switcher class="login-language-switch animate__animated animate__faster animate__fadeIn" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
+<app-language-switcher class="login-language-switch animate__animated animate__faster animate__fadeIn" [isWhite]="isCloseToNationalDay()" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel">
 </app-language-switcher>
-<div class="login-outer">
+<div class="login-outer" [ngClass]="{'national-day': isCloseToNationalDay()}">
     <div class="login-inner">
         <div class="login-card animate__animated animate__faster animate__fadeIn">
-            <img src="assets/waseel_logo_Dark_Blue.png" class="brand" alt="Waseel">
+            <img *ngIf="!isCloseToNationalDay()" src="assets/waseel_logo_Dark_Blue.png" class="brand" alt="Waseel">
+            <img *ngIf="isCloseToNationalDay()" src="assets/national-day-logo.svg" class="brand" alt="Happy National Day">
             <div class="form-group mb-0">
                 <mat-form-field appearance="outline">
                     <mat-label i19n="@@username">Username</mat-label>
@@ -19,10 +20,14 @@
                 </mat-form-field>
             </div>
             <p *ngIf="errors != null" class="error-block">{{errors}}</p>
-            <button class="submit-btn" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
+            <img *ngIf="isCloseToNationalDay()" class="identity-image" src="assets/national-day-identitiy-footer-image.svg">
+            <button class="submit-btn" [ngClass]="{'national-day': isCloseToNationalDay()}" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
             <div class="loader-block" *ngIf="isLoading">
                 <mat-spinner [diameter]="48"></mat-spinner>
             </div>
+        </div>
+        <div class="login-page-footer">
+            <p class="copyright-message">Copyright {{getYear()}}, Waseel ASP LTD</p>
         </div>
     </div>
 </div>
