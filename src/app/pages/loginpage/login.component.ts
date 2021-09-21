@@ -105,4 +105,14 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
+  getYear() {
+    return new Date().getFullYear();
+  }
+
+  isCloseToNationalDay() {
+    const day = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    return (month == 9 && day >= 19 && day <= 25);
+  }
 }
