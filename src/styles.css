@@ -201,6 +201,8 @@ button.size-sm.mat-button, button.size-sm.mat-flat-button, button.size-sm.mat-ic
 .form-title{font-weight: 600;padding-bottom: 8px;padding-top: 24px;border-bottom:1px solid #e1e1e1;display: flex;align-items: center;margin-bottom: 16px;}
 .mat-dialog-container{color: inherit;}
 .alert-marker{display: block;height: 8px;width: 8px;background: #CC2F2F;border-radius: 50px;}
+.global-loader{position: fixed;display: flex;align-items: center;justify-content: center;background: rgba(255,255,255,0.6);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);top: 0;left: 0;bottom: 0;right: 0;z-index: 3000;opacity: 0;visibility: hidden;}
+.global-loader.visible{opacity: 1;visibility: visible;}
 
 /* contextual colors
 --------------------------------------------------------------------------------------------------------*/
