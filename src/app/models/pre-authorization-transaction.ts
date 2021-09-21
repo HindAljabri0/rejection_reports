@@ -2,25 +2,19 @@ import { Paginateable } from './paginateable';
 
 export class PreAuthorizationTransaction extends Paginateable{
   responseId: number;
-  memberId: string;
-  preAuthorizationRequestId: string;
+  memberCardID: string;
+  preAuthorizationID: string;
   transactionDate: string;
-  // insurancePlan: string;
-  beneficiaryName: string;
-  payer: number;
+  payerId: number;
   status: string;
-  purpose: string[];
 
   constructor(body: {}) {
     super(body);
     this.responseId = body['responseId'];
-    this.memberId = body['memberId'];
-    this.preAuthorizationRequestId = body['eligibilityId'];
+    this.memberCardID = body['memberCardID'];
+    this.preAuthorizationID = body['preAuthorizationID'];
     this.transactionDate = body['transactionDate'];
-    // this.insurancePlan = body['insurancePlan'];
-    this.beneficiaryName = body['beneficairyName'];
-    this.payer = body['payer'];
-    this.purpose = body['purpose'];
+    this.payerId = body['payerId'];
     this.status = body['status'];
   }
 }

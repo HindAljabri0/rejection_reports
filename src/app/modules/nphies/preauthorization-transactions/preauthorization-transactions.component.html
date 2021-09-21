@@ -96,8 +96,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let transaction of transactions">
-                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.memberId}}</td>
-                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.preAuthorizationRequestId}}</td>
+                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.memberCardID}}</td>
+                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.preAuthorizationID}}</td>
                                 <td class="row-click" (click)="openDetailsDialog()">{{transaction.transactionDate | date:
                                   'dd-MM-yyyy hh:mm:ss aa'}}</td>
                                 <td class="row-click" (click)="openDetailsDialog()">{{transaction.payerName}}</td>
