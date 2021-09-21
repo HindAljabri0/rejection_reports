@@ -34,7 +34,9 @@
       </button>
     </div>
   </div>
-  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <div class="global-loader" [class.visible]="loading">
+    <mat-spinner diameter="64"></mat-spinner>
+  </div>
   <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
 </header>
 

@@ -96,8 +96,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let transaction of transactions">
-                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.memberId}}</td>
-                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.preAuthorizationRequestId}}</td>
+                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.memberCardID}}</td>
+                                <td class="row-click" (click)="openDetailsDialog()">{{transaction.preAuthorizationID}}</td>
                                 <td class="row-click" (click)="openDetailsDialog()">{{transaction.transactionDate | date:
                                   'dd-MM-yyyy hh:mm:ss aa'}}</td>
                                 <td class="row-click" (click)="openDetailsDialog()">{{transaction.payerName}}</td>
@@ -128,6 +128,21 @@
                 <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Pre Authorization transactions found!'>
                 </app-empty-state>
             </ng-scrollbar>
+            <div class="pagination-header">
+              <div class="form-group page-select">
+                <label class="control-label">Go to page: </label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="material-paginator">
+                <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+                  (page)="paginatorAction($event)">
+                </mat-paginator>
+              </div>
+            </div>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
@@ -286,6 +301,7 @@
                     </table>
                 </div>
             </ng-scrollbar>
+
         </mat-tab>
     </mat-tab-group>
 </div>
