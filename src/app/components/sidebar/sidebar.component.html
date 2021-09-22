@@ -257,7 +257,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel> -->
-                <mat-expansion-panel hideToggle *ngIf="!envProd && !envStaging && hasAnyNphiesPrivilege">
+                <mat-expansion-panel hideToggle *ngIf="!envProd && hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Eligibility</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -310,12 +310,12 @@
                         </a>
                         <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
                     </li>
-                    <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
+                    <li *ngIf="!envProd && (hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege)">
                         <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
                             <span class="text">Beneficiary</span>
                         </a>
                     </li>
-                    <li *ngIf="hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege">
+                    <li *ngIf="!envProd && (hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege)">
                         <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">
                             <span class="text">Insurance Plans</span>
                         </a>
