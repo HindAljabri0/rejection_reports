@@ -186,7 +186,7 @@ export class SharedServices {
   }
   getNotifications() {
     if (!this.isProvider) { return; }
-    this.notifications.getNotificationsCount(this.providerId, 'unread').subscribe(event => {
+    this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
@@ -198,7 +198,7 @@ export class SharedServices {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
-    this.notifications.getNotifications(this.providerId, 0, 10).subscribe(event => {
+    this.notifications.getNotifications(this.providerId, 'batch-summary-inquiry', 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         const paginatedResult: PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.notificationsListChange.next(paginatedResult.content);
