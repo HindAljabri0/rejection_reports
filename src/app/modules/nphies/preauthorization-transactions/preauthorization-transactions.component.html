@@ -112,13 +112,13 @@
                   </div>
                 </td>
                 <td class="actions">
-                  <ng-container *ngIf="transaction.status !== 'Error'">
+                  <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
-                      <!-- <button mat-menu-item><span>Reuse</span></button> -->
-                      <button *ngIf="transaction.status !== 'Error'" mat-menu-item><span>Cancel</span></button>
-                      <button *ngIf="transaction.status !== 'Error'" mat-menu-item><span>Nullify/Soft
+                      <button mat-menu-item><span>Reuse</span></button>
+                      <button mat-menu-item><span>Cancel</span></button>
+                      <button mat-menu-item><span>Nullify/Soft
                           Delete</span></button>
-                      <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
+                      <button mat-menu-item><span>Add New Related Claim</span></button>
                     </mat-menu>
                     <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
                       <mat-icon>more_vert</mat-icon>

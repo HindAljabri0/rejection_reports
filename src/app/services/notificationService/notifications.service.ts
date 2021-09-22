@@ -17,14 +17,14 @@ export class NotificationsService {
 
   constructor(private httpClient: HttpClient, private zone: NgZone) { }
 
-  getNotifications(providerId: string, page: number, pageSize: number) {
-    const requestUrl = `/providers/${providerId}?page=${page}&size=${pageSize}`;
+  getNotifications(providerId: string, type:string, page: number, pageSize: number) {
+    const requestUrl = `/providers/${providerId}/${type}?page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl);
     return this.httpClient.request(request);
   }
 
-  getNotificationsCount(providerId: string, status: string) {
-    const requestUrl = `/providers/${providerId}/count/${status}`;
+  getNotificationsCount(providerId: string, type:string, status: string) {
+    const requestUrl = `/providers/${providerId}/${type}/count/${status}`;
     const request = new HttpRequest('GET', environment.NotificationServiceHost + requestUrl);
     return this.httpClient.request(request);
   }
