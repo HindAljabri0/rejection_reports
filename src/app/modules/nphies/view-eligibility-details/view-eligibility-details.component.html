@@ -1,19 +1,21 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Eligibility - {{detailsModel.eligibilityRequestId}}</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+  <h5 class="primary-dialog-title">Eligibility - {{detailsModel.eligibilityRequestId}}</h5>&nbsp;&nbsp;
+  <h5 class="primary-dialog-title">Transaction - {{detailsModel.transactionId}}</h5>
+
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <div class="primary-dialog-body">
-    <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
+  <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
 </div>
-<div class="primary-dialog-footer has-border">
-    <div class="d-flex">
-        <div class="btn-list">
-            <button mat-flat-button color="primary">Cancel</button>
-            <button mat-flat-button color="primary">Reuse</button>
-        </div>
-        <div class="btn-list text-right ml-auto">
-            <button mat-flat-button color="primary">Progress to Authorization</button>
-            <button mat-flat-button color="primary">Progress to Encounter</button>
-        </div>
+<!-- <div class="primary-dialog-footer has-border">
+  <div class="d-flex">
+    <div class="btn-list">
+      <button mat-flat-button color="primary">Cancel</button>
+      <button mat-flat-button color="primary">Reuse</button>
     </div>
-</div>
+    <div class="btn-list text-right ml-auto">
+      <button mat-flat-button color="primary">Progress to Authorization</button>
+      <button mat-flat-button color="primary">Progress to Encounter</button>
+    </div>
+  </div>
+</div> -->

@@ -112,7 +112,7 @@
           <label class="control-label">Duration</label>
           <div class="row extra-small-gutter">
             <div class="col">
-              <input type="number" class="form-control" placeholder="Enter duration" formControlName="lenseDuration">
+              <input type="number" class="form-control" placeholder="Duration" formControlName="lenseDuration">
             </div>
             <div class="col-auto"
               [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('lenseDurationUnit').touched) && FormVisionSpecification.get('lenseDurationUnit').hasError('required')}">
