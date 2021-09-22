@@ -284,7 +284,7 @@
                     <td>{{visionSpecification.lensePower}}</td>
                     <td>{{visionSpecification.lenseBackCurve}}</td>
                     <td>{{visionSpecification.lenseDiameter}}</td>
-                    <td>{{visionSpecification.prismAmount}}/{{visionSpecification.prismBaseName}}</td>
+                    <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td class="actions">
                       <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
                         matTooltip="Edit" class="text-primary">

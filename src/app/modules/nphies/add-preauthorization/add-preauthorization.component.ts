@@ -205,6 +205,8 @@ export class AddPreauthorizationComponent implements OnInit {
               x.lenseBackCurve = result.lenseBackCurve;
               x.lenseDiameter = result.lenseDiameter;
               x.lenseDuration = result.lenseDuration;
+              x.lenseDurationUnit = result.lenseDurationUnit;
+              x.lenseDurationUnitName = result.lenseDurationUnitName;
               x.lenseColor = result.lenseColor;
               x.lenseBrand = result.lenseBrand;
               x.prismBaseName = result.prismBaseName;
@@ -635,6 +637,8 @@ export class AddPreauthorizationComponent implements OnInit {
           model.lenseBackCurve = x.lenseBackCurve;
           model.lenseDiameter = x.lenseDiameter;
           model.lenseDuration = x.lenseDuration;
+          model.lenseDurationUnit = x.lenseDurationUnit;
+          model.lenseDurationUnitName = x.lenseDurationUnitName;
           model.lenseColor = x.lenseColor;
           model.lenseBrand = x.lenseBrand;
           model.lenseNote = x.model;

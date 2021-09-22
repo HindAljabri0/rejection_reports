@@ -235,7 +235,7 @@ export class EligibilityTransactionsComponent implements OnInit {
           this.transactions = this.transactionModel.content;
           this.transactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
-            x.payerName =  this.payersList.find(y => y.nphiesId === x.payer) ? this.payersList.filter(y => y.nphiesId === x.payer)[0].englistName : '';
+            x.payerName = this.payersList.find(y => y.nphiesId === x.payer) ? this.payersList.filter(y => y.nphiesId === x.payer)[0].englistName : '';
           });
           console.log(this.transactions);
           const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
