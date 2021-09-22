@@ -114,6 +114,12 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'OTHER', Name: 'Other' },
   ];
 
+changeMode(){ 
+  this.viewMode= !this.viewMode;
+  this.editMode=!this.editMode;   
+  this.getBeneficiary(this.beneficiaryId);
+}
+
 
   getCoverageTypeName(CoverageTypeCode: string) {
 
@@ -125,7 +131,7 @@ export class BeneficiaryComponent implements OnInit {
         return "Public healthcare"
 
       default:
-        return ""
+        return null
     }
   }
 
@@ -203,7 +209,7 @@ export class BeneficiaryComponent implements OnInit {
 
   get showbeneficiaryForm() {
 
-    return this.addMode || this.editMode;
+    return this.viewMode || this.editMode;
 
   }
 
@@ -216,19 +222,25 @@ export class BeneficiaryComponent implements OnInit {
       return false;
     }
   }
-  selectedPayer(payerid: string) {
-    var payerName = this.payersList.find(e => e.payerId == payerid);
-
-    return payerName.englistName + "(" + payerName.arabicName + ")";
+  selectedPayer(payerId: string) {
+    for(let payer of this.payersList){
+      if(payer.payerId==payerId){
+        return payer.englistName + "(" + payer.arabicName + ")";
+      }
+    }
+   
+    
 
   }
-
+isNull(value:string){
+return value==null?"_":value;
+}
 
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
 
     this.insurancePlans = [];
-    this.fullName = beneficiaryinfo.firstName;
+    this.firstNameController.setValue(beneficiaryinfo.firstName);
     this.secondNameController.setValue(beneficiaryinfo.middleName);
     this.thirdNameController.setValue(beneficiaryinfo.lastName);
     this.familyNameController.setValue(beneficiaryinfo.familyName);
@@ -314,12 +326,13 @@ export class BeneficiaryComponent implements OnInit {
     if (url.endsWith('add')) {
       this.addMode = true;
     }
-    else if (this.beneficiaryId != null && url.endsWith('edit')) {
-      this.editMode = true;
-      this.getBeneficiary(this.beneficiaryId);
+    // else if (this.beneficiaryId != null && url.endsWith('edit')) {
+    //   this.editMode = true;
+    //   this.getBeneficiary(this.beneficiaryId);
 
 
-    } else {
+    // }
+     else {
       this.getBeneficiary(this.beneficiaryId)
       this.viewMode = true;
     }
@@ -348,10 +361,10 @@ export class BeneficiaryComponent implements OnInit {
       (this.thirdNameController.value != null && this.thirdNameController.value.trim().length > 0) ||
       (this.familyNameController.value != null && this.familyNameController.value.trim().length > 0)) {
       this.fullNameController.setValue(
-        (this.firstNameController.value == null ? ' ' : this.firstNameController.value) +
-        (this.secondNameController.value == null ? ' ' : this.secondNameController.value) +
-        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value) +
-        (this.familyNameController.value == null ? '' : this.familyNameController.value).trim());
+        (this.firstNameController.value == null ? ' ' : this.firstNameController.value+" ") +
+        (this.secondNameController.value == null ? ' ' : this.secondNameController.value+" ") +
+        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value+" ") +
+        (this.familyNameController.value == null ? ' ' : this.familyNameController.value+" ").trim());
 
       this.fullNameController.disable();
 
@@ -383,7 +396,7 @@ export class BeneficiaryComponent implements OnInit {
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary: false,
+        iSPrimary:false,
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
@@ -392,6 +405,8 @@ export class BeneficiaryComponent implements OnInit {
         payerErorr: null,
         memberCardIdErorr: null
       })
+
+      
     } else {
 
       this.dialogService.openMessageDialog({
@@ -451,11 +466,11 @@ export class BeneficiaryComponent implements OnInit {
 
         this.dialogService.openMessageDialog({
           title: '',
-          message: `successfully`,
+          message: `Beneficiary updated successfully`,
           isError: false
-        });
+        }).subscribe( event=>{this.changeMode()});;
         this.sharedServices.loadingChanged.next(false);
-
+      
 
       }
     }
@@ -481,7 +496,7 @@ export class BeneficiaryComponent implements OnInit {
 
         }
       });
-    this.editMode = false;
+ 
 
   }
 
@@ -493,7 +508,7 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.lastName = this.thirdNameController.value;
     this.beneficiaryModel.familyName = this.familyNameController.value;
     this.beneficiaryModel.fullName = this.fullNameController.value;
-    this.beneficiaryModel.dob = this.dobFormControl.value;
+    this.beneficiaryModel.dob = new Date(moment( this.dobFormControl.value).format('YYYY-MM-DD'));
     this.beneficiaryModel.gender = this.selectedGender;
     this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
     this.beneficiaryModel.contactNumber = this.contactNumberController.value;
@@ -515,7 +530,7 @@ export class BeneficiaryComponent implements OnInit {
     this.beneficiaryModel.country = this.selectedCountry == "" ? null : this.selectedCountry;
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
-      expiryDate: insurancePlan.expiryDateController.value,
+      expiryDate:new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == "" ? null : insurancePlan.selecteSubscriberRelationship,
@@ -544,13 +559,14 @@ export class BeneficiaryComponent implements OnInit {
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
-
+      
         this.dialogService.openMessageDialog({
           title: '',
-          message: `successfully`,
+          message: `Beneficiary added successfully`,
           isError: false
-        });
+        }).subscribe( event=>{ window.location.reload();});
         this.sharedServices.loadingChanged.next(false);
+        
       }
     }
       , err => {
@@ -624,7 +640,16 @@ export class BeneficiaryComponent implements OnInit {
 
   }
 
-
+  getSelectedPayerName(index) {
+    const retval = this.payersList.find((p) => {
+      return p.payerId == this.insurancePlans[index].selectePayer;
+    });
+    if (retval) {
+      return `${retval.englistName}(${retval.arabicName})`;
+    } else {
+      return null;
+    }
+  }
 
 
 

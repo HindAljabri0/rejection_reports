@@ -4,11 +4,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
-import { DownloadStatus } from 'src/app/models/downloadRequest';
-import { DownloadService } from 'src/app/services/downloadService/download.service';
-import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ViewEligibilityDetailsComponent } from '../view-eligibility-details/view-eligibility-details.component';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
@@ -17,6 +12,7 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { EligibilityTransaction } from 'src/app/models/eligibility-transaction';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-eligibility-transactions',
@@ -51,8 +47,6 @@ export class EligibilityTransactionsComponent implements OnInit {
   detailTopActionIcon = 'ic-download.svg';
   transactionModel: PaginatedResult<EligibilityTransaction>;
   transactions = [];
-  datePickerConfig: Partial<BsDatepickerConfig> = { showWeekNumbers: false };
-  minDate: any;
 
   constructor(
     public sharedServices: SharedServices,
@@ -73,24 +67,22 @@ export class EligibilityTransactionsComponent implements OnInit {
   ];
 
   ngOnInit() {
-    // this.payersList = this.sharedServices.getPayersList();
-    // const model: any = {};
-    // model.id = 'all';
-    // model.value = 'All';
 
-    // this.payersList.splice(0, 0, model);
+    this.FormEligibilityTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormEligibilityTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+
     this.getPayerList();
-    this.datePickerConfig = { dateInputFormat: 'DD/MM/YYYY' };
 
     this.routeActive.queryParams.subscribe(params => {
 
       if (params.fromDate != null) {
-        this.FormEligibilityTransaction.controls.fromDate.patchValue(params.fromDate);
+        const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
+        this.FormEligibilityTransaction.controls.fromDate.patchValue(this.datePipe.transform(d1, 'yyyy-MM-dd'));
       }
 
       if (params.toDate != null) {
-        // const toDate = moment(params.toDate, 'YYYY-MM-DD').toDate();
-        this.FormEligibilityTransaction.controls.toDate.patchValue(params.toDate);
+        const d2 = moment(moment(params.toDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
+        this.FormEligibilityTransaction.controls.toDate.patchValue(this.datePipe.transform(d2, 'yyyy-MM-dd'));
       }
 
       if (params.payerId != null) {
@@ -99,11 +91,13 @@ export class EligibilityTransactionsComponent implements OnInit {
       }
 
       if (params.eligibilityId != null) {
-        this.FormEligibilityTransaction.controls.eligibilityId.patchValue(params.eligibilityId);
+        // tslint:disable-next-line:radix
+        this.FormEligibilityTransaction.controls.eligibilityId.patchValue(parseInt(params.eligibilityId));
       }
 
       if (params.beneficiaryId != null) {
-        this.FormEligibilityTransaction.controls.beneficiaryId.patchValue(params.beneficiaryId);
+        // tslint:disable-next-line:radix
+        this.FormEligibilityTransaction.controls.beneficiaryId.patchValue(parseInt(params.beneficiaryId));
       }
 
       if (params.beneficiaryName != null) {
@@ -214,15 +208,15 @@ export class EligibilityTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
-        model.eligibilityId = this.FormEligibilityTransaction.controls.eligibilityId.value;
+        model.eligibilityId = parseInt(this.FormEligibilityTransaction.controls.eligibilityId.value);
       }
 
       if (this.FormEligibilityTransaction.controls.payerId.value) {
-        model.payerId = this.FormEligibilityTransaction.controls.payerId.value;
+        model.payerId = parseInt(this.FormEligibilityTransaction.controls.payerId.value);
       }
 
-      if (this.FormEligibilityTransaction.controls.beneficiaryId.value) {
-        model.beneficiaryId = this.FormEligibilityTransaction.controls.beneficiaryId.value;
+      if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
+        model.beneficiaryId = parseInt(this.FormEligibilityTransaction.controls.beneficiaryId.value);
       }
 
       if (this.FormEligibilityTransaction.controls.status.value) {
@@ -239,6 +233,11 @@ export class EligibilityTransactionsComponent implements OnInit {
           // this.transactions = body;
           this.transactionModel = new PaginatedResult(body, EligibilityTransaction);
           this.transactions = this.transactionModel.content;
+          this.transactions.forEach(x => {
+            // tslint:disable-next-line:max-line-length
+            x.payerName = this.payersList.find(y => y.nphiesId === x.payer) ? this.payersList.filter(y => y.nphiesId === x.payer)[0].englistName : '';
+          });
+          console.log(this.transactions);
           const pages = Math.ceil((this.transactionModel.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);
           this.manualPage = this.transactionModel.number;
@@ -258,11 +257,11 @@ export class EligibilityTransactionsComponent implements OnInit {
     let path = '/nphies/eligibility-transactions?';
 
     if (this.FormEligibilityTransaction.controls.fromDate.value) {
-      path += `fromDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'yyyy-MM-dd')}&`;
+      path += `fromDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.toDate.value) {
-      path += `toDate=${ this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd')}&`;
+      path += `toDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
     }
 
     if (this.FormEligibilityTransaction.controls.payerId.value) {
@@ -273,11 +272,8 @@ export class EligibilityTransactionsComponent implements OnInit {
       path += `eligibilityId=${this.FormEligibilityTransaction.controls.eligibilityId.value}&`;
     }
 
-    if (this.FormEligibilityTransaction.controls.beneficiaryId.value) {
+    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value) {
       path += `beneficiaryId=${this.FormEligibilityTransaction.controls.beneficiaryId.value}&`;
-    }
-
-    if (this.FormEligibilityTransaction.controls.beneficiaryName.value) {
       path += `beneficiaryName=${this.FormEligibilityTransaction.controls.beneficiaryName.value}&`;
     }
 
@@ -297,35 +293,23 @@ export class EligibilityTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  dateValidation(event: any) {
-    if (event !== null) {
-      const startDate = moment(event).format('YYYY-MM-DD');
-      const endDate = moment(this.FormEligibilityTransaction.value.toDate).format('YYYY-MM-DD');
-      if (startDate > endDate) {
-        this.FormEligibilityTransaction.controls['toDate'].patchValue('');
-      }
-    }
-    this.minDate = new Date(event);
-
-  }
-
   openDetailsDialog(transactionResponseId: number) {
 
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
-      dialogConfig.data = {
-        // tslint:disable-next-line:max-line-length
-        responseId: transactionResponseId,
-        providerId: this.sharedServices.providerId
-      };
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      responseId: transactionResponseId,
+      providerId: this.sharedServices.providerId
+    };
 
-      const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
 
-      // dialogRef.afterClosed().subscribe(result => {
-      //   if (result) {
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
 
-      //   }
-      // });
+    //   }
+    // });
   }
 
 }

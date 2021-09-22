@@ -24,6 +24,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     lenseBackCurve: [''],
     lenseDiameter: [''],
     lenseDuration: [''],
+    lenseDurationUnit: [''],
     prismAmount: [''],
     prismBase: [''],
     lenseNote: ['']
@@ -41,7 +42,16 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     { value: 'out', name: 'Out' }
   ];
 
+  durationUnitList = [
+    { value: 'D', name: 'Day' },
+    { value: 'WK', name: 'Week' },
+    { value: 'MO', name: 'Month' }
+  ];
+
   isSubmitted = false;
+
+  sphereError = '';
+  powerError = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddEditVisionLensSpecificationsComponent>, @Inject(MAT_DIALOG_DATA) public data,
@@ -62,8 +72,9 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
         lenseBackCurve: this.data.item.lenseBackCurve,
         lenseDiameter: this.data.item.lenseDiameter,
         lenseDuration: this.data.item.lenseDuration,
+        lenseDurationUnit: this.data.item.lenseDurationUnit ? this.data.item.lenseDurationUnit : '',
         prismAmount: this.data.item.prismAmount,
-        prismBase: this.data.item.prismBase,
+        prismBase: this.data.item.prismBase ? this.data.item.prismBase : '',
         lenseNote: this.data.item.lenseNote,
       });
 
@@ -72,14 +83,113 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
           prismBase: this.baseList.filter(x => x.value === this.data.item.prismBase)[0]
         });
       }
+
+      if (this.data.item.lenseDurationUnit) {
+        this.FormVisionSpecification.patchValue({
+          lenseDurationUnit: this.durationUnitList.filter(x => x.value === this.data.item.lenseDurationUnit)[0]
+        });
+      }
+    }
+  }
+
+  checkSphere() {
+    const value = this.FormVisionSpecification.controls.sphere.value;
+
+    if (value) {
+      if (value < -30) {
+        this.sphereError = 'Value can not be less than -30';
+      } else if (value > 30) {
+        this.sphereError = 'Value can not be greater than 30';
+      } else if (value % 0.25 !== 0) {
+        this.sphereError = 'Value should be the multiple of 0.25';
+      } else {
+        this.sphereError = '';
+      }
+    } else {
+      this.sphereError = '';
+    }
+  }
+
+  checkPower() {
+    const value = this.FormVisionSpecification.controls.lensePower.value;
+
+    if (value) {
+      if (value < -12) {
+        this.powerError = 'Value can not be less than -12';
+      } else if (value > 12) {
+        this.powerError = 'Value can not be greater than 12';
+      } else if (value % 0.25 !== 0) {
+        this.powerError = 'Value should be the multiple of 0.25';
+      } else {
+        this.powerError = '';
+      }
+    } else {
+      this.powerError = '';
+    }
+  }
+
+  changeProduct() {
+    if (!(this.data.item && this.data.item.product)) {
+      this.FormVisionSpecification.controls.sphere.setValue('');
+    }
+  }
+
+  IsSphereRequired() {
+    if (this.FormVisionSpecification.controls.product.value &&
+      this.FormVisionSpecification.controls.product.value.value &&
+      this.FormVisionSpecification.controls.product.value.value === 'lens') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  IsPowerRequired() {
+    if (this.FormVisionSpecification.controls.product.value &&
+      this.FormVisionSpecification.controls.product.value.value &&
+      this.FormVisionSpecification.controls.product.value.value === 'contact') {
+      return true;
+    } else {
+      return false;
     }
   }
 
   onSubmit() {
 
+    if (this.FormVisionSpecification.controls.product.value &&
+      this.FormVisionSpecification.controls.product.value.value &&
+      this.FormVisionSpecification.controls.product.value.value === 'lens') {
+      this.FormVisionSpecification.controls.sphere.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.sphere.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.sphere.clearValidators();
+      this.FormVisionSpecification.controls.sphere.updateValueAndValidity();
+    }
+
+    if (this.FormVisionSpecification.controls.product.value &&
+      this.FormVisionSpecification.controls.product.value.value &&
+      this.FormVisionSpecification.controls.product.value.value === 'contact') {
+      this.FormVisionSpecification.controls.lensePower.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.lensePower.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.lensePower.clearValidators();
+      this.FormVisionSpecification.controls.lensePower.updateValueAndValidity();
+    }
+
     if (this.FormVisionSpecification.controls.prismAmount.value) {
       this.FormVisionSpecification.controls.prismBase.setValidators([Validators.required]);
       this.FormVisionSpecification.controls.prismBase.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.prismBase.clearValidators();
+      this.FormVisionSpecification.controls.prismBase.updateValueAndValidity();
+    }
+
+    if (this.FormVisionSpecification.controls.lenseDuration.value) {
+      this.FormVisionSpecification.controls.lenseDurationUnit.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.lenseDurationUnit.updateValueAndValidity();
+    } else {
+      this.FormVisionSpecification.controls.lenseDurationUnit.clearValidators();
+      this.FormVisionSpecification.controls.lenseDurationUnit.updateValueAndValidity();
     }
 
     this.isSubmitted = true;
@@ -89,19 +199,45 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       model.product = this.FormVisionSpecification.controls.product.value.value;
       model.productName = this.FormVisionSpecification.controls.product.value.name;
       model.eye = this.FormVisionSpecification.controls.eye.value;
-      model.sphere = this.FormVisionSpecification.controls.sphere.value;
+
+      if (this.FormVisionSpecification.controls.product.value &&
+        this.FormVisionSpecification.controls.product.value.value &&
+        this.FormVisionSpecification.controls.product.value.value === 'lens') {
+        model.sphere = this.FormVisionSpecification.controls.sphere.value;
+      } else {
+        model.sphere = '';
+      }
+
       model.cyclinder = this.FormVisionSpecification.controls.cyclinder.value;
       model.axis = this.FormVisionSpecification.controls.axis.value;
       model.prismAmount = this.FormVisionSpecification.controls.prismAmount.value;
-      model.prismBase = this.FormVisionSpecification.controls.prismBase.value.value;
+
+      if (this.FormVisionSpecification.controls.prismBase.value) {
+        model.prismBase = this.FormVisionSpecification.controls.prismBase.value.value;
+        model.prismBaseName = this.FormVisionSpecification.controls.prismBase.value.name;
+      }
+
+      if (this.FormVisionSpecification.controls.lenseDuration.value) {
+        model.lenseDurationUnit = this.FormVisionSpecification.controls.lenseDurationUnit.value.value;
+        model.lenseDurationUnitName = this.FormVisionSpecification.controls.lenseDurationUnit.value.name;
+      }
+
       model.multifocalPower = this.FormVisionSpecification.controls.multifocalPower.value;
-      model.lensePower = this.FormVisionSpecification.controls.lensePower.value;
+
+      if (this.FormVisionSpecification.controls.product.value &&
+        this.FormVisionSpecification.controls.product.value.value &&
+        this.FormVisionSpecification.controls.product.value.value === 'contact') {
+        model.lensePower = this.FormVisionSpecification.controls.lensePower.value;
+      } else {
+        model.lensePower = '';
+      }
+
       model.lenseBackCurve = this.FormVisionSpecification.controls.lenseBackCurve.value;
       model.lenseDiameter = this.FormVisionSpecification.controls.lenseDiameter.value;
       model.lenseDuration = this.FormVisionSpecification.controls.lenseDuration.value;
       model.lenseColor = this.FormVisionSpecification.controls.lenseColor.value;
       model.lenseBrand = this.FormVisionSpecification.controls.lenseBrand.value;
-      model.prismBaseName = this.FormVisionSpecification.controls.prismBase.value.name;
+
       model.lenseNote = this.FormVisionSpecification.controls.lenseNote.value;
       this.dialogRef.close(model);
     }

@@ -8,7 +8,6 @@ import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFull
 import { EligibilityRequestModel } from 'src/app/models/nphies/eligibilityRequestModel';
 import { EligibilityResponseModel } from 'src/app/models/nphies/eligibilityResponseModel';
 import { Payer } from 'src/app/models/nphies/payer';
-import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
@@ -32,7 +31,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
   selectedPlanId: string;
   selectedPlanIdError: string;
-  serviceDateControl = new FormControl();
+  serviceDateControl = new FormControl(new Date());
   serviceDateError: string;
   endDateControl = new FormControl();
   endDateError: string;
@@ -141,7 +140,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
     return '';
   }
 
-  eligibilityResponseModel: EligibilityResponseModel = null;
+  eligibilityResponseModel: EligibilityResponseModel;
 
   sendRequest() {
     if (this.selectedBeneficiary == null || this.sharedServices.loading) {
@@ -201,7 +200,7 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
 
     const request: EligibilityRequestModel = {
       beneficiaryId: this.selectedBeneficiary.id,
-      memberCardId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId : null,
+      memberCardId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).memberCardId : "123467",
       serviceDate: moment(this.serviceDateControl.value).format('YYYY-MM-DD'),
       toDate: this._isValidDate(this.endDateControl.value) ? moment(this.endDateControl.value).format('YYYY-MM-DD') : null,
       payerNphiesId: this.purposeRadioButton == '1'? this.selectedBeneficiary.plans.find(plan => plan.planId == this.selectedPlanId).payerNphiesId : this.selectedPayer,

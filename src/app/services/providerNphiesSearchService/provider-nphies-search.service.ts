@@ -17,23 +17,23 @@ export class ProviderNphiesSearchService {
 
   NphisBeneficiarySearchByCriteria(
     providerId: string, nationality: string, fullName: string, memberCardId: string, fileId: string,
-    contractNumber: string ,page:number  ,size:number ) {
+    contactNumber: string ,page:number  ,size:number ) {
 
     let requestURL = `/providers/${providerId}/beneficiaries/criteria?`;
 
-    if (nationality != null) {
+    if (nationality != null && nationality.trim().length>0 ) {
       requestURL += `nationality=${nationality}&`;
     }
-    if (fullName != null) {
+    if (fullName != null && fullName.trim().length>0) {
       requestURL += `fullName=${fullName}&`;
     }
-    if (memberCardId != null) {
+    if (memberCardId != null && memberCardId.trim().length>0) {
       requestURL += `memberCardId=${memberCardId}&`;
     }
-    if (contractNumber != null) {
-      requestURL += `contractNumber=${contractNumber}&`;
+    if (contactNumber != null && contactNumber.trim().length>0) {
+      requestURL += `contactNumber=${contactNumber}&`;
     }
-    if (fileId != null) {
+    if (fileId != null  && fileId.trim().length>0) {
       requestURL += `fileId=${fileId}&`;
     } if (page != null) {
       requestURL += `page=${page}&`;

@@ -48,7 +48,7 @@ export class NotificationsPageComponent implements OnInit {
     if (nextPage) {
       this.currentPage++;
     }
-    this.notificationService.getNotifications(this.providerId, this.currentPage, this.pageSize).subscribe(event => {
+    this.notificationService.getNotifications(this.providerId, 'batch-summary-inquiry', this.currentPage, this.pageSize).subscribe(event => {
       if (event instanceof HttpResponse) {
         const paginatedResult: PaginatedResult<Notification> = new PaginatedResult(event.body, Notification);
         this.totalNotifications = paginatedResult.totalElements;

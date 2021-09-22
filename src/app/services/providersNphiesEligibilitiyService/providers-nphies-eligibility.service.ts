@@ -18,13 +18,13 @@ export class ProvidersNphiesEligibilityService {
 
   getEligibilityTransactions(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/nphis/eligibility/fetch/criteria`;
-    const request = new HttpRequest('POST', environment.providerNphiesEligibility + requestUrl, body);
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
     return this.http.request(request);
   }
 
   getEligibilityTransactionDetails(providerId: string, responseId: number) {
-    const requestUrl = `/providers/${providerId}/nphies/eligibility?responseId=${responseId}`;
-    const request = new HttpRequest('GET', environment.providerNphiesEligibility + requestUrl);
+    const requestUrl = `/providers/${providerId}/nphis/eligibility?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
 }
