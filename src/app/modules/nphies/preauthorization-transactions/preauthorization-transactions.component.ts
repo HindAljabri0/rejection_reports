@@ -70,9 +70,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
-    this.getPayerList();
-
     this.routeActive.queryParams.subscribe(params => {
+
+      this.getPayerList();
 
       if (params.fromDate != null) {
         const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
