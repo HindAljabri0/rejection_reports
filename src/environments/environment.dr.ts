@@ -22,5 +22,5 @@ export const environment = {
   providersBeneficiariesService: `${host}/beneficiaries`,
   providerNphiesEligibility: `${host}/coverage-eligibility`,
   providerNphiesSearch: `${host}/provider-nphies-search`,
-  providerNphiesApproval: `${host}/provider_nphies_approval`
+  providerNphiesApproval: `${host}/approvals`
 };

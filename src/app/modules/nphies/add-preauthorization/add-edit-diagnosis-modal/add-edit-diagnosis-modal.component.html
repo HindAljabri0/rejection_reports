@@ -61,13 +61,18 @@
         </div>
       </div>
     </div>
+    <div class="row" *ngIf="primaryValidationMsg">
+      <div class="col-12 text-danger">
+        <b>Note: {{primaryValidationMsg}}</b>
+      </div>
+    </div>
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
       <button type="button" mat-button (click)="closeDialog()">Cancel</button>
       <button mat-flat-button color="primary" type="submit">
         <span *ngIf="!data.item">Add</span>
-        <span *ngIf="data.item">Edit</span></button>
+        <span *ngIf="data.item">Save</span></button>
     </div>
   </div>
 </form>

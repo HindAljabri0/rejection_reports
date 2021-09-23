@@ -36,24 +36,27 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   typeList = [
     { value: 'admitting', name: 'Admitting Diagnosis' },
-    { value: 'clinical', name: 'Clinical Diagnosis' },
+    // { value: 'clinical', name: 'Clinical Diagnosis' },
     { value: 'differential', name: 'Differential Diagnosis' },
+    { value: 'secondary', name: 'Secondary Diagnosis' },
     { value: 'discharge', name: 'Discharge Diagnosis' },
-    { value: 'laboratory', name: 'Laboratory Diagnosis' },
-    { value: 'nursing', name: 'Nursing Diagnosis' },
-    { value: 'prenatal', name: 'Prenatal Diagnosis' },
+    // { value: 'laboratory', name: 'Laboratory Diagnosis' },
+    // { value: 'nursing', name: 'Nursing Diagnosis' },
+    // { value: 'prenatal', name: 'Prenatal Diagnosis' },
     { value: 'principal', name: 'Principal Diagnosis' },
-    { value: 'radiology', name: 'Radiology Diagnosis' },
-    { value: 'remote', name: 'Remote Diagnosis' },
-    { value: 'retrospective', name: 'Retrospective Diagnosis' },
-    { value: 'self', name: 'Self Diagnosis' },
+    // { value: 'radiology', name: 'Radiology Diagnosis' },
+    // { value: 'remote', name: 'Remote Diagnosis' },
+    // { value: 'retrospective', name: 'Retrospective Diagnosis' },
+    // { value: 'self', name: 'Self Diagnosis' },
   ];
 
   onAdmissionList = [
     { value: 'y', name: 'Yes' },
     { value: 'n', name: 'No' },
     { value: 'u', name: 'Unknown' },
-  ]
+  ];
+
+  primaryValidationMsg = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddEditDiagnosisModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
@@ -94,7 +97,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   addICDDiagnosis(diag: ICDDiagnosis) {
     this.FormDiagnosis.controls.code.setValue(diag.diagnosisCode);
-    this.FormDiagnosis.controls.description.setValue(diag.diagnosisDescription);
+    this.FormDiagnosis.controls.description.setValue(diag.diagnosisCode + ' - ' + diag.diagnosisDescription);
   }
 
   diagnosisHasErrorForAllList() {
@@ -114,11 +117,18 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+    // tslint:disable-next-line:max-line-length
+    if (this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
+      this.primaryValidationMsg = 'There can be only one principal Type';
+      return;
+    } else {
+      this.primaryValidationMsg = '';
+    }
     if (this.FormDiagnosis.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;
       model.diagnosisCode = this.FormDiagnosis.controls.code.value;
-      model.diagnosisDescription = this.FormDiagnosis.controls.description.value;
+      model.diagnosisDescription = this.FormDiagnosis.controls.description.value.replace(model.diagnosisCode + ' - ', '');
       model.type = this.FormDiagnosis.controls.type.value.value;
       model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
 

@@ -39,7 +39,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     { value: 'missingtooth', name: 'Missing Tooth' },
     { value: 'hospitalized', name: 'Hospitalized' },
     { value: 'employmentImpacted', name: 'Employment Impacted' },
-    { value: 'lab-test', name: 'Lab Test' },
+    // { value: 'lab-test', name: 'Lab Test' },
     { value: 'reason-for-visit', name: 'Reason For Visit' },
     { value: 'days-supply', name: 'Days Supply' },
     { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
@@ -372,7 +372,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   }
 
   addICDDiagnosis(diag: ICDDiagnosis) {
-    this.FormSupportingInfo.controls.code.setValue(diag.diagnosisCode);
+    this.FormSupportingInfo.controls.code.setValue(diag.diagnosisCode + ' - ' + diag.diagnosisDescription);
     this.FormSupportingInfo.controls.description.setValue(diag.diagnosisDescription);
   }
 
@@ -407,7 +407,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
       if (this.FormSupportingInfo.controls.code.value && this.FormSupportingInfo.controls.code.value.value) {
         model.code = this.FormSupportingInfo.controls.code.value.value;
       } else if (this.FormSupportingInfo.controls.code.value && !this.FormSupportingInfo.controls.code.value.value) {
-        model.code = this.FormSupportingInfo.controls.code.value;
+        model.code = this.FormSupportingInfo.controls.code.value.replace(' - ' + this.FormSupportingInfo.controls.description.value, '');
       } else {
         model.code = null;
       }

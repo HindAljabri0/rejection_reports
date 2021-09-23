@@ -130,7 +130,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
   length = 0;
   pageSize = 100;
   pageIndex = 0;
-  pageSizeOptions = [10, 50, 100];
+  pageSizeOptions = [10, 50, 100, 500, 1000];
   showFirstLastButtons = true;
   allFilters: any = [
     { key: 'CLAIMDATE', value: 'claimDate' },

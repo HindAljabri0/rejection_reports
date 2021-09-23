@@ -6,7 +6,7 @@
         <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Transaction ID</label>
+                    <label class="control-label">Transaction ID (Waseel <mat-icon class="size-20 vertical-bottom d-inline-block">swap_horiz</mat-icon> Nphies)</label>
                     <input placeholder="Enter Transaction ID" class="form-control" [formControl]="transactionIdControl">
                 </div>
             </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group">
-                    <label class="control-label">Type</label>
+                    <label class="control-label">Transaction Type</label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select [value]="selectedType" (selectionChange)="selectedType = $event.value">
                             <mat-option value="none">Select Type</mat-option>
@@ -44,8 +44,7 @@
                 <div class="form-group">
                     <label class="control-label">From Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                            [formControl]="fromDateControl">
+                        <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" [formControl]="fromDateControl">
                         <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterFromDate></mat-datepicker>
                     </div>
@@ -55,8 +54,7 @@
                 <div class="form-group">
                     <label class="control-label">To Date</label>
                     <div class="date-picker">
-                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
-                            [formControl]="toDateControl">
+                        <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [formControl]="toDateControl">
                         <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                         <mat-datepicker #filterToDate></mat-datepicker>
                     </div>
@@ -72,10 +70,10 @@
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
-                        <th>Transaction</th>
+                        <th>Transaction ID</th>
                         <th>Provider</th>
                         <th>Payer Name</th>
-                        <th>Type</th>
+                        <th>Transaction Type</th>
                         <th>Request Date</th>
                         <th>Member ID</th>
                         <th>Request Status Code</th>
@@ -95,8 +93,7 @@
                     </ng-container>
                     <tr>
                         <td colspan="7" class="p-0">
-                            <app-empty-state *ngIf="!isLoading && (transactions == null || transactions.length == 0)"
-                                class="claim-list-empty-state" message='No records found!'>
+                            <app-empty-state *ngIf="!isLoading && (transactions == null || transactions.length == 0)" class="claim-list-empty-state" message='No records found!'>
                             </app-empty-state>
                         </td>
                     </tr>
@@ -106,23 +103,19 @@
     </ng-scrollbar>
     <div class="block-footer sticky-bottom">
         <div class="left-block custom-paginator">
-            <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
-                [disabled]="page==0 || isLoading">
+            <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="page==0 || isLoading">
                 <img src="./assets/ic-page-first.svg" alt="First" />
             </button>
-            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
-                [disabled]="page==0 || isLoading">
+            <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="page==0 || isLoading">
                 <img src="./assets/ic-page-prev.svg" alt="Previous" />
             </button>
             <p class="page-info">
                 {{(page+1)}}<small>/{{totalPages}}</small>
             </p>
-            <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
-                [disabled]="(page+1)==totalPages || isLoading">
+            <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(page+1)==totalPages || isLoading">
                 <img src="./assets/ic-page-next.svg" alt="Next" />
             </button>
-            <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
-                [disabled]="(page+1)==totalPages || isLoading ">
+            <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(page+1)==totalPages || isLoading ">
                 <img src="./assets/ic-page-last.svg" alt="Last" />
             </button>
         </div>

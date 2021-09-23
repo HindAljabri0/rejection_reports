@@ -14,4 +14,22 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+
+  getApprovalRequestTransactions(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/fetch/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  cancelApprovalRequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/cancel/request`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+
+  nullifyApprovalRequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/nullify/request`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
 }
