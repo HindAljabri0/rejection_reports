@@ -19,80 +19,112 @@
                     <span class="alert-marker ml-2"></span>
                 </div>
             </ng-template>
-            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-                <div class="communication-wrapper">
-                    <ul class="communication">
-                        <li class="date">
-                            <span>26 April 2021</span>
-                        </li>
-                        <li class="sent">
-                            <div class="inner">
-                                <span class="time">02:30 PM</span>
-                                <p class="message">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!</p>
+            <div class="communication-wrapper">
+                <h5 class="form-title px-14 py-0 mb-0">
+                    <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true">
+                        <mat-icon>add_circle_outline</mat-icon>
+                        <span class="pl-1">Add Communication</span>
+                    </button>
+                </h5>
+                <ul class="communication">
+                    <li>
+                        <div class="header-block">
+                            <div class="add-communication-block">
+                                <div class="text-wrapper">
+                                    <input type="text" class="text-control" placeholder="Type a message" />
+                                    <button type="button" class="attachment-btn">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                </div>
+                                <button type="button" color="primary" mat-flat-button>Send</button>
                             </div>
-                        </li>
-                        <li class="received">
-                            <div class="inner">
-                                <span class="time">02:56 PM</span>
-                                <p class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, doloribus nam quod necessitatibus sapiente deserunt quis
-                                    voluptatem et
-                                    similique
-                                    nesciunt a, atque id laborum odit fugit omnis ipsum tempora soluta? Cum, quisquam! Ducimus, quis! Modi totam quas adipisci sunt exercitationem
-                                    in,
-                                    voluptates id
-                                    praesentium cupiditate, ullam distinctio quae laudantium optio.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-block">
+                            <div class="title">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!
+                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
                             </div>
-                        </li>
-                        <li class="date">
-                            <span>28 April 2021</span>
-                        </li>
-                        <li class="sent">
-                            <button type="button" class="inner">
-                                <span class="time">06:48 PM</span>
+                            <div class="ml-auto">
+                                <button type="button" class="action-btn">
+                                    <mat-icon class="text-primary">reply</mat-icon>
+                                    <span>Reply</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="body-block sent">
+                            <button type="button" class="attachment-btn">
                                 <span class="image"
                                     style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
                             </button>
-                        </li>
-                        <li class="sent">
-                            <button type="button" class="inner">
-                                <span class="time">06:56 PM</span>
-                                <span class="file">
-                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                    <span class="name">Radiology Report.pdf</span>
-                                    <span class="size">24.14 MB</span>
-                                </span>
-                            </button>
-                        </li>
-                        <li class="received">
-                            <button type="button" class="inner">
-                                <span class="time">08:48 PM</span>
-                                <span class="image"
-                                    style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
-                            </button>
-                        </li>
-                        <li class="received">
-                            <button type="button" class="inner">
-                                <span class="time">08:56 PM</span>
-                                <span class="file">
-                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                    <span class="name">Radiology Report.pdf</span>
-                                    <span class="size">24.14 MB</span>
-                                </span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </ng-scrollbar>
-            <div class="add-communication-block">
-                <div class="inner">
-                    <div class="text-wrapper">
-                        <input type="text" class="text-control" placeholder="Type a message" />
-                        <button type="button" class="attachment-btn">
-                            <mat-icon>attach_file</mat-icon>
-                        </button>
-                    </div>
-                    <button type="button" color="primary" mat-flat-button>Send</button>
-                </div>
+                            <div class="title size-sm">
+                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-block">
+                            <div class="title">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, doloribus nam quod necessitatibus sapiente deserunt quis voluptatem et similique
+                                nesciunt a, atque id laborum odit fugit omnis ipsum tempora soluta? Cum, quisquam! Ducimus, quis! Modi totam quas adipisci sunt exercitationem in,
+                                voluptates id praesentium cupiditate, ullam distinctio quae laudantium optio.
+                                <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114 09:12 PM</span>
+                            </div>
+                            <div class="ml-auto">
+                                <button type="button" class="action-btn">
+                                    <mat-icon class="text-primary">reply</mat-icon>
+                                    <span>Reply</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="body-block sent">
+                            <div class="title size-sm">
+                                Lorem ipsum dolor sit amet.
+                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-block sent">
+                            <div class="title">
+                                <button type="button" class="attachment-btn">
+                                    <span class="file">
+                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                        <span class="name">Radiology Report.pdf</span>
+                                        <span class="size">24.14 MB</span>
+                                    </span>
+                                </button>
+                                <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114 09:12 PM</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-block">
+                            <div class="title">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!
+                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
+                            </div>
+                            <div class="ml-auto">
+                                <button type="button" class="action-btn">
+                                    <mat-icon class="text-primary">reply</mat-icon>
+                                    <span>Reply</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="body-block">
+                            <div class="add-communication-block">
+                                <div class="text-wrapper">
+                                    <input type="text" class="text-control" placeholder="Type a message" />
+                                    <button type="button" class="attachment-btn">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                </div>
+                                <button type="button" color="primary" mat-flat-button>Send</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </mat-tab>
     </mat-tab-group>

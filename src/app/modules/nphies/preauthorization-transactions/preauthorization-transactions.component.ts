@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ViewPreauthorizationDetailsComponent } from '../view-preauthorization-details/view-preauthorization-details.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
@@ -12,6 +12,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import * as moment from 'moment';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { PreAuthorizationTransaction } from 'src/app/models/pre-authorization-transaction';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -66,7 +67,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
@@ -289,6 +289,113 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       path = path.substr(0, path.length - 1);
     }
     this.location.go(path);
+  }
+
+  cancelRequest(approvalRequestId: number) {
+    this.sharedServices.loadingChanged.next(true);
+    const model: any = {};
+    model.approvalRequestId = approvalRequestId;
+    this.providerNphiesApprovalService.cancelApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (body.status === 'OK') {
+            if (body.outcome.toString().toLowerCase() === 'failed') {
+              const errors: any[] = [];
+
+              if (body.disposition) {
+                errors.push(body.disposition);
+              }
+
+              if (body.errors && body.errors.length > 0) {
+                body.errors.forEach(err => {
+                  err.coding.forEach(codex => {
+                    errors.push(codex.code + ' : ' + codex.display);
+                  });
+                });
+              }
+              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+            } else {
+              this.showMessage('Success', body.message, 'success', true, 'OK');
+            }
+
+          }
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  nullifyRequest(approvalRequestId: number) {
+    this.sharedServices.loadingChanged.next(true);
+    const model: any = {};
+    model.approvalRequestId = approvalRequestId;
+    this.providerNphiesApprovalService.nullifyApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (body.status === 'OK') {
+            if (body.outcome.toString().toLowerCase() === 'failed') {
+              const errors: any[] = [];
+
+              if (body.disposition) {
+                errors.push(body.disposition);
+              }
+
+              if (body.errors && body.errors.length > 0) {
+                body.errors.forEach(err => {
+                  err.coding.forEach(codex => {
+                    errors.push(codex.code + ' : ' + codex.display);
+                  });
+                });
+              }
+              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+            } else {
+              this.showMessage('Success', body.message, 'success', true, 'OK');
+            }
+
+          }
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      mainMessage: _mainMessage,
+      subMessage: _subMessage,
+      mode: _mode,
+      hideNoButton: _hideNoButton,
+      yesButtonText: _yesButtonText,
+      errors: _errors
+    };
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
   }
 
   openDetailsDialog() {

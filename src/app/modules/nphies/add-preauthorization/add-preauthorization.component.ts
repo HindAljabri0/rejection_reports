@@ -704,7 +704,6 @@ export class AddPreauthorizationComponent implements OnInit {
                 this.prepareDetailsModel(body);
                 this.showMessage('Success', body.message, 'success', true, 'OK');
               }
-
             }
           }
           this.sharedServices.loadingChanged.next(false);
@@ -714,9 +713,27 @@ export class AddPreauthorizationComponent implements OnInit {
           if (error.status === 400) {
             this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
           } else if (error.status === 404) {
-            this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.showMessage('Error', error.error.message, 'alert', true, 'OK', errors);
+            } else {
+              this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+            }
           } else if (error.status === 500) {
             this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          } else if (error.status === 503) {
+            const errors: any[] = [];
+            if (error.error.errors) {
+              error.error.errors.forEach(x => {
+                errors.push(x);
+              });
+              this.showMessage('Error', error.error.message, 'alert', true, 'OK', errors);
+            } else {
+              this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+            }
           }
           this.sharedServices.loadingChanged.next(false);
         }
