@@ -1,10 +1,10 @@
 <div class="primary-dialog-header has-border">
   <h5 class="primary-dialog-title">Eligibility - {{detailsModel.eligibilityRequestId}}</h5>&nbsp;&nbsp;
-  <h5 class="primary-dialog-title">Transaction - {{detailsModel.transactionId}}</h5>
+  <h5 class="primary-dialog-title ml-auto">Transaction - {{detailsModel.transactionId}}</h5>
 
-  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+  <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
-<div class="primary-dialog-body">
+<div class="primary-dialog-body p-0 no-footer">
   <app-eligibility-details *ngIf="detailsModel" [eligibilityResponse]="detailsModel"></app-eligibility-details>
 </div>
 <!-- <div class="primary-dialog-footer has-border">

@@ -183,6 +183,7 @@ button.size-sm.mat-button, button.size-sm.mat-flat-button, button.size-sm.mat-ic
 .mt-14{margin-top: 14px !important;}
 .mb-14{margin-bottom: 14px !important;}
 .minw145{min-width: 145px;}
+.vertical-bottom{vertical-align: bottom!important;}
 .inline-loader{display: flex;padding: 64px 15px;align-items:center;justify-content: center;}
 .error-btn{display: flex;align-items:center;background: none;border:0;color: #CC2F2F;font-weight: 500;font-size: 14px;padding: 8px;margin: -8px -8px -8px 0;}
 .error-btn>span{padding-left: 4px;}
@@ -598,6 +599,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog.full-screen-dialog{width: 100%;max-width: 100%!important;}
 .primary-dialog.full-screen-dialog .mat-dialog-container{max-height: 100vh;height: 100vh;border-radius: 0;}
 .primary-dialog.full-screen-dialog .primary-dialog-body{height: calc(100vh - 128px);overflow: auto;}
+.primary-dialog.full-screen-dialog .primary-dialog-body.no-footer{height: calc(100vh - 55px);}
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
 .error-dialog .mat-dialog-container{background-color: #fae9e9;}
 
@@ -1224,25 +1226,27 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 
 /* pre auth details
 --------------------------------------------------------------------------------------------------------*/
-.communication-wrapper{max-height: calc(100vh - 267px);}
-.communication{padding: 16px;max-width: 768px;margin: 0 auto;}
-.communication>li{margin-bottom: 8px;}
-.communication .sent>.inner,.communication .received>.inner{max-width: 90%;padding: 14px;display: inline-block;vertical-align: top;border-radius: 16px;border:0;}
+.communication-wrapper{max-height: calc(100vh - 177px);overflow: auto;}
+.communication{padding: 14px;}
+.communication>li{margin-bottom: 40px;position: relative;}
+.communication>li:before{position: absolute;content:'';top: 0;left: 24px;background: #d2d2d2;width: 1px;z-index: 0;bottom: 15px;}
+.communication>li:last-child{margin-bottom: 0;}
+.communication .title{font-size: 18px;line-height: 24px;font-weight: 500;}
+.communication .title.size-sm{font-size: 14px;line-height: 20px;}
+.communication .title>span{display: block;font-size: 14px;line-height: 20px;color:#909090;padding-top: 4px;}
+.communication .header-block{padding: 14px;display: flex;border-radius: 6px;border:1px solid #e1e1e1;position: relative;z-index: 1;background: #fff;}
+.communication .action-btn{display: flex;align-items: center;font-weight: 500;padding: 6px 10px;margin-top: -6px;margin-right: -10px;border:0;background:none;color:inherit;}
+.communication .action-btn .mat-icon{display: block;margin-right: 6px;}
+.communication .body-block{padding: 14px;margin-top: 14px;border: 1px solid #e1e1e1;border-radius: 6px;margin-left: 48px;position: relative;}
+.communication .body-block:after{position: absolute;content:'';width: 24px;left: -24px;bottom: 14px;background: #d2d2d2;height: 1px;}
 .communication .time{opacity: 0.64;display: block;}
-.communication .sent{text-align: right;}
-.communication .sent>.inner{background: #ededed;border-bottom-right-radius: 0;}
-.communication .received>.inner{background: #3060AA;color: #fff;border-bottom-left-radius: 0;}
-.communication .date{opacity: 0.64;text-align: center;display: flex;align-items:center;}
-.communication .date>span{display: block;flex-shrink: 0;padding: 0 8px;}
-.communication .date:after,.communication .date:before{content:'';display: block;height: 1px;flex-grow: 1;background: #999;}
-.communication .sent button,.communication .received button{text-align: inherit;color:inherit;}
-.communication .sent button .time,.communication .received button .time{padding-bottom: 4px;}
-.communication .image{background-repeat: no-repeat;background-position: center top;background-size: cover;height: 256px;width: 256px;display: block;}
-.communication .file{background: #fff;display: flex;flex-direction: column;justify-content: center;text-align: center;font-weight: 500;padding: 14px;width: 256px;color: #212529;}
-.communication .file>img{display: block;height: 48px;width: 48px;margin: 0 auto 8px;}
+.communication .attachment-btn{border:1px solid #e1e1e1;background: none;border-radius: 8px;padding: 0;margin: 0;overflow: hidden;}
+.communication .image{background-repeat: no-repeat;background-position: center top;background-size: cover;height: 128px;width: 128px;display: block;}
+.communication .file{background: #fff;display: flex;flex-direction: column;justify-content: center;text-align: center;font-weight: 500;padding: 14px;width: 200px;color: #212529;font-size: 14px;line-height: 20px;}
+.communication .file>img{display: block;height: 32px;width: 32px;margin: 0 auto 8px;}
 .communication .file>.size{opacity: 0.72;font-size: 12px;line-height: 16px;}
-.add-communication-block{border-top: 1px solid #e1e1e1;}
-.add-communication-block .inner{display: flex;max-width: 768px;padding: 16px;margin: 0 auto;}
+.communication .sent{background: #f4f7fb;border-color:rgba(48, 96, 170,0.24);}
+.add-communication-block{display: flex;flex-grow: 1;}
 .add-communication-block .text-wrapper{position: relative;flex-grow: 1;}
 .add-communication-block .text-control{background: #ededed;border-radius: 6px;height: 40px;appearance: none;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;-o-appearance:none;border:0;width: 100%;padding: 4px 40px 4px 14px;}
 .add-communication-block .text-control::-webkit-input-placeholder { color: rgba(0,0,0,0.48); }

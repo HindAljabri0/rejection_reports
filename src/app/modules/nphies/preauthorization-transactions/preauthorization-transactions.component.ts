@@ -67,7 +67,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
