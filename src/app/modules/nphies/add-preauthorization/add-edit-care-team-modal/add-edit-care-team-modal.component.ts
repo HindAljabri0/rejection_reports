@@ -172,6 +172,7 @@ export class AddEditCareTeamModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+
     if (this.FormCareTeam.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;

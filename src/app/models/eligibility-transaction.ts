@@ -5,8 +5,11 @@ export class EligibilityTransaction extends Paginateable {
   memberId: string;
   eligibilityId: string;
   transactionDate: string;
-  insurancePlan: string;
+  // insurancePlan: string;
+  beneficiaryName: string;
+  payer: number;
   status: string;
+  purpose: string[];
 
   constructor(body: {}) {
     super(body);
@@ -14,7 +17,10 @@ export class EligibilityTransaction extends Paginateable {
     this.memberId = body['memberId'];
     this.eligibilityId = body['eligibilityId'];
     this.transactionDate = body['transactionDate'];
-    this.insurancePlan = body['insurancePlan'];
+    // this.insurancePlan = body['insurancePlan'];
+    this.beneficiaryName = body['beneficairyName'];
+    this.payer = body['payer'];
+    this.purpose = body['purpose'];
     this.status = body['status'];
   }
 }

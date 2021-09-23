@@ -304,8 +304,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.memberIdController.setValue(claim.member.memberID);
     this.accCodeController.setValue(claim.member.accCode);
     this.planTypeController.setValue(claim.member.planType);
-    this.setInitialValueOfNationality();
-
+    // this.setInitialValueOfNationality();
     this.physicianIdController.setValue(claim.caseInformation.physician.physicianID);
     this.physicianNameController.setValue(claim.caseInformation.physician.physicianName);
     this.selectedCategory = claim.caseInformation.physician.physicianCategory;

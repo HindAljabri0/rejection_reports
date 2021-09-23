@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
   selector: 'app-json-view-dialog',
@@ -9,7 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class JsonViewDialogComponent implements OnInit {
   copyText = 'Copy JSON';
 
-  constructor(
+  constructor(private clipboardService: ClipboardService,
     private dialogRef: MatDialogRef<JsonViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { title: string, tabs: { title: string, json: string }[] },
   ) { }
@@ -29,8 +30,11 @@ export class JsonViewDialogComponent implements OnInit {
     return JSON.parse(json);
   }
 
-  clickCopy() {
+  clickCopy(title) {
     this.copyText = 'Copied';
+    var tabs ;
+    this.data.tabs.filter(tabData => tabData.title == title).every(tabData => {tabs = tabData.json;});
+    this.clipboardService.copy(JSON.stringify(tabs));
     setTimeout(() => {
       this.copyText = 'Copy JSON';
     }, 2000);

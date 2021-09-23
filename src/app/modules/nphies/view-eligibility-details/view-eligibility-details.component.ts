@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+// tslint:disable-next-line:max-line-length
 import { ProvidersNphiesEligibilityService } from 'src/app/services/providersNphiesEligibilitiyService/providers-nphies-eligibility.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -25,7 +26,6 @@ export class ViewEligibilityDetailsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     this.providersNphiesEligibilityService.getEligibilityTransactionDetails(this.data.providerId, this.data.responseId).subscribe(event => {
       if (event instanceof HttpResponse) {
-        debugger
         if (event.status === 200) {
           this.detailsModel = event.body;
         }

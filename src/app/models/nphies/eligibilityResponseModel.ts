@@ -2,22 +2,47 @@ import { ResponseCoverageModel } from "./responseCoverageModel";
 import { ResponseItemModel } from "./responseItemModel";
 
 export class EligibilityResponseModel {
-    eligibilityRequestId:string;
-    payerNphiesId:string;
-    banificiaryName: string;
-	deptName: string;
-	eligibilityStatus: string;
-	serviceDate: string;
-	transactionDate: string;
-	eligibilityPurpose: string[];
-    responseCoverage:ResponseCoverageModel[]
-    responseItem:ResponseItemModel[] ;
-    error: {
-        status: string;
-        reasonCode: string;
-        massage: string;
-    }
 
-	
+    transactionId: string;
+    outgoingTransactionId: string;
+    eligibilityRequestId: string;
+    beneficiaryName: string;
+    status: string;
+    outcome: string;
+    disposition: string;
+    noCoverageFoundReason: string;
+    serviceDate: Date;
+    transactionDate: Date;
+    purpose: string[];
+    errors: {
+        code: string;
+        message: string;
+    }[];
+
+    coverages: {
+        memberId: string;
+        inforce: string;
+        notInforceReason: string;
+        benefitStartDate: Date;
+        benefitEndDate: Date;
+        type: string;
+        relationship: string;
+        subscriberMemberId: string;
+        status: string;
+        items: Map<string, {
+            name: string;
+            description: string;
+            network: string;
+            unit: string;
+            term: string;
+            benefits: {
+                type: string;
+                typeDisplay: string;
+                value: string;
+                currency: string;
+            }[];
+        }[]>;
+    }[];
+
 
 }

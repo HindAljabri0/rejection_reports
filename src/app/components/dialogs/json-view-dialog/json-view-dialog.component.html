@@ -11,8 +11,8 @@
         <div class="primary-dialog-footer has-border">
             <div class="btn-list text-right">
                 <button mat-button (click)="closeDialog()">Close</button>
-                <button type="button" mat-flat-button color="primary" ngxClipboard [cbContent]="tabData.json"
-                    (click)="clickCopy()" matRipple>
+                <button type="button" mat-flat-button color="primary" ngxClipboard
+                    (click)="clickCopy(tabData.title)" matRipple>
                     {{copyText}}
                 </button>
             </div>
