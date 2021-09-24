@@ -1231,7 +1231,7 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .communication>li{margin-bottom: 40px;position: relative;}
 .communication>li:before{position: absolute;content:'';top: 0;left: 24px;background: #d2d2d2;width: 1px;z-index: 0;bottom: 15px;}
 .communication>li:last-child{margin-bottom: 0;}
-.communication .title{font-size: 18px;line-height: 24px;font-weight: 500;}
+.communication .title{font-size: 16px;line-height: 24px;font-weight: 500;}
 .communication .title.size-sm{font-size: 14px;line-height: 20px;}
 .communication .title>span{display: block;font-size: 14px;line-height: 20px;color:#909090;padding-top: 4px;}
 .communication .header-block{padding: 14px;display: flex;border-radius: 6px;border:1px solid #e1e1e1;position: relative;z-index: 1;background: #fff;}
