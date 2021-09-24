@@ -12,7 +12,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 @Component({
   selector: 'app-transactions-log',
   templateUrl: './transactions-log.component.html',
-  styleUrls: ['./transactions-log.component.css']
+  styles: []
 })
 export class TransactionsLogComponent implements OnInit, AfterContentInit {
 

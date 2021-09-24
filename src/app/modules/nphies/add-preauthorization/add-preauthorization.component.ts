@@ -100,6 +100,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
   }
 
@@ -201,16 +202,16 @@ export class AddPreauthorizationComponent implements OnInit {
               x.prismAmount = result.prismAmount;
               x.prismBase = result.prismBase;
               x.multifocalPower = result.multifocalPower;
-              x.lensePower = result.lensePower;
-              x.lenseBackCurve = result.lenseBackCurve;
-              x.lenseDiameter = result.lenseDiameter;
-              x.lenseDuration = result.lenseDuration;
-              x.lenseDurationUnit = result.lenseDurationUnit;
-              x.lenseDurationUnitName = result.lenseDurationUnitName;
-              x.lenseColor = result.lenseColor;
-              x.lenseBrand = result.lenseBrand;
+              x.lensPower = result.lensPower;
+              x.lensBackCurve = result.lensBackCurve;
+              x.lensDiameter = result.lensDiameter;
+              x.lensDuration = result.lensDuration;
+              x.lensDurationUnit = result.lensDurationUnit;
+              x.lensDurationUnitName = result.lensDurationUnitName;
+              x.lensColor = result.lensColor;
+              x.lensBrand = result.lensBrand;
               x.prismBaseName = result.prismBaseName;
-              x.lenseNote = result.lenseNote;
+              x.lensNote = result.lensNote;
             }
           });
         } else {
@@ -222,6 +223,11 @@ export class AddPreauthorizationComponent implements OnInit {
 
   deleteVisionLens(index: number) {
     this.VisionSpecifications.splice(index, 1);
+    if (this.VisionSpecifications.length === 0) {
+      this.FormPreAuthorization.controls.dateWritten.clearValidators();
+      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+      this.IsDateWrittenRequired = false;
+    }
   }
 
   openAddEditCareTeam(careTeam: any = null) {
@@ -513,11 +519,12 @@ export class AddPreauthorizationComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-    console.log('Model', this.model);
+    let hasError = false;
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = true;
+      hasError = true;
     } else {
       this.FormPreAuthorization.controls.accidentType.clearValidators();
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
@@ -528,28 +535,44 @@ export class AddPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = true;
+      hasError = true;
     } else {
       this.FormPreAuthorization.controls.date.clearValidators();
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
 
-    this.checkCareTeamValidation();
-    this.checkDiagnosisValidation();
-    this.checkItemValidation();
-
-    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
-      return;
-    }
-
     if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
       this.IsLensSpecificationRequired = true;
-      return;
+      hasError = true;
     } else {
       this.IsLensSpecificationRequired = false;
     }
 
+    if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
+      this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+      this.IsDateWrittenRequired = true;
+      hasError = true;
+    } else {
+      this.FormPreAuthorization.controls.dateWritten.clearValidators();
+      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+      this.IsDateWrittenRequired = false;
+    }
+
+    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
+      hasError = true;
+    }
+
+    this.checkCareTeamValidation();
+    this.checkDiagnosisValidation();
+    this.checkItemValidation();
+
     if (!this.checkItemCareTeams()) {
+      hasError = true;
+    }
+
+    if (hasError) {
       return;
     }
 
@@ -628,20 +651,19 @@ export class AddPreauthorizationComponent implements OnInit {
           model.product = x.product;
           model.eye = x.eye;
           model.sphere = x.sphere;
-          model.cyclinder = x.cyclinder;
+          model.cylinder = x.cyclinder;
           model.axis = x.axis;
           model.prismAmount = x.prismAmount;
           model.prismBase = x.prismBase;
           model.multifocalPower = x.multifocalPower;
-          model.lensePower = x.lensePower;
-          model.lenseBackCurve = x.lenseBackCurve;
-          model.lenseDiameter = x.lenseDiameter;
-          model.lenseDuration = x.lenseDuration;
-          model.lenseDurationUnit = x.lenseDurationUnit;
-          model.lenseDurationUnitName = x.lenseDurationUnitName;
-          model.lenseColor = x.lenseColor;
-          model.lenseBrand = x.lenseBrand;
-          model.lenseNote = x.model;
+          model.lensPower = x.lensPower;
+          model.lensBackCurve = x.lensBackCurve;
+          model.lensDiameter = x.lensDiameter;
+          model.lensDuration = x.lensDuration;
+          model.lensDurationUnit = x.lensDurationUnit;
+          model.lensColor = x.lensColor;
+          model.lensBrand = x.lensBrand;
+          model.lensNote = x.model;
           return model;
         });
       }
@@ -673,7 +695,7 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      // console.log('Model', this.model);
+      console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
 
@@ -723,7 +745,7 @@ export class AddPreauthorizationComponent implements OnInit {
               this.showMessage('Error', error.error.message, 'alert', true, 'OK');
             }
           } else if (error.status === 500) {
-            this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+            this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
           } else if (error.status === 503) {
             const errors: any[] = [];
             if (error.error.errors) {
