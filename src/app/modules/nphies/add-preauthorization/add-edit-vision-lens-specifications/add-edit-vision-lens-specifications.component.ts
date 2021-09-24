@@ -289,6 +289,16 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       this.IsAxisRequired = false;
     }
 
+    if (
+      this.sphereError === '' ||
+      this.powerError === '' ||
+      this.cylinderError === '' ||
+      this.addError === '' ||
+      this.prismAmountError === '' ||
+      this.axisError === '') {
+      return;
+    }
+
     this.isSubmitted = true;
     if (this.FormVisionSpecification.valid) {
       const model: any = {};
