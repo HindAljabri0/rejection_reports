@@ -17,7 +17,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     lenseColor: [''],
     lenseBrand: [''],
     sphere: [''],
-    cyclinder: [''],
+    cylinder: [''],
     axis: [''],
     multifocalPower: [''],
     lensePower: [''],
@@ -52,6 +52,13 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
 
   sphereError = '';
   powerError = '';
+  cylinderError = '';
+  addError = '';
+  prismAmountError = '';
+  axisError = '';
+
+  IsCylinderRequired = false;
+  IsAxisRequired = false;
 
   constructor(
     private dialogRef: MatDialogRef<AddEditVisionLensSpecificationsComponent>, @Inject(MAT_DIALOG_DATA) public data,
@@ -65,7 +72,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
         lenseColor: this.data.item.lenseColor,
         lenseBrand: this.data.item.lenseBrand,
         sphere: this.data.item.sphere,
-        cyclinder: this.data.item.cyclinder,
+        cylinder: this.data.item.cylinder,
         axis: this.data.item.axis,
         multifocalPower: this.data.item.multifocalPower,
         lensePower: this.data.item.lensePower,
@@ -125,6 +132,76 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       }
     } else {
       this.powerError = '';
+    }
+  }
+
+  checkCylinder() {
+    const value = this.FormVisionSpecification.controls.cylinder.value;
+
+    if (value) {
+      if (value < -12) {
+        this.cylinderError = 'Value can not be less than -12';
+      } else if (value > 12) {
+        this.cylinderError = 'Value can not be greater than 12';
+      } else if (value % 0.25 !== 0) {
+        this.cylinderError = 'Value should be the multiple of 0.25';
+      } else {
+        this.cylinderError = '';
+      }
+    } else {
+      this.cylinderError = '';
+    }
+  }
+
+  checkAdd() {
+    const value = this.FormVisionSpecification.controls.multifocalPower.value;
+
+    if (value) {
+      if (value < -12) {
+        this.addError = 'Value can not be less than -12';
+      } else if (value > 12) {
+        this.addError = 'Value can not be greater than 12';
+      } else if (value % 0.25 !== 0) {
+        this.addError = 'Value should be the multiple of 0.25';
+      } else {
+        this.addError = '';
+      }
+    } else {
+      this.addError = '';
+    }
+  }
+
+  checkPrismAmount() {
+    const value = this.FormVisionSpecification.controls.prismAmount.value;
+
+    if (value) {
+      if (value < 0) {
+        this.prismAmountError = 'Value can not be less than 0';
+      } else if (value > 10) {
+        this.prismAmountError = 'Value can not be greater than 10';
+      } else if (value % 0.5 !== 0) {
+        this.prismAmountError = 'Value should be the multiple of 0.50';
+      } else {
+        this.prismAmountError = '';
+      }
+    } else {
+      this.prismAmountError = '';
+    }
+  }
+
+  checkAxis() {
+    const value = this.FormVisionSpecification.controls.axis.value;
+
+    if (value !== null && value !== undefined && value !== '') {
+      if (value < 1) {
+        this.axisError = 'Value can not be less than 1';
+      } else if (value > 180) {
+        this.axisError = 'Value can not be greater than 180';
+      } else {
+        this.axisError = '';
+      }
+    } else {
+      this.axisError = '';
     }
   }
 
@@ -192,6 +269,26 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       this.FormVisionSpecification.controls.lenseDurationUnit.updateValueAndValidity();
     }
 
+    if (this.FormVisionSpecification.controls.axis.value) {
+      this.FormVisionSpecification.controls.cylinder.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.cylinder.updateValueAndValidity();
+      this.IsCylinderRequired = true;
+    } else {
+      this.FormVisionSpecification.controls.cylinder.clearValidators();
+      this.FormVisionSpecification.controls.cylinder.updateValueAndValidity();
+      this.IsCylinderRequired = false;
+    }
+
+    if (this.FormVisionSpecification.controls.cylinder.value) {
+      this.FormVisionSpecification.controls.axis.setValidators([Validators.required]);
+      this.FormVisionSpecification.controls.axis.updateValueAndValidity();
+      this.IsAxisRequired = true;
+    } else {
+      this.FormVisionSpecification.controls.axis.clearValidators();
+      this.FormVisionSpecification.controls.axis.updateValueAndValidity();
+      this.IsAxisRequired = false;
+    }
+
     this.isSubmitted = true;
     if (this.FormVisionSpecification.valid) {
       const model: any = {};
@@ -208,7 +305,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
         model.sphere = '';
       }
 
-      model.cyclinder = this.FormVisionSpecification.controls.cyclinder.value;
+      model.cylinder = this.FormVisionSpecification.controls.cylinder.value;
       model.axis = this.FormVisionSpecification.controls.axis.value;
       model.prismAmount = this.FormVisionSpecification.controls.prismAmount.value;
 

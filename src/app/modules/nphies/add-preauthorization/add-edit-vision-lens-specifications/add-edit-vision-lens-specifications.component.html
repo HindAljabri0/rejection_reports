@@ -83,21 +83,38 @@
         </div>
       </div>
       <div class="col">
-        <div class="form-group">
-          <label class="control-label">Cylinder</label>
-          <input type="number" class="form-control" placeholder="Enter cylinder" formControlName="cyclinder">
+        <div class="form-group"
+          [ngClass]="{'has-error' : IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))}">
+          <label class="control-label">Cylinder<span *ngIf="IsCylinderRequired" class="asterisk">*</span></label>
+          <input type="number" class="form-control" placeholder="Enter cylinder" formControlName="cylinder" (keyup)="checkCylinder()">
+          <div *ngIf="cylinderError">
+            <span class="error-text">{{cylinderError}}</span>
+          </div>
+          <div *ngIf="IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))">
+            <span class="error-text">Please enter cylinder</span>
+          </div>
         </div>
       </div>
       <div class="col">
-        <div class="form-group">
-          <label class="control-label">Axis</label>
-          <input type="number" class="form-control" placeholder="Enter axis" formControlName="axis">
+        <div class="form-group"
+          [ngClass]="{'has-error' : IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))}">
+          <label class="control-label">Axis<span *ngIf="IsAxisRequired" class="asterisk">*</span></label>
+          <input type="number" class="form-control" placeholder="Enter axis" formControlName="axis" (keyup)="checkAxis()">
+          <div *ngIf="axisError">
+            <span class="error-text">{{axisError}}</span>
+          </div>
+          <div *ngIf="IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))">
+            <span class="error-text">Please enter axis</span>
+          </div>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label class="control-label">Add</label>
-          <input type="number" class="form-control" placeholder="Enter add" formControlName="multifocalPower">
+          <input type="number" class="form-control" placeholder="Enter add" formControlName="multifocalPower" (keyup)="checkAdd()">
+          <div *ngIf="addError">
+            <span class="error-text">{{addError}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -129,7 +146,10 @@
           <label class="control-label">Prism</label>
           <div class="row extra-small-gutter">
             <div class="col">
-              <input type="number" class="form-control" placeholder="Prism amount" formControlName="prismAmount">
+              <input type="number" class="form-control" placeholder="Prism amount" formControlName="prismAmount" (keyup)="checkPrismAmount()">
+              <div *ngIf="prismAmountError">
+                <span class="error-text">{{prismAmountError}}</span>
+              </div>
             </div>
             <div class="col-auto"
               [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')}">
