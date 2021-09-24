@@ -628,7 +628,7 @@ export class AddPreauthorizationComponent implements OnInit {
           model.product = x.product;
           model.eye = x.eye;
           model.sphere = x.sphere;
-          model.cyclinder = x.cyclinder;
+          model.cylinder = x.cyclinder;
           model.axis = x.axis;
           model.prismAmount = x.prismAmount;
           model.prismBase = x.prismBase;
