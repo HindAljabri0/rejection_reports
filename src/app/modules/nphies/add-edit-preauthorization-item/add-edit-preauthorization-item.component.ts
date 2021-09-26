@@ -59,7 +59,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   typeList = [
     { value: 'medicalDevices', name: 'Medical Devices' },
-    { value: 'medicationCode', name: 'MedicationCodes' },
+    { value: 'medicationCode', name: 'Medication Codes' },
     { value: 'transporationService', name: 'Transportation SRCA' },
     { value: 'imagingService', name: 'Imaging' },
     { value: 'procedures', name: 'Procedures' },

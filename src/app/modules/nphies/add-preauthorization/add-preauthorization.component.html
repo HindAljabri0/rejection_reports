@@ -222,14 +222,18 @@
           </h5>
           <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Date Written</label>
+              <div class="form-group" [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
+                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
                 <div class="date-picker">
                   <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written"
                     formControlName="dateWritten">
                   <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
                   <mat-datepicker #visionWrittenDate></mat-datepicker>
                 </div>
+                <div
+                *ngIf="IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))">
+                <span class="error-text">Please select Date Written</span>
+              </div>
               </div>
             </div>
             <!-- <div class="col-4 col-xxl-3">
@@ -278,12 +282,12 @@
                     <td>{{visionSpecification.productName}}</td>
                     <td>{{visionSpecification.eye | titlecase}} <span *ngIf="visionSpecification.eye">Eye</span></td>
                     <td>{{visionSpecification.sphere}}</td>
-                    <td>{{visionSpecification.cyclinder}}</td>
+                    <td>{{visionSpecification.cylinder}}</td>
                     <td>{{visionSpecification.axis}}</td>
                     <td>{{visionSpecification.multifocalPower}}</td>
-                    <td>{{visionSpecification.lensePower}}</td>
-                    <td>{{visionSpecification.lenseBackCurve}}</td>
-                    <td>{{visionSpecification.lenseDiameter}}</td>
+                    <td>{{visionSpecification.lensPower}}</td>
+                    <td>{{visionSpecification.lensBackCurve}}</td>
+                    <td>{{visionSpecification.lensDiameter}}</td>
                     <td>{{visionSpecification.prismAmount}}<span *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
                     <td class="actions">
                       <button mat-icon-button type="button" (click)="openAddEditVisionLensDialog(visionSpecification)"
