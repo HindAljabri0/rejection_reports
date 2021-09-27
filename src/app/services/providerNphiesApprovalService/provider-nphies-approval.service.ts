@@ -38,4 +38,10 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
+
+  getCommunicationRequests(providerId: string) {
+    const requestUrl = `/providers/${providerId}/approvals/communication-requests`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
 }

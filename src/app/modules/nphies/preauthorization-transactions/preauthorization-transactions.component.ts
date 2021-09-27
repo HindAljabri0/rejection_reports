@@ -409,38 +409,41 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     if ($event && $event.index === 1) {
       this.getProcessedTransactions();
     } else if ($event && $event.index === 2) {
-
+      this.getCommunicationRequests();
     }
   }
 
   getProcessedTransactions() {
-    this.sharedServices.unReadProcessedCount = 0;
     this.sharedServices.loadingChanged.next(true);
     this.providerNphiesApprovalService.getProcessedTransaction(this.sharedServices.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          if (body.status === 'OK') {
-            if (body.outcome.toString().toLowerCase() === 'failed') {
-              const errors: any[] = [];
+          this.sharedServices.unReadProcessedCount = 0;
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
 
-              if (body.disposition) {
-                errors.push(body.disposition);
-              }
-
-              if (body.errors && body.errors.length > 0) {
-                body.errors.forEach(err => {
-                  err.coding.forEach(codex => {
-                    errors.push(codex.code + ' : ' + codex.display);
-                  });
-                });
-              }
-              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-            } else {
-              this.showMessage('Success', body.message, 'success', true, 'OK');
-            }
-
-          }
+  getCommunicationRequests() {
+    this.sharedServices.loadingChanged.next(true);
+    this.providerNphiesApprovalService.getCommunicationRequests(this.sharedServices.providerId).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          this.sharedServices.unReadComunicationRequestCount = 0;
         }
         this.sharedServices.loadingChanged.next(false);
       }
