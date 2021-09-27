@@ -78,4 +78,12 @@ export class SidebarComponent implements OnInit {
     return this.sharedServices.hasRcmPrivilege;
 
   }
+
+  get IsNewAuthTransactions() {
+    if (this.sharedServices.unReadProcessedCount > 0 || this.sharedServices.unReadComunicationRequestCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

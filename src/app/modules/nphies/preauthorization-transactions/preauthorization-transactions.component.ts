@@ -8,11 +8,14 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ActivatedRoute } from '@angular/router';
 import { Location, DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse, HttpEvent } from '@angular/common/http';
 import * as moment from 'moment';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { PreAuthorizationTransaction } from 'src/app/models/pre-authorization-transaction';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
+import { Observable } from 'rxjs';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -63,10 +66,14 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
+    private notificationService: NotificationsService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
+
     this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
@@ -398,11 +405,80 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
   }
 
+  tabChange($event) {
+    if ($event && $event.index === 1) {
+      this.getProcessedTransactions();
+    } else if ($event && $event.index === 2) {
+
+    }
+  }
+
+  getProcessedTransactions() {
+    this.sharedServices.unReadProcessedCount = 0;
+    this.sharedServices.loadingChanged.next(true);
+    this.providerNphiesApprovalService.getProcessedTransaction(this.sharedServices.providerId).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (body.status === 'OK') {
+            if (body.outcome.toString().toLowerCase() === 'failed') {
+              const errors: any[] = [];
+
+              if (body.disposition) {
+                errors.push(body.disposition);
+              }
+
+              if (body.errors && body.errors.length > 0) {
+                body.errors.forEach(err => {
+                  err.coding.forEach(codex => {
+                    errors.push(codex.code + ' : ' + codex.display);
+                  });
+                });
+              }
+              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+            } else {
+              this.showMessage('Success', body.message, 'success', true, 'OK');
+            }
+
+          }
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
   openDetailsDialog() {
     const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent,
       {
         panelClass: ['primary-dialog', 'full-screen-dialog']
       });
+  }
+
+  get IsNewTransactionProcessed() {
+    if (this.sharedServices.unReadProcessedCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  get IsNewComunicationRequest() {
+    if (this.sharedServices.unReadComunicationRequestCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
