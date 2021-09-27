@@ -428,7 +428,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         if (error.status === 400) {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
         } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
         }
@@ -452,7 +452,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         if (error.status === 400) {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
         } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
         }
