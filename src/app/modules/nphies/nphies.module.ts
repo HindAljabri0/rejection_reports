@@ -20,16 +20,17 @@ import { ViewPreauthorizationDetailsComponent } from './view-preauthorization-de
 import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditDiagnosisModalComponent } from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditSupportingInfoModalComponent } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import {
+  AddEditDiagnosisModalComponent
+} from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+import {
+  AddEditSupportingInfoModalComponent
+} from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
-// tslint:disable-next-line:max-line-length
-
 import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pre-authorization-details.component';
-// tslint:disable-next-line:max-line-length
-import { AddEditVisionLensSpecificationsComponent } from './add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import {
+  AddEditVisionLensSpecificationsComponent
+} from './add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.component';
 
 @NgModule({
