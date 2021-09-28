@@ -44,6 +44,12 @@ export class SharedServices {
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
+  unReadProcessedCount = 0;
+  unReadProcessedCountChange: Subject<number> = new Subject();
+
+  unReadComunicationRequestCount = 0;
+  unReadComunicationRequestCountChange: Subject<number> = new Subject();
+
   uploadsList: {
     totalClaims: number,
     uploadDate: Date,
@@ -123,9 +129,12 @@ export class SharedServices {
       this.getUploads();
       this.getAnnouncements();
     });
-
-
-
+    this.unReadProcessedCountChange.subscribe(value => {
+      this.unReadProcessedCount = value;
+    });
+    this.unReadComunicationRequestCountChange.subscribe(value => {
+      this.unReadComunicationRequestCount = value;
+    });
   }
 
   get isAdmin() {
@@ -248,6 +257,38 @@ export class SharedServices {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         this.uploadsListChange.next([]);
+      }
+    });
+  }
+
+  getProcessedCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCount(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadProcessedCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  getCommunicationRequestCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCount(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadComunicationRequestCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
   }

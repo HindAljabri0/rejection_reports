@@ -2,7 +2,7 @@
   <div class="block-header has-border">
     <p>Preauthorization Transactions</p>
   </div>
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding"  (selectedTabChange)="tabChange($event)">
     <mat-tab>
       <ng-template mat-tab-label>
         <span>Requests</span>
@@ -152,7 +152,7 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Processed</span>
-          <span class="alert-marker ml-2"></span>
+          <span *ngIf="IsNewTransactionProcessed" class="alert-marker ml-2"></span>
         </div>
       </ng-template>
       <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
@@ -250,7 +250,7 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication Request</span>
-          <span class="alert-marker ml-2"></span>
+          <span *ngIf="IsNewComunicationRequest" class="alert-marker ml-2"></span>
         </div>
       </ng-template>
       <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
