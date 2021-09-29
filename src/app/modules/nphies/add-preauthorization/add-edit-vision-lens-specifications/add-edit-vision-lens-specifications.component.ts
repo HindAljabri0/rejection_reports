@@ -292,12 +292,12 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     }
 
     if (
-      this.sphereError === '' ||
-      this.powerError === '' ||
-      this.cylinderError === '' ||
-      this.addError === '' ||
-      this.prismAmountError === '' ||
-      this.axisError === '') {
+      this.sphereError !== '' ||
+      this.powerError !== '' ||
+      this.cylinderError !== '' ||
+      this.addError !== '' ||
+      this.prismAmountError !== '' ||
+      this.axisError !== '') {
       return;
     }
 
