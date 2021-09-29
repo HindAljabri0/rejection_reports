@@ -719,7 +719,7 @@ export class AddPreauthorizationComponent implements OnInit {
                   });
                 }
 
-                this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+                this.showMessage(body.message, '', 'alert', true, 'OK', errors);
 
               } else {
                 this.IsJSONPosted = true;
@@ -733,28 +733,28 @@ export class AddPreauthorizationComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
-            this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+            this.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
           } else if (error.status === 404) {
             const errors: any[] = [];
             if (error.error.errors) {
               error.error.errors.forEach(x => {
                 errors.push(x);
               });
-              this.showMessage('Error', error.error.message, 'alert', true, 'OK', errors);
+              this.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
             } else {
-              this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+              this.showMessage(error.error.message, '', 'alert', true, 'OK');
             }
           } else if (error.status === 500) {
-            this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+            this.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
           } else if (error.status === 503) {
             const errors: any[] = [];
             if (error.error.errors) {
               error.error.errors.forEach(x => {
                 errors.push(x);
               });
-              this.showMessage('Error', error.error.message, 'alert', true, 'OK', errors);
+              this.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
             } else {
-              this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+              this.showMessage(error.error.message, '', 'alert', true, 'OK');
             }
           }
           this.sharedServices.loadingChanged.next(false);

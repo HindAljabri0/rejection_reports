@@ -321,7 +321,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
                   });
                 });
               }
-              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+              this.showMessage(body.message, '', 'alert', true, 'OK', errors);
             } else {
               this.showMessage('Success', body.message, 'success', true, 'OK');
             }
@@ -333,11 +333,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+          this.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
         } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.showMessage(error.error.message, '', 'alert', true, 'OK');
         } else if (error.status === 500) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.showMessage(error.error.message, '', 'alert', true, 'OK');
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -367,7 +367,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
                   });
                 });
               }
-              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
+              this.showMessage(body.message, '', 'alert', true, 'OK', errors);
             } else {
               this.showMessage('Success', body.message, 'success', true, 'OK');
             }
@@ -379,11 +379,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+          this.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
         } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.showMessage(error.error.message, '', 'alert', true, 'OK');
         } else if (error.status === 500) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+          this.showMessage(error.error.message, '', 'alert', true, 'OK');
         }
         this.sharedServices.loadingChanged.next(false);
       }

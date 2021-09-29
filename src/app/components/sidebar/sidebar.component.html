@@ -1,16 +1,19 @@
 <div class="sidebar animate__animated animate__fadeIn animate__faster">
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true">
         <div class="list-container" *ngIf="isProvider">
+            <ul class="nav-list">
+                <li i18n="@@dashboard">
+                    <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+                        <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
+                        <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="list-title primary">
+                Waseel
+            </div>
             <mat-accordion displayMode="flat">
-                <ul class="nav-list">
-                    <li i18n="@@dashboard">
-                        <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-                            <img src="assets/ic-dashboard.svg" alt="Dashboard" class="default-icon" />
-                            <img src="assets/ic-dashboard-active.svg" alt="Dashboard" class="active-icon" />
-                            <span class="text">Dashboard</span>
-                        </a>
-                    </li>
-                </ul>
                 <mat-expansion-panel hideToggle
                     [expanded]="uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive || createBatch.isActive">
                     <mat-expansion-panel-header>
@@ -124,18 +127,14 @@
                             </a>
                         </li> -->
                         <li i18n="@@cleanClaimProgress">
-                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports"
-                                routerLinkActive="is-active">
-                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports"
-                                    class="default-icon" />
-                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports"
-                                    class="active-icon" />
+                            <a routerLink="/reports/{{providerId}}/clean-claim-progress-reports" routerLinkActive="is-active">
+                                <img src="assets/ic-clean-report-chart.svg" alt="Clean Claim Progress Reports" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Clean Claim Progress Reports" class="active-icon" />
                                 <span class="text">Clean Claim Progress Reports</span>
                             </a>
                         </li>
                         <li i18n="@@rejectedClaimProgress" *ngIf="!envStaging && !envProd">
-                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports"
-                                routerLinkActive="is-active">
+                            <a routerLink="/reports/{{providerId}}/rejected-claim-progress-reports" routerLinkActive="is-active">
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejected Claim Progress Report</span>
@@ -143,8 +142,7 @@
                         </li>
 
                         <li i18n="@@rejectionTrackingReport" *ngIf="hasRcmPrivilege">
-                            <a routerLink="/reports/{{providerId}}/rejection-tracking-report"
-                                routerLinkActive="is-active">
+                            <a routerLink="/reports/{{providerId}}/rejection-tracking-report" routerLinkActive="is-active">
 
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
@@ -170,14 +168,12 @@
                                 #accountsReceivableDetailsPayer="routerLinkActive"></a>
                         </li>
                         <li *ngIf="!envStaging && !envProd">
-                            <a routerLink="/collection-management/accounts-receivable-breakdown-report"
-                                routerLinkActive="is-active">
+                            <a routerLink="/collection-management/accounts-receivable-breakdown-report" routerLinkActive="is-active">
                                 <span class="text">AR Breakdown Report</span>
                             </a>
                         </li>
                         <li *ngIf="!envStaging && !envProd">
-                            <a routerLink="/collection-management/accounts-receivable-tracking-report"
-                                routerLinkActive="is-active">
+                            <a routerLink="/collection-management/accounts-receivable-tracking-report" routerLinkActive="is-active">
                                 <span class="text">AR Tracking Report</span>
                             </a>
                         </li>
@@ -257,6 +253,24 @@
                         </li>
                     </ul>
                 </mat-expansion-panel> -->
+                <ul class="nav-list" *ngIf="isProviderAdmin">
+                    <li i18n="@@configurations">
+                        <a routerLink="/configurations" routerLinkActive="is-active">
+                            <span class="text">Configurations</span>
+                        </a>
+                    </li>
+                </ul>
+            </mat-accordion>
+
+            <ng-container *ngIf="hasAnyNphiesPrivilege">
+                <div class="list-title">
+                    <hr>
+                </div>
+                <div class="list-title primary">
+                    Nphies
+                </div>
+            </ng-container>
+            <mat-accordion displayMode="flat">
                 <mat-expansion-panel hideToggle *ngIf="hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Eligibility</mat-panel-title>
@@ -297,9 +311,28 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <div class="list-title" *ngIf="isProvider">
-                    <hr>
-                </div>
+                <mat-expansion-panel hideToggle *ngIf="hasAnyNphiesPrivilege">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Claims</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul class="nav-list">
+                        <li>
+                            <a routerLink="/upload" routerLinkActive="is-active">
+                                <span class="text">Upload Claims</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/claims/add" routerLinkActive="is-active">
+                                <span class="text">Create Claim</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/uploads" routerLinkActive="is-active">
+                                <span class="text">Uploads</span>
+                            </a>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
             </mat-accordion>
 
             <ng-container *ngIf="isProviderAdmin">
@@ -318,11 +351,6 @@
                     <li *ngIf="!envStaging && !envProd && (hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege)">
                         <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">
                             <span class="text">Insurance Plans</span>
-                        </a>
-                    </li>
-                    <li i18n="@@configurations">
-                        <a routerLink="/configurations" routerLinkActive="is-active">
-                            <span class="text">Configurations</span>
                         </a>
                     </li>
                 </ul>
