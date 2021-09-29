@@ -8,6 +8,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AlertPromise } from 'selenium-webdriver';
 import { DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-supporting-info-modal',
@@ -32,31 +33,33 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     reason: [''],
   });
 
-  categoryList = [
-    { value: 'info', name: 'Info' },
-    { value: 'onset', name: 'Onset' },
-    { value: 'attachment', name: 'Attachment' },
-    { value: 'missingtooth', name: 'Missing Tooth' },
-    { value: 'hospitalized', name: 'Hospitalized' },
-    { value: 'employmentImpacted', name: 'Employment Impacted' },
-    // { value: 'lab-test', name: 'Lab Test' },
-    { value: 'reason-for-visit', name: 'Reason For Visit' },
-    { value: 'days-supply', name: 'Days Supply' },
-    { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
-    { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
-    { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
-    { value: 'icu-hours', name: 'Ice Hours' },
-    { value: 'ventilation-hours', name: 'Ventilation Hours' },
-    { value: 'vital-sign-height', name: 'Vital Sign Height' },
-    { value: 'chief-complaint', name: 'Chief Complaint' }
-  ];
+  categoryList =  this.sharedDataService.categoryList;
+  // [
+  //   { value: 'info', name: 'Info' },
+  //   { value: 'onset', name: 'Onset' },
+  //   { value: 'attachment', name: 'Attachment' },
+  //   { value: 'missingtooth', name: 'Missing Tooth' },
+  //   { value: 'hospitalized', name: 'Hospitalized' },
+  //   { value: 'employmentImpacted', name: 'Employment Impacted' },
+  //   // { value: 'lab-test', name: 'Lab Test' },
+  //   { value: 'reason-for-visit', name: 'Reason For Visit' },
+  //   { value: 'days-supply', name: 'Days Supply' },
+  //   { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
+  //   { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
+  //   { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
+  //   { value: 'icu-hours', name: 'Ice Hours' },
+  //   { value: 'ventilation-hours', name: 'Ventilation Hours' },
+  //   { value: 'vital-sign-height', name: 'Vital Sign Height' },
+  //   { value: 'chief-complaint', name: 'Chief Complaint' }
+  // ];
 
-  reasonList = [
-    { value: 'e', name: 'Extraction' },
-    { value: 'c', name: 'Congenital' },
-    { value: 'u', name: 'Unknown' },
-    { value: 'o', name: 'Other' }
-  ];
+  reasonList =  this.sharedDataService.reasonList;
+  // [
+  //   { value: 'e', name: 'Extraction' },
+  //   { value: 'c', name: 'Congenital' },
+  //   { value: 'u', name: 'Unknown' },
+  //   { value: 'o', name: 'Other' }
+  // ];
 
   codeList = [];
 
@@ -69,6 +72,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   fileByteArray: any;
 
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditSupportingInfoModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
     private datePipe: DatePipe, private sharedServices: SharedServices,
     private formBuilder: FormBuilder, private adminService: AdminService) { }

@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { ReplaySubject } from 'rxjs';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -51,22 +52,24 @@ export class AddPreauthorizationComponent implements OnInit {
     // prescriber: ['', Validators.required],
   });
 
-  typeList = [
-    { value: 'institutional', name: 'Institutional' },
-    { value: 'oral', name: 'Dental' },
-    { value: 'pharmacy', name: 'Pharmacy' },
-    { value: 'professional', name: 'Professional' },
-    { value: 'vision', name: 'Optical' },
-  ];
+  typeList = this.sharedDataService.claimTypeList;
+  //  [
+  //   { value: 'institutional', name: 'Institutional' },
+  //   { value: 'oral', name: 'Dental' },
+  //   { value: 'pharmacy', name: 'Pharmacy' },
+  //   { value: 'professional', name: 'Professional' },
+  //   { value: 'vision', name: 'Optical' },
+  // ];
 
   subTypeList = [];
 
-  accidentTypeList = [
-    { value: 'MVA', name: 'Motor vehicle accident' },
-    { value: 'SCHOOL', name: 'School Accident' },
-    { value: 'SPT', name: 'Sporting Accident' },
-    { value: 'WPA', name: 'Workplace accident' },
-  ];
+  accidentTypeList = this.sharedDataService.accidentTypeList;
+  // [
+  //   { value: 'MVA', name: 'Motor vehicle accident' },
+  //   { value: 'SCHOOL', name: 'School Accident' },
+  //   { value: 'SPT', name: 'Sporting Accident' },
+  //   { value: 'WPA', name: 'Workplace accident' },
+  // ];
 
   VisionSpecifications = [];
   SupportingInfo = [];
@@ -93,6 +96,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedCountry = '';
 
   constructor(
+    private sharedDataService: SharedDataService,
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) {
@@ -542,22 +546,24 @@ export class AddPreauthorizationComponent implements OnInit {
       this.IsDateRequired = false;
     }
 
-    if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
-      this.IsLensSpecificationRequired = true;
-      hasError = true;
-    } else {
-      this.IsLensSpecificationRequired = false;
-    }
+    if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
+      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+        this.IsLensSpecificationRequired = true;
+        hasError = true;
+      } else {
+        this.IsLensSpecificationRequired = false;
+      }
 
-    if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
-      this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
-      this.IsDateWrittenRequired = true;
-      hasError = true;
-    } else {
-      this.FormPreAuthorization.controls.dateWritten.clearValidators();
-      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
-      this.IsDateWrittenRequired = false;
+      if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
+        this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+        this.IsDateWrittenRequired = true;
+        hasError = true;
+      } else {
+        this.FormPreAuthorization.controls.dateWritten.clearValidators();
+        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+        this.IsDateWrittenRequired = false;
+      }
     }
 
     if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {

@@ -160,7 +160,7 @@
             <td>{{visionSpecification.lensPower}}</td>
             <td>{{visionSpecification.lensBackCurve}}</td>
             <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}</td>
+            <td>{{visionSpecification.lensDuration}}/{{visionSpecification.lensDurationUnitName}}</td>
             <td>{{visionSpecification.lensColor}}</td>
             <td>{{visionSpecification.lensBrand}}</td>
             <td>{{visionSpecification.prismAmount}}/{{visionSpecification.prismBaseName}}</td>
@@ -233,10 +233,10 @@
 <!-- Supporting Info end -->
 
 <!-- accident start -->
-<h5 class="form-title" *ngIf="data.accident.accidentTypeName && data.accident.date">
+<h5 class="form-title" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
   Accident
 </h5>
-<div class="row" *ngIf="data.accident.accidentTypeName && data.accident.date">
+<div class="row" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
   <div class="col-4">
     <div class="form-group">
       <div class="control-label">Accident Type</div>

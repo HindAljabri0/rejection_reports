@@ -9,7 +9,7 @@
                 <span>Details</span>
             </ng-template>
             <div class="pre-auth-info-wrapper">
-                <app-pre-authorization-details></app-pre-authorization-details>
+                <app-pre-authorization-details *ngIf="data.detailsModel" [data]="data.detailsModel"></app-pre-authorization-details>
             </div>
         </mat-tab>
         <mat-tab>

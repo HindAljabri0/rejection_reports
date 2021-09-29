@@ -66,7 +66,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
-    private notificationService: NotificationsService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
   ) {
 
@@ -461,11 +460,40 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  openDetailsDialog() {
-    const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent,
-      {
-        panelClass: ['primary-dialog', 'full-screen-dialog']
-      });
+  openDetailsDialog(value: number) {
+    this.getTransactionDetails(value);
+  }
+
+  getTransactionDetails(approvalRequestId = null) {
+    this.sharedServices.loadingChanged.next(true);
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, approvalRequestId).subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          const dialogConfig = new MatDialogConfig();
+          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+          dialogConfig.data = {
+            // tslint:disable-next-line:max-line-length
+            detailsModel: body
+          };
+
+          const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent, dialogConfig);
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
   }
 
   get IsNewTransactionProcessed() {
