@@ -233,6 +233,8 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
 
   onSubmit() {
 
+    this.isSubmitted = true;
+
     if (this.FormVisionSpecification.controls.product.value &&
       this.FormVisionSpecification.controls.product.value.value &&
       this.FormVisionSpecification.controls.product.value.value === 'lens') {
@@ -299,7 +301,6 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       return;
     }
 
-    this.isSubmitted = true;
     if (this.FormVisionSpecification.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;
