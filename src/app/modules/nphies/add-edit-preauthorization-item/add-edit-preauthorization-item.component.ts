@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { X } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-preauthorization-item',
@@ -57,20 +58,22 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   isSubmitted = false;
 
-  typeList = [
-    { value: 'medicalDevices', name: 'Medical Devices' },
-    { value: 'medicationCode', name: 'Medication Codes' },
-    { value: 'transporationService', name: 'Transportation SRCA' },
-    { value: 'imagingService', name: 'Imaging' },
-    { value: 'procedures', name: 'Procedures' },
-    { value: 'services', name: 'Services' },
-    { value: 'laboratory', name: 'Laboratory' },
-    { value: 'oralHealthOp', name: 'Oral Health OP' },
-    { value: 'oralHealthIp', name: 'Oral Health IP' },
-  ];
+  typeList =  this.sharedDataService.itemTypeList;
+  // [
+  //   { value: 'medicalDevices', name: 'Medical Devices' },
+  //   { value: 'medicationCode', name: 'Medication Codes' },
+  //   { value: 'transporationService', name: 'Transportation SRCA' },
+  //   { value: 'imagingService', name: 'Imaging' },
+  //   { value: 'procedures', name: 'Procedures' },
+  //   { value: 'services', name: 'Services' },
+  //   { value: 'laboratory', name: 'Laboratory' },
+  //   { value: 'oralHealthOp', name: 'Oral Health OP' },
+  //   { value: 'oralHealthIp', name: 'Oral Health IP' },
+  // ];
 
   today: Date;
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
     private sharedServices: SharedServices, private formBuilder: FormBuilder,
     private providerNphiesSearchService: ProviderNphiesSearchService) {

@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { AdminService } from 'src/app/services/adminService/admin.service';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-vision-lens-specifications',
@@ -30,23 +31,26 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     lensNote: ['']
   });
 
-  productList = [
-    { value: 'lens', name: 'Lens' },
-    { value: 'contact', name: 'Contact' },
-  ];
+  productList =  this.sharedDataService.productList;
+  // [
+  //   { value: 'lens', name: 'Lens' },
+  //   { value: 'contact', name: 'Contact' },
+  // ];
 
-  baseList = [
-    { value: 'up', name: 'Up' },
-    { value: 'down', name: 'Down' },
-    { value: 'in', name: 'In' },
-    { value: 'out', name: 'Out' }
-  ];
+  baseList = this.sharedDataService.baseList;
+  // [
+  //   { value: 'up', name: 'Up' },
+  //   { value: 'down', name: 'Down' },
+  //   { value: 'in', name: 'In' },
+  //   { value: 'out', name: 'Out' }
+  // ];
 
-  durationUnitList = [
-    { value: 'D', name: 'Day' },
-    { value: 'WK', name: 'Week' },
-    { value: 'MO', name: 'Month' }
-  ];
+  durationUnitList = this.sharedDataService.durationUnitList;
+  // [
+  //   { value: 'D', name: 'Day' },
+  //   { value: 'WK', name: 'Week' },
+  //   { value: 'MO', name: 'Month' }
+  // ];
 
   isSubmitted = false;
 
@@ -61,8 +65,9 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
   IsAxisRequired = false;
 
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditVisionLensSpecificationsComponent>, @Inject(MAT_DIALOG_DATA) public data,
-    private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService) { }
+    private formBuilder: FormBuilder, private adminService: AdminService) { }
 
   ngOnInit() {
     if (this.data.item && this.data.item.product) {
