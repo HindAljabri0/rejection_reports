@@ -46,8 +46,8 @@
 
       <div class="col-4 col-lg-3">
         <div class="form-group"
-          [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required')}">
-          <label class="control-label">On Admission<span class="asterisk">*</span></label>
+          [ngClass]="{'has-error' : IsOnAdmissionRequired && ((isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required'))}">
+          <label class="control-label">On Admission<span *ngIf="IsOnAdmissionRequired" class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="onAdmission">
               <mat-option value="">Select On Admission</mat-option>
@@ -55,7 +55,7 @@
             </mat-select>
           </mat-form-field>
           <div
-            *ngIf="(isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required')">
+            *ngIf="IsOnAdmissionRequired && ((isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required'))">
             <span class="error-text">Please select a On Admission </span>
           </div>
         </div>

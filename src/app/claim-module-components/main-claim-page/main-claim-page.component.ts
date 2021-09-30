@@ -9,38 +9,12 @@ import { Claim } from '../models/claim.model';
 import { RetrievedClaimProps } from '../models/retrievedClaimProps.model';
 import {
   cancelClaim,
-
-
-
-
-
-
   cancelEdit,
-
   goToClaim, loadLOVs,
-
-
-
-
   openCreateByApprovalDialog,
   retrieveClaim, saveInvoices_Services,
-
-
-
-
   saveLabResults, setLoading,
-
-
-
-
-
-
-
   startCreatingNewClaim, startValidatingClaim,
-
-
-
-
   toEditMode
 } from '../store/claim.actions';
 import {
@@ -51,10 +25,8 @@ import {
   getDepartments,
   getPageMode,
   getPageType,
-
-
-
-  getPaginationControl, getRetrievedClaimProps
+  getPaginationControl,
+  getRetrievedClaimProps
 } from '../store/claim.reducer';
 
 

@@ -1,0 +1,408 @@
+<div class="bg-white">
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab">
+        <mat-tab [label]="'Claim Information'">
+            <h5 class="form-title pt-0">Beneficary Info</h5>
+            <div class="d-flex">
+                <div class="form-group flex-grow-1">
+                    <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
+                    <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID...">
+                </div>
+                <div class="form-group pl-3 pr-3">
+                    <label class="control-label">&nbsp;</label>
+                    <span class="pt-2 d-block semibold">OR</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" color="primary">Create New Beneficiary</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select>
+                                <mat-option value="Plan 1">Plan 1</mat-option>
+                                <mat-option value="Plan 2">Plan 2</mat-option>
+                                <mat-option value="Plan 3">Plan 3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="form-title">Claim Info</h5>
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered">
+                            <mat-datepicker-toggle [for]="dateOrderedCtrl"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOrderedCtrl></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Type<span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select>
+                                <mat-option value="Type 1">Type 1</mat-option>
+                                <mat-option value="Type 2">Type 2</mat-option>
+                                <mat-option value="Type 3">Type 3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Sub Type</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select>
+                                <mat-option value="Sub Type 1">Sub Type 1</mat-option>
+                                <mat-option value="Sub Type 2">Sub Type 3</mat-option>
+                                <mat-option value="Sub Type 3">Sub Type 3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Care Team'">
+            <h5 class="form-title pt-0">
+                <span>Care Team<span class="asterisk">*</span></span>
+                <button type="button" class="btn-icon btn-primary ml-auto">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h5>
+            <div class="table-responsive">
+                <table class="primary-grid no-borders">
+                    <thead>
+                        <tr>
+                            <th>Practitioner</th>
+                            <th>Practitioner Role</th>
+                            <th>Care Team Role</th>
+                            <th>Speciality</th>
+                            <th width="10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Susie Gonzalez</td>
+                            <td>Nurse</td>
+                            <td>Primary Provider</td>
+                            <td>Community Health</td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Diagnosis'">
+            <h5 class="form-title pt-0">
+                <span>Diagnosis<span class="asterisk">*</span></span>
+                <button type="button" class="btn-icon btn-primary ml-auto">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h5>
+            <div class="table-responsive">
+                <table class="primary-grid no-borders">
+                    <thead>
+                        <tr>
+                            <th>Code - Description</th>
+                            <th>Type</th>
+                            <th>On Admission</th>
+                            <th width="10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A30.4 - Borderline lepromatous leprosy</td>
+                            <td>Admitting Diagnosis</td>
+                            <td>No</td>
+                            <td class="actions">
+                                <button type="button" mat-icon-button matTooltip="Edit" class="text-primary">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Vision Prescription'">
+            <h5 class="form-title pt-0">
+                Vision Prescription
+            </h5>
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Date Written <span class="asterisk">*</span></label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="visionWrittenDate" class="form-control" placeholder="Select date written">
+                            <mat-datepicker-toggle [for]="visionWrittenDate"></mat-datepicker-toggle>
+                            <mat-datepicker #visionWrittenDate></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <h5 class="d-flex align-items-center mb-3">
+                    <strong class="medium">Lens Specifications</strong>
+                    <button type="button" class="btn-icon btn-primary ml-auto">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </h5>
+                <div class="table-responsive">
+                    <table class="primary-grid manual-row-color no-borders">
+                        <thead>
+                            <tr>
+                                <th>Eye</th>
+                                <th>Sphere</th>
+                                <th>Cyclinder</th>
+                                <th>Axis</th>
+                                <th>Add</th>
+                                <th>Power</th>
+                                <th>Back Curve</th>
+                                <th>Diameter</th>
+                                <th>Duration</th>
+                                <th width="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="seperator-row">
+                                <td colspan="10">Lens</td>
+                            </tr>
+                            <tr>
+                                <td>Right</td>
+                                <td>35.72</td>
+                                <td>53.55</td>
+                                <td>19.90</td>
+                                <td>58.10</td>
+                                <td>54.48</td>
+                                <td>23.44</td>
+                                <td>1.78</td>
+                                <td>72.39</td>
+                                <td class="actions">
+                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                        <mat-icon>create</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Left</td>
+                                <td>83.07</td>
+                                <td>5.97</td>
+                                <td>57.42</td>
+                                <td>33.68</td>
+                                <td>3.39</td>
+                                <td>95.32</td>
+                                <td>17.12</td>
+                                <td>75.99</td>
+                                <td class="actions">
+                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                        <mat-icon>create</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="seperator-row">
+                                <td colspan="10">Contact</td>
+                            </tr>
+                            <tr>
+                                <td>Right</td>
+                                <td>35.72</td>
+                                <td>53.55</td>
+                                <td>19.90</td>
+                                <td>58.10</td>
+                                <td>54.48</td>
+                                <td>23.44</td>
+                                <td>1.78</td>
+                                <td>72.39</td>
+                                <td class="actions">
+                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                        <mat-icon>create</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Left</td>
+                                <td>83.07</td>
+                                <td>5.97</td>
+                                <td>57.42</td>
+                                <td>33.68</td>
+                                <td>3.39</td>
+                                <td>95.32</td>
+                                <td>17.12</td>
+                                <td>75.99</td>
+                                <td class="actions">
+                                    <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                        <mat-icon>create</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Supporting Info'">
+            <h5 class="form-title pt-0">
+                <span>Supporting Info</span>
+                <button type="button" class="btn-icon btn-primary ml-auto">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h5>
+            <div class="table-responsive">
+                <table class="primary-grid no-borders">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Code</th>
+                            <th>Timing</th>
+                            <th>Value</th>
+                            <th>Reason</th>
+                            <th width="10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Info</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>10</td>
+                            <td>-</td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary m-0">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Accident'">
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Accident Type<span class="asterisk">*</span></label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select>
+                                <mat-option value="Type 1">Type 1</mat-option>
+                                <mat-option value="Type 2">Type 2</mat-option>
+                                <mat-option value="Type 3">Type 3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Street Name</label>
+                        <input placeholder="Enter street name" class="form-control">
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">City</label>
+                        <input placeholder="Enter city" class="form-control">
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">State/Province</label>
+                        <input placeholder="Enter state/province" class="form-control">
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Country</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select>
+                                <mat-option value="Country 1">Country 1</mat-option>
+                                <mat-option value="Country 2">Country 2</mat-option>
+                                <mat-option value="Country 3">Country 3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">Date<span class="asterisk">*</span></label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date">
+                            <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
+                            <mat-datepicker #accidentDate></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Items'">
+            <h5 class="form-title pt-0">
+                <span>Items<span class="asterisk">*</span></span>
+                <button type="button" class="btn-icon btn-primary ml-auto">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h5>
+            <div class="table-responsive">
+                <table class="primary-grid no-borders">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Code - Description</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Net</th>
+                            <th>Non Standard Code</th>
+                            <th width="10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Medical Devices</td>
+                            <td>A30.4 - Borderline lepromatous leprosy</td>
+                            <td>5</td>
+                            <td class="text-nowrap">25 <span class="currency">SR</span></td>
+                            <td class="text-nowrap">10 <span class="currency">SR</span></td>
+                            <td>A304</td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                                <button mat-icon-button type="button" matTooltip="Delete" class="text-primary">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
