@@ -145,7 +145,9 @@ export class AddEditDiagnosisModalComponent implements OnInit {
       model.diagnosisCode = this.FormDiagnosis.controls.code.value;
       model.diagnosisDescription = this.FormDiagnosis.controls.description.value.replace(model.diagnosisCode + ' - ', '');
       model.type = this.FormDiagnosis.controls.type.value.value;
-      model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
+      if (this.IsOnAdmissionRequired) {
+        model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
+      }
 
       model.typeName = this.FormDiagnosis.controls.type.value.name;
       model.onAdmissionName = this.FormDiagnosis.controls.onAdmission.value.name;
