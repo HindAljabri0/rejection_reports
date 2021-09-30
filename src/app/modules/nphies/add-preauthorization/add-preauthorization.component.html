@@ -160,7 +160,7 @@
         <div [ngClass]="{'text-danger': IsDiagnosisRequired}">
           <h5 class="form-title">
             <span>Diagnosis<span class="asterisk">*</span></span>
-            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()">
+            <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()" [disabled]="!FormPreAuthorization.controls.type.value">
               <mat-icon>add</mat-icon>
             </button>
           </h5>

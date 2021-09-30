@@ -299,6 +299,7 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
   openAddEditDiagnosis(diagnosis: any = null) {
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
@@ -307,7 +308,8 @@ export class AddPreauthorizationComponent implements OnInit {
       item: diagnosis,
       itemTypes: this.Diagnosises.map(x => {
         return x.type;
-      })
+      }),
+      type: this.FormPreAuthorization.controls.type.value ? this.FormPreAuthorization.controls.type.value.value : ''
     };
 
     const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);
