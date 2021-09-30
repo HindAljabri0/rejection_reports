@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material';
+import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
+import { SharedServices } from 'src/app/services/shared.services';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 @Component({
   selector: 'app-view-preauthorization-details',
@@ -9,7 +13,8 @@ import { MatDialogRef } from '@angular/material';
 export class ViewPreauthorizationDetailsComponent implements OnInit {
 
   constructor(
-    private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>
+    private dialogRef: MatDialogRef<ViewPreauthorizationDetailsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data,
   ) { }
 
   ngOnInit() {

@@ -97,12 +97,12 @@
             </thead>
             <tbody>
               <tr *ngFor="let transaction of transactions">
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.memberCardID}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.approvalRequestId}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.transactionDate | date:
+                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">{{transaction.memberCardID}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">{{transaction.approvalRequestId}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">{{transaction.transactionDate | date:
                   'dd-MM-yyyy hh:mm:ss aa'}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.payerName}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.status}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">{{transaction.payerName}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">{{transaction.status}}</td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
                     <button mat-icon-button matTooltip="Check Status" class="text-primary">
@@ -170,11 +170,11 @@
             </thead>
             <tbody>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">496661</td>
-                <td class="row-click" (click)="openDetailsDialog()">LAV4FIYPZWKS</td>
-                <td class="row-click" (click)="openDetailsDialog()">22/4/2026</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">496661</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">LAV4FIYPZWKS</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">22/4/2026</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Plan - 1</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Rejected</td>
                 <td class="actions">
                   <mat-menu #moreMenu="matMenu" xPosition="before">
                     <button mat-menu-item><span>Reuse</span></button>
@@ -188,11 +188,11 @@
                 </td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">106823</td>
-                <td class="row-click" (click)="openDetailsDialog()">3CL3UHRA4OJZ</td>
-                <td class="row-click" (click)="openDetailsDialog()">9/5/2022</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approved</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">106823</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">3CL3UHRA4OJZ</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">9/5/2022</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Plan - 1</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Approved</td>
                 <td class="actions">
                   <mat-menu #moreMenu="matMenu" xPosition="before">
                     <button mat-menu-item><span>Reuse</span></button>
@@ -206,11 +206,11 @@
                 </td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">729978</td>
-                <td class="row-click" (click)="openDetailsDialog()">X1NBKAKAU0CK</td>
-                <td class="row-click" (click)="openDetailsDialog()">25/3/2021</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">729978</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">X1NBKAKAU0CK</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">25/3/2021</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Plan - 1</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Rejected</td>
                 <td class="actions">
                   <mat-menu #moreMenu="matMenu" xPosition="before">
                     <button mat-menu-item><span>Reuse</span></button>
@@ -224,11 +224,11 @@
                 </td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">285297</td>
-                <td class="row-click" (click)="openDetailsDialog()">TX7DBH9MGLSN</td>
-                <td class="row-click" (click)="openDetailsDialog()">25/7/2012</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">285297</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">TX7DBH9MGLSN</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">25/7/2012</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Plan - 1</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Rejected</td>
                 <td class="actions">
                   <mat-menu #moreMenu="matMenu" xPosition="before">
                     <button mat-menu-item><span>Reuse</span></button>
@@ -267,39 +267,39 @@
             </thead>
             <tbody>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">496661</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
-                <td class="row-click" (click)="openDetailsDialog()">XQFBDA</td>
-                <td class="row-click" (click)="openDetailsDialog()">Cecilia Brock</td>
-                <td class="row-click" (click)="openDetailsDialog()">5</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">496661</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Approval</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">XQFBDA</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Cecilia Brock</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">5</td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">660052</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
-                <td class="row-click" (click)="openDetailsDialog()">JNIK95867EQLGAHKR1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Keith Hawkins</td>
-                <td class="row-click" (click)="openDetailsDialog()">45</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">660052</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Approval</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">JNIK95867EQLGAHKR1</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Keith Hawkins</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">45</td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">913500</td>
-                <td class="row-click" (click)="openDetailsDialog()">Claim</td>
-                <td class="row-click" (click)="openDetailsDialog()">CI3FQJK9BZJC9PUYAT24</td>
-                <td class="row-click" (click)="openDetailsDialog()">Alex Moran</td>
-                <td class="row-click" (click)="openDetailsDialog()">26</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">913500</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Claim</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">CI3FQJK9BZJC9PUYAT24</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Alex Moran</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">26</td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">884114</td>
-                <td class="row-click" (click)="openDetailsDialog()">Claim</td>
-                <td class="row-click" (click)="openDetailsDialog()">PHGETRCGLXM</td>
-                <td class="row-click" (click)="openDetailsDialog()">Lou Graves</td>
-                <td class="row-click" (click)="openDetailsDialog()">62</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">884114</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Claim</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">PHGETRCGLXM</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Lou Graves</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">62</td>
               </tr>
               <tr>
-                <td class="row-click" (click)="openDetailsDialog()">807591</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
-                <td class="row-click" (click)="openDetailsDialog()">KC4GJ4DP</td>
-                <td class="row-click" (click)="openDetailsDialog()">Christina Caldwell</td>
-                <td class="row-click" (click)="openDetailsDialog()">15</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">807591</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Approval</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">KC4GJ4DP</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">Christina Caldwell</td>
+                <td class="row-click" (click)="openDetailsDialog(0)">15</td>
               </tr>
             </tbody>
           </table>

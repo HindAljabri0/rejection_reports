@@ -9,6 +9,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ICDDiagnosis } from 'src/app/models/ICDDiagnosis';
 import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
 import { X } from '@angular/cdk/keycodes';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-diagnosis-modal',
@@ -34,33 +35,36 @@ export class AddEditDiagnosisModalComponent implements OnInit {
 
   isSubmitted = false;
 
-  typeList = [
-    { value: 'admitting', name: 'Admitting Diagnosis' },
-    // { value: 'clinical', name: 'Clinical Diagnosis' },
-    { value: 'differential', name: 'Differential Diagnosis' },
-    { value: 'secondary', name: 'Secondary Diagnosis' },
-    { value: 'discharge', name: 'Discharge Diagnosis' },
-    // { value: 'laboratory', name: 'Laboratory Diagnosis' },
-    // { value: 'nursing', name: 'Nursing Diagnosis' },
-    // { value: 'prenatal', name: 'Prenatal Diagnosis' },
-    { value: 'principal', name: 'Principal Diagnosis' },
-    // { value: 'radiology', name: 'Radiology Diagnosis' },
-    // { value: 'remote', name: 'Remote Diagnosis' },
-    // { value: 'retrospective', name: 'Retrospective Diagnosis' },
-    // { value: 'self', name: 'Self Diagnosis' },
-  ];
+  typeList = this.sharedDataService.diagnosisTypeList;
+  // [
+  //   { value: 'admitting', name: 'Admitting Diagnosis' },
+  //   // { value: 'clinical', name: 'Clinical Diagnosis' },
+  //   { value: 'differential', name: 'Differential Diagnosis' },
+  //   { value: 'secondary', name: 'Secondary Diagnosis' },
+  //   { value: 'discharge', name: 'Discharge Diagnosis' },
+  //   // { value: 'laboratory', name: 'Laboratory Diagnosis' },
+  //   // { value: 'nursing', name: 'Nursing Diagnosis' },
+  //   // { value: 'prenatal', name: 'Prenatal Diagnosis' },
+  //   { value: 'principal', name: 'Principal Diagnosis' },
+  //   // { value: 'radiology', name: 'Radiology Diagnosis' },
+  //   // { value: 'remote', name: 'Remote Diagnosis' },
+  //   // { value: 'retrospective', name: 'Retrospective Diagnosis' },
+  //   // { value: 'self', name: 'Self Diagnosis' },
+  // ];
 
-  onAdmissionList = [
-    { value: 'y', name: 'Yes' },
-    { value: 'n', name: 'No' },
-    { value: 'u', name: 'Unknown' },
-  ];
+  onAdmissionList = this.sharedDataService.onAdmissionList;
+  // [
+  //   { value: 'y', name: 'Yes' },
+  //   { value: 'n', name: 'No' },
+  //   { value: 'u', name: 'Unknown' },
+  // ];
 
   primaryValidationMsg = '';
 
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditDiagnosisModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
-    private sharedServices: SharedServices, private formBuilder: FormBuilder, private adminService: AdminService) { }
+    private formBuilder: FormBuilder, private adminService: AdminService) { }
 
   ngOnInit() {
     if (this.data.item && this.data.item.diagnosisCode) {
