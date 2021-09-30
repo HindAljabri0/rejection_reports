@@ -270,6 +270,13 @@
                     Nphies
                 </div>
             </ng-container>
+            <ul class="nav-list" *ngIf="isProviderAdmin">
+                <li *ngIf="(hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege)">
+                    <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
+                        <span class="text">Beneficiary</span>
+                    </a>
+                </li>
+            </ul>
             <mat-accordion displayMode="flat">
                 <mat-expansion-panel hideToggle *ngIf="hasAnyNphiesPrivilege">
                     <mat-expansion-panel-header>
@@ -322,7 +329,7 @@
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/claims/add" routerLinkActive="is-active">
+                            <a routerLink="/claims/create-nphies" routerLinkActive="is-active">
                                 <span class="text">Create Claim</span>
                             </a>
                         </li>
@@ -342,11 +349,6 @@
                             <span class="text">Payment Reconciliation</span>
                         </a>
                         <a routerLink="/nphies/payment-reconciliation-details" class="d-none" #paymentReconciliationDetails="routerLinkActive" routerLinkActive="is-active"></a>
-                    </li>
-                    <li *ngIf="(hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege)">
-                        <a routerLink="/nphies/beneficiary" routerLinkActive="is-active">
-                            <span class="text">Beneficiary</span>
-                        </a>
                     </li>
                     <li *ngIf="!envStaging && !envProd && (hasAllNphiesPrivilege || hasNphiesBeneficiaryPrivilege)">
                         <a routerLink="/nphies/insurance-plans" routerLinkActive="is-active">

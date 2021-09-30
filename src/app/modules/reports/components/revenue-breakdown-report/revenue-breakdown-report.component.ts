@@ -368,7 +368,7 @@ export class RevenueBreakdownReportComponent implements OnInit, AfterViewInit {
             }
         }
         this.minDate = new Date(event);
-
+        this.minDate = new Date(this.minDate.setMonth(this.minDate.getMonth() + 1));
     }
 
 }

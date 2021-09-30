@@ -30,6 +30,7 @@ import { AttachmentsComponent } from 'src/app/claim-module-components/attachment
 import { ClaimErrorsComponent } from 'src/app/claim-module-components/claim-errors/claim-errors.component';
 import { LabResultsComponent } from 'src/app/claim-module-components/lab-results/lab-results.component';
 import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-comments/pbm-comments.component';
+import { CreateClaimNphiesComponent } from '../nphies/create-claim-nphies/create-claim-nphies.component';
 
 @NgModule({
   declarations: [
@@ -48,10 +49,12 @@ import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-commen
     AttachmentsComponent,
     ClaimErrorsComponent,
     LabResultsComponent,
-    PbmCommentsComponent
+    PbmCommentsComponent,
+    CreateClaimNphiesComponent
   ],
   imports: [
     RouterModule.forChild([
+      { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
