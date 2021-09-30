@@ -54,6 +54,7 @@ import { CreateClaimNphiesComponent } from '../nphies/create-claim-nphies/create
   ],
   imports: [
     RouterModule.forChild([
+      { path: 'create-nphies', component: CreateClaimNphiesComponent },
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
