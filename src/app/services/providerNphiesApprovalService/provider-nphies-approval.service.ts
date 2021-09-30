@@ -33,17 +33,7 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getProcessedTransaction(providerId: string) {
-    const requestUrl = `/providers/${providerId}/approvals/processed`;
-    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
-    return this.http.request(request);
-  }
 
-  getCommunicationRequests(providerId: string) {
-    const requestUrl = `/providers/${providerId}/approvals/communication-requests`;
-    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
-    return this.http.request(request);
-  }
 
   getTransactionDetails(providerId: string, approvalRequestId: number) {
     const requestUrl = `/providers/${providerId}/approval/${approvalRequestId}`;
