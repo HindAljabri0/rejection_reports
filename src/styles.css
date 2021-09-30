@@ -358,8 +358,8 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick{color:#bbbbbb;}
 .mat-form-field.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{color:#3060aa;}
 .form-group .control-hint{padding-top: 4px;color: #909090;font-weight: 600;}
-.form-group-static .control-label{color:#707070;}
-.form-control-static{font-size:16px;line-height:22px;color:#3060AA;font-weight: 600;}
+.form-group-static .control-label{color:#505050;}
+.form-control-static{font-size:16px;line-height:22px;color:#222;}
 .form-group .block-slide-toggle.mat-slide-toggle{padding: 12px 0;height: auto;}
 
 /* select control
@@ -738,8 +738,6 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .uploaded-card-all .scroll-block .month{position: sticky;top:-14px;left:0;background:#fff;z-index:1;padding:14px;font-weight:500;margin:-14px -14px 14px -14px;border-bottom:1px solid #e1e1e1;}
 .uploaded-card-all .scroll-block + .info-block{margin-top: 28px;}
 .upload-history-list .bottom-block{border-top: 1px solid #e8e8e8;padding: 6px;text-align: center;box-shadow: 0px -3px 4px rgba(0,0,0,0.10);position: relative;}
-.uploads-tab.primary-tab .mat-tab-nav-bar, .uploads-tab.primary-tab .mat-tab-header{background: #fff;}
-.uploads-tab.primary-tab .mat-tab-body-content{background: #f2f2f2;}
 
 /* filter menu
 --------------------------------------------------------------------------------------------------------*/
@@ -1263,18 +1261,6 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .add-communication-block .mat-flat-button{flex-shrink: 0;flex-grow: 0;margin-left: 8px;}
 .pre-auth-info-wrapper{padding: 14px;overflow: auto;max-height: calc(100vh - 177px);}
 
-/* select org radio
---------------------------------------------------------------------------------------------------------*/
-.select-radio .radio{position: relative;display: inline-block;vertical-align: top;margin-right: 8px;margin-bottom: 8px;}
-.select-radio .radio>input{opacity: 0;position: absolute;top: 0;left: 0;}
-.select-radio .radio>label{background: #fff;border-radius: 8px;border:1px solid #e1e1e1;padding: 12px 20px;text-align: center;cursor: pointer;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);box-shadow: 0 0 0 0 #3060AA;}
-.select-radio .radio>label .img-wrapper{height: 64px;width: 110px;display: flex;align-items: center;justify-content: center;margin: 0 auto 10px;}
-.select-radio .radio>label img{max-height: 46px;display: block;margin: 0 auto;max-width: 100%;}
-.select-radio .radio>input:focus~label{border-color:#3060AA;box-shadow: 0 0 0 4px rgba(48, 97, 171,0.25);}
-.select-radio .radio>input:checked~label{border-color:#3060AA;box-shadow: 0 0 0 1px #3060AA;}
-.select-radio .radio>input:checked:focus~label{border-color:#3060AA;box-shadow: 0 0 0 1px #3060AA,0 0 0 4px rgba(48, 97, 171,0.25);}
-.select-org-radio.select-radio .radio>label{min-width: 160px;}
- 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/
 .col-xxl-1-5, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto {position: relative;width: 100%;padding-right: 15px;padding-left: 15px;}

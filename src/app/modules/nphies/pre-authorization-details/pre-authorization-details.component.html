@@ -1,36 +1,36 @@
 <div class="row">
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Claim Type</div>
       <p class="form-control-static">{{data.preAuthorizationInfo.typeName}} </p>
     </div>
   </div>
   <!-- <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Related Claim Name</div>
       <p class="form-control-static">NA</p>
     </div>
   </div> -->
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Beneficiary Name</div>
       <p class="form-control-static">{{data.beneficiaryName}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Payment Amount</div>
       <p class="form-control-static">{{paymentAmount}} SR</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Transaction Date</div>
       <p class="form-control-static">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm'}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Pre-authorization Status</div>
       <p class="form-control-static">{{data.outcome}}</p>
     </div>
@@ -43,19 +43,19 @@
 </h5>
 <div class="row">
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Date Ordered</div>
       <p class="form-control-static">{{data.preAuthorizationInfo.dateOrdered}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Type</div>
       <p class="form-control-static">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Sub Type</div>
       <p class="form-control-static">
         <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
@@ -105,13 +105,13 @@
 </h5>
 <div class="row" *ngIf="data.visionPrescription">
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Date Written</div>
       <p class="form-control-static">{{data.visionPrescription.dateWritten}}</p>
     </div>
   </div>
   <!-- <div class="col-4">
-        <div class="form-group">
+        <div class="form-group form-group-static">
             <div class="control-label">Prescriber</div>
             <p class="form-control-static">Gordon Shelton</p>
         </div>
@@ -168,8 +168,7 @@
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 {{visionSpecification.lensNote}}
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
-                [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>
@@ -238,37 +237,37 @@
 </h5>
 <div class="row" *ngIf="data.accident.accidentTypeName && data.accident.date">
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Accident Type</div>
       <p class="form-control-static">{{data.accident.accidentTypeName}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Street Name</div>
       <p class="form-control-static">{{data.accident.streetName}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">City</div>
       <p class="form-control-static">{{data.accident.city}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">State/Province</div>
       <p class="form-control-static">{{data.accident.state}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Country</div>
       <p class="form-control-static">{{data.accident.country}}</p>
     </div>
   </div>
   <div class="col-4">
-    <div class="form-group">
+    <div class="form-group form-group-static">
       <div class="control-label">Date</div>
       <p class="form-control-static">{{data.accident.date}}</p>
     </div>

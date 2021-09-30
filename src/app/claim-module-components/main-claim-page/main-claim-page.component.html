@@ -1,18 +1,15 @@
 <div class="animate__animated animate__faster animate__fadeIn">
-    <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'"
-        mode="indeterminate" class="page-top-loader"></mat-progress-bar>
+    <mat-progress-bar *ngIf="isLoading && pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'" mode="indeterminate" class="page-top-loader"></mat-progress-bar>
     <div [class.view-claim]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED'">
         <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
             <div class="block-header">
                 <p>Create Claim</p><span class="spacer"></span>
-                <p *ngIf="claim != null && errors == null && claim.visitInformation != null"
-                    [class.d-none]="!(claim != null && errors == null)">{{claimName}}</p>
+                <p *ngIf="claim != null && errors == null && claim.visitInformation != null" [class.d-none]="!(claim != null && errors == null)">{{claimName}}</p>
             </div>
         </ng-container>
         <ng-template #statusHeader>
             <ng-container *ngIf="claim != null && claimProps != null">
-                <div
-                    class="claim-status-header {{(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') ? '' : 'text-' + getClaimStatusColor(claimProps?.statusCode)}}">
+                <div class="claim-status-header {{(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') ? '' : 'text-' + getClaimStatusColor(claimProps?.statusCode)}}">
                     <p class="title">View Claim</p>
                     <div class="summary">
                         <p><span>Provider Reference
@@ -41,34 +38,28 @@
         </ng-template>
 
         <div class="block-body create-claim-body">
-            <div class="error-block mb-3"
-                *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">
+            <div class="error-block mb-3" *ngIf="errors != null && !isLoading && (errors['code'] == 'CLAIM_RETRIEVE_ERROR' || pageMode != 'VIEW')">
                 {{getError()}}</div>
-            <ng-container
-                *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">
+            <ng-container *ngIf="claim != null && (errors == null || (errors['code'] != 'CLAIM_RETRIEVE_ERROR' && pageMode == 'VIEW'))">
                 <claim-data [claimType]='claimType'></claim-data>
             </ng-container>
         </div>
 
         <div class="block-footer sticky-bottom" *ngIf="!isLoading">
             <div class="left-block custom-paginator" *ngIf="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED' && paginationControl != null && paginationControl.size > 0">
-                <button matRipple (click)="goToFirstPage()" type="button" title="First Page"
-                    [disabled]="paginationControl.currentIndex==0">
+                <button matRipple (click)="goToFirstPage()" type="button" title="First Page" [disabled]="paginationControl.currentIndex==0">
                     <img src="./assets/ic-page-first.svg" alt="First" />
                 </button>
-                <button matRipple (click)="goToPrePage()" type="button" title="Previous Page"
-                    [disabled]="paginationControl.currentIndex==0">
+                <button matRipple (click)="goToPrePage()" type="button" title="Previous Page" [disabled]="paginationControl.currentIndex==0">
                     <img src="./assets/ic-page-prev.svg" alt="Previous" />
                 </button>
                 <p class="page-info">
                     {{(paginationControl.currentIndex+1)}}<small>/{{paginationControl.size}}</small>
                 </p>
-                <button matRipple (click)="goToNextPage()" type="button" title="Next Page"
-                    [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
+                <button matRipple (click)="goToNextPage()" type="button" title="Next Page" [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
                     <img src="./assets/ic-page-next.svg" alt="Next" />
                 </button>
-                <button matRipple (click)="goToLastPage()" type="button" title="Last Page"
-                    [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
+                <button matRipple (click)="goToLastPage()" type="button" title="Last Page" [disabled]="(paginationControl.currentIndex+1)==paginationControl.size">
                     <img src="./assets/ic-page-last.svg" alt="Last" />
                 </button>
             </div>
@@ -82,12 +73,10 @@
             </div>
             <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
                 <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
-                <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary"
-                    (click)="save()">Save</button>
+                <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary" (click)="save()">Save</button>
             </div>
         </div>
-        <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimTypeMenu"
-            *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
+        <button mat-fab color="primary" class="page-fab" [matMenuTriggerFor]="claimTypeMenu" *ngIf="pageMode == 'CREATE' && claim == null && errors == null && !isLoading">
             <mat-icon>add</mat-icon>
         </button>
 
