@@ -16,6 +16,7 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
 import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 import { Observable } from 'rxjs';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -66,6 +67,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
+    private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
   ) {
 
@@ -414,7 +416,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   getProcessedTransactions() {
     this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesApprovalService.getProcessedTransaction(this.sharedServices.providerId).subscribe((event: any) => {
+    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -438,7 +440,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   getCommunicationRequests() {
     this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesApprovalService.getCommunicationRequests(this.sharedServices.providerId).subscribe((event: any) => {
+    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

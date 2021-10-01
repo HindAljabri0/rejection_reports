@@ -29,7 +29,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     description: ['', Validators.required],
     descriptionFilter: [''],
     type: ['', Validators.required],
-    onAdmission: ['', Validators.required],
+    onAdmission: [''],
     onAdmissionName: ['']
   });
 
@@ -60,6 +60,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
   // ];
 
   primaryValidationMsg = '';
+  IsOnAdmissionRequired = false;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -74,6 +75,16 @@ export class AddEditDiagnosisModalComponent implements OnInit {
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         onAdmission: this.onAdmissionList.filter(x => x.value === this.data.item.onAdmission)[0],
       });
+    }
+
+    if (this.data.type && this.data.type === 'institutional') {
+      this.FormDiagnosis.controls.onAdmission.setValidators([Validators.required]);
+      this.FormDiagnosis.controls.onAdmission.updateValueAndValidity();
+      this.IsOnAdmissionRequired = true;
+    } else {
+      this.FormDiagnosis.controls.onAdmission.clearValidators();
+      this.FormDiagnosis.controls.onAdmission.updateValueAndValidity();
+      this.IsOnAdmissionRequired = false;
     }
   }
 
@@ -134,7 +145,9 @@ export class AddEditDiagnosisModalComponent implements OnInit {
       model.diagnosisCode = this.FormDiagnosis.controls.code.value;
       model.diagnosisDescription = this.FormDiagnosis.controls.description.value.replace(model.diagnosisCode + ' - ', '');
       model.type = this.FormDiagnosis.controls.type.value.value;
-      model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
+      if (this.IsOnAdmissionRequired) {
+        model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
+      }
 
       model.typeName = this.FormDiagnosis.controls.type.value.name;
       model.onAdmissionName = this.FormDiagnosis.controls.onAdmission.value.name;

@@ -171,7 +171,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       case 'professional':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' },
+          { value: 'medicationCode', name: 'Medication Codes' },
           { value: 'transporationService', name: 'Transportation SRCA' },
           { value: 'imagingService', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
@@ -182,7 +182,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       case 'oral':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' },
+          { value: 'medicationCode', name: 'Medication Codes' },
           { value: 'transporationService', name: 'Transportation SRCA' },
           { value: 'imagingService', name: 'Imaging' },
           { value: 'services', name: 'Services' },
@@ -194,7 +194,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       case 'institutional':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' },
+          { value: 'medicationCode', name: 'Medication Codes' },
           { value: 'transporationService', name: 'Transportation SRCA' },
           { value: 'imagingService', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
@@ -206,7 +206,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       case 'pharmacy':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' }
+          { value: 'medicationCode', name: 'Medication Codes' }
         ];
         break;
     }
