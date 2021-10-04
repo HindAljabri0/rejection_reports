@@ -81,6 +81,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (this.data.type) {
+      this.setTypes(this.data.type);
+    }
+
     if (this.data.item && this.data.item.itemCode) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
@@ -125,9 +130,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.factor.setValue(1);
     }
 
-    if (this.data.type) {
-      this.setTypes(this.data.type);
-    }
+
 
     if (this.data.supportingInfos) {
       this.filteredSupportingInfo.next(this.data.supportingInfos.slice());

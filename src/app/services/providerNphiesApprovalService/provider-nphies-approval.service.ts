@@ -16,8 +16,8 @@ export class ProviderNphiesApprovalService {
   }
 
   getApprovalRequestTransactions(providerId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/approval/fetch/criteria`;
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    const requestUrl = `/providers/${providerId}/approvals/fetch/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
     return this.http.request(request);
   }
 
