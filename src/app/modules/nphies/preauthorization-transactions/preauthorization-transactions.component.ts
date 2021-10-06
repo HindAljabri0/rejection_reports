@@ -80,7 +80,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
     this.routeActive.queryParams.subscribe(params => {
 
-      this.getPayerList();
+
 
       if (params.fromDate != null) {
         const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
@@ -127,9 +127,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.pageSize = 10;
       }
 
-      if (this.FormPreAuthTransaction.valid) {
-        this.onSubmit();
-      }
+      this.getPayerList(true);
+
     });
   }
 
@@ -157,12 +156,17 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  getPayerList() {
+  getPayerList(isFromUrl: boolean = false) {
     this.beneficiaryService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
           this.payersList = body;
+          if (isFromUrl) {
+            if (this.FormPreAuthTransaction.valid) {
+              this.onSubmit();
+            }
+          }
         }
       }
     }, errorEvent => {
