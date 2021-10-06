@@ -113,9 +113,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     this.FormSupportingInfo.controls.attachment.setValue(this.currentFileUploadName);
     this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
-      // event.target.files = [];
       this.currentFileUpload = undefined;
-      // this.currentFileUploadName = undefined;
       return;
     }
 
@@ -145,7 +143,6 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
   showError(error: string) {
     this.currentFileUpload = null;
-    // this.currentFileUploadName = null;
     this.uploadContainerClass = 'has-error';
     this.error = error;
     this.sharedServices.loadingChanged.next(false);
