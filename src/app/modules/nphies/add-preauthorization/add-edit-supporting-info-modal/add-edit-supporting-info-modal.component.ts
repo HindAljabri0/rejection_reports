@@ -33,7 +33,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     reason: [''],
   });
 
-  categoryList =  this.sharedDataService.categoryList;
+  categoryList = this.sharedDataService.categoryList;
   // [
   //   { value: 'info', name: 'Info' },
   //   { value: 'onset', name: 'Onset' },
@@ -53,7 +53,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   //   { value: 'chief-complaint', name: 'Chief Complaint' }
   // ];
 
-  reasonList =  this.sharedDataService.reasonList;
+  reasonList = this.sharedDataService.reasonList;
   // [
   //   { value: 'e', name: 'Extraction' },
   //   { value: 'c', name: 'Congenital' },
@@ -66,6 +66,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   isSubmitted = false;
   fileUploadFlag = false;
   currentFileUpload: File;
+  currentFileUploadName: string;
   sizeInMB: string;
   uploadContainerClass = '';
   error = '';
@@ -97,16 +98,24 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         timingPeriodTo: this.data.item.toDate,
         reason: this.reasonList.filter(x => x.value === this.data.item.reason)[0]
       });
+
+      if (this.FormSupportingInfo.controls.attachment && this.FormSupportingInfo.controls.attachment.value) {
+        this.fileUploadFlag = true;
+        this.currentFileUploadName = this.FormSupportingInfo.controls.attachment.value;
+      }
     }
   }
 
   selectFile(event) {
     this.fileUploadFlag = true;
     this.currentFileUpload = event.target.files[0];
+    this.currentFileUploadName = this.currentFileUpload.name;
+    this.FormSupportingInfo.controls.attachment.setValue(this.currentFileUploadName);
     this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
-      event.target.files = [];
+      // event.target.files = [];
       this.currentFileUpload = undefined;
+      // this.currentFileUploadName = undefined;
       return;
     }
 
@@ -136,6 +145,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
   showError(error: string) {
     this.currentFileUpload = null;
+    // this.currentFileUploadName = null;
     this.uploadContainerClass = 'has-error';
     this.error = error;
     this.sharedServices.loadingChanged.next(false);
@@ -144,6 +154,8 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
   deleteFile() {
     this.currentFileUpload = null;
+    this.currentFileUploadName = null;
+    this.error = '';
     this.FormSupportingInfo.controls.attachment.reset();
     this.fileUploadFlag = false;
   }
@@ -395,7 +407,13 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+
+    if (this.error) {
+      return;
+    }
+
     if (this.FormSupportingInfo.valid) {
+      debugger;
       const model: any = {};
       model.sequence = this.data.Sequence;
 
