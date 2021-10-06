@@ -31,7 +31,7 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
     lensNote: ['']
   });
 
-  productList =  this.sharedDataService.productList;
+  productList = this.sharedDataService.productList;
   // [
   //   { value: 'lens', name: 'Lens' },
   //   { value: 'contact', name: 'Contact' },
@@ -211,9 +211,19 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
   }
 
   changeProduct() {
-    if (!(this.data.item && this.data.item.product)) {
-      this.FormVisionSpecification.controls.sphere.setValue('');
-    }
+    // if (!(this.data.item && this.data.item.product)) {
+    //   this.FormVisionSpecification.controls.sphere.setValue('');
+    // }
+
+    this.FormVisionSpecification.controls.sphere.reset();
+    this.FormVisionSpecification.controls.prismAmount.reset();
+    this.FormVisionSpecification.controls.prismBase.setValue('');
+    this.FormVisionSpecification.controls.lensPower.reset();
+    this.FormVisionSpecification.controls.lensBackCurve.reset();
+    this.FormVisionSpecification.controls.lensDiameter.reset();
+    this.FormVisionSpecification.controls.lensDuration.reset();
+    this.FormVisionSpecification.controls.lensDurationUnit.setValue('');
+
   }
 
   IsSphereRequired() {
@@ -312,46 +322,39 @@ export class AddEditVisionLensSpecificationsComponent implements OnInit {
       model.product = this.FormVisionSpecification.controls.product.value.value;
       model.productName = this.FormVisionSpecification.controls.product.value.name;
       model.eye = this.FormVisionSpecification.controls.eye.value;
+      model.lensColor = this.FormVisionSpecification.controls.lensColor.value;
+      model.lensBrand = this.FormVisionSpecification.controls.lensBrand.value;
+      model.cylinder = this.FormVisionSpecification.controls.cylinder.value;
+      model.axis = this.FormVisionSpecification.controls.axis.value;
+      model.multifocalPower = this.FormVisionSpecification.controls.multifocalPower.value;
+      model.lensNote = this.FormVisionSpecification.controls.lensNote.value;
 
       if (this.FormVisionSpecification.controls.product.value &&
         this.FormVisionSpecification.controls.product.value.value &&
         this.FormVisionSpecification.controls.product.value.value === 'lens') {
+
         model.sphere = this.FormVisionSpecification.controls.sphere.value;
-      } else {
-        model.sphere = '';
-      }
+        model.prismAmount = this.FormVisionSpecification.controls.prismAmount.value;
+        if (this.FormVisionSpecification.controls.prismBase.value) {
+          model.prismBase = this.FormVisionSpecification.controls.prismBase.value.value;
+          model.prismBaseName = this.FormVisionSpecification.controls.prismBase.value.name;
+        }
 
-      model.cylinder = this.FormVisionSpecification.controls.cylinder.value;
-      model.axis = this.FormVisionSpecification.controls.axis.value;
-      model.prismAmount = this.FormVisionSpecification.controls.prismAmount.value;
-
-      if (this.FormVisionSpecification.controls.prismBase.value) {
-        model.prismBase = this.FormVisionSpecification.controls.prismBase.value.value;
-        model.prismBaseName = this.FormVisionSpecification.controls.prismBase.value.name;
-      }
-
-      if (this.FormVisionSpecification.controls.lensDuration.value) {
-        model.lensDurationUnit = this.FormVisionSpecification.controls.lensDurationUnit.value.value;
-        model.lensDurationUnitName = this.FormVisionSpecification.controls.lensDurationUnit.value.name;
-      }
-
-      model.multifocalPower = this.FormVisionSpecification.controls.multifocalPower.value;
-
-      if (this.FormVisionSpecification.controls.product.value &&
+      } else if (this.FormVisionSpecification.controls.product.value &&
         this.FormVisionSpecification.controls.product.value.value &&
         this.FormVisionSpecification.controls.product.value.value === 'contact') {
+
         model.lensPower = this.FormVisionSpecification.controls.lensPower.value;
-      } else {
-        model.lensPower = '';
+        model.lensBackCurve = this.FormVisionSpecification.controls.lensBackCurve.value;
+        model.lensDiameter = this.FormVisionSpecification.controls.lensDiameter.value;
+        model.lensDuration = this.FormVisionSpecification.controls.lensDuration.value;
+        if (this.FormVisionSpecification.controls.lensDuration.value) {
+          model.lensDurationUnit = this.FormVisionSpecification.controls.lensDurationUnit.value.value;
+          model.lensDurationUnitName = this.FormVisionSpecification.controls.lensDurationUnit.value.name;
+        }
+
       }
 
-      model.lensBackCurve = this.FormVisionSpecification.controls.lensBackCurve.value;
-      model.lensDiameter = this.FormVisionSpecification.controls.lensDiameter.value;
-      model.lensDuration = this.FormVisionSpecification.controls.lensDuration.value;
-      model.lensColor = this.FormVisionSpecification.controls.lensColor.value;
-      model.lensBrand = this.FormVisionSpecification.controls.lensBrand.value;
-
-      model.lensNote = this.FormVisionSpecification.controls.lensNote.value;
       this.dialogRef.close(model);
     }
   }
