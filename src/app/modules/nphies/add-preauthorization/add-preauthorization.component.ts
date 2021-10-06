@@ -144,6 +144,10 @@ export class AddPreauthorizationComponent implements OnInit {
         ];
         break;
     }
+
+    this.VisionSpecifications = [];
+    this.Items = [];
+    this.Diagnosises = [];
   }
 
   searchBeneficiaries() {

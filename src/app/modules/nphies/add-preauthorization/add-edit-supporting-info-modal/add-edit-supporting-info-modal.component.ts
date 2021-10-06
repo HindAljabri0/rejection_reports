@@ -410,7 +410,6 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     }
 
     if (this.FormSupportingInfo.valid) {
-      debugger;
       const model: any = {};
       model.sequence = this.data.Sequence;
 

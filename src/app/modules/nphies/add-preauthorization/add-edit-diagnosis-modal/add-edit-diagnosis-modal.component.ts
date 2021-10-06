@@ -133,7 +133,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     // tslint:disable-next-line:max-line-length
-    if (this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
+    if (this.FormDiagnosis.controls.type.value && this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
       this.primaryValidationMsg = 'There can be only one principal Type';
       return;
     } else {
@@ -144,13 +144,13 @@ export class AddEditDiagnosisModalComponent implements OnInit {
       model.sequence = this.data.Sequence;
       model.diagnosisCode = this.FormDiagnosis.controls.code.value;
       model.diagnosisDescription = this.FormDiagnosis.controls.description.value.replace(model.diagnosisCode + ' - ', '');
-      model.type = this.FormDiagnosis.controls.type.value.value;
+      model.type = this.FormDiagnosis.controls.type.value ? this.FormDiagnosis.controls.type.value.value : '';
       if (this.IsOnAdmissionRequired) {
-        model.onAdmission = this.FormDiagnosis.controls.onAdmission.value.value;
+        model.onAdmission = this.FormDiagnosis.controls.onAdmission.value ? this.FormDiagnosis.controls.onAdmission.value.value : '';
       }
 
-      model.typeName = this.FormDiagnosis.controls.type.value.name;
-      model.onAdmissionName = this.FormDiagnosis.controls.onAdmission.value.name;
+      model.typeName = this.FormDiagnosis.controls.type.value ? this.FormDiagnosis.controls.type.value.name : '';
+      model.onAdmissionName = this.FormDiagnosis.controls.onAdmission.value ? this.FormDiagnosis.controls.onAdmission.value.name : '';
       this.dialogRef.close(model);
     }
   }
