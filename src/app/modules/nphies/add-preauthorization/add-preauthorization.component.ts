@@ -704,8 +704,6 @@ export class AddPreauthorizationComponent implements OnInit {
       }).filter(x => x !== undefined);
 
       console.log('Model', this.model);
-      // this.IsJSONPosted = true;
-      // this.prepareDetailsModel();
 
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {

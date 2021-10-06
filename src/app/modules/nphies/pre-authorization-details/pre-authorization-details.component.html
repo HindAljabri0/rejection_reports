@@ -58,7 +58,8 @@
     <div class="form-group form-group-static">
       <div class="control-label">Sub Type</div>
       <p class="form-control-static">
-        <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span
+          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
@@ -168,7 +169,8 @@
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 {{visionSpecification.lensNote}}
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
+                [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>
@@ -219,7 +221,12 @@
             <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
           </td>
           <td>
-            {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+            <span *ngIf="s.category=='attachment'">
+              {{s.attachment}}
+            </span>
+            <span *ngIf="s.category!='attachment'">
+              {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+            </span>
           </td>
           <td>
             {{s.reasonName}}
@@ -330,7 +337,8 @@
           <td class="row-click" (click)="toggleItem(0)">{{item.typeName}}</td>
           <td class="row-click" (click)="toggleItem(0)">{{item.itemCode}} - {{item.itemDescription}}</td>
           <td class="row-click" (click)="toggleItem(0)">{{item.quantity}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(0)">{{item.unitPrice}} <span class="currency">SR</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(0)">{{item.unitPrice}} <span class="currency">SR</span>
+          </td>
           <td class="text-nowrap row-click" (click)="toggleItem(0)">{{item.net}} <span class="currency">SR</span></td>
           <td class="row-click" (click)="toggleItem(0)">{{item.nonStandardCode}}</td>
         </tr>
