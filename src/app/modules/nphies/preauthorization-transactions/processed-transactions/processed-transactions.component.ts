@@ -38,7 +38,8 @@ export class ProcessedTransactionsComponent implements OnInit {
 
   getProcessedTransactions() {
     this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId).subscribe((event: any) => {
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId, this.page, this.pageSize).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -48,7 +49,7 @@ export class ProcessedTransactionsComponent implements OnInit {
           this.processedTransactions = this.processedTransactionModel.content;
           this.processedTransactions.forEach(x => {
             // tslint:disable-next-line:max-line-length
-            x.payerName = this.payersList.find(y => y.nphiesId === x.payerId) ? this.payersList.filter(y => y.nphiesId === x.payerId)[0].englistName : '';
+            x.payerName = this.payersList.find(y => y.nphiesId === x.payerNphiesId) ? this.payersList.filter(y => y.nphiesId === x.payerNphiesId)[0].englistName : '';
           });
           const pages = Math.ceil((this.processedTransactionModel.totalElements / this.paginator.pageSize));
           this.paginatorPagesNumbers = Array(pages).fill(pages).map((x, i) => i);

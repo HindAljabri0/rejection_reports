@@ -49,7 +49,7 @@ export class AddPreauthorizationComponent implements OnInit {
     countryName: [''],
     date: [''],
     dateWritten: [''],
-    // prescriber: ['', Validators.required],
+    prescriber: ['', Validators.required],
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -554,20 +554,31 @@ export class AddPreauthorizationComponent implements OnInit {
 
     if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
       if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = true;
         hasError = true;
       } else {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = false;
       }
 
       if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
         this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
         this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+
         this.IsDateWrittenRequired = true;
         hasError = true;
       } else {
         this.FormPreAuthorization.controls.dateWritten.clearValidators();
         this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+
+        this.FormPreAuthorization.controls.prescriber.clearValidators();
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsDateWrittenRequired = false;
       }
     }
@@ -656,7 +667,7 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
-        // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+        this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
         this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
           const model: any = {};
           model.sequence = x.sequence;
