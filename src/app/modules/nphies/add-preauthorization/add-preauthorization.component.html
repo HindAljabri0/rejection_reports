@@ -239,22 +239,23 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required')}">
-            <label class="control-label">Prescriber<span class="asterisk">*</span></label>
-            <mat-form-field class="form-control custom-select-control">
-              <mat-select formControlName="prescriber">
-                <mat-option value="">Select Prescriber</mat-option>
-                <mat-option *ngFor="let pre of CareTeams" [value]="pre.physicianCode">{{pre.physicianCode}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div
-              *ngIf="(isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required')">
-              <span class="error-text">Please select a Prescriber</span>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group"
+                [ngClass]="{'has-error' : (IsLensSpecificationRequired || IsDateWrittenRequired) && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
+                <label class="control-label">Prescriber<span *ngIf="(IsLensSpecificationRequired || IsDateWrittenRequired)" class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select formControlName="prescriber">
+                    <mat-option value="">Select Prescriber</mat-option>
+                    <mat-option *ngFor="let pre of CareTeams" [value]="pre.physicianCode">{{pre.physicianCode}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="(IsLensSpecificationRequired || IsDateWrittenRequired) && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))">
+                  <span class="error-text">Please select a Prescriber</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div> -->
           </div>
           <div class="box" [ngClass]="{'text-danger': IsLensSpecificationRequired}">
             <h5 class="d-flex align-items-center mb-3">
