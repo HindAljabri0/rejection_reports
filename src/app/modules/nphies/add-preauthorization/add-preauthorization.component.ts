@@ -49,7 +49,7 @@ export class AddPreauthorizationComponent implements OnInit {
     countryName: [''],
     date: [''],
     dateWritten: [''],
-    prescriber: ['', Validators.required],
+    prescriber: [''],
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -86,6 +86,7 @@ export class AddPreauthorizationComponent implements OnInit {
   IsCareTeamRequired = false;
   IsItemRequired = false;
   IsDateWrittenRequired = false;
+  IsPrescriberRequired = false;
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
@@ -551,7 +552,6 @@ export class AddPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
-
     if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
       if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
         this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
@@ -559,7 +559,7 @@ export class AddPreauthorizationComponent implements OnInit {
         this.IsLensSpecificationRequired = true;
         hasError = true;
       } else {
-        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.clearValidators();
         this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = false;
       }
@@ -567,19 +567,25 @@ export class AddPreauthorizationComponent implements OnInit {
       if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
         this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
         this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
-
-        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
-        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
-
         this.IsDateWrittenRequired = true;
         hasError = true;
       } else {
         this.FormPreAuthorization.controls.dateWritten.clearValidators();
         this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+        this.IsDateWrittenRequired = false;
+      }
 
+      // tslint:disable-next-line:max-line-length
+      if ((this.FormPreAuthorization.controls.dateWritten.value && !this.FormPreAuthorization.controls.prescriber.value) ||
+        (this.VisionSpecifications.length > 0 && !this.FormPreAuthorization.controls.prescriber.value)) {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+        this.IsPrescriberRequired = true;
+        hasError = true;
+      } else {
         this.FormPreAuthorization.controls.prescriber.clearValidators();
         this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
-        this.IsDateWrittenRequired = false;
+        this.IsPrescriberRequired = false;
       }
     }
 
