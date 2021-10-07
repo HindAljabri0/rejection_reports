@@ -99,13 +99,9 @@
             </div>
         </div>
         <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('taxPercent').touched) && FormItem.get('taxPercent').hasError('required')}">
-                <label class="control-label">Tax(%)<span class="asterisk">*</span></label>
+            <div class="form-group">
+                <label class="control-label">Tax(%)</label>
                 <input type="number" class="form-control" placeholder="Enter tax(%)" formControlName="taxPercent" (blur)="Calculate('Tax')">
-                <div
-                *ngIf="(isSubmitted || FormItem.get('taxPercent').touched) && FormItem.get('taxPercent').hasError('required')">
-                <span class="error-text">Please enter Tax(%)</span>
-              </div>
             </div>
         </div>
         <div class="col-4 col-lg-3">

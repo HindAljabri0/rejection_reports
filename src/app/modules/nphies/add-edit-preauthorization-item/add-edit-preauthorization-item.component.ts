@@ -41,7 +41,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     unitPrice: ['', Validators.required],
     discount: [''],
     factor: ['', Validators.required],
-    taxPercent: ['', Validators.required],
+    taxPercent: [''],
     patientSharePercent: [''],
     tax: [''],
     net: [''],
@@ -327,7 +327,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
           this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
@@ -351,11 +351,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const taxValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
           this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
         } else {
-          this.FormItem.controls.tax.setValue('');
+          this.FormItem.controls.tax.setValue(0);
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
           this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
@@ -409,11 +409,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const taxValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
           this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
         } else {
-          this.FormItem.controls.tax.setValue('');
+          this.FormItem.controls.tax.setValue(0);
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
           this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
@@ -459,7 +459,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.unitPrice = parseFloat(this.FormItem.controls.unitPrice.value);
       model.discount = this.FormItem.controls.discount.value ? parseFloat(this.FormItem.controls.discount.value) : 0;
       model.factor = this.FormItem.controls.factor.value;
-      model.taxPercent = parseFloat(this.FormItem.controls.taxPercent.value);
+      model.taxPercent = this.FormItem.controls.taxPercent.value ? parseFloat(this.FormItem.controls.taxPercent.value) : 0;
       // tslint:disable-next-line:max-line-length
       model.patientSharePercent = this.FormItem.controls.patientSharePercent.value ? parseFloat(this.FormItem.controls.patientSharePercent.value) : 0;
       model.tax = this.FormItem.controls.tax.value;
