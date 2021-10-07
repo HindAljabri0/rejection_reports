@@ -71,7 +71,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
     if (this.data.item && this.data.item.diagnosisCode) {
       this.FormDiagnosis.patchValue({
         code: this.data.item.diagnosisCode,
-        description: this.data.item.diagnosisDescription,
+        description: this.data.item.diagnosisCode + ' - ' + this.data.item.diagnosisDescription,
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         onAdmission: this.onAdmissionList.filter(x => x.value === this.data.item.onAdmission)[0],
       });
