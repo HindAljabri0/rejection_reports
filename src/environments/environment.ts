@@ -28,7 +28,8 @@ export const environment = {
   providersBeneficiariesService: `${host}:8995`,
   providerNphiesEligibility: `${host}:8022`,
   providerNphiesSearch: `${host}:8090`,
-  providerNphiesApproval: `${host}:8025`
+  providerNphiesApproval: `${host}:8025`,
+  nphiesClaimUploader: `${host}:8088`,
 };
 
 /*
