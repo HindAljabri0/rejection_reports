@@ -22,5 +22,5 @@ export const environment = {
   providerNphiesEligibility: `${host}/eligibilities`,
   providerNphiesSearch: `${host}/provider-nphies-search`,
   providerNphiesApproval: `${host}/approvals`,
-  nphiesClaimUploader: `${host}/nphies-claim-uploader`
+  nphiesClaimUploader: `${host}/upload-v2`
 };
