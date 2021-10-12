@@ -225,15 +225,15 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value);
+        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
-        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value);
+        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
-        model.beneficiaryId = parseInt(this.FormPreAuthTransaction.controls.beneficiaryId.value);
+        model.beneficiaryId = parseInt(this.FormPreAuthTransaction.controls.beneficiaryId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {

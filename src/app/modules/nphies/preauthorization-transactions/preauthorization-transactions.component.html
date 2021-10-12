@@ -2,8 +2,7 @@
   <div class="block-header has-border">
     <p>Preauthorization Transactions</p>
   </div>
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding"
-    (selectedTabChange)="tabChange($event)">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding" (selectedTabChange)="tabChange($event)">
     <mat-tab>
       <ng-template mat-tab-label>
         <span>Requests</span>
@@ -15,8 +14,7 @@
               <div class="form-group">
                 <label class="control-label">From Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                    formControlName="fromDate">
+                  <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
                   <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                   <mat-datepicker #filterFromDate></mat-datepicker>
                 </div>
@@ -26,8 +24,8 @@
               <div class="form-group">
                 <label class="control-label">To Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
-                    [min]="FormPreAuthTransaction.controls.fromDate.value" formControlName="toDate">
+                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPreAuthTransaction.controls.fromDate.value"
+                    formControlName="toDate">
                   <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                   <mat-datepicker #filterToDate></mat-datepicker>
                 </div>
@@ -36,8 +34,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Pre Authorization ID</label>
-                <input placeholder="Enter pre authorization ID" class="form-control"
-                  formControlName="preAuthorizationRequestId">
+                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="preAuthorizationRequestId">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -55,11 +52,10 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Select a Beneficiary</label>
-                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
-                  formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
+                  (keyup)="searchBeneficiaries()">
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
-                    (click)="selectBeneficiary(beneficiary)">
+                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
                     {{beneficiary.name}} ({{beneficiary.documentId}})
                   </mat-option>
                 </mat-autocomplete>
@@ -82,8 +78,8 @@
           </div>
         </form>
       </div>
-      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height fixed-height-sm" *ngIf="transactionModel && transactions.length > 0">
+      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" *ngIf="transactionModel && transactions.length > 0">
+        <div class="fixed-height fixed-height-sm">
           <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
@@ -121,8 +117,7 @@
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item><span>Reuse</span></button>
-                      <button mat-menu-item
-                        (click)="cancelRequest(transaction.approvalRequestId)"><span>Cancel</span></button>
+                      <button mat-menu-item (click)="cancelRequest(transaction.approvalRequestId)"><span>Cancel</span></button>
                       <button mat-menu-item (click)="nullifyRequest(transaction.approvalRequestId)"><span>Nullify/Soft
                           Delete</span></button>
                       <button mat-menu-item><span>Add New Related Claim</span></button>
@@ -136,10 +131,9 @@
             </tbody>
           </table>
         </div>
-        <app-empty-state *ngIf="transactionModel && transactions.length === 0"
-          message='No Pre Authorization transactions found!'>
-        </app-empty-state>
       </ng-scrollbar>
+      <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Pre Authorization transactions found!'>
+      </app-empty-state>
       <div class="pagination-header">
         <div class="form-group page-select">
           <label class="control-label">Go to page: </label>
@@ -150,8 +144,7 @@
           </mat-form-field>
         </div>
         <div class="material-paginator">
-          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-            (page)="paginatorAction($event)">
+          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
           </mat-paginator>
         </div>
       </div>
@@ -164,8 +157,8 @@
         </div>
       </ng-template>
 
-        <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList"
-          (openDetailsDialogEvent)="openDetailsDialog($event)"></app-processed-transactions>
+      <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialog($event)">
+      </app-processed-transactions>
 
     </mat-tab>
     <mat-tab>
@@ -175,8 +168,8 @@
           <span *ngIf="IsNewComunicationRequest" class="alert-marker ml-2"></span>
         </div>
       </ng-template>
-        <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList"
-        (openDetailsDialogEvent)="openDetailsDialog($event)"></app-communication-requests>
+      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialog($event)">
+      </app-communication-requests>
     </mat-tab>
   </mat-tab-group>
 </div>
