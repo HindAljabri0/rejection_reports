@@ -336,6 +336,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
               this.showMessage(body.message, '', 'alert', true, 'OK', errors);
             } else {
               this.showMessage('Success', body.message, 'success', true, 'OK');
+              this.onSubmit();
             }
 
           }
@@ -382,6 +383,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
               this.showMessage(body.message, '', 'alert', true, 'OK', errors);
             } else {
               this.showMessage('Success', body.message, 'success', true, 'OK');
+              this.onSubmit();
             }
 
           }
