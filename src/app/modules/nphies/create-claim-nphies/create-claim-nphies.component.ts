@@ -36,6 +36,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
+    patientFileNumber: [''],
     insurancePlanId: ['', Validators.required],
     dateOrdered: ['', Validators.required],
     type: ['', Validators.required],
@@ -581,6 +582,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.sharedServices.loadingChanged.next(true);
       this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
       this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.patientFileNumber = 'Test';
+
+      const now = new Date(Date.now());
+      // tslint:disable-next-line:max-line-length
+      this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
 
       this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
       this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
@@ -695,6 +701,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
+      this.model.totalNet = this.model.items.reduce((x, y) => x.net + y.net);
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
