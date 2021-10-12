@@ -701,7 +701,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      this.model.totalNet = this.model.items.reduce((x, y) => x.net + y.net);
+      this.model.totalNet = 0;
+      this.model.items.forEach((x) => {
+        this.model.totalNet += x.net;
+      });
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
