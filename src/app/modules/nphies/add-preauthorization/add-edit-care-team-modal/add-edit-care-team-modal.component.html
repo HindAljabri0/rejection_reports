@@ -72,7 +72,7 @@
 
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormCareTeam.get('speciality').touched) && FormCareTeam.get('speciality').hasError('required')}">
-          <label class="control-label">Speciality<span class="asterisk">*</span></label>
+          <label class="control-label">Qualification<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="speciality" [disabled]="IsSpecialityLading" required #specialitySelect>
               <mat-option>
@@ -80,10 +80,10 @@
                   formControlName="specialityFilter" name='searchedSpeciality'></ngx-mat-select-search>
               </mat-option>
               <ng-container *ngIf="IsSpecialityLading">
-                <mat-option value="">Loading Specialities ...</mat-option>
+                <mat-option value="">Loading Qualifications ...</mat-option>
               </ng-container>
               <ng-container *ngIf="!IsSpecialityLading">
-                <mat-option value="">Select Speciality</mat-option>
+                <mat-option value="">Select Qualification</mat-option>
                 <mat-option *ngFor="let speciality of filteredSpeciality  | async" [value]="speciality">
                   {{speciality.speciallityName}}
                 </mat-option>
@@ -92,7 +92,7 @@
           </mat-form-field>
           <div
           *ngIf="(isSubmitted || FormCareTeam.get('speciality').touched) && FormCareTeam.get('speciality').hasError('required')">
-          <span class="error-text">Please select a Speciality </span>
+          <span class="error-text">Please select a Qualification </span>
         </div>
         </div>
       </div>

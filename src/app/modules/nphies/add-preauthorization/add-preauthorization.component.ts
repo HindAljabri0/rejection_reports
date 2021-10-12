@@ -724,6 +724,8 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
+      this.model.totalNet = this.model.items.reduce((x, y) => x.net + y.net);
+
       console.log('Model', this.model);
 
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
