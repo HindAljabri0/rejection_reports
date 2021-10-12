@@ -78,6 +78,8 @@ export class BeneficiaryComponent implements OnInit {
     selecteCoverageType: string,
     payerErorr: string,
     memberCardIdErorr: string,
+    selecteSubscriberRelationshipErorr: string,
+    selecteCoverageTypeErorr: string
   }[] = [];
 
   maritalStatuses: { Code: string, Name: string }[] = [
@@ -114,11 +116,11 @@ export class BeneficiaryComponent implements OnInit {
     { Code: 'OTHER', Name: 'Other' },
   ];
 
-changeMode(){ 
-  this.viewMode= !this.viewMode;
-  this.editMode=!this.editMode;   
-  this.getBeneficiary(this.beneficiaryId);
-}
+  changeMode() {
+    this.viewMode = !this.viewMode;
+    this.editMode = !this.editMode;
+    this.getBeneficiary(this.beneficiaryId);
+  }
 
 
   getCoverageTypeName(CoverageTypeCode: string) {
@@ -223,18 +225,18 @@ changeMode(){
     }
   }
   selectedPayer(payerId: string) {
-    for(let payer of this.payersList){
-      if(payer.payerId==payerId){
+    for (let payer of this.payersList) {
+      if (payer.payerId == payerId) {
         return payer.englistName + "(" + payer.arabicName + ")";
       }
     }
-   
-    
+
+
 
   }
-isNull(value:string){
-return value==null?"_":value;
-}
+  isNull(value: string) {
+    return value == null ? "_" : value;
+  }
 
   setDateforView(beneficiaryinfo: BeneficiaryModel) {
 
@@ -275,7 +277,7 @@ return value==null?"_":value;
           memberCardId: new FormControl(insurancePlans.memberCardId),
           selecteSubscriberRelationship: insurancePlans.relationWithSubscriber,
           selecteCoverageType: insurancePlans.coverageType,
-          payerErorr: null, memberCardIdErorr: null
+          payerErorr: null, memberCardIdErorr: null, selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
         }
       )
     }
@@ -332,7 +334,7 @@ return value==null?"_":value;
 
 
     // }
-     else {
+    else {
       this.getBeneficiary(this.beneficiaryId)
       this.viewMode = true;
     }
@@ -361,10 +363,10 @@ return value==null?"_":value;
       (this.thirdNameController.value != null && this.thirdNameController.value.trim().length > 0) ||
       (this.familyNameController.value != null && this.familyNameController.value.trim().length > 0)) {
       this.fullNameController.setValue(
-        (this.firstNameController.value == null ? ' ' : this.firstNameController.value+" ") +
-        (this.secondNameController.value == null ? ' ' : this.secondNameController.value+" ") +
-        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value+" ") +
-        (this.familyNameController.value == null ? ' ' : this.familyNameController.value+" ").trim());
+        (this.firstNameController.value == null ? ' ' : this.firstNameController.value + " ") +
+        (this.secondNameController.value == null ? ' ' : this.secondNameController.value + " ") +
+        (this.thirdNameController.value == null ? ' ' : this.thirdNameController.value + " ") +
+        (this.familyNameController.value == null ? ' ' : this.familyNameController.value + " ").trim());
 
       this.fullNameController.disable();
 
@@ -396,17 +398,18 @@ return value==null?"_":value;
 
     if (this.payersListErorr != null && this.payersListErorr != null) {
       this.insurancePlans.push({
-        iSPrimary:false,
+        iSPrimary: false,
         selectePayer: "",
         expiryDateController: new FormControl(),
         memberCardId: new FormControl(),
         selecteSubscriberRelationship: "",
         selecteCoverageType: "",
         payerErorr: null,
-        memberCardIdErorr: null
+        memberCardIdErorr: null,
+        selecteSubscriberRelationshipErorr: null, selecteCoverageTypeErorr: null
       })
 
-      
+
     } else {
 
       this.dialogService.openMessageDialog({
@@ -468,9 +471,9 @@ return value==null?"_":value;
           title: '',
           message: `Beneficiary updated successfully`,
           isError: false
-        }).subscribe( event=>{this.changeMode()});;
+        }).subscribe(event => { this.changeMode() });;
         this.sharedServices.loadingChanged.next(false);
-      
+
 
       }
     }
@@ -496,7 +499,7 @@ return value==null?"_":value;
 
         }
       });
- 
+
 
   }
 
@@ -508,7 +511,7 @@ return value==null?"_":value;
     this.beneficiaryModel.lastName = this.thirdNameController.value;
     this.beneficiaryModel.familyName = this.familyNameController.value;
     this.beneficiaryModel.fullName = this.fullNameController.value;
-    this.beneficiaryModel.dob = new Date(moment( this.dobFormControl.value).format('YYYY-MM-DD'));
+    this.beneficiaryModel.dob = new Date(moment(this.dobFormControl.value).format('YYYY-MM-DD'));
     this.beneficiaryModel.gender = this.selectedGender;
     this.beneficiaryModel.nationality = this.selectedNationality == "" ? null : this.selectedNationality;
     this.beneficiaryModel.contactNumber = this.contactNumberController.value;
@@ -530,7 +533,7 @@ return value==null?"_":value;
     this.beneficiaryModel.country = this.selectedCountry == "" ? null : this.selectedCountry;
     this.beneficiaryModel.postalCode = this.postalCodeController.value;
     this.beneficiaryModel.insurancePlans = this.insurancePlans.map(insurancePlan => ({
-      expiryDate:new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
+      expiryDate: new Date(moment(insurancePlan.expiryDateController.value).format('YYYY-MM-DD')),
       payerId: insurancePlan.selectePayer == "" ? null : insurancePlan.selectePayer,
       memberCardId: insurancePlan.memberCardId.value,
       relationWithSubscriber: insurancePlan.selecteSubscriberRelationship == "" ? null : insurancePlan.selecteSubscriberRelationship,
@@ -559,14 +562,14 @@ return value==null?"_":value;
       this.beneficiaryModel, this.providerId
     ).subscribe(event => {
       if (event instanceof HttpResponse) {
-      
+
         this.dialogService.openMessageDialog({
           title: '',
           message: `Beneficiary added successfully`,
           isError: false
-        }).subscribe( event=>{ window.location.reload();});
+        }).subscribe(event => { window.location.reload(); });
         this.sharedServices.loadingChanged.next(false);
-        
+
       }
     }
       , err => {
@@ -631,6 +634,16 @@ return value==null?"_":value;
       }
       if (insurancePlan.memberCardId.value == null || insurancePlan.memberCardId.value.trim().length <= 0) {
         insurancePlan.memberCardIdErorr = "Member Card ID must be specified"
+        thereIsError = true;
+      }
+
+      if (insurancePlan.selecteSubscriberRelationship == null || insurancePlan.selecteSubscriberRelationship.trim().length <= 0) {
+        insurancePlan.selecteSubscriberRelationshipErorr = "Subscriber Relationship must be specified"
+        thereIsError = true;
+      }
+
+      if (insurancePlan.selecteCoverageType == null || insurancePlan.selecteCoverageType.trim().length <= 0) {
+        insurancePlan.selecteCoverageTypeErorr = "Coverage Type must be specified"
         thereIsError = true;
       }
 

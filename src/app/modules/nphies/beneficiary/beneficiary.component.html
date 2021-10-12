@@ -263,8 +263,8 @@
                                 <th>Payer<span class="asterisk">*</span></th>
                                 <th>Expiry Date</th>
                                 <th>Member Card ID<span class="asterisk">*</span></th>
-                                <th>Relation with Subscriber</th>
-                                <th>Coverage Type</th>
+                                <th>Relation with Subscriber<span class="asterisk">*</span></th>
+                                <th>Coverage Type<span class="asterisk">*</span></th>
                                 <th width="10"></th>
                             </tr>
                         </thead>
@@ -309,7 +309,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group m-0 w-160">
+                                    <div class="form-group m-0 w-160" [class.has-error]="insurancePlan.selecteSubscriberRelationshipErorr!=null&&insurancePlan.selecteSubscriberRelationshipErorr.trim().length>0">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selecteSubscriberRelationship"
                                                 (selectionChange)="insurancePlan.selecteSubscriberRelationship = $event.value;" #selecteSubscriberRelationship>
@@ -323,7 +323,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group m-0 w-160">
+                                    <div class="form-group m-0 w-160" [class.has-error]="insurancePlan.selecteCoverageTypeErorr!=null&&insurancePlan.selecteCoverageTypeErorr.trim().length>0">
                                         <mat-form-field class="form-control custom-select-control">
                                             <mat-select [value]="insurancePlan.selecteCoverageType" (selectionChange)="insurancePlan.selecteCoverageType = $event.value;"
                                                 #selecteCoverageType>
