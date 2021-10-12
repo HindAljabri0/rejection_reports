@@ -34,6 +34,7 @@ import {
 import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.component';
 import { ProcessedTransactionsComponent } from './preauthorization-transactions/processed-transactions/processed-transactions.component';
 import { CommunicationRequestsComponent } from './preauthorization-transactions/communication-requests/communication-requests.component';
+import { AddCommunicationDialogComponent } from './add-communication-dialog/add-communication-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { CommunicationRequestsComponent } from './preauthorization-transactions/
     PreAuthorizationDetailsComponent,
     ApiErrorsDialogComponent,
     ProcessedTransactionsComponent,
-    CommunicationRequestsComponent
+    CommunicationRequestsComponent,
+    AddCommunicationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -80,7 +82,8 @@ import { CommunicationRequestsComponent } from './preauthorization-transactions/
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
-    ApiErrorsDialogComponent
+    ApiErrorsDialogComponent,
+    AddCommunicationDialogComponent
   ],
   exports: [
     ApiErrorsDialogComponent

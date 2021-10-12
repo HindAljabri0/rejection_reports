@@ -1,71 +1,173 @@
 <div class="row">
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Claim Type</div>
-      <p class="form-control-static">{{data.preAuthorizationInfo.typeName}} </p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Transaction Date</label>
+      <p class="text-primary">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm'}}</p>
     </div>
   </div>
-  <!-- <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Related Claim Name</div>
-      <p class="form-control-static">NA</p>
-    </div>
-  </div> -->
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Beneficiary Name</div>
-      <p class="form-control-static">{{data.beneficiaryName}}</p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Date Ordered</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.dateOrdered}}</p>
     </div>
   </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Payment Amount</div>
-      <p class="form-control-static">{{paymentAmount}} SR</p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Outcome</label>
+      <p class="text-primary">{{data.outcome}}</p>
     </div>
   </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Transaction Date</div>
-      <p class="form-control-static">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm'}}</p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Status</label>
+      <p class="text-primary">Dummy data</p>
     </div>
   </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Pre-authorization Status</div>
-      <p class="form-control-static">{{data.outcome}}</p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Type</label>
+      <p class="text-primary">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
-</div>
-
-<!-- pre Authorization info start -->
-<h5 class="form-title">
-  Pre Authorization Info
-</h5>
-<div class="row">
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Date Ordered</div>
-      <p class="form-control-static">{{data.preAuthorizationInfo.dateOrdered}}</p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Insurer</label>
+      <p class="text-primary">Dummy data</p>
     </div>
   </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Type</div>
-      <p class="form-control-static">{{data.preAuthorizationInfo.typeName}}</p>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>PreAuth Ref. No.</label>
+      <p class="text-primary">Dummy data</p>
     </div>
   </div>
-  <div class="col-4">
-    <div class="form-group form-group-static">
-      <div class="control-label">Sub Type</div>
-      <p class="form-control-static">
-        <span
-          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Period</label>
+      <p class="text-primary">Dummy data</p>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="inline-label-table">
+      <label>Sub Type</label>
+      <p class="text-primary">
+        <span *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
   </div>
+  <div class="col-9">
+    <div class="inline-label-table">
+      <label>Disposition</label>
+      <p class="text-primary">Dummy data</p>
+    </div>
+  </div>
 </div>
-<!-- pre Authorization info end -->
+
+<!-- payment info start -->
+<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14">
+  <h5 class="align-self-center medium pb-2 text-primary">Payment Info</h5>
+  <div class="row">
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Category:</label>
+        <p class="text-primary">Value</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Category:</label>
+        <p class="text-primary">Value</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Category:</label>
+        <p class="text-primary">Value</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Category:</label>
+        <p class="text-primary">Value</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- payment info end -->
+
+<!-- error section start -->
+<h5 class="form-title">
+  Errors
+</h5>
+<div class="table-responsive">
+  <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th class="header-cell-error">Code</th>
+        <th class="header-cell-error">Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Dummy data</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Dummy data</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Dummy data</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- error section end -->
+
+<!-- beneficiary section start -->
+<h5 class="form-title">
+  Beneficiary Details
+</h5>
+<div class="row">
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Name</div>
+      <p class="form-control-static">Dummy data</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Document</div>
+      <p class="form-control-static">Dummy Type (Dummy ID)</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Gender</div>
+      <p class="form-control-static">Dummy data</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Date of Birth</div>
+      <p class="form-control-static">Dummy data</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Contact No.</div>
+      <p class="form-control-static">Dummy data</p>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group form-group-static">
+      <div class="control-label">Email</div>
+      <p class="form-control-static">Dummy data</p>
+    </div>
+  </div>
+</div>
 
 <!-- Diagnosis start -->
 <h5 class="form-title">
@@ -169,8 +271,7 @@
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 {{visionSpecification.lensNote}}
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
-                [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>
@@ -321,29 +422,59 @@
         <th width="10"></th>
         <th>Type</th>
         <th>Code - Description</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
         <th>Net</th>
-        <th>Non Standard Code</th>
+        <th>Approved Net</th>
+        <th>Status</th>
+        <th>Reason</th>
+        <th>Note No.</th>
       </tr>
     </thead>
     <tbody>
       <ng-container *ngFor="let item of data.items; let i = index">
         <tr>
           <td class="text-primary text-center row-click" (click)="toggleItem(i)" width="10">
-            <mat-icon *ngIf="currentSelectedItem!=0" class="size-21">add_circle_outline</mat-icon>
-            <mat-icon *ngIf="currentSelectedItem==0" class="size-21">remove_circle_outline</mat-icon>
+            <mat-icon *ngIf="currentSelectedItem!=i" class="size-21">add_circle_outline</mat-icon>
+            <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
           </td>
-          <td class="row-click" (click)="toggleItem(0)">{{item.typeName}}</td>
-          <td class="row-click" (click)="toggleItem(0)">{{item.itemCode}} - {{item.itemDescription}}</td>
-          <td class="row-click" (click)="toggleItem(0)">{{item.quantity}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(0)">{{item.unitPrice}} <span class="currency">SR</span>
-          </td>
-          <td class="text-nowrap row-click" (click)="toggleItem(0)">{{item.net}} <span class="currency">SR</span></td>
-          <td class="row-click" (click)="toggleItem(0)">{{item.nonStandardCode}}</td>
+          <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
+          <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
         </tr>
         <tr *ngIf="currentSelectedItem == i">
           <td colspan="8">
+            <div class="box mb-2">
+              <h5 class="align-self-center medium pb-2">Adjudication</h5>
+              <div class="row">
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="box">
               <h5 class="align-self-center medium pb-2">Details</h5>
               <div class="row">
@@ -351,11 +482,8 @@
                   <table class="inline-label-table">
                     <tbody>
                       <tr>
-                        <td class="label">Is Package?</td>
-                        <td>
-                          <span *ngIf="item.isPackage === 1">Yes</span>
-                          <span *ngIf="item.isPackage === 2">No</span>
-                        </td>
+                        <td class="label">Quantity</td>
+                        <td>{{item.quantity}}</td>
                       </tr>
                       <tr>
                         <td class="label">Discount</td>
@@ -369,12 +497,27 @@
                         <td class="label">Patient Share(%)</td>
                         <td>{{item.patientShare}} %</td>
                       </tr>
+                      <tr>
+                        <td class="label">Is Package?</td>
+                        <td>
+                          <span *ngIf="item.isPackage === 1">Yes</span>
+                          <span *ngIf="item.isPackage === 2">No</span>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
+                      <tr>
+                        <td class="label">Unit Price</td>
+                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Factor</td>
+                        <td>Dummy data</td>
+                      </tr>
                       <tr>
                         <td class="label">Tax</td>
                         <td>{{item.tax}} <span class="currency">SR</span></td>
@@ -387,16 +530,20 @@
                         <td class="label">Payer Share</td>
                         <td>{{item.payerShare}} <span class="currency">SR</span></td>
                       </tr>
-                      <tr>
-                        <td class="label">Start Date</td>
-                        <td>{{item.startDate}}</td>
-                      </tr>
                     </tbody>
                   </table>
                 </div>
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
+                      <tr>
+                        <td class="label">Start Date</td>
+                        <td>{{item.startDate}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Non Standard Code</td>
+                        <td>{{item.nonStandardCode}}</td>
+                      </tr>
                       <tr>
                         <td class="label">Supporting Info</td>
                         <td>{{item.supportingInfoNames}}</td>
@@ -422,3 +569,37 @@
   </table>
 </div>
 <!-- Items end -->
+
+<!-- process notes start -->
+<h5 class="form-title">
+  Process Notes
+</h5>
+<div class="table-responsive">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Type</th>
+        <th>Text</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Dummy type</td>
+        <td>Dummy Text</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Dummy type</td>
+        <td>Dummy Text</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Dummy type</td>
+        <td>Dummy Text</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- process notes end -->

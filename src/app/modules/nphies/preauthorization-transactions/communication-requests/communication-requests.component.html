@@ -1,5 +1,5 @@
-<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-  <div class="fixed-height fixed-height-sm" *ngIf="communicationRequestModel && communicationRequests.length > 0">
+<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" *ngIf="communicationRequestModel && communicationRequests.length > 0">
+  <div class="fixed-height fixed-height-sm">
     <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
       <thead>
         <tr>
@@ -21,10 +21,9 @@
       </tbody>
     </table>
   </div>
-  <app-empty-state *ngIf="communicationRequestModel && communicationRequests.length === 0"
-message='No Communication request found!'>
-</app-empty-state>
 </ng-scrollbar>
+<app-empty-state *ngIf="communicationRequestModel && communicationRequests.length === 0" message='No Communication request found!'>
+</app-empty-state>
 <div class="pagination-header">
   <div class="form-group page-select">
     <label class="control-label">Go to page: </label>
@@ -35,8 +34,7 @@ message='No Communication request found!'>
     </mat-form-field>
   </div>
   <div class="material-paginator">
-    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-      (page)="paginatorAction($event)">
+    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
     </mat-paginator>
   </div>
 </div>
