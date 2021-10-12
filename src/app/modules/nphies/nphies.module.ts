@@ -32,6 +32,8 @@ import {
   AddEditVisionLensSpecificationsComponent
 } from './add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.component';
+import { ProcessedTransactionsComponent } from './preauthorization-transactions/processed-transactions/processed-transactions.component';
+import { CommunicationRequestsComponent } from './preauthorization-transactions/communication-requests/communication-requests.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.
     SearchBeneficiaryComponent,
     AddEditVisionLensSpecificationsComponent,
     PreAuthorizationDetailsComponent,
-    ApiErrorsDialogComponent
+    ApiErrorsDialogComponent,
+    ProcessedTransactionsComponent,
+    CommunicationRequestsComponent
   ],
   imports: [
     CommonModule,

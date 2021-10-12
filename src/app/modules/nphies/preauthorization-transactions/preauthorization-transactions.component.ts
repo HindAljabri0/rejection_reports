@@ -17,6 +17,10 @@ import { NotificationsService } from 'src/app/services/notificationService/notif
 import { Observable } from 'rxjs';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { ProcessedTransaction } from 'src/app/models/processed-transaction';
+import { CommunicationRequest } from 'src/app/models/communication-request';
+import { ProcessedTransactionsComponent } from './processed-transactions/processed-transactions.component';
+import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -24,6 +28,9 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
   styles: []
 })
 export class PreauthorizationTransactionsComponent implements OnInit {
+
+  @ViewChild('processedTransactions', { static: false }) processedTransactions: ProcessedTransactionsComponent;
+  @ViewChild('communicationRequests', { static: false }) communicationRequests: CommunicationRequestsComponent;
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[];
@@ -80,7 +87,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
     this.routeActive.queryParams.subscribe(params => {
 
-      this.getPayerList();
+
 
       if (params.fromDate != null) {
         const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
@@ -127,9 +134,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.pageSize = 10;
       }
 
-      if (this.FormPreAuthTransaction.valid) {
-        this.onSubmit();
-      }
+      this.getPayerList(true);
+
     });
   }
 
@@ -157,12 +163,17 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  getPayerList() {
+  getPayerList(isFromUrl: boolean = false) {
     this.beneficiaryService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
           this.payersList = body;
+          if (isFromUrl) {
+            if (this.FormPreAuthTransaction.valid) {
+              this.onSubmit();
+            }
+          }
         }
       }
     }, errorEvent => {
@@ -408,58 +419,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   tabChange($event) {
     if ($event && $event.index === 1) {
-      this.getProcessedTransactions();
+      this.processedTransactions.getProcessedTransactions();
     } else if ($event && $event.index === 2) {
-      this.getCommunicationRequests();
+      this.communicationRequests.getCommunicationRequests();
     }
-  }
-
-  getProcessedTransactions() {
-    this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesSearchService.getProcessedTransaction(this.sharedServices.providerId).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          this.sharedServices.unReadProcessedCount = 0;
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    });
-  }
-
-  getCommunicationRequests() {
-    this.sharedServices.loadingChanged.next(true);
-    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          this.sharedServices.unReadComunicationRequestCount = 0;
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    });
   }
 
   openDetailsDialog(value: number) {
@@ -487,7 +450,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
+          if (error.error && error.error.errors) {
+            // tslint:disable-next-line:max-line-length
+            this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
+          }
         } else if (error.status === 404) {
           this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
         } else if (error.status === 500) {

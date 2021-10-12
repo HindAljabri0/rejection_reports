@@ -26,15 +26,15 @@
 
       <ng-container *ngIf="FormSupportingInfo.controls.category.value.value === 'attachment'">
         <div class="col-4 col-lg-3">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('attachment').touched) && FormSupportingInfo.get('attachment').hasError('required')}">
-            <label class="control-label">Upload Attachment</label>
+          <div class="form-group">
+            <label class="control-label">{{currentFileUploadName?'Selected Attachment':'Upload Attachment'}}</label>
             <div class="file-upload-wrapper">
               <div class="content">
                 <button mat-flat-button color="primary" type="button" *ngIf="!fileUploadFlag">
                   Choose File
                 </button>
                 <div class="uploaded-file-name" *ngIf="fileUploadFlag">
-                  <span>{{currentFileUpload.name}}</span>
+                  <span>{{currentFileUploadName}}</span>
                   <button type="button" class="icon" (click)="deleteFile()" matRipple title="Delete File?">
                     <mat-icon class="size-20">close</mat-icon>
                   </button>
@@ -42,11 +42,10 @@
                 <p class="error-text pt-1" *ngIf="error">{{error}}</p>
               </div>
               <ng-container *ngIf="!fileUploadFlag">
-                <input type="file" accept="application/pdf" name="attachmentFile" class="file-upload-control" formControlName="attachment"
+                <input type="file" accept="application/pdf" name="attachmentFile" class="file-upload-control"
                   (change)="selectFile($event)" required />
-                  <div
-                  *ngIf="(isSubmitted || FormSupportingInfo.get('attachment').touched) && FormSupportingInfo.get('attachment').hasError('required')">
-                  <span class="error-text">Please select file</span>
+                <div *ngIf="isSubmitted && FormSupportingInfo.get('attachment').hasError('required')">
+                  <span class="error-text">Please select a file</span>
                 </div>
               </ng-container>
             </div>

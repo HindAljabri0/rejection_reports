@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { Observable, Subject } from 'rxjs';
@@ -20,6 +20,7 @@ import {
 import {
   ConfirmAdminDeleteDialogComponent
 } from 'src/app/components/dialogs/confirm-admin-delete-dialog/confirm-admin-delete-dialog.component';
+import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +125,22 @@ export class DialogService {
     dialogRef.afterClosed().subscribe(value => {
       this.onClaimDialogClose.next(value);
     });
+  }
+
+  showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
+    this.closeAll();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      mainMessage: _mainMessage,
+      subMessage: _subMessage,
+      mode: _mode,
+      hideNoButton: _hideNoButton,
+      yesButtonText: _yesButtonText,
+      errors: _errors
+    };
+    const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
   }
 
   closeAll() {

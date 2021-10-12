@@ -49,7 +49,7 @@ export class AddPreauthorizationComponent implements OnInit {
     countryName: [''],
     date: [''],
     dateWritten: [''],
-    // prescriber: ['', Validators.required],
+    prescriber: [''],
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -86,6 +86,7 @@ export class AddPreauthorizationComponent implements OnInit {
   IsCareTeamRequired = false;
   IsItemRequired = false;
   IsDateWrittenRequired = false;
+  IsPrescriberRequired = false;
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
@@ -144,6 +145,10 @@ export class AddPreauthorizationComponent implements OnInit {
         ];
         break;
     }
+
+    this.VisionSpecifications = [];
+    this.Items = [];
+    this.Diagnosises = [];
   }
 
   searchBeneficiaries() {
@@ -201,7 +206,7 @@ export class AddPreauthorizationComponent implements OnInit {
               x.productName = result.productName;
               x.eye = result.eye;
               x.sphere = result.sphere;
-              x.cyclinder = result.cyclinder;
+              x.cylinder = result.cylinder;
               x.axis = result.axis;
               x.prismAmount = result.prismAmount;
               x.prismBase = result.prismBase;
@@ -547,12 +552,15 @@ export class AddPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
-
     if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
       if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = true;
         hasError = true;
       } else {
+        this.FormPreAuthorization.controls.prescriber.clearValidators();
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = false;
       }
 
@@ -565,6 +573,19 @@ export class AddPreauthorizationComponent implements OnInit {
         this.FormPreAuthorization.controls.dateWritten.clearValidators();
         this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
         this.IsDateWrittenRequired = false;
+      }
+
+      // tslint:disable-next-line:max-line-length
+      if ((this.FormPreAuthorization.controls.dateWritten.value && !this.FormPreAuthorization.controls.prescriber.value) ||
+        (this.VisionSpecifications.length > 0 && !this.FormPreAuthorization.controls.prescriber.value)) {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+        this.IsPrescriberRequired = true;
+        hasError = true;
+      } else {
+        this.FormPreAuthorization.controls.prescriber.clearValidators();
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+        this.IsPrescriberRequired = false;
       }
     }
 
@@ -652,14 +673,14 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
-        // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+        this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
         this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
           const model: any = {};
           model.sequence = x.sequence;
           model.product = x.product;
           model.eye = x.eye;
           model.sphere = x.sphere;
-          model.cylinder = x.cyclinder;
+          model.cylinder = x.cylinder;
           model.axis = x.axis;
           model.prismAmount = x.prismAmount;
           model.prismBase = x.prismBase;
@@ -704,8 +725,6 @@ export class AddPreauthorizationComponent implements OnInit {
       }).filter(x => x !== undefined);
 
       console.log('Model', this.model);
-      // this.IsJSONPosted = true;
-      // this.prepareDetailsModel();
 
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
