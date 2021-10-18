@@ -7,6 +7,8 @@ export class ClaimCriteriaModel {
 
     payerId?: string;
 
+    organizationId?: string;
+
     batchId?: string;
 
     uploadId?: string;

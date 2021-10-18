@@ -16,6 +16,7 @@ export class SearchService {
     fromDate?: string,
     toDate?: string,
     payerId?: string,
+    organizationId?: string,
     batchId?: string,
     uploadId?: string,
     casetype?: string[],
@@ -25,9 +26,9 @@ export class SearchService {
     patientFileNo?: string,
     policyNo?: string) {
     let requestURL = `/providers/${providerId}/claims?`;
-    if (fromDate != null && toDate != null && payerId != null) {
+    if (fromDate != null && toDate != null && (payerId != null || organizationId != null)) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&';
+        + '&toDate=' + this.formatDate(toDate) + (payerId != null ? ('&payerId=' + payerId) : ('&organizationId=' + organizationId)) + '&';
       if (casetype != null) {
         requestURL += 'casetype=' + casetype.join(',') + '&';
       }
@@ -75,6 +76,7 @@ export class SearchService {
     fromDate?: string,
     toDate?: string,
     payerId?: string,
+    organizationId?: string,
     statuses?: string[],
     page?: number,
     pageSize?: number,
@@ -94,10 +96,12 @@ export class SearchService {
     if (page == null) { page = 0; }
     if (pageSize == null) { pageSize = 10; }
     let requestURL = `/providers/${providerId}/claims/details?`;
-    if (fromDate != null && toDate != null && payerId != null) {
+    if (fromDate != null && toDate != null && (payerId != null || organizationId != null)) {
       requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + '&payerId=' + payerId + '&';
-      if (casetype != null) { requestURL += 'casetype=' + casetype.join(',') + '&'; }
+        + '&toDate=' + this.formatDate(toDate) + (payerId != null ? ('&payerId=' + payerId) : ('&organizationId=' + organizationId)) + '&';
+      if (casetype != null) {
+        requestURL += 'casetype=' + casetype.join(',') + '&';
+      }
     }
     if (batchId != null) {
       if (batchId.includes('-')) {
@@ -136,6 +140,7 @@ export class SearchService {
     fromDate?: string,
     toDate?: string,
     payerId?: string,
+    organizationId?: string,
     batchId?: string,
     uploadId?: string,
     claimRefNo?: string,
@@ -149,8 +154,8 @@ export class SearchService {
     netAmount?: string,
     batchNo?: string) {
     let requestURL = `/providers/${providerId}/claims/download?status=${statuses.toString()}`;
-    if (fromDate != null && toDate != null && payerId != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
+    if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
     } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
       if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
@@ -200,6 +205,7 @@ export class SearchService {
     fromDate?: string,
     toDate?: string,
     payerId?: string,
+    organizationId?: string,
     batchId?: string,
     uploadId?: string,
     claimRefNo?: string,
@@ -213,8 +219,8 @@ export class SearchService {
     netAmount?: string,
     batchNo?: string) {
     let requestURL = `/providers/${providerId}/claims/download/excel?status=${statuses.toString()}`;
-    if (fromDate != null && toDate != null && payerId != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}`;
+    if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
+      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
     } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
       if (batchId.includes('-')) {
         batchId = batchId.split('-')[1];
