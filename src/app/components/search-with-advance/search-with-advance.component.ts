@@ -17,6 +17,7 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'claimRefNo', label: 'Provider Claim Ref. No.' },
     { key: 'memberId', label: 'Member ID' },
     { key: 'payer&date', label: 'Payer' },
+    { key: 'tpa&date', label: 'TPA' },
     { key: 'batchId', label: 'Batch ID' },
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
@@ -27,6 +28,8 @@ export class SearchWithAdvanceComponent implements OnInit {
 
 
   payers: { id: number, name: string }[];
+  tpas: { id: number, name: string }[];
+
   casetypes: { value: string, name: string }[] = [
     { value: 'OUTPATIENT,INPATIENT', name: 'Any' },
     { value: 'OUTPATIENT', name: 'Outpatient' },
@@ -36,7 +39,9 @@ export class SearchWithAdvanceComponent implements OnInit {
   searchControl: FormControl = new FormControl();
 
   selectedPayer: { id: number, name: string };
+  selectedTpa: { id: number, name: string };
   payerHasError = false;
+  tpaHasError = false;
   fromDateControl: FormControl = new FormControl();
   fromDateHasError = false;
   toDateControl: FormControl = new FormControl();
@@ -57,6 +62,7 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   ngOnInit() {
     this.payers = this.commen.getPayersList();
+    this.tpas = this.commen.getTPAsList();
     this.router.events.pipe(
       filter((event: RouterEvent) => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -78,9 +84,13 @@ export class SearchWithAdvanceComponent implements OnInit {
 
 
   search() {
-    if (this.selectedSearchMode == 'payer&date') {
-      if (this.selectedPayer == null) {
+    if (this.selectedSearchMode == 'payer&date' || this.selectedSearchMode == 'tpa&date') {
+      if (this.selectedSearchMode == 'payer&date' && this.selectedPayer == null) {
         this.payerHasError = true;
+        return;
+      }
+      if (this.selectedSearchMode == 'tpa&date' && this.selectedTpa == null) {
+        this.tpaHasError = true;
         return;
       }
       this.payerHasError = false;
@@ -96,7 +106,8 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.toDateHasError = false;
       this.router.navigate([this.commen.providerId, 'claims'], {
         queryParams: {
-          payerId: this.selectedPayer.id,
+          payerId: this.selectedPayer == null? null : this.selectedPayer.id,
+          organizationId: this.selectedTpa == null? null : this.selectedTpa.id,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
         },

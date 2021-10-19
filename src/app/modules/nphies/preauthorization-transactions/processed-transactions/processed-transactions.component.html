@@ -13,12 +13,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let transaction of processedTransactions">
-          <td class="row-click">{{transaction.memberCardId}}</td>
-          <td class="row-click">{{transaction.preAuthorizationId}}</td>
-          <td class="row-click">{{transaction.transactionDate | date:
-            'dd-MM-yyyy hh:mm:ss aa'}}</td>
-          <td class="row-click">{{transaction.payerName}}</td>
-          <td class="row-click">{{transaction.status}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.memberCardId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.requestId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm:ss aa'}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.payerName}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.status}}</td>
           <td class="actions">
             <mat-menu #moreMenu="matMenu" xPosition="before">
               <button mat-menu-item><span>Reuse</span></button>

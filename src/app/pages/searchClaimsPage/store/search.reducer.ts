@@ -29,6 +29,7 @@ export interface SearchCriteria {
     patientFileNo?: string;
     policyNo?: string;
     payerId?: string;
+    organizationId?: string;
     fromDate?: string;
     toDate?: string;
     batchId?: string;

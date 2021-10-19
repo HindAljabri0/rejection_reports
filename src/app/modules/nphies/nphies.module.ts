@@ -35,6 +35,8 @@ import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.
 import { ProcessedTransactionsComponent } from './preauthorization-transactions/processed-transactions/processed-transactions.component';
 import { CommunicationRequestsComponent } from './preauthorization-transactions/communication-requests/communication-requests.component';
 import { AddCommunicationDialogComponent } from './add-communication-dialog/add-communication-dialog.component';
+import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.component';
+import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { AddCommunicationDialogComponent } from './add-communication-dialog/add-
     ApiErrorsDialogComponent,
     ProcessedTransactionsComponent,
     CommunicationRequestsComponent,
-    AddCommunicationDialogComponent
+    AddCommunicationDialogComponent,
+    NphiesUploadsComponent,
+    NphiesUploadCardComponent
   ],
   imports: [
     CommonModule,

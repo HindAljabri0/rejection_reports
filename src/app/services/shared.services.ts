@@ -404,6 +404,28 @@ export class SharedServices {
     return payers;
   }
 
+  getTPAsList() {
+    let tpas: { id: number, name: string }[] = [];
+    const payersStr = localStorage.getItem('payers');
+    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
+      const payersStrSplitted = payersStr.split('|');
+      tpas = payersStrSplitted
+        .map(value => ({ id: Number.parseInt(value.split(',')[4]), name: value.split(',')[3] }));
+    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
+      tpas = [{ id: Number.parseInt(payersStr.split(',')[4]), name: payersStr.split(',')[3] }];
+    }
+    let distinctTPAIds: number[] = [];
+    return tpas.filter(tpa => tpa.id != 1 && tpa.id != 2)
+      .filter(tpa => {
+        if (distinctTPAIds.includes(tpa.id)) {
+          return false;
+        } else {
+          distinctTPAIds.push(tpa.id);
+          return true;
+        }
+      });
+  }
+
   getPayerCode(payerId: string) {
     switch (payerId) {
       case '204':
@@ -540,7 +562,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -558,7 +580,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

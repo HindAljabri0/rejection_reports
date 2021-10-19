@@ -310,10 +310,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  cancelRequest(approvalRequestId: number) {
+  cancelRequest(requestId: number) {
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
-    model.approvalRequestId = approvalRequestId;
+    model.approvalRequestId = requestId;
     this.providerNphiesApprovalService.cancelApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -357,10 +357,10 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  nullifyRequest(approvalRequestId: number) {
+  nullifyRequest(requestId: number) {
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
-    model.approvalRequestId = approvalRequestId;
+    model.approvalRequestId = requestId;
     this.providerNphiesApprovalService.nullifyApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -406,7 +406,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       mainMessage: _mainMessage,
@@ -427,14 +427,18 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }
   }
 
-  openDetailsDialog(value: number) {
-    this.getTransactionDetails(value);
+  openDetailsDialoEv(event) {
+    this.getTransactionDetails(event.requestId, event.responseId);
   }
 
-  getTransactionDetails(approvalRequestId = null) {
+  openDetailsDialog(requestId = null, responseId = null) {
+    this.getTransactionDetails(requestId, responseId);
+  }
+
+  getTransactionDetails(requestId = null, responseId = null) {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, approvalRequestId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

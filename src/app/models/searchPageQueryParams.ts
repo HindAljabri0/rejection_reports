@@ -10,6 +10,7 @@ export class SearchPageQueryParams {
     from?: string;
     to?: string;
     payerId?: string;
+    organizationId?:string
     caseTypes?: string[];
     batchId?: string;
     uploadId?: string;
@@ -43,6 +44,7 @@ export class SearchPageQueryParams {
         pageParams.from = params.from;
         pageParams.to = params.to;
         pageParams.payerId = params.payerId;
+        pageParams.organizationId = params.organizationId;
         pageParams.batchId = params.batchId;
         pageParams.uploadId = params.uploadId;
         if (params.caseTypes != null)
@@ -77,6 +79,7 @@ export class SearchPageQueryParams {
         criteria.toDate = this.to;
         criteria.invoiceNo = this.invoiceNo;
         criteria.payerId = this.payerId;
+        criteria.organizationId = this.organizationId;
         criteria.policyNo = this.policyNo;
         criteria.uploadId = this.uploadId;
 

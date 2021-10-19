@@ -2,7 +2,8 @@ import { Paginateable } from './paginateable';
 
 export class ProcessedTransaction extends Paginateable {
   memberCardId: string;
-  preAuthorizationId: number;
+  requestId: number;
+  responseId: number;
   transactionDate: string;
   status: string;
   payerNphiesId: number;
@@ -10,7 +11,8 @@ export class ProcessedTransaction extends Paginateable {
   constructor(body: {}) {
     super(body);
     this.memberCardId = body['memberCardId'];
-    this.preAuthorizationId = body['preAuthorizationId'];
+    this.requestId = body['requestId'];
+    this.responseId = body['responseId'];
     this.transactionDate = body['transactionDate'];
     this.status = body['status'];
     this.payerNphiesId = body['payerNphiesId'];
