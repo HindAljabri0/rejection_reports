@@ -9,6 +9,7 @@ import { PreauthorizationTransactionsComponent } from './preauthorization-transa
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
+import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'insurance-plans', component: InsurancePlanComponent },
   { path: 'payment-reconciliation', component: PaymentReconciliationComponent },
   { path: 'payment-reconciliation-details', component: PaymentReconciliationDetailsComponent },
-  { path: 'beneficiary', component: SearchBeneficiaryComponent }
+  { path: 'beneficiary', component: SearchBeneficiaryComponent },
+  { path: 'uploads', component: NphiesUploadsComponent},
 ];
 
 @NgModule({

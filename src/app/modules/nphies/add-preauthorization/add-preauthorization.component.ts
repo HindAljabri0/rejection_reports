@@ -724,7 +724,10 @@ export class AddPreauthorizationComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      this.model.totalNet = this.model.items.reduce((x, y) => x.net + y.net);
+      this.model.totalNet = 0;
+      this.model.items.forEach((x) => {
+        this.model.totalNet += x.net;
+      });
 
       console.log('Model', this.model);
 
@@ -760,6 +763,7 @@ export class AddPreauthorizationComponent implements OnInit {
           this.sharedServices.loadingChanged.next(false);
         }
       }, error => {
+        this.sharedServices.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
           if (error.status === 400) {
             this.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
@@ -786,7 +790,6 @@ export class AddPreauthorizationComponent implements OnInit {
               this.showMessage(error.error.message, '', 'alert', true, 'OK');
             }
           }
-          this.sharedServices.loadingChanged.next(false);
         }
       });
     }

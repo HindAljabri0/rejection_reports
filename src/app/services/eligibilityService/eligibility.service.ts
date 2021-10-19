@@ -18,6 +18,7 @@ export class EligibilityService {
   public checkEligibilityByDateOrUploadId(
     providerId: string,
     payerId: string,
+    organizationId: string,
     from: string,
     to: string,
     batchId: string,
@@ -35,8 +36,8 @@ export class EligibilityService {
     let requestUrl = `/providers/${providerId}/eligibility/criteria?`;
     if (uploadId != null) {
       requestUrl += `uploadId=${uploadId}`;
-    } else if (payerId != null && from != null && to != null) {
-      requestUrl += `payerId=${payerId}&fromDate=${from}&toDate=${to}`;
+    } else if ((payerId != null || organizationId != null) && from != null && to != null) {
+      requestUrl += `payerId=${payerId}&organizationId=${organizationId}&fromDate=${from}&toDate=${to}`;
     } else if (batchId != null) {
       requestUrl += `batchId=${batchId}`;
     } else if (invoiceNo != null) {

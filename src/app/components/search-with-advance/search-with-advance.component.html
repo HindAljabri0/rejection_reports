@@ -1,71 +1,4 @@
-<!-- <mat-menu #appMenu="matMenu">
-    <div class="menuContent" (click)="$event.stopPropagation()">
-        <div class="searchByDate" (keyup.enter)="search()">
-            <mat-form-field [ngClass]="{'mat-form-field-invalid':payerIdHasError}"
-                style="margin-right: 45px; min-width: 205px;  margin-left: 15px;">
-                <mat-label>Select Payer *</mat-label>
-                <mat-select [formControl]="payerIdControl" (keyup.enter)="search()"
-                    (selectionChange)="updateChips(payerId, $event.value)">
-                    <mat-option *ngFor="let payer of payers" [value]="payer.id">
-                        {{payer.name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="payerIdControl.hasError('required')">Please choose a Payer</mat-error>
-            </mat-form-field>
-            <mat-checkbox [(checked)]="outpatientControl" (change)="toggleSelectionOutpatient()">Outpatient
-            </mat-checkbox>
-            <mat-checkbox [(checked)]="inpatientControl" (change)="toggleSelectionInpatient()">Inpatient</mat-checkbox>
-        </div>
-        <div class="searchByDate" (keyup.enter)="search()">
-            <mat-form-field [ngClass]="{'mat-form-field-invalid':fromDateHasError}" style="margin-right: 45px;">
-                <input matInput [matDatepicker]="fromPicker" placeholder="From claim date *"
-                    [formControl]="fromDateControl" (keyup.enter)="search()"
-                    (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
-                <mat-datepicker-toggle matSuffix [for]="fromPicker">
-                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                </mat-datepicker-toggle>
-                <mat-datepicker #fromPicker></mat-datepicker>
-                <mat-error *ngIf="fromDateControl.hasError('required')">Please choose a Date</mat-error>
-            </mat-form-field>
-            <mat-form-field [ngClass]="{'mat-form-field-invalid':toDateHasError}" style="margin-right: 5px;">
-                <input matInput [matDatepicker]="toPicker" placeholder="To claim date *" [formControl]="toDateControl"
-                    (keyup.enter)="search()" (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
-                <mat-datepicker-toggle matSuffix [for]="toPicker">
-                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                </mat-datepicker-toggle>
-                <mat-datepicker #toPicker></mat-datepicker>
-                <mat-error *ngIf="toDateControl.hasError('required')">Please choose a Date</mat-error>
-            </mat-form-field>
-        </div>
-        <div style="width: 100%; text-align: end;">
-            <button mat-flat-button style="margin-right: 5px;" (click)="clear()">Clear</button>
-            <button mat-raised-button color="primary" (click)="search()">Search</button>
-        </div>
-    </div>
-</mat-menu>
 
-<mat-form-field appearance="outline" style="font-size: smaller;">
-    <mat-select [value]="selectedSearchMode" (change)="selectedSearchMode = $event.target.value;">
-        <mat-option *ngFor="let type of searchModes" [value]="type.key">{{type.label}}</mat-option>
-    </mat-select>
-</mat-form-field>
-<mat-form-field color="accent" appearance="outline" floatLabel="never" style="font-size: smaller;">
-    <mat-chip-list #chipList>
-        <mat-chip *ngFor="let query of queries" [matTooltip]="getQueryTypeText(query.type)">
-            {{queryToText(query)}}
-        </mat-chip>
-        <input type="text" placeholder="search by batch id..." matInput autocomplete="off" [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-            [formControl]="searchControl" (matChipInputTokenEnd)="updateChips(batchId, $event.value)"
-            (click)="$event.stopPropagation()" [matAutocomplete]="auto" [value]="searchControl.value">
-        <mat-icon matSuffix style="cursor: pointer;">search</mat-icon>
-    </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete">
-        <mat-option (click)="searchWithBatchId()" *ngIf="currentBatchId != null && currentBatchId != ''">
-            Search for claims with batch ID: {{currentBatchId}}
-        </mat-option>
-    </mat-autocomplete>
-</mat-form-field> -->
 
 <div class="advance-search">
     <mat-form-field class="search-mode-select">
@@ -81,9 +14,12 @@
             <mat-icon>search</mat-icon>
         </button>
         <mat-chip-list #chipList (keyup.enter)="search()">
-            <ng-container *ngIf="selectedSearchMode == 'payer&date'">
-                <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu">
+            <ng-container *ngIf="selectedSearchMode == 'payer&date' || selectedSearchMode == 'tpa&date'">
+                <mat-chip matTooltip="Select Payer" [matMenuTriggerFor]="payersMenu" *ngIf="selectedSearchMode == 'payer&date'">
                     <span [ngStyle]="{'color':payerHasError? '#D84646':'#3A3A3A'}">{{selectedPayer != null? selectedPayer.name : 'Select Payer'}}</span>
+                </mat-chip>
+                <mat-chip matTooltip="Select TPA" [matMenuTriggerFor]="tpasMenu" *ngIf="selectedSearchMode == 'tpa&date'">
+                    <span [ngStyle]="{'color':tpaHasError? '#D84646':'#3A3A3A'}">{{selectedTpa != null? selectedTpa.name : 'Select TPA'}}</span>
                 </mat-chip>
                 <mat-chip matTooltip="From Date" (click)="fromPicker.open()">
                     <input [matDatepicker]="fromPicker" [formControl]="fromDateControl" class="hidden-input">
@@ -106,5 +42,11 @@
 <mat-menu #payersMenu>
     <button *ngFor="let payer of payers" (click)="selectedPayer = payer" mat-menu-item>
         <span>{{payer.name}}</span>
+    </button>
+</mat-menu>
+
+<mat-menu #tpasMenu>
+    <button *ngFor="let tpa of tpas" (click)="selectedTpa = tpa" mat-menu-item>
+        <span>{{tpa.name}}</span>
     </button>
 </mat-menu>

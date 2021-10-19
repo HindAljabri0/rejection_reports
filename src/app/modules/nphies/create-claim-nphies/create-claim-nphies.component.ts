@@ -701,39 +701,44 @@ export class CreateClaimNphiesComponent implements OnInit {
         }
       }).filter(x => x !== undefined);
 
-      this.model.totalNet = this.model.items.reduce((x, y) => x.net + y.net);
+      this.model.totalNet = 0;
+      this.model.items.forEach((x) => {
+        this.model.totalNet += x.net;
+      });
       console.log('Model', this.model);
       // this.IsJSONPosted = true;
       // this.prepareDetailsModel();
-
       this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
-            const body: any = event.body;
-            if (body.status === 'OK') {
-              if (body.outcome.toString().toLowerCase() === 'error') {
-                const errors: any[] = [];
+            this.reset();
+            this.showMessage('Success', 'Claim created Successfully', 'success', true, 'OK');
+            // const body: any = event.body;
+            // if (body.status === 'OK') {
+            //   if (body.outcome.toString().toLowerCase() === 'error') {
+            //     const errors: any[] = [];
 
-                if (body.disposition) {
-                  errors.push(body.disposition);
-                }
+            //     if (body.disposition) {
+            //       errors.push(body.disposition);
+            //     }
 
-                if (body.errors && body.errors.length > 0) {
-                  body.errors.forEach(err => {
-                    err.coding.forEach(codex => {
-                      errors.push(codex.code + ' : ' + codex.display);
-                    });
-                  });
-                }
+            //     if (body.errors && body.errors.length > 0) {
+            //       body.errors.forEach(err => {
+            //         err.coding.forEach(codex => {
+            //           errors.push(codex.code + ' : ' + codex.display);
+            //         });
+            //       });
+            //     }
 
-                this.showMessage(body.message, '', 'alert', true, 'OK', errors);
+            //     this.showMessage(body.message, '', 'alert', true, 'OK', errors);
 
-              } else {
-                this.IsJSONPosted = true;
-                this.prepareDetailsModel(body);
-                this.showMessage('Success', body.message, 'success', true, 'OK');
-              }
-            }
+            //   } else {
+            //     // this.IsJSONPosted = true;
+            //     // this.prepareDetailsModel(body);
+            //     // this.reset();
+            //     // this.showMessage('Success', body.message, 'success', true, 'OK');
+            //   }
+            // }
           }
           this.sharedServices.loadingChanged.next(false);
         }
@@ -854,6 +859,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       accidentType: '',
       country: ''
     });
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.CareTeams = [];
     this.Diagnosises = [];
     this.VisionSpecifications = [];

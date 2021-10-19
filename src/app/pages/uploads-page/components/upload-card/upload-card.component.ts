@@ -93,7 +93,7 @@ export class UploadCardComponent implements OnInit {
           case 'confirm':
 
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null,
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, null, this.data.uploadId + '', null, null,
               null, null, null, ['Accepted', 'NotAccepted', 'Downloaded', 'Failed'], null, null, null, null, null, null, null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {

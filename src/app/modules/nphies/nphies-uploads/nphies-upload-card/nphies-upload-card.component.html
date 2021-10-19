@@ -1,0 +1,68 @@
+<div class="uplaoded-card" [ngClass]="{'clickable': !data.uploadName.endsWith('[DELETED]')}">
+  <div class="d-flex">
+      <span class="medium text-primary align-self-center">{{data.uploadName}}</span>
+      <span class="text-danger ml-auto" *ngIf="!data.uploadName.endsWith('[DELETED]') && canBeDeleted"
+          (click)="$event.stopPropagation();"
+          matTooltip="Delete All Not Submitted Claims (Ready For Submission, Rejected By Waseel, Downloadable, and Invalid)">
+          <mat-icon class="d-block">delete_outline</mat-icon>
+      </span>
+  </div>
+  <hr class="hr separator">
+  <div class="row small-gutter align-items-center">
+      <div class="col">
+          <p class="small-label">Total Claims</p>
+          <h4 class="semibold">{{totalClaims}} <span class="smaller-label">Claims</span></h4>
+      </div>
+      <div class="col-auto">
+          <button mat-stroked-button color="primary" *ngIf="!data.isManualUpload" routerLink="/summary"
+              [queryParams]="{id: data.uploadId}">View Summary</button>
+      </div>
+  </div>
+  <div class="row small-gutter pt-3">
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Ready for Submission</p>
+          <p class="dashboard-numbers">&ensp;{{data.ready_for_submission}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-under-submission"></span>Under Submission</p>
+          <p class="dashboard-numbers">&ensp;{{data.undersubmission}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-paid"></span>Paid</p>
+          <p class="dashboard-numbers">&ensp;{{data.paid}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-rejected"></span>Rejected By Payer</p>
+          <p class="dashboard-numbers">&ensp;{{data.rejected_by_payer}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-rejected-waseel"></span>Rejected By Waseel</p>
+          <p class="dashboard-numbers">&ensp;{{data.rejected_by_waseel}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-under-processing"></span>Under Processing</p>
+          <p class="dashboard-numbers">&ensp;{{data.underprocessing}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-partially-paid"></span>Partially Paid</p>
+          <p class="dashboard-numbers">&ensp;{{data.partially_paid}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-invalid"></span>Invalid</p>
+          <p class="dashboard-numbers">&ensp;{{data.invalid}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-ready-submission"></span>Downloadable</p>
+          <p class="dashboard-numbers">&ensp;{{data.downloadable}}</p>
+      </div>
+      <div class="col-6 col-lg-4 col-xl-3 pb-2">
+          <p class="smaller-label short-text-height"><span class="bg-submitted-outside-waseel"></span>Submitted Outside Waseel</p>
+          <p class="dashboard-numbers">&ensp;{{data.submitted_outside_waseel}}</p>
+      </div>
+  </div>
+  <hr class="hr separator">
+  <div class="d-flex">
+      <span class="text-medium-grey">Date: {{data.uploadDate | date : 'EEEE, d MMMM, y'}}</span>
+      <span class="text-medium-grey ml-auto text-right">Time: {{data.uploadDate | date : 'hh:mm a'}}</span>
+  </div>
+</div>
