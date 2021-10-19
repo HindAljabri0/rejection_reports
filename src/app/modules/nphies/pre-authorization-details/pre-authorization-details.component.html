@@ -66,7 +66,7 @@
 
 <!-- payment info start -->
 <div class="p-14 bg-off-white ml-n14 mr-n14 mt-14">
-  <h5 class="align-self-center medium pb-2 text-primary">Payment Info</h5>
+  <h5 class="align-self-center medium pb-2 text-primary">Total</h5>
   <div class="row">
     <div class="col-auto">
       <div class="inline-label-table auto-width">
@@ -168,6 +168,228 @@
     </div>
   </div>
 </div>
+<!-- beneficiary details end -->
+
+<!-- process notes start -->
+<h5 class="form-title">
+  Process Notes
+</h5>
+<div class="table-responsive">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Type</th>
+        <th>Text</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Dummy type</td>
+        <td>Dummy Text</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Dummy type</td>
+        <td>Dummy Text</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Dummy type</td>
+        <td>Dummy Text</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- process notes end -->
+
+<!-- Items start -->
+<h5 class="form-title">
+  Items
+</h5>
+<div class="table-responsive">
+  <table class="primary-grid manual-row-color no-borders">
+    <thead>
+      <tr>
+        <th width="10"></th>
+        <th>Type</th>
+        <th>Code - Description</th>
+        <th>Net</th>
+        <th>Approved Net</th>
+        <th>Status</th>
+        <th>Reason</th>
+        <th>Note No.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of data.items; let i = index">
+        <tr>
+          <td class="text-primary text-center row-click" (click)="toggleItem(i)" width="10">
+            <mat-icon *ngIf="currentSelectedItem!=i" class="size-21">add_circle_outline</mat-icon>
+            <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
+          </td>
+          <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
+          <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
+          <td class="text-nowrap row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
+          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
+        </tr>
+        <tr *ngIf="currentSelectedItem == i">
+          <td colspan="8">
+            <div class="box mb-2">
+              <h5 class="align-self-center medium pb-2">Adjudication</h5>
+              <div class="row">
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Category:</label>
+                    <p>Value</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="box">
+              <h5 class="align-self-center medium pb-2">Details</h5>
+              <div class="row">
+                <div class="col-4">
+                  <table class="inline-label-table">
+                    <tbody>
+                      <tr>
+                        <td class="label">Quantity</td>
+                        <td>{{item.quantity}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Discount</td>
+                        <td>{{item.discount}} %</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Tax(%)</td>
+                        <td>{{item.taxPercent}} %</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Patient Share(%)</td>
+                        <td>{{item.patientShare}} %</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Is Package?</td>
+                        <td>
+                          <span *ngIf="item.isPackage === 1">Yes</span>
+                          <span *ngIf="item.isPackage === 2">No</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-4">
+                  <table class="inline-label-table">
+                    <tbody>
+                      <tr>
+                        <td class="label">Unit Price</td>
+                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Factor</td>
+                        <td>Dummy data</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Tax</td>
+                        <td>{{item.tax}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Patient Share</td>
+                        <td>{{item.patientShare}} <span class="currency">SR</span></td>
+                      </tr>
+                      <tr>
+                        <td class="label">Payer Share</td>
+                        <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-4">
+                  <table class="inline-label-table">
+                    <tbody>
+                      <tr>
+                        <td class="label">Start Date</td>
+                        <td>{{item.startDate}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Non Standard Code</td>
+                        <td>{{item.nonStandardCode}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Supporting Info</td>
+                        <td>{{item.supportingInfoNames}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Diagnosis</td>
+                        <td>{{item.diagnosisNames}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Care Teams</td>
+                        <td>{{item.careTeamNames}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+
+    </tbody>
+  </table>
+</div>
+<!-- Items end -->
+
+<!-- Care Teams start -->
+<h5 class="form-title">
+  Care Teams
+</h5>
+<div class="table-responsive">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Sequence</th>
+        <th>Practitioner</th>
+        <th>Practitioner Role</th>
+        <th>Care Team Role</th>
+        <th>Speciality</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let careTeam of data.careTeam">
+        <td>{{careTeam.sequence}}</td>
+        <td>{{careTeam.practitionerName}}</td>
+        <td>{{careTeam.practitionerRoleName}}</td>
+        <td>{{careTeam.careTeamRoleName}}</td>
+        <td>{{careTeam.speciality}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Care Teams end -->
 
 <!-- Diagnosis start -->
 <h5 class="form-title">
@@ -382,224 +604,3 @@
   </div>
 </div>
 <!-- accident end -->
-
-<!-- Care Teams start -->
-<h5 class="form-title">
-  Care Teams
-</h5>
-<div class="table-responsive">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Sequence</th>
-        <th>Practitioner</th>
-        <th>Practitioner Role</th>
-        <th>Care Team Role</th>
-        <th>Speciality</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let careTeam of data.careTeam">
-        <td>{{careTeam.sequence}}</td>
-        <td>{{careTeam.practitionerName}}</td>
-        <td>{{careTeam.practitionerRoleName}}</td>
-        <td>{{careTeam.careTeamRoleName}}</td>
-        <td>{{careTeam.speciality}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!-- Care Teams end -->
-
-<!-- Items start -->
-<h5 class="form-title">
-  Items
-</h5>
-<div class="table-responsive">
-  <table class="primary-grid manual-row-color no-borders">
-    <thead>
-      <tr>
-        <th width="10"></th>
-        <th>Type</th>
-        <th>Code - Description</th>
-        <th>Net</th>
-        <th>Approved Net</th>
-        <th>Status</th>
-        <th>Reason</th>
-        <th>Note No.</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let item of data.items; let i = index">
-        <tr>
-          <td class="text-primary text-center row-click" (click)="toggleItem(i)" width="10">
-            <mat-icon *ngIf="currentSelectedItem!=i" class="size-21">add_circle_outline</mat-icon>
-            <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
-          </td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">{{item.net}} <span class="currency">SR</span></td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">Dummy data</td>
-          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
-          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
-          <td class="row-click" (click)="toggleItem(i)">Dummy data</td>
-        </tr>
-        <tr *ngIf="currentSelectedItem == i">
-          <td colspan="8">
-            <div class="box mb-2">
-              <h5 class="align-self-center medium pb-2">Adjudication</h5>
-              <div class="row">
-                <div class="col-auto">
-                  <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="box">
-              <h5 class="align-self-center medium pb-2">Details</h5>
-              <div class="row">
-                <div class="col-4">
-                  <table class="inline-label-table">
-                    <tbody>
-                      <tr>
-                        <td class="label">Quantity</td>
-                        <td>{{item.quantity}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Discount</td>
-                        <td>{{item.discount}} %</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Tax(%)</td>
-                        <td>{{item.taxPercent}} %</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Patient Share(%)</td>
-                        <td>{{item.patientShare}} %</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Is Package?</td>
-                        <td>
-                          <span *ngIf="item.isPackage === 1">Yes</span>
-                          <span *ngIf="item.isPackage === 2">No</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-4">
-                  <table class="inline-label-table">
-                    <tbody>
-                      <tr>
-                        <td class="label">Unit Price</td>
-                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">Factor</td>
-                        <td>Dummy data</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Tax</td>
-                        <td>{{item.tax}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">Patient Share</td>
-                        <td>{{item.patientShare}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">Payer Share</td>
-                        <td>{{item.payerShare}} <span class="currency">SR</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-4">
-                  <table class="inline-label-table">
-                    <tbody>
-                      <tr>
-                        <td class="label">Start Date</td>
-                        <td>{{item.startDate}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Non Standard Code</td>
-                        <td>{{item.nonStandardCode}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Supporting Info</td>
-                        <td>{{item.supportingInfoNames}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Diagnosis</td>
-                        <td>{{item.diagnosisNames}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Care Teams</td>
-                        <td>{{item.careTeamNames}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </ng-container>
-
-    </tbody>
-  </table>
-</div>
-<!-- Items end -->
-
-<!-- process notes start -->
-<h5 class="form-title">
-  Process Notes
-</h5>
-<div class="table-responsive">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Number</th>
-        <th>Type</th>
-        <th>Text</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>Dummy type</td>
-        <td>Dummy Text</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Dummy type</td>
-        <td>Dummy Text</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Dummy type</td>
-        <td>Dummy Text</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!-- process notes end -->

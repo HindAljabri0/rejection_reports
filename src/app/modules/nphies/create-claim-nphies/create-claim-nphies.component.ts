@@ -262,7 +262,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (this.Items.find(x => x.careTeamSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+      dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
         // tslint:disable-next-line:max-line-length
         mainMessage: 'Are you sure you want to delete this Care Team?',
@@ -329,7 +329,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (this.Items.find(x => x.diagnosisSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+      dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
         // tslint:disable-next-line:max-line-length
         mainMessage: 'Are you sure you want to delete this Diagnosis?',
@@ -454,7 +454,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (this.Items.find(x => x.supportingInfoSequence.find(y => y === sequence))) {
       const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+      dialogConfig.panelClass = ['primary-dialog'];
       dialogConfig.data = {
         // tslint:disable-next-line:max-line-length
         mainMessage: 'Are you sure you want to delete this Supporting Info?',
@@ -830,7 +830,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       mainMessage: _mainMessage,
