@@ -4,6 +4,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Router } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material';
+import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Component({
   selector: 'app-nphies-uploads',
@@ -19,7 +20,8 @@ export class NphiesUploadsComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
-  constructor(private searchService: SearchService, private sharedService: SharedServices, private router: Router) { }
+  constructor(
+    private nphiesClaimUploaderService: NphiesClaimUploaderService, private sharedService: SharedServices, private router: Router) { }
 
   ngOnInit() {
     this.fetchData();
@@ -33,7 +35,7 @@ export class NphiesUploadsComponent implements OnInit {
       return;
     }
     this.sharedService.loadingChanged.next(true);
-    this.searchService.getUploadSummaries(this.sharedService.providerId, this.pageIndex, this.pageSize)
+    this.nphiesClaimUploaderService.getUploadSummaries(this.sharedService.providerId, this.pageIndex, this.pageSize)
       .subscribe(event => {
         if (event instanceof HttpResponse) {
           this.sharedService.loadingChanged.next(false);

@@ -14,4 +14,16 @@ export class NphiesClaimUploaderService {
     const request = new HttpRequest('POST', environment.nphiesClaimUploader + requestUrl, body);
     return this.http.request(request);
   }
+
+  getUploadSummaries(providerId: string, page?: number, size?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (size == null) {
+      size = 10;
+    }
+    const requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl);
+    return this.http.request(request);
+  }
 }

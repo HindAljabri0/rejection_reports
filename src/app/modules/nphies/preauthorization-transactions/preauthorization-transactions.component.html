@@ -94,16 +94,16 @@
             </thead>
             <tbody>
               <tr *ngFor="let transaction of transactions">
-                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.memberCardID}}</td>
-                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">
-                  {{transaction.approvalRequestId}}</td>
-                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.requestId}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.transactionDate | date:
                   'dd-MM-yyyy hh:mm:ss aa'}}</td>
-                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.payerName}}</td>
-                <td class="row-click" (click)="openDetailsDialog(transaction.approvalRequestId)">{{transaction.status}}
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.status}}
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
@@ -117,8 +117,8 @@
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item><span>Reuse</span></button>
-                      <button mat-menu-item (click)="cancelRequest(transaction.approvalRequestId)"><span>Cancel</span></button>
-                      <button mat-menu-item (click)="nullifyRequest(transaction.approvalRequestId)"><span>Nullify/Soft
+                      <button mat-menu-item (click)="cancelRequest(transaction.requestId)"><span>Cancel</span></button>
+                      <button mat-menu-item (click)="nullifyRequest(transaction.requestId)"><span>Nullify/Soft
                           Delete</span></button>
                       <button mat-menu-item><span>Add New Related Claim</span></button>
                     </mat-menu>
@@ -157,7 +157,7 @@
         </div>
       </ng-template>
 
-      <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialog($event)">
+      <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
       </app-processed-transactions>
 
     </mat-tab>
@@ -168,7 +168,7 @@
           <span *ngIf="IsNewComunicationRequest" class="alert-marker ml-2"></span>
         </div>
       </ng-template>
-      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialog($event)">
+      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
       </app-communication-requests>
     </mat-tab>
   </mat-tab-group>

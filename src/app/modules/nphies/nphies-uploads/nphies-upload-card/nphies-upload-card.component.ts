@@ -17,14 +17,13 @@ export class NphiesUploadCardComponent implements OnInit {
   }
 
   get totalClaims() {
-    return this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.undersubmission
-      + this.data.underprocessing + this.data.paid + this.data.partially_paid + this.data.rejected_by_payer
-      + this.data.invalid + this.data.downloadable + this.data.submitted_outside_waseel;
+    return this.data.readyForSubmission + this.data.rejectedByWaseel + this.data.underSubmission
+      + this.data.underProcessing + this.data.paid + this.data.partiallyPaid + this.data.rejectedByPayer;
   }
 
   get canBeDeleted() {
     return (this.sharedServices.isAdmin && this.sharedServices.isProvider)
-      || (this.data.ready_for_submission + this.data.rejected_by_waseel + this.data.invalid + this.data.downloadable) > 0;
+      || (this.data.readyForSubmission + this.data.rejectedByWaseel) > 0;
   }
 
 }
