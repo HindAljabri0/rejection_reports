@@ -80,7 +80,7 @@ export class SharedDataService {
     { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
     { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
     { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
-    { value: 'icu-hours', name: 'Ice Hours' },
+    { value: 'icu-hours', name: 'ICU Hours' },
     { value: 'ventilation-hours', name: 'Ventilation Hours' },
     { value: 'vital-sign-height', name: 'Vital Sign Height' },
     { value: 'chief-complaint', name: 'Chief Complaint' }
