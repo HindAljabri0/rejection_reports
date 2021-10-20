@@ -164,6 +164,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   getPayerList(isFromUrl: boolean = false) {
+    this.sharedServices.loadingChanged.next(true);
     this.beneficiaryService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
@@ -173,10 +174,13 @@ export class PreauthorizationTransactionsComponent implements OnInit {
             if (this.FormPreAuthTransaction.valid) {
               this.onSubmit();
             }
+          } else {
+            this.sharedServices.loadingChanged.next(false);
           }
         }
       }
     }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
 
       }
