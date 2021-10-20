@@ -20,7 +20,7 @@
   <div class="col-3">
     <div class="inline-label-table">
       <label>Status</label>
-      <p class="text-primary">Dummy data</p>
+      <p class="text-primary">{{data.status}}</p>
     </div>
   </div>
   <div class="col-3">
@@ -32,19 +32,19 @@
   <div class="col-3">
     <div class="inline-label-table">
       <label>Insurer</label>
-      <p class="text-primary">Dummy data</p>
+      <p class="text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
     </div>
   </div>
   <div class="col-3">
     <div class="inline-label-table">
       <label>PreAuth Ref. No.</label>
-      <p class="text-primary">Dummy data</p>
+      <p class="text-primary">{{data.referenceNumber}}</p>
     </div>
   </div>
   <div class="col-3">
     <div class="inline-label-table">
       <label>Period</label>
-      <p class="text-primary">Dummy data</p>
+      <p class="text-primary">{{period}}</p>
     </div>
   </div>
   <div class="col-3">
@@ -59,37 +59,61 @@
   <div class="col-9">
     <div class="inline-label-table">
       <label>Disposition</label>
-      <p class="text-primary">Dummy data</p>
+      <p class="text-primary">{{data.disposition}}</p>
     </div>
   </div>
 </div>
 
 <!-- payment info start -->
-<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14">
+<div class="p-14 bg-off-white ml-n14 mr-n14 mt-14" *ngIf="data.responseDecision">
   <h5 class="align-self-center medium pb-2 text-primary">Total</h5>
   <div class="row">
     <div class="col-auto">
       <div class="inline-label-table auto-width">
-        <label>Category:</label>
-        <p class="text-primary">Value</p>
+        <label>Submitted Amount:</label>
+        <p class="text-primary">{{data.responseDecision.submittedTotalValue}}</p>
       </div>
     </div>
     <div class="col-auto">
       <div class="inline-label-table auto-width">
-        <label>Category:</label>
-        <p class="text-primary">Value</p>
+        <label>Patient Co-Payment:</label>
+        <p class="text-primary">{{data.responseDecision.copayTotalValue}}</p>
       </div>
     </div>
     <div class="col-auto">
       <div class="inline-label-table auto-width">
-        <label>Category:</label>
-        <p class="text-primary">Value</p>
+        <label>Eligible Amount:</label>
+        <p class="text-primary">{{data.responseDecision.eligibleTotalValue}}</p>
       </div>
     </div>
     <div class="col-auto">
       <div class="inline-label-table auto-width">
-        <label>Category:</label>
-        <p class="text-primary">Value</p>
+        <label>Deductible:</label>
+        <p class="text-primary">{{data.responseDecision.deductibleTotalValue}}</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Unallocated Deductible:</label>
+        <p class="text-primary">{{data.responseDecision.unallocdeductTotalValue}}</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Eligible %:</label>
+        <p class="text-primary">{{data.responseDecision.eligpercentTotalValue}}</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Tax:</label>
+        <p class="text-primary">{{data.responseDecision.texTotalValue}}</p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="inline-label-table auto-width">
+        <label>Benefit Amount:</label>
+        <p class="text-primary">{{data.responseDecision.benefitTotalValue}}</p>
       </div>
     </div>
   </div>
@@ -97,10 +121,10 @@
 <!-- payment info end -->
 
 <!-- error section start -->
-<h5 class="form-title">
+<h5 class="form-title" *ngIf="data.errors">
   Errors
 </h5>
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="data.errors">
   <table class="primary-grid no-borders manual-row-color horizontal-borders" cellpadding="0" cellspacing="0" border="0">
     <thead>
       <tr>
@@ -109,17 +133,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Dummy data</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Dummy data</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Dummy data</td>
+      <tr *ngFor="let err of data.errors">
+        <td>{{err.code}}</td>
+        <td>{{err.error}}</td>
       </tr>
     </tbody>
   </table>
@@ -127,54 +143,54 @@
 <!-- error section end -->
 
 <!-- beneficiary section start -->
-<h5 class="form-title">
+<h5 class="form-title" *ngIf="data.beneficiary">
   Beneficiary Details
 </h5>
-<div class="row">
+<div class="row" *ngIf="data.beneficiary">
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">Name</div>
-      <p class="form-control-static">Dummy data</p>
+      <p class="form-control-static">{{data.beneficiary.beneficiaryName}}</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">Document</div>
-      <p class="form-control-static">Dummy Type (Dummy ID)</p>
+      <p class="form-control-static">{{data.beneficiary.documentType}} ({{data.beneficiary.beneficiaryId}})</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">Gender</div>
-      <p class="form-control-static">Dummy data</p>
+      <p class="form-control-static">{{data.beneficiary.gender}}</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">Date of Birth</div>
-      <p class="form-control-static">Dummy data</p>
+      <p class="form-control-static">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">Contact No.</div>
-      <p class="form-control-static">Dummy data</p>
+      <p class="form-control-static">{{data.beneficiary.contactNumber}}</p>
     </div>
   </div>
   <div class="col-4">
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
-      <p class="form-control-static">Dummy data</p>
+      <p class="form-control-static">{{data.beneficiary.email}}</p>
     </div>
   </div>
 </div>
 <!-- beneficiary details end -->
 
 <!-- process notes start -->
-<h5 class="form-title">
+<h5 class="form-title" *ngIf="data.processNotes">
   Process Notes
 </h5>
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="data.processNotes">
   <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
     <thead>
       <tr>
@@ -184,20 +200,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Dummy type</td>
-        <td>Dummy Text</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Dummy type</td>
-        <td>Dummy Text</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Dummy type</td>
-        <td>Dummy Text</td>
+      <tr *ngFor="let note of data.processNotes">
+        <td>{{note.number}}</td>
+        <td>{{note.type}}</td>
+        <td>{{note.text}}</td>
       </tr>
     </tbody>
   </table>
@@ -239,31 +245,55 @@
         </tr>
         <tr *ngIf="currentSelectedItem == i">
           <td colspan="8">
-            <div class="box mb-2">
+            <div class="box mb-2" *ngIf="item.itemDecision">
               <h5 class="align-self-center medium pb-2">Adjudication</h5>
               <div class="row">
                 <div class="col-auto">
                   <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
+                    <label>Submitted Amount:</label>
+                    <p class="text-primary">{{item.itemDecision.submittedTotalValue}}</p>
                   </div>
                 </div>
                 <div class="col-auto">
                   <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
+                    <label>Patient Co-Payment:</label>
+                    <p class="text-primary">{{item.itemDecision.copayTotalValue}}</p>
                   </div>
                 </div>
                 <div class="col-auto">
                   <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
+                    <label>Eligible Amount:</label>
+                    <p class="text-primary">{{item.itemDecision.eligibleTotalValue}}</p>
                   </div>
                 </div>
                 <div class="col-auto">
                   <div class="inline-label-table auto-width">
-                    <label>Category:</label>
-                    <p>Value</p>
+                    <label>Deductible:</label>
+                    <p class="text-primary">{{item.itemDecision.deductibleTotalValue}}</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Unallocated Deductible:</label>
+                    <p class="text-primary">{{item.itemDecision.unallocdeductTotalValue}}</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Eligible %:</label>
+                    <p class="text-primary">{{item.itemDecision.eligpercentTotalValue}}</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Tax:</label>
+                    <p class="text-primary">{{item.itemDecision.texTotalValue}}</p>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="inline-label-table auto-width">
+                    <label>Benefit Amount:</label>
+                    <p class="text-primary">{{item.itemDecision.benefitTotalValue}}</p>
                   </div>
                 </div>
               </div>
@@ -309,7 +339,7 @@
                       </tr>
                       <tr>
                         <td class="label">Factor</td>
-                        <td>Dummy data</td>
+                        <td>{{item.factor}}</td>
                       </tr>
                       <tr>
                         <td class="label">Tax</td>
@@ -493,7 +523,8 @@
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 {{visionSpecification.lensNote}}
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" [matMenuTriggerFor]="notesMenu">
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
+                [matMenuTriggerFor]="notesMenu">
                 <mat-icon class="material-icons-outlined">description</mat-icon>
               </button>
             </td>

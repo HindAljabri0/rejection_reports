@@ -16,48 +16,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   constructor(private sharedDataService: SharedDataService) { }
 
   ngOnInit() {
-    if (this.data.approvalResponseId) {
-      this.setDescriptions();
-    }
-    if (this.data && this.data.items) {
-      this.data.items.forEach(x => {
-        this.paymentAmount += x.net;
-        x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
-
-        // x.supportingInfoSequence = x.supportingInfoSequence ? x.supportingInfoSequence.toString() : '-';
-        // x.careTeamSequence = x.careTeamSequence ? x.careTeamSequence.toString() : '';
-        // x.diagnosisSequence = x.diagnosisSequence ? x.diagnosisSequence.toString() : '';
-
-        if (x.supportingInfoSequence) {
-          x.supportingInfoNames = '';
-          x.supportingInfoSequence.forEach(s => {
-            x.supportingInfoNames += ', [' + this.data.supportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
-          });
-          x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
-        }
-
-        if (x.careTeamSequence) {
-          x.careTeamNames = '';
-          x.careTeamSequence.forEach(s => {
-            x.careTeamNames += ', [' + this.data.careTeam.filter(y => y.sequence === s)[0].practitionerName + ']';
-          });
-          x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
-        }
-
-        if (x.diagnosisSequence) {
-          x.diagnosisNames = '';
-          x.diagnosisSequence.forEach(s => {
-            x.diagnosisNames += ', [' + this.data.diagnosis.filter(y => y.sequence === s)[0].diagnosisCode + ']';
-          });
-          x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
-        }
-
-        if (this.data.approvalResponseId) {
-          x.isPackage = x.isPackage === true ? 1 : 2;
-        }
-
-      });
-    }
+    this.setDescriptions();
   }
 
   toggleItem(index) {
@@ -70,13 +29,11 @@ export class PreAuthorizationDetailsComponent implements OnInit {
 
   setDescriptions() {
 
-    this.data.outcome = this.data.preAuthStatus;
-
     if (this.data.accident && this.data.accident.date) {
       this.data.accident.date = moment(this.data.accident.date).format('DD-MM-YYYY');
     }
 
-    if (this.data.preAuthorizationInfo && this.data.preAuthorizationInfo.dateOrdered) {
+    if (this.data && this.data.preAuthorizationInfo.dateOrdered) {
       this.data.preAuthorizationInfo.dateOrdered = moment(this.data.preAuthorizationInfo.dateOrdered).format('DD-MM-YYYY');
     }
 
@@ -99,6 +56,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       x => x.value === this.data.preAuthorizationInfo.type)[0]
       ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0].name
       : '';
+
     this.data.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
       x => x.value === this.data.preAuthorizationInfo.subType)[0]
       ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0].name
@@ -157,6 +115,54 @@ export class PreAuthorizationDetailsComponent implements OnInit {
           ? this.sharedDataService.reasonList.filter(x => x.value === i.reason)[0].name
           : '';
       });
+    }
+
+    if (this.data && this.data.items) {
+      this.data.items.forEach(x => {
+        this.paymentAmount += x.net;
+        x.startDate = moment(moment(x.startDate, 'YYYY-MM-DD')).format('DD-MM-YYYY');
+
+        // x.supportingInfoSequence = x.supportingInfoSequence ? x.supportingInfoSequence.toString() : '-';
+        // x.careTeamSequence = x.careTeamSequence ? x.careTeamSequence.toString() : '';
+        // x.diagnosisSequence = x.diagnosisSequence ? x.diagnosisSequence.toString() : '';
+
+        if (x.supportingInfoSequence) {
+          x.supportingInfoNames = '';
+          x.supportingInfoSequence.forEach(s => {
+            x.supportingInfoNames += ', [' + this.data.supportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+          });
+          x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+        }
+
+        if (x.careTeamSequence) {
+          x.careTeamNames = '';
+          x.careTeamSequence.forEach(s => {
+            x.careTeamNames += ', [' + this.data.careTeam.filter(y => y.sequence === s)[0].practitionerName + ']';
+          });
+          x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+        }
+
+        if (x.diagnosisSequence) {
+          x.diagnosisNames = '';
+          x.diagnosisSequence.forEach(s => {
+            x.diagnosisNames += ', [' + this.data.diagnosis.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+          });
+          x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+        }
+
+        if (this.data.approvalResponseId) {
+          x.isPackage = x.isPackage === true ? 1 : 2;
+        }
+
+      });
+    }
+  }
+
+  get period() {
+    if (this.data.period) {
+      return this.data.period.replace('P', '').replace('D', ' Days').replace('M', ' Months').replace('Y', ' Years');
+    } else {
+      return this.data.period;
     }
   }
 
