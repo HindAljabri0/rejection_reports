@@ -132,11 +132,41 @@ export class CreditReportService {
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }
-
+    // , serviceCode: string, servicedescription: string, rejectionReason: string, comments: string, exceedPrice: string
+    // , deductedAmount: string, agree: string,
     getTawuniyaCreditReportServices(
-        providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services',
+        providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services', nameFild: string,
+        valueFild: string,
         page: number, size: number) {
-        const requestURL = `/providers/${providerId}/batches/${batchId}/${serviceType}?page=${page}&size=${size}`;
+        let requestURL = `/providers/${providerId}/batches/${batchId}/${serviceType}?page=${page}&size=${size}`;
+
+        if (nameFild != null) {
+            requestURL += `&${nameFild}=${valueFild}`;
+         }
+        // if (payerClaimNo != null) {
+        //     requestURL += `&payerClaimNo=${payerClaimNo}`;
+
+        // }
+        // if (serviceCode != null) {
+        //     requestURL += `&serviceCode=${serviceCode}`;
+        // }
+        // if (servicedescription != null) {
+        //     requestURL += `&servicedescription=${servicedescription}`;
+        // }
+        // if (rejectionReason != null) {
+        //     requestURL += `&rejectionReason=${rejectionReason}`;
+        // }
+        // if (comments != null) {
+        //     requestURL += `&comments=${comments}`;
+        // } if (exceedPrice != null) {
+        //     requestURL += `&exceedPrice=${exceedPrice}`;
+        // }
+        // if (deductedAmount != null) {
+        //     requestURL += `&deductedAmount=${deductedAmount}`;
+        // } if (agree != null) {
+        //     requestURL += `&agree=${agree}`;
+        // }
+
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }

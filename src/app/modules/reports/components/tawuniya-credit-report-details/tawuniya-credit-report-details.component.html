@@ -155,6 +155,10 @@
                     <button mat-menu-item>Claim Month</button>
                 </mat-menu>
                 <a href="#" class="primary-link underlined" [matMenuTriggerFor]="filterMenu" (click)="$event.preventDefault();" title="Filter & Sort">Filter & Sort</a> -->
+                
+                <!-- <button  (click)="fetchServices('deducted-services',null,null)" class="primary-text-btn"
+                    mat-flat-button type="button">Clear
+                    Filter</button> -->
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
                     href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree"
                     (click)="agreeOnSelectedServices()" [ngClass]="disabledButtonClass()">Agree</a>
@@ -196,17 +200,303 @@
                                             (change)="selectAllInPage('deducted')">
                                         </mat-checkbox>
                                     </th>
-                                    <th>Waseel Batch</th>
-                                    <th>Doctor Code</th>
-                                    <th>Claim No</th>
-                                    <th>Provider Ref.</th>
-                                    <th>Service Code</th>
-                                    <th>Service</th>
-                                    <th>Rejection Reason</th>
-                                    <th>Comment</th>
-                                    <th>Exceed Price</th>
-                                    <th>Deducted Amount</th>
-                                    <th>Agreed</th>
+                                     <th>Waseel Batch</th>
+
+                                    <!-- <th>
+                                        <div class="column-header-action">
+                                            <span>Waseel Batch</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="waseelBatchFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #waseelBatchFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Waseel Batch</label>
+                                                            <input class="form-control" placeholder="Waseel Batch"
+                                                                name="waseelBatch">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th> -->
+
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Doctor Code</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="doctorCodeFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #doctorCodeFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Doctor Code</label>
+                                                            <input class="form-control" placeholder="Doctor Code"
+                                                                [(ngModel)]="doctorCode" name="doctorCode">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','physicianId',doctorCode)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Claim No</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="claimNoFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #claimNoFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Claim No</label>
+                                                            <input class="form-control" placeholder="Claim No"
+                                                                [(ngModel)]="claimNo" name="claimNo">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','payerClaimNo',claimNo)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Provider Ref.</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="providerRefFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #providerRefFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Provider Ref.</label>
+                                                            <input class="form-control" placeholder="Provider Ref."
+                                                                name="providerRef">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Service Code</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="serviceCodeFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #serviceCodeFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Service Code</label>
+                                                            <input class="form-control" placeholder="Service Code"
+                                                                [(ngModel)]="serviceCode" name="serviceCode">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','serviceCode',serviceCode)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Service</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="serviceFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #serviceFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label"  (click)="fetchServices('deducted-services',null,null)">Service</label>
+                                                            <input class="form-control" placeholder="Service"
+                                                                [(ngModel)]="service" name="service">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button    (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','servicedescription',service)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Rejection Reason</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="rejectionReasonFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #rejectionReasonFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Rejection Reason</label>
+                                                            <input class="form-control" placeholder="Rejection Reason"
+                                                                [(ngModel)]="rejectionReason" name="rejectionReason">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','rejectionReason',rejectionReason)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Comment</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="commentFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #commentFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Comment</label>
+                                                            <input class="form-control" placeholder="Comment"
+                                                                [(ngModel)]="comment" name="comment">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','comments',comment)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Exceed Price</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="exceedPriceFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #exceedPriceFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Exceed Price</label>
+                                                            <input class="form-control" placeholder="Exceed Price"
+                                                                [(ngModel)]="exceedPrice" name="exceedPrice">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','exceedPrice',exceedPrice)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Deducted Amount</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="deductedAmountFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #deductedAmountFilter="matMenu" xPosition="before"
+                                                class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Deducted Amount</label>
+                                                            <input class="form-control" placeholder="Deducted Amount"
+                                                                [(ngModel)]="deductedAmount" name="deductedAmount">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','deductedAmount',deductedAmount)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
+
+                                    <th>
+                                        <div class="column-header-action">
+                                            <span>Agreed</span>
+                                            <button type="button" class="action-btn" matRipple
+                                                [matMenuTriggerFor]="agreedFilter">
+                                                <mat-icon>filter_list_outline</mat-icon>
+                                            </button>
+                                            <mat-menu #agreedFilter="matMenu" xPosition="before" class="filter-menu">
+                                                <div class="menu-body">
+                                                    <div (click)="$event.stopPropagation()">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Agreed</label>
+                                                            <input class="form-control" placeholder="Agreed"
+                                                                [(ngModel)]="agreed" name="agreed">
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-list text-right">
+                                                        <button mat-flat-button  (click)="fetchServices('deducted-services',null,null)">Clear</button>
+                                                        <button mat-flat-button color="primary"
+                                                            (click)="fetchServices('deducted-services','agree',agreed)">Filter</button>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </div>
+                                    </th>
                                     <th width="10"></th>
                                 </tr>
                             </thead>
@@ -365,15 +655,15 @@
                                             {{service.agree =='N'? 'cancel':'check_circle'}}</mat-icon>
                                     </td>
                                     <td class="actions" (click)="$event.stopPropagation()">
-                                        <button type="button" mat-icon-button class="text-success"
-                                            matTooltip="Agree" [ngClass]="disabledButtonClass()"
+                                        <button type="button" mat-icon-button class="text-success" matTooltip="Agree"
+                                            [ngClass]="disabledButtonClass()"
                                             (click)="agreeOnSelectedServices(service.id.serialno)"
                                             [disabled]="disabledButton()">
                                             <mat-icon class="material-icons-outlined">check_circle</mat-icon>
                                         </button>
-                                        <button type="button" mat-icon-button class="text-danger"
-                                            matTooltip="Disagree" [ngClass]="disabledButtonClass()"
-                                            [matMenuTriggerFor]="editMenu1" #clickMenuTrigger="matMenuTrigger"
+                                        <button type="button" mat-icon-button class="text-danger" matTooltip="Disagree"
+                                            [ngClass]="disabledButtonClass()" [matMenuTriggerFor]="editMenu1"
+                                            #clickMenuTrigger="matMenuTrigger"
                                             (click)="selectionDisagreement(service.id.serialno)"
                                             [disabled]="disabledButton()">
                                             <mat-icon class="material-icons-outlined">cancel</mat-icon>
