@@ -754,7 +754,6 @@ export class AddPreauthorizationComponent implements OnInit {
                 this.showMessage(body.message, '', 'alert', true, 'OK', errors);
 
               } else {
-                this.IsJSONPosted = true;
                 this.showMessage('Success', body.message, 'success', true, 'OK');
                 this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
               }
@@ -872,6 +871,7 @@ export class AddPreauthorizationComponent implements OnInit {
         if (event.status === 200) {
           const body: any = event.body;
           this.detailsModel = body;
+          this.IsJSONPosted = true;
         }
         this.sharedServices.loadingChanged.next(false);
       }
