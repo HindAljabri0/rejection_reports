@@ -34,7 +34,7 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     }
 
     if (this.data && this.data.preAuthorizationInfo.dateOrdered) {
-      this.data.dateOrdered = moment(this.data.preAuthorizationInfo.dateOrdered).format('DD-MM-YYYY');
+      this.data.preAuthorizationInfo.dateOrdered = moment(this.data.preAuthorizationInfo.dateOrdered).format('DD-MM-YYYY');
     }
 
     if (this.data.visionPrescription && this.data.visionPrescription.dateWritten) {
@@ -52,12 +52,12 @@ export class PreAuthorizationDetailsComponent implements OnInit {
       });
     }
 
-    this.data.typeName = this.sharedDataService.claimTypeList.filter(
+    this.data.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
       x => x.value === this.data.preAuthorizationInfo.type)[0]
       ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0].name
       : '';
 
-    this.data.subTypeName = this.sharedDataService.subTypeList.filter(
+    this.data.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
       x => x.value === this.data.preAuthorizationInfo.subType)[0]
       ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0].name
       : '';

@@ -517,7 +517,7 @@
       </div>
     </div>
     <div class="bg-white p-14">
-      <app-pre-authorization-details [data]="detailsModel"></app-pre-authorization-details>
+      <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel"></app-pre-authorization-details>
     </div>
     <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New
       Authorization</button>
