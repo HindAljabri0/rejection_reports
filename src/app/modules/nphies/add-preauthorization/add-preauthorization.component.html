@@ -242,11 +242,13 @@
             <div class="col-8 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
-                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
+                <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
+                    class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="prescriber">
                     <mat-option value="">Select Prescriber</mat-option>
-                    <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} - {{pre.practitionerName}}
+                    <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
+                      {{pre.practitionerName}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -511,7 +513,7 @@
   <ng-container *ngIf="IsJSONPosted && detailsModel">
     <div class="block-header has-border">
       <div class="d-flex align-items-center">
-        <p>Authorization - {{detailsModel.outgoingTransactionId}}</p>
+        <p>Authorization - {{detailsModel.providertransactionlogId}}</p>
       </div>
     </div>
     <div class="bg-white p-14">
