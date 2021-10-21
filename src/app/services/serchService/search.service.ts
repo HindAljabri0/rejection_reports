@@ -125,6 +125,21 @@ export class SearchService {
     if (patientFileNo != null) {
       requestURL += `patientFileNo=${patientFileNo}&`;
     }
+    if (drname != null && drname !== '' && drname !== undefined) {
+      requestURL += `drname=${drname}&`;
+    }
+    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
+      requestURL += `nationalId=${nationalId}&`;
+    }
+    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
+      requestURL += `claimDate=${claimDate}&`;
+    }
+    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
+      requestURL += `netAmount=${netAmount}&`;
+    }
+    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
+      requestURL += `batchNo=${batchNo}&`;
+    }
     requestURL += `status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
