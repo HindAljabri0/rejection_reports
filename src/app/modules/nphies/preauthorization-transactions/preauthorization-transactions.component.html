@@ -168,7 +168,7 @@
           <span *ngIf="IsNewComunicationRequest" class="alert-marker ml-2"></span>
         </div>
       </ng-template>
-      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
+      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
       </app-communication-requests>
     </mat-tab>
   </mat-tab-group>

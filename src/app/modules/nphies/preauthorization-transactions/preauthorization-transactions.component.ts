@@ -435,14 +435,26 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.getTransactionDetails(event.requestId, event.responseId);
   }
 
-  openDetailsDialog(requestId = null, responseId = null) {
+  openDetailsDialogCR(requestId) {
+    this.getTransactionDetails(requestId, null, true);
+  }
+
+  openDetailsDialog(requestId, responseId) {
     this.getTransactionDetails(requestId, responseId);
   }
 
-  getTransactionDetails(requestId = null, responseId = null) {
+  getTransactionDetails(requestId, responseId, fromCommunicationRequest = false) {
     this.sharedServices.loadingChanged.next(true);
+
+    let action: any;
+
+    if (fromCommunicationRequest) {
+      action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId);
+    } else {
+      action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+    }
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
+    action.subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
