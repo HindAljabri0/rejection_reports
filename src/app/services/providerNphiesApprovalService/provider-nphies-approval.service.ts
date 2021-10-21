@@ -40,4 +40,10 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
+
+  getTransactionDetailsFromCR(providerId: string, requestId: number) {
+    const requestUrl = `/providers/${providerId}/approval/communication-request/detail?requestId=${requestId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
 }

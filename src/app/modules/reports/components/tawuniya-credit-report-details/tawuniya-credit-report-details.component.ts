@@ -21,11 +21,19 @@ import { ClaimStatus } from 'src/app/models/claimStatus';
   styles: []
 })
 export class TawuniyaCreditReportDetailsComponent implements OnInit {
-
+  doctorCode='';
+  claimNo='';
+  serviceCode='';
+  service='';
+  rejectionReason='';
+  comment='';
+  exceedPrice='';
+  deductedAmount='';
+  agreed='';
   batchId: string;
-
+  selectedCardKey: number;
   data: CreditReportSummaryResponse;
-
+  appliedFilters: any = [];
   deductedServices: DeductedService[] = [];
   rejectedServices: RejectedService[] = [];
 
@@ -87,9 +95,10 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    
     private routeActive: ActivatedRoute,
     private creditReportService: CreditReportService,
-    private sharedServices: SharedServices,
+    public sharedServices: SharedServices,
     private dialogService: DialogService,
     private sanitizer: DomSanitizer,
     private claimService: ClaimService
@@ -112,7 +121,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.data = event.body as CreditReportSummaryResponse;
         this.fixDataDates();
         this.sharedServices.loadingChanged.next(false);
-        this.fetchServices('deducted-services', true)
+        this.fetchServices('deducted-services', null,null,true)
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -123,18 +132,20 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     })
   }
 
-  fetchServices(serviceType: 'deducted-services' | 'rejected-services', callAgain?: boolean) {
+  fetchServices(serviceType: 'deducted-services' | 'rejected-services', nameFilad: string,valueFild:string,callAgain?: boolean) {
     if (this.sharedServices.loading) return;
-
+    
     this.sharedServices.loadingChanged.next(true);
     this.creditReportService.getTawuniyaCreditReportServices(
       this.sharedServices.providerId,
       this.batchId,
-      serviceType,
+      serviceType,nameFilad,valueFild,
       this.paginationControl[serviceType].currentPage, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
+          
           if (serviceType == 'deducted-services') {
+            this.deductedServices=[];
             this.deductedServices = event.body['content'] as DeductedService[];
             this.deductedServices.forEach(service => service.newComments = service.comments);
             this.selectionControl.deducted.countInCurrentPage = this.deductedServices.filter(service => this.selectionControl.deducted.selections.includes(service.id.serialno)).length;
@@ -149,7 +160,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
           this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
 
           if (callAgain) {
-            this.fetchServices('rejected-services');
+            this.fetchServices('rejected-services',null,null);
           }
         }
       }, errorEvent => {
@@ -250,25 +261,25 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   goToFirstPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != 0) {
       this.paginationControl[this.selectedServiceTab].currentPage = 0;
-      this.fetchServices(this.selectedServiceTab);
+      this.fetchServices(this.selectedServiceTab,null,null);
     }
   }
   goToPrePage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != 0) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].currentPage - 1;
-      this.fetchServices(this.selectedServiceTab);
+      this.fetchServices(this.selectedServiceTab,null,null);
     }
   }
   goToNextPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage + 1 < this.paginationControl[this.selectedServiceTab].numberOfPages) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].currentPage + 1;
-      this.fetchServices(this.selectedServiceTab);
+      this.fetchServices(this.selectedServiceTab,null,null);
     }
   }
   goToLastPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != this.paginationControl[this.selectedServiceTab].numberOfPages - 1) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].numberOfPages - 1;
-      this.fetchServices(this.selectedServiceTab);
+      this.fetchServices(this.selectedServiceTab,null,null);
 
     }
   }
