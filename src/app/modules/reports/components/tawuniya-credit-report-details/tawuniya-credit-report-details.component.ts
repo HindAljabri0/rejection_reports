@@ -222,7 +222,10 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
           }
           this.paginationControl[serviceType].currentPage = event.body['number'];
           this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
-          this.goToFirstPage()
+          if(this.nameFilad!=nameFilad){
+            this.goToFirstPage()
+          }
+         
 
         }
       }, errorEvent => {
