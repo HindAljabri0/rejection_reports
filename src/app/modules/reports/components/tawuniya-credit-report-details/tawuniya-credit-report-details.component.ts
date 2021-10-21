@@ -21,20 +21,23 @@ import { ClaimStatus } from 'src/app/models/claimStatus';
   styles: []
 })
 export class TawuniyaCreditReportDetailsComponent implements OnInit {
-  waseelBatch='';
-  doctorCode='';
-  claimNo='';
-  serviceCode='';
-  service='';
-  rejectionReason='';
-  comment='';
-  exceedPrice='';
-  deductedAmount='';
-  agreed='';
+  waseelBatch = '';
+  doctorCode = '';
+  claimNo = '';
+  serviceCode = '';
+  service = '';
+  rejectionReason = '';
+  comment = '';
+  exceedPrice = '';
+  deductedAmount = '';
+  agreed = '';
   batchId: string;
   selectedCardKey: number;
   data: CreditReportSummaryResponse;
   appliedFilters: any = [];
+
+  nameFilad = '';
+  valueFilad = '';
   deductedServices: DeductedService[] = [];
   rejectedServices: RejectedService[] = [];
 
@@ -96,7 +99,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    
+
     private routeActive: ActivatedRoute,
     private creditReportService: CreditReportService,
     public sharedServices: SharedServices,
@@ -106,7 +109,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   ) { }
 
 
-  getAllData(){
+  getAllData() {
     this.routeActive.params.subscribe(value => {
       this.batchId = value.batchId;
       this.fetchData();
@@ -137,31 +140,31 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     })
   }
 
-  fetchServices(serviceType: 'deducted-services' | 'rejected-services',callAgain?: boolean) {
-    this.appliedFilters=[];
-    this.waseelBatch='';
-    this.doctorCode='';
-    this.claimNo='';
-    this.serviceCode='';
-    this.service='';
-    this.rejectionReason='';
-    this.comment='';
-    this.exceedPrice='';
-    this.deductedAmount='';
-    this.agreed='';
+  fetchServices(serviceType: 'deducted-services' | 'rejected-services', callAgain?: boolean) {
+    this.appliedFilters = [];
+    this.waseelBatch = '';
+    this.doctorCode = '';
+    this.claimNo = '';
+    this.serviceCode = '';
+    this.service = '';
+    this.rejectionReason = '';
+    this.comment = '';
+    this.exceedPrice = '';
+    this.deductedAmount = '';
+    this.agreed = '';
     if (this.sharedServices.loading) return;
-    
+
     this.sharedServices.loadingChanged.next(true);
     this.creditReportService.getTawuniyaCreditReportServices(
       this.sharedServices.providerId,
       this.batchId,
-      serviceType,null,null,
+      serviceType, null, null,
       this.paginationControl[serviceType].currentPage, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
-          
+
           if (serviceType == 'deducted-services') {
-            this.deductedServices=[];
+            this.deductedServices = [];
             this.deductedServices = event.body['content'] as DeductedService[];
             this.deductedServices.forEach(service => service.newComments = service.comments);
             this.selectionControl.deducted.countInCurrentPage = this.deductedServices.filter(service => this.selectionControl.deducted.selections.includes(service.id.serialno)).length;
@@ -188,38 +191,39 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
       });
   }
 
-  
-  fetchDataByCriteria(serviceType: 'deducted-services' | 'rejected-services', nameFilad?: string,valueFilad?:string) {
+
+  fetchDataByCriteria(serviceType: 'deducted-services' | 'rejected-services', nameFilad?: string, valueFilad?: string) {
     if (this.sharedServices.loading) return;
-    
+    this.nameFilad = nameFilad;
+    this.valueFilad = valueFilad;
     this.sharedServices.loadingChanged.next(true);
     this.creditReportService.getTawuniyaCreditReportServices(
       this.sharedServices.providerId,
       this.batchId,
-      serviceType,nameFilad,valueFilad,
+      serviceType, nameFilad, valueFilad,
       this.paginationControl[serviceType].currentPage, 10).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
-          
+
           if (serviceType == 'deducted-services') {
-            this.deductedServices=[];
+            this.deductedServices = [];
             this.deductedServices = event.body['content'] as DeductedService[];
             this.deductedServices.forEach(service => service.newComments = service.comments);
             this.selectionControl.deducted.countInCurrentPage = this.deductedServices.filter(service => this.selectionControl.deducted.selections.includes(service.id.serialno)).length;
             this.setAllCheckBoxIsIndeterminate('deducted');
-            this.appliedFilters=this.deductedServices.length>0?this.deductedServices:-1;
+            this.appliedFilters = this.deductedServices.length > 0 ? this.deductedServices : -1;
           } else {
             this.rejectedServices = event.body['content'] as RejectedService[];
             this.rejectedServices.forEach(service => service.newComments = service.comments);
             this.selectionControl.rejected.countInCurrentPage = this.rejectedServices.filter(service => this.selectionControl.rejected.selections.includes(service.id.serialno)).length;
             this.setAllCheckBoxIsIndeterminate('rejected');
-            this.appliedFilters=this.rejectedServices.length>0?this.rejectedServices:-1;
-          
+            this.appliedFilters = this.rejectedServices.length > 0 ? this.rejectedServices : -1;
+
           }
           this.paginationControl[serviceType].currentPage = event.body['number'];
           this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
+          this.goToFirstPage()
 
-         
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
@@ -319,26 +323,44 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
   goToFirstPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != 0) {
       this.paginationControl[this.selectedServiceTab].currentPage = 0;
-      this.fetchServices(this.selectedServiceTab);
+      if (this.appliedFilters.length > 0 || this.appliedFilters == -1) {
+        this.fetchDataByCriteria(this.selectedServiceTab, this.nameFilad, this.valueFilad)
+      } else {
+        this.fetchServices(this.selectedServiceTab);
+      }
+  
     }
   }
   goToPrePage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != 0) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].currentPage - 1;
-      this.fetchServices(this.selectedServiceTab);
+      if (this.appliedFilters.length > 0 || this.appliedFilters == -1) {
+        this.fetchDataByCriteria(this.selectedServiceTab, this.nameFilad, this.valueFilad)
+      } else {
+        this.fetchServices(this.selectedServiceTab);
+      }
     }
   }
   goToNextPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage + 1 < this.paginationControl[this.selectedServiceTab].numberOfPages) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].currentPage + 1;
-      this.fetchServices(this.selectedServiceTab);
+      if (this.appliedFilters.length > 0 || this.appliedFilters == -1) {
+        this.fetchDataByCriteria(this.selectedServiceTab, this.nameFilad, this.valueFilad)
+      } else {
+        this.fetchServices(this.selectedServiceTab);
+      }
+
+
     }
   }
   goToLastPage() {
     if (this.paginationControl[this.selectedServiceTab].currentPage != this.paginationControl[this.selectedServiceTab].numberOfPages - 1) {
       this.paginationControl[this.selectedServiceTab].currentPage = this.paginationControl[this.selectedServiceTab].numberOfPages - 1;
-      this.fetchServices(this.selectedServiceTab);
-
+      if (this.appliedFilters.length > 0 || this.appliedFilters == -1) {
+        this.fetchDataByCriteria(this.selectedServiceTab, this.nameFilad, this.valueFilad)
+      } else {
+        this.fetchServices(this.selectedServiceTab);
+      }
     }
   }
 
