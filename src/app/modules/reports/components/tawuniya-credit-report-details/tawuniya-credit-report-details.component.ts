@@ -129,7 +129,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
         this.data = event.body as CreditReportSummaryResponse;
         this.fixDataDates();
         this.sharedServices.loadingChanged.next(false);
-        this.fetchServices('deducted-services', true)
+        this.fetchServices('deducted-services', true,true)
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -140,7 +140,7 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
     })
   }
 
-  fetchServices(serviceType: 'deducted-services' | 'rejected-services', callAgain?: boolean) {
+  fetchServices(serviceType: 'deducted-services' | 'rejected-services', callAgain?: boolean,goToFirstPage?:boolean) {
     this.appliedFilters = [];
     this.waseelBatch = '';
     this.doctorCode = '';
@@ -179,8 +179,10 @@ export class TawuniyaCreditReportDetailsComponent implements OnInit {
           this.paginationControl[serviceType].numberOfPages = event.body['totalPages'];
 
           if (callAgain) {
-            this.fetchServices('rejected-services');
+            this.fetchServices('rejected-services',false,true);
           }
+          if(goToFirstPage){
+            this.goToFirstPage();          }
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
