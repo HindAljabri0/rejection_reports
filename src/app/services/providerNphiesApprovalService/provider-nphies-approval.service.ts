@@ -41,8 +41,15 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getTransactionDetailsFromCR(providerId: string, requestId: number) {
-    const requestUrl = `/providers/${providerId}/approval/communication-request/detail?requestId=${requestId}`;
+  getTransactionDetailsFromCR(providerId: string, requestId: number, communicationId) {
+    // tslint:disable-next-line:max-line-length
+    const requestUrl = `/providers/${providerId}/approval/communication-request/detail?requestId=${requestId}&communicationId=${communicationId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
+
+  getNphisClaimDetails(providerId: string, claimId: number, uploadId: number) {
+    const requestUrl = `/providers/${providerId}/claim?claimId=${claimId}&uploadId=${uploadId}`;
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }

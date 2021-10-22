@@ -17,6 +17,7 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -74,7 +75,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
-  IsJSONPosted = false;
 
   today: Date;
   nationalities = nationalities;
@@ -82,17 +82,43 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   hasErrorClaimInfo = false;
 
+  claimId: number;
+  uploadId: number;
+
   constructor(
+    private activatedRoute: ActivatedRoute,
     private sharedDataService: SharedDataService,
+    private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private nphiesClaimUploaderService: NphiesClaimUploaderService) {
     this.today = new Date();
+
+    // this.activatedRoute.queryParams.subscribe(params => {
+    //   if (params.claimId && params.uploadId) {
+    //     // tslint:disable-next-line:radix
+    //     this.claimId = parseInt(params.claimId);
+    //     // tslint:disable-next-line:radix
+    //     this.uploadId = parseInt(params.uploadId);
+    //   }
+    // });
   }
 
   ngOnInit() {
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
+
+    if (this.activatedRoute.snapshot.queryParams.claimId) {
+      this.claimId = parseInt(this.activatedRoute.snapshot.queryParams.claimId);
+    }
+
+    if (this.activatedRoute.snapshot.queryParams.uploadId) {
+      this.uploadId = parseInt(this.activatedRoute.snapshot.queryParams.uploadId);
+    }
+
+    if (this.claimId && this.uploadId) {
+      this.getClaimDetails();
+    }
   }
 
   filterNationality() {
@@ -706,39 +732,17 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.totalNet += x.net;
       });
       console.log('Model', this.model);
-      // this.IsJSONPosted = true;
-      // this.prepareDetailsModel();
+
       this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
-            this.reset();
-            this.showMessage('Success', 'Claim created Successfully', 'success', true, 'OK');
-            // const body: any = event.body;
-            // if (body.status === 'OK') {
-            //   if (body.outcome.toString().toLowerCase() === 'error') {
-            //     const errors: any[] = [];
-
-            //     if (body.disposition) {
-            //       errors.push(body.disposition);
-            //     }
-
-            //     if (body.errors && body.errors.length > 0) {
-            //       body.errors.forEach(err => {
-            //         err.coding.forEach(codex => {
-            //           errors.push(codex.code + ' : ' + codex.display);
-            //         });
-            //       });
-            //     }
-
-            //     this.showMessage(body.message, '', 'alert', true, 'OK', errors);
-
-            //   } else {
-            //     // this.IsJSONPosted = true;
-            //     // this.prepareDetailsModel(body);
-            //     // this.reset();
-            //     // this.showMessage('Success', body.message, 'success', true, 'OK');
-            //   }
-            // }
+            const body: any = event.body;
+            if (body.isError) {
+              this.showMessage('Error', body.message, 'alert', true, 'OK', body.errors);
+            } else {
+              this.reset();
+              this.showMessage('Success', body.message, 'success', true, 'OK');
+            }
           }
           this.sharedServices.loadingChanged.next(false);
         }
@@ -775,64 +779,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  prepareDetailsModel(body: any = null) {
-    this.detailsModel = {};
-    this.detailsModel.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
-    this.detailsModel.beneficiaryName = this.FormPreAuthorization.controls.beneficiaryName.value;
-    this.detailsModel.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
-
-    // tslint:disable-next-line:max-line-length
-    this.detailsModel.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.detailsModel.payerNphiesId)[0].coverageType;
-    // tslint:disable-next-line:max-line-length
-    this.detailsModel.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.detailsModel.payerNphiesId)[0].memberCardId;
-    // tslint:disable-next-line:max-line-length
-    this.detailsModel.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.detailsModel.payerNphiesId)[0].relationWithSubscriber;
-
-    if (body) {
-      this.detailsModel.disposition = body.disposition;
-      this.detailsModel.outgoingTransactionId = body.outgoingTransactionId;
-      this.detailsModel.transactionLogDate = body.transactionLogDate;
-      this.detailsModel.outcome = body.outcome;
-    }
-
-    this.detailsModel.nphiesPayerId = this.FormPreAuthorization.controls.insurancePlanId.value;
-
-    const preAuthorizationModel: any = {};
-    preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'dd-MM-yyyy');
-    preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
-    preAuthorizationModel.typeName = this.FormPreAuthorization.controls.type.value.name;
-    preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
-    preAuthorizationModel.subTypeName = this.FormPreAuthorization.controls.subType.value.name;
-    this.detailsModel.preAuthorizationInfo = preAuthorizationModel;
-
-    const accidentModel: any = {};
-    accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value.value;
-    accidentModel.accidentTypeName = this.FormPreAuthorization.controls.accidentType.value.name;
-    accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
-    accidentModel.city = this.FormPreAuthorization.controls.city.value;
-    accidentModel.state = this.FormPreAuthorization.controls.state.value;
-    accidentModel.country = this.FormPreAuthorization.controls.country.value;
-    accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'dd-MM-yyyy');
-    this.detailsModel.accident = accidentModel;
-
-    if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-      this.detailsModel.visionPrescription = {};
-      // tslint:disable-next-line:max-line-length
-      this.detailsModel.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'dd-MM-yyyy');
-      // this.detailsModel.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
-      this.detailsModel.visionPrescription.lensSpecifications = this.VisionSpecifications;
-    }
-
-    this.detailsModel.careTeam = this.CareTeams;
-    this.detailsModel.supportingInfo = this.SupportingInfo;
-    this.detailsModel.diagnosis = this.Diagnosises;
-    this.detailsModel.items = this.Items.map(x => {
-      if (x.careTeamSequence && x.careTeamSequence.length > 0) {
-        return x;
-      }
-    }).filter(x => x !== undefined);
-  }
-
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
@@ -865,7 +811,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.VisionSpecifications = [];
     this.Items = [];
     this.isSubmitted = false;
-    this.IsJSONPosted = false;
   }
 
   get checkErrorClaimInfo() {
@@ -884,6 +829,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   get checkErrorVision() {
     let hasError = false;
+    // tslint:disable-next-line:max-line-length
     if (this.isSubmitted && this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
       if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
         this.IsLensSpecificationRequired = true;
@@ -903,5 +849,185 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       return hasError;
     }
+  }
+
+  getClaimDetails() {
+    this.sharedServices.loadingChanged.next(true);
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, this.uploadId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          this.setData(event.body);
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  setData(response) {
+
+    this.FormPreAuthorization.controls.beneficiaryId.setValue(response.beneficiary.beneficiaryId);
+    this.FormPreAuthorization.controls.beneficiaryName.setValue(response.beneficiary.beneficiaryName);
+    this.FormPreAuthorization.controls.patientFileNumber.setValue(response.patientFileNumber);
+    // this.FormPreAuthorization.controls.insurancePlanId.setValue(response.beneficiary.beneficiaryName);
+    this.FormPreAuthorization.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
+
+    // tslint:disable-next-line:max-line-length
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0]);
+
+    if (response.preAuthorizationInfo.subType != null) {
+      // tslint:disable-next-line:max-line-length
+      this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0]);
+    }
+
+    if (response.accident) {
+      if (response.accident.accidentType) {
+        // tslint:disable-next-line:max-line-length
+        this.FormPreAuthorization.controls.accidentType.setValue(this.sharedDataService.accidentTypeList.filter(x => x.value === response.accident.accidentType)[0]);
+      }
+      if (response.accident.streetName) {
+        this.FormPreAuthorization.controls.streetName.setValue(response.accident.streetName);
+      }
+      if (response.accident.city) {
+        this.FormPreAuthorization.controls.city.setValue(response.accident.city);
+      }
+      if (response.accident.state) {
+        this.FormPreAuthorization.controls.state.setValue(response.accident.state);
+      }
+      if (response.accident.country) {
+        this.FormPreAuthorization.controls.country.setValue(response.accident.country);
+      }
+      // this.FormPreAuthorization.controls.countryName.setValue(response.beneficiary.beneficiaryName);
+      if (response.accident.date) {
+        this.FormPreAuthorization.controls.date.setValue(response.accident.date);
+      }
+    }
+
+    if (response.visionPrescription) {
+      this.FormPreAuthorization.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
+    }
+
+    this.Diagnosises = response.diagnosis.map(x => {
+      const model: any = {};
+      model.sequence = x.sequence;
+      model.diagnosisCode = x.diagnosisCode;
+      model.diagnosisDescription = x.diagnosisDescription;
+      model.type = x.type;
+      model.onAdmission = x.onAdmission;
+      // tslint:disable-next-line:max-line-length
+      model.typeName = this.sharedDataService.diagnosisTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.diagnosisTypeList.filter(y => y.value === x.type)[0].name : '';
+      // tslint:disable-next-line:max-line-length
+      model.onAdmissionName = this.sharedDataService.onAdmissionList.filter(y => y.value === x.onAdmission)[0] ? this.sharedDataService.onAdmissionList.filter(y => y.value === x.onAdmission)[0].name : '';
+      return model;
+    });
+
+    this.SupportingInfo = response.supportingInfo.map(x => {
+      const model: any = {};
+      model.sequence = x.sequence;
+      model.category = x.category;
+      model.code = x.code;
+      model.fromDate = x.fromDate;
+      model.toDate = x.toDate;
+      model.value = x.value;
+      model.reason = x.reason;
+      model.attachment = x.attachment;
+
+      // tslint:disable-next-line:max-line-length
+      model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
+
+      const codeList = this.sharedDataService.getCodeName(x.category);
+      if (x.category === '' || x.category === '') {
+        // tslint:disable-next-line:max-line-length
+        model.codeName = codeList.filter(y => y.diagnosisCode === x.code)[0] ? codeList.filter(y => y.diagnosisCode === x.code)[0].diagnosisDescription : '';
+      } else {
+        model.codeName = codeList.filter(y => y.value === x.code)[0] ? codeList.filter(y => y.value === x.code)[0].name : '';
+      }
+
+      model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0];
+      model.fromDateStr = this.datePipe.transform(x.fromDate, 'dd-MM-yyyy');
+      model.toDateStr = this.datePipe.transform(x.toDate, 'dd-MM-yyyy');
+      model.unit = this.sharedDataService.durationUnitList.filter(y => y.value === x.unit)[0];
+      model.byteArray = x.attachment;
+      return model;
+
+    });
+
+    this.CareTeams = response.careTeam.map(x => {
+      const model: any = {};
+      model.sequence = x.sequence;
+      model.practitionerName = x.practitionerName;
+      model.physicianCode = x.physicianCode;
+      model.practitionerRole = x.practitionerRole;
+      model.careTeamRole = x.careTeamRole;
+      model.speciality = x.speciality;
+      model.specialityCode = x.speciallityCode;
+      // tslint:disable-next-line:max-line-length
+      model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
+      // tslint:disable-next-line:max-line-length
+      model.careTeamRoleName = this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0] ? this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0].name : '';
+      return model;
+    });
+
+    this.VisionSpecifications = response.visionPrescription.map(x => {
+
+      const model: any = {};
+      model.sequence = x.sequence;
+      model.product = x.product;
+      model.eye = x.eye;
+      model.sphere = x.sphere;
+      model.cylinder = x.cylinder;
+      model.axis = x.axis;
+      model.prismAmount = x.prismAmount;
+      model.prismBase = x.prismBase;
+      model.multifocalPower = x.multifocalPower;
+      model.lensPower = x.lensPower;
+      model.lensBackCurve = x.lensBackCurve;
+      model.lensDiameter = x.lensDiameter;
+      model.lensDuration = x.lensDuration;
+      model.lensDurationUnit = x.lensDurationUnit;
+      model.lensColor = x.lensColor;
+      model.lensBrand = x.lensBrand;
+      model.lensNote = x.model;
+      // tslint:disable-next-line:max-line-length
+      model.productName = this.sharedDataService.productList.filter(y => y.value === x.product)[0] ? this.sharedDataService.productList.filter(y => y.value === x.product)[0].name : '';
+      // tslint:disable-next-line:max-line-length
+      model.lensDurationUnitName = this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0].name : '';
+      // tslint:disable-next-line:max-line-length
+      model.prismBaseName = this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0] ? this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0].name : '';
+      return model;
+
+    });
+
+    this.Items = response.items.map(x => {
+      const model: any = {};
+      model.sequence = x.sequence;
+      model.type = x.type;
+      model.itemCode = x.itemCode.toString();
+      model.itemDescription = x.itemDescription;
+      model.nonStandardCode = x.nonStandardCode;
+      model.isPackage = x.isPackage;
+      model.quantity = x.quantity;
+      model.unitPrice = x.unitPrice;
+      model.discount = x.discount;
+      model.factor = x.factor;
+      model.taxPercent = x.taxPercent;
+      model.patientSharePercent = x.patientSharePercent;
+      model.tax = x.tax;
+      model.net = x.net;
+      model.patientShare = x.patientShare;
+      model.payerShare = x.payerShare;
+      model.startDate = x.startDate;
+      model.supportingInfoSequence = x.supportingInfoSequence;
+      model.careTeamSequence = x.careTeamSequence;
+      model.diagnosisSequence = x.diagnosisSequence;
+      // tslint:disable-next-line:max-line-length
+      model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
+      return model;
+    });
   }
 }

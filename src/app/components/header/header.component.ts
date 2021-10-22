@@ -112,15 +112,28 @@ export class HeaderComponent implements OnInit {
 
     this.notificationService.startWatchingMessages(this.sharedServices.providerId, 'nphies');
     this.notificationService._messageWatchSources['nphies'].subscribe(value => {
+
       value = value.replace(`"`, '').replace(`"`, '');
       const splitedValue: string[] = value.split(':');
 
       if (splitedValue[0] === 'approval-notifications') {
         this.sharedServices.getProcessedCount();
+        const model: any = {};
+        // tslint:disable-next-line:radix
+        model.notificationId = parseInt(splitedValue[2]);
+        // tslint:disable-next-line:radix
+        model.responseId = parseInt(splitedValue[1]);
+        this.sharedServices.addProcessedNotifications(model);
       }
 
       if (splitedValue[0] === 'communication-request-notification') {
         this.sharedServices.getCommunicationRequestCount();
+        const model: any = {};
+        // tslint:disable-next-line:radix
+        model.notificationId = parseInt(splitedValue[2]);
+        // tslint:disable-next-line:radix
+        model.communicationId = parseInt(splitedValue[1]);
+        this.sharedServices.addCommunicationRequestNotifications(model);
       }
 
     });

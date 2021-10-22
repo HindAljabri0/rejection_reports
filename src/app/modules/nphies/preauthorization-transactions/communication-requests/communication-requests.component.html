@@ -12,11 +12,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let req of communicationRequests">
-          <td class="row-click" (click)="openDetailsDialog(req.requestId)">{{req.communicationId}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId)">{{req.category}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId)">{{req.requestId}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId)">{{req.payerName}}</td>
-          <td class="row-click" (click)="openDetailsDialog(req.requestId)">{{req.reasonCode}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId)">{{req.communicationId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId)">{{req.category}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId)">{{req.requestId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId)">{{req.payerName}}</td>
+          <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId)">{{req.reasonCode}}</td>
         </tr>
       </tbody>
     </table>
