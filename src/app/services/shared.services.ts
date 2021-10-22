@@ -46,9 +46,11 @@ export class SharedServices {
 
   unReadProcessedCount = 0;
   unReadProcessedCountChange: Subject<number> = new Subject();
+  processedNotificationList: any[] = [];
 
   unReadComunicationRequestCount = 0;
   unReadComunicationRequestCountChange: Subject<number> = new Subject();
+  communicationRequestNotificationList: any[] = [];
 
   uploadsList: {
     totalClaims: number,
@@ -277,6 +279,10 @@ export class SharedServices {
     });
   }
 
+  addProcessedNotifications(notification) {
+    this.processedNotificationList.push(notification);
+  }
+
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
     this.notifications.getNotificationsCount(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
@@ -291,6 +297,10 @@ export class SharedServices {
         this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
+  }
+
+  addCommunicationRequestNotifications(notification) {
+    this.communicationRequestNotificationList.push(notification);
   }
 
   markAsRead(notificationId: string, providerId: string) {
@@ -562,7 +572,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const hueSteps = 330 / count;
     let currentHueValue = 0;
-    for (let i = 0; i < count; i++, currentHueValue += hueSteps) {
+    for (let i = 0; i < count; i++ , currentHueValue += hueSteps) {
       let incrementedHue = baseColorHSL.h + currentHueValue;
       if (incrementedHue > 360) {
         incrementedHue %= 360;
@@ -580,7 +590,7 @@ export class SharedServices {
     const baseColorHSL = this.RGBToHSL(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b);
     const lightStep = (baseColorHSL.l - 5) / count;
     let currentLightValue = 0;
-    for (let i = 0; i < count; i++, currentLightValue += lightStep) {
+    for (let i = 0; i < count; i++ , currentLightValue += lightStep) {
       const incrementLight = baseColorHSL.l + currentLightValue;
       const derivedHSL = { h: baseColorHSL.h, s: baseColorHSL.s, l: incrementLight };
       const derivedRGB = this.HSLToRGB(derivedHSL.h, derivedHSL.s, derivedHSL.l);

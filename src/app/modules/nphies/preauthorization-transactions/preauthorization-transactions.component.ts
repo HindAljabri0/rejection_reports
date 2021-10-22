@@ -435,21 +435,21 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.getTransactionDetails(event.requestId, event.responseId);
   }
 
-  openDetailsDialogCR(requestId) {
-    this.getTransactionDetails(requestId, null, true);
+  openDetailsDialogCR(event) {
+    this.getTransactionDetails(event.requestId, null, event.communicationId);
   }
 
   openDetailsDialog(requestId, responseId) {
     this.getTransactionDetails(requestId, responseId);
   }
 
-  getTransactionDetails(requestId, responseId, fromCommunicationRequest = false) {
+  getTransactionDetails(requestId, responseId, communicationId = null) {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
 
-    if (fromCommunicationRequest) {
-      action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId);
+    if (communicationId) {
+      action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId, communicationId);
     } else {
       action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
     }
@@ -458,6 +458,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
+          if (communicationId) {
+            body.communicationId = communicationId;
+          }
           const dialogConfig = new MatDialogConfig();
           dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
           dialogConfig.data = {

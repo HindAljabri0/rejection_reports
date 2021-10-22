@@ -44,8 +44,6 @@ export class CommunicationRequestsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          this.sharedServices.unReadComunicationRequestCount = 0;
-
           this.communicationRequestModel = new PaginatedResult(body, CommunicationRequest);
           this.communicationRequests = this.communicationRequestModel.content;
           this.communicationRequests.forEach(x => {
@@ -99,8 +97,8 @@ export class CommunicationRequestsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(value) {
-    this.openDetailsDialogEvent.emit(value);
+  openDetailsDialog(requestId = null, communicationId = null) {
+    this.openDetailsDialogEvent.emit({'requestId': requestId, 'communicationId': communicationId});
   }
 
   get paginatorLength() {
