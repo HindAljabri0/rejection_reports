@@ -122,6 +122,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
   selectedInvoiceIndex: any;
   serviceTypeParIndex: any;
   serviceTypeChildIndex: any;
+
+  invoicesPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
+
   constructor(
     private store: Store,
     private actions: Actions,
@@ -842,6 +845,31 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       console.log(err);
     });
 
+  }
+
+  showFirstInvoicePage() {
+    this.invoicesPaginationControl.page = 0;
+  }
+  showNextInvoicesPage() {
+    if ((this.invoicesPaginationControl.page + 1) < Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed())) {
+      this.invoicesPaginationControl.page++;
+    }
+  }
+  showPreviousInvoicesPage() {
+    if (this.invoicesPaginationControl.page > 0) {
+      this.invoicesPaginationControl.page--;
+    }
+  }
+  showLastInvoicePage() {
+    this.invoicesPaginationControl.page = Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed())-1;
+  }
+
+  get currentInvoicesPage(){
+    return this.invoicesPaginationControl.page;
+  }
+
+  get currentInvoicesSize(){
+    return this.invoicesPaginationControl.size;
   }
 
   _isInvalidDate(date: Date) {
