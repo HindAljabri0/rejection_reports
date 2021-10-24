@@ -237,7 +237,7 @@
                                                             <div class="col-auto">
                                                                 <div class="statistic-box">
                                                                     <label>Discount</label>
-                                                                    <h3>{{service.serviceDiscount.value}}</h3>
+                                                                    <h3>{{calcDiscountValue(service) | number : '1.2-2'}}</h3>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto flex-grow-1">

@@ -552,7 +552,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       GDPN.discount.value = invoice.service.map(service => {
         if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
           let discount =
-            (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
+            (service.serviceGDPN.gross.value * (service.serviceGDPN.discount.value / 100));
           discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
           return discount;
         } else if (service.serviceGDPN.discount != null) {
@@ -658,6 +658,18 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
     return netVat;
+  }
+
+  calcDiscountValue(service) {
+    if (service.serviceDiscountUnit == 'SAR') {
+      return service.serviceDiscount.value;
+    } else {
+      const gross = this.calcGross(service);
+      if (gross != null && service.serviceDiscount.value != null) {
+        return this.calcGross(service) * service.serviceDiscount.value / 100
+      }
+    }
+    return 0;
   }
 
   calcPatientVatRate(service) {
@@ -861,14 +873,14 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
   }
   showLastInvoicePage() {
-    this.invoicesPaginationControl.page = Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed())-1;
+    this.invoicesPaginationControl.page = Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed()) - 1;
   }
 
-  get currentInvoicesPage(){
+  get currentInvoicesPage() {
     return this.invoicesPaginationControl.page;
   }
 
-  get currentInvoicesSize(){
+  get currentInvoicesSize() {
     return this.invoicesPaginationControl.size;
   }
 
