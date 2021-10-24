@@ -139,7 +139,7 @@ export class UploadCardComponent implements OnInit {
         .subscribe(result => {
           if (result === true) {
             this.sharedServices.loadingChanged.next(true);
-            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, this.data.uploadId + '', null, null,
+            this.claimService.deleteClaimByCriteria(this.sharedServices.providerId, null, null, null, this.data.uploadId + '', null, null,
               null, null, null, null, null, null, null, null, null, null, null)
               .subscribe(event => {
                 if (event instanceof HttpResponse) {
