@@ -34,32 +34,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
   });
 
   categoryList = this.sharedDataService.categoryList;
-  // [
-  //   { value: 'info', name: 'Info' },
-  //   { value: 'onset', name: 'Onset' },
-  //   { value: 'attachment', name: 'Attachment' },
-  //   { value: 'missingtooth', name: 'Missing Tooth' },
-  //   { value: 'hospitalized', name: 'Hospitalized' },
-  //   { value: 'employmentImpacted', name: 'Employment Impacted' },
-  //   // { value: 'lab-test', name: 'Lab Test' },
-  //   { value: 'reason-for-visit', name: 'Reason For Visit' },
-  //   { value: 'days-supply', name: 'Days Supply' },
-  //   { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
-  //   { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
-  //   { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
-  //   { value: 'icu-hours', name: 'Ice Hours' },
-  //   { value: 'ventilation-hours', name: 'Ventilation Hours' },
-  //   { value: 'vital-sign-height', name: 'Vital Sign Height' },
-  //   { value: 'chief-complaint', name: 'Chief Complaint' }
-  // ];
-
   reasonList = this.sharedDataService.reasonList;
-  // [
-  //   { value: 'e', name: 'Extraction' },
-  //   { value: 'c', name: 'Congenital' },
-  //   { value: 'u', name: 'Unknown' },
-  //   { value: 'o', name: 'Other' }
-  // ];
 
   codeList = [];
 

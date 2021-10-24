@@ -43,8 +43,8 @@ export class ProcessedTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          this.sharedServices.unReadProcessedCount = 0;
-
+          // this.sharedServices.unReadProcessedCount = 0;
+          // this.sharedServices.markAsRead();
           this.processedTransactionModel = new PaginatedResult(body, ProcessedTransaction);
           this.processedTransactions = this.processedTransactionModel.content;
           this.processedTransactions.forEach(x => {

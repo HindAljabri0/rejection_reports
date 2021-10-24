@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { SharedServices } from 'src/app/services/shared.services';
 
 @Component({
   selector: 'app-pre-authorization-details',
@@ -13,10 +14,30 @@ export class PreAuthorizationDetailsComponent implements OnInit {
   currentSelectedItem = -1;
   paymentAmount = 0;
 
-  constructor(private sharedDataService: SharedDataService) { }
+  constructor(private sharedDataService: SharedDataService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
+    this.readNotification();
     this.setDescriptions();
+  }
+
+  readNotification() {
+    let notificationId: string;
+    if (this.data.communicationId) {
+      this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
+      // tslint:disable-next-line:max-line-length
+      notificationId = this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId === this.data.communicationId)[0] ? this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId === this.data.communicationId)[0].notificationId : '';
+      // tslint:disable-next-line:max-line-length
+      this.sharedServices.communicationRequestNotificationList = this.sharedServices.communicationRequestNotificationList.filter(x => x.communicationId !== this.data.communicationId);
+    } else {
+      this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
+      // tslint:disable-next-line:max-line-length
+      notificationId = this.sharedServices.processedNotificationList.filter(x => x.responseId === this.data.approvalResponseId)[0] ? this.sharedServices.processedNotificationList.filter(x => x.responseId === this.data.approvalResponseId)[0].notificationId : '';
+    }
+    if (notificationId) {
+      this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+    }
+
   }
 
   toggleItem(index) {

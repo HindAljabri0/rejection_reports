@@ -106,8 +106,8 @@ export class SearchWithAdvanceComponent implements OnInit {
       this.toDateHasError = false;
       this.router.navigate([this.commen.providerId, 'claims'], {
         queryParams: {
-          payerId: this.selectedPayer == null? null : this.selectedPayer.id,
-          organizationId: this.selectedTpa == null? null : this.selectedTpa.id,
+          payerId: this.selectedSearchMode == 'tpa&date'? null : this.selectedPayer.id,
+          organizationId: this.selectedSearchMode == 'payer&date'? null : this.selectedTpa.id,
           from: this.fromDateControl.value.format('DD-MM-yyyy'),
           to: this.toDateControl.value.format('DD-MM-yyyy'),
         },
