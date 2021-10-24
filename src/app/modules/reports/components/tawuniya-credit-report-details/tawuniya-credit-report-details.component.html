@@ -159,10 +159,11 @@
                 <!-- <button  (click)="fetchServices('deducted-services',null,null)" class="primary-text-btn"
                     mat-flat-button type="button">Clear
                     Filter</button> -->
-                <p style="margin-right: 20px;" *ngIf="(appliedFilters.length>0 ||  appliedFilters==-1)"
+                <p  href="#" style="margin-right: 20px;" *ngIf="(dataAfterFilters.length>0 ||  dataAfterFilters==-1)"
                     (click)=" getAllData()" class="primary-text-btn" title="Clear
                     Filter" mat-flat-button>Clear
                     Filter</p>
+
                 <a *ngIf="(selectedServiceTab == 'deducted-services' && selectionControl.deducted.selections.length > 1) || (selectedServiceTab == 'rejected-services' && selectionControl.rejected.selections.length > 0)"
                     href="#" (click)="$event.preventDefault()" class="primary-link underlined" title="Agree"
                     (click)="agreeOnSelectedServices()" [ngClass]="disabledButtonClass()">Agree</a>
@@ -228,7 +229,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'waseelbatch' ) ; waseelBatch='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','waseelbatch',waseelBatch)">Filter</button>
                                                     </div>
@@ -255,8 +256,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="btn-list text-right">
-                                                        <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        <button mat-flat-button  
+                                                            (click)="clearFilterForOneColumn('deducted-services' , true,'physicianId' ) ; doctorCode='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','physicianId',doctorCode)">Filter</button>
                                                     </div>
@@ -285,7 +286,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'payerClaimNo' ) ; claimNo='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','payerClaimNo',claimNo)">Filter</button>
                                                     </div>
@@ -313,7 +314,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'serviceCode' ) ; serviceCode='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','serviceCode',serviceCode)">Filter</button>
                                                     </div>
@@ -342,7 +343,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'servicedescription' ) ; service='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','servicedescription',service)">Filter</button>
                                                     </div>
@@ -371,7 +372,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'rejectionReason' ) ; rejectionReason='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','rejectionReason',rejectionReason)">Filter</button>
                                                     </div>
@@ -398,7 +399,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'comments' ) ; comment='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','comments',comment)">Filter</button>
                                                     </div>
@@ -425,7 +426,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'exceedPrice' ) ; exceedPrice='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','exceedPrice',exceedPrice)">Filter</button>
                                                     </div>
@@ -453,7 +454,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'deductedAmount' ) ; deductedAmount='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','deductedAmount',deductedAmount)">Filter</button>
                                                     </div>
@@ -482,7 +483,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('deducted-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('deducted-services' , true,'agree' ) ; agreed='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('deducted-services','agree',agreed)">Filter</button>
                                                     </div>
@@ -626,7 +627,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'waseelbatch' ) ; waseelBatch='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','waseelbatch',waseelBatch)">Filter</button>
                                                     </div>
@@ -654,7 +655,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'physicianId' ) ; doctorCode='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','physicianId',doctorCode)">Filter</button>
                                                     </div>
@@ -683,7 +684,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'physicianId' ) ; claimNo='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','payerClaimNo',claimNo)">Filter</button>
                                                     </div>
@@ -710,7 +711,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'serviceCode' ) ; serviceCode='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','serviceCode',serviceCode)">Filter</button>
                                                     </div>
@@ -738,7 +739,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'servicedescription' ) ; service='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','servicedescription',service)">Filter</button>
                                                     </div>
@@ -767,7 +768,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'rejectionReason' ) ; rejectionReason='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','rejectionReason',rejectionReason)">Filter</button>
                                                     </div>
@@ -794,7 +795,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'comments' ) ; comment='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','comments',comment)">Filter</button>
                                                     </div>
@@ -821,7 +822,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'exceedPrice' ) ; exceedPrice='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','exceedPrice',exceedPrice)">Filter</button>
                                                     </div>
@@ -849,7 +850,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'deductedAmount' ) ; deductedAmount='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','deductedAmount',deductedAmount)">Filter</button>
                                                     </div>
@@ -877,7 +878,7 @@
                                                     </div>
                                                     <div class="btn-list text-right">
                                                         <button mat-flat-button
-                                                            (click)="fetchServices('rejected-services')">Clear</button>
+                                                        (click)="clearFilterForOneColumn('rejected-services' , true,'agree' ) ; agreed='' ">Clear</button>
                                                         <button mat-flat-button color="primary"
                                                             (click)="fetchDataByCriteria('rejected-services','agree',agreed)">Filter</button>
                                                     </div>

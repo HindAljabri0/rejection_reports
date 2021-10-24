@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SummaryType } from 'src/app/models/allCreditSummaryDetailsModels/summaryType';
 import { UploadSummary } from 'src/app/models/uploadSummary';
+import { SearchObject } from 'src/app/modules/reports/components/tawuniya-credit-report-details/tawuniya-credit-report-details.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -135,38 +136,16 @@ export class CreditReportService {
     // , serviceCode: string, servicedescription: string, rejectionReason: string, comments: string, exceedPrice: string
     // , deductedAmount: string, agree: string,
     getTawuniyaCreditReportServices(
-        providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services', nameFild: string,
-        valueFild: string,
+        providerId: string, batchId: string, serviceType: 'deducted-services' | 'rejected-services',  appliedFilters:SearchObject[],
         page: number, size: number) {
         let requestURL = `/providers/${providerId}/batches/${batchId}/${serviceType}?page=${page}&size=${size}`;
 
-        if (nameFild != null) {
-            requestURL += `&${nameFild}=${valueFild}`;
-         }
-        // if (payerClaimNo != null) {
-        //     requestURL += `&payerClaimNo=${payerClaimNo}`;
-
-        // }
-        // if (serviceCode != null) {
-        //     requestURL += `&serviceCode=${serviceCode}`;
-        // }
-        // if (servicedescription != null) {
-        //     requestURL += `&servicedescription=${servicedescription}`;
-        // }
-        // if (rejectionReason != null) {
-        //     requestURL += `&rejectionReason=${rejectionReason}`;
-        // }
-        // if (comments != null) {
-        //     requestURL += `&comments=${comments}`;
-        // } if (exceedPrice != null) {
-        //     requestURL += `&exceedPrice=${exceedPrice}`;
-        // }
-        // if (deductedAmount != null) {
-        //     requestURL += `&deductedAmount=${deductedAmount}`;
-        // } if (agree != null) {
-        //     requestURL += `&agree=${agree}`;
-        // }
-
+        if (appliedFilters != null && appliedFilters.length > 0 ) {
+            for (var value  of appliedFilters)  {
+                requestURL += `&${value.nameColumn}=${value.value}`;
+            }
+           
+        }
         const request = new HttpRequest('GET', environment.tawuniyaCreditReportService + requestURL);
         return this.http.request(request);
     }
