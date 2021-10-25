@@ -432,18 +432,18 @@ export class PreauthorizationTransactionsComponent implements OnInit {
   }
 
   openDetailsDialoEv(event) {
-    this.getTransactionDetails(event.requestId, event.responseId);
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId);
   }
 
   openDetailsDialogCR(event) {
-    this.getTransactionDetails(event.requestId, null, event.communicationId);
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId);
   }
 
   openDetailsDialog(requestId, responseId) {
-    this.getTransactionDetails(requestId, responseId);
+    this.getTransactionDetails(requestId, responseId, null, null);
   }
 
-  getTransactionDetails(requestId, responseId, communicationId = null) {
+  getTransactionDetails(requestId, responseId, communicationId = null, notificationId) {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
@@ -461,6 +461,9 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           if (communicationId) {
             body.communicationId = communicationId;
           }
+          if (notificationId) {
+            body.notificationId = notificationId;
+          }
           const dialogConfig = new MatDialogConfig();
           dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
           dialogConfig.data = {
@@ -469,6 +472,15 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           };
 
           const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent, dialogConfig);
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              if (!communicationId && notificationId) {
+                this.processedTransactions.getProcessedTransactions();
+              } else if (communicationId && notificationId) {
+                this.communicationRequests.getCommunicationRequests();
+              }
+            }
+          }, error => { });
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -492,20 +504,22 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  get IsNewTransactionProcessed() {
-    if (this.sharedServices.unReadProcessedCount > 0) {
-      return true;
-    } else {
-      return false;
-    }
+  get NewTransactionProcessed() {
+    // if (this.sharedServices.unReadProcessedCount > 0) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return this.sharedServices.unReadProcessedCount;
   }
 
-  get IsNewComunicationRequest() {
-    if (this.sharedServices.unReadComunicationRequestCount > 0) {
-      return true;
-    } else {
-      return false;
-    }
+  get NewComunicationRequests() {
+    // if (this.sharedServices.unReadComunicationRequestCount > 0) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return this.sharedServices.unReadComunicationRequestCount;
   }
 
 }

@@ -98,8 +98,8 @@ export class ProcessedTransactionsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId = null, responseId = null) {
-    this.openDetailsDialogEvent.emit({'requestId': requestId, 'responseId': responseId});
+  openDetailsDialog(requestId = null, responseId = null, notificationId = null) {
+    this.openDetailsDialogEvent.emit({'requestId': requestId, 'responseId': responseId, 'notificationId': notificationId});
   }
 
   get paginatorLength() {

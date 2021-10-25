@@ -19,13 +19,13 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 
   openAddCommunicationDialog() {
     this.dialog.open(AddCommunicationDialogComponent, {
       panelClass: ['primary-dialog', 'dialog-lg']
-    })
+    });
   }
 
 }
