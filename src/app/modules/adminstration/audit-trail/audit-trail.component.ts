@@ -44,6 +44,8 @@ export class AuditTrailComponent implements OnInit {
       { value: 'LoginAuditLogType', text: 'Login' },
       { value: 'ClaimSubmissionRequestAuditLogType', text: 'ClaimSubmissionRequest' },
       { value: 'ClaimSubmissionResponseAuditLogType', text: 'ClaimSubmissionResponse' },
+      { value: 'StartOfBatchRequestAuditLogType', text: 'StartOfBatchRequest' },
+      { value: 'StartOfBatchResponseAuditLogType', text: 'StartOfBatchResponse' },
     ];
     this.commenService.loadingChanged.next(true);
     this.auditTrailService.getAllLogs().subscribe(value => {
