@@ -40,6 +40,8 @@ export class LabResultsComponent implements OnInit {
 
   pageMode: ClaimPageMode;
 
+  labsPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
+
   constructor(private store: Store, private actions: Actions, private datePipe: DatePipe) { }
 
   ngOnInit() {
@@ -277,6 +279,31 @@ export class LabResultsComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  showFirstLabsPage() {
+    this.labsPaginationControl.page = 0;
+  }
+  showNextLabsPage() {
+    if ((this.labsPaginationControl.page + 1) < Number.parseInt((this.resultsControls.length / this.labsPaginationControl.size).toFixed())) {
+      this.labsPaginationControl.page++;
+    }
+  }
+  showPreviousLabsPage() {
+    if (this.labsPaginationControl.page > 0) {
+      this.labsPaginationControl.page--;
+    }
+  }
+  showLastLabsPage() {
+    this.labsPaginationControl.page = Number.parseInt((this.resultsControls.length / this.labsPaginationControl.size).toFixed())-1;
+  }
+
+  get currentLabsPage(){
+    return this.labsPaginationControl.page;
+  }
+
+  get currentLabsSize(){
+    return this.labsPaginationControl.size;
   }
 
 }

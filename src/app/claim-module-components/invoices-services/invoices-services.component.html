@@ -12,6 +12,29 @@
 <div class="table-responsive">
     <table class="primary-grid manual-row-color claim-view-table no-borders">
         <thead>
+            <tr *ngIf="controllers.length > 10">
+                <th colspan="10">
+                    <div class="right-block custom-paginator">
+                        <button matRipple (click)="showFirstInvoicePage()" type="button" title="First Page"
+                            style="margin-left: auto;">
+                            <img src="./assets/ic-page-first.svg" alt="First" />
+                        </button>
+                        <button matRipple (click)="showPreviousInvoicesPage()" type="button" title="Previous Page">
+                            <img src="./assets/ic-page-prev.svg" alt="Previous" />
+                        </button>
+                        <p class="page-info">
+                            {{(invoicesPaginationControl.page+1)}}<small>/{{(controllers.length/
+                                invoicesPaginationControl.size).toFixed()}}</small>
+                        </p>
+                        <button matRipple (click)="showNextInvoicesPage()" type="button" title="Next Page">
+                            <img src="./assets/ic-page-next.svg" alt="Next" />
+                        </button>
+                        <button matRipple (click)="showLastInvoicePage()" type="button" title="Last Page">
+                            <img src="./assets/ic-page-last.svg" alt="Last" />
+                        </button>
+                    </div>
+                </th>
+            </tr>
             <tr>
                 <th width="10"></th>
                 <th width="10"></th>
@@ -26,17 +49,23 @@
             </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="let invoice of controllers; let i = index">
-                <tr [class.even]="i%2" class="align-middle" [class.text-danger]="invoiceHasErrors(i)"
-                    [class.light-bg-danger]="invoiceHasErrors(i)">
-                    <td class="text-primary text-center row-click" (click)="toggleInvoice(i)">
-                        <mat-icon *ngIf="expandedInvoice != i" class="size-21">chevron_right</mat-icon>
-                        <mat-icon *ngIf="expandedInvoice == i" class="size-21">expand_more</mat-icon>
+            <ng-container
+                *ngFor="let invoice of controllers | slice:currentInvoicesPage*currentInvoicesSize:(currentInvoicesPage*currentInvoicesSize)+currentInvoicesSize; let i = index">
+                <tr [class.even]="i%2" class="align-middle"
+                    [class.text-danger]="invoiceHasErrors(i+(currentInvoicesPage*currentInvoicesSize))"
+                    [class.light-bg-danger]="invoiceHasErrors(i+(currentInvoicesPage*currentInvoicesSize))">
+                    <td class="text-primary text-center row-click"
+                        (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
+                        <mat-icon *ngIf="expandedInvoice != i+(currentInvoicesPage*currentInvoicesSize)"
+                            class="size-21">chevron_right</mat-icon>
+                        <mat-icon *ngIf="expandedInvoice == i+(currentInvoicesPage*currentInvoicesSize)"
+                            class="size-21">expand_more</mat-icon>
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">
-                        <mat-icon *ngIf="invoiceHasErrors(i)">error</mat-icon>
+                    <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
+                        <mat-icon *ngIf="invoiceHasErrors(i+(currentInvoicesPage*currentInvoicesSize))">error</mat-icon>
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{(i+1)}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
+                        {{(i+1+(currentInvoicesPage*currentInvoicesSize))}}</td>
                     <td width="200">
                         <div class="form-group mt-n1 mb-n1"
                             [class.has-error]="fieldHasError('INVDATE', invoice?.invoice?.invoiceId) "
@@ -51,8 +80,8 @@
                     </td>
                     <td width="200">
                         <div class="form-group mt-n1 mb-n1"
-                            [class.has-error]="fieldHasError('INVOICENUM', invoice?.invoice?.invoiceId) || fieldHasError('INVOICENUM', i)"
-                            [matTooltip]="getFieldError('INVOICENUM', invoice?.invoice?.invoiceId) || getFieldError('INVOICENUM', i)">
+                            [class.has-error]="fieldHasError('INVOICENUM', invoice?.invoice?.invoiceId) || fieldHasError('INVOICENUM', i+(currentInvoicesPage*currentInvoicesSize))"
+                            [matTooltip]="getFieldError('INVOICENUM', invoice?.invoice?.invoiceId) || getFieldError('INVOICENUM', i+(currentInvoicesPage*currentInvoicesSize))">
                             <input class="form-control" placeholder="Enter invoice number" type="text"
                                 [formControl]="invoice.invoiceNumber">
                         </div>
@@ -64,7 +93,8 @@
                             <mat-form-field class="form-control custom-select-control">
                                 <!-- [value]="controllers[i].invoice.invoiceDepartment" -->
                                 <!-- [disabled]="pageMode != 'CREATE' && pageMode != 'CREATE_FROM_RETRIEVED' && pageMode !== 'EDIT'" -->
-                                <mat-select (selectionChange)="updateInvoiceDepartment(i, $event)"
+                                <mat-select
+                                    (selectionChange)="updateInvoiceDepartment(i+(currentInvoicesPage*currentInvoicesSize), $event)"
                                     [formControl]="invoice.invoiceDepartment" required>
                                     <mat-option *ngFor="let department of departments"
                                         [value]="department.departmentId">
@@ -73,20 +103,23 @@
                             </mat-form-field>
                         </div>
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice?.invoice?.invoiceGDPN?.net?.value}}</td>
-                    <td class="row-click" (click)="toggleInvoice(i)">
+                    <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
+                        {{invoice?.invoice?.invoiceGDPN?.net?.value}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
                         {{invoice?.invoice?.invoiceGDPN?.netVATamount?.value}}
                     </td>
-                    <td class="row-click" (click)="toggleInvoice(i)">{{invoice.services.length}}</td>
+                    <td class="row-click" (click)="toggleInvoice(i+(currentInvoicesPage*currentInvoicesSize))">
+                        {{invoice.services.length}}</td>
                     <td>
                         <!-- (pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') &&  -->
-                        <button type="button" class="delete-btn text-danger" (click)="onDeleteInvoiceClick(i)"
+                        <button type="button" class="delete-btn text-danger"
+                            (click)="onDeleteInvoiceClick(i+(currentInvoicesPage*currentInvoicesSize))"
                             *ngIf="controllers.length > 1">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="expandedInvoice == i">
+                <tr *ngIf="expandedInvoice == i+(currentInvoicesPage*currentInvoicesSize)">
                     <td colspan="10">
                         <div class="box">
                             <div class="d-flex pb-2">
@@ -94,12 +127,13 @@
                                 <div class="ml-auto btn-list mt-n1 mb-n1" *ngIf="pageMode != 'VIEW'">
                                     <button mat-flat-button *ngIf="pageMode == 'CREATE_FROM_RETRIEVED'"
                                         disableRipple="true" class="primary-text-btn px-0"
-                                        (click)="onAddRetrievedServiceClick(i)">
+                                        (click)="onAddRetrievedServiceClick(i+(currentInvoicesPage*currentInvoicesSize))">
                                         <mat-icon>add_circle_outline</mat-icon>
                                         <span class="pl-1">Add a Retreived Service</span>
                                     </button>
-                                    <button mat-flat-button (click)="onAddServiceClick(i)" class="primary-text-btn px-0"
-                                        disableRipple="true">
+                                    <button mat-flat-button
+                                        (click)="onAddServiceClick(i+(currentInvoicesPage*currentInvoicesSize))"
+                                        class="primary-text-btn px-0" disableRipple="true">
                                         <mat-icon>add_circle_outline</mat-icon>
                                         <span class="pl-1">Add Service</span>
                                     </button>
@@ -123,26 +157,36 @@
                                     </thead>
                                     <tbody>
                                         <ng-container *ngFor="let service of invoice.services; let j = index">
-                                            <tr [class.text-danger]="serviceHasErrors(i, j)">
+                                            <tr
+                                                [class.text-danger]="serviceHasErrors(i+(currentInvoicesPage*currentInvoicesSize), j)">
                                                 <td class="text-primary text-center row-click"
-                                                    (click)="toggleServiceExpansion($event,i,j)">
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     <mat-icon *ngIf="!service.isOpen" class="size-21">chevron_right
                                                     </mat-icon>
                                                     <mat-icon *ngIf="service.isOpen" class="size-21">expand_more
                                                     </mat-icon>
                                                 </td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
-                                                    <mat-icon *ngIf="serviceHasErrors(i, j)">error</mat-icon>
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
+                                                    <mat-icon
+                                                        *ngIf="serviceHasErrors(i+(currentInvoicesPage*currentInvoicesSize), j)">
+                                                        error</mat-icon>
                                                 </td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     {{(j+1)}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     {{service.serviceCode.value}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     {{service.serviceDate.value| date:"dd/MM/yyyy"}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
-                                                    {{calcNet(controllers[i].services[j])}}</td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
+                                                    {{calcNet(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j])}}
+                                                </td>
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     <span class="text-{{getStatusColor(service.statusCode)}}"
                                                         *ngIf=" service.statusCode != null && service.statusDescription != null">
                                                         {{service.statusDescription}}
@@ -150,7 +194,8 @@
                                                     <span
                                                         *ngIf="!(service.statusCode != null && service.statusDescription != null)">-</span>
                                                 </td>
-                                                <td class="row-click" (click)="toggleServiceExpansion($event,i,j)">
+                                                <td class="row-click"
+                                                    (click)="toggleServiceExpansion($event,i+(currentInvoicesPage*currentInvoicesSize),j)">
                                                     <span *ngIf="service.statusCode != null"
                                                         class="semibold text-{{getStatusColor(service.statusCode)}}">{{getStatusText(service.statusCode)}}</span>
                                                 </td>
@@ -159,15 +204,15 @@
                                                         <a href="#" class="primary-link"
                                                             title="Select a retrieved service"
                                                             *ngIf="pageMode == 'CREATE_FROM_RETRIEVED' && !service.retrieved && j == expandedService"
-                                                            (click)="onSelectRetrievedServiceClick($event, i, j)">Select
+                                                            (click)="onSelectRetrievedServiceClick($event, i+(currentInvoicesPage*currentInvoicesSize), j)">Select
                                                             a
                                                             retrieved service</a>
                                                     </ng-container>
                                                 </td>
                                                 <td>
                                                     <button
-                                                        *ngIf="controllers[i].services.length > 1 && pageMode != 'VIEW'"
-                                                        (click)="onDeleteServiceClick($event, i, j)"
+                                                        *ngIf="controllers[i+(currentInvoicesPage*currentInvoicesSize)].services.length > 1 && pageMode != 'VIEW'"
+                                                        (click)="onDeleteServiceClick($event, i+(currentInvoicesPage*currentInvoicesSize), j)"
                                                         class="text-danger delete-btn">
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
@@ -184,7 +229,7 @@
                                                             <div class="col-auto">
                                                                 <div class="statistic-box">
                                                                     <label>Gross Amount</label>
-                                                                    <h3>{{calcGross(controllers[i].services[j]) | number
+                                                                    <h3>{{calcGross(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j]) | number
                                                                         : '1.2-2'}}
                                                                     </h3>
                                                                 </div>
@@ -192,7 +237,7 @@
                                                             <div class="col-auto">
                                                                 <div class="statistic-box">
                                                                     <label>Discount</label>
-                                                                    <h3>{{service.serviceDiscount.value}}</h3>
+                                                                    <h3>{{calcDiscountValue(service) | number : '1.2-2'}}</h3>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto flex-grow-1">
@@ -203,7 +248,7 @@
                                                                     </div>
                                                                     <div class="text-right ml-auto pl-2">
                                                                         <label>PSh Vat Amount</label>
-                                                                        <h3>{{calcPatientVatRate(controllers[i].services[j])}}
+                                                                        <h3>{{calcPatientVatRate(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j])}}
                                                                         </h3>
                                                                     </div>
                                                                 </div>
@@ -212,40 +257,42 @@
                                                                 <div class="statistic-box d-flex">
                                                                     <div>
                                                                         <label>Net Amount</label>
-                                                                        <h3>{{calcNet(controllers[i].services[j])}}</h3>
+                                                                        <h3>{{calcNet(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j])}}</h3>
                                                                     </div>
                                                                     <div class="text-right ml-auto pl-2">
                                                                         <label>Net Vat</label>
-                                                                        <h3>{{calcNetVat(controllers[i].services[j])}}
+                                                                        <h3>{{calcNetVat(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j])}}
                                                                         </h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto"
-                                                                *ngIf="controllers[i].services[j].statusCode != null && controllers[i].services[j].statusCode != ''">
+                                                                *ngIf="controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode != null && controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode != ''">
                                                                 <div
-                                                                    class="statistic-box text-{{getStatusColor(controllers[i].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i].services[j].statusCode)}}">
+                                                                    class="statistic-box text-{{getStatusColor(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode)}}">
                                                                     <label>Actual Deducted Amount</label>
-                                                                    <h3>{{controllers[i].services[j].acutalDeductedAmount}}
+                                                                    <h3>{{controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].acutalDeductedAmount}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto"
-                                                                *ngIf="controllers[i].services[j].statusCode != null && controllers[i].services[j].statusCode != ''">
+                                                                *ngIf="controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode != null && controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode != ''">
                                                                 <div
-                                                                    class="statistic-box text-{{getStatusColor(controllers[i].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i].services[j].statusCode)}}">
+                                                                    class="statistic-box text-{{getStatusColor(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode)}}">
                                                                     <label>Actual Paid Net Amount</label>
-                                                                    <h3>{{(calcNet(controllers[i].services[j]) -
-                                                                        controllers[i].services[j].acutalDeductedAmount) | number : '1.2-2'}}
+                                                                    <h3>{{(calcNet(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j]) -
+                                                                        controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].acutalDeductedAmount)
+                                                                        | number : '1.2-2'}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
                                                             <div class="col-auto"
-                                                                *ngIf="controllers[i].services[j].statusCode != null && controllers[i].services[j].statusCode != ''">
+                                                                *ngIf="controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode != null && controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode != ''">
                                                                 <div
-                                                                    class="statistic-box text-{{getStatusColor(controllers[i].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i].services[j].statusCode)}}">
+                                                                    class="statistic-box text-{{getStatusColor(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode)}} light-bg-{{getStatusColor(controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].statusCode)}}">
                                                                     <label>Actual Paid VAT Amount</label>
-                                                                    <h3>{{controllers[i].services[j].acutalPaidVatAmount  | number : '1.2-2'}}
+                                                                    <h3>{{controllers[i+(currentInvoicesPage*currentInvoicesSize)].services[j].acutalPaidVatAmount
+                                                                        | number : '1.2-2'}}
                                                                     </h3>
                                                                 </div>
                                                             </div>
@@ -283,7 +330,7 @@
                                                                             <span
                                                                                 class="input-group-text clickable medium"
                                                                                 [matMenuTriggerFor]="editServiceCodeMenu"
-                                                                                (click)="setServiceTypeIndex(i,j)">Select</span>
+                                                                                (click)="setServiceTypeIndex(i+(currentInvoicesPage*currentInvoicesSize),j)">Select</span>
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -327,7 +374,7 @@
                                                                     <div class="input-group">
                                                                         <input class="form-control"
                                                                             placeholder="Enter unit price" type="number"
-                                                                            (change)="service.net = null; service.gross = null; controllers[i].needsRecalculation = true"
+                                                                            (change)="service.net = null; service.gross = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true"
                                                                             [formControl]="service.unitPrice">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">SAR</span></span>
@@ -342,7 +389,7 @@
                                                                             class="asterisk">*</span></label>
                                                                     <input class="form-control"
                                                                         placeholder="Enter quantity" type="text"
-                                                                        (change)="service.net = null; service.gross = null; controllers[i].needsRecalculation = true"
+                                                                        (change)="service.net = null; service.gross = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true"
                                                                         [formControl]="service.quantity">
                                                                 </div>
                                                             </div>
@@ -358,7 +405,7 @@
                                                                             placeholder="Enter patient share"
                                                                             type="number"
                                                                             [formControl]="service.patientShare"
-                                                                            (change)="service.net = null; controllers[i].needsRecalculation = true">
+                                                                            (change)="service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">SAR</span></span>
                                                                     </div>
@@ -375,11 +422,11 @@
                                                                             placeholder="Enter service discount"
                                                                             type="number"
                                                                             [formControl]="service.serviceDiscount"
-                                                                            (change)="service.net = null; controllers[i].needsRecalculation = true">
+                                                                            (change)="service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">
                                                                         <span class="input-group-append">
                                                                             <span
                                                                                 class="input-group-text clickable medium"
-                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')); service.net = null; controllers[i].needsRecalculation = true">{{service.serviceDiscountUnit
+                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')); service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">{{service.serviceDiscountUnit
                                                                                 == 'SAR'? 'SAR':'%'}}</span>
                                                                         </span>
                                                                     </div>
@@ -395,7 +442,7 @@
                                                                         <input class="form-control"
                                                                             placeholder="Enter net vat rate"
                                                                             type="number"
-                                                                            (change)="service.netVatAmount = null; controllers[i].needsRecalculation = true"
+                                                                            (change)="service.netVatAmount = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true"
                                                                             [formControl]="service.netVatRate">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">%</span></span>
@@ -412,7 +459,7 @@
                                                                         <input class="form-control"
                                                                             placeholder="Enter patient share vat rate"
                                                                             type="number"
-                                                                            (change)="service.patientShareVatAmount = null; controllers[i].needsRecalculation = true"
+                                                                            (change)="service.patientShareVatAmount = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true"
                                                                             [formControl]="service.patientShareVatRate">
                                                                         <span class="input-group-append"><span
                                                                                 class="input-group-text medium">%</span></span>
