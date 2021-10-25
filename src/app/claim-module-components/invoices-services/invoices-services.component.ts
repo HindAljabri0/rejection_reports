@@ -122,6 +122,9 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
   selectedInvoiceIndex: any;
   serviceTypeParIndex: any;
   serviceTypeChildIndex: any;
+
+  invoicesPaginationControl: { page: number, size: number } = { page: 0, size: 10 };
+
   constructor(
     private store: Store,
     private actions: Actions,
@@ -549,7 +552,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       GDPN.discount.value = invoice.service.map(service => {
         if (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') {
           let discount =
-            (service.serviceGDPN.gross.value - service.serviceGDPN.patientShare.value) * (service.serviceGDPN.discount.value / 100);
+            (service.serviceGDPN.gross.value * (service.serviceGDPN.discount.value / 100));
           discount = Number.parseFloat(discount.toPrecision(discount.toFixed().length + 2));
           return discount;
         } else if (service.serviceGDPN.discount != null) {
@@ -655,6 +658,18 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     let netVat = (net * (service.netVatRate.value / 100));
     netVat = Number.parseFloat(netVat.toPrecision(netVat.toFixed().length + 2));
     return netVat;
+  }
+
+  calcDiscountValue(service) {
+    if (service.serviceDiscountUnit == 'SAR') {
+      return service.serviceDiscount.value;
+    } else {
+      const gross = this.calcGross(service);
+      if (gross != null && service.serviceDiscount.value != null) {
+        return this.calcGross(service) * service.serviceDiscount.value / 100
+      }
+    }
+    return 0;
   }
 
   calcPatientVatRate(service) {
@@ -842,6 +857,31 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
       console.log(err);
     });
 
+  }
+
+  showFirstInvoicePage() {
+    this.invoicesPaginationControl.page = 0;
+  }
+  showNextInvoicesPage() {
+    if ((this.invoicesPaginationControl.page + 1) < Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed())) {
+      this.invoicesPaginationControl.page++;
+    }
+  }
+  showPreviousInvoicesPage() {
+    if (this.invoicesPaginationControl.page > 0) {
+      this.invoicesPaginationControl.page--;
+    }
+  }
+  showLastInvoicePage() {
+    this.invoicesPaginationControl.page = Number.parseInt((this.controllers.length / this.invoicesPaginationControl.size).toFixed()) - 1;
+  }
+
+  get currentInvoicesPage() {
+    return this.invoicesPaginationControl.page;
+  }
+
+  get currentInvoicesSize() {
+    return this.invoicesPaginationControl.size;
   }
 
   _isInvalidDate(date: Date) {
