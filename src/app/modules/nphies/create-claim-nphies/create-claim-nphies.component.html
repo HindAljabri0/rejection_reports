@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn">
   <mat-progress-bar mode="indeterminate" class="page-top-loader"></mat-progress-bar>
   <div>
-    <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
+    <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
       <!-- <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
       <div class="block-header">
         <p>Create Claim</p><span class="spacer"></span>
@@ -36,7 +36,7 @@
               <h5 class="form-title pt-0">Beneficary Info</h5>
               <div class="d-flex">
                 <div class="form-group flex-grow-1"
-                  [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
+                  [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
                   <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
                   <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
                     formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
@@ -47,7 +47,7 @@
                     </mat-option>
                   </mat-autocomplete>
                   <div
-                    *ngIf="(isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')">
+                    *ngIf="(isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')">
                     <span class="error-text">Please select a Beneficiary</span>
                   </div>
                 </div>
@@ -64,7 +64,7 @@
               <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
                 <div class="col-md-4">
                   <div class="form-group" [matTooltip]="selectedPlanIdError"
-                    [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
                     <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="insurancePlanId">
@@ -76,7 +76,7 @@
                       </mat-select>
                     </mat-form-field>
                     <div
-                      *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')">
                       <span class="error-text">Please select an Insurance Plan</span>
                     </div>
                   </div>
@@ -87,7 +87,7 @@
               <div class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
                     <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
                     <div class="date-picker">
                       <input [matDatepicker]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered"
@@ -96,14 +96,14 @@
                       <mat-datepicker #dateOrderedCtrl></mat-datepicker>
                     </div>
                     <div
-                      *ngIf="(isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')">
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')">
                       <span class="error-text">Please enter Date Ordered</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')}">
                     <label class="control-label">Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
@@ -112,7 +112,7 @@
                       </mat-select>
                     </mat-form-field>
                     <div
-                      *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')">
                       <span class="error-text">Please select a Type</span>
                     </div>
                   </div>
@@ -124,14 +124,14 @@
                       <mat-select formControlName="subType">
                         <mat-option value="">Select Sub Type</mat-option>
                         <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
-                        <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">
+                        <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="ip">
                           InPatient
                         </mat-option>
-                        <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
-                      FormPreAuthorization.controls.type.value === 'oral' ||
-                      FormPreAuthorization.controls.type.value === 'vision' ||
-                      FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
-                        <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">
+                        <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'professional' ||
+                      FormNphiesClaim.controls.type.value === 'oral' ||
+                      FormNphiesClaim.controls.type.value === 'vision' ||
+                      FormNphiesClaim.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
+                        <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="emr">
                           Emergency
                         </mat-option>
                       </mat-select>
@@ -205,7 +205,7 @@
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
                 <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()"
-                  [disabled]="!FormPreAuthorization.controls.type.value">
+                  [disabled]="!FormNphiesClaim.controls.type.value">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -249,7 +249,7 @@
               <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
               </app-empty-state>
             </mat-tab>
-            <mat-tab *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
+            <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
               <ng-template mat-tab-label>
                 <mat-icon class="mr-1" *ngIf="checkErrorVision === true" [class.text-danger]="checkErrorVision === true">
                   error</mat-icon>
@@ -261,7 +261,7 @@
               <div class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
+                    [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))}">
                     <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired"
                         class="asterisk">*</span></label>
                     <div class="date-picker">
@@ -271,8 +271,27 @@
                       <mat-datepicker #visionWrittenDate></mat-datepicker>
                     </div>
                     <div
-                      *ngIf="IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))">
+                      *ngIf="IsDateWrittenRequired && ((isSubmitted || FormNphiesClaim.get('dateWritten').touched) && FormNphiesClaim.get('dateWritten').hasError('required'))">
                       <span class="error-text">Please select Date Written</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-8 col-xxl-3">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))}">
+                    <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired"
+                        class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select formControlName="prescriber">
+                        <mat-option value="">Select Prescriber</mat-option>
+                        <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
+                          {{pre.practitionerName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div
+                      *ngIf="IsPrescriberRequired && ((isSubmitted || FormNphiesClaim.get('prescriber').touched) && FormNphiesClaim.get('prescriber').hasError('required'))">
+                      <span class="error-text">Please select a Prescriber</span>
                     </div>
                   </div>
                 </div>
@@ -398,7 +417,7 @@
               <div class="row small-gutter">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))}">
+                    [ngClass]="{'has-error' : IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))}">
                     <label class="control-label">Accident Type<span *ngIf="IsAccidentTypeRequired"
                         class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
@@ -408,7 +427,7 @@
                       </mat-select>
                     </mat-form-field>
                     <div
-                      *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormPreAuthorization.get('accidentType').touched) && FormPreAuthorization.get('accidentType').hasError('required'))">
+                      *ngIf="IsAccidentTypeRequired && ((isSubmitted || FormNphiesClaim.get('accidentType').touched) && FormNphiesClaim.get('accidentType').hasError('required'))">
                       <span class="error-text">Please select an Accident Type</span>
                     </div>
                   </div>
@@ -452,7 +471,7 @@
                 </div>
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
-                    [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
+                    [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))}">
                     <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
                     <div class="date-picker">
                       <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
@@ -461,7 +480,7 @@
                       <mat-datepicker #accidentDate></mat-datepicker>
                     </div>
                     <div
-                      *ngIf="(IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))">
+                      *ngIf="(IsDateRequired && (isSubmitted || FormNphiesClaim.get('date').touched) && FormNphiesClaim.get('date').hasError('required'))">
                       <span class="error-text">Please enter date</span>
                     </div>
                   </div>
@@ -477,7 +496,7 @@
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
                 <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-                  [disabled]="CareTeams.length === 0 || !(this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value)">
+                  [disabled]="CareTeams.length === 0 || !(this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value)">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
