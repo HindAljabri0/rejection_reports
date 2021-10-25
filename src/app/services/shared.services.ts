@@ -425,7 +425,7 @@ export class SharedServices {
       tpas = [{ id: Number.parseInt(payersStr.split(',')[4]), name: payersStr.split(',')[3] }];
     }
     let distinctTPAIds: number[] = [];
-    return tpas.filter(tpa => tpa.id != 1 && tpa.id != 2)
+    return tpas.filter(tpa => tpa.id != 1 && tpa.id != 2 && tpa.id != 94)
       .filter(tpa => {
         if (distinctTPAIds.includes(tpa.id)) {
           return false;
