@@ -11,7 +11,7 @@
                         <input class="form-control" placeholder="Enter name"  [formControl]="nameController" />
                     </div>
                 </div>
-                <div class="col-4 col-xxl-3"> 
+                <div class="col-4 col-xxl-3">
                     <div class="form-group">
                         <label class="control-label">National ID</label>
                         <input class="form-control" placeholder="Enter national ID" [formControl]="nationalIdController" />
@@ -41,11 +41,11 @@
             </div>
         </div>
 
-        <div class="p-14 bg-white" *ngIf="beneficiaries.length==0" >
+        <div class="p-14 bg-white" *ngIf="beneficiaries && beneficiaries.length==0" >
             <app-empty-state message='Search Beneficiary' icon="ic-empty-search.svg">
             </app-empty-state>
         </div>
-        <ng-scrollbar *ngIf="beneficiaries.length>0" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" style="height: 480px;">
+        <ng-scrollbar *ngIf="beneficiaries && beneficiaries.length>0" smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" style="height: 480px;">
             <div class="fixed-height" >
                 <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
                     <thead>
