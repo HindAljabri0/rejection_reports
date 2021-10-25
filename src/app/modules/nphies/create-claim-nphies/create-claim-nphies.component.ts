@@ -1081,35 +1081,38 @@ export class CreateClaimNphiesComponent implements OnInit {
       return model;
     });
 
-    this.VisionSpecifications = response.visionPrescription.map(x => {
+    if (response.visionPrescription) {
+      this.VisionSpecifications = response.visionPrescription.map(x => {
 
-      const model: any = {};
-      model.sequence = x.sequence;
-      model.product = x.product;
-      model.eye = x.eye;
-      model.sphere = x.sphere;
-      model.cylinder = x.cylinder;
-      model.axis = x.axis;
-      model.prismAmount = x.prismAmount;
-      model.prismBase = x.prismBase;
-      model.multifocalPower = x.multifocalPower;
-      model.lensPower = x.lensPower;
-      model.lensBackCurve = x.lensBackCurve;
-      model.lensDiameter = x.lensDiameter;
-      model.lensDuration = x.lensDuration;
-      model.lensDurationUnit = x.lensDurationUnit;
-      model.lensColor = x.lensColor;
-      model.lensBrand = x.lensBrand;
-      model.lensNote = x.model;
-      // tslint:disable-next-line:max-line-length
-      model.productName = this.sharedDataService.productList.filter(y => y.value === x.product)[0] ? this.sharedDataService.productList.filter(y => y.value === x.product)[0].name : '';
-      // tslint:disable-next-line:max-line-length
-      model.lensDurationUnitName = this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0].name : '';
-      // tslint:disable-next-line:max-line-length
-      model.prismBaseName = this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0] ? this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0].name : '';
-      return model;
+        const model: any = {};
+        model.sequence = x.sequence;
+        model.product = x.product;
+        model.eye = x.eye;
+        model.sphere = x.sphere;
+        model.cylinder = x.cylinder;
+        model.axis = x.axis;
+        model.prismAmount = x.prismAmount;
+        model.prismBase = x.prismBase;
+        model.multifocalPower = x.multifocalPower;
+        model.lensPower = x.lensPower;
+        model.lensBackCurve = x.lensBackCurve;
+        model.lensDiameter = x.lensDiameter;
+        model.lensDuration = x.lensDuration;
+        model.lensDurationUnit = x.lensDurationUnit;
+        model.lensColor = x.lensColor;
+        model.lensBrand = x.lensBrand;
+        model.lensNote = x.model;
+        // tslint:disable-next-line:max-line-length
+        model.productName = this.sharedDataService.productList.filter(y => y.value === x.product)[0] ? this.sharedDataService.productList.filter(y => y.value === x.product)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        model.lensDurationUnitName = this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        model.prismBaseName = this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0] ? this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0].name : '';
+        return model;
 
-    });
+      });
+    }
+
 
     this.Items = response.items.map(x => {
       const model: any = {};

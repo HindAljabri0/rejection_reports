@@ -63,6 +63,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getUserData();
+    this.sharedServices.getProcessedCount();
+    this.sharedServices.getCommunicationRequestCount();
     this.watchPreAuthorizationChanges();
     this.downloadService.downloads.subscribe(downloads => {
       this.downloads = downloads;
@@ -118,22 +120,22 @@ export class HeaderComponent implements OnInit {
 
       if (splitedValue[0] === 'approval-notifications') {
         this.sharedServices.getProcessedCount();
-        const model: any = {};
-        // tslint:disable-next-line:radix
-        model.notificationId = parseInt(splitedValue[2]);
-        // tslint:disable-next-line:radix
-        model.responseId = parseInt(splitedValue[1]);
-        this.sharedServices.addProcessedNotifications(model);
+        // const model: any = {};
+        // // tslint:disable-next-line:radix
+        // model.notificationId = parseInt(splitedValue[2]);
+        // // tslint:disable-next-line:radix
+        // model.responseId = parseInt(splitedValue[1]);
+        // this.sharedServices.addProcessedNotifications(model);
       }
 
       if (splitedValue[0] === 'communication-request-notification') {
         this.sharedServices.getCommunicationRequestCount();
-        const model: any = {};
-        // tslint:disable-next-line:radix
-        model.notificationId = parseInt(splitedValue[2]);
-        // tslint:disable-next-line:radix
-        model.communicationId = parseInt(splitedValue[1]);
-        this.sharedServices.addCommunicationRequestNotifications(model);
+        // const model: any = {};
+        // // tslint:disable-next-line:radix
+        // model.notificationId = parseInt(splitedValue[2]);
+        // // tslint:disable-next-line:radix
+        // model.communicationId = parseInt(splitedValue[1]);
+        // this.sharedServices.addCommunicationRequestNotifications(model);
       }
 
     });
