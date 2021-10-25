@@ -34,7 +34,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
-  FormPreAuthorization: FormGroup = this.formBuilder.group({
+  FormNphiesClaim: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
     patientFileNumber: [''],
@@ -50,7 +50,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     countryName: [''],
     date: [''],
     dateWritten: [''],
-    // prescriber: ['', Validators.required],
+    prescriber: [''],
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -72,6 +72,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   IsCareTeamRequired = false;
   IsItemRequired = false;
   IsDateWrittenRequired = false;
+  IsPrescriberRequired = false;
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
@@ -105,7 +106,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
 
     if (this.activatedRoute.snapshot.queryParams.claimId) {
@@ -127,7 +128,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       return;
     }
     // get the search keyword
-    let search = this.FormPreAuthorization.controls.nationalityFilterCtrl.value;
+    let search = this.FormNphiesClaim.controls.nationalityFilterCtrl.value;
     if (!search) {
       this.filteredNations.next(this.nationalities.slice());
       return;
@@ -164,7 +165,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthorization.controls.beneficiaryName.value).subscribe(event => {
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormNphiesClaim.controls.beneficiaryName.value).subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
@@ -180,7 +181,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     this.selectedBeneficiary = beneficiary;
-    this.FormPreAuthorization.patchValue({
+    this.FormNphiesClaim.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id
     });
@@ -244,8 +245,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   deleteVisionLens(index: number) {
     this.VisionSpecifications.splice(index, 1);
     if (this.VisionSpecifications.length === 0) {
-      this.FormPreAuthorization.controls.dateWritten.clearValidators();
-      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+      this.FormNphiesClaim.controls.dateWritten.clearValidators();
+      this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
       this.IsDateWrittenRequired = false;
     }
   }
@@ -325,7 +326,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       itemTypes: this.Diagnosises.map(x => {
         return x.type;
       }),
-      type: this.FormPreAuthorization.controls.type.value ? this.FormPreAuthorization.controls.type.value.value : ''
+      type: this.FormNphiesClaim.controls.type.value ? this.FormNphiesClaim.controls.type.value.value : ''
     };
 
     const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);
@@ -391,8 +392,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
-      type: this.FormPreAuthorization.controls.type.value.value,
-      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value
+      type: this.FormNphiesClaim.controls.type.value.value,
+      dateOrdered: this.FormNphiesClaim.controls.dateOrdered.value
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
@@ -544,45 +545,62 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     let hasError = false;
     // tslint:disable-next-line:max-line-length
-    if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
-      this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
+    if (this.FormNphiesClaim.controls.date.value && !(this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value)) {
+      this.FormNphiesClaim.controls.accidentType.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = true;
       hasError = true;
     } else {
-      this.FormPreAuthorization.controls.accidentType.clearValidators();
-      this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
+      this.FormNphiesClaim.controls.accidentType.clearValidators();
+      this.FormNphiesClaim.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = false;
     }
     // tslint:disable-next-line:max-line-length
-    if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
-      this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
-      this.FormPreAuthorization.controls.date.updateValueAndValidity();
+    if (this.FormNphiesClaim.controls.accidentType.value && this.FormNphiesClaim.controls.accidentType.value.value && !this.FormNphiesClaim.controls.date.value) {
+      this.FormNphiesClaim.controls.date.setValidators([Validators.required]);
+      this.FormNphiesClaim.controls.date.updateValueAndValidity();
       this.IsDateRequired = true;
       hasError = true;
     } else {
-      this.FormPreAuthorization.controls.date.clearValidators();
-      this.FormPreAuthorization.controls.date.updateValueAndValidity();
+      this.FormNphiesClaim.controls.date.clearValidators();
+      this.FormNphiesClaim.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
 
-    if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+    if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
+      if (this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+        this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = true;
         hasError = true;
       } else {
+        this.FormNphiesClaim.controls.prescriber.clearValidators();
+        this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = false;
       }
 
-      if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
-        this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
-        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+      if (!this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
+        this.FormNphiesClaim.controls.dateWritten.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
         this.IsDateWrittenRequired = true;
         hasError = true;
       } else {
-        this.FormPreAuthorization.controls.dateWritten.clearValidators();
-        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+        this.FormNphiesClaim.controls.dateWritten.clearValidators();
+        this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
         this.IsDateWrittenRequired = false;
+      }
+
+      // tslint:disable-next-line:max-line-length
+      if ((this.FormNphiesClaim.controls.dateWritten.value && !this.FormNphiesClaim.controls.prescriber.value) ||
+        (this.VisionSpecifications.length > 0 && !this.FormNphiesClaim.controls.prescriber.value)) {
+        this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
+        this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+        this.IsPrescriberRequired = true;
+        hasError = true;
+      } else {
+        this.FormNphiesClaim.controls.prescriber.clearValidators();
+        this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+        this.IsPrescriberRequired = false;
       }
     }
 
@@ -602,12 +620,12 @@ export class CreateClaimNphiesComponent implements OnInit {
       return;
     }
 
-    if (this.FormPreAuthorization.valid) {
+    if (this.FormNphiesClaim.valid) {
 
       this.model = {};
       this.sharedServices.loadingChanged.next(true);
-      this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
-      this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.beneficiaryId = this.FormNphiesClaim.controls.beneficiaryId.value;
+      this.model.payerNphiesId = this.FormNphiesClaim.controls.insurancePlanId.value;
       this.model.patientFileNumber = 'Test';
 
       const now = new Date(Date.now());
@@ -621,9 +639,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       const preAuthorizationModel: any = {};
-      preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
-      preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
-      preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
+      preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
+      preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
+      preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {
@@ -649,14 +667,14 @@ export class CreateClaimNphiesComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPreAuthorization.controls.accidentType.value.value) {
+      if (this.FormNphiesClaim.controls.accidentType.value.value) {
         const accidentModel: any = {};
-        accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value.value;
-        accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
-        accidentModel.city = this.FormPreAuthorization.controls.city.value;
-        accidentModel.state = this.FormPreAuthorization.controls.state.value;
-        accidentModel.country = this.FormPreAuthorization.controls.country.value;
-        accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'yyyy-MM-dd');
+        accidentModel.accidentType = this.FormNphiesClaim.controls.accidentType.value.value;
+        accidentModel.streetName = this.FormNphiesClaim.controls.streetName.value;
+        accidentModel.city = this.FormNphiesClaim.controls.city.value;
+        accidentModel.state = this.FormNphiesClaim.controls.state.value;
+        accidentModel.country = this.FormNphiesClaim.controls.country.value;
+        accidentModel.date = this.datePipe.transform(this.FormNphiesClaim.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
 
@@ -672,11 +690,11 @@ export class CreateClaimNphiesComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
+      if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
-        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormPreAuthorization.controls.dateWritten.value, 'yyyy-MM-dd');
-        // this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+        this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormNphiesClaim.controls.dateWritten.value, 'yyyy-MM-dd');
+        // this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
         this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
           const model: any = {};
           model.sequence = x.sequence;
@@ -797,15 +815,15 @@ export class CreateClaimNphiesComponent implements OnInit {
   reset() {
     this.model = {};
     this.detailsModel = {};
-    this.FormPreAuthorization.reset();
-    this.FormPreAuthorization.patchValue({
+    this.FormNphiesClaim.reset();
+    this.FormNphiesClaim.patchValue({
       insurancePlanId: '',
       type: '',
       subType: '',
       accidentType: '',
       country: ''
     });
-    this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormNphiesClaim.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.CareTeams = [];
     this.Diagnosises = [];
     this.VisionSpecifications = [];
@@ -814,10 +832,10 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   get checkErrorClaimInfo() {
-    if (this.isSubmitted && (!this.FormPreAuthorization.controls.beneficiaryName.value ||
-      !this.FormPreAuthorization.controls.insurancePlanId.value ||
-      !this.FormPreAuthorization.controls.dateOrdered.value ||
-      !this.FormPreAuthorization.controls.type.value)) {
+    if (this.isSubmitted && (!this.FormNphiesClaim.controls.beneficiaryName.value ||
+      !this.FormNphiesClaim.controls.insurancePlanId.value ||
+      !this.FormNphiesClaim.controls.dateOrdered.value ||
+      !this.FormNphiesClaim.controls.type.value)) {
 
       // this.hasErrorClaimInfo = true;
       return true;
@@ -830,25 +848,115 @@ export class CreateClaimNphiesComponent implements OnInit {
   get checkErrorVision() {
     let hasError = false;
     // tslint:disable-next-line:max-line-length
-    if (this.isSubmitted && this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
-        this.IsLensSpecificationRequired = true;
-        hasError = true;
-      } else {
+    if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
+
+      if (this.FormNphiesClaim.controls.dateWritten.value) {
+        if (this.VisionSpecifications.length === 0) {
+          this.IsLensSpecificationRequired = true;
+          hasError = true;
+        } else {
+          this.IsLensSpecificationRequired = false;
+        }
+
+        if (!this.FormNphiesClaim.controls.prescriber.value) {
+          this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
+          this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+          this.IsPrescriberRequired = true;
+          hasError = true;
+        } else {
+          this.FormNphiesClaim.controls.prescriber.clearValidators();
+          this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+          this.IsPrescriberRequired = false;
+        }
+      }
+
+      if (this.VisionSpecifications.length > 0) {
+        if (!this.FormNphiesClaim.controls.dateWritten.value) {
+          this.FormNphiesClaim.controls.dateWritten.setValidators([Validators.required]);
+          this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
+          this.IsDateWrittenRequired = true;
+          hasError = true;
+        } else {
+          this.FormNphiesClaim.controls.dateWritten.clearValidators();
+          this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
+          this.IsDateWrittenRequired = false;
+        }
+
+        if (!this.FormNphiesClaim.controls.prescriber.value) {
+          this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
+          this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+          this.IsPrescriberRequired = true;
+          hasError = true;
+        } else {
+          this.FormNphiesClaim.controls.prescriber.clearValidators();
+          this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+          this.IsPrescriberRequired = false;
+        }
+      }
+
+      if (this.FormNphiesClaim.controls.prescriber.value) {
+        if (!this.FormNphiesClaim.controls.dateWritten.value) {
+          this.FormNphiesClaim.controls.dateWritten.setValidators([Validators.required]);
+          this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
+          this.IsDateWrittenRequired = true;
+          hasError = true;
+        } else {
+          this.FormNphiesClaim.controls.dateWritten.clearValidators();
+          this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
+          this.IsDateWrittenRequired = false;
+        }
+
+        if (this.VisionSpecifications.length === 0) {
+          this.IsLensSpecificationRequired = true;
+          hasError = true;
+        } else {
+          this.IsLensSpecificationRequired = false;
+        }
+      }
+
+      if (!hasError) {
         this.IsLensSpecificationRequired = false;
-      }
-
-      if (this.isSubmitted && !this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
-        this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
-        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
-        this.IsDateWrittenRequired = true;
-        hasError = true;
-      } else {
         this.IsDateWrittenRequired = false;
+        this.IsPrescriberRequired = false;
       }
 
-      return hasError;
+
+      // if (this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+      //   this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
+      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+      //   this.IsLensSpecificationRequired = true;
+      //   hasError = true;
+      // } else {
+      //   this.FormNphiesClaim.controls.prescriber.clearValidators();
+      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+      //   this.IsLensSpecificationRequired = false;
+      // }
+
+      // if (!this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
+      //   this.FormNphiesClaim.controls.dateWritten.setValidators([Validators.required]);
+      //   this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
+      //   this.IsDateWrittenRequired = true;
+      //   hasError = true;
+      // } else {
+      //   this.FormNphiesClaim.controls.dateWritten.clearValidators();
+      //   this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
+      //   this.IsDateWrittenRequired = false;
+      // }
+
+      // // tslint:disable-next-line:max-line-length
+      // if ((this.FormNphiesClaim.controls.dateWritten.value && !this.FormNphiesClaim.controls.prescriber.value) ||
+      //   (this.VisionSpecifications.length > 0 && !this.FormNphiesClaim.controls.prescriber.value)) {
+      //   this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
+      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+      //   this.IsPrescriberRequired = true;
+      //   hasError = true;
+      // } else {
+      //   this.FormNphiesClaim.controls.prescriber.clearValidators();
+      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
+      //   this.IsPrescriberRequired = false;
+      // }
     }
+    return hasError;
   }
 
   getClaimDetails() {
@@ -871,45 +979,45 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   setData(response) {
 
-    this.FormPreAuthorization.controls.beneficiaryId.setValue(response.beneficiary.beneficiaryId);
-    this.FormPreAuthorization.controls.beneficiaryName.setValue(response.beneficiary.beneficiaryName);
-    this.FormPreAuthorization.controls.patientFileNumber.setValue(response.patientFileNumber);
-    // this.FormPreAuthorization.controls.insurancePlanId.setValue(response.beneficiary.beneficiaryName);
-    this.FormPreAuthorization.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
+    this.FormNphiesClaim.controls.beneficiaryId.setValue(response.beneficiary.beneficiaryId);
+    this.FormNphiesClaim.controls.beneficiaryName.setValue(response.beneficiary.beneficiaryName);
+    this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
+    // this.FormNphiesClaim.controls.insurancePlanId.setValue(response.beneficiary.beneficiaryName);
+    this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
 
     // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0]);
+    this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0]);
 
     if (response.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0]);
+      this.FormNphiesClaim.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0]);
     }
 
     if (response.accident) {
       if (response.accident.accidentType) {
         // tslint:disable-next-line:max-line-length
-        this.FormPreAuthorization.controls.accidentType.setValue(this.sharedDataService.accidentTypeList.filter(x => x.value === response.accident.accidentType)[0]);
+        this.FormNphiesClaim.controls.accidentType.setValue(this.sharedDataService.accidentTypeList.filter(x => x.value === response.accident.accidentType)[0]);
       }
       if (response.accident.streetName) {
-        this.FormPreAuthorization.controls.streetName.setValue(response.accident.streetName);
+        this.FormNphiesClaim.controls.streetName.setValue(response.accident.streetName);
       }
       if (response.accident.city) {
-        this.FormPreAuthorization.controls.city.setValue(response.accident.city);
+        this.FormNphiesClaim.controls.city.setValue(response.accident.city);
       }
       if (response.accident.state) {
-        this.FormPreAuthorization.controls.state.setValue(response.accident.state);
+        this.FormNphiesClaim.controls.state.setValue(response.accident.state);
       }
       if (response.accident.country) {
-        this.FormPreAuthorization.controls.country.setValue(response.accident.country);
+        this.FormNphiesClaim.controls.country.setValue(response.accident.country);
       }
-      // this.FormPreAuthorization.controls.countryName.setValue(response.beneficiary.beneficiaryName);
+      // this.FormNphiesClaim.controls.countryName.setValue(response.beneficiary.beneficiaryName);
       if (response.accident.date) {
-        this.FormPreAuthorization.controls.date.setValue(response.accident.date);
+        this.FormNphiesClaim.controls.date.setValue(response.accident.date);
       }
     }
 
     if (response.visionPrescription) {
-      this.FormPreAuthorization.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
+      this.FormNphiesClaim.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
     }
 
     this.Diagnosises = response.diagnosis.map(x => {
