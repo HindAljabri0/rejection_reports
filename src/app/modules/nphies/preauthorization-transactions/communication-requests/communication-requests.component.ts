@@ -97,8 +97,8 @@ export class CommunicationRequestsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId = null, communicationId = null) {
-    this.openDetailsDialogEvent.emit({'requestId': requestId, 'communicationId': communicationId});
+  openDetailsDialog(requestId = null, communicationId = null,  notificationId = null) {
+    this.openDetailsDialogEvent.emit({'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId});
   }
 
   get paginatorLength() {

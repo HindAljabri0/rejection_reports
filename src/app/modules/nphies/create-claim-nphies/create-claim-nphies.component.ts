@@ -694,7 +694,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.model.visionPrescription = {};
         // tslint:disable-next-line:max-line-length
         this.model.visionPrescription.dateWritten = this.datePipe.transform(this.FormNphiesClaim.controls.dateWritten.value, 'yyyy-MM-dd');
-        // this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
+        this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
         this.model.visionPrescription.lensSpecifications = this.VisionSpecifications.map(x => {
           const model: any = {};
           model.sequence = x.sequence;
@@ -919,42 +919,6 @@ export class CreateClaimNphiesComponent implements OnInit {
         this.IsDateWrittenRequired = false;
         this.IsPrescriberRequired = false;
       }
-
-
-      // if (this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
-      //   this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
-      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
-      //   this.IsLensSpecificationRequired = true;
-      //   hasError = true;
-      // } else {
-      //   this.FormNphiesClaim.controls.prescriber.clearValidators();
-      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
-      //   this.IsLensSpecificationRequired = false;
-      // }
-
-      // if (!this.FormNphiesClaim.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
-      //   this.FormNphiesClaim.controls.dateWritten.setValidators([Validators.required]);
-      //   this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
-      //   this.IsDateWrittenRequired = true;
-      //   hasError = true;
-      // } else {
-      //   this.FormNphiesClaim.controls.dateWritten.clearValidators();
-      //   this.FormNphiesClaim.controls.dateWritten.updateValueAndValidity();
-      //   this.IsDateWrittenRequired = false;
-      // }
-
-      // // tslint:disable-next-line:max-line-length
-      // if ((this.FormNphiesClaim.controls.dateWritten.value && !this.FormNphiesClaim.controls.prescriber.value) ||
-      //   (this.VisionSpecifications.length > 0 && !this.FormNphiesClaim.controls.prescriber.value)) {
-      //   this.FormNphiesClaim.controls.prescriber.setValidators([Validators.required]);
-      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
-      //   this.IsPrescriberRequired = true;
-      //   hasError = true;
-      // } else {
-      //   this.FormNphiesClaim.controls.prescriber.clearValidators();
-      //   this.FormNphiesClaim.controls.prescriber.updateValueAndValidity();
-      //   this.IsPrescriberRequired = false;
-      // }
     }
     return hasError;
   }
@@ -1018,6 +982,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (response.visionPrescription) {
       this.FormNphiesClaim.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
+      this.FormNphiesClaim.controls.prescriber.setValue(response.visionPrescription.prescriber);
     }
 
     this.Diagnosises = response.diagnosis.map(x => {
@@ -1081,35 +1046,38 @@ export class CreateClaimNphiesComponent implements OnInit {
       return model;
     });
 
-    this.VisionSpecifications = response.visionPrescription.map(x => {
+    if (response.visionPrescription) {
+      this.VisionSpecifications = response.visionPrescription.map(x => {
 
-      const model: any = {};
-      model.sequence = x.sequence;
-      model.product = x.product;
-      model.eye = x.eye;
-      model.sphere = x.sphere;
-      model.cylinder = x.cylinder;
-      model.axis = x.axis;
-      model.prismAmount = x.prismAmount;
-      model.prismBase = x.prismBase;
-      model.multifocalPower = x.multifocalPower;
-      model.lensPower = x.lensPower;
-      model.lensBackCurve = x.lensBackCurve;
-      model.lensDiameter = x.lensDiameter;
-      model.lensDuration = x.lensDuration;
-      model.lensDurationUnit = x.lensDurationUnit;
-      model.lensColor = x.lensColor;
-      model.lensBrand = x.lensBrand;
-      model.lensNote = x.model;
-      // tslint:disable-next-line:max-line-length
-      model.productName = this.sharedDataService.productList.filter(y => y.value === x.product)[0] ? this.sharedDataService.productList.filter(y => y.value === x.product)[0].name : '';
-      // tslint:disable-next-line:max-line-length
-      model.lensDurationUnitName = this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0].name : '';
-      // tslint:disable-next-line:max-line-length
-      model.prismBaseName = this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0] ? this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0].name : '';
-      return model;
+        const model: any = {};
+        model.sequence = x.sequence;
+        model.product = x.product;
+        model.eye = x.eye;
+        model.sphere = x.sphere;
+        model.cylinder = x.cylinder;
+        model.axis = x.axis;
+        model.prismAmount = x.prismAmount;
+        model.prismBase = x.prismBase;
+        model.multifocalPower = x.multifocalPower;
+        model.lensPower = x.lensPower;
+        model.lensBackCurve = x.lensBackCurve;
+        model.lensDiameter = x.lensDiameter;
+        model.lensDuration = x.lensDuration;
+        model.lensDurationUnit = x.lensDurationUnit;
+        model.lensColor = x.lensColor;
+        model.lensBrand = x.lensBrand;
+        model.lensNote = x.model;
+        // tslint:disable-next-line:max-line-length
+        model.productName = this.sharedDataService.productList.filter(y => y.value === x.product)[0] ? this.sharedDataService.productList.filter(y => y.value === x.product)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        model.lensDurationUnitName = this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0] ? this.sharedDataService.durationUnitList.filter(y => y.value === x.lensDurationUnit)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        model.prismBaseName = this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0] ? this.sharedDataService.baseList.filter(y => y.value === x.prismBase)[0].name : '';
+        return model;
 
-    });
+      });
+    }
+
 
     this.Items = response.items.map(x => {
       const model: any = {};

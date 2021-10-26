@@ -46,11 +46,11 @@ export class SharedServices {
 
   unReadProcessedCount = 0;
   unReadProcessedCountChange: Subject<number> = new Subject();
-  processedNotificationList: any[] = [];
+  // processedNotificationList: any[] = [];
 
   unReadComunicationRequestCount = 0;
   unReadComunicationRequestCountChange: Subject<number> = new Subject();
-  communicationRequestNotificationList: any[] = [];
+  // communicationRequestNotificationList: any[] = [];
 
   uploadsList: {
     totalClaims: number,
@@ -279,9 +279,9 @@ export class SharedServices {
     });
   }
 
-  addProcessedNotifications(notification) {
-    this.processedNotificationList.push(notification);
-  }
+  // addProcessedNotifications(notification) {
+  //   this.processedNotificationList.push(notification);
+  // }
 
   getCommunicationRequestCount() {
     // tslint:disable-next-line:max-line-length
@@ -299,9 +299,9 @@ export class SharedServices {
     });
   }
 
-  addCommunicationRequestNotifications(notification) {
-    this.communicationRequestNotificationList.push(notification);
-  }
+  // addCommunicationRequestNotifications(notification) {
+  //   this.communicationRequestNotificationList.push(notification);
+  // }
 
   markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
@@ -425,7 +425,7 @@ export class SharedServices {
       tpas = [{ id: Number.parseInt(payersStr.split(',')[4]), name: payersStr.split(',')[3] }];
     }
     let distinctTPAIds: number[] = [];
-    return tpas.filter(tpa => tpa.id != 1 && tpa.id != 2)
+    return tpas.filter(tpa => tpa.id != 1 && tpa.id != 2 && tpa.id != 94)
       .filter(tpa => {
         if (distinctTPAIds.includes(tpa.id)) {
           return false;

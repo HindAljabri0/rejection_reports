@@ -7,6 +7,7 @@ export class ProcessedTransaction extends Paginateable {
   transactionDate: string;
   status: string;
   payerNphiesId: number;
+  notificationId: number;
 
   constructor(body: {}) {
     super(body);
@@ -16,5 +17,6 @@ export class ProcessedTransaction extends Paginateable {
     this.transactionDate = body['transactionDate'];
     this.status = body['status'];
     this.payerNphiesId = body['payerNphiesId'];
+    this.notificationId = body['notificationId'];
   }
 }
