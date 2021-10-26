@@ -300,7 +300,7 @@
                         <mat-panel-title>
                             <span class="d-flex align-items-center">
                                 <span>Pre Authorization</span>
-                                <span *ngIf="NewAuthTransactions > 0" class="alert-marker ml-auto">{{NewAuthTransactions}}</span>
+                                <span *ngIf="NewAuthTransactions > 0" class="alert-marker ml-auto alert-count">{{NewAuthTransactions}}</span>
                             </span>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
@@ -313,7 +313,7 @@
                         <li>
                             <a routerLink="/nphies/preauthorization-transactions" routerLinkActive="is-active">
                                 <span class="text">Pre Authorization Transactions</span>
-                                <span *ngIf="NewAuthTransactions > 0" class="alert-marker">{{NewAuthTransactions}}</span>
+                                <span *ngIf="NewAuthTransactions > 0" class="alert-marker alert-count">{{NewAuthTransactions}}</span>
                             </a>
                         </li>
                     </ul>
