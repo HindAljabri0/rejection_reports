@@ -207,7 +207,7 @@ export class MedicalRejctionReportComponent implements OnInit {
           claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];
 
           const invoices = event.body['wslGenInfo']['wslClaimInvoices'];
-          switch (claim.claimStatus) {
+          switch (claim.claimStatus.toLocaleUpperCase()) {
             case ClaimStatus.PARTIALLY_PAID:
               if (invoices instanceof Array) {
                 claim.services = [];
