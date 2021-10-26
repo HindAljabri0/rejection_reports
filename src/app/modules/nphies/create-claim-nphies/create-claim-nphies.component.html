@@ -204,7 +204,7 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsCareTeamRequired}">Care Team<span class="asterisk">*</span></span>
-                <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
+                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditCareTeam()">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -216,7 +216,7 @@
                       <th>Practitioner Role</th>
                       <th>Care Team Role</th>
                       <th>Qualification</th>
-                      <th width="10"></th>
+                      <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -233,7 +233,7 @@
                       <td>
                         {{careTeam.speciality}}
                       </td>
-                      <td class="actions">
+                      <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditCareTeam(careTeam)"
                           class="text-primary">
                           <mat-icon>create</mat-icon>
@@ -261,7 +261,7 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsDiagnosisRequired}">Diagnosis<span class="asterisk">*</span></span>
-                <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()"
+                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditDiagnosis()"
                   [disabled]="!FormNphiesClaim.controls.type.value">
                   <mat-icon>add</mat-icon>
                 </button>
@@ -273,7 +273,7 @@
                       <th>Code - Description</th>
                       <th>Type</th>
                       <th>On Admission</th>
-                      <th width="10"></th>
+                      <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -287,7 +287,7 @@
                       <td>
                         {{diagnosis.onAdmissionName}}
                       </td>
-                      <td class="actions">
+                      <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button type="button" mat-icon-button matTooltip="Edit"
                           (click)="openAddEditDiagnosis(diagnosis)" class="text-primary">
                           <mat-icon>create</mat-icon>
@@ -360,7 +360,7 @@
                 <h5 class="d-flex align-items-center mb-3">
                   <strong [ngClass]="{'text-danger': IsLensSpecificationRequired}" class="medium">Lens
                     Specifications</strong>
-                  <button type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
+                  <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
                     <mat-icon>add</mat-icon>
                   </button>
                 </h5>
@@ -378,7 +378,7 @@
                         <th>Back Curve</th>
                         <th>Diameter</th>
                         <th>Prism</th>
-                        <th width="10"></th>
+                        <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -395,7 +395,7 @@
                         <td>{{visionSpecification.lensDiameter}}</td>
                         <td>{{visionSpecification.prismAmount}}<span
                             *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
-                        <td class="actions">
+                        <td [hidden]="pageMode === 'VIEW'" class="actions">
                           <button mat-icon-button type="button"
                             (click)="openAddEditVisionLensDialog(visionSpecification)" matTooltip="Edit"
                             class="text-primary">
@@ -422,7 +422,7 @@
             <mat-tab [label]="'Supporting Info'">
               <h5 class="form-title pt-0">
                 <span>Supporting Info</span>
-                <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
+                <button [hidden]="pageMode === 'VIEW'" type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -435,7 +435,7 @@
                       <th>Timing</th>
                       <th>Value</th>
                       <th>Reason</th>
-                      <th width="10"></th>
+                      <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -457,7 +457,7 @@
                       <td>
                         {{s.reasonName}}
                       </td>
-                      <td class="actions">
+                      <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
                           (click)="openAddEditSupportInfoDialog(s)">
                           <mat-icon>create</mat-icon>
@@ -556,7 +556,7 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
-                <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
+                <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
                   [disabled]="CareTeams.length === 0 || !(this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value)">
                   <mat-icon>add</mat-icon>
                 </button>
@@ -571,7 +571,7 @@
                       <th>Unit Price</th>
                       <th>Net</th>
                       <th>Non Standard Code</th>
-                      <th width="10"></th>
+                      <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -583,7 +583,7 @@
                       <td class="text-nowrap">{{item.unitPrice}} <span class="currency">SR</span></td>
                       <td class="text-nowrap">{{item.net}} <span class="currency">SR</span></td>
                       <td>{{item.nonStandardCode}}</td>
-                      <td class="actions">
+                      <td [hidden]="pageMode === 'VIEW'" class="actions">
                         <button mat-icon-button type="button" matTooltip="Edit" (click)="openAddEditItemDialog(item)"
                           class="text-primary">
                           <mat-icon>create</mat-icon>

@@ -113,9 +113,29 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     if (this.claimId && this.uploadId) {
       this.pageMode = 'VIEW';
+      this.disableControls();
       this.getClaimDetails();
     }
 
+  }
+
+  disableControls() {
+    this.FormNphiesClaim.controls.beneficiaryName.disable();
+    this.FormNphiesClaim.controls.beneficiaryId.disable();
+    this.FormNphiesClaim.controls.patientFileNumber.disable();
+    this.FormNphiesClaim.controls.insurancePlanId.disable();
+    this.FormNphiesClaim.controls.dateOrdered.disable();
+    this.FormNphiesClaim.controls.type.disable();
+    this.FormNphiesClaim.controls.subType.disable();
+    this.FormNphiesClaim.controls.accidentType.disable();
+    this.FormNphiesClaim.controls.streetName.disable();
+    this.FormNphiesClaim.controls.city.disable();
+    this.FormNphiesClaim.controls.state.disable();
+    this.FormNphiesClaim.controls.country.disable();
+    this.FormNphiesClaim.controls.countryName.disable();
+    this.FormNphiesClaim.controls.date.disable();
+    this.FormNphiesClaim.controls.dateWritten.disable();
+    this.FormNphiesClaim.controls.prescriber.disable();
   }
 
   filterNationality() {
