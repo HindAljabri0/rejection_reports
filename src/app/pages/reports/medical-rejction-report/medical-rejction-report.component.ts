@@ -225,7 +225,7 @@ export class MedicalRejctionReportComponent implements OnInit {
                         requestedNAUnit: service['unitofnet'],
                         requestedNAVat: service['netvatamount'],
                         requestedNAVatUnit: service['unitofnetvatamount'],
-                        status: '',
+                        status:service['servicedecision'] === null ? '' : service['servicedecision'] ['servicestatuscode'],
                         statusDetails: service['servicedecision'] === null ? '' : service['servicedecision']['decisioncomment']
                       });
                     });
