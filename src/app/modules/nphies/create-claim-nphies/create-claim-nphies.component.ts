@@ -1014,11 +1014,15 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.categoryName = this.sharedDataService.categoryList.filter(y => y.value === x.category)[0] ? this.sharedDataService.categoryList.filter(y => y.value === x.category)[0].name : '';
 
       const codeList = this.sharedDataService.getCodeName(x.category);
-      if (x.category === '' || x.category === '') {
-        // tslint:disable-next-line:max-line-length
-        model.codeName = codeList.filter(y => y.diagnosisCode === x.code)[0] ? codeList.filter(y => y.diagnosisCode === x.code)[0].diagnosisDescription : '';
-      } else {
-        model.codeName = codeList.filter(y => y.value === x.code)[0] ? codeList.filter(y => y.value === x.code)[0].name : '';
+
+      // tslint:disable-next-line:max-line-length
+      if ((x.category === 'missingtooth' || x.category === 'reason-for-visit' || x.category === 'chief-complaint' || x.category === 'onset') && codeList) {
+        if (x.category === 'chief-complaint' || x.category === 'onset') {
+          // tslint:disable-next-line:max-line-length
+          model.codeName = codeList.filter(y => y.diagnosisCode === x.code)[0] ? codeList.filter(y => y.diagnosisCode === x.code)[0].diagnosisDescription : '';
+        } else {
+          model.codeName = codeList.filter(y => y.value === x.code)[0] ? codeList.filter(y => y.value === x.code)[0].name : '';
+        }
       }
 
       model.reasonName = this.sharedDataService.reasonList.filter(y => y.value === x.reason)[0];
