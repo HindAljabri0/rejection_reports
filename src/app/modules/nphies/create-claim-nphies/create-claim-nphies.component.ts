@@ -1169,6 +1169,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   close() {
-    this.location.go('/nphies/uploads');
+    this.router.navigateByUrl('/nphies/uploads');
   }
 }
