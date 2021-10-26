@@ -2,19 +2,74 @@
   <mat-progress-bar mode="indeterminate" class="page-top-loader"></mat-progress-bar>
   <div>
     <form [formGroup]="FormNphiesClaim" (ngSubmit)="onSubmit()">
-      <!-- <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
-      <div class="block-header">
-        <p>Create Claim</p><span class="spacer"></span>
-        <p *ngIf="claim != null && errors == null && claim.visitInformation != null"
-          [class.d-none]="!(claim != null && errors == null)">{{claimName}}</p>
-      </div>
-    </ng-container> -->
+      <ng-container *ngIf="pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED'; else statusHeader">
+        <div class="block-header">
+          <p>Create Claim</p><span class="spacer"></span>
+          <!-- <p *ngIf="claim != null && errors == null && claim.visitInformation != null"
+          [class.d-none]="!(claim != null && errors == null)">{{claimName}}</p> -->
+        </div>
+      </ng-container>
+      <ng-template #statusHeader>
+        <ng-container>
+          <div class="claim-status-header text-ready-submission">
+            <p class="title">View Claim</p>
+            <!-- <div class="summary">
+              <p><span>Provider Reference
+                  No.:</span>&nbsp;<strong>{{claim.claimIdentities.providerClaimNumber}}</strong>
+              </p>
+              <p *ngIf="claim.claimIdentities.providerBatchID != null"><span>Batch
+                  Number:</span>&nbsp;<strong>{{claim.claimIdentities.providerBatchNumber}}</strong>
+              </p>
+              <p *ngIf="claim.claimIdentities.providerBatchID != null"><span>Submission
+                  Date:</span>&nbsp;<strong>{{claimProps.lastSubmissionDate}}</strong>
+              </p>
+              <p *ngIf="claimProps.payerbatchrefno !=null"><span>Payer Batch Reference
+                  No.:</span>&nbsp;<strong>{{claimProps.payerbatchrefno}}</strong>
+              </p>
+              <p *ngIf="claimProps.payerclaimrefno !=null"><span>Payer Claim Reference
+                  No.:</span>&nbsp;<strong>{{claimProps.payerclaimrefno}}</strong>
+              </p>
 
-      <div class="block-header">
-        <p>Create Claim</p><span class="spacer"></span>
-        <!-- <p *ngIf="claim != null && errors == null && claim.visitInformation != null"
-        [class.d-none]="!(claim != null && errors == null)">{{claimName}}</p> -->
-      </div>
+              <p><span>Status:</span>&nbsp;<strong>{{getClaimStatusLabel(claimProps.statusCode)}}</strong>
+              </p>
+
+              <p *ngIf="claimProps.statusDetail != null"><span>Status
+                  Description:</span>&nbsp;<strong>{{claimProps.statusDetail}}</strong>
+              </p>
+            </div> -->
+          </div>
+        </ng-container>
+        <!-- <ng-container *ngIf="!isLoading && claim != null && claimProps != null">
+          <div
+            class="claim-status-header {{(pageMode == 'CREATE' || pageMode == 'CREATE_FROM_RETRIEVED') ? '' : 'text-' + getClaimStatusColor(claimProps?.statusCode)}}">
+            <p class="title">View Claim</p>
+            <div class="summary">
+              <p><span>Provider Reference
+                  No.:</span>&nbsp;<strong>{{claim.claimIdentities.providerClaimNumber}}</strong>
+              </p>
+              <p *ngIf="claim.claimIdentities.providerBatchID != null"><span>Batch
+                  Number:</span>&nbsp;<strong>{{claim.claimIdentities.providerBatchNumber}}</strong>
+              </p>
+              <p *ngIf="claim.claimIdentities.providerBatchID != null"><span>Submission
+                  Date:</span>&nbsp;<strong>{{claimProps.lastSubmissionDate}}</strong>
+              </p>
+              <p *ngIf="claimProps.payerbatchrefno !=null"><span>Payer Batch Reference
+                  No.:</span>&nbsp;<strong>{{claimProps.payerbatchrefno}}</strong>
+              </p>
+              <p *ngIf="claimProps.payerclaimrefno !=null"><span>Payer Claim Reference
+                  No.:</span>&nbsp;<strong>{{claimProps.payerclaimrefno}}</strong>
+              </p>
+
+              <p><span>Status:</span>&nbsp;<strong>{{getClaimStatusLabel(claimProps.statusCode)}}</strong>
+              </p>
+
+              <p *ngIf="claimProps.statusDetail != null"><span>Status
+                  Description:</span>&nbsp;<strong>{{claimProps.statusDetail}}</strong>
+              </p>
+            </div>
+          </div>
+        </ng-container> -->
+      </ng-template>
 
       <div class="block-body create-claim-body">
         <!-- <div class="error-block mb-3"
@@ -29,7 +84,8 @@
           <mat-tab-group [dynamicHeight]="true" class="primary-tab">
             <mat-tab>
               <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true" [class.text-danger]="checkErrorClaimInfo === true">
+                <mat-icon class="mr-1" *ngIf="checkErrorClaimInfo === true"
+                  [class.text-danger]="checkErrorClaimInfo === true">
                   error</mat-icon>
                 <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
               </ng-template>
@@ -124,7 +180,7 @@
                       <mat-select formControlName="subType">
                         <mat-option value="">Select Sub Type</mat-option>
                         <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
-                        <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="ip">
+                        <!-- <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="ip">
                           InPatient
                         </mat-option>
                         <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'professional' ||
@@ -133,7 +189,7 @@
                       FormNphiesClaim.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
                         <mat-option *ngIf="FormNphiesClaim.controls.type.value === 'institutional'" value="emr">
                           Emergency
-                        </mat-option>
+                        </mat-option> -->
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -193,7 +249,8 @@
               </div>
               <app-empty-state *ngIf="!IsCareTeamRequired && CareTeams.length === 0" message='No Care Team found!'>
               </app-empty-state>
-              <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}" *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
+              <app-empty-state [ngClass]="{'text-danger': IsCareTeamRequired}"
+                *ngIf="IsCareTeamRequired && CareTeams.length === 0" message='Care Team required!'>
               </app-empty-state>
             </mat-tab>
             <mat-tab>
@@ -246,12 +303,15 @@
               </div>
               <app-empty-state *ngIf="!IsDiagnosisRequired && Diagnosises.length === 0" message='No Diagnosis found!'>
               </app-empty-state>
-              <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}" *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
+              <app-empty-state [ngClass]="{'text-danger': IsDiagnosisRequired}"
+                *ngIf="IsDiagnosisRequired && Diagnosises.length === 0" message='Diagnosis required!'>
               </app-empty-state>
             </mat-tab>
-            <mat-tab *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
+            <mat-tab
+              *ngIf="FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value === 'vision'">
               <ng-template mat-tab-label>
-                <mat-icon class="mr-1" *ngIf="checkErrorVision === true" [class.text-danger]="checkErrorVision === true">
+                <mat-icon class="mr-1" *ngIf="checkErrorVision === true"
+                  [class.text-danger]="checkErrorVision === true">
                   error</mat-icon>
                 <span [class.text-danger]="checkErrorVision === true">Vision Prescription</span>
               </ng-template>
@@ -353,7 +413,8 @@
                 <app-empty-state *ngIf="!IsLensSpecificationRequired && VisionSpecifications.length === 0"
                   message='No Lens Specifications found!'>
                 </app-empty-state>
-                <app-empty-state [ngClass]="{'text-danger': IsLensSpecificationRequired}" *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
+                <app-empty-state [ngClass]="{'text-danger': IsLensSpecificationRequired}"
+                  *ngIf="IsLensSpecificationRequired && VisionSpecifications.length === 0"
                   message='Lens Specifications reqired!'>
                 </app-empty-state>
               </div>
@@ -538,7 +599,8 @@
               </div>
               <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
               </app-empty-state>
-              <app-empty-state [ngClass]="{'text-danger': IsItemRequired}" *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
+              <app-empty-state [ngClass]="{'text-danger': IsItemRequired}" *ngIf="IsItemRequired && Items.length === 0"
+                message='Item required!'>
               </app-empty-state>
             </mat-tab>
           </mat-tab-group>
@@ -569,19 +631,21 @@
           <img src="./assets/ic-page-last.svg" alt="Last" />
         </button>
       </div> -->
-        <div class="right-block btn-list">
+        <div class="right-block btn-list" *ngIf="pageMode == 'CREATE'">
           <!-- <button *ngIf="claim != null" mat-flat-button (click)="cancel()">Cancel</button> -->
           <!-- <button *ngIf="claim != null" mat-flat-button color="primary" (click)="save()">Save</button> -->
           <button type="submit" mat-flat-button color="primary">Save</button>
         </div>
-        <!-- <div class="right-block btn-list" *ngIf="pageMode == 'VIEW'">
-        <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
-        <button *ngIf="claim != null && editable" mat-flat-button color="primary" (click)="edit()">Edit</button>
-      </div>
-      <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
-        <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
-        <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary" (click)="save()">Save</button>
-      </div> -->
+        <div class="right-block btn-list" *ngIf="pageMode == 'VIEW'">
+          <!-- <button *ngIf="claim != null" mat-flat-button (click)="close()">Close</button>
+          <button *ngIf="claim != null && editable" mat-flat-button color="primary" (click)="edit()">Edit</button> -->
+          <button type="button" mat-flat-button (click)="close()">Close</button>
+          <!-- <button mat-flat-button color="primary" (click)="edit()">Edit</button> -->
+        </div>
+        <!-- <div class="right-block btn-list" *ngIf="pageMode == 'EDIT'">
+          <button *ngIf="claim != null && !isLoading" mat-flat-button (click)="cancel()">Cancel</button>
+          <button *ngIf="claim != null && !isLoading" mat-flat-button color="primary" (click)="save()">Save</button>
+        </div> -->
       </div>
     </form>
   </div>

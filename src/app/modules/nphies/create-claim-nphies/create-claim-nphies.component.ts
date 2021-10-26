@@ -6,7 +6,7 @@ import { nationalities } from 'src/app/claim-module-components/store/claim.reduc
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { SharedServices } from 'src/app/services/shared.services';
-import { DatePipe } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -17,7 +17,7 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -85,24 +85,18 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   claimId: number;
   uploadId: number;
+  pageMode = 'CREATE';
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private location: Location,
     private sharedDataService: SharedDataService,
+    private router: Router,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private nphiesClaimUploaderService: NphiesClaimUploaderService) {
     this.today = new Date();
-
-    // this.activatedRoute.queryParams.subscribe(params => {
-    //   if (params.claimId && params.uploadId) {
-    //     // tslint:disable-next-line:radix
-    //     this.claimId = parseInt(params.claimId);
-    //     // tslint:disable-next-line:radix
-    //     this.uploadId = parseInt(params.uploadId);
-    //   }
-    // });
   }
 
   ngOnInit() {
@@ -118,8 +112,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
 
     if (this.claimId && this.uploadId) {
+      this.pageMode = 'VIEW';
       this.getClaimDetails();
     }
+
   }
 
   filterNationality() {
@@ -170,6 +166,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
+          if (name) {
+            this.selectBeneficiary(this.selectedBeneficiary);
+          }
         }
       }
     }, errorEvent => {
@@ -749,7 +748,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.model.items.forEach((x) => {
         this.model.totalNet += x.net;
       });
-      console.log('Model', this.model);
+      // console.log('Model', this.model);
 
       this.nphiesClaimUploaderService.createNphisClaim(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {
@@ -760,6 +759,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             } else {
               this.reset();
               this.showMessage('Success', body.message, 'success', true, 'OK');
+              this.router.navigateByUrl(`/claims/nphies-claim?claimId=${body.claimId}&uploadId=${body.uploadId}`);
             }
           }
           this.sharedServices.loadingChanged.next(false);
@@ -929,9 +929,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.providerNphiesApprovalService.getNphisClaimDetails(this.sharedServices.providerId, this.claimId, this.uploadId).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-          this.setData(event.body);
+          const body: any = event.body;
+          this.setData(body);
         }
-        this.sharedServices.loadingChanged.next(false);
+
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -943,19 +944,29 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   setData(response) {
 
-    this.FormNphiesClaim.controls.beneficiaryId.setValue(response.beneficiary.beneficiaryId);
-    this.FormNphiesClaim.controls.beneficiaryName.setValue(response.beneficiary.beneficiaryName);
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
-    // this.FormNphiesClaim.controls.insurancePlanId.setValue(response.beneficiary.beneficiaryName);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
 
     // tslint:disable-next-line:max-line-length
     this.FormNphiesClaim.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === response.preAuthorizationInfo.type)[0]);
 
+    switch (response.preAuthorizationInfo.type) {
+      case 'institutional':
+        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
+        break;
+      case 'professional':
+      case 'vision':
+      case 'pharmacy':
+      case 'oral':
+        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
+        break;
+    }
+
     if (response.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
       this.FormNphiesClaim.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === response.preAuthorizationInfo.subType)[0]);
     }
+
 
     if (response.accident) {
       if (response.accident.accidentType) {
@@ -1109,5 +1120,35 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.typeName = this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.itemTypeList.filter(y => y.value === x.type)[0].name : '';
       return model;
     });
+
+    this.setBeneficiary(response);
+  }
+
+  setBeneficiary(res) {
+    // tslint:disable-next-line:max-line-length
+    this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.beneficiaryName).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        const body = event.body;
+        if (body instanceof Array) {
+          this.beneficiariesSearchResult = body;
+          this.selectedBeneficiary = body[0];
+          this.FormNphiesClaim.patchValue({
+            beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
+            beneficiaryId: res.beneficiary.beneficiaryId
+          });
+          this.FormNphiesClaim.controls.insurancePlanId.setValue(res.payerNphiesId.toString());
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+      }
+      this.sharedServices.loadingChanged.next(false);
+    });
+  }
+
+  close() {
+    this.location.go('/nphies/uploads');
   }
 }
