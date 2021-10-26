@@ -13,6 +13,7 @@ export class RejectionReportClaimDialogData {
     fullName: string;
 
     statusDescription: string;
+    statusCode:string;
 
     services?: {
         invoiceNmber: string;

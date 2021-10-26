@@ -133,7 +133,7 @@ export class AddEditDiagnosisModalComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     // tslint:disable-next-line:max-line-length
-    if (this.FormDiagnosis.controls.type.value && this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
+    if (!this.data.item && this.FormDiagnosis.controls.type.value && this.FormDiagnosis.controls.type.value.value === 'principal' && this.data.itemTypes.find(x => x === this.FormDiagnosis.controls.type.value.value)) {
       this.primaryValidationMsg = 'There can be only one principal Type';
       return;
     } else {
