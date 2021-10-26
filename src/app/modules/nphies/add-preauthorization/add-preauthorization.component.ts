@@ -729,7 +729,7 @@ export class AddPreauthorizationComponent implements OnInit {
         this.model.totalNet += x.net;
       });
 
-      console.log('Model', this.model);
+      // console.log('Model', this.model);
 
       this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model).subscribe(event => {
         if (event instanceof HttpResponse) {

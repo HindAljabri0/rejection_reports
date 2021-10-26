@@ -60,6 +60,7 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
   imports: [
     RouterModule.forChild([
       { path: 'create-nphies', component: CreateClaimNphiesComponent },
+      { path: 'nphies-claim', component: CreateClaimNphiesComponent },
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
