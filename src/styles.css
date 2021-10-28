@@ -74,6 +74,7 @@ button.size-sm.mat-button, button.size-sm.mat-flat-button, button.size-sm.mat-ic
 button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disableripple="true"].mat-button .mat-button-focus-overlay,button[disableripple="true"].mat-flat-button .mat-button-focus-overlay,a[disableripple="true"].mat-flat-button .mat-button-focus-overlay,button[disableripple="true"].mat-icon-button .mat-button-focus-overlay,a[disableripple="true"].mat-icon-button .mat-button-focus-overlay{display: none;}
 .btn-list>button,.btn-list>a{margin-right: 10px;}
 .btn-list>button:last-child,.btn-list>a:last-child{margin-right: 0;}
+.btn-list.flex{display: flex;align-items: center;flex-wrap: wrap;}
 .btn-action{background: none;border:0;margin:0;padding: 6px;color:inherit;}
 .btn-action>img{display: block;height: 24px;width: 24px;}
 .btn-action>.mat-icon{display: block;}
