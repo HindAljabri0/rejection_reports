@@ -151,7 +151,7 @@ export class TransactionsLogComponent implements OnInit, AfterContentInit {
 
   viewJSONs(transaction: TransactionLog) {
     this.dialog.open(JsonViewDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-lg'],
+      panelClass: ['primary-dialog', 'dialog-lg', 'json-dialog'],
       data: {
         title: `JSONs of Transaction [${transaction.providerTransactionId}]`,
         tabs: [
