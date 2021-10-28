@@ -78,7 +78,7 @@
             <tbody>
                 <ng-container *ngFor="let log of logsArray">
                     <tr *ngIf="log.id != null"
-                        [ngClass]="{ 'light-bg-warning':log.eventType == 'Login', 'light-bg-primary':log.eventType == 'ClaimManipulation', 'light-bg-parrot':log.eventType == 'ClaimSubmission', 'light-bg-cyan':log.eventType == 'Upload', '':log.eventType == 'Generic'}">
+                        [ngClass]="{ 'light-bg-warning text-warning':log.eventType == 'Login', 'light-bg-primary text-primary':log.eventType == 'ClaimManipulation', 'light-bg-parrot text-parrot':log.eventType == 'ClaimSubmission', 'light-bg-cyan text-cyan':log.eventType == 'Upload', '':log.eventType == 'Generic'}">
                         <td>{{log.objectId}}</td>
                         <td>{{log.userId}}</td>
                         <td>{{log.providerId}}</td>
