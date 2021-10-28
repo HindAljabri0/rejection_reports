@@ -69,7 +69,6 @@ export class CreateClaimNphiesComponent implements OnInit {
   isSubmitted = false;
   IsLensSpecificationRequired = false;
   IsDiagnosisRequired = false;
-  IsCareTeamRequired = false;
   IsItemRequired = false;
   IsDateWrittenRequired = false;
   IsPrescriberRequired = false;
@@ -298,7 +297,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           });
         } else {
           this.CareTeams.push(result);
-          this.checkCareTeamValidation();
+          // this.checkCareTeamValidation();
         }
       }
     });
@@ -325,12 +324,12 @@ export class CreateClaimNphiesComponent implements OnInit {
             z.careTeamSequence.splice(z.careTeamSequence.indexOf(sequence), 1);
           });
           this.CareTeams.splice(index, 1);
-          this.checkCareTeamValidation();
+          // this.checkCareTeamValidation();
         }
       });
     } else {
       this.CareTeams.splice(index, 1);
-      this.checkCareTeamValidation();
+      // this.checkCareTeamValidation();
     }
   }
 
@@ -524,13 +523,13 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
-  checkCareTeamValidation() {
-    if (this.CareTeams.length === 0) {
-      this.IsCareTeamRequired = true;
-    } else {
-      this.IsCareTeamRequired = false;
-    }
-  }
+  // checkCareTeamValidation() {
+  //   if (this.CareTeams.length === 0) {
+  //     this.IsCareTeamRequired = true;
+  //   } else {
+  //     this.IsCareTeamRequired = false;
+  //   }
+  // }
 
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
@@ -550,12 +549,17 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   checkItemCareTeams() {
     if (this.Items.length > 0) {
-      if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
-        this.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
-        return false;
-      } else {
+      if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
         return true;
+      } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') {
+        if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
+          this.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
+          return false;
+        } else {
+          return true;
+        }
       }
+
     }
   }
 
@@ -623,11 +627,11 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     }
 
-    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
+    if (this.Diagnosises.length === 0 || this.Items.length === 0) {
       hasError = true;
     }
 
-    this.checkCareTeamValidation();
+    // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
 
@@ -738,7 +742,30 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
       this.model.items = this.Items.map(x => {
-        if (x.careTeamSequence && x.careTeamSequence.length > 0) {
+        if ((this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.type = x.type;
+          model.itemCode = x.itemCode.toString();
+          model.itemDescription = x.itemDescription;
+          model.nonStandardCode = x.nonStandardCode;
+          model.isPackage = x.isPackage;
+          model.quantity = x.quantity;
+          model.unitPrice = x.unitPrice;
+          model.discount = x.discount;
+          model.factor = x.factor;
+          model.taxPercent = x.taxPercent;
+          model.patientSharePercent = x.patientSharePercent;
+          model.tax = x.tax;
+          model.net = x.net;
+          model.patientShare = x.patientShare;
+          model.payerShare = x.payerShare;
+          model.startDate = x.startDate;
+          model.supportingInfoSequence = x.supportingInfoSequence;
+          model.careTeamSequence = x.careTeamSequence;
+          model.diagnosisSequence = x.diagnosisSequence;
+          return model;
+        } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
@@ -1060,21 +1087,23 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     });
 
-    this.CareTeams = response.careTeam.map(x => {
-      const model: any = {};
-      model.sequence = x.sequence;
-      model.practitionerName = x.practitionerName;
-      model.physicianCode = x.physicianCode;
-      model.practitionerRole = x.practitionerRole;
-      model.careTeamRole = x.careTeamRole;
-      model.speciality = x.speciality;
-      model.specialityCode = x.speciallityCode;
-      // tslint:disable-next-line:max-line-length
-      model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
-      // tslint:disable-next-line:max-line-length
-      model.careTeamRoleName = this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0] ? this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0].name : '';
-      return model;
-    });
+    if (response.careTeam) {
+      this.CareTeams = response.careTeam.map(x => {
+        const model: any = {};
+        model.sequence = x.sequence;
+        model.practitionerName = x.practitionerName;
+        model.physicianCode = x.physicianCode;
+        model.practitionerRole = x.practitionerRole;
+        model.careTeamRole = x.careTeamRole;
+        model.speciality = x.speciality;
+        model.specialityCode = x.speciallityCode;
+        // tslint:disable-next-line:max-line-length
+        model.practitionerRoleName = this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0] ? this.sharedDataService.practitionerRoleList.filter(y => y.value === x.practitionerRole)[0].name : '';
+        // tslint:disable-next-line:max-line-length
+        model.careTeamRoleName = this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0] ? this.sharedDataService.careTeamRoleList.filter(y => y.value === x.careTeamRole)[0].name : '';
+        return model;
+      });
+    }
 
     if (response.visionPrescription) {
       this.FormNphiesClaim.controls.dateWritten.setValue(response.visionPrescription.dateWritten);
@@ -1167,6 +1196,21 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
       this.sharedServices.loadingChanged.next(false);
     });
+  }
+
+  get IsCareTeamRequired() {
+    if (this.isSubmitted) {
+      if (!this.FormNphiesClaim.controls.type.value || (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value !== 'pharmacy')) {
+        if (this.CareTeams.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return false;
+    }
+
   }
 
   close() {

@@ -50,7 +50,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     startDate: ['', Validators.required],
     supportingInfoSequence: [''],
     supportingInfoFilter: [''],
-    careTeamSequence: ['', Validators.required],
+    careTeamSequence: [''],
     careTeamFilter: [''],
     diagnosisSequence: [''],
     diagnosisFilter: ['']
@@ -58,7 +58,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   isSubmitted = false;
 
-  typeList =  this.sharedDataService.itemTypeList;
+  typeList = this.sharedDataService.itemTypeList;
+  IscareTeamSequenceRequired = false;
   // [
   //   { value: 'medicalDevices', name: 'Medical Devices' },
   //   { value: 'medicationCode', name: 'Medication Codes' },
@@ -170,6 +171,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'professional':
         this.typeList = [
@@ -181,6 +185,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'oral':
         this.typeList = [
@@ -193,6 +200,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'oralHealthOp', name: 'Oral Health OP' },
           { value: 'oralHealthIp', name: 'Oral Health IP' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'institutional':
         this.typeList = [
@@ -205,12 +215,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'laboratory', name: 'Laboratory' },
           { value: 'oralHealthIp', name: 'Oral Health IP' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'pharmacy':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
           { value: 'medicationCode', name: 'Medication Codes' }
         ];
+        this.FormItem.controls.careTeamSequence.clearValidators();
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = false;
         break;
     }
   }
