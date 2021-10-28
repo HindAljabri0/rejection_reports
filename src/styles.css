@@ -613,6 +613,7 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-dialog.full-screen-dialog .primary-dialog-body.no-footer{height: calc(100vh - 55px);}
 .success-dialog .mat-dialog-container{background-color: #e7f2e9;}
 .error-dialog .mat-dialog-container{background-color: #fae9e9;}
+.json-dialog .primary-dialog-body.fixed-body{max-height: calc(100vh - 241px);}
 
 /* primary button toggle
 --------------------------------------------------------------------------------------------------------*/
