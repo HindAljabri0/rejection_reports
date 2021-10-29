@@ -107,11 +107,11 @@
                     <span class="error-text">Please select a Beneficiary</span>
                   </div>
                 </div>
-                <div class="form-group pl-3 pr-3">
+                <div [hidden]="pageMode === 'VIEW' || pageMode === 'EDIT'" class="form-group pl-3 pr-3">
                   <label class="control-label">&nbsp;</label>
                   <span class="pt-2 d-block semibold">OR</span>
                 </div>
-                <div class="form-group">
+                <div [hidden]="pageMode === 'VIEW' || pageMode === 'EDIT'" class="form-group">
                   <label class="control-label">&nbsp;</label>
                   <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap"
                     color="primary">Create New Beneficiary</button>
@@ -557,7 +557,7 @@
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
                 <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-                  [disabled]="IsCareTeamRequired">
+                  [disabled]="!FormNphiesClaim.controls.type.value || (FormNphiesClaim.controls.type.value && FormNphiesClaim.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
