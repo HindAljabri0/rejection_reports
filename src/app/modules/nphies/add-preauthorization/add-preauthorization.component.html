@@ -454,7 +454,7 @@
           <h5 class="form-title">
             <span>Items<span class="asterisk">*</span></span>
             <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-              [disabled]="CareTeams.length === 0 || !(this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value)">
+              [disabled]="IsCareTeamRequired">
               <mat-icon>add</mat-icon>
             </button>
           </h5>
@@ -473,7 +473,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of Items; let i = index;"
-                  [ngClass]="{'text-danger': item.careTeamSequence.length === 0}">
+                  [ngClass]="{'text-danger': IsCareTeamRequired && item.careTeamSequence && item.careTeamSequence.length === 0}">
                   <td>{{item.typeName}}</td>
                   <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                   <td>{{item.quantity}}</td>
@@ -517,7 +517,8 @@
       </div>
     </div>
     <div class="bg-white p-14">
-      <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel"></app-pre-authorization-details>
+      <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
+      </app-pre-authorization-details>
     </div>
     <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New
       Authorization</button>
