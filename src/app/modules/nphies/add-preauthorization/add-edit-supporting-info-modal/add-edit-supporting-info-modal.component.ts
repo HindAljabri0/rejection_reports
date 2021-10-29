@@ -13,7 +13,7 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
 @Component({
   selector: 'app-add-edit-supporting-info-modal',
   templateUrl: './add-edit-supporting-info-modal.component.html',
-  styleUrls: ['./add-edit-supporting-info-modal.component.css']
+  styles: []
 })
 export class AddEditSupportingInfoModalComponent implements OnInit {
 
@@ -102,7 +102,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
 
   checkfile() {
-    const validExts =  ['.pdf', '.png', '.jpg', '.jpeg'];
+    const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {

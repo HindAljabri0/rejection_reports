@@ -271,7 +271,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   openAddEditCareTeam(careTeam: any = null) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       Sequence: (careTeam !== null) ? careTeam.sequence : (this.CareTeams.length === 0 ? 1 : (this.CareTeams[this.CareTeams.length - 1].sequence + 1)),
@@ -458,7 +458,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   openAddEditSupportInfoDialog(supportInfoModel: any = null) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       Sequence: (supportInfoModel !== null) ? supportInfoModel.sequence : (this.SupportingInfo.length === 0 ? 1 : (this.SupportingInfo[this.SupportingInfo.length - 1].sequence + 1)),
