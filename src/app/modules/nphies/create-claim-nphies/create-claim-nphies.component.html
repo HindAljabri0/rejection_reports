@@ -567,8 +567,7 @@
               </ng-template>
               <h5 class="form-title pt-0">
                 <span [ngClass]="{'text-danger': IsItemRequired}">Items<span class="asterisk">*</span></span>
-                <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-                  [disabled]="CareTeams.length === 0 || !(this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value)">
+                <button [hidden]="pageMode === 'VIEW'" type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="IsCareTeamRequired">
                   <mat-icon>add</mat-icon>
                 </button>
               </h5>
@@ -586,7 +585,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of Items; let i = index;" [ngClass]="{'text-danger': item.careTeamSequence.length === 0}">
+                    <tr *ngFor="let item of Items; let i = index;" [ngClass]="{'text-danger': IsCareTeamRequired && item.careTeamSequence && item.careTeamSequence.length === 0}">
                       <td>{{item.typeName}}</td>
                       <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                       <td>{{item.quantity}}</td>
