@@ -33,6 +33,8 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ClaimStatusSummaryReportComponent } from 'src/app/pages/reports/claim-summary-status-report/claim-status-summary-report.component';
 import { RejectionTrackingReportComponent } from './components/rejection-tracking-report/rejection-tracking-report.component';
 import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-rejction-report/medical-rejction-report.component';
+import { GeneralSummaryStatementReportComponent } from 'src/app/Pages/reports/general-summary-statement-report/general-summary-statement-report.component';
+
 
 
 @NgModule({
@@ -53,9 +55,10 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
     TawuniyaCreditReportErrorsDialogComponent,
     RevenueBreakdownReportComponent,
     RevenueComparativeReportComponent,
-    ClaimStatusSummaryReportComponent,
+    GeneralSummaryStatementReportComponent,
     RejectionTrackingReportComponent,
-    MedicalRejctionReportComponent
+    MedicalRejctionReportComponent,
+    ClaimStatusSummaryReportComponent
   ],
   imports: [
     CommonModule,
@@ -71,6 +74,7 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
   ],
   providers: [PercentPipe, DatePipe, CreditReportService, CurrencyPipe],
   entryComponents: [
+    
     CreditReportCreateConfirmDialogComponent,
     TawuniyaCreditReportDetailsDialogComponent,
     CreditReportUploadModalComponent,

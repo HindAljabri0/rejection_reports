@@ -95,6 +95,7 @@ import { ClaimModule } from './modules/claim/claim.module';
 import { ConfirmationAlertDialogComponent } from './components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -154,7 +155,8 @@ import { ConfirmationAlertDialogComponent } from './components/confirmation-aler
     ConfirmAdminDeleteDialogComponent,
     XmlViewDialogComponent,
     EditClaimComponent,
-    ConfirmationAlertDialogComponent
+    ConfirmationAlertDialogComponent,
+    
   ],
   imports: [
     AppRoutingModule,

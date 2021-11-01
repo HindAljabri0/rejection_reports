@@ -19,6 +19,8 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
 import { RejectionReportComponent } from 'src/app/pages/reports/rejection-report/rejection-report.component';
 import { PaymentReferenceReportComponent } from 'src/app/pages/reports/payment-reference-report/payment-reference-report.component';
 import { ReportsComponent } from 'src/app/pages/reports/reports-page.component';
+import { GeneralSummaryStatementReportComponent } from 'src/app/Pages/reports/general-summary-statement-report/general-summary-statement-report.component';
+
 
 
 const routes: Routes = [
@@ -35,6 +37,7 @@ const routes: Routes = [
   { path: 'revenue-report-breakdown', component: RevenueBreakdownReportComponent },
   { path: 'revenue-comparison-report', component: RevenueComparativeReportComponent },
   { path: 'claim-status-summary-report', component: ClaimStatusSummaryReportComponent },
+  { path: 'general-summary-statement-report', component: GeneralSummaryStatementReportComponent },
   { path: 'rejection-tracking-report', component: RejectionTrackingReportComponent },
   { path: 'medical-rejection-report', component: MedicalRejctionReportComponent },
   { path: 'technical-rejection-report', component: RejectionReportComponent },
