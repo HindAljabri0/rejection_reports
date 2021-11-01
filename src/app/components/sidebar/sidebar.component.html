@@ -154,6 +154,15 @@
                                 <span class="text">Rejection Tracking Report</span>
                             </a>
                         </li>
+                        
+                        <li i18n="@@rejectionBreakDownReport" *ngIf="hasRcmPrivilege">
+                            <a routerLink="/reports/{{providerId}}/rejection-breakdown-report" routerLinkActive="is-active">
+
+                                <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
+                                <span class="text">Rejection Breakdown Report</span>
+                            </a>
+                        </li>
                     </ul>
                 </mat-expansion-panel>
 
