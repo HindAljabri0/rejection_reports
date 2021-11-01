@@ -130,6 +130,13 @@ export class SharedDataService {
     { value: 'oralHealthIp', name: 'Oral Health IP' },
   ];
 
+
+  cancelReasonList = [
+    { value: 'WI', name: 'Wrong information' },
+    { value: 'NP', name: 'Service not performed' },
+    { value: 'TAS', name: 'Transaction already submitted' }
+  ];
+
   constructor(private adminService: AdminService) { }
 
   getCodeName(category) {

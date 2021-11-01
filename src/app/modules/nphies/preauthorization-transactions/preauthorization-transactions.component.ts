@@ -21,6 +21,7 @@ import { ProcessedTransaction } from 'src/app/models/processed-transaction';
 import { CommunicationRequest } from 'src/app/models/communication-request';
 import { ProcessedTransactionsComponent } from './processed-transactions/processed-transactions.component';
 import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
+import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -314,96 +315,19 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  cancelRequest(requestId: number) {
-    this.sharedServices.loadingChanged.next(true);
-    const model: any = {};
-    model.approvalRequestId = requestId;
-    this.providerNphiesApprovalService.cancelApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          if (body.status === 'OK') {
-            if (body.outcome.toString().toLowerCase() === 'failed') {
-              const errors: any[] = [];
+  openReasonModal(requestId: number, reqType: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      approvalRequestId: requestId,
+      type: reqType
+    };
 
-              if (body.disposition) {
-                errors.push(body.disposition);
-              }
+    const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
 
-              if (body.errors && body.errors.length > 0) {
-                body.errors.forEach(err => {
-                  err.coding.forEach(codex => {
-                    errors.push(codex.code + ' : ' + codex.display);
-                  });
-                });
-              }
-              this.showMessage(body.message, '', 'alert', true, 'OK', errors);
-            } else {
-              this.showMessage('Success', body.message, 'success', true, 'OK');
-              this.onSubmit();
-            }
-
-          }
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.showMessage(error.error.message, '', 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.showMessage(error.error.message, '', 'alert', true, 'OK');
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    });
-  }
-
-  nullifyRequest(requestId: number) {
-    this.sharedServices.loadingChanged.next(true);
-    const model: any = {};
-    model.approvalRequestId = requestId;
-    this.providerNphiesApprovalService.nullifyApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          if (body.status === 'OK') {
-            if (body.outcome.toString().toLowerCase() === 'failed') {
-              const errors: any[] = [];
-
-              if (body.disposition) {
-                errors.push(body.disposition);
-              }
-
-              if (body.errors && body.errors.length > 0) {
-                body.errors.forEach(err => {
-                  err.coding.forEach(codex => {
-                    errors.push(codex.code + ' : ' + codex.display);
-                  });
-                });
-              }
-              this.showMessage(body.message, '', 'alert', true, 'OK', errors);
-            } else {
-              this.showMessage('Success', body.message, 'success', true, 'OK');
-              this.onSubmit();
-            }
-
-          }
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.showMessage(error.error.message, '', 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.showMessage(error.error.message, '', 'alert', true, 'OK');
-        }
-        this.sharedServices.loadingChanged.next(false);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.onSubmit();
       }
     });
   }
