@@ -1,7 +1,7 @@
 <div class="bg-white p-14">
-    <div class="row justify-content-between">
+    <div class="row">
         <div class="col-4">
-            <div class="form-group">
+            <div class="form-group form-group-static">
                 <div class="control-label">Beneficiary Name</div>
                 <p class="form-control-static">
                     {{eligibilityResponse.beneficiaryName}}
@@ -10,31 +10,31 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="form-group">
+            <div class="form-group form-group-static">
                 <div class="control-label">Outcome</div>
                 <p class="form-control-static">{{eligibilityResponse.outcome}}</p>
             </div>
         </div>
         <div class="col-4" *ngIf="eligibilityResponse.disposition">
-            <div class="form-group">
+            <div class="form-group form-group-static">
                 <div class="control-label">Disposition</div>
                 <p class="form-control-static">{{eligibilityResponse.disposition}}</p>
             </div>
         </div>
         <div class="col-4" *ngIf="eligibilityResponse.noCoverageFoundReason">
-            <div class="form-group">
+            <div class="form-group form-group-static">
                 <div class="control-label">No Coverage Reason</div>
                 <p class="form-control-static">{{eligibilityResponse.noCoverageFoundReason}}</p>
             </div>
         </div>
         <div class="col-4">
-            <div class="form-group">
+            <div class="form-group form-group-static">
                 <div class="control-label">Service Date</div>
                 <p class="form-control-static">{{eligibilityResponse.serviceDate | date :'dd/MM/yyyy'}}</p>
             </div>
         </div>
         <div class="col-4">
-            <div class="form-group">
+            <div class="form-group form-group-static">
                 <div class="control-label">Purpose</div>
                 <p class="form-control-static">{{eligibilityResponse.purpose.join(', ')}}</p>
             </div>
