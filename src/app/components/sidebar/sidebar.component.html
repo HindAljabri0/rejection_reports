@@ -104,6 +104,11 @@
                                 <span class="text">Claim Status Summary Report</span>
                             </a>
                         </li>
+                        <li i18n="@@gssreport">
+                            <a routerLink="/{{providerId}}/reports/gss-report" #GSSReport="routerLinkActive" routerLinkActive="is-active">
+                                <span class="text">GSS Report</span>
+                            </a>
+                        </li>
                     </ul>
                 </mat-expansion-panel>
 
@@ -147,6 +152,14 @@
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
                                 <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
                                 <span class="text">Rejection Tracking Report</span>
+                            </a>
+                        </li>
+                         <li i18n="@@rejectionBreakDownReport">
+                            <a routerLink="/reports/rejection-breakdown-report" routerLinkActive="is-active">
+
+                                <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
+                                <img src="assets/ic-clean-report-chart-active.svg" alt="Chart" class="active-icon" />
+                                <span class="text">Rejection Breakdown Report</span>
                             </a>
                         </li>
                     </ul>
