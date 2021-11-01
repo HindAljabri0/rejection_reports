@@ -1210,7 +1210,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     } else {
       return false;
     }
-
   }
 
   close() {

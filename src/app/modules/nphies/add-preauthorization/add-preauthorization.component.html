@@ -92,14 +92,14 @@
                 <mat-select formControlName="subType">
                   <mat-option value="">Select Sub Type</mat-option>
                   <mat-option *ngFor="let sub of subTypeList" [value]="sub">{{sub.name}}</mat-option>
-                  <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
+                  <!-- <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
                   </mat-option>
                   <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
                 FormPreAuthorization.controls.type.value === 'oral' ||
                 FormPreAuthorization.controls.type.value === 'vision' ||
                 FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
                   <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency
-                  </mat-option>
+                  </mat-option> -->
                 </mat-select>
               </mat-form-field>
             </div>
@@ -424,8 +424,7 @@
         <div [ngClass]="{'text-danger': IsItemRequired}">
           <h5 class="form-title">
             <span>Items<span class="asterisk">*</span></span>
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto"
-              [disabled]="CareTeams.length === 0 || !(this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value)">
+            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary ml-auto" [disabled]="!FormPreAuthorization.controls.type.value || (FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value !== 'pharmacy' && CareTeams.length === 0)">
               <mat-icon>add</mat-icon>
             </button>
           </h5>
@@ -443,7 +442,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of Items; let i = index;" [ngClass]="{'text-danger': item.careTeamSequence.length === 0}">
+                <tr *ngFor="let item of Items; let i = index;" [ngClass]="{'text-danger': IsCareTeamRequired && item.careTeamSequence && item.careTeamSequence.length === 0}">
                   <td>{{item.typeName}}</td>
                   <td>{{item.itemCode}} - {{item.itemDescription}}</td>
                   <td>{{item.quantity}}</td>
@@ -485,7 +484,8 @@
       </div>
     </div>
     <div class="bg-white p-14">
-      <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel"></app-pre-authorization-details>
+      <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
+      </app-pre-authorization-details>
     </div>
     <button class="mt-14" type="button" mat-flat-button color="primary" (click)="reset()">Request New
       Authorization</button>

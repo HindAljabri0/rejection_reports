@@ -117,8 +117,8 @@
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item><span>Reuse</span></button>
-                      <button mat-menu-item (click)="cancelRequest(transaction.requestId)"><span>Cancel</span></button>
-                      <button mat-menu-item (click)="nullifyRequest(transaction.requestId)"><span>Nullify/Soft
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, 'cancel')"><span>Cancel</span></button>
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, 'nullify')"><span>Nullify/Soft
                           Delete</span></button>
                       <button mat-menu-item><span>Add New Related Claim</span></button>
                     </mat-menu>

@@ -60,17 +60,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   typeList = this.sharedDataService.itemTypeList;
   IscareTeamSequenceRequired = false;
-  // [
-  //   { value: 'medicalDevices', name: 'Medical Devices' },
-  //   { value: 'medicationCode', name: 'Medication Codes' },
-  //   { value: 'transporationService', name: 'Transportation SRCA' },
-  //   { value: 'imagingService', name: 'Imaging' },
-  //   { value: 'procedures', name: 'Procedures' },
-  //   { value: 'services', name: 'Services' },
-  //   { value: 'laboratory', name: 'Laboratory' },
-  //   { value: 'oralHealthOp', name: 'Oral Health OP' },
-  //   { value: 'oralHealthIp', name: 'Oral Health IP' },
-  // ];
 
   today: Date;
   constructor(

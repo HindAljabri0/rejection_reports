@@ -83,7 +83,7 @@ export class AddPreauthorizationComponent implements OnInit {
   isSubmitted = false;
   IsLensSpecificationRequired = false;
   IsDiagnosisRequired = false;
-  IsCareTeamRequired = false;
+  // IsCareTeamRequired = false;
   IsItemRequired = false;
   IsDateWrittenRequired = false;
   IsPrescriberRequired = false;
@@ -267,7 +267,7 @@ export class AddPreauthorizationComponent implements OnInit {
           });
         } else {
           this.CareTeams.push(result);
-          this.checkCareTeamValidation();
+          // this.checkCareTeamValidation();
         }
       }
     });
@@ -294,12 +294,12 @@ export class AddPreauthorizationComponent implements OnInit {
             z.careTeamSequence.splice(z.careTeamSequence.indexOf(sequence), 1);
           });
           this.CareTeams.splice(index, 1);
-          this.checkCareTeamValidation();
+          // this.checkCareTeamValidation();
         }
       });
     } else {
       this.CareTeams.splice(index, 1);
-      this.checkCareTeamValidation();
+      // this.checkCareTeamValidation();
     }
   }
 
@@ -493,11 +493,25 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  checkCareTeamValidation() {
-    if (this.CareTeams.length === 0) {
-      this.IsCareTeamRequired = true;
+  // checkCareTeamValidation() {
+  //   if (this.CareTeams.length === 0) {
+  //     this.IsCareTeamRequired = true;
+  //   } else {
+  //     this.IsCareTeamRequired = false;
+  //   }
+  // }
+
+  get IsCareTeamRequired() {
+    if (this.isSubmitted) {
+      if (!this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy')) {
+        if (this.CareTeams.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     } else {
-      this.IsCareTeamRequired = false;
+      return false;
     }
   }
 
@@ -519,12 +533,17 @@ export class AddPreauthorizationComponent implements OnInit {
 
   checkItemCareTeams() {
     if (this.Items.length > 0) {
-      if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
-        this.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
-        return false;
-      } else {
+      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
         return true;
+      } else if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') {
+        if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
+          this.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
+          return false;
+        } else {
+          return true;
+        }
       }
+
     }
   }
 
@@ -589,11 +608,11 @@ export class AddPreauthorizationComponent implements OnInit {
       }
     }
 
-    if (this.CareTeams.length === 0 || this.Diagnosises.length === 0 || this.Items.length === 0) {
+    if (this.Diagnosises.length === 0 || this.Items.length === 0) {
       hasError = true;
     }
 
-    this.checkCareTeamValidation();
+    // this.checkCareTeamValidation();
     this.checkDiagnosisValidation();
     this.checkItemValidation();
 
@@ -698,7 +717,30 @@ export class AddPreauthorizationComponent implements OnInit {
       }
 
       this.model.items = this.Items.map(x => {
-        if (x.careTeamSequence && x.careTeamSequence.length > 0) {
+        if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.type = x.type;
+          model.itemCode = x.itemCode.toString();
+          model.itemDescription = x.itemDescription;
+          model.nonStandardCode = x.nonStandardCode;
+          model.isPackage = x.isPackage;
+          model.quantity = x.quantity;
+          model.unitPrice = x.unitPrice;
+          model.discount = x.discount;
+          model.factor = x.factor;
+          model.taxPercent = x.taxPercent;
+          model.patientSharePercent = x.patientSharePercent;
+          model.tax = x.tax;
+          model.net = x.net;
+          model.patientShare = x.patientShare;
+          model.payerShare = x.payerShare;
+          model.startDate = x.startDate;
+          model.supportingInfoSequence = x.supportingInfoSequence;
+          model.careTeamSequence = x.careTeamSequence;
+          model.diagnosisSequence = x.diagnosisSequence;
+          return model;
+        } else if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
