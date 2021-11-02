@@ -310,4 +310,16 @@ export class SearchService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
     return this.http.request(request);
   }
+
+  getGssData(providerId: string, payer: string, fromDate: string, toDate: string,page?: number, size?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (size == null) {
+      size = 10;
+    }
+    const requestUrl = `/providers/${providerId}/gss?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&page=${page}&size=${size}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+    return this.http.request(request);
+  }
 }

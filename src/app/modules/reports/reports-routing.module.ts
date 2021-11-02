@@ -19,6 +19,8 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
 import { RejectionReportComponent } from 'src/app/pages/reports/rejection-report/rejection-report.component';
 import { PaymentReferenceReportComponent } from 'src/app/pages/reports/payment-reference-report/payment-reference-report.component';
 import { ReportsComponent } from 'src/app/pages/reports/reports-page.component';
+import { GeneralSummaryStatementReportComponent } from 'src/app/pages/reports/general-summary-statement-report/general-summary-statement-report.component';
+
 
 
 const routes: Routes = [
@@ -39,7 +41,8 @@ const routes: Routes = [
   { path: 'medical-rejection-report', component: MedicalRejctionReportComponent },
   { path: 'technical-rejection-report', component: RejectionReportComponent },
   { path: 'payment-report', component: PaymentReferenceReportComponent },
-  { path: 'submission-report', component: ReportsComponent }
+  { path: 'submission-report', component: ReportsComponent },
+   { path: 'general-summary-statement-report', component: GeneralSummaryStatementReportComponent },
 ];
 
 @NgModule({

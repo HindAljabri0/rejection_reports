@@ -35,6 +35,7 @@ import { RejectionTrackingReportComponent } from './components/rejection-trackin
 import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-rejction-report/medical-rejction-report.component';
 
 
+
 @NgModule({
   declarations: [
     CreditReportCreateComponent,
@@ -53,11 +54,12 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
     TawuniyaCreditReportErrorsDialogComponent,
     RevenueBreakdownReportComponent,
     RevenueComparativeReportComponent,
-    ClaimStatusSummaryReportComponent,
     RejectionTrackingReportComponent,
-    MedicalRejctionReportComponent
+    MedicalRejctionReportComponent,
+    ClaimStatusSummaryReportComponent,
   ],
   imports: [
+   
     CommonModule,
     SharedModule,
     ReportsRoutingModule,
@@ -71,6 +73,7 @@ import { MedicalRejctionReportComponent } from 'src/app/pages/reports/medical-re
   ],
   providers: [PercentPipe, DatePipe, CreditReportService, CurrencyPipe],
   entryComponents: [
+    
     CreditReportCreateConfirmDialogComponent,
     TawuniyaCreditReportDetailsDialogComponent,
     CreditReportUploadModalComponent,
