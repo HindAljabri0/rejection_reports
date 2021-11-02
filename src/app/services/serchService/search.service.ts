@@ -319,8 +319,8 @@ export class SearchService {
   }
   downloadGssReport(providerId: string, payer: string, fromDate: string, toDate: string) {
     const requestUrl = `/providers/${providerId}/gss/download/pdf?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}`;
-    const headers: HttpHeaders = new HttpHeaders('produces: application/pdf');
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl,
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/pdf');
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl,'', 
       { responseType: 'blob', reportProgress: true, headers: headers });
     return this.http.request(request);
   }

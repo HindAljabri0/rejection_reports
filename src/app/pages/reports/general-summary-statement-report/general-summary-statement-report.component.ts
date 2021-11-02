@@ -1,3 +1,4 @@
+import { I } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import {  Component, OnInit, ViewChild } from '@angular/core';
@@ -24,7 +25,7 @@ export class GeneralSummaryStatementReportComponent implements OnInit {
   paginatorPagesNumbers: number[]=[];
   page: number=0;
   pageSize: number=10;
- 
+  submitted=false;
   paginatorLength1=0;
   payerId='';
   fromDate = new FormControl();
@@ -53,6 +54,11 @@ export class GeneralSummaryStatementReportComponent implements OnInit {
   }
 
   search() {
+    this.submitted=true;
+    if((this.fromDate.value==null || this.fromDate.value=='')||(this.toDate.value==null || this.toDate.value=='')||
+    (this.payerId==null || this.payerId=='')){
+     return 
+    }
     this.errorMessage =null;
     this.commen.loadingChanged.next(true);
     this.gssReportResponseModel=[];
