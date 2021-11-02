@@ -50,6 +50,7 @@ export class GeneralSummaryStatementReportComponent implements OnInit {
   }
 
   search() {
+    this.errorMessage =null;
     this.commen.loadingChanged.next(true);
     this.gssReportResponseModel=[];
     let fromDate =this.datepipe.transform(this.fromDate.value, 'dd-MM-yyyy');
