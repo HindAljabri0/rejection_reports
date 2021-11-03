@@ -36,13 +36,11 @@ export class AgingReportComponent implements OnInit {
   report:Report[]=[];
  
 
-  // getPreviousDate(){
-  //   var year  = new Date(this.date.value.date).getFullYear();
-  //   var month = new Date(this.date.value.date).getMonth();
-  //   var day   = new Date(this.date.value.date).getDate();
-  //   var d  = new Date(year - 1, month, day);
-  //   return this.datePipe.transform(date, 'yyyy-MM-dd') ;
-  // }
+  getPreviousDate(){
+
+ 
+    return this.datePipe.transform(new Date(this.date.value.getFullYear()-1, this.date.value.getMonth(), this.date.value.getDate()), 'yyyy-MM-dd') ;
+  }
 
 
   formatDate(date:Date){
