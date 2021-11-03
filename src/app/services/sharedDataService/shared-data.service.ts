@@ -241,4 +241,133 @@ export class SharedDataService {
       }
     );
   }
+
+  getBodySite(type: string) {
+
+    let bodySite: any = [];
+    if (type === 'oral') {
+      bodySite = [
+        { value: 11, name: 'UPPER RIGHT; PERMANENT TEETH # 1' },
+        { value: 12, name: 'UPPER RIGHT; PERMANENT TEETH # 2' },
+        { value: 13, name: 'UPPER RIGHT; PERMANENT TEETH # 3' },
+        { value: 14, name: 'UPPER RIGHT; PERMANENT TEETH # 4' },
+        { value: 15, name: 'UPPER RIGHT; PERMANENT TEETH # 5' },
+        { value: 16, name: 'UPPER RIGHT; PERMANENT TEETH # 6' },
+        { value: 17, name: 'UPPER RIGHT; PERMANENT TEETH # 7' },
+        { value: 18, name: 'UPPER RIGHT; PERMANENT TEETH # 8' },
+        { value: 21, name: 'UPPER LEFT; PERMANENT TEETH # 1' },
+        { value: 22, name: 'UPPER LEFT; PERMANENT TEETH # 2' },
+        { value: 23, name: 'UPPER LEFT; PERMANENT TEETH # 3' },
+        { value: 24, name: 'UPPER LEFT; PERMANENT TEETH # 4' },
+        { value: 25, name: 'UPPER LEFT; PERMANENT TEETH # 5' },
+        { value: 26, name: 'UPPER LEFT; PERMANENT TEETH # 6' },
+        { value: 27, name: 'UPPER LEFT; PERMANENT TEETH # 7' },
+        { value: 28, name: 'UPPER LEFT; PERMANENT TEETH # 8' },
+        { value: 31, name: 'LOWER LEFT; PERMANENT TEETH # 1' },
+        { value: 32, name: 'LOWER LEFT; PERMANENT TEETH # 2' },
+        { value: 33, name: 'LOWER LEFT; PERMANENT TEETH # 3' },
+        { value: 34, name: 'LOWER LEFT; PERMANENT TEETH # 4' },
+        { value: 35, name: 'LOWER LEFT; PERMANENT TEETH # 5' },
+        { value: 36, name: 'LOWER LEFT; PERMANENT TEETH # 6' },
+        { value: 37, name: 'LOWER LEFT; PERMANENT TEETH # 7' },
+        { value: 38, name: 'LOWER LEFT; PERMANENT TEETH # 8' },
+        { value: 41, name: 'LOWER RIGHT; PERMANENT TEETH # 1' },
+        { value: 42, name: 'LOWER RIGHT; PERMANENT TEETH # 2' },
+        { value: 43, name: 'LOWER RIGHT; PERMANENT TEETH # 3' },
+        { value: 44, name: 'LOWER RIGHT; PERMANENT TEETH # 4' },
+        { value: 45, name: 'LOWER RIGHT; PERMANENT TEETH # 5' },
+        { value: 46, name: 'LOWER RIGHT; PERMANENT TEETH # 6' },
+        { value: 47, name: 'LOWER RIGHT; PERMANENT TEETH # 7' },
+        { value: 48, name: 'LOWER RIGHT; PERMANENT TEETH # 8' },
+        { value: 51, name: 'UPPER RIGHT; DECIDUOUS TEETH # 1' },
+        { value: 52, name: 'UPPER RIGHT; DECIDUOUS TEETH # 2' },
+        { value: 53, name: 'UPPER RIGHT; DECIDUOUS TEETH # 3' },
+        { value: 54, name: 'UPPER RIGHT; DECIDUOUS TEETH # 4' },
+        { value: 55, name: 'UPPER RIGHT; DECIDUOUS TEETH # 5' },
+        { value: 61, name: 'UPPER LEFT; DECIDUOUS TEETH # 1' },
+        { value: 62, name: 'UPPER LEFT; DECIDUOUS TEETH # 2' },
+        { value: 63, name: 'UPPER LEFT; DECIDUOUS TEETH # 3' },
+        { value: 64, name: 'UPPER LEFT; DECIDUOUS TEETH # 4' },
+        { value: 65, name: 'UPPER LEFT; DECIDUOUS TEETH # 5' },
+        { value: 71, name: 'LOWER LEFT; DECIDUOUS TEETH # 1' },
+        { value: 72, name: 'LOWER LEFT; DECIDUOUS TEETH # 2' },
+        { value: 73, name: 'LOWER LEFT; DECIDUOUS TEETH # 3' },
+        { value: 74, name: 'LOWER LEFT; DECIDUOUS TEETH # 4' },
+        { value: 75, name: 'LOWER LEFT; DECIDUOUS TEETH # 5' },
+        { value: 81, name: 'LOWER RIGHT; DECIDUOUS TEETH # 1' },
+        { value: 82, name: 'LOWER RIGHT; DECIDUOUS TEETH # 2' },
+        { value: 83, name: 'LOWER RIGHT; DECIDUOUS TEETH # 3' },
+        { value: 84, name: 'LOWER RIGHT; DECIDUOUS TEETH # 4' },
+        { value: 85, name: 'LOWER RIGHT; DECIDUOUS TEETH # 5' },
+      ];
+    } else {
+      bodySite = [
+        { value: 'E1', name: 'Upper left, eyelid' },
+        { value: 'E2', name: 'Lower left, eyelid' },
+        { value: 'E3', name: 'Upper right, eyelid' },
+        { value: 'E4', name: 'Lower right, eyelid' },
+        { value: 'F1', name: 'Left hand, second digit' },
+        { value: 'F2', name: 'Left hand, third digit' },
+        { value: 'F3', name: 'Left hand, fourth digit' },
+        { value: 'F4', name: 'Left hand, fifth digit' },
+        { value: 'F5', name: 'Right hand, thumb' },
+        { value: 'F6', name: 'Right hand, second digit' },
+        { value: 'F7', name: 'Right hand, third digit' },
+        { value: 'F8', name: 'Right hand, fourth digit' },
+        { value: 'F9', name: 'Right hand, fifth digit' },
+        { value: 'FA', name: 'Left hand, thumb' },
+        { value: 'LC', name: 'Left circumflex coronary artery' },
+        { value: 'LD', name: 'Left anterior descending coronary artery' },
+        { value: 'LM', name: 'Left main coronary artery' },
+        { value: 'LT', name: 'Left side (used to identify procedures performed on the left side of the body)' },
+        { value: 'RC', name: 'Right coronary artery' },
+        { value: 'RI', name: 'Ramus intermedius coronary artery' },
+        { value: 'RT', name: 'Right side (used to identify procedures performed on the right side of the body)' },
+        { value: 'T1', name: 'Left foot, second digit' },
+        { value: 'T2', name: 'Left foot, third digit' },
+        { value: 'T3', name: 'Left foot, fourth digit' },
+        { value: 'T4', name: 'Left foot, fifth digit' },
+        { value: 'T5', name: 'Right foot, great toe' },
+        { value: 'T6', name: 'Right foot, second digit' },
+        { value: 'T7', name: 'Right foot, third digit' },
+        { value: 'T8', name: 'Right foot, fourth digit' },
+        { value: 'T9', name: 'Right foot, fifth digit' },
+        { value: 'TA', name: 'Left foot, great toe' },
+        { value: 'RIV', name: 'right eye' },
+        { value: 'LIV', name: 'left eye' }
+      ];
+    }
+    return bodySite;
+  }
+
+  getSubSite(type: string) {
+    let subSite: any = [];
+    if (subSite === 'oral') {
+      subSite = [
+        { value: 'M', name: 'Mesial' },
+        { value: 'O', name: 'Occlusal' },
+        { value: 'I', name: 'Incisal' },
+        { value: 'D', name: 'Distal' },
+        { value: 'B', name: 'Buccal' },
+        { value: 'V', name: 'Ventral' },
+        { value: 'L', name: 'Lingual' },
+        { value: 'MO', name: 'Mesioclusal' },
+        { value: 'DO', name: 'Distoclusal' },
+        { value: 'DI', name: 'Distoincisal' },
+        { value: 'MOD', name: 'Mesioclusodistal' }
+      ];
+    } else {
+      subSite = [
+        { value: 'R', name: 'Right' },
+        { value: 'L', name: 'Left' },
+        { value: 'U', name: 'Upper ' },
+        { value: 'D', name: 'Down' },
+        { value: 'A', name: 'Anterior' },
+        { value: 'P', name: 'Posterior' },
+        { value: 'I', name: 'interior' },
+        { value: 'E', name: 'Exterior' }
+      ];
+    }
+    return subSite;
+  }
 }
