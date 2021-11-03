@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-auto align-self-end">
                         <div class="form-group">
-                            <button type="button" mat-flat-button color="primary" (click)="Search()">Search</button>
+                            <button type="button" mat-flat-button color="primary" (click)="search()">Search</button>
                             <span class="d-block pt-1 text-sm">&nbsp;</span>
                         </div>
                     </div>
@@ -39,15 +39,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let item of report;let i=index">
+                    <ng-container *ngFor="let item of agingReportResponseModel;let i=index">
                         <tr [class.even]="i%2==0">
                             <td class="text-primary row-click" width="10" (click)="toggleRow(i)">
                                 <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
-                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.payer}}</td>
-                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.amountOutStanding}} SR</td>
-                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.totalAmoount}} SR</td>
+                            <td [class]="'row-click '" (click)="toggleRow(i)">{{getPayerName(item.payerId)}}</td>
+                            <td [class]="'row-click '" (click)="toggleRow(i)">{{item.outstandingAmount}} SR</td>
+                            <td [class]="'row-click '" (click)="toggleRow(i)">{{item.totalAmount}} SR</td>
                         </tr>
                         <tr *ngIf="currentDetailsOpen==i">
                             <td colspan="4">
@@ -58,49 +58,49 @@
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 1-30</div>
-                                                        <p class="form-control-static">{{item.aged1to30}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 31-60</div>
-                                                        <p class="form-control-static">{{item.aged31to60}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 61-90</div>
-                                                        <p class="form-control-static">{{item.aged61to90}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 91-120</div>
-                                                        <p class="form-control-static">{{item.aged91to120}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 121-150</div>
-                                                        <p class="form-control-static">{{item.aged121to150}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 151-180</div>
-                                                        <p class="form-control-static">{{item.aged151to180}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 181-365</div>
-                                                        <p class="form-control-static">{{item.aged181to365}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged > 365</div>
-                                                        <p class="form-control-static">{{item.aged365}}</p>
+                                                        <p class="form-control-static">{{""}}</p>
                                                     </div>
                                                 </div>
                                             </div>

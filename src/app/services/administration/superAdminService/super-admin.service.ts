@@ -105,7 +105,7 @@ export class SuperAdminService {
     return this.http.request(req);
   }
 
-  searchByCriteriaForAgingReport(providerId: string, formDate: any, toDate: any) {
+  searchByCriteriaForAgingReport(providerId: string, toDate: any) {
 
     const requestURL = `/providers/${providerId}/aging/search?toDate=${toDate}`;
     const req = new HttpRequest('GET', environment.payerPaymentContractService + requestURL);
