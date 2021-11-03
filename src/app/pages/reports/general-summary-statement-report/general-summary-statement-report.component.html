@@ -3,12 +3,12 @@
     <p>General Summary Statement Report</p>
   </div>
   <div class="block-filter-panel has-border">
-    <div class="row small-gutter" >
+    <div class="row small-gutter"  >
       <div class="col">
-        <div class="form-group" >
+        <div class="form-group"  [class.has-error]="submitted&&(payerId==''||payerId==null)">
           <label class="control-label">Payer</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select >
+            <mat-select  [(value)]="payerId" >
               <mat-option *ngFor="let payer of payers" [value]="payer.id">
                 {{payer.name}}
               </mat-option>
@@ -16,35 +16,38 @@
             </mat-select>
           </mat-form-field>
           <div >
-            <!-- <span class="error-text">Please select a Payer</span> -->
+            <span *ngIf="submitted&&(payerId==''||payerId==null)" class="error-text">Please select a Payer</span>
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="form-group" >
+        <div class="form-group" [class.has-error]="submitted&&(fromDate.value==''||fromDate.value==null)">
           <label class="control-label">From Date</label>
           <div class="date-picker">
         
-            <input class="form-control date-picker" placeholder="Select From Date" required
+            <input  autocomplete="off" class="form-control date-picker" bsDatepicker [formControl]="fromDate"
+            [bsConfig]="datePickerConfig" placeholder="Select From Date"    (bsValueChange)="dateValidation($event)" required
+            
              />
           </div>
           <div >
-            <!-- <span class="error-text" >Please choose a date</span> -->
+            <span *ngIf="submitted&&(fromDate.value==''||fromDate.value==null)" class="error-text" >Please choose a date</span>
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="form-group" >
+        <div class="form-group" [class.has-error]="submitted&&(toDate.value==''||toDate.value==null)">
           <label class="control-label">To Date</label>
           <div class="date-picker">
             <!-- <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
               formControlName="toDate">
             <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker> -->
-            <input class="form-control date-picker"    placeholder="Select To Date" required />
+            <input class="form-control date-picker"   autocomplete="off" class="form-control date-picker" bsDatepicker [formControl]="toDate"
+            [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required  />
           </div>
           <div>
-            <!-- <span class="error-text" >Please choose a date</span> -->
+            <span *ngIf="submitted&&(toDate.value==''||toDate.value==null)" class="error-text" >Please choose a date</span>
           </div>
         </div>
       </div>
@@ -52,7 +55,7 @@
       <div class="col-lg-auto">
         <div class="form-group">
           <label class="control-label d-lg-block d-none">&nbsp;</label>
-          <button color="primary" mat-flat-button >Search</button>
+          <button color="primary" mat-flat-button  (click)='search()'>Search</button>
         </div>
       </div>
 
@@ -65,17 +68,18 @@
       <div class="form-group page-select">
         <label class="control-label">Go to page: </label>
         <mat-form-field class="form-control custom-select-control">
-          <mat-select [ngModel]="manualPage" >
+          <mat-select [ngModel]="manualPage"  (ngModelChange)="updateManualPage($event)">
             <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="material-paginator">
         <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
+        (page)="paginatorAction($event)"
           >
         </mat-paginator>
       </div>
-      <button matRipple type="button" class="action-btn ml-2"  matTooltip="Download">
+      <button matRipple type="button" class="action-btn ml-2"  (click)="download()" matTooltip="Download">
         <img src="./assets/{{detailTopActionIcon}}" />
       </button>
     </div>
@@ -91,31 +95,30 @@
             <th>Discount</th>
             <th>Deductable</th>
             <th>Net Amount</th>
-            <th>Vat</th>
+            <th>Vat</th> 
             <th>Net Payable</th>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-            <td>8</td>
-            <td>9</td>
+          <tr *ngFor="let  data of gssReportResponseModel">
+            <td>{{data.groupName}}</td>
+            <td>{{data.contractNo}}</td>
+            <td>{{data.count}}</td>
+            <td>{{data.gross}}</td>
+            <td>{{data.discount}}</td>
+            <td>{{data.deductable}}</td>
+            <td>{{data.net}}</td>
+            <td>{{data.vat}}</td>
+            <td>{{data.netPayable}}</td>
            
           </tr>
         </tbody>
       </table>
     </div>
 
-<!-- 
-    <div class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+
+    
+    <div style="margin-top: 20px;" class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
       <p class="error-card m-0">{{errorMessage}}</p>
-    </div> -->
+    </div>
   </div>
 </div>
-
-

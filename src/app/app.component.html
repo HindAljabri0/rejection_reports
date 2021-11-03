@@ -1,4 +1,6 @@
 <router-outlet>
 </router-outlet>
-
+<div class="global-loader" [class.visible]="loading">
+  <mat-spinner diameter="64"></mat-spinner>
+</div>
 <ngx-guided-tour class="primary-tour"></ngx-guided-tour>

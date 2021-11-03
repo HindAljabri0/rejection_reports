@@ -36,6 +36,7 @@ import { AddEditCareTeamModalComponent } from '../nphies/add-preauthorization/ad
 import { AddEditDiagnosisModalComponent } from '../nphies/add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { AddEditVisionLensSpecificationsComponent } from '../nphies/add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorizat
     AddEditDiagnosisModalComponent,
     AddEditVisionLensSpecificationsComponent,
     AddEditSupportingInfoModalComponent,
+    AddEditItemDetailsModalComponent
   ],
   providers: [
     DatePipe

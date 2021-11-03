@@ -5,7 +5,7 @@
         <tr>
           <th>Member Card ID</th>
           <th>Pre Authorization ID</th>
-          <th>Transaction Date/Time</th>
+          <th>Transaction Date</th>
           <th>Payer</th>
           <th>Status</th>
           <th></th>
@@ -15,7 +15,7 @@
         <tr *ngFor="let transaction of processedTransactions">
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.memberCardId}}</td>
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.requestId}}</td>
-          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.transactionDate | date: 'dd-MM-yyyy hh:mm:ss aa'}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.transactionDate | date: 'dd-MM-yyyy'}}</td>
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.payerName}}</td>
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.status}}</td>
           <td class="actions">
