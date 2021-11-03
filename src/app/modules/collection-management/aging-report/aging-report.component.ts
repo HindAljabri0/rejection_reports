@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 
 @Component({
   selector: 'app-aging-report',
@@ -90,13 +91,19 @@ export class AgingReportComponent implements OnInit {
       aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0
     },
   ];
-  constructor(private datePipe: DatePipe) { }
+  constructor(private datePipe: DatePipe ,public superAdminService:SuperAdminService) { }
 
   ngOnInit() {
   }
 
   toggleRow(index) {
     this.currentDetailsOpen = (this.currentDetailsOpen == index) ? -1 : index;
+
+  }
+  Search(){
+
+ //this.superAdminService.searchByCriteriaForAgingReport()
+
 
   }
 

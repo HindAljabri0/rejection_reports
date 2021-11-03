@@ -105,8 +105,12 @@ export class SuperAdminService {
     return this.http.request(req);
   }
 
+  searchByCriteriaForAgingReport(providerId: string, formDate: any, toDate: any) {
 
-
+    const requestURL = `/providers/${providerId}/aging/search?toDate=${toDate}`;
+    const req = new HttpRequest('GET', environment.payerPaymentContractService + requestURL);
+    return this.http.request(req);
+  }
 }
 
 export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';
