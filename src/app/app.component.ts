@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { VersionCheckService } from './services/versionCheckService/version-check.service';
 import { environment } from 'src/environments/environment';
+import { SharedServices } from './services/shared.services';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthService,
+    private sharedServices: SharedServices,
     private router: Router,
     readonly viewportScroller: ViewportScroller,
     private versionCheckService: VersionCheckService
@@ -36,6 +38,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get isLoggedIn() {
     return this.authService.loggedIn;
+  }
+
+  get loading(): boolean {
+    return this.sharedServices.loading;
   }
 
   ngOnDestroy() {
