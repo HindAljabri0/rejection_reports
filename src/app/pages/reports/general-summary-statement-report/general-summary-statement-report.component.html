@@ -5,7 +5,7 @@
   <div class="block-filter-panel has-border">
     <div class="row small-gutter"  >
       <div class="col">
-        <div class="form-group" >
+        <div class="form-group"  [class.has-error]="submitted&&(payerId==''||payerId==null)">
           <label class="control-label">Payer</label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select  [(value)]="payerId" >
@@ -16,12 +16,12 @@
             </mat-select>
           </mat-form-field>
           <div >
-            <!-- <span class="error-text">Please select a Payer</span> -->
+            <span *ngIf="submitted&&(payerId==''||payerId==null)" class="error-text">Please select a Payer</span>
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="form-group" >
+        <div class="form-group" [class.has-error]="submitted&&(fromDate.value==''||fromDate.value==null)">
           <label class="control-label">From Date</label>
           <div class="date-picker">
         
@@ -31,12 +31,12 @@
              />
           </div>
           <div >
-            <!-- <span class="error-text" >Please choose a date</span> -->
+            <span *ngIf="submitted&&(fromDate.value==''||fromDate.value==null)" class="error-text" >Please choose a date</span>
           </div>
         </div>
       </div>
       <div class="col">
-        <div class="form-group" >
+        <div class="form-group" [class.has-error]="submitted&&(toDate.value==''||toDate.value==null)">
           <label class="control-label">To Date</label>
           <div class="date-picker">
             <!-- <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
@@ -47,7 +47,7 @@
             [bsConfig]="datePickerConfig" [minDate]="minDate" placeholder="Select To Date" required  />
           </div>
           <div>
-            <!-- <span class="error-text" >Please choose a date</span> -->
+            <span *ngIf="submitted&&(toDate.value==''||toDate.value==null)" class="error-text" >Please choose a date</span>
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@
           >
         </mat-paginator>
       </div>
-      <button matRipple type="button" class="action-btn ml-2"  matTooltip="Download">
+      <button matRipple type="button" class="action-btn ml-2"  (click)="download()" matTooltip="Download">
         <img src="./assets/{{detailTopActionIcon}}" />
       </button>
     </div>

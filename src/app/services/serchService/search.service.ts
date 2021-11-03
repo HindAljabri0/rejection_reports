@@ -312,14 +312,17 @@ export class SearchService {
   }
 
   getGssData(providerId: string, payer: string, fromDate: string, toDate: string,page?: number, size?: number) {
-    if (page == null) {
-      page = 0;
-    }
-    if (size == null) {
-      size = 10;
-    }
-    const requestUrl = `/providers/${providerId}/gss?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&page=${page}&size=${size}`;
+  
+    const requestUrl = `/providers/${providerId}/gss?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&page=${page}&pageSize=${size}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
     return this.http.request(request);
   }
+  downloadGssReport(providerId: string, payer: string, fromDate: string, toDate: string) {
+    const requestUrl = `/providers/${providerId}/gss/download/pdf?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/pdf');
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl,'', 
+      { responseType: 'blob', reportProgress: true, headers: headers });
+    return this.http.request(request);
+  }
+  
 }
