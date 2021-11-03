@@ -10,6 +10,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 })
 export class EligibilityDetailsComponent implements OnInit {
 
+  currentOpenCoverage: number = null;
   @Input() eligibilityResponse: EligibilityResponseModel;
 
   constructor() { }
@@ -17,6 +18,10 @@ export class EligibilityDetailsComponent implements OnInit {
   ngOnInit() {
 
 
+  }
+
+  toggleRow(index) {
+    this.currentOpenCoverage = (index == this.currentOpenCoverage) ? -1 : index;
   }
 
 }
