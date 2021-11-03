@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
@@ -10,7 +11,14 @@ import { Label } from 'ng2-charts';
 })
 export class AgingReportComponent implements OnInit {
   currentDetailsOpen = -1;
-  date = new FormControl(new Date('2021-01-01'));
+  formatDate(date:Date){
+
+    return this.datePipe.transform(date, 'yyyy-MM-dd') ;
+  }
+  today = this.formatDate(new Date())
+  errorMessage="No payment contract exists to show Aging Report";
+  
+  date = new FormControl(this.today);
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
   public barChartOptions: ChartOptions = {
@@ -82,7 +90,7 @@ export class AgingReportComponent implements OnInit {
       aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0
     },
   ];
-  constructor() { }
+  constructor(private datePipe: DatePipe) { }
 
   ngOnInit() {
   }
