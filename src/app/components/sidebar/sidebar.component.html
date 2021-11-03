@@ -154,7 +154,7 @@
                                 <span class="text">Rejection Tracking Report</span>
                             </a>
                         </li>
-                         <li i18n="@@rejectionBreakDownReport">
+                        <li i18n="@@rejectionBreakDownReport">
                             <a routerLink="/reports/rejection-breakdown-report" routerLinkActive="is-active">
 
                                 <img src="assets/ic-clean-report-chart.svg" alt="Chart" class="default-icon" />
@@ -266,6 +266,19 @@
                         </li>
                     </ul>
                 </mat-expansion-panel> -->
+                <ul class="nav-list">
+                    <li>
+                        <a routerLink="/contract-management" routerLinkActive="is-active">
+                            <span class="text">Contract Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/policy-management" routerLinkActive="is-active">
+                            <span class="text">Policy Management</span>
+                        </a>
+                    </li>
+                </ul>
+
                 <ul class="nav-list" *ngIf="isProviderAdmin">
                     <li i18n="@@configurations">
                         <a routerLink="/configurations" routerLinkActive="is-active">
