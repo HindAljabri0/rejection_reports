@@ -20,6 +20,7 @@ import { ReplaySubject } from 'rxjs';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 
 @Component({
   selector: 'app-add-preauthorization',
@@ -41,6 +42,7 @@ export class AddPreauthorizationComponent implements OnInit {
     beneficiaryId: ['', Validators.required],
     insurancePlanId: ['', Validators.required],
     dateOrdered: ['', Validators.required],
+    payee: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
     accidentType: [''],
@@ -55,7 +57,7 @@ export class AddPreauthorizationComponent implements OnInit {
   });
 
   typeList = this.sharedDataService.claimTypeList;
-
+  payeeList = [];
   subTypeList = [];
 
   accidentTypeList = this.sharedDataService.accidentTypeList;
@@ -90,13 +92,32 @@ export class AddPreauthorizationComponent implements OnInit {
     private dialogService: DialogService,
     private dialog: MatDialog, private formBuilder: FormBuilder, private sharedServices: SharedServices, private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService,
+    private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService) {
     this.today = new Date();
   }
 
   ngOnInit() {
+    this.getPayees();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.filteredNations.next(this.nationalities.slice());
+  }
+
+  getPayees() {
+    this.sharedServices.loadingChanged.next(true);
+    this.providersBeneficiariesService.getPayees().subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.sharedServices.loadingChanged.next(false);
+        if (event.body != null && event.body instanceof Array) {
+          this.payeeList = event.body;
+        }
+      }
+    }, err => {
+      if (err instanceof HttpErrorResponse) {
+        console.log("Error");
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
   }
 
   filterNationality() {
@@ -386,7 +407,12 @@ export class AddPreauthorizationComponent implements OnInit {
                 x.itemCode = result.itemCode;
               x.itemDescription = result.itemDescription;
               x.nonStandardCode = result.nonStandardCode;
+              x.display = result.display;
               x.isPackage = result.isPackage;
+              x.bodySite = result.bodySite;
+              x.bodySiteName = result.bodySiteName;
+              x.subSite = result.subSite;
+              x.subSiteName = result.subSiteName;
               x.quantity = result.quantity;
               x.unitPrice = result.unitPrice;
               x.discount = result.discount;
@@ -680,6 +706,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
+      preAuthorizationModel.payee = this.FormPreAuthorization.controls.payee.value;
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
@@ -766,7 +793,10 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
+          model.display = x.display;
           model.isPackage = x.isPackage;
+          model.bodySite = x.bodySite;
+          model.subSite = x.subSite;
           model.quantity = x.quantity;
           model.unitPrice = x.unitPrice;
           model.discount = x.discount;
@@ -801,7 +831,10 @@ export class AddPreauthorizationComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
+          model.display = x.display;
           model.isPackage = x.isPackage;
+          model.bodySite = x.bodySite;
+          model.subSite = x.subSite;
           model.quantity = x.quantity;
           model.unitPrice = x.unitPrice;
           model.discount = x.discount;
