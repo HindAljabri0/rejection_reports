@@ -147,6 +147,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.patientFileNumber.disable();
     this.FormNphiesClaim.controls.insurancePlanId.disable();
     this.FormNphiesClaim.controls.dateOrdered.disable();
+    this.FormNphiesClaim.controls.payee.disable();
     this.FormNphiesClaim.controls.type.disable();
     this.FormNphiesClaim.controls.subType.disable();
     this.FormNphiesClaim.controls.accidentType.disable();
