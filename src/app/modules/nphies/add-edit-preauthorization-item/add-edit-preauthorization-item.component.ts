@@ -38,6 +38,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     nonStandardCode: [''],
     display: [''],
     isPackage: [''],
+    bodySite: [''],
+    subSite: [''],
     quantity: ['', Validators.required],
     unitPrice: ['', Validators.required],
     discount: [''],
@@ -60,6 +62,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   isSubmitted = false;
 
   typeList = this.sharedDataService.itemTypeList;
+  bodySiteList = [];
+  subSiteList = [];
   IscareTeamSequenceRequired = false;
 
   today: Date;
@@ -74,7 +78,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   ngOnInit() {
 
     if (this.data.type) {
-      this.setTypes(this.data.type);
+      this.setTypes(this.data.type);      
+      this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+      this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
 
     if (this.data.item && this.data.item.itemCode) {
@@ -83,6 +89,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
+        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.type)[0],
+        subSite: this.subSiteList.filter(x => x.value === this.data.item.type)[0],
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
@@ -462,6 +470,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
+      
+      model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
+      model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
+
+      model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
+      model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
       model.quantity = parseInt(this.FormItem.controls.quantity.value);
       model.unitPrice = parseFloat(this.FormItem.controls.unitPrice.value);
