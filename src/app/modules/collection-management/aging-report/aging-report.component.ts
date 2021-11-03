@@ -34,13 +34,24 @@ export class AgingReportComponent implements OnInit {
   payerName:string;
   agingReportResponseModel:AgingReportResponseModel[]=[];
   report:Report[]=[];
-  formatDate(date:Date){
+ 
 
+  // getPreviousDate(){
+  //   var year  = new Date(this.date.value.date).getFullYear();
+  //   var month = new Date(this.date.value.date).getMonth();
+  //   var day   = new Date(this.date.value.date).getDate();
+  //   var d  = new Date(year - 1, month, day);
+  //   return this.datePipe.transform(date, 'yyyy-MM-dd') ;
+  // }
+
+
+  formatDate(date:Date){
+   
     return this.datePipe.transform(date, 'yyyy-MM-dd') ;
   }
   today = this.formatDate(new Date())
   errorMessage=null;
-  //"No payment contract exists to show Aging Report";
+
   
   date = new FormControl(this.today);
   public chartFontFamily = '"Poppins", sans-serif';
