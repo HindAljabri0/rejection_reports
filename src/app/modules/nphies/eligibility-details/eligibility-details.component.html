@@ -68,70 +68,132 @@
             Coverages
         </h5>
         <div class="table-responsive">
-            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+            <table class="primary-grid manual-row-color no-borders" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
+                        <th width="10"></th>
                         <th>In-Force</th>
-                        <th>Benefit Start Date</th>
-                        <th>Benefit End Date</th>
+                        <th>Benefit Date</th>
                         <th>Member ID</th>
                         <th>Type</th>
                         <th>Status</th>
                         <th>Relationship With Subscriber</th>
-                        <th>Subscriber MemberId</th>
+                        <th>Subscriber Member ID</th>
+                        <th>Network</th>
+                        <th>Subrogation</th>
                         <th>Not In-Force reason</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let coverage of eligibilityResponse.coverages ">
-                        <td>{{coverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
-                        <td>{{coverage.benefitStartDate | date :'dd/MM/yyyy'}}</td>
-                        <td>{{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
-                        <td>{{coverage.memberId}}</td>
-                        <td>{{coverage.type}}</td>
-                        <td>{{coverage.status}}</td>
-                        <td>{{coverage.relationship}}</td>
-                        <td>{{coverage.subscriberMemberId}}</td>
-                        <td>{{coverage.notInforceReason}}</td>
-                    </tr>
+                    <ng-container *ngFor="let coverage of eligibilityResponse.coverages;let i=index">
+                        <tr>
+                            <td class="text-primary text-center row-click" (click)="toggleRow(i)" width="10">
+                                <mat-icon *ngIf="currentOpenCoverage!=i" class="size-21">add_circle_outline</mat-icon>
+                                <mat-icon *ngIf="currentOpenCoverage==i" class="size-21">remove_circle_outline</mat-icon>
+                            </td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.inforce=="true"?"Eligible":"Ineligible"}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.benefitStartDate | date :'dd/MM/yyyy'}} - {{coverage.benefitEndDate | date :'dd/MM/yyyy'}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.memberId}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.type}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.status}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.relationship}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.subscriberMemberId}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.network}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.subrogation}}</td>
+                            <td class="row-click" (click)="toggleRow(i)">{{coverage.notInforceReason}}</td>
+                        </tr>
+                        <tr *ngIf="currentOpenCoverage==i">
+                            <td colspan="11">
+                                <div class="box mb-3">
+                                    <h5 class="medium pb-2">Classes</h5>
+                                    <div class="table-responsive">
+                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Name</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let cls of coverage.classList">
+                                                    <td>{{cls.classType}}</td>
+                                                    <td>{{cls.className}}</td>
+                                                    <td>{{cls.classValue}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="box mb-3">
+                                    <h5 class="medium pb-2">Cost to Beneficiaries</h5>
+                                    <div class="table-responsive">
+                                        <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Quantity</th>
+                                                    <th>Money</th>
+                                                    <th>Exception</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let ctb of coverage.costBeneficiaries">
+                                                    <td>{{ctb.costBeneficiaryType}}</td>
+                                                    <td>{{ctb.costBeneficiaryQut}}</td>
+                                                    <td>{{ctb.costBeneficiaryMoney}}</td>
+                                                    <td>
+                                                        <div *ngFor="let excp of ctb.exceptionList" class="pb-2">
+                                                            <p>{{excp.exceptionType}}</p>
+                                                            <p class="text-grey">{{excp.exceptionStartDate | date: 'dd-MM-yyyy hh:mm aa'}} - {{excp.exceptionEndDate | date: 'dd-MM-yyyy hh:mm aa'}}</p>
+                                                        </div>                                                       
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="box" *ngIf="coverage != null && coverage.items != null">
+                                    <h5 class="medium">Items</h5>
+                                    <hr class="hr mt-2 mb-3" />
+                                    <ng-container *ngFor="let items of coverage.items | keyvalue">
+                                        <p class="pb-3">Benefit Category: <span class="medium">{{items.key}}</span></p>
+                                        <div class="table-responsive mb-4">
+                                            <table class="primary-grid no-borders" cellpadding="0" cellspacing="0" border="0">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Item Name</td>
+                                                        <td>Description</td>
+                                                        <td>Network</td>
+                                                        <td>Unit</td>
+                                                        <td>Term</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let item of items.value">
+                                                        <tr>
+                                                            <td>{{item.name}}</td>
+                                                            <td>{{item.description}}</td>
+                                                            <td>{{item.network}}</td>
+                                                            <td>{{item.unit}}</td>
+                                                            <td>{{item.term}}</td>
+                                                        </tr>
+                                                        <tr *ngFor="let benefit of item.benefits" class="item-benefit">
+                                                            <td colspan="4" [matTooltip]="benefit.typeDisplay">{{benefit.type}}</td>
+                                                            <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
-        <ng-container *ngIf="eligibilityResponse.coverages != null && eligibilityResponse.coverages[0] != null && eligibilityResponse.coverages[0].items != null">
-            <ng-container *ngFor="let items of eligibilityResponse.coverages[0].items | keyvalue">
-                <h5 class="form-title">
-                    Benefit Category: {{items.key}}
-                </h5>
-                <div class="table-responsive">
-                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                            <tr>
-                                <td>Item Name</td>
-                                <td>Description</td>
-                                <td>Network</td>
-                                <td>Unit</td>
-                                <td>Term</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let item of items.value">
-                                <tr>
-                                    <td>{{item.name}}</td>
-                                    <td>{{item.description}}</td>
-                                    <td>{{item.network}}</td>
-                                    <td>{{item.unit}}</td>
-                                    <td>{{item.term}}</td>
-                                </tr>
-                                <tr *ngFor="let benefit of item.benefits" class="item-benefit">
-                                    <td colspan="4" [matTooltip]="benefit.typeDisplay">{{benefit.type}}</td>
-                                    <td>{{benefit.value}} <span>{{benefit.currency}}</span></td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-            </ng-container>
-        </ng-container>
     </ng-container>
 
 </div>

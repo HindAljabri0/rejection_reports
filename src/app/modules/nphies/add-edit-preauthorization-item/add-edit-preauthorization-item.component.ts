@@ -36,6 +36,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
+    display: [''],
     isPackage: [''],
     quantity: ['', Validators.required],
     unitPrice: ['', Validators.required],
@@ -80,6 +81,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
+        display: this.data.item.display,
         isPackage: this.data.item.isPackage,
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
@@ -458,6 +460,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.itemCode = this.FormItem.controls.item.value.code;
       model.itemDescription = this.FormItem.controls.item.value.description;
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
+      model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
       // tslint:disable-next-line:radix
       model.quantity = parseInt(this.FormItem.controls.quantity.value);
@@ -484,6 +487,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       if (this.FormItem.controls.diagnosisSequence.value && this.FormItem.controls.diagnosisSequence.value.length > 0) {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
+
+      model.Details = [];
 
       this.dialogRef.close(model);
     }

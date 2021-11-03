@@ -18,6 +18,7 @@ import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorizati
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 
 @Component({
   selector: 'app-create-claim-nphies',
@@ -426,6 +427,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                 x.itemCode = result.itemCode;
               x.itemDescription = result.itemDescription;
               x.nonStandardCode = result.nonStandardCode;
+              x.display = result.display;
               x.isPackage = result.isPackage;
               x.quantity = result.quantity;
               x.unitPrice = result.unitPrice;
@@ -454,6 +456,58 @@ export class CreateClaimNphiesComponent implements OnInit {
   deleteItem(index: number) {
     this.Items.splice(index, 1);
     this.checkItemValidation();
+  }
+
+  openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
+
+    const item = this.Items.filter(x => x.sequence === itemSequence)[0];
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      Sequence: (itemModel !== null) ? itemModel.sequence : (item.Details.length === 0 ? 1 : (item.Details[item.Details.length - 1].sequence + 1)),
+      item: itemModel,
+      type: this.FormNphiesClaim.controls.type.value.value
+    };
+
+    const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (this.Items.find(x => x.sequence === itemSequence)) {
+          this.Items.map(x => {
+            if (x.sequence === itemSequence) {
+              if (x.Details.find(y => y.sequence === result.sequence)) {
+                x.Details.map(y => {
+                  if (y.sequence === result.sequence) {
+                    y.type = result.type;
+                    y.typeName = result.typeName,
+                      y.itemCode = result.itemCode;
+                    y.itemDescription = result.itemDescription;
+                    y.nonStandardCode = result.nonStandardCode;
+                    y.display = result.display;
+                  }
+                });
+              } else {
+                x.Details.push(result);
+              }
+            }
+          });
+
+        }
+      }
+    });
+  }
+
+  deleteItemDetails(itemSequence: number, index: number) {
+    if (this.Items.find(x => x.sequence === itemSequence)) {
+      this.Items.map(x => {
+        if (x.sequence === itemSequence) {
+          x.Details.splice(index, 1);
+        }
+      });
+    }
   }
 
   openAddEditSupportInfoDialog(supportInfoModel: any = null) {
@@ -749,6 +803,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
+          model.display = x.display;
           model.isPackage = x.isPackage;
           model.quantity = x.quantity;
           model.unitPrice = x.unitPrice;
@@ -764,6 +819,18 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
+
+          model.Details = x.Details.map(x => {
+            const dmodel: any = {};
+            dmodel.sequence = x.sequence;
+            dmodel.type = x.type;
+            dmodel.itemCode = x.itemCode.toString();
+            dmodel.itemDescription = x.itemDescription;
+            dmodel.nonStandardCode = x.nonStandardCode;
+            dmodel.display = x.display;
+            return dmodel;
+          });
+
           return model;
         } else if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'pharmacy') {
           const model: any = {};
@@ -772,6 +839,7 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.itemCode = x.itemCode.toString();
           model.itemDescription = x.itemDescription;
           model.nonStandardCode = x.nonStandardCode;
+          model.display = x.display;
           model.isPackage = x.isPackage;
           model.quantity = x.quantity;
           model.unitPrice = x.unitPrice;
@@ -787,6 +855,18 @@ export class CreateClaimNphiesComponent implements OnInit {
           model.supportingInfoSequence = x.supportingInfoSequence;
           model.careTeamSequence = x.careTeamSequence;
           model.diagnosisSequence = x.diagnosisSequence;
+
+          model.Details = x.Details.map(x => {
+            const dmodel: any = {};
+            dmodel.sequence = x.sequence;
+            dmodel.type = x.type;
+            dmodel.itemCode = x.itemCode.toString();
+            dmodel.itemDescription = x.itemDescription;
+            dmodel.nonStandardCode = x.nonStandardCode;
+            dmodel.display = x.display;
+            return dmodel;
+          });
+
           return model;
         }
       }).filter(x => x !== undefined);
