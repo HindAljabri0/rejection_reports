@@ -1,4 +1,4 @@
-import { V, X } from '@angular/cdk/keycodes';
+import { D, V, X } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -10,20 +10,7 @@ import { SuperAdminService } from 'src/app/services/administration/superAdminSer
 import { SharedServices } from 'src/app/services/shared.services';
 
 
-export interface Report {
-  className: string;
-  payer: string;
-   amountOutStanding: string; 
-   totalAmoount: string;
-    aged1to30: string;
-    aged31to60: string; 
-    aged61to90: string; 
-    aged91to120: string;
-    aged121to150: string;
-    aged151to180: string ;
-    aged181to365: string ;
-    aged365: string
-}
+
 @Component({
   selector: 'app-aging-report',
   templateUrl: './aging-report.component.html',
@@ -31,26 +18,26 @@ export interface Report {
 })
 export class AgingReportComponent implements OnInit {
   currentDetailsOpen = -1;
-  payerName:string;
-  agingReportResponseModel:AgingReportResponseModel[]=[];
-  report:Report[]=[];
- 
+  data: AgingReportResponseModel = null;
+  payerName: string;
+  agingReportResponseModel: AgingReportResponseModel[] = [];
+  selectedDate: Date;
 
-  getPreviousDate(){
+  getPreviousDate() {
+    this.selectedDate = new Date(this.date.value)
 
- 
-    return this.datePipe.transform(new Date(this.date.value.getFullYear()-1, this.date.value.getMonth(), this.date.value.getDate()), 'yyyy-MM-dd') ;
+    return this.datePipe.transform(new Date(this.selectedDate.getFullYear() - 1, this.selectedDate.getMonth(), this.selectedDate.getDate()), 'yyyy-MM-dd');
   }
 
 
-  formatDate(date:Date){
-   
-    return this.datePipe.transform(date, 'yyyy-MM-dd') ;
+  formatDate(date: Date) {
+
+    return this.datePipe.transform(date, 'yyyy-MM-dd');
   }
   today = this.formatDate(new Date())
-  errorMessage=null;
+  errorMessage = null;
 
-  
+
   date = new FormControl(this.today);
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
@@ -88,110 +75,129 @@ export class AgingReportComponent implements OnInit {
   public barChartLegend = true;
 
 
- 
-  //  payer: string, amountOutStanding: string, totalAmoount: string, aged1to30: string, aged31to60: string, aged61to90: string, aged91to120: string,
-  //   aged121to150: string,aged151to180: string ,aged181to365: string ,aged365: string  }>;
-  public barChartData: ChartDataSets[] = [
-    {
-      data: [65, 59, 80, 81, 56, 55, 40, 30],
-      backgroundColor: '#3060AA',
-      hoverBackgroundColor: '#3060AA',
-      datalabels: {
-        display: false
-      }
-    },
-  ];
+  public barChartData: ChartDataSets[] = [];
 
 
-  // report = [
-  //   {
-  //     className: 'semibold', payer: 'All', amountOutStanding: 500, totalAmoount: 1000, aged1to30: 0, aged31to60: 0, aged61to90: 0,
-  //     aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 500
-  //   },
-  //   {
-  //     className: '', payer: 'Tawuniya', amountOutStanding: 500, totalAmoount: 1000, aged1to30: 0, aged31to60: 0, aged61to90: 0,
-  //     aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 500
-  //   },
-  //   {
-  //     className: '', payer: 'Bupa', amountOutStanding: 100, totalAmoount: 100, aged1to30: 0, aged31to60: 0, aged61to90: 0,
-  //     aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0
-  //   },
-  //   {
-  //     className: '', payer: 'Medgulf', amountOutStanding: 645.75, totalAmoount: 645.75, aged1to30: 0, aged31to60: 0, aged61to90: 0,
-  //     aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 645.75
-  //   },
-  //   {
-  //     className: '', payer: 'Sagar', amountOutStanding: 35.40, totalAmoount: 35.40, aged1to30: 0, aged31to60: 0, aged61to90: 0,
-  //     aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 35.40
-  //   },
-  //   {
-  //     className: '', payer: 'Allianz', amountOutStanding: 0, totalAmoount: 605, aged1to30: 0, aged31to60: 0, aged61to90: 0,
-  //     aged91to120: 0, aged121to150: 0, aged151to180: 0, aged181to365: 0, aged365: 0
-  //   },
-  // ];
-  constructor(public commen: SharedServices,private datePipe: DatePipe ,public superAdminService:SuperAdminService) { }
+
+  constructor(public commen: SharedServices, private datePipe: DatePipe, public superAdminService: SuperAdminService) { }
 
 
-  getPayerName(payerId:number){
+  getPayerName(payerId: number) {
 
-    this.commen.getPayersList().forEach(data=>{
-     
-      if(data.id==payerId){
-   
-        this.payerName= data.name;
+    this.commen.getPayersList().forEach(data => {
+
+      if (data.id == payerId) {
+
+        this.payerName = data.name;
       }
     });
     return this.payerName;
   }
   ngOnInit() {
     this.search();
-    // for(var data of this.agingReportResponseModel){
-     
-    //   this.report.push({
-    //         className: '', payer: data.payerId, amountOutStanding:data.outstandingAmount , totalAmoount: data.totalAmount, aged1to30: '0', aged31to60: '0', aged61to90: '0',
-    //         aged91to120: '0', aged121to150: '0', aged151to180: '0', aged181to365: '0', aged365: '0'
-    //       },);
 
-
-    // }
   }
 
   toggleRow(index) {
     this.currentDetailsOpen = (this.currentDetailsOpen == index) ? -1 : index;
 
   }
-  search(){
-    this.errorMessage=null;
+  search() {
+    this.errorMessage = null;
     this.commen.loadingChanged.next(true);
-    this.agingReportResponseModel=[];
-  this.superAdminService.searchByCriteriaForAgingReport(this.commen.providerId,this.formatDate(this.date.value)).subscribe((data=>{
+    this.agingReportResponseModel = [];
+    this.superAdminService.searchByCriteriaForAgingReport(this.commen.providerId, this.formatDate(this.date.value)).subscribe((data => {
 
-    if (data instanceof HttpResponse) {
-    
-      this.agingReportResponseModel=data.body as AgingReportResponseModel[];
-      if( this.agingReportResponseModel.length==0){
-        this.errorMessage="No payment contract exists to show Aging Report";;
-       
-      }
-     
-        this.commen.loadingChanged.next(false);}
-      
-  }), error => {
-    if (error instanceof HttpErrorResponse) {
-      if ((error.status / 100).toFixed() == '4') {
-        this.errorMessage = 'Access Denied.';
-      } else if ((error.status / 100).toFixed() == '5') {
-        this.errorMessage = 'Server could not handle the request. Please try again later.';
-      } else {
-        this.errorMessage = 'Somthing went wrong.';
-      }
-   
+      if (data instanceof HttpResponse) {
+        if (data.status == 204) {
+
+          this.errorMessage = "No payment contract exists to show Aging Report";;
+          this.commen.loadingChanged.next(false)
+          return
+        }
+        this.agingReportResponseModel = data.body as AgingReportResponseModel[];
+
         this.commen.loadingChanged.next(false);
-   }});
-  
-  
+      }
 
- 
+    }), error => {
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == '4') {
+          this.errorMessage = 'Access Denied.';
+        } else if ((error.status / 100).toFixed() == '5') {
+          this.errorMessage = 'Server couldatanot handle the request. Please try again later.';
+        } else {
+          this.errorMessage = 'Somthing went wrong.';
+        }
+
+        this.commen.loadingChanged.next(false);
+      }
+    });
+
+
+  }
+
+  getDetails(index: any) {
+    this.barChartData = [];
+    this.errorMessage = null;
+    this.commen.loadingChanged.next(true);
+    this.data = this.agingReportResponseModel[index];
+
+
+    this.superAdminService.getAgedDetailsForAgingReport(this.commen.providerId, this.data.payerId.toString(), this.formatDate(this.date.value)).subscribe((data => {
+
+
+      if (data instanceof HttpResponse) {
+        this.data.aged1to30 = data.body["1-30"];
+        this.data.aged31to60 = data.body["31-60"];
+        this.data.aged61to90 = data.body["61-90"];
+        this.data.aged91to120 = data.body["91-120"];
+        this.data.aged121to150 = data.body["121-150"];
+        this.data.aged151to180 = data.body["151-180"];
+        this.data.aged181to365 = data.body["181-365"];
+        this.data.aged365 = data.body["> 365"];
+
+
+        this.data.sum = this.data.aged1to30 + this.data.aged31to60 + this.data.aged61to90 + this.data.aged91to120 + this.data.aged121to150 +
+          this.data.aged151to180 + this.data.aged181to365 + this.data.aged365;
+        console.log(this.data.aged181to365)
+        this.barChartData = [
+          {
+            data: [Number(((this.data.aged1to30 / this.data.sum) * 100).toFixed()), Number(((this.data.aged31to60 / this.data.sum) * 100).toFixed()), Number(((this.data.aged61to90 / this.data.sum) * 100).toFixed()), Number(((this.data.aged91to120 / this.data.sum) * 100).toFixed()), Number(((this.data.aged121to150 / this.data.sum) * 100).toFixed()),
+            Number(((this.data.aged151to180 / this.data.sum) * 100).toFixed()), Number(((this.data.aged181to365 / this.data.sum) * 100).toFixed()), Number(((this.data.aged365 / this.data.sum) * 100).toFixed())],
+            backgroundColor: '#3060AA',
+            hoverBackgroundColor: '#3060AA',
+            datalabels: {
+              display: false
+            }
+          },
+        ];
+
+        this.commen.loadingChanged.next(false);
+      }
+
+    }), error => {
+      if (error instanceof HttpErrorResponse) {
+        if ((error.status / 100).toFixed() == '4') {
+          this.errorMessage = 'Access Denied.';
+        } else if ((error.status / 100).toFixed() == '5') {
+          this.errorMessage = 'Server couldatanot handle the request. Pleadata.data.se try again later.';
+        }
+
+        else {
+          this.errorMessage = 'Somthing went wrong.';
+        }
+
+        this.commen.loadingChanged.next(false);
+      }
+    });
+
+
+
+
+
+
+
 
 
   }

@@ -10,11 +10,13 @@
                         <div class="form-group">
                             <label class="control-label">As of Date</label>
                             <div class="date-picker">
-                                <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date" class="form-control" [formControl]="date">
+                                <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date"
+                                    class="form-control" [formControl]="date">
                                 <mat-datepicker-toggle [for]="asOfDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #asOfDatePicker></mat-datepicker>
                             </div>
-                            <span class="d-block pt-1 text-sm text-muted">Will show data from {{getPreviousDate()}} to {{formatDate(date.value)}}.</span>
+                            <span class="d-block pt-1 text-sm text-muted">Will show data from {{getPreviousDate()}} to
+                                {{formatDate(date.value)}}.</span>
                         </div>
                     </div>
                     <div class="col-auto align-self-end">
@@ -41,13 +43,17 @@
                 <tbody>
                     <ng-container *ngFor="let item of agingReportResponseModel;let i=index">
                         <tr [class.even]="i%2==0">
-                            <td class="text-primary row-click" width="10" (click)="toggleRow(i)">
+                            <td class="text-primary row-click" width="10"
+                                (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
                                 <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
-                            <td [class]="'row-click '" (click)="toggleRow(i)">{{getPayerName(item.payerId)}}</td>
-                            <td [class]="'row-click '" (click)="toggleRow(i)">{{item.outstandingAmount}} SR</td>
-                            <td [class]="'row-click '" (click)="toggleRow(i)">{{item.totalAmount}} SR</td>
+                            <td [class]="'row-click '" (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
+                                {{getPayerName(item.payerId)}}</td>
+                            <td [class]="'row-click '" (click)="currentDetailsOpen!=i?getDetails(i):'';;toggleRow(i)">
+                                {{item.outstandingAmount}} SR</td>
+                            <td [class]="'row-click '" (click)="currentDetailsOpen!=i?getDetails(i):'';;toggleRow(i)">
+                                {{item.totalAmount}} SR</td>
                         </tr>
                         <tr *ngIf="currentDetailsOpen==i">
                             <td colspan="4">
@@ -56,57 +62,59 @@
                                         <div class="col-6">
                                             <div class="row">
                                                 <div class="col-4">
+
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 1-30</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged1to30}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 31-60</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged31to60}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 61-90</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged61to90}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 91-120</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged91to120}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 121-150</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged121to150}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 151-180</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged151to180}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 181-365</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged181to365}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group form-group-static">
                                                         <div class="control-label">Aged > 365</div>
-                                                        <p class="form-control-static">{{""}}</p>
+                                                        <p class="form-control-static">{{item.aged365}}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                                [options]="barChartOptions" [legend]="barChartLegend"
                                                 [chartType]="barChartType">
                                             </canvas>
                                         </div>
@@ -121,7 +129,7 @@
 
         <div style="margin-top: 20px;" class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
             <p class="error-card m-0">{{errorMessage}}</p>
-          </div>
+        </div>
     </ng-scrollbar>
     <!-- <div class="block-footer sticky-bottom">
         <div class="left-block custom-paginator">
