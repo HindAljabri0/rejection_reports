@@ -72,4 +72,12 @@ export class RevenuReportService {
     return this.http.request(request);
   }
 
+  generateRejectionReportBreakdown(
+    providerId: string, payerId: string, fromDate: string, toDate: string,
+    category: 'Doctor' | 'Department' | 'ServiceCode' | 'ServiceType' | 'Payers'): Observable<any> {
+    const requestURL = `/providers/${providerId}/reports/rejection-breakdown/payers/${payerId}?fromDate=${fromDate}&toDate=${toDate}&category=${category}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
 }
