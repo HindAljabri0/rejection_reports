@@ -141,6 +141,21 @@
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
+                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
+                    <label class="control-label">Payee<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select formControlName="payee">
+                        <mat-option value="">Select Payee</mat-option>
+                        <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
+                      <span class="error-text">Please select payee</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('type').touched) && FormNphiesClaim.get('type').hasError('required')}">
                     <label class="control-label">Type<span class="asterisk">*</span></label>
@@ -672,17 +687,21 @@
                                       </td>
                                     </tr>
                                     <tr>
+                                      <td class="label">Body Site</td>
+                                      <td>{{item.bodySiteName}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="label">Sub Site</td>
+                                      <td>{{item.subSiteName}}</td>
+                                    </tr>
+                                    <tr>
                                       <td class="label">Discount(%)</td>
                                       <td>{{item.discount}} %</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Factor</td>
                                       <td>{{item.factor}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="label">Tax(%)</td>
-                                      <td>{{item.taxPercent}} %</td>
-                                    </tr>
+                                    </tr>                                   
                                   </tbody>
                                 </table>
                               </div>
@@ -690,13 +709,17 @@
                                 <table class="inline-label-table">
                                   <tbody>
                                     <tr>
-                                      <td class="label">Patient Share(%)</td>
-                                      <td>{{item.patientShare}} %</td>
+                                      <td class="label">Tax(%)</td>
+                                      <td>{{item.taxPercent}} %</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Tax</td>
                                       <td>{{item.tax}} <span class="currency">SR</span></td>
                                     </tr>
+                                    <tr>
+                                      <td class="label">Patient Share(%)</td>
+                                      <td>{{item.patientShare}} %</td>
+                                    </tr>                                  
                                     <tr>
                                       <td class="label">Patient Share</td>
                                       <td>{{item.patientShare}} <span class="currency">SR</span></td>
