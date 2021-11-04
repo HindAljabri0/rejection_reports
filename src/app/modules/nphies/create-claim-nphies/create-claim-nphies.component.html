@@ -141,7 +141,7 @@
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
+                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
                     <label class="control-label">Payee<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="payee">
@@ -150,7 +150,7 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
+                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
                       <span class="error-text">Please select payee</span>
                     </div>
                   </div>
