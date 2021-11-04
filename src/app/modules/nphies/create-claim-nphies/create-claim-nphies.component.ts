@@ -209,9 +209,10 @@ export class CreateClaimNphiesComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          if (name) {
-            this.selectBeneficiary(this.selectedBeneficiary);
-          }
+          //TODO: causing build issues
+          // if (name) {
+          //   this.selectBeneficiary(this.selectedBeneficiary);
+          // }
         }
       }
     }, errorEvent => {
