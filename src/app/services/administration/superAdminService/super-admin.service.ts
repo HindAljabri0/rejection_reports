@@ -111,6 +111,19 @@ export class SuperAdminService {
     const req = new HttpRequest('GET', environment.payerPaymentContractService + requestURL);
     return this.http.request(req);
   }
+
+  getAgedDetailsForAgingReport(providerId: string, payerId: string, toDate: any) {
+
+    const requestURL = `/providers/${providerId}/aging/report/details`;
+
+
+    var body = {
+      "payerId": payerId,
+      "agingReportDate": toDate,
+    };
+    const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, body);
+    return this.http.request(req);
+  }
 }
 
 export const SERVICE_CODE_RESTRICTION_KEY = 'serviceCodeRestriction';
