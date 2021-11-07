@@ -8,11 +8,20 @@ import { ProvidersBeneficiariesService } from 'src/app/services/providersBenefic
 import { ActivatedRoute } from '@angular/router';
 import { Location, DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse, HttpEvent } from '@angular/common/http';
 import * as moment from 'moment';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { PreAuthorizationTransaction } from 'src/app/models/pre-authorization-transaction';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
+import { Observable } from 'rxjs';
+import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
+import { ProcessedTransaction } from 'src/app/models/processed-transaction';
+import { CommunicationRequest } from 'src/app/models/communication-request';
+import { ProcessedTransactionsComponent } from './processed-transactions/processed-transactions.component';
+import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
+import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -20,6 +29,9 @@ import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmatio
   styles: []
 })
 export class PreauthorizationTransactionsComponent implements OnInit {
+
+  @ViewChild('processedTransactions', { static: false }) processedTransactions: ProcessedTransactionsComponent;
+  @ViewChild('communicationRequests', { static: false }) communicationRequests: CommunicationRequestsComponent;
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
   paginatorPagesNumbers: number[];
@@ -63,16 +75,20 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
     private beneficiaryService: ProvidersBeneficiariesService,
+    private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
+
     this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
     this.routeActive.queryParams.subscribe(params => {
 
-      this.getPayerList();
+
 
       if (params.fromDate != null) {
         const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
@@ -119,9 +135,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
         this.pageSize = 10;
       }
 
-      if (this.FormPreAuthTransaction.valid) {
-        this.onSubmit();
-      }
+      this.getPayerList(true);
+
     });
   }
 
@@ -149,15 +164,24 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  getPayerList() {
+  getPayerList(isFromUrl: boolean = false) {
+    this.sharedServices.loadingChanged.next(true);
     this.beneficiaryService.getPayers().subscribe(event => {
       if (event instanceof HttpResponse) {
         const body = event.body;
         if (body instanceof Array) {
           this.payersList = body;
+          if (isFromUrl) {
+            if (this.FormPreAuthTransaction.valid) {
+              this.onSubmit();
+            }
+          } else {
+            this.sharedServices.loadingChanged.next(false);
+          }
         }
       }
     }, errorEvent => {
+      this.sharedServices.loadingChanged.next(false);
       if (errorEvent instanceof HttpErrorResponse) {
 
       }
@@ -206,15 +230,15 @@ export class PreauthorizationTransactionsComponent implements OnInit {
       model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
       if (this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value) {
-        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value);
+        model.preAuthorizationRequestId = parseInt(this.FormPreAuthTransaction.controls.preAuthorizationRequestId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.payerId.value) {
-        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value);
+        model.payerId = parseInt(this.FormPreAuthTransaction.controls.payerId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value) {
-        model.beneficiaryId = parseInt(this.FormPreAuthTransaction.controls.beneficiaryId.value);
+        model.beneficiaryId = parseInt(this.FormPreAuthTransaction.controls.beneficiaryId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {
@@ -291,101 +315,26 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     this.location.go(path);
   }
 
-  cancelRequest(approvalRequestId: number) {
-    this.sharedServices.loadingChanged.next(true);
-    const model: any = {};
-    model.approvalRequestId = approvalRequestId;
-    this.providerNphiesApprovalService.cancelApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          if (body.status === 'OK') {
-            if (body.outcome.toString().toLowerCase() === 'failed') {
-              const errors: any[] = [];
+  openReasonModal(requestId: number, reqType: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog'];
+    dialogConfig.data = {
+      approvalRequestId: requestId,
+      type: reqType
+    };
 
-              if (body.disposition) {
-                errors.push(body.disposition);
-              }
+    const dialogRef = this.dialog.open(CancelReasonModalComponent, dialogConfig);
 
-              if (body.errors && body.errors.length > 0) {
-                body.errors.forEach(err => {
-                  err.coding.forEach(codex => {
-                    errors.push(codex.code + ' : ' + codex.display);
-                  });
-                });
-              }
-              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-            } else {
-              this.showMessage('Success', body.message, 'success', true, 'OK');
-            }
-
-          }
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    });
-  }
-
-  nullifyRequest(approvalRequestId: number) {
-    this.sharedServices.loadingChanged.next(true);
-    const model: any = {};
-    model.approvalRequestId = approvalRequestId;
-    this.providerNphiesApprovalService.nullifyApprovalRequest(this.sharedServices.providerId, model).subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          if (body.status === 'OK') {
-            if (body.outcome.toString().toLowerCase() === 'failed') {
-              const errors: any[] = [];
-
-              if (body.disposition) {
-                errors.push(body.disposition);
-              }
-
-              if (body.errors && body.errors.length > 0) {
-                body.errors.forEach(err => {
-                  err.coding.forEach(codex => {
-                    errors.push(codex.code + ' : ' + codex.display);
-                  });
-                });
-              }
-              this.showMessage('Error', body.message, 'alert', true, 'OK', errors);
-            } else {
-              this.showMessage('Success', body.message, 'success', true, 'OK');
-            }
-
-          }
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 400) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK', error.error.errors);
-        } else if (error.status === 404) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        } else if (error.status === 500) {
-          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
-        }
-        this.sharedServices.loadingChanged.next(false);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.onSubmit();
       }
     });
   }
 
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.panelClass = ['primary-dialog'];
     dialogConfig.data = {
       // tslint:disable-next-line:max-line-length
       mainMessage: _mainMessage,
@@ -398,11 +347,103 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationAlertDialogComponent, dialogConfig);
   }
 
-  openDetailsDialog() {
-    const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent,
-      {
-        panelClass: ['primary-dialog', 'full-screen-dialog']
-      });
+  tabChange($event) {
+    if ($event && $event.index === 1) {
+      this.processedTransactions.getProcessedTransactions();
+    } else if ($event && $event.index === 2) {
+      this.communicationRequests.getCommunicationRequests();
+    }
+  }
+
+  openDetailsDialoEv(event) {
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId);
+  }
+
+  openDetailsDialogCR(event) {
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId);
+  }
+
+  openDetailsDialog(requestId, responseId) {
+    this.getTransactionDetails(requestId, responseId, null, null);
+  }
+
+  getTransactionDetails(requestId, responseId, communicationId = null, notificationId) {
+    this.sharedServices.loadingChanged.next(true);
+
+    let action: any;
+
+    if (communicationId) {
+      action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId, communicationId);
+    } else {
+      action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+    }
+    // tslint:disable-next-line:max-line-length
+    action.subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (communicationId) {
+            body.communicationId = communicationId;
+          }
+          if (notificationId) {
+            body.notificationId = notificationId;
+          }
+          const dialogConfig = new MatDialogConfig();
+          dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
+          dialogConfig.data = {
+            // tslint:disable-next-line:max-line-length
+            detailsModel: body
+          };
+
+          const dialogRef = this.dialog.open(ViewPreauthorizationDetailsComponent, dialogConfig);
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              if (!communicationId && notificationId) {
+                this.processedTransactions.getProcessedTransactions();
+              } else if (communicationId && notificationId) {
+                this.communicationRequests.getCommunicationRequests();
+              }
+            }
+          }, error => { });
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          if (error.error && error.error.errors) {
+            // tslint:disable-next-line:max-line-length
+            this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK', error.error.errors);
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.showMessage('Error', (error.error && error.error.message) ? error.error.message : ((error.error && !error.error.message) ? error.error : (error.error ? error.error : error.message)), 'alert', true, 'OK');
+          }
+        } else if (error.status === 404) {
+          this.showMessage('Error', error.error.message ? error.error.message : error.error.error, 'alert', true, 'OK');
+        } else if (error.status === 500) {
+          this.showMessage('Error', error.error.message, 'alert', true, 'OK');
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  get NewTransactionProcessed() {
+    // if (this.sharedServices.unReadProcessedCount > 0) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return this.sharedServices.unReadProcessedCount;
+  }
+
+  get NewComunicationRequests() {
+    // if (this.sharedServices.unReadComunicationRequestCount > 0) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return this.sharedServices.unReadComunicationRequestCount;
   }
 
 }

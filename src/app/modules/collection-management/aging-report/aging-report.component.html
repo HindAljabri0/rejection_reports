@@ -4,37 +4,24 @@
     </div>
     <div class="block-filter-panel">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-4">
                 <div class="row small-gutter">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="control-label">Payer</label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select value="">
-                                    <mat-option value="">All</mat-option>
-                                    <mat-option value="Tawuniya">Tawuniya</mat-option>
-                                    <mat-option value="Bupa">Bupa</mat-option>
-                                    <mat-option value="Medgulf">Medgulf</mat-option>
-                                    <mat-option value="Sagar">Sagar</mat-option>
-                                    <mat-option value="Allianz">Allianz</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
                     <div class="col">
                         <div class="form-group">
                             <label class="control-label">As of Date</label>
                             <div class="date-picker">
-                                <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date" class="form-control" [formControl]="date">
+                                <input [matDatepicker]="asOfDatePicker" placeholder="Select as of date"
+                                    class="form-control" [formControl]="date">
                                 <mat-datepicker-toggle [for]="asOfDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #asOfDatePicker></mat-datepicker>
                             </div>
-                            <span class="d-block pt-1 text-sm text-muted">Will show data for 01-01-2020 to 01-01-2021.</span>
+                            <span class="d-block pt-1 text-sm text-muted">Will show data from {{getPreviousDate()}} to
+                                {{formatDate(date.value)}}.</span>
                         </div>
                     </div>
                     <div class="col-auto align-self-end">
                         <div class="form-group">
-                            <button type="button" mat-flat-button color="primary">Search</button>
+                            <button type="button" mat-flat-button color="primary" (click)="search()">Search</button>
                             <span class="d-block pt-1 text-sm">&nbsp;</span>
                         </div>
                     </div>
@@ -43,7 +30,7 @@
         </div>
     </div>
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
+        <div class="fixed-height" *ngIf="errorMessage == null">
             <table class="primary-grid manual-row-color sticky-header" cellpadding="0" cellspacing="0" border="0">
                 <thead>
                     <tr>
@@ -54,15 +41,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let item of report;let i=index">
+                    <ng-container *ngFor="let item of agingReportResponseModel;let i=index">
                         <tr [class.even]="i%2==0">
-                            <td class="text-primary row-click" width="10" (click)="toggleRow(i)">
+                            <td class="text-primary row-click" width="10"
+                                (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
                                 <mat-icon *ngIf="currentDetailsOpen!=i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentDetailsOpen==i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
-                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.payer}}</td>
-                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.amountOutStanding}} SR</td>
-                            <td [class]="'row-click '+ item.className" (click)="toggleRow(i)">{{item.totalAmoount}} SR</td>
+                            <td [class]="'row-click '" (click)="currentDetailsOpen!=i?getDetails(i):'';toggleRow(i)">
+                                {{getPayerName(item.payerId)}}</td>
+                            <td [class]="'row-click '" (click)="currentDetailsOpen!=i?getDetails(i):'';;toggleRow(i)">
+                                {{item.outstandingAmount}} SR</td>
+                            <td [class]="'row-click '" (click)="currentDetailsOpen!=i?getDetails(i):'';;toggleRow(i)">
+                                {{item.totalAmount}} SR</td>
                         </tr>
                         <tr *ngIf="currentDetailsOpen==i">
                             <td colspan="4">
@@ -71,49 +62,50 @@
                                         <div class="col-6">
                                             <div class="row">
                                                 <div class="col-4">
-                                                    <div class="form-group">
+
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 1-30</div>
                                                         <p class="form-control-static">{{item.aged1to30}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 31-60</div>
                                                         <p class="form-control-static">{{item.aged31to60}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 61-90</div>
                                                         <p class="form-control-static">{{item.aged61to90}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 91-120</div>
                                                         <p class="form-control-static">{{item.aged91to120}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 121-150</div>
                                                         <p class="form-control-static">{{item.aged121to150}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 151-180</div>
                                                         <p class="form-control-static">{{item.aged151to180}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged 181-365</div>
                                                         <p class="form-control-static">{{item.aged181to365}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <div class="form-group">
+                                                    <div class="form-group form-group-static">
                                                         <div class="control-label">Aged > 365</div>
                                                         <p class="form-control-static">{{item.aged365}}</p>
                                                     </div>
@@ -121,7 +113,8 @@
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                                [options]="barChartOptions" [legend]="barChartLegend"
                                                 [chartType]="barChartType">
                                             </canvas>
                                         </div>
@@ -133,24 +126,9 @@
                 </tbody>
             </table>
         </div>
-    </ng-scrollbar>
-    <div class="block-footer sticky-bottom">
-        <div class="left-block custom-paginator">
-            <button matRipple type="button" title="First Page">
-                <img src="./assets/ic-page-first.svg" alt="First" />
-            </button>
-            <button matRipple type="button" title="Previous Page">
-                <img src="./assets/ic-page-prev.svg" alt="Previous" />
-            </button>
-            <p class="page-info">
-                1<small>/5</small>
-            </p>
-            <button matRipple type="button" title="Next Page">
-                <img src="./assets/ic-page-next.svg" alt="Next" />
-            </button>
-            <button matRipple type="button" title="Last Page">
-                <img src="./assets/ic-page-last.svg" alt="Last" />
-            </button>
+
+        <div style="margin-top: 20px;" class="px-3 pb-3 bg-white" *ngIf="errorMessage != null">
+            <p class="error-card m-0">{{errorMessage}}</p>
         </div>
-    </div>
+    </ng-scrollbar>
 </div>

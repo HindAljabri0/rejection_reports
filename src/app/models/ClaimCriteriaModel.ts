@@ -7,6 +7,8 @@ export class ClaimCriteriaModel {
 
     payerId?: string;
 
+    organizationId?: string;
+
     batchId?: string;
 
     uploadId?: string;
@@ -56,6 +58,9 @@ export class ClaimCriteriaModel {
         }
         if(this.payerId != null && this.payerId.trim().length > 0){
             params += `payerId=${this.payerId}&`
+        }
+        if(this.organizationId != null && this.organizationId.trim().length > 0){
+            params += `organizationId=${this.organizationId}&`
         }
         if(this.batchId != null && this.batchId.trim().length > 0){
             params += `batchId=${this.batchId}&`

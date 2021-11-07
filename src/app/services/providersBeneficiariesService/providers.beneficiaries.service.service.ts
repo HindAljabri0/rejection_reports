@@ -43,4 +43,10 @@ export class ProvidersBeneficiariesService {
 
   }
 
+  getPayees() {
+    const requestUrl = `/lov/providers`;
+    const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
+
 }

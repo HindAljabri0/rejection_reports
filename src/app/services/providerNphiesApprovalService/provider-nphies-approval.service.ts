@@ -16,8 +16,8 @@ export class ProviderNphiesApprovalService {
   }
 
   getApprovalRequestTransactions(providerId: string, body: any) {
-    const requestUrl = `/providers/${providerId}/approval/fetch/criteria`;
-    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    const requestUrl = `/providers/${providerId}/approvals/fetch/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
     return this.http.request(request);
   }
 
@@ -30,6 +30,27 @@ export class ProviderNphiesApprovalService {
   nullifyApprovalRequest(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/nullify/request`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+
+
+
+  getTransactionDetails(providerId: string, requestId: number, responseId: number) {
+    const requestUrl = `/providers/${providerId}/approval?requestId=${requestId}&responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
+
+  getTransactionDetailsFromCR(providerId: string, requestId: number, communicationId) {
+    // tslint:disable-next-line:max-line-length
+    const requestUrl = `/providers/${providerId}/approval/communication-request/detail?requestId=${requestId}&communicationId=${communicationId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
+
+  getNphisClaimDetails(providerId: string, claimId: number, uploadId: number) {
+    const requestUrl = `/providers/${providerId}/claim?claimId=${claimId}&uploadId=${uploadId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
 }

@@ -44,6 +44,14 @@ export class SharedServices {
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
+  unReadProcessedCount = 0;
+  unReadProcessedCountChange: Subject<number> = new Subject();
+  // processedNotificationList: any[] = [];
+
+  unReadComunicationRequestCount = 0;
+  unReadComunicationRequestCountChange: Subject<number> = new Subject();
+  // communicationRequestNotificationList: any[] = [];
+
   uploadsList: {
     totalClaims: number,
     uploadDate: Date,
@@ -123,9 +131,12 @@ export class SharedServices {
       this.getUploads();
       this.getAnnouncements();
     });
-
-
-
+    this.unReadProcessedCountChange.subscribe(value => {
+      this.unReadProcessedCount = value;
+    });
+    this.unReadComunicationRequestCountChange.subscribe(value => {
+      this.unReadComunicationRequestCount = value;
+    });
   }
 
   get isAdmin() {
@@ -252,6 +263,46 @@ export class SharedServices {
     });
   }
 
+  getProcessedCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCount(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadProcessedCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  // addProcessedNotifications(notification) {
+  //   this.processedNotificationList.push(notification);
+  // }
+
+  getCommunicationRequestCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCount(this.providerId, 'communication-request-notification', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadComunicationRequestCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
+  // addCommunicationRequestNotifications(notification) {
+  //   this.communicationRequestNotificationList.push(notification);
+  // }
+
   markAsRead(notificationId: string, providerId: string) {
     this.notifications.markNotificationAsRead(providerId, notificationId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -361,6 +412,28 @@ export class SharedServices {
     }
 
     return payers;
+  }
+
+  getTPAsList() {
+    let tpas: { id: number, name: string }[] = [];
+    const payersStr = localStorage.getItem('payers');
+    if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes('|')) {
+      const payersStrSplitted = payersStr.split('|');
+      tpas = payersStrSplitted
+        .map(value => ({ id: Number.parseInt(value.split(',')[4]), name: value.split(',')[3] }));
+    } else if (payersStr != null && payersStr.trim().length > 0 && payersStr.includes(':')) {
+      tpas = [{ id: Number.parseInt(payersStr.split(',')[4]), name: payersStr.split(',')[3] }];
+    }
+    let distinctTPAIds: number[] = [];
+    return tpas.filter(tpa => tpa.id != 1 && tpa.id != 2 && tpa.id != 94)
+      .filter(tpa => {
+        if (distinctTPAIds.includes(tpa.id)) {
+          return false;
+        } else {
+          distinctTPAIds.push(tpa.id);
+          return true;
+        }
+      });
   }
 
   getPayerCode(payerId: string) {

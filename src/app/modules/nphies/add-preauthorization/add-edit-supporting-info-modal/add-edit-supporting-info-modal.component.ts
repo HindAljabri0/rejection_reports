@@ -8,11 +8,12 @@ import { HttpResponse } from '@angular/common/http';
 import { AlertPromise } from 'selenium-webdriver';
 import { DatePipe } from '@angular/common';
 import { SharedServices } from 'src/app/services/shared.services';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-supporting-info-modal',
   templateUrl: './add-edit-supporting-info-modal.component.html',
-  styleUrls: ['./add-edit-supporting-info-modal.component.css']
+  styles: []
 })
 export class AddEditSupportingInfoModalComponent implements OnInit {
 
@@ -32,43 +33,22 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     reason: [''],
   });
 
-  categoryList = [
-    { value: 'info', name: 'Info' },
-    { value: 'onset', name: 'Onset' },
-    { value: 'attachment', name: 'Attachment' },
-    { value: 'missingtooth', name: 'Missing Tooth' },
-    { value: 'hospitalized', name: 'Hospitalized' },
-    { value: 'employmentImpacted', name: 'Employment Impacted' },
-    // { value: 'lab-test', name: 'Lab Test' },
-    { value: 'reason-for-visit', name: 'Reason For Visit' },
-    { value: 'days-supply', name: 'Days Supply' },
-    { value: 'vital-sign-weight', name: 'Vital Sign Weight' },
-    { value: 'vital-sign-systolic', name: 'Vital Sign Systolic' },
-    { value: 'vital-sign-diastolic', name: 'Vital Sign Diastolic' },
-    { value: 'icu-hours', name: 'Ice Hours' },
-    { value: 'ventilation-hours', name: 'Ventilation Hours' },
-    { value: 'vital-sign-height', name: 'Vital Sign Height' },
-    { value: 'chief-complaint', name: 'Chief Complaint' }
-  ];
-
-  reasonList = [
-    { value: 'e', name: 'Extraction' },
-    { value: 'c', name: 'Congenital' },
-    { value: 'u', name: 'Unknown' },
-    { value: 'o', name: 'Other' }
-  ];
+  categoryList = this.sharedDataService.categoryList;
+  reasonList = this.sharedDataService.reasonList;
 
   codeList = [];
 
   isSubmitted = false;
   fileUploadFlag = false;
   currentFileUpload: File;
+  currentFileUploadName: string;
   sizeInMB: string;
   uploadContainerClass = '';
   error = '';
   fileByteArray: any;
 
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditSupportingInfoModalComponent>, @Inject(MAT_DIALOG_DATA) public data,
     private datePipe: DatePipe, private sharedServices: SharedServices,
     private formBuilder: FormBuilder, private adminService: AdminService) { }
@@ -93,15 +73,21 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
         timingPeriodTo: this.data.item.toDate,
         reason: this.reasonList.filter(x => x.value === this.data.item.reason)[0]
       });
+
+      if (this.FormSupportingInfo.controls.attachment && this.FormSupportingInfo.controls.attachment.value) {
+        this.fileUploadFlag = true;
+        this.currentFileUploadName = this.FormSupportingInfo.controls.attachment.value;
+      }
     }
   }
 
   selectFile(event) {
     this.fileUploadFlag = true;
     this.currentFileUpload = event.target.files[0];
+    this.currentFileUploadName = this.currentFileUpload.name;
+    this.FormSupportingInfo.controls.attachment.setValue(this.currentFileUploadName);
     this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
-      event.target.files = [];
       this.currentFileUpload = undefined;
       return;
     }
@@ -116,7 +102,7 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
 
   checkfile() {
-    const validExts = ['.pdf'];
+    const validExts = ['.pdf', '.png', '.jpg', '.jpeg'];
     let fileExt = this.currentFileUpload.name;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
@@ -140,6 +126,8 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
   deleteFile() {
     this.currentFileUpload = null;
+    this.currentFileUploadName = null;
+    this.error = '';
     this.FormSupportingInfo.controls.attachment.reset();
     this.fileUploadFlag = false;
   }
@@ -391,6 +379,11 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+
+    if (this.error) {
+      return;
+    }
+
     if (this.FormSupportingInfo.valid) {
       const model: any = {};
       model.sequence = this.data.Sequence;

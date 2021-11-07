@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadRequest } from 'src/app/models/downloadRequest';
 import { MatMenuTrigger } from '@angular/material';
+import { NotificationsService } from 'src/app/services/notificationService/notifications.service';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit {
 
   thereIsActiveDownloads = false;
   downloads: DownloadRequest[] = [];
+  watchingProcessed = false;
 
   @ViewChild('downloadMenuTriggerButton', { static: false, read: MatMenuTrigger }) downloadMenuRef: MatMenuTrigger;
 
@@ -32,7 +34,8 @@ export class HeaderComponent implements OnInit {
     private sharedServices: SharedServices,
     public router: Router,
     public authService: AuthService,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private notificationService: NotificationsService
   ) {
     this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
       this.setNewNotificationIndecater(count > 0);
@@ -60,6 +63,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getUserData();
+    this.sharedServices.getProcessedCount();
+    this.sharedServices.getCommunicationRequestCount();
+    this.watchPreAuthorizationChanges();
     this.downloadService.downloads.subscribe(downloads => {
       this.downloads = downloads;
       this.thereIsActiveDownloads = downloads.length > 0;
@@ -99,6 +105,40 @@ export class HeaderComponent implements OnInit {
   toggleNav() {
     document.body.classList.toggle('nav-open');
     document.getElementsByTagName('html')[0].classList.toggle('nav-open');
+  }
+
+  watchPreAuthorizationChanges() {
+    if (this.watchingProcessed) { return; }
+
+    this.watchingProcessed = true;
+
+    this.notificationService.startWatchingMessages(this.sharedServices.providerId, 'nphies');
+    this.notificationService._messageWatchSources['nphies'].subscribe(value => {
+
+      value = value.replace(`"`, '').replace(`"`, '');
+      const splitedValue: string[] = value.split(':');
+
+      if (splitedValue[0] === 'approval-notifications') {
+        this.sharedServices.getProcessedCount();
+        // const model: any = {};
+        // // tslint:disable-next-line:radix
+        // model.notificationId = parseInt(splitedValue[2]);
+        // // tslint:disable-next-line:radix
+        // model.responseId = parseInt(splitedValue[1]);
+        // this.sharedServices.addProcessedNotifications(model);
+      }
+
+      if (splitedValue[0] === 'communication-request-notification') {
+        this.sharedServices.getCommunicationRequestCount();
+        // const model: any = {};
+        // // tslint:disable-next-line:radix
+        // model.notificationId = parseInt(splitedValue[2]);
+        // // tslint:disable-next-line:radix
+        // model.communicationId = parseInt(splitedValue[1]);
+        // this.sharedServices.addCommunicationRequestNotifications(model);
+      }
+
+    });
   }
 
   get isProvider() {

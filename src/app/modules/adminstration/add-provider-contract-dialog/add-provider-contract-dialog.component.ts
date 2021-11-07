@@ -6,7 +6,6 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, Validators } from '@angular/forms';
 import { PaymentProviderModel } from 'src/app/models/PaymentProviderModel';
 import * as moment from 'moment';
-import { parse } from 'querystring';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';

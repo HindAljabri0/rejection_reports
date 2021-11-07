@@ -69,12 +69,20 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
           return true;
         }
         payerId = route.queryParamMap.get('payerId');
-        authority = localStorage.getItem(providerId + payerId);
-        if (providerId == null || providerId == '' || payerId == null || payerId == '' || authority == null) {
-          return this.router.createUrlTree(['/']);
-        }
-        if (!authority.includes('3.0') && authority.includes('3.9') && authority.includes('3.91')) {
-          return this.router.createUrlTree(['/']);
+        let organizationId = route.queryParamMap.get('organizationId');
+        if ((payerId == null || payerId == '') && organizationId != null && organizationId != '') {
+          const payersStr = localStorage.getItem('payers');
+          if (!payersStr.includes(`,${organizationId}|`) && !payersStr.endsWith(`,${organizationId}`)) {
+            return this.router.createUrlTree(['/']);
+          }
+        } else {
+          authority = localStorage.getItem(providerId + payerId);
+          if (providerId == null || providerId == '' || payerId == null || payerId == '' || authority == null) {
+            return this.router.createUrlTree(['/']);
+          }
+          if (!authority.includes('3.0') && authority.includes('3.9') && authority.includes('3.91')) {
+            return this.router.createUrlTree(['/']);
+          }
         }
         return true;
       case NotificationsPageComponent:

@@ -2,7 +2,7 @@
   <div class="block-header has-border">
     <p>Preauthorization Transactions</p>
   </div>
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding">
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab bg-white no-body-padding" (selectedTabChange)="tabChange($event)">
     <mat-tab>
       <ng-template mat-tab-label>
         <span>Requests</span>
@@ -14,8 +14,7 @@
               <div class="form-group">
                 <label class="control-label">From Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date"
-                    formControlName="fromDate">
+                  <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
                   <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                   <mat-datepicker #filterFromDate></mat-datepicker>
                 </div>
@@ -25,8 +24,8 @@
               <div class="form-group">
                 <label class="control-label">To Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
-                    [min]="FormPreAuthTransaction.controls.fromDate.value" formControlName="toDate">
+                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPreAuthTransaction.controls.fromDate.value"
+                    formControlName="toDate">
                   <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                   <mat-datepicker #filterToDate></mat-datepicker>
                 </div>
@@ -35,8 +34,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Pre Authorization ID</label>
-                <input placeholder="Enter pre authorization ID" class="form-control"
-                  formControlName="preAuthorizationRequestId">
+                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="preAuthorizationRequestId">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -54,11 +52,10 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Select a Beneficiary</label>
-                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..."
-                  formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                <input type="text" class="form-control" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName" [matAutocomplete]="auto"
+                  (keyup)="searchBeneficiaries()">
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult"
-                    (click)="selectBeneficiary(beneficiary)">
+                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
                     {{beneficiary.name}} ({{beneficiary.documentId}})
                   </mat-option>
                 </mat-autocomplete>
@@ -81,14 +78,14 @@
           </div>
         </form>
       </div>
-      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height fixed-height-sm" *ngIf="transactionModel && transactions.length > 0">
+      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white" *ngIf="transactionModel && transactions.length > 0">
+        <div class="fixed-height fixed-height-sm">
           <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
                 <th>Member Card ID</th>
                 <th>Pre Authorization ID</th>
-                <th>Transaction Date/Time</th>
+                <th>Transaction Date</th>
                 <th>Payer</th>
                 <th>Status</th>
                 <th>Processing Status</th>
@@ -97,12 +94,17 @@
             </thead>
             <tbody>
               <tr *ngFor="let transaction of transactions">
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.memberCardID}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.approvalRequestId}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.transactionDate | date:
-                  'dd-MM-yyyy hh:mm:ss aa'}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.payerName}}</td>
-                <td class="row-click" (click)="openDetailsDialog()">{{transaction.status}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.memberCardID}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.requestId}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.transactionDate | date:
+                  'dd-MM-yyyy'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.payerName}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">{{transaction.status}}
+                </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
                     <button mat-icon-button matTooltip="Check Status" class="text-primary">
@@ -115,8 +117,9 @@
                   <ng-container>
                     <mat-menu #moreMenu="matMenu" xPosition="before">
                       <button mat-menu-item><span>Reuse</span></button>
-                      <button mat-menu-item (click)="cancelRequest(transaction.approvalRequestId)"><span>Cancel</span></button>
-                      <button mat-menu-item (click)="nullifyRequest(transaction.approvalRequestId)"><span>Nullify/Soft Delete</span></button>
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, 'cancel')"><span>Cancel</span></button>
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, 'nullify')"><span>Nullify/Soft
+                          Delete</span></button>
                       <button mat-menu-item><span>Add New Related Claim</span></button>
                     </mat-menu>
                     <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
@@ -128,10 +131,9 @@
             </tbody>
           </table>
         </div>
-        <app-empty-state *ngIf="transactionModel && transactions.length === 0"
-          message='No Pre Authorization transactions found!'>
-        </app-empty-state>
       </ng-scrollbar>
+      <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Pre Authorization transactions found!'>
+      </app-empty-state>
       <div class="pagination-header">
         <div class="form-group page-select">
           <label class="control-label">Go to page: </label>
@@ -142,8 +144,7 @@
           </mat-form-field>
         </div>
         <div class="material-paginator">
-          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-            (page)="paginatorAction($event)">
+          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
           </mat-paginator>
         </div>
       </div>
@@ -152,160 +153,23 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Processed</span>
-          <span class="alert-marker ml-2"></span>
+          <span *ngIf="NewTransactionProcessed > 0" class="alert-marker ml-2 alert-count">{{NewTransactionProcessed}}</span>
         </div>
       </ng-template>
-      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
-          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Member Card ID</th>
-                <th>Pre Authorization ID</th>
-                <th>Transaction Date/Time</th>
-                <th>Insurance Plan</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">496661</td>
-                <td class="row-click" (click)="openDetailsDialog()">LAV4FIYPZWKS</td>
-                <td class="row-click" (click)="openDetailsDialog()">22/4/2026</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
-                <td class="actions">
-                  <mat-menu #moreMenu="matMenu" xPosition="before">
-                    <button mat-menu-item><span>Reuse</span></button>
-                    <button mat-menu-item><span>Cancel</span></button>
-                    <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                    <button mat-menu-item><span>Add New Related Claim</span></button>
-                  </mat-menu>
-                  <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">106823</td>
-                <td class="row-click" (click)="openDetailsDialog()">3CL3UHRA4OJZ</td>
-                <td class="row-click" (click)="openDetailsDialog()">9/5/2022</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approved</td>
-                <td class="actions">
-                  <mat-menu #moreMenu="matMenu" xPosition="before">
-                    <button mat-menu-item><span>Reuse</span></button>
-                    <button mat-menu-item><span>Cancel</span></button>
-                    <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                    <button mat-menu-item><span>Add New Related Claim</span></button>
-                  </mat-menu>
-                  <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">729978</td>
-                <td class="row-click" (click)="openDetailsDialog()">X1NBKAKAU0CK</td>
-                <td class="row-click" (click)="openDetailsDialog()">25/3/2021</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
-                <td class="actions">
-                  <mat-menu #moreMenu="matMenu" xPosition="before">
-                    <button mat-menu-item><span>Reuse</span></button>
-                    <button mat-menu-item><span>Cancel</span></button>
-                    <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                    <button mat-menu-item><span>Add New Related Claim</span></button>
-                  </mat-menu>
-                  <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">285297</td>
-                <td class="row-click" (click)="openDetailsDialog()">TX7DBH9MGLSN</td>
-                <td class="row-click" (click)="openDetailsDialog()">25/7/2012</td>
-                <td class="row-click" (click)="openDetailsDialog()">Plan - 1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Rejected</td>
-                <td class="actions">
-                  <mat-menu #moreMenu="matMenu" xPosition="before">
-                    <button mat-menu-item><span>Reuse</span></button>
-                    <button mat-menu-item><span>Cancel</span></button>
-                    <button mat-menu-item><span>Nullify/Soft Delete</span></button>
-                    <button mat-menu-item><span>Add New Related Claim</span></button>
-                  </mat-menu>
-                  <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" class="text-primary">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </ng-scrollbar>
+
+      <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
+      </app-processed-transactions>
+
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication Request</span>
-          <span class="alert-marker ml-2"></span>
+          <span *ngIf="NewComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewComunicationRequests}}</span>
         </div>
       </ng-template>
-      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
-        <div class="fixed-height">
-          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Communication ID</th>
-                <th>Category</th>
-                <th>Claim ID/Pre-Auth ID</th>
-                <th>Sender</th>
-                <th>Reason Code</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">496661</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
-                <td class="row-click" (click)="openDetailsDialog()">XQFBDA</td>
-                <td class="row-click" (click)="openDetailsDialog()">Cecilia Brock</td>
-                <td class="row-click" (click)="openDetailsDialog()">5</td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">660052</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
-                <td class="row-click" (click)="openDetailsDialog()">JNIK95867EQLGAHKR1</td>
-                <td class="row-click" (click)="openDetailsDialog()">Keith Hawkins</td>
-                <td class="row-click" (click)="openDetailsDialog()">45</td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">913500</td>
-                <td class="row-click" (click)="openDetailsDialog()">Claim</td>
-                <td class="row-click" (click)="openDetailsDialog()">CI3FQJK9BZJC9PUYAT24</td>
-                <td class="row-click" (click)="openDetailsDialog()">Alex Moran</td>
-                <td class="row-click" (click)="openDetailsDialog()">26</td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">884114</td>
-                <td class="row-click" (click)="openDetailsDialog()">Claim</td>
-                <td class="row-click" (click)="openDetailsDialog()">PHGETRCGLXM</td>
-                <td class="row-click" (click)="openDetailsDialog()">Lou Graves</td>
-                <td class="row-click" (click)="openDetailsDialog()">62</td>
-              </tr>
-              <tr>
-                <td class="row-click" (click)="openDetailsDialog()">807591</td>
-                <td class="row-click" (click)="openDetailsDialog()">Approval</td>
-                <td class="row-click" (click)="openDetailsDialog()">KC4GJ4DP</td>
-                <td class="row-click" (click)="openDetailsDialog()">Christina Caldwell</td>
-                <td class="row-click" (click)="openDetailsDialog()">15</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </ng-scrollbar>
-
+      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
+      </app-communication-requests>
     </mat-tab>
   </mat-tab-group>
 </div>

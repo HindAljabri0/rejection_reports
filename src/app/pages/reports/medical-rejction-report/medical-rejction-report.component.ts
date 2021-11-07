@@ -203,10 +203,11 @@ export class MedicalRejctionReportComponent implements OnInit {
           ${(event.body['wslGenInfo']['lastname'] != null ? event.body['wslGenInfo']['lastname'] : '')}`;
           claim.policyNumber = event.body['wslGenInfo']['policynumber'];
           claim.providerClaimId = event.body['wslGenInfo']['provclaimno'];
+          claim.statusCode=event.body['wslGenInfo']['claimprop']['statuscode'];
           claim.statusDescription = event.body['wslGenInfo']['claimprop']['statusdetail'];
 
           const invoices = event.body['wslGenInfo']['wslClaimInvoices'];
-          switch (claim.claimStatus) {
+          switch (claim.claimStatus.toLocaleUpperCase()) {
             case ClaimStatus.PARTIALLY_PAID:
               if (invoices instanceof Array) {
                 claim.services = [];
@@ -225,7 +226,7 @@ export class MedicalRejctionReportComponent implements OnInit {
                         requestedNAUnit: service['unitofnet'],
                         requestedNAVat: service['netvatamount'],
                         requestedNAVatUnit: service['unitofnetvatamount'],
-                        status: '',
+                        status:service['servicedecision'] === null ? '' : service['servicedecision'] ['servicestatuscode'],
                         statusDetails: service['servicedecision'] === null ? '' : service['servicedecision']['decisioncomment']
                       });
                     });
@@ -251,7 +252,7 @@ export class MedicalRejctionReportComponent implements OnInit {
                         requestedNAUnit: service['unitofnet'],
                         requestedNAVat: service['netvatamount'],
                         requestedNAVatUnit: service['unitofnetvatamount'],
-                        status: '',
+                        status:service['servicedecision'] === null ? '' : service['servicedecision'] ['servicestatuscode'],
                         statusDetails: service['servicedecision'] === null ? '' : service['servicedecision']['decisioncomment']
                       });
                     });

@@ -1,6 +1,8 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Authorization - LAV4FIYPZWKS</h5>
-    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+    <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization - {{data.detailsModel.approvalRequestId}}</h5>&nbsp;&nbsp;
+    <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title ml-auto">Transaction - {{data.detailsModel.providertransactionlogId}}</h5>
+
+    <button type="button" (click)="closeDialog()" class="dialog-close ml-4" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
     <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
@@ -9,7 +11,7 @@
                 <span>Details</span>
             </ng-template>
             <div class="pre-auth-info-wrapper">
-                <app-pre-authorization-details></app-pre-authorization-details>
+                <app-pre-authorization-details *ngIf="data.detailsModel" [data]="data.detailsModel"></app-pre-authorization-details>
             </div>
         </mat-tab>
         <mat-tab>
@@ -21,7 +23,7 @@
             </ng-template>
             <div class="communication-wrapper">
                 <h5 class="form-title px-14 py-0 mb-0">
-                    <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true">
+                    <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true" (click)="openAddCommunicationDialog()">
                         <mat-icon>add_circle_outline</mat-icon>
                         <span class="pl-1">Add Communication</span>
                     </button>
@@ -29,98 +31,167 @@
                 <ul class="communication">
                     <li>
                         <div class="header-block">
-                            <div class="add-communication-block">
-                                <div class="text-wrapper">
-                                    <input type="text" class="text-control" placeholder="Type a message" />
-                                    <button type="button" class="attachment-btn">
-                                        <mat-icon>attach_file</mat-icon>
-                                    </button>
+                            <div class="message">
+                                <div class="table-responsive pb-2">
+                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
+                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                                                <span>img_0005.jpg</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                                <span>report_054578.pdf</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <button type="button" color="primary" mat-flat-button>Send</button>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="header-block">
-                            <div class="title">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!
                                 <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
                             </div>
                             <div class="ml-auto">
-                                <button type="button" class="action-btn">
+                                <button type="button" class="action-btn" (click)="openAddCommunicationDialog()">
                                     <mat-icon class="text-primary">reply</mat-icon>
                                     <span>Reply</span>
                                 </button>
                             </div>
                         </div>
                         <div class="body-block sent">
-                            <button type="button" class="attachment-btn">
-                                <span class="image"
-                                    style="background-image: url(https://data2.unhcr.org/images/documents/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg);"></span>
-                            </button>
-                            <div class="title size-sm">
+                            <div class="message size-sm">
+                                <div class="table-responsive pb-2">
+                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
+                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                                                <span>img_0005.jpg</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                                <span>report_054578.pdf</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
                             </div>
                         </div>
-                    </li>
-                    <li>
-                        <div class="header-block">
-                            <div class="title">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, doloribus nam quod necessitatibus sapiente deserunt quis voluptatem et similique
-                                nesciunt a, atque id laborum odit fugit omnis ipsum tempora soluta? Cum, quisquam! Ducimus, quis! Modi totam quas adipisci sunt exercitationem in,
-                                voluptates id praesentium cupiditate, ullam distinctio quae laudantium optio.
-                                <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114 09:12 PM</span>
-                            </div>
-                            <div class="ml-auto">
-                                <button type="button" class="action-btn">
-                                    <mat-icon class="text-primary">reply</mat-icon>
-                                    <span>Reply</span>
-                                </button>
-                            </div>
-                        </div>
                         <div class="body-block sent">
-                            <div class="title size-sm">
-                                Lorem ipsum dolor sit amet.
+                            <div class="message size-sm">
+                                <div class="table-responsive pb-2">
+                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
+                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                                                <span>img_0005.jpg</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                                <span>report_054578.pdf</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="header-block sent">
-                            <div class="title">
-                                <button type="button" class="attachment-btn">
-                                    <span class="file">
-                                        <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                        <span class="name">Radiology Report.pdf</span>
-                                        <span class="size">24.14 MB</span>
-                                    </span>
-                                </button>
-                                <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114 09:12 PM</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="header-block">
-                            <div class="title">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, quaerat!
-                                <span>Communication ID: ae4f1e48-baad-501f-87da-bae91c07d317 &nbsp;&nbsp;&nbsp;&nbsp; Date: 7/1/2117 08:10 AM</span>
-                            </div>
-                            <div class="ml-auto">
-                                <button type="button" class="action-btn">
-                                    <mat-icon class="text-primary">reply</mat-icon>
-                                    <span>Reply</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="body-block">
-                            <div class="add-communication-block">
-                                <div class="text-wrapper">
-                                    <input type="text" class="text-control" placeholder="Type a message" />
-                                    <button type="button" class="attachment-btn">
-                                        <mat-icon>attach_file</mat-icon>
-                                    </button>
+                            <div class="message">
+                                <div class="table-responsive pb-2">
+                                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid manual-row-color horizontal-borders">
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque molestiae, voluptates, fugit, nostrum eum officia
+                                                    quo esse deserunt eos quasi pariatur earum vitae voluptas harum.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
+                                                                <span>img_0005.jpg</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <ul class="inline-attachments no-space">
+                                                        <li>
+                                                            <button type="button">
+                                                                <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
+                                                                <span>report_054578.pdf</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <button type="button" color="primary" mat-flat-button>Send</button>
+                                <span>Communication ID: 6716eebd-0891-57fc-91b0-8a48bbec342a &nbsp;&nbsp;&nbsp;&nbsp; Date: 21/11/2114 09:12 PM</span>
                             </div>
                         </div>
                     </li>

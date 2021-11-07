@@ -30,6 +30,13 @@ import { AttachmentsComponent } from 'src/app/claim-module-components/attachment
 import { ClaimErrorsComponent } from 'src/app/claim-module-components/claim-errors/claim-errors.component';
 import { LabResultsComponent } from 'src/app/claim-module-components/lab-results/lab-results.component';
 import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-comments/pbm-comments.component';
+import { CreateClaimNphiesComponent } from '../nphies/create-claim-nphies/create-claim-nphies.component';
+import { AddEditPreauthorizationItemComponent } from '../nphies/add-edit-preauthorization-item/add-edit-preauthorization-item.component';
+import { AddEditCareTeamModalComponent } from '../nphies/add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
+import { AddEditDiagnosisModalComponent } from '../nphies/add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+import { AddEditVisionLensSpecificationsComponent } from '../nphies/add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { AddEditSupportingInfoModalComponent } from '../nphies/add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { AddEditItemDetailsModalComponent } from '../nphies/add-edit-item-details-modal/add-edit-item-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -48,10 +55,13 @@ import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-commen
     AttachmentsComponent,
     ClaimErrorsComponent,
     LabResultsComponent,
-    PbmCommentsComponent
+    PbmCommentsComponent,
+    CreateClaimNphiesComponent
   ],
   imports: [
     RouterModule.forChild([
+      { path: 'create-nphies', component: CreateClaimNphiesComponent },
+      { path: 'nphies-claim', component: CreateClaimNphiesComponent },
       { path: ':id', component: MainClaimPageComponent }
     ]),
     StoreModule.forFeature('claimState', claimReducer),
@@ -87,7 +97,13 @@ import { PbmCommentsComponent } from 'src/app/claim-module-components/pbm-commen
   entryComponents: [
     CreateByApprovalFormComponent,
     SelectServiceDialogComponent,
-    OnSavingDoneComponent
+    OnSavingDoneComponent,
+    AddEditPreauthorizationItemComponent,
+    AddEditCareTeamModalComponent,
+    AddEditDiagnosisModalComponent,
+    AddEditVisionLensSpecificationsComponent,
+    AddEditSupportingInfoModalComponent,
+    AddEditItemDetailsModalComponent
   ],
   providers: [
     DatePipe
