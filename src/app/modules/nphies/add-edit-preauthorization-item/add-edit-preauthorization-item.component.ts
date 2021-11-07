@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { X } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
+import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
   selector: 'app-add-edit-preauthorization-item',
@@ -35,12 +36,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     // itemCode: ['', Validators.required],
     // itemDescription: ['', Validators.required],
     nonStandardCode: [''],
+    display: [''],
     isPackage: [''],
+    bodySite: [''],
+    subSite: [''],
     quantity: ['', Validators.required],
     unitPrice: ['', Validators.required],
     discount: [''],
     factor: ['', Validators.required],
-    taxPercent: ['', Validators.required],
+    taxPercent: [''],
     patientSharePercent: [''],
     tax: [''],
     net: [''],
@@ -49,7 +53,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     startDate: ['', Validators.required],
     supportingInfoSequence: [''],
     supportingInfoFilter: [''],
-    careTeamSequence: ['', Validators.required],
+    careTeamSequence: [''],
     careTeamFilter: [''],
     diagnosisSequence: [''],
     diagnosisFilter: ['']
@@ -57,20 +61,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   isSubmitted = false;
 
-  typeList = [
-    { value: 'medicalDevices', name: 'Medical Devices' },
-    { value: 'medicationCode', name: 'MedicationCodes' },
-    { value: 'transporationService', name: 'Transportation SRCA' },
-    { value: 'imagingService', name: 'Imaging' },
-    { value: 'procedures', name: 'Procedures' },
-    { value: 'services', name: 'Services' },
-    { value: 'laboratory', name: 'Laboratory' },
-    { value: 'oralHealthOp', name: 'Oral Health OP' },
-    { value: 'oralHealthIp', name: 'Oral Health IP' },
-  ];
+  typeList = this.sharedDataService.itemTypeList;
+  bodySiteList = [];
+  subSiteList = [];
+  IscareTeamSequenceRequired = false;
 
   today: Date;
   constructor(
+    private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
     private sharedServices: SharedServices, private formBuilder: FormBuilder,
     private providerNphiesSearchService: ProviderNphiesSearchService) {
@@ -78,11 +76,21 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (this.data.type) {
+      this.setTypes(this.data.type);      
+      this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+      this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
+    }
+
     if (this.data.item && this.data.item.itemCode) {
       this.FormItem.patchValue({
         type: this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: this.data.item.nonStandardCode,
+        display: this.data.item.display,
         isPackage: this.data.item.isPackage,
+        bodySite: this.bodySiteList.filter(x => x.value === this.data.item.type)[0],
+        subSite: this.subSiteList.filter(x => x.value === this.data.item.type)[0],
         quantity: this.data.item.quantity,
         unitPrice: this.data.item.unitPrice,
         discount: this.data.item.discount,
@@ -122,9 +130,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.factor.setValue(1);
     }
 
-    if (this.data.type) {
-      this.setTypes(this.data.type);
-    }
+
 
     if (this.data.supportingInfos) {
       this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
@@ -164,22 +170,28 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'professional':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' },
+          { value: 'medicationCode', name: 'Medication Codes' },
           { value: 'transporationService', name: 'Transportation SRCA' },
           { value: 'imagingService', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'oral':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' },
+          { value: 'medicationCode', name: 'Medication Codes' },
           { value: 'transporationService', name: 'Transportation SRCA' },
           { value: 'imagingService', name: 'Imaging' },
           { value: 'services', name: 'Services' },
@@ -187,11 +199,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'oralHealthOp', name: 'Oral Health OP' },
           { value: 'oralHealthIp', name: 'Oral Health IP' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'institutional':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' },
+          { value: 'medicationCode', name: 'Medication Codes' },
           { value: 'transporationService', name: 'Transportation SRCA' },
           { value: 'imagingService', name: 'Imaging' },
           { value: 'procedures', name: 'Procedures' },
@@ -199,12 +214,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           { value: 'laboratory', name: 'Laboratory' },
           { value: 'oralHealthIp', name: 'Oral Health IP' }
         ];
+        this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = true;
         break;
       case 'pharmacy':
         this.typeList = [
           { value: 'medicalDevices', name: 'Medical Devices' },
-          { value: 'medicationCode', name: 'MedicationCodes' }
+          { value: 'medicationCode', name: 'Medication Codes' }
         ];
+        this.FormItem.controls.careTeamSequence.clearValidators();
+        this.FormItem.controls.careTeamSequence.updateValueAndValidity();
+        this.IscareTeamSequenceRequired = false;
         break;
     }
   }
@@ -321,7 +342,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
           this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
@@ -345,11 +366,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const taxValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
           this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
         } else {
-          this.FormItem.controls.tax.setValue('');
+          this.FormItem.controls.tax.setValue(0);
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
           this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
@@ -403,11 +424,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
           const taxValue = ((parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value)) * parseFloat(this.FormItem.controls.taxPercent.value)) / 100;
           this.FormItem.controls.tax.setValue(parseFloat(taxValue.toFixed(2)));
         } else {
-          this.FormItem.controls.tax.setValue('');
+          this.FormItem.controls.tax.setValue(0);
         }
 
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && this.FormItem.controls.tax.value) {
+        if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && this.FormItem.controls.factor.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
           // tslint:disable-next-line:max-line-length
           const netValue = (parseInt(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + this.FormItem.controls.tax.value;
           this.FormItem.controls.net.setValue(parseFloat(netValue.toFixed(2)));
@@ -447,13 +468,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.itemCode = this.FormItem.controls.item.value.code;
       model.itemDescription = this.FormItem.controls.item.value.description;
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
+      model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
+      
+      model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
+      model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
+
+      model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
+      model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
       model.quantity = parseInt(this.FormItem.controls.quantity.value);
       model.unitPrice = parseFloat(this.FormItem.controls.unitPrice.value);
       model.discount = this.FormItem.controls.discount.value ? parseFloat(this.FormItem.controls.discount.value) : 0;
       model.factor = this.FormItem.controls.factor.value;
-      model.taxPercent = parseFloat(this.FormItem.controls.taxPercent.value);
+      model.taxPercent = this.FormItem.controls.taxPercent.value ? parseFloat(this.FormItem.controls.taxPercent.value) : 0;
       // tslint:disable-next-line:max-line-length
       model.patientSharePercent = this.FormItem.controls.patientSharePercent.value ? parseFloat(this.FormItem.controls.patientSharePercent.value) : 0;
       model.tax = this.FormItem.controls.tax.value;
@@ -473,6 +501,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       if (this.FormItem.controls.diagnosisSequence.value && this.FormItem.controls.diagnosisSequence.value.length > 0) {
         model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
       }
+
+      model.Details = [];
 
       this.dialogRef.close(model);
     }

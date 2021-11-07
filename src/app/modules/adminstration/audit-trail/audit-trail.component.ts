@@ -11,7 +11,7 @@ import { XmlViewDialogComponent } from 'src/app/components/dialogs/xml-view-dial
 @Component({
   selector: 'app-audit-trail',
   templateUrl: './audit-trail.component.html',
-  styleUrls: ['./audit-trail.component.css']
+  styles: []
 })
 export class AuditTrailComponent implements OnInit {
 
@@ -44,6 +44,11 @@ export class AuditTrailComponent implements OnInit {
       { value: 'LoginAuditLogType', text: 'Login' },
       { value: 'ClaimSubmissionRequestAuditLogType', text: 'ClaimSubmissionRequest' },
       { value: 'ClaimSubmissionResponseAuditLogType', text: 'ClaimSubmissionResponse' },
+      { value: 'StartOfBatchRequestAuditLogType', text: 'StartOfBatchRequest' },
+      { value: 'StartOfBatchResponseAuditLogType', text: 'StartOfBatchResponse' },
+      { value: 'NphiesClaimAuditLogType', text: 'NphiesClaimManipulation' },
+      { value: 'BeneficiaryManipulationAuditLogType', text: 'BeneficairyManipulation' },
+
     ];
     this.commenService.loadingChanged.next(true);
     this.auditTrailService.getAllLogs().subscribe(value => {
@@ -174,7 +179,7 @@ export class AuditTrailComponent implements OnInit {
 
   viewJSON(objectId: string, json: string) {
     this.dialog.open(JsonViewDialogComponent, {
-      panelClass: ['primary-dialog', 'dialog-lg'],
+      panelClass: ['primary-dialog', 'dialog-lg', 'json-dialog'],
       data: {
         title: `JSON of Claim [${objectId}]`,
         tabs: [

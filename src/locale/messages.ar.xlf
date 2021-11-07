@@ -326,6 +326,30 @@
 					</context>
 				</context-group>
 			</trans-unit>
+			<trans-unit id="gssreport" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					General Summary Statement  Report
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					اجمالي حسابات الشركات
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						95
+					</context>
+				</context-group>
+			</trans-unit>
 			<trans-unit id="medicalrejectionport" datatype="html">
 				<source>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
@@ -478,6 +502,63 @@
         </context>
     </context-group>
 </trans-unit>
+	<trans-unit id="rejectionBreakDownReport" datatype="html">
+    <source>
+        <x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+        <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+        <x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+      		  Rejection Breakdown Report
+        <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+        <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+    </source>
+    <target>
+        <x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+        <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+        <x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+        تقرير تفصيلي حسابات العملاء
+        <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+        <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+    </target>
+    <context-group purpose="location">
+        <context context-type="sourcefile">
+            src/app/components/sidebar/sidebar.component.html
+        </context>
+        <context context-type="linenumber">
+            138
+        </context>
+    </context-group>
+</trans-unit>
+
+<trans-unit id="rejectionComparisonReport" datatype="html">
+				<source>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					Rejection Comparison Report
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</source>
+				<target>
+					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />
+					<x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="TAG_IMG_1" ctype="image" equiv-text="&lt;img/&gt;" />
+					<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;" />
+					تقرير مقارنة الرفض
+					<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;" />
+					<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;" />
+				</target>
+				<context-group purpose="location">
+					<context context-type="sourcefile">
+						src/app/components/sidebar/sidebar.component.html
+					</context>
+					<context context-type="linenumber">
+						20
+					</context>
+				</context-group>
+			</trans-unit>
 			<trans-unit id="gmsummaryreport" datatype="html">
 				<source>
 					<x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;" />

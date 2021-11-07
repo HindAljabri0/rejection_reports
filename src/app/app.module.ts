@@ -93,6 +93,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { EditClaimComponent } from './pages/edit-claim/edit-claim.component';
 import { ClaimModule } from './modules/claim/claim.module';
 import { ConfirmationAlertDialogComponent } from './components/confirmation-alert-dialog/confirmation-alert-dialog.component';
+import { GeneralSummaryStatementReportComponent } from './pages/reports/general-summary-statement-report/general-summary-statement-report.component';
+
 
 
 @NgModule({
@@ -121,6 +123,7 @@ import { ConfirmationAlertDialogComponent } from './components/confirmation-aler
     DashboardComponent,
     SearchWithAdvanceComponent,
     PaymentReferenceReportComponent,
+    GeneralSummaryStatementReportComponent,
     PaymentClaimDetailDailogComponent,
     PaymentClaimSummaryReportComponent,
     SubmittedInvoicesComponent,
@@ -154,7 +157,8 @@ import { ConfirmationAlertDialogComponent } from './components/confirmation-aler
     ConfirmAdminDeleteDialogComponent,
     XmlViewDialogComponent,
     EditClaimComponent,
-    ConfirmationAlertDialogComponent
+    ConfirmationAlertDialogComponent,
+    
   ],
   imports: [
     AppRoutingModule,
