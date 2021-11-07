@@ -1,328 +1,246 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { formatDate } from '@angular/common';
+import { CreditReportQueryModel } from 'src/app/models/creditReportQuery';
+import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
+import { Observable } from 'rxjs';
+import { ClaimStatusSummaryReport } from 'src/app/models/claimStatusSummaryReport';
+import { StatementAccountSummary } from 'src/app/models/statementAccountModel';
+import { PayerStatementModel } from 'src/app/models/payerStatmentModel';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SearchService {
+export class ReportsService {
 
   constructor(private http: HttpClient) { }
 
-  getSummaries(
-    providerId: string,
-    statuses: string[],
-    fromDate?: string,
-    toDate?: string,
-    payerId?: string,
-    organizationId?: string,
-    batchId?: string,
-    uploadId?: string,
-    casetype?: string[],
-    claimRefNo?: string,
-    memberId?: string,
-    invoiceNo?: string,
-    patientFileNo?: string,
-    policyNo?: string) {
-    let requestURL = `/providers/${providerId}/claims?`;
-    if (fromDate != null && toDate != null && (payerId != null || organizationId != null)) {
-      requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + (payerId != null ? ('&payerId=' + payerId) : ('&organizationId=' + organizationId)) + '&';
-      if (casetype != null) {
-        requestURL += 'casetype=' + casetype.join(',') + '&';
-      }
+  getPaymentSummary(providerId: string, fromDate: string, toDate: string, payerId: string[], page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
     }
-    if (batchId != null) {
-      if (batchId.includes('-')) {
-        batchId = batchId.split('-')[1];
-      }
-      requestURL += `batchId=${batchId}&`;
+    if (pageSize == null) {
+      pageSize = 10;
     }
-    if (uploadId != null) {
-      requestURL += `uploadId=${uploadId}&`;
-    }
-
-    if (invoiceNo != null) {
-      requestURL += `invoiceNo=${invoiceNo}&`;
-    }
-
-    if (policyNo != null) {
-      requestURL += `policyNo=${policyNo}&`;
-    }
-    if (claimRefNo != null) {
-      requestURL += `claimRefNo=${claimRefNo}&`;
-    }
-    if (memberId != null) {
-      requestURL += `memberId=${memberId}&`;
-    }
-    if (patientFileNo != null) {
-      requestURL += `patientFileNo=${patientFileNo}&`;
-    }
-    requestURL += `status=${statuses.toString()}`;
+    const requestURL = `/providers/${providerId}/payments?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
-  formatDate(date: string) {
-    const splittedDate = date.split('-');
-    if (splittedDate[2].length == 4) {
-      const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
-      return formattedDate;
-    } else { return date; }
+
+  getPaymentClaimSummary(providerId: string, paymentReference: string, page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 10;
+    }
+    const requestURL = `/providers/${providerId}/payments/${paymentReference}?` +
+      `page=${page}&size=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
   }
 
-  getResults(
+  getSubmittedInvoicesSummary(providerId: string, fromDate: string, toDate: string, payerId: string[], page?: number, pageSize?: number) {
+    if (page == null) {
+      page = 0;
+    }
+    if (pageSize == null) {
+      pageSize = 10;
+    }
+    const requestURL = `/providers/${providerId}/submissions?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&page=${page}&size=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+  getSubmittedServicesOfClaim(providerId: string, payerId: string[], claimId: string) {
+    const requestURL = `/providers/${providerId}/submissions/${claimId}?` +
+      `payerId=${payerId}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+  getPaymentClaimDetail(providerId: string, claimId: number) {
+    const requestURL = `/providers/${providerId}/payments/${claimId}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+  getRejectionSummary(
     providerId: string,
-    fromDate?: string,
-    toDate?: string,
-    payerId?: string,
-    organizationId?: string,
-    statuses?: string[],
+    fromDate: string,
+    toDate: string,
+    payerId: string[],
+    criteria: string,
     page?: number,
-    pageSize?: number,
-    batchId?: string,
-    uploadId?: string,
-    casetype?: string[],
-    claimRefNo?: string,
-    memberId?: string,
-    invoiceNo?: string,
-    patientFileNo?: string,
-    policyNo?: string,
-    drname?: string,
-    nationalId?: string,
-    claimDate?: string,
-    netAmount?: string,
-    batchNo?: string) {
-    if (page == null) { page = 0; }
-    if (pageSize == null) { pageSize = 10; }
-    let requestURL = `/providers/${providerId}/claims/details?`;
-    if (fromDate != null && toDate != null && (payerId != null || organizationId != null)) {
-      requestURL += 'fromDate=' + this.formatDate(fromDate)
-        + '&toDate=' + this.formatDate(toDate) + (payerId != null ? ('&payerId=' + payerId) : ('&organizationId=' + organizationId)) + '&';
-      if (casetype != null) {
-        requestURL += 'casetype=' + casetype.join(',') + '&';
-      }
+    pageSize?: number) {
+    let queryType: string;
+    if (page == null) {
+      page = 0;
     }
-    if (batchId != null) {
-      if (batchId.includes('-')) {
-        batchId = batchId.split('-')[1];
-      }
-      requestURL += `batchId=${batchId}&`;
+    if (pageSize == null) {
+      pageSize = 10;
     }
-    if (uploadId != null) {
-      requestURL += `uploadId=${uploadId}&`;
+    if (criteria == '1') {
+      queryType = 'extraction';
+    } else if (criteria == '2') {
+      queryType = 'claim';
     }
-
-    if (invoiceNo != null) {
-      requestURL += `invoiceNo=${invoiceNo}&`;
-    }
-
-    if (policyNo != null) {
-      requestURL += `policyNo=${policyNo}&`;
-    }
-    if (claimRefNo != null) {
-      requestURL += `claimRefNo=${claimRefNo}&`;
-    }
-    if (memberId != null) {
-      requestURL += `memberId=${memberId}&`;
-    }
-    if (patientFileNo != null) {
-      requestURL += `patientFileNo=${patientFileNo}&`;
-    }
-    if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `drname=${drname}&`;
-    }
-    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-      requestURL += `nationalId=${nationalId}&`;
-    }
-    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
-      requestURL += `claimDate=${claimDate}&`;
-    }
-    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
-      requestURL += `netAmount=${netAmount}&`;
-    }
-    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
-      requestURL += `batchNo=${batchNo}&`;
-    }
-    requestURL += `status=${statuses.toString()}` + '&page=' + page + '&size=' + pageSize;
+    const requestURL = `/providers/${providerId}/rejections?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}&page=${page}&size=${pageSize}`;
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
 
-  downloadSummaries(
-    providerId: string,
-    statuses: string[],
-    fromDate?: string,
-    toDate?: string,
-    payerId?: string,
-    organizationId?: string,
-    batchId?: string,
-    uploadId?: string,
-    claimRefNo?: string,
-    memberId?: string,
-    invoiceNo?: string,
-    patientFileNo?: string,
-    policyNo?: string,
-    drname?: string,
-    nationalId?: string,
-    claimDate?: string,
-    netAmount?: string,
-    batchNo?: string) {
-    let requestURL = `/providers/${providerId}/claims?status=${statuses.toString()}`;
-    if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
-    } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
-      if (batchId.includes('-')) {
-        batchId = batchId.split('-')[1];
-      }
-      requestURL += `&batchId=${batchId}`;
-    }
-    if (uploadId != null) {
-      requestURL += `&uploadId=${uploadId}`;
-    }
-    if (claimRefNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&claimRefNo=${claimRefNo}`;
-    }
-    if (memberId != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&memberId=${memberId}`;
-    }
-    if (invoiceNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&invoiceNo=${invoiceNo}`;
-    }
-    if (patientFileNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&patientFileNo=${patientFileNo}`;
-    }
-    if (policyNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&policyNo=${policyNo}`;
-    }
-    if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `&drname=${drname}`;
-    }
-    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-      requestURL += `&nationalId=${nationalId}`;
-    }
-    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
-      requestURL += `&claimDate=${claimDate}`;
-    }
-    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
-      requestURL += `&netAmount=${netAmount}`;
-    }
-    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
-      requestURL += `&batchNo=${batchNo}`;
-    }
+  getClaimRejection(providerId: string, payerId: string[], claimId: string) {
+    const requestURL = `/providers/${providerId}/rejections/${claimId}?` +
+      `payerId=${payerId}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
+
+  downloadPaymentClaimSummaryAsCSV(providerId: string, paymentReference: string) {
+    const requestURL = `/providers/${providerId}/payments/${paymentReference}`;
     const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
-  downloadExcelSummaries(
-    providerId: string,
-    statuses: string[],
-    fromDate?: string,
-    toDate?: string,
-    payerId?: string,
-    organizationId?: string,
-    batchId?: string,
-    uploadId?: string,
-    claimRefNo?: string,
-    memberId?: string,
-    invoiceNo?: string,
-    patientFileNo?: string,
-    policyNo?: string,
-    drname?: string,
-    nationalId?: string,
-    claimDate?: string,
-    netAmount?: string,
-    batchNo?: string) {
-    let requestURL = `/providers/${providerId}/claims/excel?status=${statuses.toString()}`;
-    if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
-    } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
-      if (batchId.includes('-')) {
-        batchId = batchId.split('-')[1];
+
+  downloadSubmittedInvoiceSummaryAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[]) {
+    const requestURL = `/providers/${providerId}/submissions?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
+    return this.http.request(request);
+  }
+
+  downloadRejectionAsCSV(providerId: string, fromDate: string, toDate: string, payerId: string[], criteria: string) {
+    let queryType: string;
+    if (criteria == '1') {
+      queryType = 'extraction';
+    } else if (criteria == '2') {
+      queryType = 'claim';
+    }
+    const requestURL = `/providers/${providerId}/rejections?` +
+      `fromDate=${fromDate}&toDate=${toDate}&payerId=${payerId}&queryType=${queryType}`;
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', {
+      responseType: 'text',
+      reportProgress: true
+    });
+    return this.http.request(request);
+  }
+
+  saveBupaRejectionReport(providerId: string, data: CreditReportQueryModel) {
+    const body = { ...data };
+    Object.keys(body).some(key => {
+      if (body[key].toString().includes('%')) {
+        body[key] = +body[key].replace(/%/g, '');
       }
-      requestURL += `&batchId=${batchId}`;
-    }
-    if (uploadId != null) {
-      requestURL += `&uploadId=${uploadId}`;
-    }
-    if (claimRefNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&claimRefNo=${claimRefNo}`;
-    }
-    if (memberId != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&memberId=${memberId}`;
-    }
-    if (invoiceNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&invoiceNo=${invoiceNo}`;
-    }
-    if (patientFileNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&patientFileNo=${patientFileNo}`;
-    }
-    if (policyNo != null && (uploadId === null || uploadId === undefined)) {
-      requestURL += `&policyNo=${policyNo}`;
-    }
-    if (drname != null && drname !== '' && drname !== undefined) {
-      requestURL += `&drname=${drname}`;
-    }
-    if (nationalId != null && nationalId !== '' && nationalId !== undefined) {
-      requestURL += `&nationalId=${nationalId}`;
-    }
-    if (claimDate != null && claimDate !== '' && claimDate !== undefined) {
-      requestURL += `&claimDate=${claimDate}`;
-    }
-    if (netAmount != null && netAmount !== '' && netAmount !== undefined) {
-      requestURL += `&netAmount=${netAmount}`;
-    }
-    if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
-      requestURL += `&batchNo=${batchNo}`;
-    }
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'blob', reportProgress: true });
+      if (body[key] === '') {
+        body[key] = 0;
+      }
+    });
+    const requestURL = `/providers/${providerId}/report/rejected`;
+    const request = new HttpRequest('POST', environment.creditReportService + requestURL, body, { responseType: 'text' });
     return this.http.request(request);
   }
 
-  getClaim(providerId: string, claimId: string) {
-    const requestURL = `/providers/${providerId}/claims/${claimId}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+  generateCleanClaimProgressReport(providerId: string, data: generateCleanClaimProgressReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/charts`;
+    const request = new HttpRequest('POST', environment.uploaderHost + requestURL, data, { responseType: 'text' });
     return this.http.request(request);
   }
+  getClaimStatusSummary(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/status-summary`;
 
-
-  getClaimsSummary(providerId: string, payerId: string, fromDate: string, toDate: string, statuses: string[]) {
-    const requestURL = `/providers/${providerId}/payerId/${payerId}/ClaimsSummary?fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&statuses=${statuses.toString()}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
-    return this.http.request(request);
-  }
-
-  getTopFiveRejections(rejectionBy: string, providerId: string, payerId: string, fromDate: string, toDate: string) {
-    const requestURL = `/providers/${providerId}/top/${rejectionBy.toUpperCase()}?payerId=${payerId}&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
-    return this.http.request(request);
-  }
-
-
-  getUploadSummaries(providerId: string, page?: number, size?: number) {
-    if (page == null) {
-      page = 0;
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
     }
-    if (size == null) {
-      size = 10;
-    }
-    const requestUrl = `/providers/${providerId}/uploads?page=${page}&size=${size}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
 
-  getGssData(providerId: string, payer: string, fromDate: string, toDate: string,page?: number, size?: number) {
-  
-    const requestUrl = `/providers/${providerId}/gss?payer=${payer}&fromDate=${fromDate}&toDate=${toDate}&page=${page}&pageSize=${size}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl);
+  downalodClaimStatusSummaryCsv(providerId: string, data: ClaimStatusSummaryReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/status-summary?payerId=${data.payerId}&fromDate=${data.fromDate}&toDate=${data.toDate}&summaryCriteria=${data.summaryCriteria}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined) { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    // { responseType: 'text', params: searchparams }
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
+      { responseType: 'arraybuffer', reportProgress: true });
     return this.http.request(request);
   }
-  downloadGssReport(providerId: string, payer: string[], fromDate: string, toDate: string) {
-    const requestUrl = `/providers/${providerId}/gss/pdf?payer=${payer.join(',')}&fromDate=${fromDate}&toDate=${toDate}`;
-    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/pdf');
-    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl,'', 
+  addPayerSOAData(providerId: any, fileUpload: File, data: any) {
+    const formdata: FormData = new FormData();
+    for (const key in data) {
+      if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'file') {
+        formdata.append(key, data[key]);
+      }
+    }
+    formdata.append('file', fileUpload);
+    const requestURL = `/providers/${providerId}/statement`;
+
+    const req = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+    return this.http.request(req);
+  }
+  getPayerSOAData(providerId: string, data: StatementAccountSummary): Observable<any> {
+    const requestURL = `/providers/${providerId}/statement/fetch?` +
+      `fromDate=${data.fromDate}&toDate=${data.toDate}&searchCriteria=${data.searchCriteria}&page=${data.page}&size=${data.size}`;
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+  addPayementSOAData(providerId: any, data: any) {
+    const requestURL = `/providers/${providerId}/payment/save`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest('POST', environment.payerPaymentContractService + requestURL, data, { headers: headers });
+    return this.http.request(request);
+  }
+  getPaymentStatmentSOA(providerId: string, data: PayerStatementModel): Observable<any> {
+    const requestURL = `/providers/${providerId}/payment`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'totalPages') { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.payerPaymentContractService + requestURL, { responseType: 'text', params: searchparams });
+    return this.http.request(request);
+  }
+  getTechinicalRejection(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string, page: number, pageSize: number): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejections/technical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}&page=${page}&size=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+  downloadTechnicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejections/technical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
       { responseType: 'blob', reportProgress: true, headers: headers });
     return this.http.request(request);
   }
-  
+  getMedicalRejection(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string, page: number, pageSize: number): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejections/medical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}&page=${page}&size=${pageSize}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+  downloadMedicalRejectionReport(providerId: string, fromDate: string, toDate: string, payerId: string[], queryType: string): Observable<any> {
+    const requestURL = `/providers/${providerId}/rejections/medical?payerId=${payerId}&fromDate=${fromDate}&toDate=${toDate}&queryType=${queryType}`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/ms-excel');
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '',
+      { responseType: 'blob', reportProgress: true, headers: headers });
+    return this.http.request(request);
+  }
+
 }
