@@ -42,10 +42,12 @@ export class AgingReportComponent implements OnInit {
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
   public barChartOptions: ChartOptions = {
+    
     responsive: true,
     scales: {
       xAxes: [{
         gridLines: {
+          
           display: false
         },
         ticks: {
@@ -55,6 +57,7 @@ export class AgingReportComponent implements OnInit {
       }],
       yAxes: [{
         ticks: {
+          
           fontFamily: this.chartFontFamily,
           fontColor: this.chartFontColor,
           beginAtZero: true
@@ -62,6 +65,7 @@ export class AgingReportComponent implements OnInit {
       }],
     },
     legend: {
+      
       display: false
     },
     tooltips: {
@@ -69,6 +73,7 @@ export class AgingReportComponent implements OnInit {
       titleFontFamily: this.chartFontFamily,
       footerFontFamily: this.chartFontFamily
     },
+    
   };
   public barChartLabels: Label[] = ['1-30', '31-60', '61-90', '91-120', '121-150', '151-180', '181-365', '> 365'];
   public barChartType: ChartType = 'bar';
@@ -166,9 +171,11 @@ export class AgingReportComponent implements OnInit {
             data: [Number(((this.data.aged1to30 / this.data.sum) * 100).toFixed()), Number(((this.data.aged31to60 / this.data.sum) * 100).toFixed()), Number(((this.data.aged61to90 / this.data.sum) * 100).toFixed()), Number(((this.data.aged91to120 / this.data.sum) * 100).toFixed()), Number(((this.data.aged121to150 / this.data.sum) * 100).toFixed()),
             Number(((this.data.aged151to180 / this.data.sum) * 100).toFixed()), Number(((this.data.aged181to365 / this.data.sum) * 100).toFixed()), Number(((this.data.aged365 / this.data.sum) * 100).toFixed())],
             backgroundColor: '#3060AA',
+            label:'%',    
+
             hoverBackgroundColor: '#3060AA',
             datalabels: {
-              display: false
+              display: true
             }
           },
         ];
