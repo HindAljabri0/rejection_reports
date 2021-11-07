@@ -1,0 +1,152 @@
+<div class="animate__animated animate__faster animate__fadeIn tawuniya-report-details">
+    <div class="block-header has-border">
+        <p>Rejection Comparison Report</p>
+    </div>
+    <form #revenuBreakingReportForm='ngForm' (ngSubmit)=null>
+        <div class="block-filter-panel has-border">
+            <div class="row small-gutter align-items-end">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="control-label">Payer</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select [(ngModel)]="selectedPayerId" #payerId name="payerId"
+                                (selectionChange)="onPayerChanged()" required>
+                                <mat-option value="All">All</mat-option>
+                                <mat-option *ngFor="let payer of payersList" [value]="payer.id+''">{{payer.name}}
+                                    ({{payer.arName}})</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group" [matTooltip]="null"
+                      >
+                        <label class="control-label">Date From</label>
+                        <div class="date-picker">
+                            <!-- [matDatepicker]="fromDate"  -->
+                            <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig"
+                                (bsValueChange)="dateValidation($event)" autocomplete="off"
+                                (onShown)="onOpenCalendar($event)" placeholder="Select from month"
+                                [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group" [matTooltip]="toDateError" [ngClass]="{'has-error' : toDateError!=null}">
+                        <label class="control-label">Date To</label>
+                        <div class="date-picker">
+                            <input class="form-control date-picker" placeholder="Select to month" bsDatepicker
+                                autocomplete="off" [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
+                                [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required
+                                [minDate]="minDate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-auto">
+                    <div class="form-group">
+                        <button mat-flat-button color="primary" type="submit">Generate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="progress-report-wrapper">
+        <div class="left-block">
+            <ul class="list">
+                <li class="title">Payer</li>
+                <li>
+                    <button type="button"
+                        (click)="selectedPayerId=='All'? null:null"
+                        matRipple
+                        [ngClass]="{'active': selectedCategory== 'Payers' && selectedPayerId == 'All'}">{{selectedPayerName}}</button>
+                </li>
+                <li class="title">By Category</li>
+                <ng-container>
+
+                    <li>
+                        <button type="button" matRipple
+                            (click)="null"
+                            [class.active]="selectedCategory=='ServiceCode'">Service</button>
+                    </li>
+                    <li>
+                        <button type="button" [class.active]="selectedCategory=='Department'"
+                            (click)=null
+                            matRipple>Department</button>
+                    </li>
+                    <li>
+                        <button type="button" (click)=null
+                            [class.active]="selectedCategory=='Doctor'" matRipple>Doctor</button>
+                    </li>
+                    <li>
+                        <button type="button" (click)=null
+                            [class.active]="selectedCategory=='ServiceType'" matRipple>Service
+                            Type</button>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+        <div class="right-block"  *ngIf="check==true">
+            <div class="custom-legend-wrapper">
+                <div class="chart-wrapper">
+                    <canvas >
+                    </canvas>
+                </div>
+                <div class="chart-wrapper" >
+                    <app-empty-state message="No records found" icon="ic-empty-chart.svg">
+                    </app-empty-state>
+                </div>
+                <ul class="custom-legend" [class.child-active]="selectedDoctor!=-1">
+                    <li 
+                        >
+                        <ng-container >
+                            <button type="button" (click)="null" [title]="null">
+                                <span class="color"
+                                  ></span>
+                                <span class="text">
+                                    <ng-container></ng-container>  
+                                    <span class="text-muted">Amount -
+                                      </span>
+                                </span>
+                            </button>
+                            <ul>
+                                <li class="list-title" >
+                                    No services found for this DR.
+                                </li>
+                                <li class="list-title" >
+                                  
+                                </li>
+                                <li >
+                                    <span ></span>
+                                    <span class="text">
+                                       <ng-container></ng-container>
+                                          
+                                        <span class="text-muted">Amount -
+                                           </span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </ng-container>
+                        <ng-container
+                            >
+                            <span class="color" ></span>
+                            <span class="text">
+                             <ng-container> </ng-container>
+                                <span class="text-muted"> SR
+                                   </span>
+                            </span>
+                        </ng-container>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right-block"  *ngIf="check==false">
+            <app-empty-state  icon="ic-empty-chart.svg">
+            </app-empty-state>
+        </div>
+    </div>
+    <!-- <div class="block-footer sticky-bottom">
+        <div class="right-block btn-list">
+            <button color="primary" mat-flat-button>Print</button>
+        </div>
+    </div> -->
+</div>
