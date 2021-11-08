@@ -137,6 +137,12 @@ export class SharedDataService {
     { value: 'TAS', name: 'Transaction already submitted' }
   ];
 
+  payeeTypeList = [
+    { value: 'subscriber', name: 'Subscriber' },
+    { value: 'provider', name: 'Provider' },
+    { value: 'other', name: 'Other' },
+  ];
+
   constructor(private adminService: AdminService) { }
 
   getCodeName(category) {
@@ -342,7 +348,7 @@ export class SharedDataService {
 
   getSubSite(type: string) {
     let subSite: any = [];
-    if (subSite === 'oral') {
+    if (type === 'oral') {
       subSite = [
         { value: 'M', name: 'Mesial' },
         { value: 'O', name: 'Occlusal' },

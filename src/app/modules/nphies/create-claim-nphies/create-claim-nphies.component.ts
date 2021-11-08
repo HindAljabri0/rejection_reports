@@ -43,6 +43,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanId: ['', Validators.required],
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
+    payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
     accidentType: [''],
@@ -57,6 +58,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   });
 
   typeList = this.sharedDataService.claimTypeList;
+  payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
   subTypeList = [];
   accidentTypeList = this.sharedDataService.accidentTypeList;
@@ -209,7 +211,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          //TODO: causing build issues
+          // TODO: causing build issues
           // if (name) {
           //   this.selectBeneficiary(this.selectedBeneficiary);
           // }
@@ -560,6 +562,9 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.value = result.value;
               x.reason = result.reason;
               x.attachment = result.attachment;
+              x.attachmentName = result.attachmentName;
+              x.attachmentType = result.attachmentType;
+              x.attachmentDate = result.attachmentDate;
               x.codeName = result.codeName;
               x.reasonName = result.reasonName;
               x.fromDateStr = result.fromDateStr;
@@ -744,6 +749,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
       preAuthorizationModel.payee = this.FormNphiesClaim.controls.payee.value;
+      preAuthorizationModel.payeeType = this.FormNphiesClaim.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
       preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
@@ -758,6 +764,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.value = x.value;
         model.reason = x.reason;
         model.attachment = x.byteArray;
+        model.attachmentName = x.attachmentName;
+        model.attachmentType = x.attachmentType;
+        model.attachmentDate = x.attachmentDate;
         return model;
       });
 

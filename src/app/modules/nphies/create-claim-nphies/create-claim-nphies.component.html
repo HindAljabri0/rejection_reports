@@ -141,6 +141,21 @@
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
+                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
+                    <label class="control-label">Payee Type<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                      <mat-select formControlName="payee">
+                        <mat-option value="">Select Payee Type</mat-option>
+                        <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
+                      <span class="error-text">Please select Payee Type</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 col-xxl-3">
                   <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
                     <label class="control-label">Payee<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
