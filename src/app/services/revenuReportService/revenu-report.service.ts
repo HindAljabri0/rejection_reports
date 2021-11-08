@@ -79,6 +79,13 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
+  generateRejectiontReportComparison(
+    providerId: string, payerId: string, fromDate: string, toDate: string,
+    isAvgCost:string): Observable<any> {
+    const requestURL = `/providers/${providerId}/payers/${payerId}?fromDate=${fromDate}&toDate=${toDate}&isAvgCost=${isAvgCost}`;
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+    return this.http.request(request);
+  }
 
   getServicesPerDoctor(payerId: string, providerId: string, data: any) {
     const requestURL = `/providers/${providerId}/reports/rejection-breakdown/payers/${payerId}/doctor-service`;
