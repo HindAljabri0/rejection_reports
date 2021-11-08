@@ -168,7 +168,7 @@ export class SearchService {
     claimDate?: string,
     netAmount?: string,
     batchNo?: string) {
-    let requestURL = `/providers/${providerId}/claims/download?status=${statuses.toString()}`;
+    let requestURL = `/providers/${providerId}/claims?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
     } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
@@ -210,7 +210,7 @@ export class SearchService {
     if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
       requestURL += `&batchNo=${batchNo}`;
     }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'text', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -233,7 +233,7 @@ export class SearchService {
     claimDate?: string,
     netAmount?: string,
     batchNo?: string) {
-    let requestURL = `/providers/${providerId}/claims/download/excel?status=${statuses.toString()}`;
+    let requestURL = `/providers/${providerId}/claims/excel?status=${statuses.toString()}`;
     if (fromDate != null && toDate != null && (payerId != null || organizationId != null) && (uploadId === null || uploadId === undefined)) {
       requestURL += `&fromDate=${this.formatDate(fromDate)}&toDate=${this.formatDate(toDate)}&payerId=${payerId}&organizationId=${organizationId}`;
     } else if (batchId != null && (uploadId === null || uploadId === undefined)) {
@@ -275,7 +275,7 @@ export class SearchService {
     if (batchNo != null && batchNo !== '' && batchNo !== undefined) {
       requestURL += `&batchNo=${batchNo}`;
     }
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, '', { responseType: 'blob', reportProgress: true });
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestURL, '', { responseType: 'blob', reportProgress: true });
     return this.http.request(request);
   }
 
@@ -318,9 +318,9 @@ export class SearchService {
     return this.http.request(request);
   }
   downloadGssReport(providerId: string, payer: string[], fromDate: string, toDate: string) {
-    const requestUrl = `/providers/${providerId}/gss/download/pdf?payer=${payer.join(',')}&fromDate=${fromDate}&toDate=${toDate}`;
+    const requestUrl = `/providers/${providerId}/gss/pdf?payer=${payer.join(',')}&fromDate=${fromDate}&toDate=${toDate}`;
     const headers: HttpHeaders = new HttpHeaders('Content-Type: application/pdf');
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestUrl,'', 
+    const request = new HttpRequest('GET', environment.claimsDownloadsService + requestUrl,'', 
       { responseType: 'blob', reportProgress: true, headers: headers });
     return this.http.request(request);
   }
