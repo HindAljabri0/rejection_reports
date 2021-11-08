@@ -34,6 +34,7 @@ export interface SearchCriteria {
     toDate?: string;
     batchId?: string;
     uploadId?: string;
+    nationalId?:string;
 }
 
 

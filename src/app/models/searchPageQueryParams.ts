@@ -19,6 +19,7 @@ export class SearchPageQueryParams {
     invoiceNo?: string;
     patientFileNo?: string;
     policyNo?: string;
+    nationalId?: string;
     filter_claimRefNo?: string;
     filter_memberId?: string;
     filter_patientFileNo?: string;
@@ -55,6 +56,7 @@ export class SearchPageQueryParams {
         pageParams.invoiceNo = params.invoiceNo;
         pageParams.patientFileNo = params.patientFileNo;
         pageParams.policyNo = params.policyNo;
+        pageParams.nationalId=params.nationalId;
         pageParams.editMode = params.editMode || location.href.includes('#edit');
 
         pageParams.filter_drName = params.filter_drName;
@@ -88,7 +90,7 @@ export class SearchPageQueryParams {
         criteria.batchNo = this.filter_batchNum;
         criteria.claimDate = this.filter_claimDate;
         criteria.drname = this.filter_drName;
-        criteria.nationalId = this.filter_nationalId;
+        criteria.nationalId = this.filter_nationalId||this.nationalId;
         criteria.netAmount = this.filter_netAmount;
 
         criteria.statuses = statuses;
