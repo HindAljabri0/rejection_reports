@@ -22,6 +22,7 @@ import { CommunicationRequest } from 'src/app/models/communication-request';
 import { ProcessedTransactionsComponent } from './processed-transactions/processed-transactions.component';
 import { CommunicationRequestsComponent } from './communication-requests/communication-requests.component';
 import { CancelReasonModalComponent } from './cancel-reason-modal/cancel-reason-modal.component';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 
 @Component({
   selector: 'app-preauthorization-transactions',
@@ -74,6 +75,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     private datePipe: DatePipe,
     private routeActive: ActivatedRoute,
     private dialog: MatDialog,
+    private dialogService: DialogService,
     private beneficiaryService: ProvidersBeneficiariesService,
     private providerNphiesSearchService: ProviderNphiesSearchService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService
@@ -424,6 +426,70 @@ export class PreauthorizationTransactionsComponent implements OnInit {
           this.showMessage('Error', error.error.message, 'alert', true, 'OK');
         }
         this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  checkStatus(requestId: number, responseId: number) {    
+    this.sharedServices.loadingChanged.next(true);
+    const model: any = {};
+    model.approvalRequestId = requestId;
+    model.approvalResponseId = responseId;
+    this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
+            const errors: any[] = [];
+
+            if (body.disposition) {
+              errors.push(body.disposition);
+            }
+
+            if (body.errors && body.errors.length > 0) {
+              body.errors.forEach(err => {
+                err.coding.forEach(codex => {
+                  errors.push(codex.code + ' : ' + codex.display);
+                });
+              });
+            }
+            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+
+          } else {
+            this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+            this.onSubmit();
+          }
+        }
+        this.sharedServices.loadingChanged.next(false);
+      }
+    }, error => {
+      this.sharedServices.loadingChanged.next(false);
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 400) {
+          this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);
+        } else if (error.status === 404) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        } else if (error.status === 500) {
+          this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK');
+        } else if (error.status === 503) {
+          const errors: any[] = [];
+          if (error.error.errors) {
+            error.error.errors.forEach(x => {
+              errors.push(x);
+            });
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+          } else {
+            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+          }
+        }
       }
     });
   }

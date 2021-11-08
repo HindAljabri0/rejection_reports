@@ -27,6 +27,9 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     value: [''],
     code: [''],
     attachment: [''],
+    attachmentName: [''],
+    attachmentType: [''],
+    attachmentDate: [''],
     timingDate: [''],
     timingPeriodFrom: [''],
     timingPeriodTo: [''],
@@ -86,6 +89,10 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
     this.currentFileUpload = event.target.files[0];
     this.currentFileUploadName = this.currentFileUpload.name;
     this.FormSupportingInfo.controls.attachment.setValue(this.currentFileUploadName);
+    this.FormSupportingInfo.controls.attachmentName.setValue(this.currentFileUpload.name);
+    this.FormSupportingInfo.controls.attachmentType.setValue(this.currentFileUpload.type);
+    this.FormSupportingInfo.controls.attachmentDate.setValue(new Date());
+
     this.sizeInMB = this.sharedServices.formatBytes(this.currentFileUpload.size);
     if (!this.checkfile()) {
       this.currentFileUpload = undefined;
@@ -408,6 +415,9 @@ export class AddEditSupportingInfoModalComponent implements OnInit {
       if (this.FormSupportingInfo.controls.attachment.value) {
         model.attachment = this.FormSupportingInfo.controls.attachment.value;
         model.byteArray = this.fileByteArray;
+        model.attachmentName = this.FormSupportingInfo.controls.attachmentName.value;
+        model.attachmentType = this.FormSupportingInfo.controls.attachmentType.value;
+        model.attachmentDate = this.datePipe.transform(this.FormSupportingInfo.controls.attachmentDate.value, 'dd-MM-yyyy');
       } else {
         model.attachment = null;
         model.byteArray = null;

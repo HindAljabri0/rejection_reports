@@ -78,6 +78,9 @@ export class SidebarComponent implements OnInit {
     return this.sharedServices.hasRcmPrivilege;
 
   }
+  get hasGSSPrivilege(){
+    return this.sharedServices.hasGSSPrivilege;
+  }
 
   get NewAuthTransactions() {
     // if (this.sharedServices.unReadProcessedCount > 0 || this.sharedServices.unReadComunicationRequestCount > 0) {

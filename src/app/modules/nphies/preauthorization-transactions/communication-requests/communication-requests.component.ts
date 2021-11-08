@@ -97,7 +97,10 @@ export class CommunicationRequestsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId = null, communicationId = null,  notificationId = null) {
+  openDetailsDialog(requestId, communicationId,  notificationId) {
+    if (this.communicationRequests.filter(x => x.notificationId === notificationId)[0]) {
+      this.communicationRequests.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
+    }
     this.openDetailsDialogEvent.emit({'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId});
   }
 
