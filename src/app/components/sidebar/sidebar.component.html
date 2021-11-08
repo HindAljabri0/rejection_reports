@@ -104,7 +104,7 @@
                                 <span class="text">Claim Status Summary Report</span>
                             </a>
                         </li>
-                        <li i18n="@@gssreport">
+                        <li i18n="@@gssreport" *ngIf='hasGSSPrivilege'>
                             <a routerLink="/{{providerId}}/reports/general-summary-statement-report" #GSSReport="routerLinkActive" routerLinkActive="is-active">
                                 <span class="text">General Summary Statement  Report</span>
                             </a>

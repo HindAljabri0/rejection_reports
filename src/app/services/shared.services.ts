@@ -177,6 +177,17 @@ export class SharedServices {
     }
   }
 
+  get hasGSSPrivilege() {
+    const providerId = localStorage.getItem('provider_id');
+    try {
+      const userPrivileges = localStorage.getItem(`${providerId}101`);
+      // tslint:disable-next-line:max-line-length
+      return userPrivileges != null && (userPrivileges.includes('|24.0') || userPrivileges.startsWith('24.0') || userPrivileges.includes('|24.3') || userPrivileges.startsWith('24.3'));
+    } catch (error) {
+      return false;
+    }
+  }
+
   get hasAllNphiesPrivilege() {
     const providerId = localStorage.getItem('provider_id');
     try {
