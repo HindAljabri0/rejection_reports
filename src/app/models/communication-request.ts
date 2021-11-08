@@ -7,6 +7,7 @@ export class CommunicationRequest extends Paginateable {
   reasonCode: string;
   payerNphiesId: number;
   notificationId: number;
+  notificationStatus: string;
 
   constructor(body: {}) {
     super(body);
@@ -16,5 +17,6 @@ export class CommunicationRequest extends Paginateable {
     this.reasonCode = body['reasonCode'];
     this.payerNphiesId = body['payerNphiesId'];
     this.notificationId = body['notificationId'];
+    this.notificationStatus = body['notificationStatus'];
   }
 }

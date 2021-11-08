@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let transaction of processedTransactions">
+        <tr *ngFor="let transaction of processedTransactions" [ngClass]="transaction.notificationStatus === 'read' ? 'read-notification': 'unread-notification'">
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.memberCardId}}</td>
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.requestId}}</td>
           <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId)">{{transaction.transactionDate | date: 'dd-MM-yyyy'}}</td>

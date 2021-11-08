@@ -107,7 +107,7 @@
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
-                    <button mat-icon-button matTooltip="Check Status" class="text-primary">
+                    <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.requestId, transaction.responseId)">
                       <mat-icon>refresh</mat-icon>
                     </button>
                     <span class="pl-1">Processing Payment</span>
