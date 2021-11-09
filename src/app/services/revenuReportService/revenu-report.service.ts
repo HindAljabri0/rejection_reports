@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
+
 import { Observable } from 'rxjs';
 import { HttpRequest, HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { RevenuComparativeReport } from 'src/app/models/revenuComparativeReport';
-import { RejectionComparisonReport} from 'src/app/models/RejectionComparisonReport';
+import { RejectionComparisonReport} from 'src/app/models/rejectionComparisonReport';
 
 @Injectable({
   providedIn: 'root'
