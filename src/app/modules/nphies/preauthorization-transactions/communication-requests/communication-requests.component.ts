@@ -10,7 +10,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 @Component({
   selector: 'app-communication-requests',
   templateUrl: './communication-requests.component.html',
-  styleUrls: ['./communication-requests.component.css']
+  styles: []
 })
 export class CommunicationRequestsComponent implements OnInit {
 
@@ -97,11 +97,11 @@ export class CommunicationRequestsComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  openDetailsDialog(requestId, communicationId,  notificationId) {
+  openDetailsDialog(requestId, communicationId, notificationId) {
     if (this.communicationRequests.filter(x => x.notificationId === notificationId)[0]) {
       this.communicationRequests.filter(x => x.notificationId === notificationId)[0].notificationStatus = 'read';
     }
-    this.openDetailsDialogEvent.emit({'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId});
+    this.openDetailsDialogEvent.emit({ 'requestId': requestId, 'communicationId': communicationId, 'notificationId': notificationId });
   }
 
   get paginatorLength() {

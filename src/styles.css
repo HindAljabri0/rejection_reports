@@ -1430,11 +1430,3 @@ table.inline-label-table{width: 100%;}
     letter-spacing: 0px;
     color: #B1B1B1;
 }
-
-.read-notification{
-  background-color: #edf4ff !important;
-}
-
-.unread-notification{
-  background-color: #fff !important;
-}
