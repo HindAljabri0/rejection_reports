@@ -10,7 +10,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 @Component({
   selector: 'app-processed-transactions',
   templateUrl: './processed-transactions.component.html',
-  styleUrls: ['./processed-transactions.component.css']
+  styles: []
 })
 export class ProcessedTransactionsComponent implements OnInit {
 
