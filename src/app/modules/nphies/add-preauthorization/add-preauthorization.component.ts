@@ -374,6 +374,7 @@ export class AddPreauthorizationComponent implements OnInit {
             z.diagnosisSequence.splice(z.diagnosisSequence.indexOf(sequence), 1);
           });
           this.Diagnosises.splice(index, 1);
+          this.updateSequenceNames();
           this.checkDiagnosisValidation();
         }
       });
@@ -426,13 +427,77 @@ export class AddPreauthorizationComponent implements OnInit {
               x.patientShare = result.patientShare;
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
+              x.startDateStr = result.startDateStr;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              } else {
+                x.supportingInfoNames = '';
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              } else {
+                x.careTeamNames = '';
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              } else {
+                x.diagnosisNames = '';
+              }
+
+              if (x.isPackage === 2) {
+                x.Details = [];
+              }
+
             }
           });
         } else {
           this.Items.push(result);
+          this.Items.filter((x, i) => {
+            if (i === this.Items.length - 1) {
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              }
+            }
+          });
           this.checkItemValidation();
         }
       }
@@ -559,6 +624,7 @@ export class AddPreauthorizationComponent implements OnInit {
             z.supportingInfoSequence.splice(z.supportingInfoSequence.indexOf(sequence), 1);
           });
           this.SupportingInfo.splice(index, 1);
+          this.updateSequenceNames();
         }
       });
     } else {
@@ -574,19 +640,7 @@ export class AddPreauthorizationComponent implements OnInit {
   //   }
   // }
 
-  get IsCareTeamRequired() {
-    if (this.isSubmitted) {
-      if (!this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy')) {
-        if (this.CareTeams.length === 0) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } else {
-      return false;
-    }
-  }
+
 
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
@@ -620,9 +674,44 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
+  updateSequenceNames() {
+    this.Items.forEach(x => {
+      if (x.supportingInfoSequence) {
+        x.supportingInfoNames = '';
+        x.supportingInfoSequence.forEach(s => {
+          x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+        });
+        x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+      } else {
+        x.supportingInfoNames = '';
+      }
+
+      if (x.careTeamSequence) {
+        x.careTeamNames = '';
+        x.careTeamSequence.forEach(s => {
+          x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+        });
+        x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+      } else {
+        x.careTeamNames = '';
+      }
+
+      if (x.diagnosisSequence) {
+        x.diagnosisNames = '';
+        x.diagnosisSequence.forEach(s => {
+          x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+        });
+        x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+      } else {
+        x.diagnosisNames = '';
+      }
+    });
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     let hasError = false;
+    // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
@@ -633,7 +722,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = false;
     }
-
+    // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
       this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
@@ -707,6 +796,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
       this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
       this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+      // tslint:disable-next-line:max-line-length
       this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       const preAuthorizationModel: any = {};
@@ -795,6 +885,7 @@ export class AddPreauthorizationComponent implements OnInit {
       }
 
       this.model.items = this.Items.map(x => {
+        // tslint:disable-next-line:max-line-length
         if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
           const model: any = {};
           model.sequence = x.sequence;
@@ -993,6 +1084,21 @@ export class AddPreauthorizationComponent implements OnInit {
     this.Items = [];
     this.isSubmitted = false;
     this.IsJSONPosted = false;
+  }
+
+  get IsCareTeamRequired() {
+    if (this.isSubmitted) {
+      // tslint:disable-next-line:max-line-length
+      if (!this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy')) {
+        if (this.CareTeams.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return false;
+    }
   }
 
 }
