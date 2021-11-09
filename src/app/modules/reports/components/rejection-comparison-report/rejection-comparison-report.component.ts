@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
-import { RejectionComparisonReport } from 'src/app/models/RejectionComparisonReport';
+import { RejectionComparisonReport } from 'src/app/models/rejectionComparisonReport';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service'
 
 import { SharedServices } from 'src/app/services/shared.services';
