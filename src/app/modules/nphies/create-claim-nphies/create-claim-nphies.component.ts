@@ -91,6 +91,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   claimId: number;
   uploadId: number;
   pageMode = 'CREATE';
+  currentOpenItem: number = null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
