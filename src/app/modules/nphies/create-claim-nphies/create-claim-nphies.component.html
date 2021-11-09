@@ -145,7 +145,7 @@
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
                     <label class="control-label">Payee Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                      <mat-select formControlName="payee">
+                      <mat-select formControlName="payeeType">
                         <mat-option value="">Select Payee Type</mat-option>
                         <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
                         </mat-option>
