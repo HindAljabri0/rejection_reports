@@ -68,6 +68,10 @@ export class RouteCanActiveService implements CanActivate, CanLoad {
         if (policyNo != null && policyNo != '') {
           return true;
         }
+        const nationalId = route.queryParamMap.get('nationalId');
+        if (nationalId != null && nationalId != '') {
+          return true;
+        }
         payerId = route.queryParamMap.get('payerId');
         let organizationId = route.queryParamMap.get('organizationId');
         if ((payerId == null || payerId == '') && organizationId != null && organizationId != '') {

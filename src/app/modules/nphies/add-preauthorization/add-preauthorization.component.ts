@@ -43,6 +43,7 @@ export class AddPreauthorizationComponent implements OnInit {
     insurancePlanId: ['', Validators.required],
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
+    payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
     accidentType: [''],
@@ -57,6 +58,7 @@ export class AddPreauthorizationComponent implements OnInit {
   });
 
   typeList = this.sharedDataService.claimTypeList;
+  payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
   subTypeList = [];
 
@@ -86,6 +88,8 @@ export class AddPreauthorizationComponent implements OnInit {
   today: Date;
   nationalities = nationalities;
   selectedCountry = '';
+
+  currentOpenItem: number = null;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -372,6 +376,7 @@ export class AddPreauthorizationComponent implements OnInit {
             z.diagnosisSequence.splice(z.diagnosisSequence.indexOf(sequence), 1);
           });
           this.Diagnosises.splice(index, 1);
+          this.updateSequenceNames();
           this.checkDiagnosisValidation();
         }
       });
@@ -424,13 +429,77 @@ export class AddPreauthorizationComponent implements OnInit {
               x.patientShare = result.patientShare;
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
+              x.startDateStr = result.startDateStr;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              } else {
+                x.supportingInfoNames = '';
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              } else {
+                x.careTeamNames = '';
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              } else {
+                x.diagnosisNames = '';
+              }
+
+              if (x.isPackage === 2) {
+                x.Details = [];
+              }
+
             }
           });
         } else {
           this.Items.push(result);
+          this.Items.filter((x, i) => {
+            if (i === this.Items.length - 1) {
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              }
+            }
+          });
           this.checkItemValidation();
         }
       }
@@ -518,6 +587,9 @@ export class AddPreauthorizationComponent implements OnInit {
               x.value = result.value;
               x.reason = result.reason;
               x.attachment = result.attachment;
+              x.attachmentName = result.attachmentName;
+              x.attachmentType = result.attachmentType;
+              x.attachmentDate = result.attachmentDate;
               x.codeName = result.codeName;
               x.reasonName = result.reasonName;
               x.fromDateStr = result.fromDateStr;
@@ -554,6 +626,7 @@ export class AddPreauthorizationComponent implements OnInit {
             z.supportingInfoSequence.splice(z.supportingInfoSequence.indexOf(sequence), 1);
           });
           this.SupportingInfo.splice(index, 1);
+          this.updateSequenceNames();
         }
       });
     } else {
@@ -569,19 +642,7 @@ export class AddPreauthorizationComponent implements OnInit {
   //   }
   // }
 
-  get IsCareTeamRequired() {
-    if (this.isSubmitted) {
-      if (!this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy')) {
-        if (this.CareTeams.length === 0) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } else {
-      return false;
-    }
-  }
+
 
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
@@ -615,9 +676,44 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
+  updateSequenceNames() {
+    this.Items.forEach(x => {
+      if (x.supportingInfoSequence) {
+        x.supportingInfoNames = '';
+        x.supportingInfoSequence.forEach(s => {
+          x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+        });
+        x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+      } else {
+        x.supportingInfoNames = '';
+      }
+
+      if (x.careTeamSequence) {
+        x.careTeamNames = '';
+        x.careTeamSequence.forEach(s => {
+          x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+        });
+        x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+      } else {
+        x.careTeamNames = '';
+      }
+
+      if (x.diagnosisSequence) {
+        x.diagnosisNames = '';
+        x.diagnosisSequence.forEach(s => {
+          x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+        });
+        x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+      } else {
+        x.diagnosisNames = '';
+      }
+    });
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     let hasError = false;
+    // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
@@ -628,7 +724,7 @@ export class AddPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = false;
     }
-
+    // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
       this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
@@ -702,11 +798,13 @@ export class AddPreauthorizationComponent implements OnInit {
       this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
       this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
       this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+      // tslint:disable-next-line:max-line-length
       this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
       preAuthorizationModel.payee = this.FormPreAuthorization.controls.payee.value;
+      preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
@@ -721,6 +819,9 @@ export class AddPreauthorizationComponent implements OnInit {
         model.value = x.value;
         model.reason = x.reason;
         model.attachment = x.byteArray;
+        model.attachmentName = x.attachmentName;
+        model.attachmentType = x.attachmentType;
+        model.attachmentDate = x.attachmentDate;
         return model;
       });
 
@@ -786,6 +887,7 @@ export class AddPreauthorizationComponent implements OnInit {
       }
 
       this.model.items = this.Items.map(x => {
+        // tslint:disable-next-line:max-line-length
         if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
           const model: any = {};
           model.sequence = x.sequence;
@@ -984,6 +1086,21 @@ export class AddPreauthorizationComponent implements OnInit {
     this.Items = [];
     this.isSubmitted = false;
     this.IsJSONPosted = false;
+  }
+
+  get IsCareTeamRequired() {
+    if (this.isSubmitted) {
+      // tslint:disable-next-line:max-line-length
+      if (!this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy')) {
+        if (this.CareTeams.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return false;
+    }
   }
 
 }

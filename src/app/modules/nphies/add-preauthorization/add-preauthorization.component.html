@@ -72,6 +72,21 @@
             </div>
           </div>
           <div class="col-4 col-xxl-3">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
+              <label class="control-label">Payee Type<span class="asterisk">*</span></label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="payeeType">
+                  <mat-option value="">Select Payee Type</mat-option>
+                  <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
+                <span class="error-text">Please select Payee Type</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3">
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
               <label class="control-label">Payee<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
@@ -461,17 +476,17 @@
               <tbody>
                 <ng-container *ngFor="let item of Items; let i = index">
                   <tr>
-                    <td class="text-primary text-center row-click" width="10">
-                      <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
-                      <mat-icon class="size-21">remove_circle_outline</mat-icon>
+                    <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
+                      <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                     </td>
-                    <td class="row-click">{{item.typeName}}</td>
-                    <td class="row-click">>{{item.itemCode}} - {{item.itemDescription}}</td>
-                    <td class="row-click">{{item.quantity}}</td>
-                    <td class="text-nowrap row-click">{{item.unitPrice}} <span class="currency">SR</span></td>
-                    <td class="text-nowrap row-click">{{item.Net}} <span class="currency">SR</span></td>
-                    <td class="row-click">{{item.nonStandardCode}}</td>
-                    <td class="row-click">{{item.display}}</td>
+                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}</td>
+                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">>{{item.itemCode}} - {{item.itemDescription}}</td>
+                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}</td>
+                    <td class="text-nowrap row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.unitPrice}} <span class="currency">SR</span></td>
+                    <td class="text-nowrap row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.net}} <span class="currency">SR</span></td>
+                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.nonStandardCode}}</td>
+                    <td class="row-click"  (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.display}}</td>
                     <td class="actions text-nowrap">
                       <button mat-icon-button *ngIf="item.isPackage === 1" type="button" matTooltip="Add Details" class="text-primary"
                         (click)="openAddEditItemDetailsDialog(item.sequence)">
@@ -487,7 +502,7 @@
                       </button>
                     </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="currentOpenItem==i">
                     <td colspan="9">
                       <div class="box mb-2">
                         <h5 class="align-self-center medium pb-2">Information</h5>
@@ -552,7 +567,7 @@
                               <tbody>
                                 <tr>
                                   <td class="label">Start Date</td>
-                                  <td>{{item.startDate}}</td>
+                                  <td>{{item.startDateStr}}</td>
                                 </tr>
                                 <tr>
                                   <td class="label">Supporting Info</td>
@@ -576,8 +591,7 @@
                         <h5 class="align-self-center medium pb-2">Details</h5>
                         <table class="primary-grid manual-row-color claim-view-table no-borders">
                           <thead>
-                            <tr>
-                              <th width="10"></th>
+                            <tr>                              
                               <th>Seq.</th>
                               <th>Type</th>
                               <th>Code - Description</th>
@@ -587,11 +601,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let d of item.Details; let di = index">
-                              <td class="text-primary text-center row-click" width="10">
-                                <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
-                                <mat-icon class="size-21">remove_circle_outline</mat-icon>
-                              </td>
+                            <tr *ngFor="let d of item.Details; let di = index">                           
                               <td class="row-click">{{d.sequence}}</td>
                               <td class="row-click">{{d.typeName}}</td>
                               <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>

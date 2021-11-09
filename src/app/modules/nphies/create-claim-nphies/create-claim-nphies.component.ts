@@ -43,6 +43,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     insurancePlanId: ['', Validators.required],
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
+    payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
     accidentType: [''],
@@ -57,6 +58,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   });
 
   typeList = this.sharedDataService.claimTypeList;
+  payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
   subTypeList = [];
   accidentTypeList = this.sharedDataService.accidentTypeList;
@@ -89,6 +91,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   claimId: number;
   uploadId: number;
   pageMode = 'CREATE';
+  currentOpenItem: number = null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -209,7 +212,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
-          //TODO: causing build issues
+          // TODO: causing build issues
           // if (name) {
           //   this.selectBeneficiary(this.selectedBeneficiary);
           // }
@@ -416,6 +419,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             z.diagnosisSequence.splice(z.diagnosisSequence.indexOf(sequence), 1);
           });
           this.Diagnosises.splice(index, 1);
+          this.updateSequenceNames();
           this.checkDiagnosisValidation();
         }
       });
@@ -466,13 +470,77 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.patientShare = result.patientShare;
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
+              x.startDateStr = result.startDateStr;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              } else {
+                x.supportingInfoNames = '';
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              } else {
+                x.careTeamNames = '';
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              } else {
+                x.diagnosisNames = '';
+              }
+
+              if (x.isPackage === 2) {
+                x.Details = [];
+              }
+
             }
           });
         } else {
           this.Items.push(result);
+          this.Items.filter((x, i) => {
+            if (i === this.Items.length - 1) {
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              }
+            }
+          });
           this.checkItemValidation();
         }
       }
@@ -560,6 +628,9 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.value = result.value;
               x.reason = result.reason;
               x.attachment = result.attachment;
+              x.attachmentName = result.attachmentName;
+              x.attachmentType = result.attachmentType;
+              x.attachmentDate = result.attachmentDate;
               x.codeName = result.codeName;
               x.reasonName = result.reasonName;
               x.fromDateStr = result.fromDateStr;
@@ -596,6 +667,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             z.supportingInfoSequence.splice(z.supportingInfoSequence.indexOf(sequence), 1);
           });
           this.SupportingInfo.splice(index, 1);
+          this.updateSequenceNames();
         }
       });
     } else {
@@ -641,6 +713,40 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
     }
+  }
+
+  updateSequenceNames() {
+    this.Items.forEach(x => {
+      if (x.supportingInfoSequence) {
+        x.supportingInfoNames = '';
+        x.supportingInfoSequence.forEach(s => {
+          x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+        });
+        x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+      } else {
+        x.supportingInfoNames = '';
+      }
+
+      if (x.careTeamSequence) {
+        x.careTeamNames = '';
+        x.careTeamSequence.forEach(s => {
+          x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+        });
+        x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+      } else {
+        x.careTeamNames = '';
+      }
+
+      if (x.diagnosisSequence) {
+        x.diagnosisNames = '';
+        x.diagnosisSequence.forEach(s => {
+          x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+        });
+        x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+      } else {
+        x.diagnosisNames = '';
+      }
+    });
   }
 
   onSubmit() {
@@ -744,6 +850,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormNphiesClaim.controls.dateOrdered.value, 'yyyy-MM-dd');
       preAuthorizationModel.payee = this.FormNphiesClaim.controls.payee.value;
+      preAuthorizationModel.payeeType = this.FormNphiesClaim.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormNphiesClaim.controls.type.value.value;
       preAuthorizationModel.subType = this.FormNphiesClaim.controls.subType.value.value;
       this.model.preAuthorizationInfo = preAuthorizationModel;
@@ -758,6 +865,9 @@ export class CreateClaimNphiesComponent implements OnInit {
         model.value = x.value;
         model.reason = x.reason;
         model.attachment = x.byteArray;
+        model.attachmentName = x.attachmentName;
+        model.attachmentType = x.attachmentType;
+        model.attachmentDate = x.attachmentDate;
         return model;
       });
 
