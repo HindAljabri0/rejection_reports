@@ -25,6 +25,7 @@ import { RejectionComparisonReportComponent } from './components/rejection-compa
 
 
 
+
 const routes: Routes = [
   { path: 'creditReportCreate', component: CreditReportCreateComponent },
   { path: 'clean-claim-progress-reports', component: CleanClaimProgressReportComponent },
