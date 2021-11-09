@@ -7,13 +7,15 @@ import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { PolicyManagementRoutingModule } from './policy-management-routing.module';
 import { AddEditViewPolicyComponent } from './add-edit-view-policy/add-edit-view-policy.component';
 import { PoliciesComponent } from './policies/policies.component';
+import { AddEditViewClassComponent } from './add-edit-view-class/add-edit-view-class.component';
 
 
 
 @NgModule({
   declarations: [
     AddEditViewPolicyComponent,
-    PoliciesComponent
+    PoliciesComponent,
+    AddEditViewClassComponent
   ],
   imports: [
     CommonModule,

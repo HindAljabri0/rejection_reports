@@ -1,1 +1,167 @@
-<p>add-edit-view-policy works!</p>
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header has-border">
+        <p>Add Policy</p>
+    </div>
+    <div class="p-14 bg-white">
+        <h5 class="form-title pt-0">
+            <span>Policy Info</span>
+            <mat-slide-toggle color="primary" class="ml-auto theme-success" checked="true" labelPosition="before">
+                Active
+            </mat-slide-toggle>
+        </h5>
+        <div class="row small-gutter">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Insurance Company</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="">
+                            <mat-option value="">Select Company</mat-option>
+                            <mat-option value="Company 1">Company 1</mat-option>
+                            <mat-option value="Company 2">Company 2</mat-option>
+                            <mat-option value="Company 3">Company 3</mat-option>
+                            <mat-option value="Company 4">Company 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Policy No.</label>
+                    <input type="text" placeholder="Enter policy no." class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Policy Name</label>
+                    <input type="text" placeholder="Enter policy name" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Start Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="startDate" class="form-control" placeholder="Select start date">
+                        <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">End Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="endDate" class="form-control" placeholder="Select end date">
+                        <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                        <mat-datepicker #endDate></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="form-title">
+            <span>Policy Classes</span>
+            <button type="button" routerLink="/policy-management/add-class" class="btn-icon btn-primary ml-auto">
+                <mat-icon>add</mat-icon>
+            </button>
+        </h5>
+        <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" class="bg-white">
+            <div class="fixed-height">
+                <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Threshold Limit</th>
+                            <th>Patient Share</th>
+                            <th>Patient Share Type</th>
+                            <th>Max Episode Limit</th>
+                            <th class="text-center">Active</th>
+                            <th width="10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-click" routerLink="/policy-management/view-class">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">3198511</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">1459</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">Percentage</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">419153</td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit-class">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row-click" routerLink="/policy-management/view-class">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">1143920</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">3796</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">Amount</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">95706</td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit-class">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row-click" routerLink="/policy-management/view-class">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">581632</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">4381</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">Percentage</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">102000</td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit-class">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row-click" routerLink="/policy-management/view-class">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">4191997</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">1555</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">Amount</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">280572</td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit-class">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row-click" routerLink="/policy-management/view-class">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">2548758</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">2248</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">Amount</td>
+                            <td class="row-click" routerLink="/policy-management/view-class">436180</td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" checked="true" class="grid-checkbox"></mat-checkbox>
+                            </td>
+                            <td class="actions">
+                                <button mat-icon-button type="button" matTooltip="Edit" class="text-primary" routerLink="/policy-management/edit-class">
+                                    <mat-icon>create</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-scrollbar>
+    </div>
+    <div class="block-footer sticky-bottom">
+        <div class="right-block btn-list">
+            <button type="button" color="primary" mat-flat-button>Save</button>
+        </div>
+    </div>
+</div>
