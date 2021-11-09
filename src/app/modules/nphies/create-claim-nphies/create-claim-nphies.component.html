@@ -668,7 +668,7 @@
                         <td class="row-click">>{{item.itemCode}} - {{item.itemDescription}}</td>
                         <td class="row-click">{{item.quantity}}</td>
                         <td class="text-nowrap row-click">{{item.unitPrice}} <span class="currency">SR</span></td>
-                        <td class="text-nowrap row-click">{{item.Net}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap row-click">{{item.net}} <span class="currency">SR</span></td>
                         <td class="row-click">{{item.nonStandardCode}}</td>
                         <td class="row-click">{{item.display}}</td>
                         <td class="actions text-nowrap">
@@ -751,7 +751,7 @@
                                   <tbody>
                                     <tr>
                                       <td class="label">Start Date</td>
-                                      <td>{{item.startDate}}</td>
+                                      <td>{{item.startDateStr}}</td>
                                     </tr>
                                     <tr>
                                       <td class="label">Supporting Info</td>
@@ -776,7 +776,6 @@
                             <table class="primary-grid manual-row-color claim-view-table no-borders">
                               <thead>
                                 <tr>
-                                  <th width="10"></th>
                                   <th>Seq.</th>
                                   <th>Type</th>
                                   <th>Code - Description</th>
@@ -787,10 +786,6 @@
                               </thead>
                               <tbody>
                                 <tr *ngFor="let d of item.Details; let di = index">
-                                  <td class="text-primary text-center row-click" width="10">
-                                    <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
-                                    <mat-icon class="size-21">remove_circle_outline</mat-icon>
-                                  </td>
                                   <td class="row-click">{{d.sequence}}</td>
                                   <td class="row-click">{{d.typeName}}</td>
                                   <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>

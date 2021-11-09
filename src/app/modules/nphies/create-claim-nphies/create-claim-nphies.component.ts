@@ -418,6 +418,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             z.diagnosisSequence.splice(z.diagnosisSequence.indexOf(sequence), 1);
           });
           this.Diagnosises.splice(index, 1);
+          this.updateSequenceNames();
           this.checkDiagnosisValidation();
         }
       });
@@ -468,13 +469,77 @@ export class CreateClaimNphiesComponent implements OnInit {
               x.patientShare = result.patientShare;
               x.payerShare = result.payerShare;
               x.startDate = result.startDate;
+              x.startDateStr = result.startDateStr;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              } else {
+                x.supportingInfoNames = '';
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              } else {
+                x.careTeamNames = '';
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              } else {
+                x.diagnosisNames = '';
+              }
+
+              if (x.isPackage === 2) {
+                x.Details = [];
+              }
+
             }
           });
         } else {
           this.Items.push(result);
+          this.Items.filter((x, i) => {
+            if (i === this.Items.length - 1) {
+
+              if (x.supportingInfoSequence) {
+                x.supportingInfoNames = '';
+                x.supportingInfoSequence.forEach(s => {
+                  x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+                });
+                x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+              }
+
+              if (x.careTeamSequence) {
+                x.careTeamNames = '';
+                x.careTeamSequence.forEach(s => {
+                  x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+                });
+                x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+              }
+
+              if (x.diagnosisSequence) {
+                x.diagnosisNames = '';
+                x.diagnosisSequence.forEach(s => {
+                  x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+                });
+                x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+              }
+            }
+          });
           this.checkItemValidation();
         }
       }
@@ -601,6 +666,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             z.supportingInfoSequence.splice(z.supportingInfoSequence.indexOf(sequence), 1);
           });
           this.SupportingInfo.splice(index, 1);
+          this.updateSequenceNames();
         }
       });
     } else {
@@ -646,6 +712,40 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
 
     }
+  }
+
+  updateSequenceNames() {
+    this.Items.forEach(x => {
+      if (x.supportingInfoSequence) {
+        x.supportingInfoNames = '';
+        x.supportingInfoSequence.forEach(s => {
+          x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
+        });
+        x.supportingInfoNames = x.supportingInfoNames.slice(2, x.supportingInfoNames.length);
+      } else {
+        x.supportingInfoNames = '';
+      }
+
+      if (x.careTeamSequence) {
+        x.careTeamNames = '';
+        x.careTeamSequence.forEach(s => {
+          x.careTeamNames += ', [' + this.CareTeams.filter(y => y.sequence === s)[0].practitionerName + ']';
+        });
+        x.careTeamNames = x.careTeamNames.slice(2, x.careTeamNames.length);
+      } else {
+        x.careTeamNames = '';
+      }
+
+      if (x.diagnosisSequence) {
+        x.diagnosisNames = '';
+        x.diagnosisSequence.forEach(s => {
+          x.diagnosisNames += ', [' + this.Diagnosises.filter(y => y.sequence === s)[0].diagnosisCode + ']';
+        });
+        x.diagnosisNames = x.diagnosisNames.slice(2, x.diagnosisNames.length);
+      } else {
+        x.diagnosisNames = '';
+      }
+    });
   }
 
   onSubmit() {
