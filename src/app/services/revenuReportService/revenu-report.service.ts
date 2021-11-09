@@ -80,7 +80,7 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
-  generateRejectionComparativeProgressReport(providerId: string, data: RejectionComparisonReport): Observable<any> {
+  generateRejectionComparativeProgressReport(providerId: string, data: any): Observable<any> {
     const requestURL = `/providers/${providerId}/payerId/${data.payerId}`;
 
     let searchparams = new HttpParams();

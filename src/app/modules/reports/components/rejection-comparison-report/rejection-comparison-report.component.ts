@@ -1,4 +1,3 @@
-
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -10,16 +9,15 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
 import { RejectionComparisonReport } from 'src/app/models/rejectionComparisonReport';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service'
-
 import { SharedServices } from 'src/app/services/shared.services';
-
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 @Component({
   selector: 'app-rejection-comparison-report',
   templateUrl: './rejection-comparison-report.component.html',
   styles: []
 })
 export class RejectionComparisonReportComponent implements OnInit {
-  check=false;
+
   public chartFontFamily = '"Poppins", sans-serif';
   public chartFontColor = '#2d2d2d';
   public barChartOptions: ChartOptions = {
@@ -121,7 +119,7 @@ export class RejectionComparisonReportComponent implements OnInit {
         this.height += 10;
       };
     }
-  }, null];
+  }, pluginDataLabels];
   public barChartData: ChartDataSets[] = [
     {
       data: [],
