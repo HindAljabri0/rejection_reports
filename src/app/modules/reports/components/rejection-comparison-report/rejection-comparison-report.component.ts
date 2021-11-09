@@ -1,9 +1,9 @@
-import { CurrencyPipe } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-
+import { Location, CurrencyPipe } from '@angular/common';
 import * as moment from 'moment';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -177,6 +177,7 @@ export class RejectionComparisonReportComponent implements OnInit {
     private sharedService: SharedServices,
     private reportSerice: RevenuReportService,
     private routeActive: ActivatedRoute,
+    private location: Location,
     private currencyPipe: CurrencyPipe
   ) { }
 
@@ -343,7 +344,7 @@ export class RejectionComparisonReportComponent implements OnInit {
     if (path.endsWith('?') || path.endsWith('&')) {
       path = path.substr(0, path.length - 1);
     }
-  //  this.location.go(path);
+    this.location.go(path);
   }
    
   
