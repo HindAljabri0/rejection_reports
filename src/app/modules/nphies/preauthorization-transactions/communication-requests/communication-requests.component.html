@@ -3,6 +3,7 @@
     <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
       <thead>
         <tr>
+          <th width="10"></th>
           <th>Communication ID</th>
           <th>Category</th>
           <th>Pre Authorization ID</th>
@@ -11,7 +12,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let req of communicationRequests"  [ngClass]="req.notificationStatus === 'read' ? 'read-notification': 'unread-notification'">
+        <tr *ngFor="let req of communicationRequests">
+          <td>
+            <span class="alert-marker bg-danger" *ngIf="req.notificationStatus !== 'read'"></span>
+          </td>
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.communicationId}}</td>
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.category}}</td>
           <td class="row-click" (click)="openDetailsDialog(req.requestId, req.communicationId, req.notificationId)">{{req.requestId}}</td>
