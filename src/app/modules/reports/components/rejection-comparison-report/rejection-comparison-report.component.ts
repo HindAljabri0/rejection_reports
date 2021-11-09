@@ -1,15 +1,15 @@
 import { CurrencyPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+
 import * as moment from 'moment';
 import { BaseChartDirective, Label } from 'ng2-charts';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { GrowthRate } from 'src/app/models/generateCleanClaimProgressReport';
-import { RejectionComparisonReport } from 'src/app/models/rejectionComparisonReport';
-
-
-
+import { RejectionComparisonReport } from 'src/app/models/RejectionComparisonReport';
+import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service'
 
 import { SharedServices } from 'src/app/services/shared.services';
 
@@ -175,6 +175,7 @@ export class RejectionComparisonReportComponent implements OnInit {
   secondYear: string;
   constructor(
     private sharedService: SharedServices,
+    private reportSerice: RevenuReportService,
     private routeActive: ActivatedRoute,
     private currencyPipe: CurrencyPipe
   ) { }
@@ -214,17 +215,138 @@ export class RejectionComparisonReportComponent implements OnInit {
     this.firstYear = moment(this.rejectionComparisonReport.fromDate).format('YYYY');
     this.secondYear = moment(this.rejectionComparisonReport.toDate).format('YYYY');
     const toDate = moment(this.rejectionComparisonReport.toDate).format('YYYY-MM-DD');
-  
+    this.editURL(fromDate, toDate);
     const obj: RejectionComparisonReport = {
       payerId: this.rejectionComparisonReport.payerId,
       fromDate,
-      toDate,
+      toDate
     };
 
+    this.reportSerice.generateRejectionComparativeProgressReport(this.providerId, obj).subscribe(event => {
+      if (event.body !== undefined) {
+        this.error = null;
+        const datas = JSON.parse(event.body);
 
-   
+        this.barChartOptions.scales.xAxes[0].scaleLabel.labelString = 'Year';
+        this.barChartData[0].label = datas[0].label;
+        this.barChartData[1].label = datas[1].label;
+        this.barChartData[0].data = datas[0].data;
+        this.barChartData[1].data = datas[1].data;
+
+        this.percenatgeChartData = [];
+        const firstYearData = datas[0].data;
+        const secondYearData = datas[1].data;
+        const percentageLabelData = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        this.diffrenceLableName = 'Months';
+        this.quarterData = {
+          firstQuarter: [],
+          firstQuaterSumOfTotal: 0,
+          secondQuarter: [],
+          secondQuaterSumOfTotal: 0
+        };
+        // let firstQuarterTotal = 0, secondQuarterTotal = 0;
+        firstYearData.map((ele, index) => {
+          let value = 0;
+          if (ele === 0 && secondYearData[index] > ele) {
+            value = 100;
+          } else if (secondYearData[index] === 0 && ele > secondYearData[index]) {
+            value = 100;
+          }
+          const finalValue = ele !== 0 && secondYearData[index] !== 0
+            ? ele > secondYearData[index]
+              ? (100 - (secondYearData[index] * 100) / ele) : (100 - (ele * 100) / secondYearData[index])
+            : value;
+
+          const obj = {
+            label: percentageLabelData[index],
+            value: ele === 0 && secondYearData[index] === 0 ? this.Rate.Equal : ele > secondYearData[index] ? this.Rate.Down : this.Rate.Up,
+            data: Number(finalValue.toFixed(2))
+          };
+          this.percenatgeChartData.push(obj);
+          this.quarterData.firstQuaterSumOfTotal += ele;
+          this.quarterData.secondQuaterSumOfTotal += secondYearData[index];
+        });
+
+        const firstQuarterTotal = firstYearData.reduce((acc, n, i) => {
+          const curr = acc.pop();
+          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n];
+        }, [0]);
+        const secondQuarterTotal = secondYearData.reduce((acc, n, i) => {
+          const curr = acc.pop();
+          return i && i % 3 === 0 ? [...acc, curr, n] : [...acc, curr + n];
+        }, [0]);
+        this.quarterData.secondQuarter = secondQuarterTotal.map((ele) => this.currencyPipe.transform(
+          ele.toString(),
+          'number',
+          '',
+          '1.2-2'
+        ));
+        this.quarterData.firstQuarter = firstQuarterTotal.map((ele) => this.currencyPipe.transform(
+          ele.toString(),
+          'number',
+          '',
+          '1.2-2'
+        ));
+
+        this.quarterData.firstQuaterSumOfTotal = this.currencyPipe.transform(
+          this.quarterData.firstQuaterSumOfTotal.toString(),
+          'number',
+          '',
+          '1.2-2'
+        );
+        this.quarterData.secondQuaterSumOfTotal = this.currencyPipe.transform(
+          this.quarterData.secondQuaterSumOfTotal.toString(),
+          'number',
+          '',
+          '1.2-2'
+        );
+        this.barChartLabels = this.percenatgeChartData.map(ele => ele.label);
+        // this.barChartOptions.title.text = 'All';
+
+        if (this.chart) {
+          this.chart.ngOnChanges({});
+        }
+
+      }
+      this.sharedService.loadingChanged.next(false);
+
+    }, err => {
+      this.sharedService.loadingChanged.next(false);
+      this.barChartData.map((ele) => {
+        ele.data = [];
+        ele.label = '';
+        return ele;
+      });
+      this.percenatgeChartData = [];
+      if (err instanceof HttpErrorResponse) {
+        if (err.status == 404) {
+          this.error = 'No data found.';
+        }
+      } else {
+        console.log(err);
+        this.error = 'Could not load data at the moment. Please try again later.';
+      }
+    });
   }
- 
+  editURL(fromDate?: string, toDate?: string) {
+    let path = '/reports/rejection-comparison-report?';
+    if (this.rejectionComparisonReport.payerId != null) {
+      path += `payerId=${this.rejectionComparisonReport.payerId}&`;
+    }
+   
+    if (fromDate != null) {
+      path += `fromDate=${fromDate}&`;
+    }
+    if (toDate != null) {
+      path += `toDate=${toDate}`;
+    }
+    if (path.endsWith('?') || path.endsWith('&')) {
+      path = path.substr(0, path.length - 1);
+    }
+  //  this.location.go(path);
+  }
+   
+  
   
   dateValidation(event: any) {
     if (event !== null) {
@@ -246,4 +368,5 @@ export class RejectionComparisonReportComponent implements OnInit {
   }
   get Rate() {
     return GrowthRate;
-  }}
+  }
+}

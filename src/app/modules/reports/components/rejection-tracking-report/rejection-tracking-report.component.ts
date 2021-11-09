@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { SharedServices } from 'src/app/services/shared.services';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';
 import { ActivatedRoute } from '@angular/router';

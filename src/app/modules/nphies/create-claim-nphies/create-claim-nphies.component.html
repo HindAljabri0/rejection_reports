@@ -141,7 +141,8 @@
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')}">
                     <label class="control-label">Payee Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="payee">
@@ -150,13 +151,15 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('payeeType').touched) && FormNphiesClaim.get('payeeType').hasError('required')">
                       <span class="error-text">Please select Payee Type</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-4 col-xxl-3">
-                  <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
+                  <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')}">
                     <label class="control-label">Payee<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                       <mat-select formControlName="payee">
@@ -165,7 +168,8 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
-                    <div *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
+                    <div
+                      *ngIf="(isSubmitted || FormNphiesClaim.get('payee').touched) && FormNphiesClaim.get('payee').hasError('required')">
                       <span class="error-text">Please select payee</span>
                     </div>
                   </div>
@@ -660,20 +664,28 @@
                   <tbody>
                     <ng-container *ngFor="let item of Items; let i = index">
                       <tr>
-                        <td class="text-primary text-center row-click" width="10">
-                          <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
-                          <mat-icon class="size-21">remove_circle_outline</mat-icon>
+                        <td class="text-primary text-center row-click" width="10"
+                          (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
+                          <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                         </td>
-                        <td class="row-click">{{item.typeName}}</td>
-                        <td class="row-click">>{{item.itemCode}} - {{item.itemDescription}}</td>
-                        <td class="row-click">{{item.quantity}}</td>
-                        <td class="text-nowrap row-click">{{item.unitPrice}} <span class="currency">SR</span></td>
-                        <td class="text-nowrap row-click">{{item.net}} <span class="currency">SR</span></td>
-                        <td class="row-click">{{item.nonStandardCode}}</td>
-                        <td class="row-click">{{item.display}}</td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.typeName}}</td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          >{{item.itemCode}} - {{item.itemDescription}}</td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.quantity}}</td>
+                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.unitPrice}} <span class="currency">SR</span></td>
+                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.net}} <span class="currency">SR</span></td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.nonStandardCode}}</td>
+                        <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                          {{item.display}}</td>
                         <td class="actions text-nowrap">
-                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details" class="text-primary"
-                            (click)="openAddEditItemDetailsDialog(item.sequence)">
+                          <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details"
+                            class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
                             <mat-icon>add</mat-icon>
                           </button>
                           <button mat-icon-button type="button" matTooltip="Edit" class="text-primary"
@@ -686,7 +698,7 @@
                           </button>
                         </td>
                       </tr>
-                      <tr>
+                      <tr *ngIf="currentOpenItem==i">
                         <td colspan="9">
                           <div class="box mb-2">
                             <h5 class="align-self-center medium pb-2">Information</h5>
@@ -716,7 +728,7 @@
                                     <tr>
                                       <td class="label">Factor</td>
                                       <td>{{item.factor}}</td>
-                                    </tr>                                   
+                                    </tr>
                                   </tbody>
                                 </table>
                               </div>
@@ -734,7 +746,7 @@
                                     <tr>
                                       <td class="label">Patient Share(%)</td>
                                       <td>{{item.patientShare}} %</td>
-                                    </tr>                                  
+                                    </tr>
                                     <tr>
                                       <td class="label">Patient Share</td>
                                       <td>{{item.patientShare}} <span class="currency">SR</span></td>

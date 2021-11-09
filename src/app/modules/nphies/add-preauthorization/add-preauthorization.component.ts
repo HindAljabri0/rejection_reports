@@ -89,6 +89,8 @@ export class AddPreauthorizationComponent implements OnInit {
   nationalities = nationalities;
   selectedCountry = '';
 
+  currentOpenItem: number = null;
+
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,

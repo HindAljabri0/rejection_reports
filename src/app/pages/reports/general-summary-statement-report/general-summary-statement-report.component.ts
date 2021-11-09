@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material';
 import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Subscription } from 'rxjs';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { GssReportResponseModel } from 'src/app/models/gssReportResponseModel';

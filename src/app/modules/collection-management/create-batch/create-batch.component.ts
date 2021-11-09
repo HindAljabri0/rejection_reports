@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BatchSummaryModel } from 'src/app/models/batchSummary';
 import { BatchSummary } from 'src/app/models/batchSummaryModel';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';

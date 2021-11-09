@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { ReportsService } from 'src/app/services/reportsService/reports.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ActivatedRoute } from '@angular/router';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 @Component({
