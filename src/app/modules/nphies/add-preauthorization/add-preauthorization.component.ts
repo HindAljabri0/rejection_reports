@@ -55,6 +55,8 @@ export class AddPreauthorizationComponent implements OnInit {
     date: [''],
     dateWritten: [''],
     prescriber: [''],
+    eligibilityOfflineDate: [''],
+    eligibilityOfflineId: [''],
   });
 
   typeList = this.sharedDataService.claimTypeList;
@@ -803,10 +805,20 @@ export class AddPreauthorizationComponent implements OnInit {
 
       const preAuthorizationModel: any = {};
       preAuthorizationModel.dateOrdered = this.datePipe.transform(this.FormPreAuthorization.controls.dateOrdered.value, 'yyyy-MM-dd');
-      preAuthorizationModel.payee = this.FormPreAuthorization.controls.payee.value;
+      if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
+        preAuthorizationModel.payeeId = this.sharedServices.cchiId;
+      } else {
+        preAuthorizationModel.payeeId = this.FormPreAuthorization.controls.payee.value;
+      }
+
       preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
       preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
       preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
+
+      preAuthorizationModel.eligibilityOfflineDate = this.FormPreAuthorization.controls.eligibilityOfflineDate.value;
+      preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
+
+
       this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {

@@ -134,6 +134,23 @@
               </mat-form-field>
             </div>
           </div>
+
+          <div class="col-4 col-lg-3">
+            <div class="form-group">
+              <label class="control-label">Offline Eligibility ID</label>
+              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Offline Eligibility Date<span class="asterisk">*</span></label>
+              <div class="date-picker">
+                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today" formControlName="eligibilityOfflineDate">
+                <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+              </div>              
+            </div>
+          </div>
         </div>
 
 

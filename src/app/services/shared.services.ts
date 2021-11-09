@@ -334,6 +334,10 @@ export class SharedServices {
     return this.authService.getProviderId();
   }
 
+  public get cchiId(){
+    return this.authService.getCCHIId();
+  }
+
   getCardAccentColor(status: string) {
     switch (status.toLowerCase()) {
       case ClaimStatus.Accepted.toLowerCase():
