@@ -8,7 +8,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as moment from 'moment';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { RevenuTrackingReportChart } from 'src/app/claim-module-components/models/revenuTrackingCategoryChart';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';

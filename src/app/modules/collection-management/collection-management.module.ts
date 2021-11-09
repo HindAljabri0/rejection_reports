@@ -10,7 +10,7 @@ import { AccountsReceivableListComponent } from './accounts-receivable-list/acco
 import { AccountReceivableAddPaymentComponent } from './account-receivable-add-payment/account-receivable-add-payment.component';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { AccountReceivableDetailsComponent } from './account-receivable-details/account-receivable-details.component';
-import { BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AgingReportComponent } from './aging-report/aging-report.component';
 import { StatementOfAccountsComponent } from './statement-of-accounts/statement-of-accounts.component';
 import { StatementOfAccountsDetailsComponent } from './statement-of-accounts-details/statement-of-accounts-details.component';

@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import * as moment from 'moment';
 import { Label } from 'ng2-charts';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { getDepartmentNames } from 'src/app/pages/dashboard/store/dashboard.actions';
 import { getDepartments } from 'src/app/pages/dashboard/store/dashboard.reducer';
 import { RevenuReportService } from 'src/app/services/revenuReportService/revenu-report.service';

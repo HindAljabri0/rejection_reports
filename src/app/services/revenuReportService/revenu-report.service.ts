@@ -5,6 +5,7 @@ import { HttpRequest, HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { RevenuComparativeReport } from 'src/app/models/revenuComparativeReport';
+import { RejectionComparisonReport} from 'src/app/models/RejectionComparisonReport';
 
 @Injectable({
   providedIn: 'root'
@@ -79,11 +80,16 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
-  generateRejectiontReportComparison(
-    providerId: string, payerId: string, fromDate: string, toDate: string,
-    isAvgCost:string): Observable<any> {
-    const requestURL = `/providers/${providerId}/payers/${payerId}?fromDate=${fromDate}&toDate=${toDate}&isAvgCost=${isAvgCost}`;
-    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
+  generateRejectionComparativeProgressReport(providerId: string, data: RejectionComparisonReport): Observable<any> {
+    const requestURL = `/providers/${providerId}/payerId/${data.payerId}`;
+
+    let searchparams = new HttpParams();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] !== undefined && key !== 'payerId') { searchparams = searchparams.set(key, data[key]); }
+      }
+    }
+    const request = new HttpRequest('GET', environment.claimSearchHost + requestURL, { responseType: 'text', params: searchparams });
     return this.http.request(request);
   }
 

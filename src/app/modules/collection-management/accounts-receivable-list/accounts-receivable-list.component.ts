@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CollectionManagementService } from 'src/app/services/collection-management/collection-management.service';
 import { SharedServices } from 'src/app/services/shared.services';
 import * as moment from 'moment';

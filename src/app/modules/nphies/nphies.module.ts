@@ -4,7 +4,7 @@ import { EligibilityComponent } from './eligibility/eligibility.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared.module';
-import { BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { NphiesRoutingModule } from './nphies-routing.module';
 import { NgScrollbarModule, SmoothScrollModule } from 'ngx-scrollbar';
 import { ViewEligibilityDetailsComponent } from './view-eligibility-details/view-eligibility-details.component';
