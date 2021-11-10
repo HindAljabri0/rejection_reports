@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { generateCleanClaimProgressReport } from 'src/app/models/generateCleanClaimProgressReport';
+
 import { Observable } from 'rxjs';
 import { HttpRequest, HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { RevenuTrackingReport } from 'src/app/models/revenuReportTrackingReport';
 import { RevenuComparativeReport } from 'src/app/models/revenuComparativeReport';
-import { RejectionComparisonReport} from 'src/app/models/RejectionComparisonReport';
+import { RejectionComparisonReport} from 'src/app/models/rejectionComparisonReport';
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +80,7 @@ export class RevenuReportService {
     const request = new HttpRequest('GET', environment.claimSearchHost + requestURL);
     return this.http.request(request);
   }
-  generateRejectionComparativeProgressReport(providerId: string, data: RejectionComparisonReport): Observable<any> {
+  generateRejectionComparativeProgressReport(providerId: string, data: any): Observable<any> {
     const requestURL = `/providers/${providerId}/payerId/${data.payerId}`;
 
     let searchparams = new HttpParams();

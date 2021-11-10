@@ -3,14 +3,14 @@
             <div class="block-header has-border">
                 <p>Rejection Comparison Report</p>
             </div>
-            <form #revenuComparativeReportForm='ngForm' (ngSubmit)='revenuComparativeReportForm.valid && generate()'>
+            <form #rejectionComparativeReportForm='ngForm' (ngSubmit)='rejectionComparativeReportForm.valid && generate()'>
                 <div class="block-filter-panel has-border">
                     <div class="row small-gutter align-items-end">
                         <div class="col">
                             <div class="form-group">
                                 <label class="control-label">Payer</label>
                                 <mat-form-field class="form-control custom-select-control"
-                                    [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && !rejectionComparisonReport.payerId}">
+                                    [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && !rejectionComparisonReport.payerId}">
                                     <mat-select [(ngModel)]="rejectionComparisonReport.payerId" #payerId name="payer" required>
                                         <mat-option value="0">All</mat-option>
                                         <mat-option *ngFor="let payer of payersList" [value]="payer.id">{{payer.name}}
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="form-group" [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && fromDate.invalid}">
+                            <div class="form-group" [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && fromDate.invalid}">
                                 <label class="control-label">First Year</label>
                                 <div class="date-picker">
                                     <!-- [matDatepicker]="fromDate" -->
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="form-group" [ngClass]="{'has-error' : revenuComparativeReportForm.submitted && toDate.invalid}">
+                            <div class="form-group" [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && toDate.invalid}">
                                 <label class="control-label">Second Year</label>
                                 <div class="date-picker">
                                     <input bsDatepicker [minDate]="minDate" [bsConfig]="datePickerConfig" [(ngModel)]='rejectionComparisonReport.toDate' #toDate='ngModel' name="toDate"
@@ -53,8 +53,8 @@
                     </div>
                 </div>
             </form>
-            <div class="progress-report-wrapper">
-                <div class="right-block full-width" *ngIf="percenatgeChartData.length>0">
+            <div class="progress-report-wrapper"  *ngIf="percenatgeChartData.length>0">
+                <div class="right-block full-width">
                     <div class="chart-wrapper">
                         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
                             [chartType]="barChartType">
