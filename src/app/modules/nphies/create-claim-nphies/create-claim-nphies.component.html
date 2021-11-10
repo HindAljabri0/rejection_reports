@@ -670,7 +670,7 @@
                       <th>Net</th>
                       <th>Non Standard Code</th>
                       <th>Display</th>
-                      <th width="10"></th>
+                      <th [hidden]="pageMode === 'VIEW'" width="10"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -695,7 +695,7 @@
                           {{item.nonStandardCode}}</td>
                         <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                           {{item.display}}</td>
-                        <td class="actions text-nowrap">
+                        <td [hidden]="pageMode === 'VIEW'" class="actions text-nowrap">
                           <button *ngIf="item.isPackage === 1" mat-icon-button type="button" matTooltip="Add Details"
                             class="text-primary" (click)="openAddEditItemDetailsDialog(item.sequence)">
                             <mat-icon>add</mat-icon>

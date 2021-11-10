@@ -1,6 +1,6 @@
 <div class="primary-dialog-header has-border">
-  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Preauthorization Item</h5>
-  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Preauthorization Item</h5>
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Item</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Item</h5>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
@@ -79,7 +79,7 @@
               <mat-option value="">Select Body Site</mat-option>
               <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite">{{bodySite.name}}</mat-option>
             </mat-select>
-          </mat-form-field>         
+          </mat-form-field>
         </div>
       </div>
 
@@ -91,7 +91,7 @@
               <mat-option value="">Select Sub Site</mat-option>
               <mat-option *ngFor="let subSite of subSiteList" [value]="subSite">{{subSite.name}}</mat-option>
             </mat-select>
-          </mat-form-field>         
+          </mat-form-field>
         </div>
       </div>
 
