@@ -335,7 +335,8 @@ export class SharedServices {
   }
 
   public get cchiId(){
-    return this.authService.getCCHIId();
+    // tslint:disable-next-line:radix
+    return parseInt(this.authService.getCCHIId());
   }
 
   getCardAccentColor(status: string) {

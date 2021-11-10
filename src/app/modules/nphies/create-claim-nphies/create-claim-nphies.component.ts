@@ -92,7 +92,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   uploadId: number;
   pageMode = 'CREATE';
   currentOpenItem: number = null;
-  beneficiaryModel: any;
+  otherDataModel: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -151,6 +151,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.patientFileNumber.disable();
     this.FormNphiesClaim.controls.insurancePlanId.disable();
     this.FormNphiesClaim.controls.dateOrdered.disable();
+    this.FormNphiesClaim.controls.payeeType.disable();
     this.FormNphiesClaim.controls.payee.disable();
     this.FormNphiesClaim.controls.type.disable();
     this.FormNphiesClaim.controls.subType.disable();
@@ -184,26 +185,35 @@ export class CreateClaimNphiesComponent implements OnInit {
     );
   }
 
-  onTypeChange($event) {
-    switch ($event.value && $event.value.value) {
-      case 'institutional':
-        this.subTypeList = [
-          { value: 'ip', name: 'InPatient' },
-          { value: 'emr', name: 'Emergency' },
-        ];
-        break;
-      case 'professional':
-      case 'vision':
-      case 'pharmacy':
-      case 'oral':
-        this.subTypeList = [
-          { value: 'op', name: 'OutPatient' },
-        ];
-        break;
+  onPayeeTypeChange($event) {
+    if ($event.value && $event.value.value === 'provider') {
+      // tslint:disable-next-line:max-line-length
+      this.FormNphiesClaim.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
+  }
 
-    this.Items = [];
-    this.VisionSpecifications = [];
+  onTypeChange($event) {
+    if ($event.value) {
+      switch ($event.value.value) {
+        case 'institutional':
+          this.subTypeList = [
+            { value: 'ip', name: 'InPatient' },
+            { value: 'emr', name: 'Emergency' },
+          ];
+          break;
+        case 'professional':
+        case 'vision':
+        case 'pharmacy':
+        case 'oral':
+          this.subTypeList = [
+            { value: 'op', name: 'OutPatient' },
+          ];
+          break;
+      }
+
+      this.Items = [];
+      this.VisionSpecifications = [];
+    }
   }
 
   searchBeneficiaries() {
@@ -1217,8 +1227,11 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   setData(response) {
+    this.otherDataModel = {};
+    this.otherDataModel.beneficiary = response.beneficiary;
+    this.otherDataModel.accident = response.accident;
+    this.otherDataModel.insurancePlan = response.coverageType;
 
-    this.beneficiaryModel = response.beneficiary;
     this.FormNphiesClaim.controls.patientFileNumber.setValue(response.patientFileNumber);
     this.FormNphiesClaim.controls.dateOrdered.setValue(response.preAuthorizationInfo.dateOrdered);
 

@@ -138,7 +138,7 @@ export class SharedDataService {
   ];
 
   payeeTypeList = [
-    { value: 'subscriber', name: 'Subscriber' },
+    // { value: 'subscriber', name: 'Subscriber' },
     { value: 'provider', name: 'Provider' },
     { value: 'other', name: 'Other' },
   ];
