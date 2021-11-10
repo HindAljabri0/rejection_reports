@@ -229,7 +229,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .text-grey{color: #707070!important;}
 .text-success{color: #29bf24!important;}
 .text-danger{color: #CC2F2F!important;}
-.text-invalid{color: #682691!important;}
+.text-invalid,.text-purple{color: #682691!important;}
 .text-middle-grey{color:#bebebe!important;}
 .text-normal-color{color:#2d2d2d!important;}
 .text-white{color: #fff!important;}
@@ -248,7 +248,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .bg-off-white{background-color:#f6f6f6!important;}
 .bg-success{background-color: #29bf24!important;}
 .bg-danger{background-color: #CC2F2F!important;}
-.bg-invalid{background-color: #682691!important;}
+.bg-invalid,.bg-purple{background-color: #682691!important;}
 .bg-white{background-color: #fff!important;}
 .light-bg-all-claim,.light-bg-primary{background-color: #e6ecf5!important;}
 .light-bg-ready-submission,.light-bg-parrot{background-color: #edf9e4!important;}
@@ -261,7 +261,7 @@ button[disableripple="true"].mat-button .mat-button-focus-overlay,a[disablerippl
 .light-bg-partially-paid,.light-bg-light-blue{background-color: #e9f3f8!important;}
 .light-bg-submitted-outside-waseel,.light-bg-submitted,.light-bg-under-processing,.light-bg-deep-red{background-color: #efe0e0!important;}
 .light-bg-danger{background-color: #f9e6e6!important;}
-.light-bg-invalid{background-color: #ede4f2!important;}
+.light-bg-invalid,.light-bg-purple{background-color: #ede4f2!important;}
 
 /* brand header 
 --------------------------------------------------------------------------------------------------------*/
