@@ -26,7 +26,7 @@
                 <span [class.text-danger]="checkErrorClaimInfo === true">Claim Information</span>
               </ng-template>
               <h5 class="form-title pt-0">Beneficary Info</h5>
-              <div class="d-flex">
+              <div *ngIf="pageMode !== 'VIEW'" class="d-flex">
                 <div class="form-group flex-grow-1"
                   [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('beneficiaryName').touched) && FormNphiesClaim.get('beneficiaryName').hasError('required')}">
                   <label class="control-label">Select a Beneficiary<span class="asterisk">*</span></label>
@@ -54,41 +54,41 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="pageMode === 'VIEW' && beneficiaryModel">
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Name</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{beneficiaryModel.beneficiaryName}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Document</div>
-                    <p class="form-control-static">Dummy data)</p>
+                    <p class="form-control-static">{{beneficiaryModel.documentType}} ({{beneficiaryModel.documentId}})</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Gender</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{beneficiaryModel.gender}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Date of Birth</div>
-                    <p class="form-control-static">Dummy data}</p>
+                    <p class="form-control-static">{{beneficiaryModel.dob | date: 'dd-MM-yyyy'}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Contact No.</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{beneficiaryModel.contactNumber}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Email</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{beneficiaryModel.email}}</p>
                   </div>
                 </div>
                 <div class="col-4">
@@ -100,7 +100,7 @@
               </div>
 
 
-              <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
+              <div class="row" *ngIf="pageMode !== 'VIEW' && selectedBeneficiary && selectedBeneficiary.plans">
                 <div class="col-md-4">
                   <div class="form-group" [matTooltip]="selectedPlanIdError"
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('insurancePlanId').touched) && FormNphiesClaim.get('insurancePlanId').hasError('required')}">
@@ -123,7 +123,7 @@
               </div>
 
               <h5 class="form-title">Claim Info</h5>
-              <div class="row small-gutter">
+              <div class="row small-gutter" *ngIf="pageMode !== 'VIEW'">
                 <div class="col-4 col-xxl-3">
                   <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('dateOrdered').touched) && FormNphiesClaim.get('dateOrdered').hasError('required')}">
@@ -213,23 +213,35 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div *ngIf="pageMode === 'VIEW'" class="row">
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Date Ordered</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.dateOrdered.value | date: 'dd-MM-yyyy'}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Payee Type</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.payeeType.value.name}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group form-group-static">
+                    <div class="control-label">Payee</div>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.payee.value}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Type</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.type.value.name}}</p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group form-group-static">
                     <div class="control-label">Sub Type</div>
-                    <p class="form-control-static">Dummy data</p>
+                    <p class="form-control-static">{{FormNphiesClaim.controls.subType.value.name}}</p>
                   </div>
                 </div>
               </div>

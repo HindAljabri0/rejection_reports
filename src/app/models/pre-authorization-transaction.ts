@@ -8,6 +8,7 @@ export class PreAuthorizationTransaction extends Paginateable{
   transactionDate: string;
   payerId: number;
   status: string;
+  processingStatus: string;
 
   constructor(body: {}) {
     super(body);
@@ -18,5 +19,6 @@ export class PreAuthorizationTransaction extends Paginateable{
     this.transactionDate = body['transactionDate'];
     this.payerId = body['payerId'];
     this.status = body['status'];
+    this.processingStatus = body['processingStatus'];
   }
 }

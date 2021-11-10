@@ -107,10 +107,12 @@
                 </td>
                 <td class="actions text-left text-wrap">
                   <div class="d-flex align-items-center">
-                    <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.requestId, transaction.responseId)">
+                    <button mat-icon-button matTooltip="Check Status" class="text-primary" (click)="checkStatus(transaction.responseId)">
                       <mat-icon>refresh</mat-icon>
                     </button>
-                    <span class="pl-1">Processing Payment</span>
+                    <span *ngIf="!transaction.processingStatus" class="pl-1">Processing Payment</span>
+                    <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
+                    
                   </div>
                 </td>
                 <td class="actions">

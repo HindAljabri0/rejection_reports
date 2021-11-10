@@ -430,37 +430,49 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     });
   }
 
-  checkStatus(requestId: number, responseId: number) {    
+  checkStatus(responseId: number) {
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
-    model.approvalRequestId = requestId;
     model.approvalResponseId = responseId;
     this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
+
+          if (body.errors && body.errors.length > 0) {
             const errors: any[] = [];
-
-            if (body.disposition) {
-              errors.push(body.disposition);
-            }
-
-            if (body.errors && body.errors.length > 0) {
-              body.errors.forEach(err => {
-                err.coding.forEach(codex => {
-                  errors.push(codex.code + ' : ' + codex.display);
-                });
+            body.errors.forEach(err => {
+              err.coding.forEach(codex => {
+                errors.push(codex.code + ' : ' + codex.display);
               });
-            }
+            });
             this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-
-          } else {
-            this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-            this.onSubmit();
           }
+          this.onSubmit();
+
+
+          // if (body.outcome && body.outcome.toString().toLowerCase() === 'error') {
+          //   const errors: any[] = [];
+
+          //   if (body.disposition) {
+          //     errors.push(body.disposition);
+          //   }
+
+          //   if (body.errors && body.errors.length > 0) {
+          //     body.errors.forEach(err => {
+          //       err.coding.forEach(codex => {
+          //         errors.push(codex.code + ' : ' + codex.display);
+          //       });
+          //     });
+          //   }
+          //   this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+
+          // } else {
+          //   // this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+          //   this.onSubmit();
+          // }
         }
-        this.sharedServices.loadingChanged.next(false);
+        // this.sharedServices.loadingChanged.next(false);
       }
     }, error => {
       this.sharedServices.loadingChanged.next(false);
